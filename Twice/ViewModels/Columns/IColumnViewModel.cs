@@ -5,8 +5,8 @@ namespace Twice.ViewModels.Columns
 {
 	internal interface IColumnViewModel
 	{
-		string Title { get; }
-
+		Icon Icon { get; }
 		ICollection<StatusViewModel> Statuses { get; }
+		string Title { get; }
 	}
 }

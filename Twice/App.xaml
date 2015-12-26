@@ -12,8 +12,12 @@
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+				<ResourceDictionary Source="Resources/Icons.xaml" />
+				<ResourceDictionary Source="Resources/Converters.xaml" />
+				<ResourceDictionary Source="Resources/DataTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			
+
 			<viewModels:ViewModelLocator x:Key="Locator" />
 		</ResourceDictionary>
 	</Application.Resources>

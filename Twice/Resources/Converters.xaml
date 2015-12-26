@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Twice.Converters">
+	<BooleanToVisibilityConverter x:Key="BoolToVisibleConv" />
+	<converters:StatusHighlighter x:Key="StatusHighlighterConv" />
+	<converters:UtcToLocal x:Key="UtcToLocalConv" />
+	<converters:SourceUrl x:Key="SourceUrlConv" />
+	<converters:SourceName x:Key="SourceNameConv" />
+	<converters:StatusLink x:Key="StatusLinkConv" />
+	<converters:Localize x:Key="LocConv" />
+	<converters:UserToId x:Key="UserToIdConv" />
+	<converters:IconToVisual x:Key="IconToVisualConv" />
+
+	<converters:ConverterChain x:Key="RelativeDateConv">
+		<converters:UtcToLocal />
+		<converters:RelativeDate />
+	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="InvertBoolToVisibleConv">
+		<converters:InvertBool />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleNotNullConv">
+		<converters:NotNull />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
+</ResourceDictionary>

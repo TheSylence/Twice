@@ -13,7 +13,7 @@ namespace Twice.Models.Contexts
 			AccountName = lines[0];
 			UserId = ulong.Parse( lines[1] );
 
-			Context = new TwitterContext( new SingleUserAuthorizer
+			Twitter = new TwitterContext( new SingleUserAuthorizer
 			{
 				CredentialStore = new InMemoryCredentialStore
 				{
@@ -37,12 +37,12 @@ namespace Twice.Models.Contexts
 		{
 			if( disposing )
 			{
-				Context?.Dispose();
+				Twitter?.Dispose();
 			}
 		}
 
 		public string AccountName { get; }
-		public TwitterContext Context { get; }
+		public TwitterContext Twitter { get; }
 		public ulong UserId { get; }
 	}
 }

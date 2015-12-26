@@ -10,6 +10,8 @@ namespace Twice.ViewModels.Columns
 			Statuses = new List<StatusViewModel>();
 		}
 
+		public Icon Icon => ViewModels.Icon.User;
+
 		public string Title => "Test";
 		public ICollection<StatusViewModel> Statuses { get; }
 	}

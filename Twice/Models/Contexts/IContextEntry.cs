@@ -6,7 +6,7 @@ namespace Twice.Models.Contexts
 	internal interface IContextEntry : IDisposable
 	{
 		string AccountName { get; }
-		TwitterContext Context { get; }
+		TwitterContext Twitter { get; }
 		ulong UserId { get; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using Ninject;
+using Twice.Models.Configuration;
 using Twice.Models.Contexts;
 
 namespace Twice.ViewModels
@@ -11,6 +12,9 @@ namespace Twice.ViewModels
 
 	internal class ViewModelBaseEx : ViewModelBase, IViewModelBase
 	{
+		[Inject]
+		public IConfig Configuration { get; set; }
+
 		[Inject]
 		public ITwitterContextList ContextList { get; set; }
 	}

@@ -117,10 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ago" xml:space="preserve">
+    <value>{0} ago</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="DaysShort" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="HoursShort" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="MinutesShort" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Now</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="Via" xml:space="preserve">
+    <value>Via</value>
+  </data>
+  <data name="FavoritedXTimes" xml:space="preserve">
+    <value>Favorited {0} times</value>
+  </data>
+  <data name="RetweetedXTimes" xml:space="preserve">
+    <value>Retweeted {0} times</value>
+  </data>
+  <data name="UserRetweeted" xml:space="preserve">
+    <value>{0} retweeted</value>
+  </data>
+  <data name="CopyTweet" xml:space="preserve">
+    <value>Copy tweet</value>
+  </data>
+  <data name="CopyTweetUrl" xml:space="preserve">
+    <value>Copy tweet URL</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="EmbedTweet" xml:space="preserve">
+    <value>Embed tweet</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="ReplyAll" xml:space="preserve">
+    <value>Reply all</value>
+  </data>
+  <data name="ReportSpam" xml:space="preserve">
+    <value>Report spam</value>
+  </data>
+  <data name="Retweet" xml:space="preserve">
+    <value>Retweet</value>
+  </data>
+  <data name="ShareTweet" xml:space="preserve">
+    <value>Share tweet</value>
+  </data>
+  <data name="FavoriteTweet" xml:space="preserve">
+    <value>Favorite tweet</value>
+  </data>
+  <data name="Favourites" xml:space="preserve">
+    <value>Favourites</value>
+  </data>
+  <data name="Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="InlineMediaInTimeline" xml:space="preserve">
+    <value>Show inline media in timelines</value>
+  </data>
+  <data name="ShowStatusSeparator" xml:space="preserve">
+    <value>Show separator between statuses</value>
+  </data>
+  <data name="TranslateTweet" xml:space="preserve">
+    <value>Translate tweet</value>
   </data>
 </root>

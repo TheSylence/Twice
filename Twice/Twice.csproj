@@ -73,8 +73,8 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -131,12 +131,32 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFLocalizeExtension, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfLocalizeExtension.2.3.2\lib\net35\WPFLocalizeExtension.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XAMLMarkupExtensions, Version=1.2.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XAMLMarkupExtensions.1.2.1.3\lib\net40\XAMLMarkupExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -146,6 +166,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controls\BindableTextBlock.cs" />
+    <Compile Include="Converters\ConverterChain.cs" />
+    <Compile Include="Converters\IconToImageSource.cs" />
+    <Compile Include="Converters\InvertBool.cs" />
+    <Compile Include="Converters\Localize.cs" />
+    <Compile Include="Converters\NotNull.cs" />
+    <Compile Include="Converters\RelativeDate.cs" />
+    <Compile Include="Converters\StatusHighlighter.cs" />
+    <Compile Include="Converters\StatusLink.cs" />
+    <Compile Include="Converters\TweetSource.cs" />
+    <Compile Include="Converters\UserToId.cs" />
+    <Compile Include="Converters\UtcToLocal.cs" />
     <Compile Include="Injections\ModelInjectionModule.cs" />
     <Compile Include="Injections\ServiceInjectionModule.cs" />
     <Compile Include="Injections\ViewModelInjectionModule.cs" />
@@ -153,11 +186,17 @@
     <Compile Include="Models\Cache\DataCache.cs" />
     <Compile Include="Models\Cache\IDataCache.cs" />
     <Compile Include="Models\Cache\SecureBlobCacheProvider.cs" />
+    <Compile Include="Models\Configuration\Config.cs" />
+    <Compile Include="Models\Configuration\ConfigurationProvider.cs" />
+    <Compile Include="Models\Configuration\GeneralConfig.cs" />
+    <Compile Include="Models\Configuration\VisualConfig.cs" />
     <Compile Include="Models\Contexts\ContextEntry.cs" />
     <Compile Include="Models\Contexts\IContextEntry.cs" />
     <Compile Include="Models\Contexts\ITwitterContextList.cs" />
     <Compile Include="Models\ObjectId.cs" />
     <Compile Include="Models\Contexts\TwitterContextList.cs" />
+    <Compile Include="Models\Twitter\TweetSource.cs" />
+    <Compile Include="Models\Twitter\TwitterHelper.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,6 +205,8 @@
     <Compile Include="ViewModels\Columns\IColumnViewModel.cs" />
     <Compile Include="ViewModels\Columns\TestColumn.cs" />
     <Compile Include="ViewModels\Columns\UserColumn.cs" />
+    <Compile Include="ViewModels\GlobalCommands.cs" />
+    <Compile Include="ViewModels\Icon.cs" />
     <Compile Include="ViewModels\Main\IMainViewModel.cs" />
     <Compile Include="ViewModels\Main\MainViewModel.cs" />
     <Compile Include="ViewModels\Twitter\StatusViewModel.cs" />
@@ -186,6 +227,7 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -200,6 +242,12 @@
     <None Include="DebugTokens.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

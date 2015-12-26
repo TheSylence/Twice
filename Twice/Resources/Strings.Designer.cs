@@ -61,6 +61,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} ago.
+        /// </summary>
+        internal static string Ago {
+            get {
+                return ResourceManager.GetString("Ago", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Block.
+        /// </summary>
+        internal static string Block {
+            get {
+                return ResourceManager.GetString("Block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -70,11 +88,209 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy tweet.
+        /// </summary>
+        internal static string CopyTweet {
+            get {
+                return ResourceManager.GetString("CopyTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy tweet URL.
+        /// </summary>
+        internal static string CopyTweetUrl {
+            get {
+                return ResourceManager.GetString("CopyTweetUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        internal static string DaysShort {
+            get {
+                return ResourceManager.GetString("DaysShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embed tweet.
+        /// </summary>
+        internal static string EmbedTweet {
+            get {
+                return ResourceManager.GetString("EmbedTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorited {0} times.
+        /// </summary>
+        internal static string FavoritedXTimes {
+            get {
+                return ResourceManager.GetString("FavoritedXTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorite tweet.
+        /// </summary>
+        internal static string FavoriteTweet {
+            get {
+                return ResourceManager.GetString("FavoriteTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favourites.
+        /// </summary>
+        internal static string Favourites {
+            get {
+                return ResourceManager.GetString("Favourites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to h.
+        /// </summary>
+        internal static string HoursShort {
+            get {
+                return ResourceManager.GetString("HoursShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show inline media in timelines.
+        /// </summary>
+        internal static string InlineMediaInTimeline {
+            get {
+                return ResourceManager.GetString("InlineMediaInTimeline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        internal static string MinutesShort {
+            get {
+                return ResourceManager.GetString("MinutesShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Now.
+        /// </summary>
+        internal static string Now {
+            get {
+                return ResourceManager.GetString("Now", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reply.
+        /// </summary>
+        internal static string Reply {
+            get {
+                return ResourceManager.GetString("Reply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reply all.
+        /// </summary>
+        internal static string ReplyAll {
+            get {
+                return ResourceManager.GetString("ReplyAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report spam.
+        /// </summary>
+        internal static string ReportSpam {
+            get {
+                return ResourceManager.GetString("ReportSpam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retweet.
+        /// </summary>
+        internal static string Retweet {
+            get {
+                return ResourceManager.GetString("Retweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retweeted {0} times.
+        /// </summary>
+        internal static string RetweetedXTimes {
+            get {
+                return ResourceManager.GetString("RetweetedXTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share tweet.
+        /// </summary>
+        internal static string ShareTweet {
+            get {
+                return ResourceManager.GetString("ShareTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show separator between statuses.
+        /// </summary>
+        internal static string ShowStatusSeparator {
+            get {
+                return ResourceManager.GetString("ShowStatusSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translate tweet.
+        /// </summary>
+        internal static string TranslateTweet {
+            get {
+                return ResourceManager.GetString("TranslateTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} retweeted.
+        /// </summary>
+        internal static string UserRetweeted {
+            get {
+                return ResourceManager.GetString("UserRetweeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Via.
+        /// </summary>
+        internal static string Via {
+            get {
+                return ResourceManager.GetString("Via", resourceCulture);
             }
         }
     }
