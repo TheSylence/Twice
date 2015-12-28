@@ -19,6 +19,7 @@
 			</ResourceDictionary.MergedDictionaries>
 
 			<viewModels:ViewModelLocator x:Key="Locator" />
+			<viewModels:DialogViewModelLocator x:Key="DialogLocator" />
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

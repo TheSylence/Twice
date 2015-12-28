@@ -2,7 +2,7 @@
 using System.IO;
 using LinqToTwitter;
 
-namespace Twice.Models.Contexts
+namespace Twice.Models.Twitter
 {
 	internal class ContextEntry : IContextEntry
 	{

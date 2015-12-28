@@ -1,7 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using Ninject;
 using Twice.Models.Configuration;
-using Twice.Models.Contexts;
+using Twice.Models.Twitter;
+using Twice.Services;
 
 namespace Twice.ViewModels
 {
@@ -17,5 +18,8 @@ namespace Twice.ViewModels
 
 		[Inject]
 		public ITwitterContextList ContextList { get; set; }
+
+		[Inject]
+		public IServiceRepository ServiceRepository { get; set; }
 	}
 }

@@ -2,7 +2,7 @@
 using Ninject.Modules;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
-using Twice.Models.Contexts;
+using Twice.Models.Twitter;
 
 namespace Twice.Injections
 {

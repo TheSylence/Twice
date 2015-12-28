@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Twice.Models.Contexts
+namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{

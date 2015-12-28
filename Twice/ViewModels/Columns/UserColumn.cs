@@ -1,13 +1,13 @@
-﻿using LinqToTwitter;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Twice.Models.Contexts;
+using LinqToTwitter;
+using Twice.Models.Twitter;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
-	internal class UserColumn : IColumnViewModel
+	internal class UserColumn : ColumnViewModelBase
 	{
 		public UserColumn( IContextEntry context )
 		{
@@ -18,9 +18,9 @@ namespace Twice.ViewModels.Columns
 			Statuses = new ObservableCollection<StatusViewModel>( statuses.Select( t => new StatusViewModel( t, context ) ) );
 		}
 
-		public Icon Icon => Icon.User;
+		public override Icon Icon => Icon.User;
 
-		public ICollection<StatusViewModel> Statuses { get; }
-		public string Title { get; }
+		public override ICollection<StatusViewModel> Statuses { get; }
+		public override string Title { get; }
 	}
 }

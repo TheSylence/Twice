@@ -8,5 +8,6 @@ namespace Twice.ViewModels.Columns
 		Icon Icon { get; }
 		ICollection<StatusViewModel> Statuses { get; }
 		string Title { get; }
+		double Width { get; set; }
 	}
 }

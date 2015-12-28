@@ -1,4 +1,6 @@
 ﻿using Ninject.Modules;
+using Twice.Services;
+using Twice.Services.ViewServices;
 
 namespace Twice.Injections
 {
@@ -10,6 +12,9 @@ namespace Twice.Injections
 		/// </summary>
 		public override void Load()
 		{
+			Bind<IServiceRepository>().To<ServiceRepository>().InSingletonScope();
+
+			Bind<ISettingsService>().To<SettingsService>();
 		}
 	}
 }

@@ -9,7 +9,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
-using Twice.Models.Contexts;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter

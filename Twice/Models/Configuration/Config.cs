@@ -5,6 +5,8 @@ namespace Twice.Models.Configuration
 {
 	internal interface IConfig
 	{
+		void Save();
+
 		GeneralConfig General { get; }
 		VisualConfig Visual { get; }
 	}
@@ -28,6 +30,12 @@ namespace Twice.Models.Configuration
 				General = new GeneralConfig();
 				Visual = new VisualConfig();
 			}
+		}
+
+		public void Save()
+		{
+			string json = JsonConvert.SerializeObject( this );
+			File.WriteAllText( FileName, json );
 		}
 
 		public GeneralConfig General { get; }

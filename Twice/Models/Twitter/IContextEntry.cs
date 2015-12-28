@@ -1,7 +1,7 @@
 ﻿using System;
 using LinqToTwitter;
 
-namespace Twice.Models.Contexts
+namespace Twice.Models.Twitter
 {
 	internal interface IContextEntry : IDisposable
 	{
