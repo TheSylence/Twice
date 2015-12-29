@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ninject;
 using Twice.Services.ViewServices;
 
 namespace Twice.Services
 {
-	class ServiceRepository : IServiceRepository
+	internal class ServiceRepository : IServiceRepository
 	{
 		public ServiceRepository()
 		{
 			Kernel = App.Kernel;
 		}
 
-		public async Task<TResult> Show<TService, TResult>( object args = null ) 
-			where TService : IViewService 
+		public async Task<TResult> Show<TService, TResult>( object args = null )
+			where TService : IViewService
 			where TResult : class
 		{
 			var service = Kernel.Get<TService>();

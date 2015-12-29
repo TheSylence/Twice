@@ -13,12 +13,7 @@ namespace Twice.Models.Configuration
 		/// </returns>
 		protected override IConfig CreateInstance( IContext context )
 		{
-			if( Config == null )
-			{
-				Config = new Config( Constants.IO.ConfigFileName );
-			}
-
-			return Config;
+			return Config ?? ( Config = new Config( Constants.IO.ConfigFileName ) );
 		}
 
 		private static IConfig Config;

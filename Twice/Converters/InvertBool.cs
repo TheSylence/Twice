@@ -17,7 +17,7 @@ namespace Twice.Converters
 			return ConvertInternal( value );
 		}
 
-		private object ConvertInternal( object value )
+		private static object ConvertInternal( object value )
 		{
 			if( !( value is bool ) )
 			{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Documents;
 using LinqToTwitter;
@@ -22,12 +22,12 @@ namespace Twice.Converters
 		/// <returns>
 		/// A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
-		public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			Status tweet = value as Status;
 			if( tweet == null )
 			{
-				throw new ArgumentException( "Value is not an ITweet object", nameof( value ) );
+				throw new ArgumentException( @"Value is not an ITweet object", nameof( value ) );
 			}
 
 			IEnumerable<Inline> inlines = GenerateInlines( tweet ).ToArray();
@@ -43,7 +43,7 @@ namespace Twice.Converters
 		/// <returns>
 		/// A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
-		public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			throw new NotSupportedException();
 		}
@@ -140,14 +140,6 @@ namespace Twice.Converters
 			}
 		}
 
-		private static string PrepareText( string text )
-		{
-			text = WebUtility.HtmlDecode( text );
-
-			return text;
-		}
-
-
 		/// <summary>Generates an inline from a link entity.</summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -184,7 +176,7 @@ namespace Twice.Converters
 		/// <summary>Generates an inline from a mention entity.</summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
+		[SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
 		private static Inline GenerateMention( UserMentionEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
@@ -196,6 +188,13 @@ namespace Twice.Converters
 			link.CommandParameter = entity.Id;
 
 			return link;
+		}
+
+		private static string PrepareText( string text )
+		{
+			text = WebUtility.HtmlDecode( text );
+
+			return text;
 		}
 	}
 }

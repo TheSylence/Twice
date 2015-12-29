@@ -45,9 +45,8 @@ namespace Twice.Services.ViewServices
 
 		protected virtual void SetupViewModel( TViewModel vm, object args )
 		{
-			
 		}
 
-		private MetroWindow Window => Application.Current.MainWindow as MetroWindow;
+		private static MetroWindow Window => Application.Current.MainWindow as MetroWindow;
 	}
 }

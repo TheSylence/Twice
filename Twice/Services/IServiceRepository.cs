@@ -3,9 +3,9 @@ using Twice.Services.ViewServices;
 
 namespace Twice.Services
 {
-	interface IServiceRepository
+	internal interface IServiceRepository
 	{
-		Task<TResult> Show<TService, TResult>( object args = null ) 
+		Task<TResult> Show<TService, TResult>( object args = null )
 			where TService : IViewService
 			where TResult : class;
 	}

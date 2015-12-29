@@ -12,12 +12,7 @@ namespace Twice.Converters
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			Status status = value as Status;
-			if( status == null )
-			{
-				return value;
-			}
-
-			return status.GetUrl();
+			return status == null ? value : status.GetUrl();
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

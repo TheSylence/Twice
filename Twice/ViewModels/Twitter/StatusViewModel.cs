@@ -99,6 +99,14 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
+		private void ExecuteReplyCommand()
+		{
+		}
+
+		private void ExecuteReplyToAllCommand()
+		{
+		}
+
 		private void ExecuteReportSpamCommand()
 		{
 		}
@@ -166,6 +174,8 @@ namespace Twice.ViewModels.Twitter
 
 		public Status Model { get; }
 
+		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
+		public ICommand ReplyToAllCommand => _ReplyToAllCommand ?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand ) );
 		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
 
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
@@ -197,6 +207,12 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyToAllCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _ReportSpamCommand;

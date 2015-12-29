@@ -15,12 +15,7 @@ namespace Twice.Models.Cache
 		/// </returns>
 		protected override ISecureBlobCache CreateInstance( IContext context )
 		{
-			if( Cache == null )
-			{
-				Cache = new SQLiteEncryptedBlobCache( "cache.crypt.db3" );
-			}
-
-			return Cache;
+			return Cache ?? ( Cache = new SQLiteEncryptedBlobCache( "cache.crypt.db3" ) );
 		}
 
 		private static ISecureBlobCache Cache;

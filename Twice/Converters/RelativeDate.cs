@@ -10,7 +10,7 @@ namespace Twice.Converters
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
-			if( value == null || !( value is DateTime ) )
+			if( !( value is DateTime ) )
 			{
 				return DependencyProperty.UnsetValue;
 			}

@@ -121,7 +121,7 @@ namespace Twice.Models.Twitter
 
 		/// <summary>Parses the content and raises events.</summary>
 		/// <param name="content">The content.</param>
-		private void ParseContent( StreamContent content )
+		private void ParseContent( IStreamContent content )
 		{
 			if( string.IsNullOrEmpty( content.Content ) )
 			{

@@ -15,12 +15,7 @@ namespace Twice.Models.Cache
 		/// </returns>
 		protected override IBlobCache CreateInstance( IContext context )
 		{
-			if( Cache == null )
-			{
-				Cache = new SQLitePersistentBlobCache( "cache.db3" );
-			}
-
-			return Cache;
+			return Cache ?? ( Cache = new SQLitePersistentBlobCache( "cache.db3" ) );
 		}
 
 		private static IBlobCache Cache;

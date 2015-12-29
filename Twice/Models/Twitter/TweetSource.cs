@@ -26,7 +26,7 @@ namespace Twice.Models.Twitter
 
 				if( !match.Success )
 				{
-					throw new ArgumentException( "Invalid source", nameof( source ) );
+					throw new ArgumentException( @"Invalid source", nameof( source ) );
 				}
 
 				Name = match.Groups[2].Value;

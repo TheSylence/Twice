@@ -24,6 +24,7 @@ namespace Twice.ViewModels.Columns
 			}
 			set
 			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				if( _Width == value )
 				{
 					return;

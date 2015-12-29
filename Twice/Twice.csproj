@@ -156,6 +156,9 @@
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Messages\ColumnLockMessage.cs" />
     <Compile Include="Messages\DragMessage.cs" />
+    <Compile Include="Models\Cache\IUserCache.cs" />
+    <Compile Include="Models\Cache\UserCache.cs" />
+    <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Twitter\StreamEventArgs.cs" />
     <Compile Include="Models\Twitter\StreamParser.cs" />
     <Compile Include="Services\IServiceRepository.cs" />

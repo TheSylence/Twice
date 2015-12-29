@@ -8,9 +8,12 @@ namespace Twice.Models.Cache
 		{
 			Secure = secure;
 			Data = data;
+
+			Users = new UserCache( data );
 		}
 
 		public IBlobCache Data { get; }
 		public ISecureBlobCache Secure { get; }
+		public IUserCache Users { get; }
 	}
 }

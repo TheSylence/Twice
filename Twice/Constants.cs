@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Twice
 {
@@ -6,6 +7,11 @@ namespace Twice
 	[ExcludeFromCodeCoverage]
 	internal static class Constants
 	{
+		public static class Cache
+		{
+			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 100 );
+		}
+
 		public static class IO
 		{
 			internal const string ConfigFileName = "config.json";

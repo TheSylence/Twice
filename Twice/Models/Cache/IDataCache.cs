@@ -1,10 +1,7 @@
-﻿using Akavache;
-
-namespace Twice.Models.Cache
+﻿namespace Twice.Models.Cache
 {
-	interface IDataCache
+	internal interface IDataCache
 	{
-		ISecureBlobCache Secure { get; }
-		IBlobCache Data { get; }
+		IUserCache Users { get; }
 	}
 }

@@ -8,6 +8,5 @@ namespace Twice.Services.ViewServices
 
 	internal class SettingsService : ViewServiceBase<SettingsDialog, SettingsDialogViewModel, object>, ISettingsService
 	{
-		
 	}
 }

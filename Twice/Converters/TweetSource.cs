@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using Twice.Models.Twitter;
@@ -16,12 +12,7 @@ namespace Twice.Converters
 		{
 			string str = value as string;
 
-			if( str == null )
-			{
-				return DependencyProperty.UnsetValue;
-			}
-
-			return new TweetSource( str ).Name;
+			return str == null ? DependencyProperty.UnsetValue : new TweetSource( str ).Name;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
@@ -36,12 +27,7 @@ namespace Twice.Converters
 		{
 			string str = value as string;
 
-			if( str == null )
-			{
-				return DependencyProperty.UnsetValue;
-			}
-
-			return new TweetSource( str ).Url;
+			return str == null ? DependencyProperty.UnsetValue : new TweetSource( str ).Url;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
