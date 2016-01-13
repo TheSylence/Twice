@@ -30,9 +30,17 @@ namespace Twice.ViewModels
 		}
 		public event EventHandler<CloseRequestEventArgs> CloseRequested;
 
+		protected virtual bool OnOk()
+		{
+			return true;
+		}
+
 		private void ExecuteCancelCommand()
 		{
-			CloseRequested?.Invoke( this, CloseRequestEventArgs.Cancel );
+			if( OnOk() )
+			{
+				CloseRequested?.Invoke( this, CloseRequestEventArgs.Cancel );
+			}
 		}
 
 		private void ExecuteOkCommand()

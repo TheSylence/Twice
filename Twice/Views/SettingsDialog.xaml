@@ -36,7 +36,7 @@
 						</DataTemplate>
 					</Grid.Resources>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
+						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 

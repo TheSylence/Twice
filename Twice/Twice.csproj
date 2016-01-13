@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\Settings\ColorItem.cs" />
     <Compile Include="ViewModels\Settings\FontSizeItem.cs" />
     <Compile Include="ViewModels\Settings\ISettingsDialogViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ISettingsSection.cs" />
     <Compile Include="ViewModels\Settings\IVisualSettings.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\VisualSettings.cs" />

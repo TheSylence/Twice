@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using MahApps.Metro;
+using Twice.Models.Configuration;
 using Twice.Resources;
 using WPFLocalizeExtension.Engine;
 
@@ -12,7 +13,7 @@ namespace Twice.ViewModels.Settings
 {
 	internal class VisualSettings : ViewModelBaseEx, IVisualSettings
 	{
-		public VisualSettings()
+		public VisualSettings( IConfig currentConfig )
 		{
 			AvailableThemes = new List<ColorItem>( ThemeManager.AppThemes.Select( t =>
 				new ColorItem
@@ -39,7 +40,7 @@ namespace Twice.ViewModels.Settings
 			foreach( var kvp in new Dictionary<int, string> {
 				{ 10, "Tiny" }, { 13, "Small" }, { 16, "Normal" }, { 18, "Large" }, { 20, "Huge" } } )
 			{
-				string name = Strings.ResourceManager.GetString( kvp.Value, LocalizeDictionary.CurrentCulture );
+				string name = Strings.ResourceManager.GetString( $"FontSize_{kvp.Value}", LocalizeDictionary.CurrentCulture );
 				AvailableFontSizes.Add( new FontSizeItem
 				{
 					DisplayName = name,
@@ -47,7 +48,28 @@ namespace Twice.ViewModels.Settings
 				} );
 			}
 
+			SelectedFontSize = AvailableFontSizes.FirstOrDefault( f => f.Size == currentConfig.Visual.FontSize );
+			SelectedHashtagColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.HashtagColor );
+			SelectedLinkColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
+			SelectedMentionColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
+			ShowStatusSeparator = currentConfig.Visual.ShowStatusSeparator;
+			InlineMedias = currentConfig.Visual.InlineMedia;
+
 			AvailableLanguages = new List<CultureInfo>( LocalizeDictionary.Instance.MergedAvailableCultures );
+		}
+
+		public void SaveTo( IConfig config )
+		{
+			config.Visual.ThemeName = SelectedTheme.Name;
+			config.Visual.AccentName = SelectedColor.Name;
+
+			config.Visual.FontSize = SelectedFontSize.Size;
+			config.Visual.HashtagColor = SelectedHashtagColor.Name;
+			config.Visual.LinkColor = SelectedLinkColor.Name;
+			config.Visual.MentionColor = SelectedMentionColor.Name;
+
+			config.Visual.ShowStatusSeparator = ShowStatusSeparator;
+			config.Visual.InlineMedia = InlineMedias;
 		}
 
 		public ICollection<ColorItem> AvailableColors { get; }

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Twice.ViewModels.Settings
 {
-	internal interface IVisualSettings
+	internal interface IVisualSettings : ISettingsSection
 	{
 		ICollection<ColorItem> AvailableColors { get; }
 		ICollection<FontSizeItem> AvailableFontSizes { get; }
