@@ -55,7 +55,6 @@ namespace Twice.Converters
 		{
 			Hyperlink link = new Hyperlink();
 			link.Inlines.Add( Constants.Twitter.HashTag + entity.Tag );
-			//link.Foreground = Application.Current.FindResource<Brush>( "HashtagBrush" );
 			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
 			link.TextDecorations = null;
 
@@ -150,7 +149,6 @@ namespace Twice.Converters
 			link.CommandParameter = new Uri( entity.ExpandedUrl );
 			link.Command = GlobalCommands.OpenUrlCommand;
 			link.ToolTip = entity.ExpandedUrl;
-			//link.Foreground = Application.Current.FindResource<Brush>( "LinkBrush" );
 			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
 
 			return link;
@@ -167,7 +165,6 @@ namespace Twice.Converters
 			link.CommandParameter = entity.MediaUrlHttps;
 			link.Command = GlobalCommands.OpenUrlCommand;
 			link.ToolTip = entity.MediaUrlHttps;
-			//link.Foreground = Application.Current.FindResource<Brush>( "LinkBrush" );
 			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
 
 			return link;
@@ -181,7 +178,6 @@ namespace Twice.Converters
 		{
 			Hyperlink link = new Hyperlink();
 			link.Inlines.Add( Constants.Twitter.Mention + entity.ScreenName );
-			//link.Foreground = Application.Current.FindResource<Brush>( "MentionBrush" );
 			link.SetResourceReference( TextElement.ForegroundProperty, "MentionBrush" );
 			link.TextDecorations = null;
 			link.Command = GlobalCommands.OpenProfileCommand;

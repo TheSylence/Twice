@@ -207,4 +207,37 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="FontSize_Tiny" xml:space="preserve">
+    <value>Tiny</value>
+  </data>
+  <data name="FontSize_Small" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="FontSize_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="FontSize_Large" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="FontSize_Huge" xml:space="preserve">
+    <value>Huge</value>
+  </data>
+  <data name="LinkColor" xml:space="preserve">
+    <value>Color of links</value>
+  </data>
+  <data name="MentionColor" xml:space="preserve">
+    <value>Color of user mentions</value>
+  </data>
+  <data name="HashtagColor" xml:space="preserve">
+    <value>Color of hashtags</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="AccentColor" xml:space="preserve">
+    <value>Accent color</value>
+  </data>
 </root>

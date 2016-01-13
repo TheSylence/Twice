@@ -61,6 +61,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accent color.
+        /// </summary>
+        internal static string AccentColor {
+            get {
+                return ResourceManager.GetString("AccentColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} ago.
         /// </summary>
         internal static string Ago {
@@ -160,11 +169,74 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        internal static string FontSize {
+            get {
+                return ResourceManager.GetString("FontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huge.
+        /// </summary>
+        internal static string FontSize_Huge {
+            get {
+                return ResourceManager.GetString("FontSize_Huge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large.
+        /// </summary>
+        internal static string FontSize_Large {
+            get {
+                return ResourceManager.GetString("FontSize_Large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        internal static string FontSize_Normal {
+            get {
+                return ResourceManager.GetString("FontSize_Normal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        internal static string FontSize_Small {
+            get {
+                return ResourceManager.GetString("FontSize_Small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tiny.
+        /// </summary>
+        internal static string FontSize_Tiny {
+            get {
+                return ResourceManager.GetString("FontSize_Tiny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         internal static string General {
             get {
                 return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of hashtags.
+        /// </summary>
+        internal static string HashtagColor {
+            get {
+                return ResourceManager.GetString("HashtagColor", resourceCulture);
             }
         }
         
@@ -183,6 +255,24 @@ namespace Twice.Resources {
         internal static string InlineMediaInTimeline {
             get {
                 return ResourceManager.GetString("InlineMediaInTimeline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of links.
+        /// </summary>
+        internal static string LinkColor {
+            get {
+                return ResourceManager.GetString("LinkColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color of user mentions.
+        /// </summary>
+        internal static string MentionColor {
+            get {
+                return ResourceManager.GetString("MentionColor", resourceCulture);
             }
         }
         
@@ -291,6 +381,15 @@ namespace Twice.Resources {
         internal static string ShowStatusSeparator {
             get {
                 return ResourceManager.GetString("ShowStatusSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        internal static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
         
