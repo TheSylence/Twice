@@ -59,7 +59,7 @@
 							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
 
-						<Button Width="28" Height="28" Style="{StaticResource MetroCircleButtonStyle}" ToolTipService.ShowOnDisabled="True"
+						<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True"
 						ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}">
 							<Rectangle Width="12" Height="12"
                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
@@ -67,16 +67,36 @@
 									<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_star}" />
 								</Rectangle.OpacityMask>
 							</Rectangle>
+							
+							<Button.Style>
+								<Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding IsFavorited}" Value="True">
+											<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Button.Style>
 						</Button>
 
 						<Button Width="28" Height="28" Grid.Column="1" ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}"
-						Command="{Binding RetweetStatusCommand}" Style="{StaticResource MetroCircleButtonStyle}" ToolTipService.ShowOnDisabled="True">
+						Command="{Binding RetweetStatusCommand}" ToolTipService.ShowOnDisabled="True">
 							<Rectangle Width="12" Height="12"
                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
 								<Rectangle.OpacityMask>
 									<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_redo_point}" />
 								</Rectangle.OpacityMask>
 							</Rectangle>
+
+							<Button.Style>
+								<Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+											<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Button.Style>
 						</Button>
 					</Grid>
 				</StackPanel>

@@ -1,14 +1,83 @@
 ﻿<simpleChildWindow:ChildWindow x:Class="Twice.Views.SettingsDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             mc:Ignorable="d" Title="{lex:Loc Settings}" DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
-</simpleChildWindow:ChildWindow>
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:settings="clr-namespace:Twice.ViewModels.Settings"
+             ShowCloseButton="True" mc:Ignorable="d" Title="{lex:Loc Settings}"
+             DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
+             d:DesignHeight="300" d:DesignWidth="300"  Padding="20"
+			HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+	<DockPanel>
+		<DockPanel.Resources>
+			<Thickness x:Key="Spacing" Top="0" Left="0" Right="0" Bottom="20" />
+			<Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
+				<Setter Property="MinWidth" Value="75" />
+				<Setter Property="Margin" Value="5,0" />
+			</Style>
+		</DockPanel.Resources>
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+			<Button Content="{lex:Loc Save}" IsDefault="True" Command="{Binding OkCommand}" />
+			<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}" />
+		</StackPanel>
+		<TabControl DockPanel.Dock="Top" controls:TabControlHelper.IsUnderlined="True">
+			<TabItem Header="{lex:Loc General}" />
+			<TabItem Header="{lex:Loc Visual}" DataContext="{Binding Visual}">
+				<Grid>
+					<Grid.Resources>
+						<DataTemplate x:Key="ColorDataTemplate" DataType="settings:ColorItem">
+							<DockPanel>
+								<Ellipse Fill="{Binding ColorBrush}" Stroke="{Binding BorderBrush}" Width="18" Height="18" />
+								<TextBlock Text="{Binding Name}" Margin="5,0" />
+							</DockPanel>
+						</DataTemplate>
+					</Grid.Resources>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
 
+					<StackPanel Orientation="Vertical">
+						<TextBlock Text="{lex:Loc Theme}" />
+						<ComboBox Margin="0,0,0,5" ItemsSource="{Binding AvailableThemes}"
+								  ItemTemplate="{StaticResource ColorDataTemplate}"
+								  SelectedItem="{Binding SelectedTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+						<TextBlock Text="{lex:Loc AccentColor}" />
+						<ComboBox Margin="{StaticResource Spacing}"
+								  ItemTemplate="{StaticResource ColorDataTemplate}"
+								  ItemsSource="{Binding AvailableColors}" SelectedItem="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBlock Text="{lex:Loc FontSize}" />
+						<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableFontSizes}"
+								  SelectedItem="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding DisplayName}" FontSize="{Binding Size}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+
+						<TextBlock Text="{lex:Loc HashtagColor}" />
+						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}"
+								  ItemsSource="{Binding AvailableColors}"
+								  SelectedItem="{Binding SelectedHashtagColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBlock Text="{lex:Loc MentionColor}" />
+						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}"
+								  ItemsSource="{Binding AvailableColors}"
+								  SelectedItem="{Binding SelectedMentionColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBlock Text="{lex:Loc LinkColor}" />
+						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}"
+								  ItemsSource="{Binding AvailableColors}" Margin="{StaticResource Spacing}"
+								  SelectedItem="{Binding SelectedLinkColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc ShowStatusSeparator}" IsChecked="{Binding ShowStatusSeparator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</simpleChildWindow:ChildWindow>

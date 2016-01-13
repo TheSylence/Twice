@@ -168,7 +168,12 @@
     <Compile Include="Services\ViewServices\ViewServiceBase.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBase.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ColorItem.cs" />
+    <Compile Include="ViewModels\Settings\FontSizeItem.cs" />
+    <Compile Include="ViewModels\Settings\ISettingsDialogViewModel.cs" />
+    <Compile Include="ViewModels\Settings\IVisualSettings.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModel.cs" />
+    <Compile Include="ViewModels\Settings\VisualSettings.cs" />
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>

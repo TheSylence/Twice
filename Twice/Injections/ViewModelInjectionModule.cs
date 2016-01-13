@@ -17,6 +17,7 @@ namespace Twice.Injections
 			Bind<IMainViewModel>().To<MainViewModel>();
 
 			Bind<ISettingsDialogViewModel>().To<SettingsDialogViewModel>();
+			Bind<IVisualSettings>().To<VisualSettings>();
 		}
 	}
 }
