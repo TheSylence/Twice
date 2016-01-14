@@ -11,7 +11,7 @@ namespace Twice.ViewModels.Columns
 		Icon Icon { get; }
 		bool IsLoading { get; }
 		ICollection<StatusViewModel> Statuses { get; }
-		string Title { get; }
+		string Title { get; set; }
 		double Width { get; set; }
 	}
 }

@@ -37,8 +37,14 @@ namespace Twice.ViewModels.Settings
 			SelectedColor = AvailableColors.First( c => c.Name == currentStyle.Item2.Name );
 
 			AvailableFontSizes = new List<FontSizeItem>();
-			foreach( var kvp in new Dictionary<int, string> {
-				{ 10, "Tiny" }, { 13, "Small" }, { 16, "Normal" }, { 18, "Large" }, { 20, "Huge" } } )
+			foreach( var kvp in new Dictionary<int, string>
+			{
+				{10, "Tiny"},
+				{13, "Small"},
+				{16, "Normal"},
+				{18, "Large"},
+				{20, "Huge"}
+			} )
 			{
 				string name = Strings.ResourceManager.GetString( $"FontSize_{kvp.Value}", LocalizeDictionary.CurrentCulture );
 				AvailableFontSizes.Add( new FontSizeItem
@@ -54,6 +60,7 @@ namespace Twice.ViewModels.Settings
 			SelectedMentionColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
 			ShowStatusSeparator = currentConfig.Visual.ShowStatusSeparator;
 			InlineMedias = currentConfig.Visual.InlineMedia;
+			UseStars = currentConfig.Visual.UseStars;
 
 			AvailableLanguages = new List<CultureInfo>( LocalizeDictionary.Instance.MergedAvailableCultures );
 		}
@@ -70,6 +77,7 @@ namespace Twice.ViewModels.Settings
 
 			config.Visual.ShowStatusSeparator = ShowStatusSeparator;
 			config.Visual.InlineMedia = InlineMedias;
+			config.Visual.UseStars = UseStars;
 		}
 
 		public ICollection<ColorItem> AvailableColors { get; }
@@ -82,11 +90,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool InlineMedias
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _InlineMedias;
-			}
+			[DebuggerStepThrough] get { return _InlineMedias; }
 			set
 			{
 				if( _InlineMedias == value )
@@ -101,11 +105,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedColor
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedColor;
-			}
+			[DebuggerStepThrough] get { return _SelectedColor; }
 			set
 			{
 				if( _SelectedColor == value )
@@ -120,11 +120,7 @@ namespace Twice.ViewModels.Settings
 
 		public FontSizeItem SelectedFontSize
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedFontSize;
-			}
+			[DebuggerStepThrough] get { return _SelectedFontSize; }
 			set
 			{
 				if( _SelectedFontSize == value )
@@ -139,11 +135,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedHashtagColor
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedHashtagColor;
-			}
+			[DebuggerStepThrough] get { return _SelectedHashtagColor; }
 			set
 			{
 				if( _SelectedHashtagColor == value )
@@ -158,11 +150,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedLinkColor
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedLinkColor;
-			}
+			[DebuggerStepThrough] get { return _SelectedLinkColor; }
 			set
 			{
 				if( _SelectedLinkColor == value )
@@ -177,11 +165,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedMentionColor
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedMentionColor;
-			}
+			[DebuggerStepThrough] get { return _SelectedMentionColor; }
 			set
 			{
 				if( _SelectedMentionColor == value )
@@ -196,11 +180,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedTheme
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedTheme;
-			}
+			[DebuggerStepThrough] get { return _SelectedTheme; }
 			set
 			{
 				if( _SelectedTheme == value )
@@ -215,11 +195,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool ShowStatusSeparator
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _ShowStatusSeparator;
-			}
+			[DebuggerStepThrough] get { return _ShowStatusSeparator; }
 			set
 			{
 				if( _ShowStatusSeparator == value )
@@ -232,28 +208,37 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _InlineMedias;
+		public bool UseStars
+		{
+			[DebuggerStepThrough] get { return _UseStars; }
+			set
+			{
+				if( _UseStars == value )
+				{
+					return;
+				}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedColor;
+				_UseStars = value;
+				RaisePropertyChanged();
+			}
+		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private FontSizeItem _SelectedFontSize;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _InlineMedias;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedHashtagColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedLinkColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private FontSizeItem _SelectedFontSize;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedMentionColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedHashtagColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedTheme;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedLinkColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _ShowStatusSeparator;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedMentionColor;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedTheme;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ShowStatusSeparator;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseStars;
 	}
 }

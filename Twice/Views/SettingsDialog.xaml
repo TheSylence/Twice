@@ -75,6 +75,7 @@
 
 						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc ShowStatusSeparator}" IsChecked="{Binding ShowStatusSeparator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc UseStarsForFavorites}" IsChecked="{Binding UseStars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 					</StackPanel>
 				</Grid>
 			</TabItem>

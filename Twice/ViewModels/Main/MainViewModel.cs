@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Twitter;
 using Twice.Services.ViewServices;
 using Twice.ViewModels.Columns;
+using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Main
 {
@@ -17,11 +18,21 @@ namespace Twice.ViewModels.Main
 		{
 			var context = list.Contexts.First();
 
-			Columns = new ObservableCollection<IColumnViewModel>();
+			var columnList = new ColumnDefintionList( Constants.IO.ColumnDefintionFileName );
+			var columns = columnList.Load();
+			if( !columns.Any() )
+			{
+				columns = columnList.DefaultColumns( context.UserId );
+			}
 
-			Columns.Add( new UserColumn( context, context.UserId ) );
-			Columns.Add( new TimelineColumn( context ) );
-			Columns.Add( new UserColumn( context, 548023302 ) );
+			var factory = new ColumnFactory( list );
+
+			var constructed = columns.Select( c => factory.Construct( c ) );
+#if DEBUG
+			constructed = constructed.Where( c => c != null );
+#endif
+
+			Columns = new ObservableCollection<IColumnViewModel>( constructed );
 		}
 
 		public async Task OnLoad()
@@ -47,10 +58,8 @@ namespace Twice.ViewModels.Main
 
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
 	}
 }

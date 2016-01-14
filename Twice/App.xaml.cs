@@ -24,7 +24,6 @@ namespace Twice
 	{
 		protected override void OnExit( ExitEventArgs e )
 		{
-			DispatcherHelper.Initialize();
 			Kernel.Dispose();
 
 			base.OnExit( e );
@@ -32,6 +31,7 @@ namespace Twice
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
+			DispatcherHelper.Initialize();
 			Kernel = new StandardKernel( InjectionModules.ToArray() );
 
 			base.OnStartup( e );

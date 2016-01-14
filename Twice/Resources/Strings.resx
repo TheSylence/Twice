@@ -243,4 +243,7 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Mentions" xml:space="preserve">
+    <value>Mentions</value>
+  </data>
 </root>

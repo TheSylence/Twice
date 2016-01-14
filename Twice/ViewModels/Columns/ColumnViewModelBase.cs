@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
+using Twice.Utilities;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
@@ -13,22 +14,41 @@ namespace Twice.ViewModels.Columns
 			Context = context;
 			Width = 300;
 			IsLoading = true;
+			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
 		}
 
 		public async Task Load()
 		{
-			await OnLoad();
-
-			IsLoading = false;
-			RaisePropertyChanged( nameof( IsLoading ) );
+			await Task.Run( async () =>
+			{
+				await OnLoad().ContinueWith( t =>
+				{
+					IsLoading = false;
+					RaisePropertyChanged( nameof( IsLoading ) );
+				} );
+			} );
 		}
 
 		protected abstract Task OnLoad();
 
 		public abstract Icon Icon { get; }
 		public bool IsLoading { get; private set; }
-		public abstract ICollection<StatusViewModel> Statuses { get; }
-		public abstract string Title { get; protected set; }
+		public ICollection<StatusViewModel> Statuses { get; }
+
+		public string Title
+		{
+			[DebuggerStepThrough] get { return _Title; }
+			set
+			{
+				if( _Title == value )
+				{
+					return;
+				}
+
+				_Title = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public double Width
 		{
@@ -47,6 +67,10 @@ namespace Twice.ViewModels.Columns
 		}
 
 		protected readonly IContextEntry Context;
+
+		protected readonly SmartCollection<StatusViewModel> StatusCollection;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}

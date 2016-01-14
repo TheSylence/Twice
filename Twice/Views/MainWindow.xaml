@@ -28,7 +28,7 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<DockPanel VerticalAlignment="Stretch">
+		<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
 			<StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
 				<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{lex:Loc NewTweet}"
 						Command="{Binding NewTweetCommand}">
@@ -103,10 +103,18 @@
 							<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
 								<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top" />
 
-								<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-									<ItemsControl ItemsSource="{Binding Statuses}" ItemTemplate="{StaticResource StatusViewTemplate}"
-											  HorizontalContentAlignment="Stretch" />
-								</ScrollViewer>
+								<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
+								<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
+											  HorizontalContentAlignment="Stretch">
+									<ItemsControl.Template>
+										<ControlTemplate>
+											<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+												<ItemsPresenter />
+											</ScrollViewer>
+										</ControlTemplate>
+									</ItemsControl.Template>
+								</ItemsControl>
+								<!--</ScrollViewer>-->
 							</DockPanel>
 
 							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />

@@ -15,6 +15,7 @@ namespace Twice
 		public static class IO
 		{
 			internal const string ConfigFileName = "config.json";
+			internal const string ColumnDefintionFileName = "columns.json";
 		}
 
 		/// <summary>Constants associated with twitter.</summary>

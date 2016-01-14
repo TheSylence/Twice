@@ -286,6 +286,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mentions.
+        /// </summary>
+        internal static string Mentions {
+            get {
+                return ResourceManager.GetString("Mentions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
         internal static string MinutesShort {
