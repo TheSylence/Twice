@@ -45,6 +45,8 @@
 							</Rectangle.OpacityMask>
 						</Rectangle>
 
+						<Image Height="16" Width="16" Source="{Binding SourceUser.ProfileImageUrlHttps}" Margin="5,0" />
+
 						<TextBlock Text="{Binding SourceUser.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 					</StackPanel>
 				</StackPanel>
