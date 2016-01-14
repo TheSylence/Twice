@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Twitter;
@@ -14,9 +15,20 @@ namespace Twice.ViewModels.Main
 	{
 		public MainViewModel( ITwitterContextList list )
 		{
+			var context = list.Contexts.First();
+
 			Columns = new ObservableCollection<IColumnViewModel>();
 
-			Columns.Add( new UserColumn( list.Contexts.First() ) );
+			Columns.Add( new UserColumn( context, context.UserId ) );
+			Columns.Add( new UserColumn( context, 548023302 ) );
+		}
+
+		public async Task OnLoad()
+		{
+			foreach( var col in Columns )
+			{
+				await col.Load();
+			}
 		}
 
 		private void ExecuteNewTweetCommand()

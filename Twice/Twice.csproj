@@ -149,6 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>
