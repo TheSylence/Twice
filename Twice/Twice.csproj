@@ -168,6 +168,7 @@
     <Compile Include="Services\ViewServices\SettingsService.cs" />
     <Compile Include="Services\ViewServices\ViewServiceBase.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBase.cs" />
+    <Compile Include="ViewModels\Columns\TimelineColumn.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\ColorItem.cs" />
     <Compile Include="ViewModels\Settings\FontSizeItem.cs" />

@@ -20,6 +20,7 @@ namespace Twice.ViewModels.Main
 			Columns = new ObservableCollection<IColumnViewModel>();
 
 			Columns.Add( new UserColumn( context, context.UserId ) );
+			Columns.Add( new TimelineColumn( context ) );
 			Columns.Add( new UserColumn( context, 548023302 ) );
 		}
 
