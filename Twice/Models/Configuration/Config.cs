@@ -34,12 +34,12 @@ namespace Twice.Models.Configuration
 
 		public void Save()
 		{
-			string json = JsonConvert.SerializeObject( this );
+			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
 			File.WriteAllText( FileName, json );
 		}
 
-		public GeneralConfig General { get; }
-		public VisualConfig Visual { get; }
+		public GeneralConfig General { get; set; }
+		public VisualConfig Visual { get; set; }
 
 		private readonly string FileName;
 	}

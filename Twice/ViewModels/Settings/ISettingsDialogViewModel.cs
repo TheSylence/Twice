@@ -2,6 +2,7 @@
 {
 	internal interface ISettingsDialogViewModel : IDialogViewModel
 	{
+		IGeneralSettings General { get; }
 		IVisualSettings Visual { get; }
 	}
 }
