@@ -157,7 +157,9 @@
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
+    <Compile Include="Services\ViewServices\FileSelectService.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
+    <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>

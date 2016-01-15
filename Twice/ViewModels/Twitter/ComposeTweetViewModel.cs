@@ -1,71 +1,69 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Twitter;
+using Twice.Services.ViewServices;
 
 namespace Twice.ViewModels.Twitter
 {
 	internal interface IComposeTweetViewModel : IResetable
 	{
 		ICollection<AccountEntry> Accounts { get; }
+		ICommand AttachImageCommand { get; }
+		bool IsSending { get; }
 		ICommand SendTweetCommand { get; }
 		string Text { get; set; }
-		bool IsSending { get; }
-	}
-
-	internal class AccountEntry : ObservableObject
-	{
-		public AccountEntry( IContextEntry context )
-		{
-			Context = context;
-			Image = new BitmapImage( context.ProfileImageUrl );
-		}
-
-		public IContextEntry Context { get; }
-		public ImageSource Image { get; }
-		public string ScreenName => Context.AccountName;
-
-		public bool Use
-		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Use;
-			}
-			set
-			{
-				if( _Use == value )
-				{
-					return;
-				}
-
-				_Use = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Use;
 	}
 
 	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
 	{
+		public ComposeTweetViewModel()
+		{
+			Accounts = new List<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
+			Accounts.First().Use = true;
+		}
+
 		public void Reset()
 		{
 			Text = string.Empty;
 
-			Accounts = new List<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
-			RaisePropertyChanged( nameof( Accounts ) );
+			Medias.Clear();
+		}
+
+		private static string GetMimeType( string fileName )
+		{
+			var ext = Path.GetExtension( fileName );
+
+			var lookup = new Dictionary<string, string>
+			{
+				{".png", "image/png"}, {".gif", "image/gif"}, {".bmp", "image/bmp"}
+			};
+
+			if( ext != null && lookup.ContainsKey( ext ) )
+			{
+				return lookup[ext];
+			}
+
+			return "application/octet-stream";
+		}
+
+		private bool CanExecuteAttachImageCommand()
+		{
+			return true;
 		}
 
 		private bool CanExecuteSendTweetCommand()
 		{
+			if( IsSending )
+			{
+				return false;
+			}
+
 			if( string.IsNullOrWhiteSpace( Text ) )
 			{
 				return false;
@@ -84,6 +82,39 @@ namespace Twice.ViewModels.Twitter
 			return true;
 		}
 
+		private async void ExecuteAttachImageCommand()
+		{
+			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
+			var selectedFile = await ServiceRepository.Show<IFileSelectService, string>( fsa );
+			if( selectedFile == null )
+			{
+				return;
+			}
+
+			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
+
+			var acc = usedAccounts.First();
+			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
+
+			IsSending = true;
+
+			string mediaType = GetMimeType( selectedFile );
+			byte[] mediaData = File.ReadAllBytes( selectedFile );
+
+			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
+			{
+				IsSending = false;
+				return t.Result;
+			} );
+
+			Medias.Add( media );
+		}
+
+		private async void ExecuteSendTweetCommand()
+		{
+			await SendTweet();
+		}
+
 		private async Task SendTweet()
 		{
 			IsSending = true;
@@ -92,17 +123,17 @@ namespace Twice.ViewModels.Twitter
 			{
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await acc.Context.Twitter.TweetAsync( Text );
+					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) );
 				}
 			} ).ContinueWith( t =>
 			{
 				IsSending = false;
-			});
+				Reset();
+			} );
 		}
 
-
-		[System.Diagnostics.DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsSending;
+		public ICollection<AccountEntry> Accounts { get; private set; }
+		public ICommand AttachImageCommand => _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand, CanExecuteAttachImageCommand ) );
 
 		public bool IsSending
 		{
@@ -123,12 +154,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private async void ExecuteSendTweetCommand()
-		{
-			await SendTweet();
-		}
-
-		public ICollection<AccountEntry> Accounts { get; private set; }
 		public ICommand SendTweetCommand => _SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) );
 
 		public string Text
@@ -149,6 +174,14 @@ namespace Twice.ViewModels.Twitter
 				RaisePropertyChanged();
 			}
 		}
+
+		private readonly List<Media> Medias = new List<Media>();
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AttachImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSending;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _SendTweetCommand;

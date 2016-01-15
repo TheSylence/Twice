@@ -77,7 +77,7 @@
 						</Rectangle.OpacityMask>
 					</Rectangle>
 				</Button>
-				<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}">
+				<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}" Command="{Binding AttachImageCommand}">
 					<Rectangle Width="16" Height="16"
                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
 						<Rectangle.OpacityMask>

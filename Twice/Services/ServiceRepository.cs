@@ -16,7 +16,7 @@ namespace Twice.Services
 			where TResult : class
 		{
 			var service = Kernel.Get<TService>();
-			var result = await service.Show();
+			var result = await service.Show( args );
 
 			return result as TResult;
 		}
