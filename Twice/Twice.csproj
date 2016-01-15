@@ -150,11 +150,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
+    <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Messages\FlyoutMessage.cs" />
+    <Compile Include="ViewModels\IResetable.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
+    <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
+      <DependentUpon>TweetComposer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Messages\ColumnLockMessage.cs" />
     <Compile Include="Messages\DragMessage.cs" />
     <Compile Include="Models\Cache\IUserCache.cs" />
@@ -188,11 +195,16 @@
     <Compile Include="ViewModels\Settings\IVisualSettings.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\VisualSettings.cs" />
+    <Compile Include="Views\FlyoutNames.cs" />
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VisualTreeWalker.cs" />
     <Page Include="Controls\ColumnHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Flyouts\TweetComposer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

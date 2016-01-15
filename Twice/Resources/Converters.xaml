@@ -10,6 +10,7 @@
 	<converters:Localize x:Key="LocConv" />
 	<converters:UserToId x:Key="UserToIdConv" />
 	<converters:IconToVisual x:Key="IconToVisualConv" />
+	<converters:InvertBool x:Key="InvertBoolConv" />
 
 	<converters:ConverterChain x:Key="RelativeDateConv">
 		<converters:UtcToLocal />

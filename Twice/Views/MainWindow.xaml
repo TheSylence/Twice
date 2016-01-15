@@ -13,6 +13,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
         mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
         Title="MainWindow" Height="600" Width="800"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -22,6 +23,14 @@
 		<behaviours:WindowsSettingBehaviour />
 		<behaviours:GlowWindowBehavior />
 	</i:Interaction.Behaviors>
+	<controls:MetroWindow.InputBindings>
+		<KeyBinding Modifiers="Control" Key="N" Command="{Binding NewTweetCommand}" />
+	</controls:MetroWindow.InputBindings>
+	<controls:MetroWindow.Flyouts>
+		<controls:FlyoutsControl>
+			<flyouts:TweetComposer />
+		</controls:FlyoutsControl>
+	</controls:MetroWindow.Flyouts>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />

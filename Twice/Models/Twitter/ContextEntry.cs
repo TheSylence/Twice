@@ -12,6 +12,7 @@ namespace Twice.Models.Twitter
 
 			AccountName = lines[0];
 			UserId = ulong.Parse( lines[1] );
+			ProfileImageUrl = new Uri( lines[2] );
 
 			Twitter = new TwitterContext( new SingleUserAuthorizer
 			{
@@ -19,10 +20,10 @@ namespace Twice.Models.Twitter
 				{
 					ScreenName = AccountName,
 					UserID = UserId,
-					ConsumerKey = lines[2],
-					ConsumerSecret = lines[3],
-					OAuthToken = lines[4],
-					OAuthTokenSecret = lines[5]
+					ConsumerKey = lines[3],
+					ConsumerSecret = lines[4],
+					OAuthToken = lines[5],
+					OAuthTokenSecret = lines[6]
 				}
 			} );
 		}
@@ -41,6 +42,7 @@ namespace Twice.Models.Twitter
 			}
 		}
 
+		public Uri ProfileImageUrl { get; }
 		public string AccountName { get; }
 		public TwitterContext Twitter { get; }
 		public ulong UserId { get; }
