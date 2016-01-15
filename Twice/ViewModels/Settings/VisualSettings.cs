@@ -78,6 +78,11 @@ namespace Twice.ViewModels.Settings
 			config.Visual.ShowStatusSeparator = ShowStatusSeparator;
 			config.Visual.InlineMedia = InlineMedias;
 			config.Visual.UseStars = UseStars;
+			
+			Application.Current.Resources["HashtagBrush"] = ThemeManager.GetAccent( config.Visual.HashtagColor ).Resources["HighlightBrush"];
+			Application.Current.Resources["LinkBrush"] = ThemeManager.GetAccent( config.Visual.LinkColor ).Resources["HighlightBrush"];
+			Application.Current.Resources["MentionBrush"] = ThemeManager.GetAccent( config.Visual.MentionColor ).Resources["HighlightBrush"];
+			Application.Current.Resources["GlobalFontSize"] = (double)config.Visual.FontSize;
 		}
 
 		public ICollection<ColorItem> AvailableColors { get; }
