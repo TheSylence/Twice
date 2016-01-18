@@ -7,13 +7,28 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:settings="clr-namespace:Twice.ViewModels.Settings"
+             xmlns:configuration="clr-namespace:Twice.Models.Configuration"
+             xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              ShowCloseButton="True" mc:Ignorable="d" Title="{lex:Loc Settings}"
              DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300"  Padding="20"
 			HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+	<simpleChildWindow:ChildWindow.Resources>
+		<xaml:Markdown x:Key="Markdown">
+			<xaml:Markdown.DocumentStyle>
+				<Style TargetType="FlowDocument">
+					<Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
+					<Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
+				</Style>
+			</xaml:Markdown.DocumentStyle>
+		</xaml:Markdown>
+
+		<xaml:TextToFlowDocumentConverter x:Key="FlowDocConv" Markdown="{StaticResource Markdown}" />
+	</simpleChildWindow:ChildWindow.Resources>
 	<DockPanel>
 		<DockPanel.Resources>
 			<Thickness x:Key="Spacing" Top="0" Left="0" Right="0" Bottom="20" />
+			<!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
 			<Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
 				<Setter Property="MinWidth" Value="75" />
 				<Setter Property="Margin" Value="5,0" />
@@ -24,7 +39,7 @@
 			<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}" />
 		</StackPanel>
 		<TabControl DockPanel.Dock="Top" controls:TabControlHelper.IsUnderlined="True">
-			<TabItem Header="{lex:Loc General}" />
+			<TabItem Header="{lex:Loc General}" DataContext="{Binding General}" />
 			<TabItem Header="{lex:Loc Visual}" DataContext="{Binding Visual}">
 				<Grid>
 					<Grid.Resources>
@@ -77,6 +92,52 @@
 						<CheckBox Content="{lex:Loc ShowStatusSeparator}" IsChecked="{Binding ShowStatusSeparator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc UseStarsForFavorites}" IsChecked="{Binding UseStars, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 					</StackPanel>
+				</Grid>
+			</TabItem>
+			<TabItem Header="{lex:Loc Muting}" DataContext="{Binding Mute}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<DockPanel>
+						<TextBlock Text="{lex:Loc ActiveMutes}" DockPanel.Dock="Top" />
+
+						<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+							<Button Content="{lex:Loc Add}" Command="{Binding AddCommand}" />
+							<Button Content="{lex:Loc Edit}" Command="{Binding EditCommand}" />
+							<Button Content="{lex:Loc Delete}" Command="{Binding RemoveCommand}" />
+						</StackPanel>
+
+						<ListView ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							<ListView.ItemTemplate>
+								<DataTemplate DataType="configuration:MuteEntry">
+									<StackPanel Orientation="Vertical">
+										<TextBlock Text="{Binding Filter}" />
+										<Grid>
+											<TextBlock Text="{Binding EndDate}" Visibility="{Binding EndDate.HasValue, Converter={StaticResource BoolToVisibleConv}}" />
+											<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding EndDate.HasValue, Converter={StaticResource InvertBoolToVisibleConv}}" />
+										</Grid>
+									</StackPanel>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</DockPanel>
+
+					<StackPanel Orientation="Vertical" Grid.Column="1" DataContext="{Binding EditData}" IsEnabled="{Binding Converter={StaticResource NotNullConv}}">
+						<TextBlock Text="{lex:Loc Filter}" Margin="5" />
+						<TextBox Margin="5,0" controls:TextBoxHelper.Watermark="{lex:Loc FilterCriteria}" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc ActiveUntil}" Margin="5" IsChecked="{Binding HasEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<DatePicker Margin="5,0" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding HasEndDate}" />
+						<StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+							<Button Content="{lex:Loc Save}" Command="{Binding SaveCommand}" />
+							<Button Content="{lex:Loc Cancel}" Command="{Binding CancelCommand}" />
+						</StackPanel>
+					</StackPanel>
+
+					<FlowDocumentScrollViewer Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
 				</Grid>
 			</TabItem>
 		</TabControl>

@@ -246,4 +246,49 @@
   <data name="Mentions" xml:space="preserve">
     <value>Mentions</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="ActiveUntil" xml:space="preserve">
+    <value>Active until</value>
+  </data>
+  <data name="ActiveMutes" xml:space="preserve">
+    <value>Active mutes</value>
+  </data>
+  <data name="FilterCriteria" xml:space="preserve">
+    <value>Filter criteria</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmDeleteFilter" xml:space="preserve">
+    <value>Do you really want to delete the selected filter?</value>
+  </data>
+  <data name="ValueMustNotBeEmpty" xml:space="preserve">
+    <value>Value must not be empty</value>
+  </data>
+  <data name="SelectAValue" xml:space="preserve">
+    <value>Select a value</value>
+  </data>
+  <data name="NameAlreadyExists" xml:space="preserve">
+    <value>Name already exists</value>
+  </data>
+  <data name="DastMustNotBeInThePast" xml:space="preserve">
+    <value>Date must not be in the past</value>
+  </data>
+  <data name="Forever" xml:space="preserve">
+    <value>Forever</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
 </root>

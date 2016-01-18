@@ -51,8 +51,6 @@ namespace Twice
 
 			Resources.MergedDictionaries.Add( resDict );
 
-			var test = TryFindResource("MentionBrush");
-
 			LocalizeDictionary dict = LocalizeDictionary.Instance;
 			dict.IncludeInvariantCulture = false;
 			dict.SetCurrentThreadCulture = true;

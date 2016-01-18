@@ -70,6 +70,33 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active mutes.
+        /// </summary>
+        internal static string ActiveMutes {
+            get {
+                return ResourceManager.GetString("ActiveMutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active until.
+        /// </summary>
+        internal static string ActiveUntil {
+            get {
+                return ResourceManager.GetString("ActiveUntil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} ago.
         /// </summary>
         internal static string Ago {
@@ -97,6 +124,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the selected filter?.
+        /// </summary>
+        internal static string ConfirmDeleteFilter {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy tweet.
         /// </summary>
         internal static string CopyTweet {
@@ -115,6 +160,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date must not be in the past.
+        /// </summary>
+        internal static string DastMustNotBeInThePast {
+            get {
+                return ResourceManager.GetString("DastMustNotBeInThePast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to d.
         /// </summary>
         internal static string DaysShort {
@@ -129,6 +183,15 @@ namespace Twice.Resources {
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -165,6 +228,24 @@ namespace Twice.Resources {
         internal static string Favourites {
             get {
                 return ResourceManager.GetString("Favourites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter criteria.
+        /// </summary>
+        internal static string FilterCriteria {
+            get {
+                return ResourceManager.GetString("FilterCriteria", resourceCulture);
             }
         }
         
@@ -219,6 +300,15 @@ namespace Twice.Resources {
         internal static string FontSize_Tiny {
             get {
                 return ResourceManager.GetString("FontSize_Tiny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forever.
+        /// </summary>
+        internal static string Forever {
+            get {
+                return ResourceManager.GetString("Forever", resourceCulture);
             }
         }
         
@@ -304,6 +394,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name already exists.
+        /// </summary>
+        internal static string NameAlreadyExists {
+            get {
+                return ResourceManager.GetString("NameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Now.
         /// </summary>
         internal static string Now {
@@ -376,6 +484,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a value.
+        /// </summary>
+        internal static string SelectAValue {
+            get {
+                return ResourceManager.GetString("SelectAValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {
@@ -430,6 +547,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value must not be empty.
+        /// </summary>
+        internal static string ValueMustNotBeEmpty {
+            get {
+                return ResourceManager.GetString("ValueMustNotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Via.
         /// </summary>
         internal static string Via {
@@ -444,6 +570,15 @@ namespace Twice.Resources {
         internal static string Visual {
             get {
                 return ResourceManager.GetString("Visual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

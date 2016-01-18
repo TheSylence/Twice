@@ -19,6 +19,8 @@ namespace Twice.Injections
 
 			Bind<ISettingsDialogViewModel>().To<SettingsDialogViewModel>();
 			Bind<IVisualSettings>().To<VisualSettings>();
+			Bind<IGeneralSettings>().To<GeneralSettings>();
+			Bind<IMuteSettings>().To<MuteSettings>();
 
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
 		}

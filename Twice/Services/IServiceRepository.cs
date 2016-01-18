@@ -6,7 +6,6 @@ namespace Twice.Services
 	internal interface IServiceRepository
 	{
 		Task<TResult> Show<TService, TResult>( object args = null )
-			where TService : IViewService
-			where TResult : class;
+			where TService : IViewService;
 	}
 }

@@ -9,6 +9,7 @@ namespace Twice.Models.Configuration
 
 		GeneralConfig General { get; }
 		VisualConfig Visual { get; }
+		MuteConfig Mute { get; }
 	}
 
 	internal class Config : IConfig
@@ -24,22 +25,25 @@ namespace Twice.Models.Configuration
 				Config tmp = JsonConvert.DeserializeObject<Config>( json );
 				Visual = tmp.Visual;
 				General = tmp.General;
+				Mute = tmp.Mute;
 			}
 			else
 			{
 				General = new GeneralConfig();
 				Visual = new VisualConfig();
+				Mute = new MuteConfig();
 			}
 		}
 
 		public void Save()
 		{
-			string json = JsonConvert.SerializeObject( this );
+			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
 			File.WriteAllText( FileName, json );
 		}
 
-		public GeneralConfig General { get; }
-		public VisualConfig Visual { get; }
+		public GeneralConfig General { get; set; }
+		public VisualConfig Visual { get; set; }
+		public MuteConfig Mute { get; set; }
 
 		private readonly string FileName;
 	}

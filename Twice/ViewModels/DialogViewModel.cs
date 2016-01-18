@@ -7,10 +7,12 @@ namespace Twice.ViewModels
 {
 	internal interface IDialogViewModel
 	{
+		event EventHandler<CloseRequestEventArgs> CloseRequested;
+
 		ICommand CancelCommand { get; }
 		ICommand OkCommand { get; }
-		event EventHandler<CloseRequestEventArgs> CloseRequested;
 	}
+
 	internal class CloseRequestEventArgs : EventArgs
 	{
 		public CloseRequestEventArgs( bool? result = null )
@@ -22,13 +24,15 @@ namespace Twice.ViewModels
 		public static CloseRequestEventArgs Ok { get; } = new CloseRequestEventArgs( true );
 		public bool? Result { get; }
 	}
+
 	internal abstract class DialogViewModel : IDialogViewModel
 	{
+		public event EventHandler<CloseRequestEventArgs> CloseRequested;
+
 		protected virtual bool CanExecuteOkCommand()
 		{
 			return true;
 		}
-		public event EventHandler<CloseRequestEventArgs> CloseRequested;
 
 		protected virtual bool OnOk()
 		{
@@ -37,15 +41,15 @@ namespace Twice.ViewModels
 
 		private void ExecuteCancelCommand()
 		{
-			if( OnOk() )
-			{
-				CloseRequested?.Invoke( this, CloseRequestEventArgs.Cancel );
-			}
+			CloseRequested?.Invoke( this, CloseRequestEventArgs.Cancel );
 		}
 
 		private void ExecuteOkCommand()
 		{
-			CloseRequested?.Invoke( this, CloseRequestEventArgs.Ok );
+			if( OnOk() )
+			{
+				CloseRequested?.Invoke( this, CloseRequestEventArgs.Ok );
+			}
 		}
 
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
