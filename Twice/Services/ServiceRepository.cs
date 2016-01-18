@@ -13,12 +13,11 @@ namespace Twice.Services
 
 		public async Task<TResult> Show<TService, TResult>( object args = null )
 			where TService : IViewService
-			where TResult : class
 		{
 			var service = Kernel.Get<TService>();
 			var result = await service.Show( args );
 
-			return result as TResult;
+			return (TResult)result;
 		}
 
 		private readonly IKernel Kernel;

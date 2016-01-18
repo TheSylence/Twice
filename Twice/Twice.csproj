@@ -89,6 +89,10 @@
       <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Resourcer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Resourcer.Fody.1.4.0\lib\portable-net45+netcore45+wpa81+wp8\Resourcer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
@@ -156,6 +160,7 @@
     </Compile>
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Services\ViewServices\FileSelectService.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
@@ -169,10 +174,13 @@
     <Compile Include="Models\Cache\IUserCache.cs" />
     <Compile Include="Models\Cache\UserCache.cs" />
     <Compile Include="Models\Cache\UserCacheEntry.cs" />
+    <Compile Include="Models\Configuration\MuteConfig.cs" />
+    <Compile Include="Models\Configuration\MuteEntry.cs" />
     <Compile Include="Models\Twitter\StreamEventArgs.cs" />
     <Compile Include="Models\Twitter\StreamParser.cs" />
     <Compile Include="Services\IServiceRepository.cs" />
     <Compile Include="Services\ServiceRepository.cs" />
+    <Compile Include="Services\ViewServices\ConfirmService.cs" />
     <Compile Include="Services\ViewServices\IViewService.cs" />
     <Compile Include="Services\ViewServices\SettingsService.cs" />
     <Compile Include="Services\ViewServices\ViewServiceBase.cs" />
@@ -194,12 +202,22 @@
     <Compile Include="ViewModels\Settings\FontSizeItem.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettings.cs" />
     <Compile Include="ViewModels\Settings\IGeneralSettings.cs" />
+    <Compile Include="ViewModels\Settings\IMuteSettings.cs" />
     <Compile Include="ViewModels\Settings\ISettingsDialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\ISettingsSection.cs" />
     <Compile Include="ViewModels\Settings\IVisualSettings.cs" />
+    <Compile Include="ViewModels\Settings\MuteEditViewModel.cs" />
+    <Compile Include="ViewModels\Settings\MuteSettings.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\VisualSettings.cs" />
     <Compile Include="Views\FlyoutNames.cs" />
+    <Compile Include="ViewModels\Validation\CommonValidations.cs" />
+    <Compile Include="ViewModels\Validation\IPropertyValidatorContainer.cs" />
+    <Compile Include="ViewModels\Validation\IValidationSetup.cs" />
+    <Compile Include="ViewModels\Validation\PropertyValidator.cs" />
+    <Compile Include="ViewModels\Validation\PropertyValidatorBase.cs" />
+    <Compile Include="ViewModels\Validation\ValidationSetup.cs" />
+    <Compile Include="ViewModels\Validation\ValidationViewModel.cs" />
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -224,6 +242,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <EmbeddedResource Include="Resources\Licenses\Markdown.XAML.txt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -299,6 +320,7 @@
       <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\Documentation\Mute.md" />
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -309,7 +331,12 @@
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ThidParty\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
+      <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
+      <Name>Markdown.Xaml</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="DebugTokens.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -330,9 +357,11 @@
     <Error Condition="!Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Stamp.Fody.1.2.4\build\dotnet\Stamp.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stamp.Fody.1.2.4\build\dotnet\Stamp.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets'))" />
+    <Error Condition="!Exists('..\packages\Resourcer.Fody.1.4.0\build\dotnet\Resourcer.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Resourcer.Fody.1.4.0\build\dotnet\Resourcer.Fody.targets'))" />
   </Target>
   <Import Project="..\packages\Stamp.Fody.1.2.4\build\dotnet\Stamp.Fody.targets" Condition="Exists('..\packages\Stamp.Fody.1.2.4\build\dotnet\Stamp.Fody.targets')" />
   <Import Project="..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets" Condition="Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" />
+  <Import Project="..\packages\Resourcer.Fody.1.4.0\build\dotnet\Resourcer.Fody.targets" Condition="Exists('..\packages\Resourcer.Fody.1.4.0\build\dotnet\Resourcer.Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
