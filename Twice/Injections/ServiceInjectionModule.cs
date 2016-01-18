@@ -15,6 +15,8 @@ namespace Twice.Injections
 			Bind<IServiceRepository>().To<ServiceRepository>().InSingletonScope();
 
 			Bind<ISettingsService>().To<SettingsService>();
+
+			Bind<IFileSelectService>().To<FileSelectService>();
 		}
 	}
 }

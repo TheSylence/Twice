@@ -8,5 +8,6 @@ namespace Twice.Models.Twitter
 		string AccountName { get; }
 		TwitterContext Twitter { get; }
 		ulong UserId { get; }
+		Uri ProfileImageUrl { get; }
 	}
 }

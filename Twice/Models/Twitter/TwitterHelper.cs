@@ -16,5 +16,11 @@ namespace Twice.Models.Twitter
 			string userName = status.User.GetScreenName();
 			return new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}/status/{1}", userName, status.StatusID ) );
 		}
+
+		public static int CountCharacters( string text )
+		{
+			// TODO: Correct character counting
+			return text.Length;
+		}
 	}
 }

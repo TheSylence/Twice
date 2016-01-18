@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.Services.ViewServices;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Columns.Definitions;
+using Twice.Views;
 
 namespace Twice.ViewModels.Main
 {
@@ -45,6 +47,7 @@ namespace Twice.ViewModels.Main
 
 		private void ExecuteNewTweetCommand()
 		{
+			MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Open ) );
 		}
 
 		private async void ExecuteSettingsCommand()
@@ -58,8 +61,10 @@ namespace Twice.ViewModels.Main
 
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SettingsCommand;
 	}
 }

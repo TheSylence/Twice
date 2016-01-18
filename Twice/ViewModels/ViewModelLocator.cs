@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Settings;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels
 {
@@ -11,6 +12,7 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
+		public IComposeTweetViewModel ComposeTweet => Kernel.Get<IComposeTweetViewModel>();
 		public IMainViewModel Main => Kernel.Get<IMainViewModel>();
 
 		private readonly IKernel Kernel;
