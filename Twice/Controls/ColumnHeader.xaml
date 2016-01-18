@@ -18,7 +18,7 @@
 			<local:ResizeThumb DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="SizeWE">
 				<local:ResizeThumb.Template>
 					<ControlTemplate TargetType="local:ResizeThumb">
-						<Rectangle Fill="{DynamicResource ThumbBrush}" Width="3" />
+						<Rectangle Fill="{DynamicResource WindowBackgroundBrush}" Width="3" />
 					</ControlTemplate>
 				</local:ResizeThumb.Template>
 			</local:ResizeThumb>
