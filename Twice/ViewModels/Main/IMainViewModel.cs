@@ -7,7 +7,7 @@ namespace Twice.ViewModels.Main
 {
 	interface ILoadCallback
 	{
-		Task OnLoad();
+		Task OnLoad( object data );
 	}
 
 	interface IMainViewModel : IViewModelBase, ILoadCallback

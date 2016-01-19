@@ -163,7 +163,11 @@
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Services\ViewServices\FileSelectService.cs" />
+    <Compile Include="Services\ViewServices\ViewProfileService.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
+    <Compile Include="ViewModels\Profile\IProfileDialogViewModel.cs" />
+    <Compile Include="ViewModels\Profile\ProfileDialogViewModel.cs" />
+    <Compile Include="ViewModels\Profile\UserSubPage.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
@@ -218,6 +222,11 @@
     <Compile Include="ViewModels\Validation\PropertyValidatorBase.cs" />
     <Compile Include="ViewModels\Validation\ValidationSetup.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModel.cs" />
+    <Compile Include="Views\GenericDataTemplateSelectorItem.cs" />
+    <Compile Include="Views\GenericTemplateSelector.cs" />
+    <Compile Include="Views\ProfileDialog.xaml.cs">
+      <DependentUpon>ProfileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -303,6 +312,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ProfileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

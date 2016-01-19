@@ -291,4 +291,13 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Following" xml:space="preserve">
+    <value>Following</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Followers</value>
+  </data>
+  <data name="Tweets" xml:space="preserve">
+    <value>Tweets</value>
+  </data>
 </root>

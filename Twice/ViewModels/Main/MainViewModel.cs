@@ -37,7 +37,7 @@ namespace Twice.ViewModels.Main
 			Columns = new ObservableCollection<IColumnViewModel>( constructed );
 		}
 
-		public async Task OnLoad()
+		public async Task OnLoad( object data )
 		{
 			foreach( var col in Columns )
 			{

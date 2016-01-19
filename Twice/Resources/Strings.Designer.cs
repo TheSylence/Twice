@@ -250,6 +250,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Followers.
+        /// </summary>
+        internal static string Followers {
+            get {
+                return ResourceManager.GetString("Followers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Following.
+        /// </summary>
+        internal static string Following {
+            get {
+                return ResourceManager.GetString("Following", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Font size.
         /// </summary>
         internal static string FontSize {
@@ -534,6 +552,15 @@ namespace Twice.Resources {
         internal static string TranslateTweet {
             get {
                 return ResourceManager.GetString("TranslateTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tweets.
+        /// </summary>
+        internal static string Tweets {
+            get {
+                return ResourceManager.GetString("Tweets", resourceCulture);
             }
         }
         

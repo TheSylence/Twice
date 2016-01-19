@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Twice.ViewModels.Main;
+using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
 using Twice.ViewModels.Twitter;
 
@@ -26,6 +27,7 @@ namespace Twice.ViewModels
 		}
 
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
+		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
 
 		private readonly IKernel Kernel;
 	}

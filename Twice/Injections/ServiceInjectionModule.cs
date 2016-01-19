@@ -18,6 +18,8 @@ namespace Twice.Injections
 
 			Bind<ISettingsService>().To<SettingsService>();
 
+			Bind<IViewProfileService>().To<ViewProfileService>();
+
 			Bind<IFileSelectService>().To<FileSelectService>();
 		}
 	}

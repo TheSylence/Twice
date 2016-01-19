@@ -51,7 +51,7 @@
 					</StackPanel>
 				</StackPanel>
 
-				<StackPanel Grid.Row="1">
+				<StackPanel Grid.Row="1" Grid.Column="0">
 					<Image Source="{Binding Model.User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
 					Margin="5" />
 
@@ -159,7 +159,8 @@
 					</StackPanel>
 				</StackPanel>
 
-				<Separator Grid.Row="2" Grid.ColumnSpan="2" Visibility="{Binding ShowStatusSeparator, Converter={StaticResource BoolToVisibleConv}}" />
+				<Separator Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0"
+							Visibility="{Binding ShowStatusSeparator, Converter={StaticResource BoolToVisibleConv}}" />
 
 				<Grid.ContextMenu>
 					<ContextMenu>

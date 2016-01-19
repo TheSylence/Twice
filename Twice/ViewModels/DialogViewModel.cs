@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels
 {
@@ -25,7 +26,7 @@ namespace Twice.ViewModels
 		public bool? Result { get; }
 	}
 
-	internal abstract class DialogViewModel : IDialogViewModel
+	internal abstract class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
 		public event EventHandler<CloseRequestEventArgs> CloseRequested;
 

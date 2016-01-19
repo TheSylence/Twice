@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Ninject.Modules;
 using Twice.ViewModels.Main;
+using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
 using Twice.ViewModels.Twitter;
 
@@ -23,6 +24,8 @@ namespace Twice.Injections
 			Bind<IMuteSettings>().To<MuteSettings>();
 
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
+
+			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
 		}
 	}
 }
