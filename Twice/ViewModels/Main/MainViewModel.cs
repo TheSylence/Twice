@@ -16,7 +16,7 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList list )
+		public MainViewModel( ITwitterContextList list, IStatusMuter muter )
 		{
 			var context = list.Contexts.First();
 
@@ -27,7 +27,7 @@ namespace Twice.ViewModels.Main
 				columns = columnList.DefaultColumns( context.UserId );
 			}
 
-			var factory = new ColumnFactory( list );
+			var factory = new ColumnFactory( list, muter );
 
 			var constructed = columns.Select( c => factory.Construct( c ) );
 #if DEBUG

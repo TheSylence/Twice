@@ -291,6 +291,15 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="MuteHashtag" xml:space="preserve">
+    <value>Mute hashtag</value>
+  </data>
+  <data name="MuteUser" xml:space="preserve">
+    <value>Mute user</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Copy URL</value>
+  </data>
   <data name="Following" xml:space="preserve">
     <value>Following</value>
   </data>

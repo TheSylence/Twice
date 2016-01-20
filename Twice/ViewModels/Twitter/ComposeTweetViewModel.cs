@@ -24,12 +24,13 @@ namespace Twice.ViewModels.Twitter
 	{
 		public ComposeTweetViewModel()
 		{
-			Accounts = new List<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
-			Accounts.First().Use = true;
 		}
 
 		public void Reset()
 		{
+			Accounts = new List<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
+			Accounts.First().Use = true;
+
 			Text = string.Empty;
 
 			Medias.Clear();

@@ -18,7 +18,7 @@ namespace Twice.ViewModels.Columns
 		protected override async Task OnLoad()
 		{
 			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.Mentions && s.UserID == Context.UserId ).ToListAsync();
-			var list = statuses.Select( s => new StatusViewModel( s, Context ) );
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 
 			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( list ) );
 		}

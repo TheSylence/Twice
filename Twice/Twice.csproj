@@ -162,6 +162,7 @@
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
+    <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Services\ViewServices\FileSelectService.cs" />
     <Compile Include="Services\ViewServices\ViewProfileService.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
