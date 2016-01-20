@@ -27,7 +27,7 @@ namespace Twice.ViewModels.Profile
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
 
-			User = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId ).SingleOrDefaultAsync();
+			User = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
 			if( User == null )
 			{
 				// TODO: Handle errors
@@ -38,9 +38,9 @@ namespace Twice.ViewModels.Profile
 
 			UserPages = new List<UserSubPage>
 			{
-				new UserSubPage( Strings.Tweets, LoadStatuses ),
-				new UserSubPage( Strings.Following, LoadFollowings ),
-				new UserSubPage( Strings.Followers, LoadFollowers )
+				new UserSubPage( Strings.Tweets, LoadStatuses, User.StatusesCount ),
+				new UserSubPage( Strings.Following, LoadFollowings, User.FriendsCount ),
+				new UserSubPage( Strings.Followers, LoadFollowers, User.FollowersCount )
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 

@@ -15,7 +15,7 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
         mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" Height="600" Width="800"
+        Title="MainWindow" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />

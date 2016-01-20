@@ -8,11 +8,14 @@ namespace Twice.ViewModels.Profile
 {
 	class UserSubPage : ObservableObject
 	{
-		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction )
+		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, int count )
 		{
 			Title = title;
+			Count = count;
 			LoadAction = loadAction;
 		}
+
+		public int Count { get; }
 
 		public bool IsLoading
 		{
