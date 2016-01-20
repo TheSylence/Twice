@@ -49,12 +49,18 @@ namespace Twice.ViewModels.Profile
 
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
-			return await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FollowersList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
+			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FollowersList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+
+			return users.Select( u => new UserViewModel( u ) );
 		}
 
 		private async Task<IEnumerable<object>> LoadFollowings()
 		{
-			return await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FriendsList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
+			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FriendsList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+
+			return users.Select( u => new UserViewModel( u ) );
 		}
 
 		private async Task<IEnumerable<object>> LoadStatuses()

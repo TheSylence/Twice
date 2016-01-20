@@ -26,7 +26,7 @@ namespace Twice.ViewModels
 			Debugger.Break();
 		}
 
-		private static void ExecuteOpenProfileCommand( ulong args )
+		private static async void ExecuteOpenProfileCommand( ulong args )
 		{
 			//ServiceRepository.Default.Show<ProfileService>( args );
 

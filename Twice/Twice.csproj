@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\Profile\UserSubPage.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>

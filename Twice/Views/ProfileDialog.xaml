@@ -11,9 +11,10 @@
              xmlns:views="clr-namespace:Twice.Views"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:profile="clr-namespace:Twice.ViewModels.Profile"
+             xmlns:linqToTwitter="clr-namespace:LinqToTwitter;assembly=LinqToTwitter.net"
              mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300" IsModal="True" Padding="30" VerticalContentAlignment="Stretch"
-							   HorizontalContentAlignment="Stretch"
+			ShowCloseButton="True" HorizontalContentAlignment="Stretch"
 			Title="{Binding User.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
@@ -88,6 +89,7 @@
 								<ListView.ItemTemplateSelector>
 									<views:GenericTemplateSelector>
 										<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}"/>
+										<views:GenericDataTemplateSelectorItem TemplatedType="twitter:UserViewModel" Template="{StaticResource UserViewTemplate}"/>
 									</views:GenericTemplateSelector>
 								</ListView.ItemTemplateSelector>
 							</ListView>
