@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Columns
 			Title = userInfo.ScreenNameResponse;
 
 			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == UserId ).ToListAsync();
-			var list = statuses.Select( t => new StatusViewModel( t, Context ) ).ToArray();
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( t => new StatusViewModel( t, Context ) ).ToArray();
 			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( list ) );
 		}
 

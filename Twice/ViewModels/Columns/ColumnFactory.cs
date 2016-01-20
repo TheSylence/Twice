@@ -8,8 +8,9 @@ namespace Twice.ViewModels.Columns
 {
 	internal class ColumnFactory
 	{
-		public ColumnFactory( ITwitterContextList contexts )
+		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter )
 		{
+			Muter = muter;
 			Rand = new Random();
 			Contexts = contexts;
 
@@ -30,6 +31,7 @@ namespace Twice.ViewModels.Columns
 				var column = factoryAction( def );
 
 				column.Width = def.Width;
+				column.Muter = Muter;
 
 				return column;
 			}
@@ -63,6 +65,7 @@ namespace Twice.ViewModels.Columns
 
 		private readonly ITwitterContextList Contexts;
 		private readonly Dictionary<ColumnType, Func<ColumnDefinition, ColumnViewModelBase>> FactoryMap;
+		private readonly IStatusMuter Muter;
 		private readonly Random Rand;
 	}
 }

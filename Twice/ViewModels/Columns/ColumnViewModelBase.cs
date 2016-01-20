@@ -33,6 +33,7 @@ namespace Twice.ViewModels.Columns
 
 		public abstract Icon Icon { get; }
 		public bool IsLoading { get; private set; }
+		public IStatusMuter Muter { get; set; }
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string Title
