@@ -13,6 +13,11 @@ namespace Twice.ViewModels
 			return args != null && args.IsAbsoluteUri;
 		}
 
+		private static void ExecuteCreateMuteCommand( string value )
+		{
+			Debugger.Break();
+		}
+
 		private static void ExecuteOpenProfileCommand( ulong args )
 		{
 			//ServiceRepository.Default.Show<ProfileService>( args );
@@ -23,16 +28,17 @@ namespace Twice.ViewModels
 			Process.Start( args.AbsoluteUri );
 		}
 
+		public static ICommand CreateMuteCommand => _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
 		public static ICommand OpenProfileCommand => _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );
 
 		/// <summary>Command to open an URL in the default webbrowser.</summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
-														( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+		                                         ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<ulong> _OpenProfileCommand;
+		private static RelayCommand<string> _CreateMuteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<Uri> _OpenUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<ulong> _OpenProfileCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
 	}
 }

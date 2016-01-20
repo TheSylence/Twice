@@ -4,9 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using LinqToTwitter;
+using Twice.Resources;
 using Twice.ViewModels;
 
 namespace Twice.Converters
@@ -20,7 +22,7 @@ namespace Twice.Converters
 		/// <param name="parameter">The converter parameter to use.</param>
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
+		///     A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
@@ -41,11 +43,63 @@ namespace Twice.Converters
 		/// <param name="parameter">The converter parameter to use.</param>
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
+		///     A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			throw new NotSupportedException();
+		}
+
+		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
+		{
+			var menu = new ContextMenu();
+
+			menu.Items.Add( new MenuItem
+			{
+				Header = Strings.MuteHashtag,
+				CommandParameter = $"#{entity.Tag}",
+				Command = GlobalCommands.CreateMuteCommand
+			} );
+
+			return menu;
+		}
+
+		private static ContextMenu CreateLinkContextMenu( UrlEntity entity )
+		{
+			var menu = new ContextMenu();
+
+			menu.Items.Add( new MenuItem
+			{
+				Header = Strings.CopyUrl
+			} );
+
+			return menu;
+		}
+
+		private static ContextMenu CreateUserContextMenu( UserMentionEntity entity )
+		{
+			var menu = new ContextMenu();
+
+			menu.Items.Add( new MenuItem
+			{
+				Header = Strings.MuteUser,
+				CommandParameter = $"@{entity.ScreenName}",
+				Command = GlobalCommands.CreateMuteCommand
+			} );
+
+			menu.Items.Add( new Separator() );
+
+			menu.Items.Add( new MenuItem
+			{
+				Header = Strings.Block
+			} );
+
+			menu.Items.Add( new MenuItem
+			{
+				Header = Strings.ReportSpam
+			} );
+
+			return menu;
 		}
 
 		/// <summary>Generates an inline from a hashtag entity.</summary>
@@ -57,6 +111,7 @@ namespace Twice.Converters
 			link.Inlines.Add( Constants.Twitter.HashTag + entity.Tag );
 			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
 			link.TextDecorations = null;
+			link.ContextMenu = CreateHashtagContextMenu( entity );
 
 			return link;
 		}
@@ -150,6 +205,7 @@ namespace Twice.Converters
 			link.Command = GlobalCommands.OpenUrlCommand;
 			link.ToolTip = entity.ExpandedUrl;
 			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
+			link.ContextMenu = CreateLinkContextMenu( entity );
 
 			return link;
 		}
@@ -173,7 +229,8 @@ namespace Twice.Converters
 		/// <summary>Generates an inline from a mention entity.</summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
-		[SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
+		[SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
+			MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
 		private static Inline GenerateMention( UserMentionEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
@@ -182,6 +239,7 @@ namespace Twice.Converters
 			link.TextDecorations = null;
 			link.Command = GlobalCommands.OpenProfileCommand;
 			link.CommandParameter = entity.Id;
+			link.ContextMenu = CreateUserContextMenu( entity );
 
 			return link;
 		}

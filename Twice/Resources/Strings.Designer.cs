@@ -160,6 +160,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy URL.
+        /// </summary>
+        internal static string CopyUrl {
+            get {
+                return ResourceManager.GetString("CopyUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date must not be in the past.
         /// </summary>
         internal static string DastMustNotBeInThePast {
@@ -390,6 +399,24 @@ namespace Twice.Resources {
         internal static string MinutesShort {
             get {
                 return ResourceManager.GetString("MinutesShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mute hashtag.
+        /// </summary>
+        internal static string MuteHashtag {
+            get {
+                return ResourceManager.GetString("MuteHashtag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mute user.
+        /// </summary>
+        internal static string MuteUser {
+            get {
+                return ResourceManager.GetString("MuteUser", resourceCulture);
             }
         }
         
