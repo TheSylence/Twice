@@ -9,6 +9,8 @@
              xmlns:settings="clr-namespace:Twice.ViewModels.Settings"
              xmlns:configuration="clr-namespace:Twice.Models.Configuration"
              xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+             xmlns:views="clr-namespace:Twice.Views"
+             xmlns:controls1="clr-namespace:Twice.Controls"
              ShowCloseButton="True" mc:Ignorable="d" Title="{lex:Loc Settings}"
              DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300"  Padding="20"
@@ -138,6 +140,81 @@
 					</StackPanel>
 
 					<FlowDocumentScrollViewer Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
+				</Grid>
+			</TabItem>
+			<TabItem Header="{lex:Loc Notifications}" DataContext="{Binding Notifications}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<GroupBox Header="{lex:Loc AvailableNotificationMechanisms}">
+						<ItemsControl ItemsSource="{Binding AvailableNotifications}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate DataType="settings:NotificationModuleSettings">
+									<CheckBox Content="{Binding Title}" IsChecked="{Binding Enabled, Mode=TwoWay}" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</GroupBox>
+
+					<ItemsControl ItemsSource="{Binding EnabledNotifications}" Grid.Column="1">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="settings:NotificationModuleSettings">
+								<GroupBox Header="{Binding Title}">
+									<ContentControl Content="{Binding}">
+										<ContentControl.ContentTemplateSelector>
+											<views:GenericTemplateSelector>
+												<views:GenericDataTemplateSelectorItem TemplatedType="settings:SoundNotificationSettings">
+													<DataTemplate DataType="settings:SoundNotificationSettings">
+														<Grid>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
+															<controls1:FileSelectBox Grid.Column="1" />
+														</Grid>
+													</DataTemplate>
+												</views:GenericDataTemplateSelectorItem>
+												<views:GenericDataTemplateSelectorItem TemplatedType="settings:ToastNotificationSettings">
+													<DataTemplate DataType="settings:ToastNotificationSettings">
+														<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" />
+													</DataTemplate>
+												</views:GenericDataTemplateSelectorItem>
+												<views:GenericDataTemplateSelectorItem TemplatedType="settings:PopupNotificationSettings">
+													<DataTemplate DataType="settings:PopupNotificationSettings">
+														<Grid>
+															<Grid.RowDefinitions>
+																<RowDefinition />
+																<RowDefinition />
+															</Grid.RowDefinitions>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" />
+															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name" 
+																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedDisplay, Mode=TwoWay}" 
+																	  ItemsSource="{Binding AvailableDisplays}" />
+
+															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
+															<ComboBox ItemsSource="{Binding AvailableCorners}" DisplayMemberPath="Name" Grid.Column="1" 
+																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedCorner, Mode=TwoWay}" 
+																	  Grid.Row="1" VerticalAlignment="Center" Margin="5,0" />
+														</Grid>
+													</DataTemplate>
+												</views:GenericDataTemplateSelectorItem>
+											</views:GenericTemplateSelector>
+										</ContentControl.ContentTemplateSelector>
+									</ContentControl>
+								</GroupBox>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
 				</Grid>
 			</TabItem>
 		</TabControl>

@@ -5,5 +5,6 @@
 		IGeneralSettings General { get; }
 		IVisualSettings Visual { get; }
 		IMuteSettings Mute { get; }
+		INotificationSettings Notifications { get; }
 	}
 }

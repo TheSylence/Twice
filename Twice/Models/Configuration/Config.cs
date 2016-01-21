@@ -10,6 +10,7 @@ namespace Twice.Models.Configuration
 		GeneralConfig General { get; }
 		VisualConfig Visual { get; }
 		MuteConfig Mute { get; }
+		NotificationConfig Notifications { get; }
 	}
 
 	internal class Config : IConfig
@@ -26,12 +27,14 @@ namespace Twice.Models.Configuration
 				Visual = tmp.Visual;
 				General = tmp.General;
 				Mute = tmp.Mute;
+				Notifications = tmp.Notifications;
 			}
 			else
 			{
 				General = new GeneralConfig();
 				Visual = new VisualConfig();
 				Mute = new MuteConfig();
+				Notifications = new NotificationConfig();
 			}
 		}
 
@@ -44,6 +47,7 @@ namespace Twice.Models.Configuration
 		public GeneralConfig General { get; set; }
 		public VisualConfig Visual { get; set; }
 		public MuteConfig Mute { get; set; }
+		public NotificationConfig Notifications { get; set; }
 
 		private readonly string FileName;
 	}

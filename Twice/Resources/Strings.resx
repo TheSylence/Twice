@@ -309,4 +309,40 @@
   <data name="Tweets" xml:space="preserve">
     <value>Tweets</value>
   </data>
+  <data name="SoundNotification" xml:space="preserve">
+    <value>Notification sounds</value>
+  </data>
+  <data name="PopupNotification" xml:space="preserve">
+    <value>Notification popups</value>
+  </data>
+  <data name="ToastNotification" xml:space="preserve">
+    <value>Notification toasts in app</value>
+  </data>
+  <data name="NoFurtherSettingsForThisNotificationType" xml:space="preserve">
+    <value>There are no further settings for this type of notifications</value>
+  </data>
+  <data name="SoundFile" xml:space="preserve">
+    <value>Sound file</value>
+  </data>
+  <data name="AvailableNotificationMechanisms" xml:space="preserve">
+    <value>Available notification mechanisms</value>
+  </data>
+  <data name="DisplayToShowPopupsAt" xml:space="preserve">
+    <value>Display to show popups at</value>
+  </data>
+  <data name="CornerToShowPopupsIn" xml:space="preserve">
+    <value>Corner to show popups in</value>
+  </data>
+  <data name="Corner_TopLeft" xml:space="preserve">
+    <value>Top left</value>
+  </data>
+  <data name="Corner_TopRight" xml:space="preserve">
+    <value>Top right</value>
+  </data>
+  <data name="Corner_BottomLeft" xml:space="preserve">
+    <value>Bottom left</value>
+  </data>
+  <data name="Corner_BottomRight" xml:space="preserve">
+    <value>Bottom right</value>
+  </data>
 </root>

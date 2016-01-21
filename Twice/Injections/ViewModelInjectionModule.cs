@@ -22,6 +22,7 @@ namespace Twice.Injections
 			Bind<IVisualSettings>().To<VisualSettings>();
 			Bind<IGeneralSettings>().To<GeneralSettings>();
 			Bind<IMuteSettings>().To<MuteSettings>();
+			Bind<INotificationSettings>().To<NotificationSettings>();
 
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
 

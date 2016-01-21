@@ -106,6 +106,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available notification mechanisms.
+        /// </summary>
+        internal static string AvailableNotificationMechanisms {
+            get {
+                return ResourceManager.GetString("AvailableNotificationMechanisms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Block.
         /// </summary>
         internal static string Block {
@@ -169,6 +178,51 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom left.
+        /// </summary>
+        internal static string Corner_BottomLeft {
+            get {
+                return ResourceManager.GetString("Corner_BottomLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom right.
+        /// </summary>
+        internal static string Corner_BottomRight {
+            get {
+                return ResourceManager.GetString("Corner_BottomRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top left.
+        /// </summary>
+        internal static string Corner_TopLeft {
+            get {
+                return ResourceManager.GetString("Corner_TopLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top right.
+        /// </summary>
+        internal static string Corner_TopRight {
+            get {
+                return ResourceManager.GetString("Corner_TopRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corner to show popups in.
+        /// </summary>
+        internal static string CornerToShowPopupsIn {
+            get {
+                return ResourceManager.GetString("CornerToShowPopupsIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date must not be in the past.
         /// </summary>
         internal static string DastMustNotBeInThePast {
@@ -192,6 +246,15 @@ namespace Twice.Resources {
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display to show popups at.
+        /// </summary>
+        internal static string DisplayToShowPopupsAt {
+            get {
+                return ResourceManager.GetString("DisplayToShowPopupsAt", resourceCulture);
             }
         }
         
@@ -457,6 +520,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no further settings for this type of notifications.
+        /// </summary>
+        internal static string NoFurtherSettingsForThisNotificationType {
+            get {
+                return ResourceManager.GetString("NoFurtherSettingsForThisNotificationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Now.
         /// </summary>
         internal static string Now {
@@ -471,6 +543,15 @@ namespace Twice.Resources {
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification popups.
+        /// </summary>
+        internal static string PopupNotification {
+            get {
+                return ResourceManager.GetString("PopupNotification", resourceCulture);
             }
         }
         
@@ -565,11 +646,38 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sound file.
+        /// </summary>
+        internal static string SoundFile {
+            get {
+                return ResourceManager.GetString("SoundFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification sounds.
+        /// </summary>
+        internal static string SoundNotification {
+            get {
+                return ResourceManager.GetString("SoundNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
         internal static string Theme {
             get {
                 return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification toasts in app.
+        /// </summary>
+        internal static string ToastNotification {
+            get {
+                return ResourceManager.GetString("ToastNotification", resourceCulture);
             }
         }
         

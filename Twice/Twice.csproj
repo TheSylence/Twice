@@ -123,6 +123,7 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.2.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -153,15 +154,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FileSelectBox.xaml.cs">
+      <DependentUpon>FileSelectBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
+    <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Services\ViewServices\FileSelectService.cs" />
     <Compile Include="Services\ViewServices\ViewProfileService.cs" />
@@ -169,9 +175,12 @@
     <Compile Include="ViewModels\Profile\IProfileDialogViewModel.cs" />
     <Compile Include="ViewModels\Profile\ProfileDialogViewModel.cs" />
     <Compile Include="ViewModels\Profile\UserSubPage.cs" />
+    <Compile Include="ViewModels\Settings\INotificationSettings.cs" />
+    <Compile Include="ViewModels\Settings\NotificationModuleSettings.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
+    <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>
@@ -234,6 +243,10 @@
     </Compile>
     <Compile Include="Views\VisualTreeWalker.cs" />
     <Page Include="Controls\ColumnHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FileSelectBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
