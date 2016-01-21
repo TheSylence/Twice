@@ -40,6 +40,7 @@ namespace Twice.ViewModels.Settings
 
 			Enabled = config.Notifications.PopupEnabled;
 			SelectedCorner = config.Notifications.PopupDisplayCorner;
+			SelectedDisplay = config.Notifications.PopupDisplayIndex;
 		}
 
 		public override void SaveTo( IConfig config )
