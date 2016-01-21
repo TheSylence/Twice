@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
+using Twice.Models.Configuration;
 using Twice.Services;
 using Twice.Services.ViewServices;
 
@@ -23,7 +24,13 @@ namespace Twice.ViewModels
 
 		private static void ExecuteCreateMuteCommand( string value )
 		{
-			Debugger.Break();
+			var config = Kernel.Get<IConfig>();
+			config.Mute.Entries.Add( new MuteEntry
+			{
+				Filter = value
+			} );
+
+			config.Save();
 		}
 
 		private static async void ExecuteOpenProfileCommand( ulong args )
