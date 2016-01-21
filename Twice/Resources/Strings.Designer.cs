@@ -502,6 +502,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Muting.
+        /// </summary>
+        internal static string Muting {
+            get {
+                return ResourceManager.GetString("Muting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name already exists.
         /// </summary>
         internal static string NameAlreadyExists {
@@ -525,6 +534,15 @@ namespace Twice.Resources {
         internal static string NoFurtherSettingsForThisNotificationType {
             get {
                 return ResourceManager.GetString("NoFurtherSettingsForThisNotificationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        internal static string Notifications {
+            get {
+                return ResourceManager.GetString("Notifications", resourceCulture);
             }
         }
         

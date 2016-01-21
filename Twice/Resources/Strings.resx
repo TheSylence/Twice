@@ -345,4 +345,10 @@
   <data name="Corner_BottomRight" xml:space="preserve">
     <value>Bottom right</value>
   </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Muting" xml:space="preserve">
+    <value>Muting</value>
+  </data>
 </root>
