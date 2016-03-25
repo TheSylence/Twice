@@ -58,7 +58,6 @@ namespace Twice.ViewModels.Settings
 			SelectedHashtagColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.HashtagColor );
 			SelectedLinkColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
 			SelectedMentionColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
-			ShowStatusSeparator = currentConfig.Visual.ShowStatusSeparator;
 			InlineMedias = currentConfig.Visual.InlineMedia;
 			UseStars = currentConfig.Visual.UseStars;
 
@@ -75,7 +74,6 @@ namespace Twice.ViewModels.Settings
 			config.Visual.LinkColor = SelectedLinkColor.Name;
 			config.Visual.MentionColor = SelectedMentionColor.Name;
 
-			config.Visual.ShowStatusSeparator = ShowStatusSeparator;
 			config.Visual.InlineMedia = InlineMedias;
 			config.Visual.UseStars = UseStars;
 			
@@ -198,21 +196,6 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public bool ShowStatusSeparator
-		{
-			[DebuggerStepThrough] get { return _ShowStatusSeparator; }
-			set
-			{
-				if( _ShowStatusSeparator == value )
-				{
-					return;
-				}
-
-				_ShowStatusSeparator = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public bool UseStars
 		{
 			[DebuggerStepThrough] get { return _UseStars; }
@@ -241,9 +224,7 @@ namespace Twice.ViewModels.Settings
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedMentionColor;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedTheme;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ShowStatusSeparator;
-
+		
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseStars;
 	}
 }

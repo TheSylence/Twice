@@ -19,13 +19,7 @@
 	</i:Interaction.Behaviors>
 
 	<Grid>
-		<!-- TODO: Workaround for https://github.com/MahApps/MahApps.Metro/issues/2288 -->
-		<Grid.RowDefinitions>
-			<RowDefinition Height="30" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-
-		<Grid Grid.Row="1">
+		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />

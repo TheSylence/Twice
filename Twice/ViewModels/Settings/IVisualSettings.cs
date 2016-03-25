@@ -16,7 +16,6 @@ namespace Twice.ViewModels.Settings
 		ColorItem SelectedLinkColor { get; set; }
 		ColorItem SelectedMentionColor { get; set; }
 		ColorItem SelectedTheme { get; set; }
-		bool ShowStatusSeparator { get; set; }
 		bool UseStars { get; set; }
 	}
 }

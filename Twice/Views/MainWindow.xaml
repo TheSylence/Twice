@@ -13,9 +13,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
+        xmlns:flyouts="clr-namespace:Twice.Views.Flyouts" Style="{StaticResource WindowStyle}"
         mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" Height="768" Width="1024"
+        Title="MainWindow" Height="768" Width="1024" BorderThickness="1"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />

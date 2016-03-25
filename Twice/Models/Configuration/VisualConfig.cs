@@ -11,7 +11,6 @@
 			MentionColor = "Green";
 			LinkColor = "Blue";
 			InlineMedia = true;
-			ShowStatusSeparator = false;
 			UseStars = true;
 		}
 
@@ -21,7 +20,6 @@
 		public bool InlineMedia { get; set; }
 		public string LinkColor { get; set; }
 		public string MentionColor { get; set; }
-		public bool ShowStatusSeparator { get; set; }
 		public string ThemeName { get; set; }
 		public bool UseStars { get; set; }
 	}
