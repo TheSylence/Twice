@@ -7,7 +7,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Resourcer;
 using Twice.Models.Configuration;
 using Twice.Resources;
-using Twice.Services.ViewServices;
+using Twice.Services.Views;
 
 namespace Twice.ViewModels.Settings
 {
@@ -84,7 +84,7 @@ namespace Twice.ViewModels.Settings
 		private async void ExecuteRemoveCommand()
 		{
 			var csa = new ConfirmServiceArgs( Strings.ConfirmDeleteFilter );
-			if( !await ServiceRepository.Show<IConfirmService, bool>( csa ) )
+			if( !await ViewServiceRepository.Confirm( csa ) )
 			{
 				return;
 			}

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Twice.Messages;
 using Twice.Models.Twitter;
-using Twice.Services.ViewServices;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Columns.Definitions;
 using Twice.Views;
@@ -71,7 +70,7 @@ namespace Twice.ViewModels.Main
 
 		private async void ExecuteSettingsCommand()
 		{
-			await ServiceRepository.Show<ISettingsService, object>();
+			await ViewServiceRepository.ShowSettings();
 		}
 
 		public ICollection<IColumnViewModel> Columns { get; }

@@ -4,8 +4,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
 using Twice.Models.Configuration;
-using Twice.Services;
-using Twice.Services.ViewServices;
+using Twice.Services.Views;
 
 namespace Twice.ViewModels
 {
@@ -35,9 +34,7 @@ namespace Twice.ViewModels
 
 		private static async void ExecuteOpenProfileCommand( ulong args )
 		{
-			//ServiceRepository.Default.Show<ProfileService>( args );
-
-			await Services.Show<IViewProfileService, object>( args );
+			await ViewServices.ViewProfile( args );
 		}
 
 		private static void ExecuteOpenUrlCommand( Uri args )
@@ -51,13 +48,15 @@ namespace Twice.ViewModels
 		/// <summary>Command to open an URL in the default webbrowser.</summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
 														( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
-		private static RelayCommand<string> _CreateMuteCommand;
-		private static IServiceRepository Services => Kernel.Get<IServiceRepository>();
+
+		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
 		private static readonly IKernel Kernel;
+		private static RelayCommand<string> _CreateMuteCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private static RelayCommand<ulong> _OpenProfileCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<Uri> _OpenUrlCommand;
 	}
 }

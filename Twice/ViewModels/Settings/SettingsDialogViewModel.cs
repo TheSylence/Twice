@@ -1,4 +1,5 @@
 ﻿using Twice.Models.Configuration;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Settings
 {
@@ -12,6 +13,8 @@ namespace Twice.ViewModels.Settings
 			General = general;
 			Mute = mute;
 			Notifications = notifications;
+
+			Title = Strings.Settings;
 		}
 
 		protected override bool OnOk()

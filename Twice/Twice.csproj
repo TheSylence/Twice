@@ -172,6 +172,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Attributes\IconAttribute.cs" />
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
@@ -187,8 +188,8 @@
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
-    <Compile Include="Services\ViewServices\FileSelectService.cs" />
-    <Compile Include="Services\ViewServices\ViewProfileService.cs" />
+    <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
+    <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
     <Compile Include="ViewModels\Notifier.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
+    <Compile Include="Views\Dialog.cs" />
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>
@@ -213,12 +215,8 @@
     <Compile Include="Models\Configuration\MuteEntry.cs" />
     <Compile Include="Models\Twitter\StreamEventArgs.cs" />
     <Compile Include="Models\Twitter\StreamParser.cs" />
-    <Compile Include="Services\IServiceRepository.cs" />
-    <Compile Include="Services\ServiceRepository.cs" />
-    <Compile Include="Services\ViewServices\ConfirmService.cs" />
-    <Compile Include="Services\ViewServices\IViewService.cs" />
-    <Compile Include="Services\ViewServices\SettingsService.cs" />
-    <Compile Include="Services\ViewServices\ViewServiceBase.cs" />
+    <Compile Include="Services\Views\IViewServiceRepository.cs" />
+    <Compile Include="Services\Views\ViewServiceRepository.cs" />
     <Compile Include="Utilities\SmartCollection.cs" />
     <Compile Include="ViewModels\Columns\ColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ActivityColumnDefintion.cs" />
@@ -271,6 +269,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

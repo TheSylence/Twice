@@ -3,6 +3,7 @@ using Ninject;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Services;
+using Twice.Services.Views;
 
 namespace Twice.ViewModels
 {
@@ -20,6 +21,6 @@ namespace Twice.ViewModels
 		public ITwitterContextList ContextList { get; set; }
 
 		[Inject]
-		public IServiceRepository ServiceRepository { get; set; }
+		public IViewServiceRepository ViewServiceRepository { get; set; }
 	}
 }

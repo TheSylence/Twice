@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using MahApps.Metro;
+using MaterialDesignColors;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using WPFLocalizeExtension.Engine;
@@ -15,6 +16,8 @@ namespace Twice.ViewModels.Settings
 	{
 		public VisualSettings( IConfig currentConfig )
 		{
+			var swatches = new SwatchesProvider().Swatches;
+
 			AvailableThemes = new List<ColorItem>( ThemeManager.AppThemes.Select( t =>
 				new ColorItem
 				{
@@ -23,18 +26,18 @@ namespace Twice.ViewModels.Settings
 					BorderBrush = t.Resources["BlackColorBrush"] as Brush
 				}
 				) );
-
-			AvailableColors = new List<ColorItem>( ThemeManager.Accents.Select( a =>
+			
+			AvailableColors = new List<ColorItem>( swatches.Select( a =>
 				new ColorItem
 				{
 					Name = a.Name,
-					ColorBrush = a.Resources["AccentColorBrush"] as Brush
+					ColorBrush = new SolidColorBrush( a.PrimaryHues.First().Color )
 				}
 				) );
 
-			var currentStyle = ThemeManager.DetectAppStyle( Application.Current );
-			SelectedTheme = AvailableThemes.First( t => t.Name == currentStyle.Item1.Name );
-			SelectedColor = AvailableColors.First( c => c.Name == currentStyle.Item2.Name );
+			//var currentStyle = ThemeManager.DetectAppStyle( Application.Current );
+			//SelectedTheme = AvailableThemes.First( t => t.Name == currentStyle.Item1.Name );
+			//SelectedColor = AvailableColors.First( c => c.Name == currentStyle.Item2.Name );
 
 			AvailableFontSizes = new List<FontSizeItem>();
 			foreach( var kvp in new Dictionary<int, string>
@@ -66,8 +69,8 @@ namespace Twice.ViewModels.Settings
 
 		public void SaveTo( IConfig config )
 		{
-			config.Visual.ThemeName = SelectedTheme.Name;
-			config.Visual.AccentName = SelectedColor.Name;
+			config.Visual.UseDarkTheme = UseDarkTheme;
+			config.Visual.AccentColor = SelectedColor.Name;
 
 			config.Visual.FontSize = SelectedFontSize.Size;
 			config.Visual.HashtagColor = SelectedHashtagColor.Name;
@@ -181,17 +184,17 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public ColorItem SelectedTheme
+		public bool UseDarkTheme
 		{
-			[DebuggerStepThrough] get { return _SelectedTheme; }
+			[DebuggerStepThrough] get { return _UseDarkTheme; }
 			set
 			{
-				if( _SelectedTheme == value )
+				if( _UseDarkTheme == value )
 				{
 					return;
 				}
 
-				_SelectedTheme = value;
+				_UseDarkTheme = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -223,7 +226,7 @@ namespace Twice.ViewModels.Settings
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedMentionColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedTheme;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseDarkTheme;
 		
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseStars;
 	}

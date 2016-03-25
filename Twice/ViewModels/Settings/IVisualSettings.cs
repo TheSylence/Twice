@@ -15,7 +15,7 @@ namespace Twice.ViewModels.Settings
 		ColorItem SelectedHashtagColor { get; set; }
 		ColorItem SelectedLinkColor { get; set; }
 		ColorItem SelectedMentionColor { get; set; }
-		ColorItem SelectedTheme { get; set; }
+		bool UseDarkTheme { get; set; }
 		bool UseStars { get; set; }
 	}
 }

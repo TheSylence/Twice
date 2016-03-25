@@ -1,10 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Data;
+using Twice.Attributes;
 using Twice.ViewModels;
 
 namespace Twice.Converters
@@ -13,10 +12,10 @@ namespace Twice.Converters
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
-			var desc = typeof( Icon ).GetField( value.ToString() ).GetCustomAttribute<DescriptionAttribute>()?.Description;
-			Debug.Assert( desc != null, "desc != null" );
+			var kind = typeof( Icon ).GetField( value.ToString() ).GetCustomAttribute<IconAttribute>()?.Kind;
+			Debug.Assert( kind != null, "kind != null" );
 
-			return Application.Current.FindResource( desc );
+			return kind;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

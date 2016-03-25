@@ -4,23 +4,25 @@
 	{
 		public VisualConfig()
 		{
-			ThemeName = "BaseLight";
-			AccentName = "Blue";
+			UseDarkTheme = true;
+			PrimaryColor = "bluegrey";
+			AccentColor = "blue";
 			FontSize = 16;
-			HashtagColor = "Red";
-			MentionColor = "Green";
-			LinkColor = "Blue";
+			HashtagColor = "red";
+			MentionColor = "green";
+			LinkColor = "tial";
 			InlineMedia = true;
 			UseStars = true;
 		}
 
-		public string AccentName { get; set; }
+		public string AccentColor { get; set; }
 		public int FontSize { get; set; }
 		public string HashtagColor { get; set; }
 		public bool InlineMedia { get; set; }
 		public string LinkColor { get; set; }
 		public string MentionColor { get; set; }
-		public string ThemeName { get; set; }
+		public string PrimaryColor { get; set; }
+		public bool UseDarkTheme { get; set; }
 		public bool UseStars { get; set; }
 	}
 }
