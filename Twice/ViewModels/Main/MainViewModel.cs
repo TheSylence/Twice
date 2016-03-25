@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.Services.ViewServices;
@@ -16,8 +16,9 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList list, IStatusMuter muter )
+		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier )
 		{
+			Notifier = notifier;
 			var context = list.Contexts.First();
 
 			var columnList = new ColumnDefintionList( Constants.IO.ColumnDefintionFileName );
@@ -35,7 +36,25 @@ namespace Twice.ViewModels.Main
 #endif
 
 			Columns = new ObservableCollection<IColumnViewModel>( constructed );
+			foreach( var col in Columns )
+			{
+				col.NewStatus += Col_NewStatus;
+			}
 		}
+
+		private void Col_NewStatus( object sender, StatusEventArgs e )
+		{
+			ColumnNotifications columnSettings = new ColumnNotifications
+			{
+				Popup = true,
+				Sound = true,
+				Toast = true
+			};
+
+			Notifier.OnStatus( e.Status, columnSettings );
+		}
+
+		private readonly INotifier Notifier;
 
 		public async Task OnLoad( object data )
 		{

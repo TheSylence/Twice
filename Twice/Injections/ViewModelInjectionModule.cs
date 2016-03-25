@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Ninject.Modules;
+using Twice.ViewModels;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
@@ -27,6 +28,8 @@ namespace Twice.Injections
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
 
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
+
+			Bind<INotifier>().To<Notifier>();
 		}
 	}
 }

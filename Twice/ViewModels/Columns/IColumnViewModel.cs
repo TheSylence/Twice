@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.ViewModels.Twitter;
 
@@ -6,6 +7,7 @@ namespace Twice.ViewModels.Columns
 {
 	internal interface IColumnViewModel
 	{
+		event EventHandler<StatusEventArgs> NewStatus;
 		Task Load();
 
 		Icon Icon { get; }
@@ -13,5 +15,15 @@ namespace Twice.ViewModels.Columns
 		ICollection<StatusViewModel> Statuses { get; }
 		string Title { get; set; }
 		double Width { get; set; }
+	}
+
+	internal class StatusEventArgs : EventArgs
+	{
+		public StatusEventArgs( StatusViewModel status )
+		{
+			Status = status;
+		}
+
+		public readonly StatusViewModel Status;
 	}
 }

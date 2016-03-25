@@ -10,6 +10,7 @@
     <RootNamespace>Twice</RootNamespace>
     <AssemblyName>Twice</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -137,6 +138,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Windows" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -171,7 +173,9 @@
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Services\ViewServices\FileSelectService.cs" />
     <Compile Include="Services\ViewServices\ViewProfileService.cs" />
+    <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
+    <Compile Include="ViewModels\Notifier.cs" />
     <Compile Include="ViewModels\Profile\IProfileDialogViewModel.cs" />
     <Compile Include="ViewModels\Profile\ProfileDialogViewModel.cs" />
     <Compile Include="ViewModels\Profile\UserSubPage.cs" />

@@ -21,7 +21,8 @@ namespace Twice.ViewModels.Columns
 		{
 			var statues = await Context.Twitter.Status.Where( s => s.Type == StatusType.Home && s.UserID == Context.UserId ).ToListAsync();
 			var list = statues.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) ).ToArray();
-			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( list ) );
+			
+			await AddStatuses( list );
 		}
 
 		public override Icon Icon => Icon.Home;

@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Threading;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 using Twice.ViewModels.Twitter;
@@ -17,6 +20,8 @@ namespace Twice.ViewModels.Columns
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
 		}
 
+		public event EventHandler<StatusEventArgs> NewStatus;
+
 		public async Task Load()
 		{
 			await Task.Run( async () =>
@@ -29,7 +34,25 @@ namespace Twice.ViewModels.Columns
 			} );
 		}
 
+		protected async Task AddStatus( StatusViewModel status )
+		{
+			await DispatcherHelper.RunAsync( () => StatusCollection.Add( status ) );
+			RaiseNewStatus( status );
+		}
+
+		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses )
+		{
+			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
+			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
+			RaiseNewStatus( statusViewModels.Last() );
+		}
+
 		protected abstract Task OnLoad();
+
+		protected void RaiseNewStatus( StatusViewModel status )
+		{
+			NewStatus?.Invoke( this, new StatusEventArgs( status ) );
+		}
 
 		public abstract Icon Icon { get; }
 		public bool IsLoading { get; private set; }
@@ -38,7 +61,8 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -53,7 +77,8 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough] get { return _Width; }
+			[DebuggerStepThrough]
+			get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -69,10 +94,12 @@ namespace Twice.ViewModels.Columns
 
 		protected readonly IContextEntry Context;
 
-		protected readonly SmartCollection<StatusViewModel> StatusCollection;
+		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private double _Width;
 	}
 }
