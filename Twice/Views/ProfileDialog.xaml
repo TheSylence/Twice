@@ -67,7 +67,7 @@
 		</Grid>
 
 		<Grid Grid.Column="1" Visibility="{Binding IsBusy, Converter={StaticResource InvertBoolToVisibleConv}}">
-			<TabControl ItemsSource="{Binding UserPages}">
+			<TabControl ItemsSource="{Binding UserPages}" SelectedIndex="0">
 				<TabControl.ContentTemplate>
 					<DataTemplate DataType="profile:UserSubPage">
 						<Grid>
