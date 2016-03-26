@@ -10,7 +10,6 @@ using Ninject;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.Profile;
-using Twice.ViewModels.Settings;
 using Twice.Views;
 
 namespace Twice.Services.Views
@@ -20,16 +19,6 @@ namespace Twice.Services.Views
 		public ViewServiceRepository()
 		{
 			Kernel = App.Kernel;
-		}
-
-		public async Task ViewProfile( ulong userId )
-		{
-			Action<IProfileDialogViewModel> vmSetup = vm =>
-			{
-				vm.Setup( userId );
-			};
-
-			await ShowDialog<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
@@ -47,23 +36,6 @@ namespace Twice.Services.Views
 			return result == MessageDialogResult.Affirmative;
 		}
 
-		public Task ShowSettings()
-		{
-			var dlg = new SettingsDialog
-			{
-				Owner = Window
-			};
-
-			dlg.ShowDialog();
-
-			return Task.CompletedTask;
-		}
-
-		public async Task ShowAccounts()
-		{
-			await ShowDialog<AccountsDialog, IAccountsDialogViewModel, object>();
-		}
-
 		public Task<string> OpenFile( FileServiceArgs fsa = null )
 		{
 			OpenFileDialog dlg = new OpenFileDialog();
@@ -78,6 +50,33 @@ namespace Twice.Services.Views
 			}
 
 			return Task.FromResult<string>( null );
+		}
+
+		public async Task ShowAccounts()
+		{
+			await ShowDialog<AccountsDialog, IAccountsDialogViewModel, object>();
+		}
+
+		public Task ShowSettings()
+		{
+			var dlg = new SettingsDialog
+			{
+				Owner = Window
+			};
+
+			dlg.ShowDialog();
+
+			return Task.CompletedTask;
+		}
+
+		public async Task ViewProfile( ulong userId )
+		{
+			Action<IProfileDialogViewModel> vmSetup = vm =>
+			{
+				vm.Setup( userId );
+			};
+
+			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
 		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
@@ -107,9 +106,37 @@ namespace Twice.Services.Views
 				return null;
 			}
 
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 			var resSetup = resultSetup ?? defaultResultSetup;
 			return resSetup( vm );
+		}
+
+		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+					Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var dlg = new TWindow
+			{
+				Owner = Window
+			};
+
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			TResult result = null;
+
+			if( dlg.ShowDialog() == true )
+			{
+				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+				var resSetup = resultSetup ?? defaultResultSetup;
+				result = resSetup( vm );
+			}
+
+			return Task.FromResult( result );
 		}
 
 		public Dialog CurrentDialog { get; private set; }

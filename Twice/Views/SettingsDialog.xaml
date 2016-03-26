@@ -3,20 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com" GlowBrush="{DynamicResource AccentColorBrush}"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" WindowStartupLocation="CenterOwner"
-             xmlns:settings="clr-namespace:Twice.ViewModels.Settings" ShowMinButton="False" ShowMaxRestoreButton="False"
-             xmlns:configuration="clr-namespace:Twice.Models.Configuration" WindowStyle="ToolWindow"
-             xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml" ShowInTaskbar="False"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:settings="clr-namespace:Twice.ViewModels.Settings"
+             xmlns:configuration="clr-namespace:Twice.Models.Configuration"
+             xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              xmlns:views="clr-namespace:Twice.Views" xmlns:controls1="clr-namespace:Twice.Controls"
-					xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-					xmlns:behaviors="clr-namespace:Twice.Behaviors"
-					xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-					mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource WindowStyle}"
+			xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+			xmlns:behaviors="clr-namespace:Twice.Behaviors" WindowStartupLocation="CenterOwner"
+			xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600" BorderThickness="1">
+             d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
+		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.Resources>

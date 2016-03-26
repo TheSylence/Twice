@@ -173,6 +173,7 @@
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
+    <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>

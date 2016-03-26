@@ -16,8 +16,7 @@
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource WindowStyle}"
-        mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="Twice" Height="768" Width="1024" BorderThickness="1"
+        mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
@@ -61,7 +60,7 @@
 					</Button>
 
 					<Button Width="36" Height="36"
-					ToolTip="{lex:Loc Accounts}" Command="{Binding SettingsCommand}"
+					ToolTip="{lex:Loc Settings}" Command="{Binding SettingsCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 						<materialDesign:PackIcon Kind="Settings" />
 					</Button>
@@ -79,15 +78,6 @@
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 								<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 							</Button>
-
-							<!--<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{Binding Title}">
-							<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-								<Rectangle.OpacityMask>
-									<VisualBrush Stretch="Fill" Visual="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
-								</Rectangle.OpacityMask>
-							</Rectangle>
-						</Button>-->
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

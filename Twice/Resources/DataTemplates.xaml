@@ -171,44 +171,47 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
+		<materialDesign:Card Margin="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
 
-			<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
+				<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
 					Margin="5" Grid.RowSpan="2" />
 
-			<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5" Grid.Row="0" Grid.Column="1">
-				<StackPanel.Resources>
-					<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-						<Style.Triggers>
-							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+				<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5" Grid.Row="0" Grid.Column="1">
+					<StackPanel.Resources>
+						<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
                                                Path=IsMouseOver}" Value="True">
-								<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
-								<Setter Property="TextDecorations" Value="Underline" />
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</StackPanel.Resources>
-				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="MouseDown">
-						<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+									<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
+									<Setter Property="TextDecorations" Value="Underline" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</StackPanel.Resources>
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="MouseDown">
+							<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
-					</i:EventTrigger>
-				</i:Interaction.Triggers>
-				<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-				<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 							VerticalAlignment="Center" />
-			</StackPanel>
+				</StackPanel>
 
-			<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
+				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
 					   TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}" />
-		</Grid>
+			</Grid>
+		</materialDesign:Card>
 	</DataTemplate>
 </ResourceDictionary>
