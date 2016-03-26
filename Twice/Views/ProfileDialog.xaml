@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
              xmlns:views="clr-namespace:Twice.Views"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:profile="clr-namespace:Twice.ViewModels.Profile"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300" Padding="30" VerticalContentAlignment="Stretch"
 			HorizontalContentAlignment="Stretch"
@@ -48,30 +48,15 @@
 					<TextBlock Text="{Binding User.Description}" TextWrapping="Wrap" Margin="0,10" />
 
 					<StackPanel Orientation="Horizontal" Margin="0,5">
-						<Rectangle Height="12" Width="12">
-							<Rectangle.Fill>
-								<VisualBrush Visual="{StaticResource appbar_clock}" />
-							</Rectangle.Fill>
-						</Rectangle>
-
+						<materialDesign:PackIcon Kind="Clock" Width="12" Height="12" />
 						<TextBlock Text="{Binding User.CreatedAt}" Margin="10,0" />
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,5">
-						<Rectangle Height="12" Width="12">
-							<Rectangle.Fill>
-								<VisualBrush Visual="{StaticResource appbar_location_round}" />
-							</Rectangle.Fill>
-						</Rectangle>
-
+						<materialDesign:PackIcon Kind="AccountLocation" Width="12" Height="12" />
 						<TextBlock Text="{Binding User.Location}" Margin="10,0" />
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,5">
-						<Rectangle Height="12" Width="12">
-							<Rectangle.Fill>
-								<VisualBrush Visual="{StaticResource appbar_link}" />
-							</Rectangle.Fill>
-						</Rectangle>
-
+						<materialDesign:PackIcon Kind="Link" Width="12" Height="12" />
 						<TextBlock Text="{Binding User.Url}" Margin="10,0" />
 					</StackPanel>
 				</StackPanel>

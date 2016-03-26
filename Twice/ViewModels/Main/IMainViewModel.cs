@@ -17,5 +17,6 @@ namespace Twice.ViewModels.Main
 
 		ICommand NewTweetCommand { get; }
 		ICommand SettingsCommand { get; }
+		ICommand AccountsCommand { get; }
 	}
 }

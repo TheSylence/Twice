@@ -36,7 +36,6 @@
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
 
-				<ResourceDictionary Source="Resources/Icons.xaml" />
 				<ResourceDictionary Source="Resources/Converters.xaml" />
 				<ResourceDictionary Source="Resources/DataTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>

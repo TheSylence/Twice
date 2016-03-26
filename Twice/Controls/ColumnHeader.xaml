@@ -22,7 +22,7 @@
 				</local:ResizeThumb.Template>
 			</local:ResizeThumb>
 
-			<TextBlock Text="{Binding Title}" FontSize="{DynamicResource HeaderFontSize}" VerticalAlignment="Center" />
+			<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignTitleTextBlock}" VerticalAlignment="Center" />
 		</DockPanel>
 	</Grid>
 </UserControl>

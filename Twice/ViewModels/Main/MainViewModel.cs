@@ -73,6 +73,16 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
+		[System.Diagnostics.DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
+
+		public ICommand AccountsCommand => _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
+
+		private async void ExecuteAccountsCommand()
+		{
+			await ViewServiceRepository.ShowAccounts();
+		}
+
 		public ICollection<IColumnViewModel> Columns { get; }
 
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand ) );

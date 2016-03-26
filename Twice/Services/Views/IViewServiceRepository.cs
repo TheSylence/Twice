@@ -5,15 +5,15 @@ namespace Twice.Services.Views
 {
 	internal interface IViewServiceRepository
 	{
-
-
-		Task ShowSettings();
+		Task<bool> Confirm( ConfirmServiceArgs args );
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
-		Task ViewProfile( ulong userId );
+		Task ShowAccounts();
 
-		Task<bool> Confirm( ConfirmServiceArgs args );
+		Task ShowSettings();
+
+		Task ViewProfile( ulong userId );
 
 		Dialog CurrentDialog { get; }
 	}

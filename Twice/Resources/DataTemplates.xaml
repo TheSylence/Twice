@@ -9,7 +9,8 @@
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3">
+		<materialDesign:Card Margin="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 			<Grid>
 				<Grid Background="Transparent">
 					<Grid.ColumnDefinitions>

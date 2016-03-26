@@ -8,6 +8,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Ninject;
 using Twice.Resources;
+using Twice.ViewModels.Accounts;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
 using Twice.Views;
@@ -46,9 +47,21 @@ namespace Twice.Services.Views
 			return result == MessageDialogResult.Affirmative;
 		}
 
-		public async Task ShowSettings()
+		public Task ShowSettings()
 		{
-			await ShowDialog<SettingsDialog, ISettingsDialogViewModel, object>();
+			var dlg = new SettingsDialog
+			{
+				Owner = Window
+			};
+
+			dlg.ShowDialog();
+
+			return Task.CompletedTask;
+		}
+
+		public async Task ShowAccounts()
+		{
+			await ShowDialog<AccountsDialog, IAccountsDialogViewModel, object>();
 		}
 
 		public Task<string> OpenFile( FileServiceArgs fsa = null )

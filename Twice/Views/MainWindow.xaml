@@ -17,7 +17,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource WindowStyle}"
         mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" Height="768" Width="1024" BorderThickness="1"
+        Title="Twice" Height="768" Width="1024" BorderThickness="1"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
@@ -55,7 +55,7 @@
 					</Button>
 
 					<Button Width="36" Height="36"
-					ToolTip="{lex:Loc Accounts}"
+					ToolTip="{lex:Loc Accounts}" Command="{Binding AccountsCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 						<materialDesign:PackIcon Kind="AccountMultiple" />
 					</Button>

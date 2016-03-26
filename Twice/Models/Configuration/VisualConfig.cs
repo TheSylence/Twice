@@ -12,7 +12,6 @@
 			MentionColor = "green";
 			LinkColor = "tial";
 			InlineMedia = true;
-			UseStars = true;
 		}
 
 		public string AccentColor { get; set; }
@@ -23,6 +22,5 @@
 		public string MentionColor { get; set; }
 		public string PrimaryColor { get; set; }
 		public bool UseDarkTheme { get; set; }
-		public bool UseStars { get; set; }
 	}
 }

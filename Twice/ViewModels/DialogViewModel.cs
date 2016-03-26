@@ -7,7 +7,7 @@ using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels
 {
-	internal interface IDialogViewModel
+	internal interface IDialogViewModel : IViewController
 	{
 		ICommand CancelCommand { get; }
 		ICommand OkCommand { get; }
@@ -16,6 +16,8 @@ namespace Twice.ViewModels
 
 	internal abstract class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
+		public event EventHandler<CloseEventArgs> CloseRequested;
+
 		protected virtual bool CanExecuteOkCommand()
 		{
 			return true;
@@ -29,6 +31,7 @@ namespace Twice.ViewModels
 		private void ExecuteCancelCommand()
 		{
 			DialogHost.CloseDialogCommand.Execute( false, ViewServiceRepository.CurrentDialog );
+			CloseRequested?.Invoke( this, CloseEventArgs.Cancel );
 		}
 
 		private void ExecuteOkCommand()
@@ -36,6 +39,7 @@ namespace Twice.ViewModels
 			if( OnOk() )
 			{
 				DialogHost.CloseDialogCommand.Execute( true, ViewServiceRepository.CurrentDialog );
+				CloseRequested?.Invoke( this, CloseEventArgs.Ok );
 			}
 		}
 
