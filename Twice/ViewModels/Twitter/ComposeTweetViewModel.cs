@@ -7,7 +7,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Twitter;
-using Twice.Services.ViewServices;
+using Twice.Services;
+using Twice.Services.Views;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -86,7 +87,7 @@ namespace Twice.ViewModels.Twitter
 		private async void ExecuteAttachImageCommand()
 		{
 			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
-			var selectedFile = await ServiceRepository.Show<IFileSelectService, string>( fsa );
+			var selectedFile = await ViewServiceRepository.OpenFile( fsa );
 			if( selectedFile == null )
 			{
 				return;

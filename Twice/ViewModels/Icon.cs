@@ -1,13 +1,14 @@
-﻿using System.ComponentModel;
+﻿using MaterialDesignThemes.Wpf;
+using Twice.Attributes;
 
 namespace Twice.ViewModels
 {
 	internal enum Icon
 	{
-		[Description( "appbar_user" )]
+		[Icon( PackIconKind.Account )]
 		User,
 
-		[Description( "appbar_home_empty" )]
+		[Icon( PackIconKind.Home )]
 		Home
 	}
 }

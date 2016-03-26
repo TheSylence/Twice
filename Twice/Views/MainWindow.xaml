@@ -14,8 +14,9 @@
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
-        mc:Ignorable="d" GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" Height="768" Width="1024"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{StaticResource WindowStyle}"
+        mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
@@ -31,106 +32,90 @@
 			<flyouts:TweetComposer />
 		</controls:FlyoutsControl>
 	</controls:MetroWindow.Flyouts>
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
+	<materialDesign:DialogHost>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
-		<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
-			<StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
-				<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{lex:Loc NewTweet}"
-						Command="{Binding NewTweetCommand}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
-				</Button>
+			<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
+				<StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+					<Button Width="36" Height="36"
+					ToolTip="{lex:Loc NewTweet}" Command="{Binding NewTweetCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+						<materialDesign:PackIcon Kind="Pencil" />
+					</Button>
 
-				<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{lex:Loc Search}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_magnify}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
-				</Button>
+					<Button Width="36" Height="36"
+					ToolTip="{lex:Loc Search}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+						<materialDesign:PackIcon Kind="Magnify" />
+					</Button>
 
-				<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{lex:Loc Accounts}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_group}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
-				</Button>
+					<Button Width="36" Height="36"
+					ToolTip="{lex:Loc Accounts}" Command="{Binding AccountsCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+						<materialDesign:PackIcon Kind="AccountMultiple" />
+					</Button>
 
-				<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{lex:Loc Settings}"
-						Command="{Binding SettingsCommand}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
-				</Button>
-			</StackPanel>
+					<Button Width="36" Height="36"
+					ToolTip="{lex:Loc Settings}" Command="{Binding SettingsCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+						<materialDesign:PackIcon Kind="Settings" />
+					</Button>
+				</StackPanel>
 
-			<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Columns}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Vertical" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="columns:IColumnViewModel">
-						<Button Width="36" Height="36" Style="{StaticResource MetroCircleButtonStyle}" ToolTip="{Binding Title}">
-							<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-								<Rectangle.OpacityMask>
-									<VisualBrush Stretch="Fill" Visual="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
-								</Rectangle.OpacityMask>
-							</Rectangle>
-						</Button>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</DockPanel>
+				<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Columns}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="columns:IColumnViewModel">
+							<Button Width="36" Height="36" ToolTip="{Binding Title}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+								<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
+							</Button>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</DockPanel>
 
-		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
-			<ItemsControl ItemsSource="{Binding Columns}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="columns:IColumnViewModel">
-						<Grid>
-							<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
-								<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top" />
+			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
+				<ItemsControl ItemsSource="{Binding Columns}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="columns:IColumnViewModel">
+							<Grid>
+								<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
+									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top" />
 
-								<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
-								<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
+									<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
+									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
 											  HorizontalContentAlignment="Stretch">
-									<ItemsControl.Template>
-										<ControlTemplate>
-											<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-												<ItemsPresenter />
-											</ScrollViewer>
-										</ControlTemplate>
-									</ItemsControl.Template>
-								</ItemsControl>
-								<!--</ScrollViewer>-->
-							</DockPanel>
+										<ItemsControl.Template>
+											<ControlTemplate>
+												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+													<ItemsPresenter />
+												</ScrollViewer>
+											</ControlTemplate>
+										</ItemsControl.Template>
+									</ItemsControl>
+									<!--</ScrollViewer>-->
+								</DockPanel>
 
-							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
-						</Grid>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
-	</Grid>
+								<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Grid>
+	</materialDesign:DialogHost>
 </controls:MetroWindow>

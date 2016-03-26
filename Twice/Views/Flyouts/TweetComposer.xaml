@@ -10,6 +10,7 @@
              xmlns:views="clr-namespace:Twice.Views"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d"  CloseButtonIsCancel="True" IsPinned="True" Theme="Accent"
 			Position="Bottom" TitleVisibility="Collapsed"
@@ -19,13 +20,7 @@
 	</i:Interaction.Behaviors>
 
 	<Grid>
-		<!-- TODO: Workaround for https://github.com/MahApps/MahApps.Metro/issues/2288 -->
-		<Grid.RowDefinitions>
-			<RowDefinition Height="30" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
-
-		<Grid Grid.Row="1">
+		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
@@ -70,20 +65,10 @@
 				
 				<Button Width="36" Height="36" ToolTip="{lex:Loc SendTweet}"
 						Command="{Binding SendTweetCommand}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
+					<materialDesign:PackIcon Kind="Plus" Width="16" Height="16" />
 				</Button>
 				<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}" Command="{Binding AttachImageCommand}">
-					<Rectangle Width="16" Height="16"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-						<Rectangle.OpacityMask>
-							<VisualBrush Stretch="Fill" Visual="{StaticResource appbar_image}" />
-						</Rectangle.OpacityMask>
-					</Rectangle>
+					<materialDesign:PackIcon Kind="Image" Width="16" Height="16" />
 				</Button>
 			</StackPanel>
 		</Grid>

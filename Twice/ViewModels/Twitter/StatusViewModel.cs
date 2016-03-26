@@ -178,9 +178,7 @@ namespace Twice.ViewModels.Twitter
 		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
 
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
-
-		public bool ShowStatusSeparator => true;
-
+		
 		public User SourceUser { get; }
 
 		private readonly IContextEntry Context;

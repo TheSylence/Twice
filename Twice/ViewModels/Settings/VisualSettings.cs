@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using MahApps.Metro;
+using MaterialDesignColors;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using WPFLocalizeExtension.Engine;
@@ -15,26 +16,26 @@ namespace Twice.ViewModels.Settings
 	{
 		public VisualSettings( IConfig currentConfig )
 		{
-			AvailableThemes = new List<ColorItem>( ThemeManager.AppThemes.Select( t =>
-				new ColorItem
-				{
-					Name = t.Name,
-					ColorBrush = t.Resources["WhiteColorBrush"] as Brush,
-					BorderBrush = t.Resources["BlackColorBrush"] as Brush
-				}
-				) );
+			var swatches = new SwatchesProvider().Swatches.ToArray();
 
-			AvailableColors = new List<ColorItem>( ThemeManager.Accents.Select( a =>
+			AvailableAccentColors = new List<ColorItem>( swatches.Where(a=>a.IsAccented).Select( a =>
 				new ColorItem
 				{
 					Name = a.Name,
-					ColorBrush = a.Resources["AccentColorBrush"] as Brush
+					ColorBrush = new SolidColorBrush( a.PrimaryHues.First( h => h.Name.Equals( "Primary500" ) ).Color )
 				}
 				) );
 
-			var currentStyle = ThemeManager.DetectAppStyle( Application.Current );
-			SelectedTheme = AvailableThemes.First( t => t.Name == currentStyle.Item1.Name );
-			SelectedColor = AvailableColors.First( c => c.Name == currentStyle.Item2.Name );
+			AvailablePrimaryColors = new List<ColorItem>( swatches.Select( a =>
+					 new ColorItem
+					 {
+						 Name = a.Name,
+						 ColorBrush = new SolidColorBrush( a.PrimaryHues.First( h => h.Name.Equals( "Primary500" ) ).Color )
+					 }
+				) );
+
+			SelectedPrimaryColor = AvailablePrimaryColors.First( c => c.Name == currentConfig.Visual.PrimaryColor );
+			SelectedAccentColor = AvailableAccentColors.First( c => c.Name == currentConfig.Visual.AccentColor );
 
 			AvailableFontSizes = new List<FontSizeItem>();
 			foreach( var kvp in new Dictionary<int, string>
@@ -54,48 +55,46 @@ namespace Twice.ViewModels.Settings
 				} );
 			}
 
+			UseDarkTheme = currentConfig.Visual.UseDarkTheme;
 			SelectedFontSize = AvailableFontSizes.FirstOrDefault( f => f.Size == currentConfig.Visual.FontSize );
-			SelectedHashtagColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.HashtagColor );
-			SelectedLinkColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
-			SelectedMentionColor = AvailableColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
-			ShowStatusSeparator = currentConfig.Visual.ShowStatusSeparator;
+			SelectedHashtagColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.HashtagColor );
+			SelectedLinkColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
+			SelectedMentionColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
 			InlineMedias = currentConfig.Visual.InlineMedia;
-			UseStars = currentConfig.Visual.UseStars;
 
-			AvailableLanguages = new List<CultureInfo>( LocalizeDictionary.Instance.MergedAvailableCultures );
 		}
+
+		public ICollection<ColorItem> AvailablePrimaryColors { get; }
 
 		public void SaveTo( IConfig config )
 		{
-			config.Visual.ThemeName = SelectedTheme.Name;
-			config.Visual.AccentName = SelectedColor.Name;
+			config.Visual.UseDarkTheme = UseDarkTheme;
+			config.Visual.AccentColor = SelectedAccentColor.Name;
+			config.Visual.PrimaryColor = SelectedPrimaryColor.Name;
 
 			config.Visual.FontSize = SelectedFontSize.Size;
 			config.Visual.HashtagColor = SelectedHashtagColor.Name;
 			config.Visual.LinkColor = SelectedLinkColor.Name;
 			config.Visual.MentionColor = SelectedMentionColor.Name;
 
-			config.Visual.ShowStatusSeparator = ShowStatusSeparator;
 			config.Visual.InlineMedia = InlineMedias;
-			config.Visual.UseStars = UseStars;
-			
+
 			Application.Current.Resources["HashtagBrush"] = ThemeManager.GetAccent( config.Visual.HashtagColor ).Resources["HighlightBrush"];
 			Application.Current.Resources["LinkBrush"] = ThemeManager.GetAccent( config.Visual.LinkColor ).Resources["HighlightBrush"];
 			Application.Current.Resources["MentionBrush"] = ThemeManager.GetAccent( config.Visual.MentionColor ).Resources["HighlightBrush"];
 			Application.Current.Resources["GlobalFontSize"] = (double)config.Visual.FontSize;
 		}
 
-		public ICollection<ColorItem> AvailableColors { get; }
+		public ICollection<ColorItem> AvailableAccentColors { get; }
 
 		public ICollection<FontSizeItem> AvailableFontSizes { get; }
 
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
-		public ICollection<ColorItem> AvailableThemes { get; }
-
 		public bool InlineMedias
 		{
-			[DebuggerStepThrough] get { return _InlineMedias; }
+			[DebuggerStepThrough]
+			get { return _InlineMedias; }
 			set
 			{
 				if( _InlineMedias == value )
@@ -108,24 +107,26 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public ColorItem SelectedColor
+		public ColorItem SelectedAccentColor
 		{
-			[DebuggerStepThrough] get { return _SelectedColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedAccentColor; }
 			set
 			{
-				if( _SelectedColor == value )
+				if( _SelectedAccentColor == value )
 				{
 					return;
 				}
 
-				_SelectedColor = value;
+				_SelectedAccentColor = value;
 				RaisePropertyChanged();
 			}
 		}
 
 		public FontSizeItem SelectedFontSize
 		{
-			[DebuggerStepThrough] get { return _SelectedFontSize; }
+			[DebuggerStepThrough]
+			get { return _SelectedFontSize; }
 			set
 			{
 				if( _SelectedFontSize == value )
@@ -140,7 +141,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedHashtagColor
 		{
-			[DebuggerStepThrough] get { return _SelectedHashtagColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedHashtagColor; }
 			set
 			{
 				if( _SelectedHashtagColor == value )
@@ -155,7 +157,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedLinkColor
 		{
-			[DebuggerStepThrough] get { return _SelectedLinkColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedLinkColor; }
 			set
 			{
 				if( _SelectedLinkColor == value )
@@ -170,7 +173,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedMentionColor
 		{
-			[DebuggerStepThrough] get { return _SelectedMentionColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedMentionColor; }
 			set
 			{
 				if( _SelectedMentionColor == value )
@@ -183,67 +187,63 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public ColorItem SelectedTheme
+		public ColorItem SelectedPrimaryColor
 		{
-			[DebuggerStepThrough] get { return _SelectedTheme; }
+			[DebuggerStepThrough]
+			get
+			{
+				return _SelectedPrimaryColor;
+			}
 			set
 			{
-				if( _SelectedTheme == value )
+				if( _SelectedPrimaryColor == value )
 				{
 					return;
 				}
 
-				_SelectedTheme = value;
+				_SelectedPrimaryColor = value;
 				RaisePropertyChanged();
 			}
 		}
 
-		public bool ShowStatusSeparator
+		public bool UseDarkTheme
 		{
-			[DebuggerStepThrough] get { return _ShowStatusSeparator; }
+			[DebuggerStepThrough]
+			get { return _UseDarkTheme; }
 			set
 			{
-				if( _ShowStatusSeparator == value )
+				if( _UseDarkTheme == value )
 				{
 					return;
 				}
 
-				_ShowStatusSeparator = value;
+				_UseDarkTheme = value;
 				RaisePropertyChanged();
 			}
 		}
 
-		public bool UseStars
-		{
-			[DebuggerStepThrough] get { return _UseStars; }
-			set
-			{
-				if( _UseStars == value )
-				{
-					return;
-				}
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _InlineMedias;
 
-				_UseStars = value;
-				RaisePropertyChanged();
-			}
-		}
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ColorItem _SelectedAccentColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _InlineMedias;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private FontSizeItem _SelectedFontSize;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ColorItem _SelectedHashtagColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private FontSizeItem _SelectedFontSize;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ColorItem _SelectedLinkColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedHashtagColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ColorItem _SelectedMentionColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedLinkColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ColorItem _SelectedPrimaryColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedMentionColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedTheme;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ShowStatusSeparator;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseStars;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _UseDarkTheme;
 	}
 }

@@ -5,18 +5,16 @@ namespace Twice.ViewModels.Settings
 {
 	internal interface IVisualSettings : ISettingsSection
 	{
-		ICollection<ColorItem> AvailableColors { get; }
+		ICollection<ColorItem> AvailableAccentColors { get; }
+		ICollection<ColorItem> AvailablePrimaryColors { get; }
 		ICollection<FontSizeItem> AvailableFontSizes { get; }
-		ICollection<CultureInfo> AvailableLanguages { get; }
-		ICollection<ColorItem> AvailableThemes { get; }
 		bool InlineMedias { get; set; }
-		ColorItem SelectedColor { get; set; }
+		ColorItem SelectedAccentColor { get; set; }
+		ColorItem SelectedPrimaryColor { get; set; }
 		FontSizeItem SelectedFontSize { get; set; }
 		ColorItem SelectedHashtagColor { get; set; }
 		ColorItem SelectedLinkColor { get; set; }
 		ColorItem SelectedMentionColor { get; set; }
-		ColorItem SelectedTheme { get; set; }
-		bool ShowStatusSeparator { get; set; }
-		bool UseStars { get; set; }
+		bool UseDarkTheme { get; set; }
 	}
 }

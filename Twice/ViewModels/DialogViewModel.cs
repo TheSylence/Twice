@@ -2,33 +2,21 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using MaterialDesignThemes.Wpf;
 using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels
 {
-	internal interface IDialogViewModel
+	internal interface IDialogViewModel : IViewController
 	{
-		event EventHandler<CloseRequestEventArgs> CloseRequested;
-
 		ICommand CancelCommand { get; }
 		ICommand OkCommand { get; }
-	}
-
-	internal class CloseRequestEventArgs : EventArgs
-	{
-		public CloseRequestEventArgs( bool? result = null )
-		{
-			Result = result;
-		}
-
-		public static CloseRequestEventArgs Cancel { get; } = new CloseRequestEventArgs( false );
-		public static CloseRequestEventArgs Ok { get; } = new CloseRequestEventArgs( true );
-		public bool? Result { get; }
+		string Title { get; set; }
 	}
 
 	internal abstract class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
-		public event EventHandler<CloseRequestEventArgs> CloseRequested;
+		public event EventHandler<CloseEventArgs> CloseRequested;
 
 		protected virtual bool CanExecuteOkCommand()
 		{
@@ -42,14 +30,16 @@ namespace Twice.ViewModels
 
 		private void ExecuteCancelCommand()
 		{
-			CloseRequested?.Invoke( this, CloseRequestEventArgs.Cancel );
+			DialogHost.CloseDialogCommand.Execute( false, ViewServiceRepository.CurrentDialog );
+			CloseRequested?.Invoke( this, CloseEventArgs.Cancel );
 		}
 
 		private void ExecuteOkCommand()
 		{
 			if( OnOk() )
 			{
-				CloseRequested?.Invoke( this, CloseRequestEventArgs.Ok );
+				DialogHost.CloseDialogCommand.Execute( true, ViewServiceRepository.CurrentDialog );
+				CloseRequested?.Invoke( this, CloseEventArgs.Ok );
 			}
 		}
 
@@ -57,10 +47,32 @@ namespace Twice.ViewModels
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
+		public string Title
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return _Title;
+			}
+			set
+			{
+				if( _Title == value )
+				{
+					return;
+				}
+
+				_Title = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _CancelCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _OkCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 	}
 }

@@ -5,15 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Twice.Controls"
              xmlns:columns="clr-namespace:Twice.ViewModels.Columns"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance columns:IColumnViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
 		<DockPanel>
-			<Rectangle DockPanel.Dock="Left" Height="24" Width="24" Margin="5">
-				<Rectangle.Fill>
-					<VisualBrush Visual="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
-				</Rectangle.Fill>
-			</Rectangle>
+			<materialDesign:PackIcon DockPanel.Dock="Left" Height="24" Width="24" Margin="5" 
+									 VerticalAlignment="Center"
+									 Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 
 			<local:ResizeThumb DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="SizeWE">
 				<local:ResizeThumb.Template>
@@ -23,7 +22,7 @@
 				</local:ResizeThumb.Template>
 			</local:ResizeThumb>
 
-			<TextBlock Text="{Binding Title}" FontSize="{DynamicResource HeaderFontSize}" VerticalAlignment="Center" />
+			<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignTitleTextBlock}" VerticalAlignment="Center" />
 		</DockPanel>
 	</Grid>
 </UserControl>

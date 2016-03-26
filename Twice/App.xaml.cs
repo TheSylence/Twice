@@ -9,6 +9,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
+using MaterialDesignThemes.Wpf;
 using Ninject;
 using Ninject.Modules;
 using Twice.Injections;
@@ -37,7 +38,10 @@ namespace Twice
 			base.OnStartup( e );
 
 			var conf = Kernel.Get<IConfig>();
-			ThemeManager.ChangeAppStyle( this, ThemeManager.GetAccent( conf.Visual.AccentName ), ThemeManager.GetAppTheme( conf.Visual.ThemeName ) );
+			var palette = new PaletteHelper();
+			palette.SetLightDark( conf.Visual.UseDarkTheme );
+			palette.ReplaceAccentColor( conf.Visual.AccentColor );
+			palette.ReplacePrimaryColor( conf.Visual.PrimaryColor );
 
 			var resDict = new ResourceDictionary();
 			resDict.BeginInit();
