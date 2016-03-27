@@ -13,7 +13,7 @@ namespace Twice.ViewModels.Main
 	interface IMainViewModel : IViewModelBase, ILoadCallback
 	{
 		ICollection<IColumnViewModel> Columns { get; }
-
+		ICommand InfoCommand { get; }
 
 		ICommand NewTweetCommand { get; }
 		ICommand SettingsCommand { get; }

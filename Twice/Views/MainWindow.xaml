@@ -33,6 +33,13 @@
 			<flyouts:NotificationBar />
 		</controls:FlyoutsControl>
 	</controls:MetroWindow.Flyouts>
+	<controls:MetroWindow.RightWindowCommands>
+		<controls:WindowCommands>
+			<Button ToolTip="{lex:Loc Information}" Command="{Binding InfoCommand}">
+				<materialDesign:PackIcon Kind="Information"/>
+			</Button>
+		</controls:WindowCommands>
+	</controls:MetroWindow.RightWindowCommands>
 	<materialDesign:DialogHost>
 		<Grid>
 			<Grid.ColumnDefinitions>

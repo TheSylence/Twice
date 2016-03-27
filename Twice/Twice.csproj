@@ -191,6 +191,7 @@
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\Info\InfoDialogViewModel.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
     <Compile Include="ViewModels\IViewController.cs" />
     <Compile Include="ViewModels\Notifier.cs" />
@@ -260,6 +261,9 @@
     <Compile Include="ViewModels\Validation\ValidationViewModel.cs" />
     <Compile Include="Views\GenericDataTemplateSelectorItem.cs" />
     <Compile Include="Views\GenericTemplateSelector.cs" />
+    <Compile Include="Views\InfoDialog.xaml.cs">
+      <DependentUpon>InfoDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProfileDialog.xaml.cs">
       <DependentUpon>ProfileDialog.xaml</DependentUpon>
     </Compile>
@@ -302,6 +306,10 @@
     <EmbeddedResource Include="Resources\Licenses\Markdown.XAML.txt">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Page Include="Views\InfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

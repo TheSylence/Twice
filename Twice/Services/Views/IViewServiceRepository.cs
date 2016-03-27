@@ -11,6 +11,8 @@ namespace Twice.Services.Views
 
 		Task ShowAccounts();
 
+		Task ShowInfo();
+
 		Task ShowSettings();
 
 		Task ViewProfile( ulong userId );

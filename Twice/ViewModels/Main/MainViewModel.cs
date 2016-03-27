@@ -15,6 +15,16 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
+
+		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
+
+		private async void ExecuteInfoCommand()
+		{
+			await ViewServiceRepository.ShowInfo();
+		}
+
 		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier )
 		{
 			Notifier = notifier;
@@ -73,7 +83,7 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
-		[System.Diagnostics.DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _AccountsCommand;
 
 		public ICommand AccountsCommand => _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );

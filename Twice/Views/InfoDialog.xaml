@@ -1,0 +1,26 @@
+﻿<controls:MetroWindow x:Class="Twice.Views.InfoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        WindowStartupLocation="CenterOwner" DataContext="{Binding Info, Source={StaticResource DialogLocator}}"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        mc:Ignorable="d" Style="{StaticResource DialogStyle}"
+        Title="{lex:Loc Info}" Height="600" Width="600">
+	<TabControl>
+		<TabItem Header="{lex:Loc About}">
+			<StackPanel Orientation="Vertical">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{lex:Loc Version}" />
+					<TextBlock Text="{Binding Version}" />
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{lex:Loc BuildDate}" />
+					<TextBlock Text="{Binding BuildDate}" />
+				</StackPanel>
+			</StackPanel>
+		</TabItem>
+		<TabItem Header="{lex:Loc Licenses}" />
+	</TabControl>
+</controls:MetroWindow>

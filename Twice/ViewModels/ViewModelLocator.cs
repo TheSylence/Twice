@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Twice.ViewModels.Accounts;
+using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
@@ -15,7 +16,7 @@ namespace Twice.ViewModels
 		}
 
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
-
+		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
 		private readonly IKernel Kernel;

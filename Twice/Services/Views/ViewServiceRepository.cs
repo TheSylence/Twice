@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using Ninject;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
+using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
 using Twice.Views;
 
@@ -19,6 +20,11 @@ namespace Twice.Services.Views
 		public ViewServiceRepository()
 		{
 			Kernel = App.Kernel;
+		}
+
+		public async Task ShowInfo()
+		{
+			await ShowWindow<InfoDialog, IInfoDialogViewModel, object>();
 		}
 
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
