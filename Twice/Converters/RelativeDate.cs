@@ -53,7 +53,8 @@ namespace Twice.Converters
 				return Strings.Now;
 			}
 
-			return string.Format( Strings.Ago, string.Format( culture, "{0}{1}", amount, suffix ) );
+			//return string.Format( Strings.Ago, string.Format( culture, "{0}{1}", amount, suffix ) );
+			return string.Format( culture, "{0}{1}", amount, suffix );
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

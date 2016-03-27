@@ -1,23 +1,39 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
+using Twice.Messages;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Columns.Definitions;
+using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
-using Windows.UI.Notifications;
+using Twice.Views;
 
 namespace Twice.ViewModels
 {
+
+	internal enum NotificationType
+	{
+		Information,
+		Success,
+		Error
+	}
+
 	internal interface INotifier
 	{
+		void DisplayMessage( string message, NotificationType type );
+
 		void OnStatus( StatusViewModel status, ColumnNotifications columnSettings );
 	}
 
 	internal class Notifier : INotifier
 	{
-		public Notifier( IConfig config )
+		public Notifier( IConfig config, IMessenger messenger )
 		{
+			MessengerInstance = messenger;
 			Config = config;
 
 			if( config.Notifications.SoundEnabled && File.Exists( config.Notifications.SoundFileName ) )
@@ -30,6 +46,17 @@ namespace Twice.ViewModels
 			{
 				PopupNotify = new NotifyIcon();
 			}
+		}
+
+		public void DisplayMessage( string message, NotificationType type )
+		{
+			if( !Config.Notifications.ToastsEnabled )
+			{
+				return;
+			}
+
+			var context = new NotificationViewModel( message, type );
+			NotifyToast( context );
 		}
 
 		public void OnStatus( StatusViewModel status, ColumnNotifications columnSettings )
@@ -61,9 +88,24 @@ namespace Twice.ViewModels
 
 		private void NotifyToast( StatusViewModel status )
 		{
+			var context = new NotificationViewModel( status );
+			NotifyToast( context );
+		}
+
+		private void NotifyToast( NotificationViewModel vm )
+		{
+			DispatcherHelper.CheckBeginInvokeOnUI(
+				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
+
+			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( ( t ) =>
+			{
+				DispatcherHelper.CheckBeginInvokeOnUI( () =>
+					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
+			} );
 		}
 
 		private readonly IConfig Config;
+		private readonly IMessenger MessengerInstance;
 		private readonly MediaPlayer Player;
 		private readonly NotifyIcon PopupNotify;
 	}

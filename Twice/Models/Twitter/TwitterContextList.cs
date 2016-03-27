@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{
-		public TwitterContextList()
+		public TwitterContextList( INotifier notifier )
 		{
 			Contexts = new List<IContextEntry>();
 
-			Contexts.Add( new ContextEntry() );
+			Contexts.Add( new ContextEntry(notifier) );
 		}
-
+		
 		public void Dispose()
 		{
 			Dispose( true );

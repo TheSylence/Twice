@@ -12,6 +12,7 @@ namespace Twice.ViewModels.Columns
 	{
 		public MentionsColumn( IContextEntry context ) : base( context )
 		{
+			Icon = Icon.Mentions;
 			Title = Strings.Mentions;
 		}
 

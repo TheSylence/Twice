@@ -65,15 +65,22 @@
 				<Setter Property="TextElement.FontSize" Value="13" />
 				<Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
 				<Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
-				<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}"/>
-				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}" />
+				<Setter Property="BorderThickness" Value="1" />
 			</Style>
 
 			<Style TargetType="controls:MetroWindow" BasedOn="{StaticResource WindowStyle}" x:Key="DialogStyle">
-				<Setter Property="WindowStyle" Value="ToolWindow"/>
-				<Setter Property="ShowInTaskbar" Value="False"/>
-				<Setter Property="ShowMaxRestoreButton" Value="False"/>
-				<Setter Property="ShowMinButton" Value="False"/>
+				<Setter Property="WindowStyle" Value="ToolWindow" />
+				<Setter Property="ShowInTaskbar" Value="False" />
+				<Setter Property="ShowMaxRestoreButton" Value="False" />
+				<Setter Property="ShowMinButton" Value="False" />
+				<Setter Property="ResizeMode" Value="NoResize" />
+			</Style>
+
+			<Style TargetType="Hyperlink">
+				<Setter Property="TextDecorations" Value="{x:Null}" />
+				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+				<Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
 			</Style>
 
 			<viewModels:ViewModelLocator x:Key="Locator" />

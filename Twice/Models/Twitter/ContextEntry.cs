@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IO;
 using LinqToTwitter;
+using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class ContextEntry : IContextEntry
 	{
-		public ContextEntry()
+		public ContextEntry( INotifier notifier )
 		{
+			Notifier = notifier;
 			var lines = File.ReadAllLines( "DebugTokens.txt" );
 
 			AccountName = lines[0];
@@ -43,6 +45,7 @@ namespace Twice.Models.Twitter
 		}
 
 		public Uri ProfileImageUrl { get; }
+		public INotifier Notifier { get; }
 		public string AccountName { get; }
 		public TwitterContext Twitter { get; }
 		public ulong UserId { get; }

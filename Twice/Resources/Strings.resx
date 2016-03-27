@@ -375,4 +375,19 @@
   <data name="Unfollow" xml:space="preserve">
     <value>Unfollow</value>
   </data>
+  <data name="BlockedUser" xml:space="preserve">
+    <value>Blocked user</value>
+  </data>
+  <data name="RemovedFavorite" xml:space="preserve">
+    <value>Removed favorite</value>
+  </data>
+  <data name="AddedFavorite" xml:space="preserve">
+    <value>Added favorite</value>
+  </data>
+  <data name="RetweetedStatus" xml:space="preserve">
+    <value>Retweeted status</value>
+  </data>
+  <data name="StatusDeleted" xml:space="preserve">
+    <value>Deleted status</value>
+  </data>
 </root>

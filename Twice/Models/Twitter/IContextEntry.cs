@@ -1,5 +1,6 @@
 ﻿using System;
 using LinqToTwitter;
+using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
@@ -9,5 +10,6 @@ namespace Twice.Models.Twitter
 		TwitterContext Twitter { get; }
 		ulong UserId { get; }
 		Uri ProfileImageUrl { get; }
+		INotifier Notifier { get; }
 	}
 }

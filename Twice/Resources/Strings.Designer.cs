@@ -106,6 +106,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Added favorite.
+        /// </summary>
+        internal static string AddedFavorite {
+            get {
+                return ResourceManager.GetString("AddedFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} ago.
         /// </summary>
         internal static string Ago {
@@ -129,6 +138,15 @@ namespace Twice.Resources {
         internal static string Block {
             get {
                 return ResourceManager.GetString("Block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blocked user.
+        /// </summary>
+        internal static string BlockedUser {
+            get {
+                return ResourceManager.GetString("BlockedUser", resourceCulture);
             }
         }
         
@@ -610,6 +628,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removed favorite.
+        /// </summary>
+        internal static string RemovedFavorite {
+            get {
+                return ResourceManager.GetString("RemovedFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reply.
         /// </summary>
         internal static string Reply {
@@ -642,6 +669,15 @@ namespace Twice.Resources {
         internal static string Retweet {
             get {
                 return ResourceManager.GetString("Retweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retweeted status.
+        /// </summary>
+        internal static string RetweetedStatus {
+            get {
+                return ResourceManager.GetString("RetweetedStatus", resourceCulture);
             }
         }
         
@@ -723,6 +759,15 @@ namespace Twice.Resources {
         internal static string SoundNotification {
             get {
                 return ResourceManager.GetString("SoundNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted status.
+        /// </summary>
+        internal static string StatusDeleted {
+            get {
+                return ResourceManager.GetString("StatusDeleted", resourceCulture);
             }
         }
         

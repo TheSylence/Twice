@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Twice.ViewModels.Columns.Definitions
 {
-	class ColumnDefintionList
+	internal class ColumnDefintionList
 	{
 		public ColumnDefintionList( string fileName )
 		{
@@ -14,8 +14,9 @@ namespace Twice.ViewModels.Columns.Definitions
 
 		public IEnumerable<ColumnDefinition> DefaultColumns( ulong accountId )
 		{
-			yield return new MentionsColumnDefinition( new[] {accountId} );
+			yield return new MentionsColumnDefinition( new[] { accountId } );
 			yield return new TimelineColumnDefinition( new[] { accountId } );
+			yield return new UserColumnDefintion( accountId );
 			yield return new MessagesColumnDefinition( accountId );
 		}
 

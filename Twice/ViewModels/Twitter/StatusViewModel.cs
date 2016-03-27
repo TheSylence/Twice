@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Models.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -50,21 +51,27 @@ namespace Twice.ViewModels.Twitter
 
 		private bool CanExecuteRetweetStatusCommand()
 		{
-			return OriginalStatus.UserID != Context.UserId;
+			return ulong.Parse( OriginalStatus.User.UserIDResponse ) != Context.UserId;
 		}
 
-		private void ExecAsync( Action action )
+		private void ExecAsync( Action action, string message = null, NotificationType type = NotificationType.Information )
 		{
 			IsLoading = true;
 			Task.Run( action ).ContinueWith( t =>
 			{
 				DispatcherHelper.CheckBeginInvokeOnUI( () => IsLoading = false );
+			} ).ContinueWith( t =>
+			{
+				if( !string.IsNullOrWhiteSpace( message ) )
+				{
+					Context.Notifier.DisplayMessage( message, type );
+				}
 			} );
 		}
 
 		private void ExecuteBlockUserCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.UserID, null, true ) );
+			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.UserID, null, true ), Strings.BlockedUser, NotificationType.Success );
 		}
 
 		private void ExecuteCopyTweetCommand()
@@ -81,7 +88,7 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteDeleteStatusCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ) );
+			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted, NotificationType.Success );
 		}
 
 		private void ExecuteFavoriteStatusCommand()
@@ -96,7 +103,10 @@ namespace Twice.ViewModels.Twitter
 				{
 					await Context.Twitter.DestroyFavoriteAsync( Model.StatusID );
 				}
-			} );
+
+				Model.Favorited = !Model.Favorited;
+				RaisePropertyChanged( nameof( IsFavorited ) );
+			}, Model.Favorited ? Strings.RemovedFavorite : Strings.AddedFavorite, NotificationType.Success );
 		}
 
 		private void ExecuteReplyCommand()
@@ -113,7 +123,12 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteRetweetStatusCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.RetweetAsync( Model.StatusID ) );
+			ExecAsync( async () =>
+			{
+				await Context.Twitter.RetweetAsync( Model.StatusID );
+				Model.Retweeted = true;
+				RaisePropertyChanged( nameof( IsRetweeted ) );
+			}, Strings.RetweetedStatus );
 		}
 
 		public ICommand BlockUserCommand => _BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) );
@@ -178,7 +193,7 @@ namespace Twice.ViewModels.Twitter
 		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
 
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
-		
+
 		public User SourceUser { get; }
 
 		private readonly IContextEntry Context;

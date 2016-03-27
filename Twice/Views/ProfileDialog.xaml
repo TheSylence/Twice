@@ -34,7 +34,7 @@
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<StackPanel>
+				<StackPanel Margin="5">
 					<Image Source="{Binding User.ProfileImageUrlHttps}" Width="96" Height="96" VerticalAlignment="Top" Margin="5" />
 					<Button Content="{lex:Loc Follow}" Style="{StaticResource SquareButtonStyle}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
 					<Button Content="{lex:Loc Unfollow}" Style="{StaticResource SquareButtonStyle}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />

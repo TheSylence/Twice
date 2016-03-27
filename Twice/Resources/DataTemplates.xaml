@@ -9,8 +9,7 @@
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+		<materialDesign:Card Margin="3">
 			<Grid>
 				<Grid Background="Transparent">
 					<Grid.ColumnDefinitions>
@@ -60,19 +59,13 @@
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
 
-							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True"
+							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
+									Style="{StaticResource MaterialDesignToolForegroundButton}"
 									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}">
-								<materialDesign:PackIcon Kind="Star" />
-
-								<Button.Style>
-									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding IsFavorited}" Value="True">
-												<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</Button.Style>
+								<Grid>
+									<materialDesign:PackIcon Kind="StarOutline" Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
+									<materialDesign:PackIcon Kind="Star" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
+								</Grid>
 							</Button>
 
 							<Button Width="28" Height="28" Grid.Column="1" ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}"
@@ -93,28 +86,40 @@
 					</StackPanel>
 
 					<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="1">
-						<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
-							<StackPanel.Resources>
-								<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
-											<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
-											<Setter Property="TextDecorations" Value="Underline" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</StackPanel.Resources>
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="MouseDown">
-									<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-											 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-							<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-							<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-							VerticalAlignment="Center" />
-						</StackPanel>
+						<DockPanel>
+							<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+								<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
+						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
+									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+										<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}" />
+									</Hyperlink>
+								</ContentControl>
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
+								<StackPanel.Resources>
+									<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+												   Path=IsMouseOver}" Value="True">
+												<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
+												<Setter Property="TextDecorations" Value="Underline" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</StackPanel.Resources>
+								<i:Interaction.Triggers>
+									<i:EventTrigger EventName="MouseDown">
+										<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
+									</i:EventTrigger>
+								</i:Interaction.Triggers>
+								<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+								<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+								VerticalAlignment="Center" />
+							</StackPanel>
+						</DockPanel>
 
 						<StackPanel>
 							<controls:BindableTextBlock Margin="5,0" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
@@ -129,7 +134,7 @@
 							</controls1:FlipView>
 						</StackPanel>
 
-						<StackPanel Margin="5" Orientation="Horizontal">
+						<!--<StackPanel Margin="5" Orientation="Horizontal">
 							<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
 						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
 								<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
@@ -145,7 +150,7 @@
 									<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}" />
 								</Hyperlink>
 							</ContentControl>
-						</StackPanel>
+						</StackPanel>-->
 					</StackPanel>
 
 					<Grid.ContextMenu>
@@ -171,8 +176,7 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">
-		<materialDesign:Card Margin="3" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+		<materialDesign:Card Margin="3">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />

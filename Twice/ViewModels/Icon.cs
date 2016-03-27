@@ -9,6 +9,9 @@ namespace Twice.ViewModels
 		User,
 
 		[Icon( PackIconKind.Home )]
-		Home
+		Home,
+
+		[Icon( PackIconKind.At )]
+		Mentions
 	}
 }

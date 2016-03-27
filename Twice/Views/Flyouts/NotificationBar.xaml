@@ -1,0 +1,21 @@
+﻿<controls:Flyout x:Class="Twice.Views.Flyouts.NotificationBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             IsPinned="True" CloseButtonVisibility="Collapsed"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:views="clr-namespace:Twice.Views"
+             xmlns:flyouts="clr-namespace:Twice.ViewModels.Flyouts"
+             d:DataContext="{d:DesignInstance flyouts:NotificationViewModel}"
+             mc:Ignorable="d" Position="Top" TitleVisibility="Collapsed" Theme="Accent"
+             d:DesignHeight="300" d:DesignWidth="300" Height="50">
+	<i:Interaction.Behaviors>
+		<behaviors:FlyoutControl Name="{x:Static views:FlyoutNames.NotificationBar}" />
+	</i:Interaction.Behaviors>
+	<Grid>
+		<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+	</Grid>
+</controls:Flyout>

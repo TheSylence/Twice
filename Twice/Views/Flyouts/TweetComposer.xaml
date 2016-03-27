@@ -58,8 +58,9 @@
 			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="2">
 				<StackPanel.Resources>
 					<!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-					<Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+					<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
 						<Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}"/>
+						<Setter Property="Margin" Value="5"/>
 					</Style>
 				</StackPanel.Resources>
 				

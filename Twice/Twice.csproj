@@ -190,6 +190,7 @@
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
+    <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
     <Compile Include="ViewModels\IResetable.cs" />
     <Compile Include="ViewModels\IViewController.cs" />
     <Compile Include="ViewModels\Notifier.cs" />
@@ -206,6 +207,9 @@
       <DependentUpon>AccountsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialog.cs" />
+    <Compile Include="Views\Flyouts\NotificationBar.xaml.cs">
+      <DependentUpon>NotificationBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>
@@ -276,6 +280,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AccountsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Flyouts\NotificationBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
