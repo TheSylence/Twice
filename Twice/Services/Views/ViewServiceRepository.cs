@@ -6,38 +6,33 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
-using Ninject;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
+using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
 using Twice.Views;
+using Twice.Views.Dialogs;
+using AccountsDialog = Twice.Views.Dialogs.AccountsDialog;
+using AddColumnDialog = Twice.Views.Wizards.AddColumn.AddColumnDialog;
+using InfoDialog = Twice.Views.Dialogs.InfoDialog;
+using ProfileDialog = Twice.Views.Dialogs.ProfileDialog;
+using SettingsDialog = Twice.Views.Dialogs.SettingsDialog;
 
 namespace Twice.Services.Views
 {
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
-		public ViewServiceRepository()
-		{
-			Kernel = App.Kernel;
-		}
-
-		public async Task ShowInfo()
-		{
-			await ShowWindow<InfoDialog, IInfoDialogViewModel, object>();
-		}
-
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
-			ConfirmServiceArgs csa = args as ConfirmServiceArgs;
-			Debug.Assert( csa != null );
+			Debug.Assert( args != null );
 
 			var settings = new MetroDialogSettings
 			{
 				AffirmativeButtonText = Strings.Yes,
 				NegativeButtonText = Strings.No
 			};
-			var result = await Window.ShowMessageAsync( csa.Title, csa.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
+			var result = await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
 
 			return result == MessageDialogResult.Affirmative;
 		}
@@ -61,6 +56,16 @@ namespace Twice.Services.Views
 		public async Task ShowAccounts()
 		{
 			await ShowDialog<AccountsDialog, IAccountsDialogViewModel, object>();
+		}
+
+		public async Task ShowAddColumnDialog()
+		{
+			await ShowWindow<AddColumnDialog, IAddColumnDialogViewModel>();
+		}
+
+		public async Task ShowInfo()
+		{
+			await ShowWindow<InfoDialog, IInfoDialogViewModel>();
 		}
 
 		public Task ShowSettings()
@@ -117,6 +122,13 @@ namespace Twice.Services.Views
 			return resSetup( vm );
 		}
 
+		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : Window, new()
+		{
+			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
 		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
 					Action<TViewModel> vmSetup = null )
 			where TViewModel : class
@@ -137,7 +149,7 @@ namespace Twice.Services.Views
 
 			if( dlg.ShowDialog() == true )
 			{
-				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+				Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 				var resSetup = resultSetup ?? defaultResultSetup;
 				result = resSetup( vm );
 			}
@@ -147,6 +159,5 @@ namespace Twice.Services.Views
 
 		public Dialog CurrentDialog { get; private set; }
 		private static MetroWindow Window => Application.Current.MainWindow as MetroWindow;
-		private readonly IKernel Kernel;
 	}
 }

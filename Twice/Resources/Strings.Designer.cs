@@ -529,6 +529,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage columns.
+        /// </summary>
+        internal static string ManageColumns {
+            get {
+                return ResourceManager.GetString("ManageColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color of user mentions.
         /// </summary>
         internal static string MentionColor {
@@ -543,6 +552,15 @@ namespace Twice.Resources {
         internal static string Mentions {
             get {
                 return ResourceManager.GetString("Mentions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add mentions of an account.
+        /// </summary>
+        internal static string MentionsDescription {
+            get {
+                return ResourceManager.GetString("MentionsDescription", resourceCulture);
             }
         }
         
@@ -835,6 +853,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Timeline.
+        /// </summary>
+        internal static string Timeline {
+            get {
+                return ResourceManager.GetString("Timeline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the timeline of an account.
+        /// </summary>
+        internal static string TimelineDescription {
+            get {
+                return ResourceManager.GetString("TimelineDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification toasts in app.
         /// </summary>
         internal static string ToastNotification {
@@ -867,6 +903,24 @@ namespace Twice.Resources {
         internal static string Unfollow {
             get {
                 return ResourceManager.GetString("Unfollow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        internal static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add tweets of a user.
+        /// </summary>
+        internal static string UserDescription {
+            get {
+                return ResourceManager.GetString("UserDescription", resourceCulture);
             }
         }
         

@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Twice.ViewModels.Accounts;
+using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
@@ -15,6 +16,7 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
+		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();

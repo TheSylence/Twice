@@ -1,4 +1,4 @@
-﻿namespace Twice.Views
+﻿namespace Twice.Views.Dialogs
 {
 	/// <summary>
 	/// Interaction logic for SettingsDialog.xaml

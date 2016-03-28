@@ -5,18 +5,18 @@ using Twice.ViewModels.Columns;
 
 namespace Twice.ViewModels.Main
 {
-	interface ILoadCallback
+	internal interface ILoadCallback
 	{
 		Task OnLoad( object data );
 	}
 
-	interface IMainViewModel : IViewModelBase, ILoadCallback
+	internal interface IMainViewModel : IViewModelBase, ILoadCallback
 	{
+		ICommand AccountsCommand { get; }
 		ICollection<IColumnViewModel> Columns { get; }
 		ICommand InfoCommand { get; }
-
+		ICommand AddColumnCommand { get; }
 		ICommand NewTweetCommand { get; }
 		ICommand SettingsCommand { get; }
-		ICommand AccountsCommand { get; }
 	}
 }

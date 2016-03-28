@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Columns;
@@ -15,16 +15,6 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _InfoCommand;
-
-		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
-
-		private async void ExecuteInfoCommand()
-		{
-			await ViewServiceRepository.ShowInfo();
-		}
-
 		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier )
 		{
 			Notifier = notifier;
@@ -40,14 +30,21 @@ namespace Twice.ViewModels.Main
 			var factory = new ColumnFactory( list, muter );
 
 			var constructed = columns.Select( c => factory.Construct( c ) );
-#if DEBUG
 			constructed = constructed.Where( c => c != null );
-#endif
+			
 
 			Columns = new ObservableCollection<IColumnViewModel>( constructed );
 			foreach( var col in Columns )
 			{
 				col.NewStatus += Col_NewStatus;
+			}
+		}
+
+		public async Task OnLoad( object data )
+		{
+			foreach( var col in Columns )
+			{
+				await col.Load();
 			}
 		}
 
@@ -63,14 +60,19 @@ namespace Twice.ViewModels.Main
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
-		private readonly INotifier Notifier;
-
-		public async Task OnLoad( object data )
+		private async void ExecuteAccountsCommand()
 		{
-			foreach( var col in Columns )
-			{
-				await col.Load();
-			}
+			await ViewServiceRepository.ShowAccounts();
+		}
+
+		private async void ExecuteInfoCommand()
+		{
+			await ViewServiceRepository.ShowInfo();
+		}
+
+		private async void ExecuteAddColumnCommand()
+		{
+			await ViewServiceRepository.ShowAddColumnDialog();
 		}
 
 		private void ExecuteNewTweetCommand()
@@ -83,21 +85,28 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AccountsCommand;
-
 		public ICommand AccountsCommand => _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
 
-		private async void ExecuteAccountsCommand()
-		{
-			await ViewServiceRepository.ShowAccounts();
-		}
-
 		public ICollection<IColumnViewModel> Columns { get; }
+
+		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
+
+		public ICommand AddColumnCommand => _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand ) );
 
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand ) );
 
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
+
+		private readonly INotifier Notifier;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ManageColumnsCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _NewTweetCommand;

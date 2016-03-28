@@ -11,6 +11,8 @@ namespace Twice.Services.Views
 
 		Task ShowAccounts();
 
+		Task ShowAddColumnDialog();
+
 		Task ShowInfo();
 
 		Task ShowSettings();

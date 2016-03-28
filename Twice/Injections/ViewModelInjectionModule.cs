@@ -2,6 +2,7 @@
 using Ninject.Modules;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
+using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
@@ -34,6 +35,8 @@ namespace Twice.Injections
 			Bind<IAccountsDialogViewModel>().To<AccountsDialogViewModel>();
 
 			Bind<IInfoDialogViewModel>().To<InfoDialogViewModel>();
+
+			Bind<IAddColumnDialogViewModel>().To<AddColumnDialogViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

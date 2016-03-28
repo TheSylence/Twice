@@ -189,6 +189,7 @@
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
+    <Compile Include="ViewModels\ColumnManagement\AddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
     <Compile Include="ViewModels\Info\InfoDialogViewModel.cs" />
@@ -204,8 +205,15 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
-    <Compile Include="Views\AccountsDialog.xaml.cs">
+    <Compile Include="ViewModels\Wizards\PageTypeAttribute.cs" />
+    <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
+    <Compile Include="Views\Dialogs\AccountsDialog.xaml.cs">
       <DependentUpon>AccountsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Proxies\AddColumnDataProxy.cs" />
+    <Compile Include="Views\Proxies\GenericBindingProxy.cs" />
+    <Compile Include="Views\Wizards\AddColumn\AddColumnDialog.xaml.cs">
+      <DependentUpon>AddColumnDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialog.cs" />
     <Compile Include="Views\Flyouts\NotificationBar.xaml.cs">
@@ -261,13 +269,13 @@
     <Compile Include="ViewModels\Validation\ValidationViewModel.cs" />
     <Compile Include="Views\GenericDataTemplateSelectorItem.cs" />
     <Compile Include="Views\GenericTemplateSelector.cs" />
-    <Compile Include="Views\InfoDialog.xaml.cs">
+    <Compile Include="Views\Dialogs\InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProfileDialog.xaml.cs">
+    <Compile Include="Views\Dialogs\ProfileDialog.xaml.cs">
       <DependentUpon>ProfileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsDialog.xaml.cs">
+    <Compile Include="Views\Dialogs\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VisualTreeWalker.cs" />
@@ -283,7 +291,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AccountsDialog.xaml">
+    <Page Include="Views\Dialogs\AccountsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizards\AddColumn\AddColumnDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -306,7 +318,7 @@
     <EmbeddedResource Include="Resources\Licenses\Markdown.XAML.txt">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Page Include="Views\InfoDialog.xaml">
+    <Page Include="Views\Dialogs\InfoDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -368,11 +380,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ProfileDialog.xaml">
+    <Page Include="Views\Dialogs\ProfileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsDialog.xaml">
+    <Page Include="Views\Dialogs\SettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -410,6 +422,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

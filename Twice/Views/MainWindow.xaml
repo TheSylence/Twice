@@ -74,21 +74,29 @@
 					</Button>
 				</StackPanel>
 
-				<ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Columns}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel Orientation="Vertical" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="columns:IColumnViewModel">
-							<Button Width="36" Height="36" ToolTip="{Binding Title}"
+				<StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+					<Button Width="36" Height="36" Command="{Binding AddColumnCommand}"
+					ToolTip="{lex:Loc AddColumn}" 
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-								<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
-							</Button>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+						<materialDesign:PackIcon Kind="Plus" />
+					</Button>
+					
+					<ItemsControl ItemsSource="{Binding Columns}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Vertical" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="columns:IColumnViewModel">
+								<Button Width="36" Height="36" ToolTip="{Binding Title}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+									<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
+								</Button>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</StackPanel>
 			</DockPanel>
 
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">

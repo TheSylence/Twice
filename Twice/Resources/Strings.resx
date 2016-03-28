@@ -405,4 +405,22 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="ManageColumns" xml:space="preserve">
+    <value>Manage columns</value>
+  </data>
+  <data name="Timeline" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="TimelineDescription" xml:space="preserve">
+    <value>Add the timeline of an account</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="MentionsDescription" xml:space="preserve">
+    <value>Add mentions of an account</value>
+  </data>
+  <data name="UserDescription" xml:space="preserve">
+    <value>Add tweets of a user</value>
+  </data>
 </root>
