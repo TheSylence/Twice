@@ -3,6 +3,8 @@ using Ninject.Modules;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
+using Twice.ViewModels.Columns.Definitions;
+using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
@@ -20,6 +22,8 @@ namespace Twice.Injections
 		{
 			Bind<IMessenger>().ToConstant( Messenger.Default );
 
+			Bind<IColumnDefinitionList>().To<ColumnDefinitionList>();
+
 			Bind<IMainViewModel>().To<MainViewModel>();
 
 			Bind<ISettingsDialogViewModel>().To<SettingsDialogViewModel>();
@@ -31,12 +35,14 @@ namespace Twice.Injections
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
 
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
-
-			Bind<IAccountsDialogViewModel>().To<AccountsDialogViewModel>();
-
+			
 			Bind<IInfoDialogViewModel>().To<InfoDialogViewModel>();
 
+			Bind<IAccountsDialogViewModel>().To<AccountsDialogViewModel>();
 			Bind<IAddColumnDialogViewModel>().To<AddColumnDialogViewModel>();
+			Bind<IColumnTypeSelectionDialogViewModel>().To<ColumnTypeSelectionDialogViewModel>();
+
+			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

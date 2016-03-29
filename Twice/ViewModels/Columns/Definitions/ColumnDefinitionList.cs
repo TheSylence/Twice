@@ -1,24 +1,19 @@
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Twice.ViewModels.Columns.Definitions
 {
-	internal class ColumnDefintionList
+	internal class ColumnDefinitionList : IColumnDefinitionList
 	{
-		public ColumnDefintionList( string fileName )
+		public ColumnDefinitionList( string fileName = Constants.IO.ColumnDefintionFileName )
 		{
 			FileName = fileName;
 		}
 
-		public IEnumerable<ColumnDefinition> DefaultColumns( ulong accountId )
-		{
-			yield return new MentionsColumnDefinition( new[] { accountId } );
-			yield return new TimelineColumnDefinition( new[] { accountId } );
-			yield return new UserColumnDefintion( accountId );
-			yield return new MessagesColumnDefinition( accountId );
-		}
+		public event EventHandler ColumnsChanged;
 
 		public IEnumerable<ColumnDefinition> Load()
 		{
@@ -35,6 +30,8 @@ namespace Twice.ViewModels.Columns.Definitions
 		{
 			var json = JsonConvert.SerializeObject( definitions.ToList(), Formatting.Indented );
 			File.WriteAllText( FileName, json );
+
+			ColumnsChanged?.Invoke( this, EventArgs.Empty );
 		}
 
 		private readonly string FileName;

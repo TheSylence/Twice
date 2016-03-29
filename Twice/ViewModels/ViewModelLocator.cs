@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
+using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
@@ -16,11 +17,13 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
-		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();
+		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
+		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
+		public ITextInputDialogViewModel TextInput => Kernel.Get<ITextInputDialogViewModel>();
 		private readonly IKernel Kernel;
 	}
 

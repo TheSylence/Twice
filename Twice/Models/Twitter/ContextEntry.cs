@@ -22,8 +22,8 @@ namespace Twice.Models.Twitter
 				{
 					ScreenName = AccountName,
 					UserID = UserId,
-					ConsumerKey = lines[3],
-					ConsumerSecret = lines[4],
+					ConsumerKey = Constants.Auth.ConsumerKey,
+					ConsumerSecret = Constants.Auth.ConsumerSecret,
 					OAuthToken = lines[5],
 					OAuthTokenSecret = lines[6]
 				}

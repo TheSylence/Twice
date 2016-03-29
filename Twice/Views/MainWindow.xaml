@@ -45,7 +45,7 @@
 			<materialDesign:PackIcon Kind="TwitterCircle" VerticalAlignment="Center" HorizontalAlignment="Center" />
 		</DataTemplate>
 	</controls:MetroWindow.IconTemplate>
-	<materialDesign:DialogHost>
+	<materialDesign:DialogHost Identifier="MainDialogHost">
 		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />

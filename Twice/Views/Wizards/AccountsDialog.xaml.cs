@@ -1,4 +1,4 @@
-﻿namespace Twice.Views.Dialogs
+﻿namespace Twice.Views.Wizards
 {
 	/// <summary>
 	/// Interaction logic for AccountsDialog.xaml

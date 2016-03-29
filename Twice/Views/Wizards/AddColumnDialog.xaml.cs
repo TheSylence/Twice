@@ -1,4 +1,4 @@
-﻿namespace Twice.Views.Wizards.AddColumn
+﻿namespace Twice.Views.Wizards
 {
 	/// <summary>
 	/// Interaction logic for ColumnManagementDialog.xaml

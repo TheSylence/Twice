@@ -15,29 +15,14 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier )
+		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList )
 		{
+			Columns = new ObservableCollection<IColumnViewModel>();
 			Notifier = notifier;
-			var context = list.Contexts.First();
-
-			var columnList = new ColumnDefintionList( Constants.IO.ColumnDefintionFileName );
-			var columns = columnList.Load();
-			if( !columns.Any() )
-			{
-				columns = columnList.DefaultColumns( context.UserId );
-			}
-
-			var factory = new ColumnFactory( list, muter );
-
-			var constructed = columns.Select( c => factory.Construct( c ) );
-			constructed = constructed.Where( c => c != null );
-			
-
-			Columns = new ObservableCollection<IColumnViewModel>( constructed );
-			foreach( var col in Columns )
-			{
-				col.NewStatus += Col_NewStatus;
-			}
+			Factory = new ColumnFactory( list, muter );
+			ColumnList = columnList;
+			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
+			ConstructColumns();
 		}
 
 		public async Task OnLoad( object data )
@@ -60,19 +45,44 @@ namespace Twice.ViewModels.Main
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
+		private async void ColumnList_ColumnsChanged( object sender, System.EventArgs e )
+		{
+			ConstructColumns();
+			await OnLoad( null );
+		}
+
+		private void ConstructColumns()
+		{
+			foreach( var c in Columns )
+			{
+				c.NewStatus -= Col_NewStatus;
+			}
+			Columns.Clear();
+
+			var definitions = ColumnList.Load();
+			var constructed = definitions.Select( c => Factory.Construct( c ) );
+			constructed = constructed.Where( c => c != null );
+
+			foreach( var c in constructed )
+			{
+				c.NewStatus += Col_NewStatus;
+				Columns.Add( c );
+			}
+		}
+
 		private async void ExecuteAccountsCommand()
 		{
 			await ViewServiceRepository.ShowAccounts();
 		}
 
-		private async void ExecuteInfoCommand()
-		{
-			await ViewServiceRepository.ShowInfo();
-		}
-
 		private async void ExecuteAddColumnCommand()
 		{
 			await ViewServiceRepository.ShowAddColumnDialog();
+		}
+
+		private async void ExecuteInfoCommand()
+		{
+			await ViewServiceRepository.ShowInfo();
 		}
 
 		private void ExecuteNewTweetCommand()
@@ -86,32 +96,23 @@ namespace Twice.ViewModels.Main
 		}
 
 		public ICommand AccountsCommand => _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
-
-		public ICollection<IColumnViewModel> Columns { get; }
-
-		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
-
 		public ICommand AddColumnCommand => _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand ) );
-
+		public ICollection<IColumnViewModel> Columns { get; }
+		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand ) );
-
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
-
+		private readonly IColumnDefinitionList ColumnList;
+		private readonly ColumnFactory Factory;
 		private readonly INotifier Notifier;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
 	}
 }

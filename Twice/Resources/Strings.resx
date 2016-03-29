@@ -423,4 +423,13 @@
   <data name="UserDescription" xml:space="preserve">
     <value>Add tweets of a user</value>
   </data>
+  <data name="TwitterPinEntry" xml:space="preserve">
+    <value>Enter the PIN that is displayed on the website after authorizing Twice to access your twitter account</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="MessagesDescription" xml:space="preserve">
+    <value>Messages sent from/to an account</value>
+  </data>
 </root>

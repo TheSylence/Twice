@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using MaterialDesignThemes.Wpf;
+using Twice.Resources;
+using Twice.ViewModels.Columns.Definitions;
+
+namespace Twice.ViewModels.ColumnManagement
+{
+	static class ColumnTypeListFactory
+	{
+		internal static IEnumerable<ColumnTypeItem> GetItems(  )
+		{
+			return GetItems( Enum.GetValues( typeof( ColumnType ) ).Cast<ColumnType>() );
+		}
+
+		internal static IEnumerable<ColumnTypeItem> GetItems( IEnumerable<ColumnType> types )
+		{
+			var typeList = types.ToArray();
+
+			if( typeList.Contains( ColumnType.Timeline ) )
+			{
+				yield return new ColumnTypeItem( ColumnType.Timeline, Strings.Timeline, Strings.TimelineDescription, PackIconKind.Home );
+			}
+
+			if( typeList.Contains( ColumnType.Mentions ) )
+			{
+				yield return new ColumnTypeItem( ColumnType.Mentions, Strings.Mentions, Strings.MentionsDescription, PackIconKind.At );
+			}
+
+			if( typeList.Contains( ColumnType.User ) )
+			{
+				yield return new ColumnTypeItem( ColumnType.User, Strings.User, Strings.UserDescription, PackIconKind.Account );
+			}
+
+			if( typeList.Contains( ColumnType.Messages ))
+			{
+				yield return new ColumnTypeItem( ColumnType.Messages, Strings.Messages, Strings.MessagesDescription, PackIconKind.Message );
+			}
+		}
+	}
+}

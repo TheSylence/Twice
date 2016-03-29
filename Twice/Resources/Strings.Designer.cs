@@ -565,6 +565,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Messages.
+        /// </summary>
+        internal static string Messages {
+            get {
+                return ResourceManager.GetString("Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages sent from/to an account.
+        /// </summary>
+        internal static string MessagesDescription {
+            get {
+                return ResourceManager.GetString("MessagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
         internal static string MinutesShort {
@@ -894,6 +912,15 @@ namespace Twice.Resources {
         internal static string Tweets {
             get {
                 return ResourceManager.GetString("Tweets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the PIN that is displayed on the website after authorizing Twice to access your twitter account.
+        /// </summary>
+        internal static string TwitterPinEntry {
+            get {
+                return ResourceManager.GetString("TwitterPinEntry", resourceCulture);
             }
         }
         

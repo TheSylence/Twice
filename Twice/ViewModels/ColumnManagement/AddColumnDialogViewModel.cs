@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MaterialDesignThemes.Wpf;
-using Twice.Resources;
 using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Wizards;
 
@@ -40,12 +39,7 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		public ColumnTypeSelctorPage()
 		{
-			ColumnTypes = new List<ColumnTypeItem>
-			{
-				new ColumnTypeItem(ColumnType.Timeline, Strings.Timeline, Strings.TimelineDescription, PackIconKind.Home ),
-				new ColumnTypeItem( ColumnType.Mentions, Strings.Mentions, Strings.MentionsDescription, PackIconKind.At),
-				new ColumnTypeItem( ColumnType.User, Strings.User, Strings.UserDescription, PackIconKind.Account )
-			};
+			ColumnTypes = new List<ColumnTypeItem>( ColumnTypeListFactory.GetItems() );
 		}
 
 		public ICollection<ColumnTypeItem> ColumnTypes { get; }

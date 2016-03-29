@@ -14,7 +14,7 @@ namespace Twice.ViewModels.Columns
 			Rand = new Random();
 			Contexts = contexts;
 
-			FactoryMap = new Dictionary<ColumnType, Func<ColumnDefinition, ColumnViewModelBase>>
+			FactoryMap = new Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>>
 			{
 				{ColumnType.User, UserColumn},
 				{ColumnType.Timeline, TimelineColumn},
@@ -24,11 +24,17 @@ namespace Twice.ViewModels.Columns
 
 		public ColumnViewModelBase Construct( ColumnDefinition def )
 		{
-			Func<ColumnDefinition, ColumnViewModelBase> factoryAction;
+			var context = Contexts.Contexts.FirstOrDefault( c => c.UserId == def.SourceAccount );
+			if( context == null )
+			{
+				return null;
+			}
+
+			Func<IContextEntry, ColumnDefinition, ColumnViewModelBase> factoryAction;
 
 			if( FactoryMap.TryGetValue( def.Type, out factoryAction ) )
 			{
-				var column = factoryAction( def );
+				var column = factoryAction( context, def );
 
 				column.Width = def.Width;
 				column.Muter = Muter;
@@ -39,10 +45,9 @@ namespace Twice.ViewModels.Columns
 			return null;
 		}
 
-		private ColumnViewModelBase MentionsColumn( ColumnDefinition definition )
+		private ColumnViewModelBase MentionsColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			var def = (MentionsColumnDefinition)definition;
-			return new MentionsColumn( Contexts.Contexts.FirstOrDefault( c => c.UserId == def.AccountIds.First() ) );
+			return new MentionsColumn( context );
 		}
 
 		private IContextEntry RandomContext()
@@ -51,20 +56,18 @@ namespace Twice.ViewModels.Columns
 			return Contexts.Contexts.ElementAt( index );
 		}
 
-		ColumnViewModelBase TimelineColumn( ColumnDefinition definition )
+		private ColumnViewModelBase TimelineColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			var def = (TimelineColumnDefinition)definition;
-			return new TimelineColumn( Contexts.Contexts.FirstOrDefault( c => c.UserId == def.AccountIds.First() ) );
+			return new TimelineColumn( context );
 		}
 
-		private ColumnViewModelBase UserColumn( ColumnDefinition definition )
+		private ColumnViewModelBase UserColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			var def = (UserColumnDefintion)definition;
-			return new UserColumn( RandomContext(), def.UserId );
+			return new UserColumn( context, definition.AccountIds.First() );
 		}
 
 		private readonly ITwitterContextList Contexts;
-		private readonly Dictionary<ColumnType, Func<ColumnDefinition, ColumnViewModelBase>> FactoryMap;
+		private readonly Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>> FactoryMap;
 		private readonly IStatusMuter Muter;
 		private readonly Random Rand;
 	}

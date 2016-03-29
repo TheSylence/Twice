@@ -23,6 +23,12 @@ namespace Twice.ViewModels
 			return true;
 		}
 
+		protected void Close( bool result )
+		{
+			DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository.CurrentDialog );
+			CloseRequested?.Invoke( this, result ? CloseEventArgs.Ok : CloseEventArgs.Cancel );
+		}
+
 		protected virtual bool OnOk()
 		{
 			return true;
@@ -30,16 +36,14 @@ namespace Twice.ViewModels
 
 		private void ExecuteCancelCommand()
 		{
-			DialogHost.CloseDialogCommand.Execute( false, ViewServiceRepository.CurrentDialog );
-			CloseRequested?.Invoke( this, CloseEventArgs.Cancel );
+			Close( false );
 		}
 
 		private void ExecuteOkCommand()
 		{
 			if( OnOk() )
 			{
-				DialogHost.CloseDialogCommand.Execute( true, ViewServiceRepository.CurrentDialog );
-				CloseRequested?.Invoke( this, CloseEventArgs.Ok );
+				Close( true );
 			}
 		}
 
@@ -49,11 +53,7 @@ namespace Twice.ViewModels
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Title;
-			}
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -66,13 +66,10 @@ namespace Twice.ViewModels
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _OkCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _OkCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 	}
 }
