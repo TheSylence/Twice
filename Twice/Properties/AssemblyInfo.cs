@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 using System.Windows;
 
 [assembly: AssemblyTitle( "Twice" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Twitter Client for Windows" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "btbsoft.org" )]
 [assembly: AssemblyProduct( "Twice" )]
-[assembly: AssemblyCopyright( "Copyright ©  2015" )]
+[assembly: AssemblyCopyright( "Copyright © btbsoft.org 2016" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: CLSCompliant( false )]
