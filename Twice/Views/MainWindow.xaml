@@ -36,10 +36,15 @@
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
 			<Button ToolTip="{lex:Loc Information}" Command="{Binding InfoCommand}">
-				<materialDesign:PackIcon Kind="Information"/>
+				<materialDesign:PackIcon Kind="Information" />
 			</Button>
 		</controls:WindowCommands>
 	</controls:MetroWindow.RightWindowCommands>
+	<controls:MetroWindow.IconTemplate>
+		<DataTemplate>
+			<materialDesign:PackIcon Kind="TwitterCircle" VerticalAlignment="Center" HorizontalAlignment="Center" />
+		</DataTemplate>
+	</controls:MetroWindow.IconTemplate>
 	<materialDesign:DialogHost>
 		<Grid>
 			<Grid.ColumnDefinitions>
@@ -76,11 +81,11 @@
 
 				<StackPanel Orientation="Vertical" DockPanel.Dock="Top">
 					<Button Width="36" Height="36" Command="{Binding AddColumnCommand}"
-					ToolTip="{lex:Loc AddColumn}" 
+					ToolTip="{lex:Loc AddColumn}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 						<materialDesign:PackIcon Kind="Plus" />
 					</Button>
-					
+
 					<ItemsControl ItemsSource="{Binding Columns}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
