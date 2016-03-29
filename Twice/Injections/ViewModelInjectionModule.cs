@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using Ninject.Modules;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
@@ -13,6 +14,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.Injections
 {
+	[ExcludeFromCodeCoverage]
 	internal class ViewModelInjectionModule : NinjectModule
 	{
 		/// <summary>

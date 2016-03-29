@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System.Windows;
 using System.Windows.Interactivity;
@@ -7,6 +8,7 @@ using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class FlyoutControl : Behavior<Flyout>
 	{
 		protected override void OnAttached()

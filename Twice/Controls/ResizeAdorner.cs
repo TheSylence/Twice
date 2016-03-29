@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace Twice.Controls
 {
+	[ExcludeFromCodeCoverage]
 	internal class ResizeAdorner : Adorner
 	{
 		public ResizeAdorner( UIElement adornedElement )

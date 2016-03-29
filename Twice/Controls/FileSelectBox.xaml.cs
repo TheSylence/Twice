@@ -1,19 +1,20 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 
 namespace Twice.Controls
 {
-	enum FileSelectMode
+	internal enum FileSelectMode
 	{
 		Open,
 		Save
 	}
 
 	/// <summary>
-	///     Interaction logic for FileSelectBox.xaml
+	/// Interaction logic for FileSelectBox.xaml
 	/// </summary>
-	internal partial class FileSelectBox : UserControl
+	[ExcludeFromCodeCoverage]
+	internal partial class FileSelectBox
 	{
 		public FileSelectBox()
 		{
@@ -34,7 +35,7 @@ namespace Twice.Controls
 			}
 		}
 
-		void GetOpenFileName()
+		private void GetOpenFileName()
 		{
 			var dlg = new OpenFileDialog
 			{
@@ -48,7 +49,7 @@ namespace Twice.Controls
 			}
 		}
 
-		void GetSaveFileName()
+		private void GetSaveFileName()
 		{
 			var dlg = new SaveFileDialog
 			{

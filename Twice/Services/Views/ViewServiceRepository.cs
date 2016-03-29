@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ using Twice.Views.Wizards;
 
 namespace Twice.Services.Views
 {
+	[ExcludeFromCodeCoverage]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
 		public async Task<bool> Confirm( ConfirmServiceArgs args )

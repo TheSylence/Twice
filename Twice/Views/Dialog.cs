@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Twice.Views
 {
+	[ExcludeFromCodeCoverage]
 	public class Dialog : ContentControl
 	{
 		static Dialog()

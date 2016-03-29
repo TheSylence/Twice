@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -10,6 +11,7 @@ using Twice.Views;
 
 namespace Twice.Controls
 {
+	[ExcludeFromCodeCoverage]
 	internal class ResizeThumb : Thumb
 	{
 		public ResizeThumb()

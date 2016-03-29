@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Interactivity;
 using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class CloseableView : Behavior<Window>
 	{
 		protected override void OnAttached()

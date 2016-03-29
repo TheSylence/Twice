@@ -1,4 +1,5 @@
-﻿using Akavache;
+﻿using System.Diagnostics.CodeAnalysis;
+using Akavache;
 using Ninject.Modules;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
@@ -6,6 +7,7 @@ using Twice.Models.Twitter;
 
 namespace Twice.Injections
 {
+	[ExcludeFromCodeCoverage]
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>

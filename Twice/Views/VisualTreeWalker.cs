@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Twice.Views
 {
+	[ExcludeFromCodeCoverage]
 	internal static class VisualTreeWalker
 	{
 		public static TControl FindParent<TControl>( UIElement ctrl )
