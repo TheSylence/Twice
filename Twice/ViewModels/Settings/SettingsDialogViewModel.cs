@@ -1,5 +1,6 @@
 ﻿using Twice.Models.Configuration;
 using Twice.Resources;
+using Twice.Utilities;
 
 namespace Twice.ViewModels.Settings
 {
@@ -19,11 +20,14 @@ namespace Twice.ViewModels.Settings
 
 		protected override bool OnOk()
 		{
-			General.SaveTo( Config );
-			Visual.SaveTo( Config );
-			Mute.SaveTo( Config );
-			Notifications.SaveTo( Config );
-			Config.Save();
+			using( new WaitOperation() )
+			{
+				General.SaveTo( Config );
+				Visual.SaveTo( Config );
+				Mute.SaveTo( Config );
+				Notifications.SaveTo( Config );
+				Config.Save();
+			}
 
 			return base.OnOk();
 		}

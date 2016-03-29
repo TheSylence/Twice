@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using MahApps.Metro;
 using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using WPFLocalizeExtension.Engine;
@@ -80,6 +81,11 @@ namespace Twice.ViewModels.Settings
 			Application.Current.Resources["LinkBrush"] = ThemeManager.GetAccent( config.Visual.LinkColor ).Resources["HighlightBrush"];
 			Application.Current.Resources["MentionBrush"] = ThemeManager.GetAccent( config.Visual.MentionColor ).Resources["HighlightBrush"];
 			Application.Current.Resources["GlobalFontSize"] = (double)config.Visual.FontSize;
+
+			var palette = new PaletteHelper();
+			palette.SetLightDark( config.Visual.UseDarkTheme );
+			palette.ReplaceAccentColor( config.Visual.AccentColor );
+			palette.ReplacePrimaryColor( config.Visual.PrimaryColor );
 		}
 
 		public ICollection<ColorItem> AvailableAccentColors { get; }

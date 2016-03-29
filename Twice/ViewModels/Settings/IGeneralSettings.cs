@@ -7,5 +7,8 @@ namespace Twice.ViewModels.Settings
 	{
 		ICollection<CultureInfo> AvailableLanguages { get; }
 		CultureInfo SelectedLanguage { get; }
+		bool RealtimeStreaming { get; set; }
+		bool CheckForUpdates { get; set; }
+		bool IncludePrereleaseUpdates { get; set; }
 	}
 }

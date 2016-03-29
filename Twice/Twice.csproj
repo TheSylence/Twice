@@ -188,6 +188,7 @@
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
+    <Compile Include="Utilities\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\AddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />

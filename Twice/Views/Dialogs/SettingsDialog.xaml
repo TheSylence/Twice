@@ -46,7 +46,27 @@
 		</DockPanel>
 
 		<TabControl controls:TabControlHelper.IsUnderlined="True" Margin="5">
-			<TabItem Header="{lex:Loc General}" DataContext="{Binding General}" />
+			<TabItem Header="{lex:Loc General}" DataContext="{Binding General}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+
+					<StackPanel Orientation="Vertical">
+						<TextBlock Text="{lex:Loc Language}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+						<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								  DisplayMemberPath="NativeName" />
+
+						<CheckBox Content="{lex:Loc StreamContentInRealtime}" Margin="{StaticResource Spacing}"
+								  IsChecked="{Binding RealtimeStreaming,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
+								  IsEnabled="{Binding CheckForUpdates}"
+								  IsChecked="{Binding IncludePrereleaseUpdates,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
 			<TabItem Header="{lex:Loc Visual}" DataContext="{Binding Visual}">
 				<Grid>
 					<Grid.Resources>

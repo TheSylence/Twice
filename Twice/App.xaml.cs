@@ -60,9 +60,9 @@ namespace Twice
 			dict.SetCurrentThreadCulture = true;
 			dict.Culture = CultureInfo.GetCultureInfo( conf.General.Language );
 
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
-				new FrameworkPropertyMetadata( XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag ) ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag ) ) );
+			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		public static IKernel Kernel { get; private set; }
