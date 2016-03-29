@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -8,7 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Ninject;
 using Ninject.Modules;
@@ -19,7 +17,7 @@ using WPFLocalizeExtension.Engine;
 namespace Twice
 {
 	/// <summary>
-	/// Interaction logic for App.xaml
+	///     Interaction logic for App.xaml
 	/// </summary>
 	public partial class App
 	{
@@ -43,12 +41,14 @@ namespace Twice
 			palette.ReplaceAccentColor( conf.Visual.AccentColor );
 			palette.ReplacePrimaryColor( conf.Visual.PrimaryColor );
 
+			var swatches = new SwatchesProvider().Swatches.ToArray();
+
 			var resDict = new ResourceDictionary();
 			resDict.BeginInit();
 			{
-				resDict.Add( "HashtagBrush", ThemeManager.GetAccent( conf.Visual.HashtagColor ).Resources["HighlightBrush"] );
-				resDict.Add( "LinkBrush", ThemeManager.GetAccent( conf.Visual.LinkColor ).Resources["HighlightBrush"] );
-				resDict.Add( "MentionBrush", ThemeManager.GetAccent( conf.Visual.MentionColor ).Resources["HighlightBrush"] );
+				resDict.Add( "HashtagBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.HashtagColor ).ExemplarHue.Color ) );
+				resDict.Add( "LinkBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.LinkColor ).ExemplarHue.Color ) );
+				resDict.Add( "MentionBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.MentionColor ).ExemplarHue.Color ) );
 				resDict.Add( "GlobalFontSize", (double)conf.Visual.FontSize );
 			}
 			resDict.EndInit();
@@ -60,7 +60,8 @@ namespace Twice
 			dict.SetCurrentThreadCulture = true;
 			dict.Culture = CultureInfo.GetCultureInfo( conf.General.Language );
 
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ), new FrameworkPropertyMetadata( XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag ) ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
+				new FrameworkPropertyMetadata( XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag ) ) );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag ) ) );
 		}
 

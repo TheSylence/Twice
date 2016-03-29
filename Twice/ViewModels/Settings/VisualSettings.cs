@@ -18,20 +18,20 @@ namespace Twice.ViewModels.Settings
 		{
 			var swatches = new SwatchesProvider().Swatches.ToArray();
 
-			AvailableAccentColors = new List<ColorItem>( swatches.Where(a=>a.IsAccented).Select( a =>
+			AvailableAccentColors = new List<ColorItem>( swatches.Where( a => a.IsAccented ).Select( a =>
 				new ColorItem
 				{
 					Name = a.Name,
-					ColorBrush = new SolidColorBrush( a.PrimaryHues.First( h => h.Name.Equals( "Primary500" ) ).Color )
+					ColorBrush = new SolidColorBrush( a.ExemplarHue.Color )
 				}
 				) );
 
 			AvailablePrimaryColors = new List<ColorItem>( swatches.Select( a =>
-					 new ColorItem
-					 {
-						 Name = a.Name,
-						 ColorBrush = new SolidColorBrush( a.PrimaryHues.First( h => h.Name.Equals( "Primary500" ) ).Color )
-					 }
+				new ColorItem
+				{
+					Name = a.Name,
+					ColorBrush = new SolidColorBrush( a.ExemplarHue.Color )
+				}
 				) );
 
 			SelectedPrimaryColor = AvailablePrimaryColors.First( c => c.Name == currentConfig.Visual.PrimaryColor );
@@ -61,10 +61,7 @@ namespace Twice.ViewModels.Settings
 			SelectedLinkColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
 			SelectedMentionColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
 			InlineMedias = currentConfig.Visual.InlineMedia;
-
 		}
-
-		public ICollection<ColorItem> AvailablePrimaryColors { get; }
 
 		public void SaveTo( IConfig config )
 		{
@@ -86,15 +83,13 @@ namespace Twice.ViewModels.Settings
 		}
 
 		public ICollection<ColorItem> AvailableAccentColors { get; }
-
 		public ICollection<FontSizeItem> AvailableFontSizes { get; }
-
 		public ICollection<CultureInfo> AvailableLanguages { get; }
+		public ICollection<ColorItem> AvailablePrimaryColors { get; }
 
 		public bool InlineMedias
 		{
-			[DebuggerStepThrough]
-			get { return _InlineMedias; }
+			[DebuggerStepThrough] get { return _InlineMedias; }
 			set
 			{
 				if( _InlineMedias == value )
@@ -109,8 +104,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedAccentColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedAccentColor; }
+			[DebuggerStepThrough] get { return _SelectedAccentColor; }
 			set
 			{
 				if( _SelectedAccentColor == value )
@@ -125,8 +119,7 @@ namespace Twice.ViewModels.Settings
 
 		public FontSizeItem SelectedFontSize
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedFontSize; }
+			[DebuggerStepThrough] get { return _SelectedFontSize; }
 			set
 			{
 				if( _SelectedFontSize == value )
@@ -141,8 +134,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedHashtagColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedHashtagColor; }
+			[DebuggerStepThrough] get { return _SelectedHashtagColor; }
 			set
 			{
 				if( _SelectedHashtagColor == value )
@@ -157,8 +149,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedLinkColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedLinkColor; }
+			[DebuggerStepThrough] get { return _SelectedLinkColor; }
 			set
 			{
 				if( _SelectedLinkColor == value )
@@ -173,8 +164,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedMentionColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedMentionColor; }
+			[DebuggerStepThrough] get { return _SelectedMentionColor; }
 			set
 			{
 				if( _SelectedMentionColor == value )
@@ -189,11 +179,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedPrimaryColor
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedPrimaryColor;
-			}
+			[DebuggerStepThrough] get { return _SelectedPrimaryColor; }
 			set
 			{
 				if( _SelectedPrimaryColor == value )
@@ -208,8 +194,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool UseDarkTheme
 		{
-			[DebuggerStepThrough]
-			get { return _UseDarkTheme; }
+			[DebuggerStepThrough] get { return _UseDarkTheme; }
 			set
 			{
 				if( _UseDarkTheme == value )
@@ -222,28 +207,20 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _InlineMedias;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _InlineMedias;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedAccentColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedAccentColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private FontSizeItem _SelectedFontSize;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private FontSizeItem _SelectedFontSize;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedHashtagColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedHashtagColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedLinkColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedLinkColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedMentionColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedMentionColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedPrimaryColor;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ColorItem _SelectedPrimaryColor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _UseDarkTheme;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _UseDarkTheme;
 	}
 }

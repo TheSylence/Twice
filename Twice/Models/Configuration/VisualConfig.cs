@@ -8,9 +8,9 @@
 			PrimaryColor = "bluegrey";
 			AccentColor = "blue";
 			FontSize = 16;
-			HashtagColor = "red";
-			MentionColor = "green";
-			LinkColor = "tial";
+			HashtagColor = "blue";
+			MentionColor = "blue";
+			LinkColor = "blue";
 			InlineMedia = true;
 		}
 
