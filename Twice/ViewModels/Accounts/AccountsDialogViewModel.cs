@@ -1,9 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Columns.Definitions;
 
@@ -12,16 +17,32 @@ namespace Twice.ViewModels.Accounts
 	internal interface IAccountsDialogViewModel : IDialogViewModel
 	{
 		ICommand AddAccountCommand { get; }
+		ICollection<AccountEntry> AddedAccounts { get; }
+	}
+
+	internal class AccountEntry
+	{
+		public AccountEntry( IContextEntry context )
+		{
+			AccountName = context.AccountName;
+			ProfileImage = context.ProfileImageUrl;
+			IsDefaultAccount = true;
+		}
+
+		public string AccountName { get; }
+		public bool IsDefaultAccount { get; set; }
+		public Uri ProfileImage { get; }
 	}
 
 	internal class AccountsDialogViewModel : DialogViewModel, IAccountsDialogViewModel
 	{
-		public AccountsDialogViewModel( IColumnDefinitionList columnList )
+		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList )
 		{
+			ContextList = contextList;
 			ColumnList = columnList;
-		}
 
-		private readonly IColumnDefinitionList ColumnList;
+			AddedAccounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+		}
 
 		private void DisplayPinPage( string url )
 		{
@@ -68,8 +89,6 @@ namespace Twice.ViewModels.Accounts
 			Close( true );
 		}
 
-		const string DialogHostIdentifier = "AccountDialogHost";
-
 		private string GetPinFromUser()
 		{
 			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null, DialogHostIdentifier );
@@ -81,6 +100,11 @@ namespace Twice.ViewModels.Accounts
 		}
 
 		public ICommand AddAccountCommand => _AddAccountCommand ?? ( _AddAccountCommand = new RelayCommand( ExecuteAddAccountCommand ) );
+		public ICollection<AccountEntry> AddedAccounts { get; }
+
+		private const string DialogHostIdentifier = "AccountDialogHost";
+		private readonly IColumnDefinitionList ColumnList;
+		private readonly ITwitterContextList ContextList;
 		private RelayCommand _AddAccountCommand;
 		private bool PinEntryCancelled;
 	}

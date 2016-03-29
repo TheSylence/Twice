@@ -432,4 +432,7 @@
   <data name="MessagesDescription" xml:space="preserve">
     <value>Messages sent from/to an account</value>
   </data>
+  <data name="IsDefaultAccount" xml:space="preserve">
+    <value>Default account</value>
+  </data>
 </root>

@@ -511,6 +511,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default account.
+        /// </summary>
+        internal static string IsDefaultAccount {
+            get {
+                return ResourceManager.GetString("IsDefaultAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Licenses.
         /// </summary>
         internal static string Licenses {

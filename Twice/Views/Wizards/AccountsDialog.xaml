@@ -6,6 +6,7 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:accounts="clr-namespace:Twice.ViewModels.Accounts"
              mc:Ignorable="d" Title="{lex:Loc Accounts}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Accounts, Source={StaticResource DialogLocator}}"
 			Width="600" Height="500" d:DesignHeight="300" d:DesignWidth="300">
@@ -16,11 +17,50 @@
 				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 
-			<ItemsControl />
+			<ItemsControl ItemsSource="{Binding AddedAccounts}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="accounts:AccountEntry">
+						<materialDesign:Card Margin="5">
+							<Expander Margin="5">
+								<Expander.Header>
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition />
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition />
+											<RowDefinition />
+										</Grid.RowDefinitions>
+
+										<Image Source="{Binding ProfileImage, IsAsync=True}" Grid.RowSpan="2" Width="48" Height="48" Margin="5"
+									   VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+										<TextBlock Text="{Binding AccountName}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
+										<TextBlock Text="{lex:Loc IsDefaultAccount}" Visibility="{Binding IsDefaultAccount, Converter={StaticResource BoolToVisibleConv}}"
+									   Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
+									</Grid>
+								</Expander.Header>
+
+								<StackPanel Orientation="Vertical">
+									<CheckBox Content="{lex:Loc RequiresConfirmationStep}" Margin="5" />
+									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}" />
+									<Button Margin="5">
+										<DockPanel>
+											<materialDesign:PackIcon Kind="Delete" Margin="5,0" />
+											<TextBlock Text="{lex:Loc Delete}" />
+										</DockPanel>
+									</Button>
+								</StackPanel>
+							</Expander>
+						</materialDesign:Card>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 
 			<Button Grid.Column="1" VerticalAlignment="Top" Margin="5" Command="{Binding AddAccountCommand}">
 				<DockPanel>
-					<materialDesign:PackIcon Kind="AccountPlus" DockPanel.Dock="Left" />
+					<materialDesign:PackIcon Kind="AccountPlus" DockPanel.Dock="Left" Margin="5,0" />
 					<TextBlock Text="{lex:Loc AddAccount}" />
 				</DockPanel>
 			</Button>

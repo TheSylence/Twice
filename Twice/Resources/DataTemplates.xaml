@@ -43,7 +43,7 @@
 
 							<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="16" Height="16" VerticalAlignment="Center" />
 
-							<Image Height="16" Width="16" Source="{Binding SourceUser.ProfileImageUrlHttps}" Margin="5,0" />
+							<Image Height="16" Width="16" Source="{Binding SourceUser.ProfileImageUrlHttps, IsAsync=True}" Margin="5,0" />
 
 							<TextBlock Text="{Binding SourceUser.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 						</StackPanel>
