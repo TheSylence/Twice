@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.Tests.ViewModels.Columns.Definitions
@@ -53,6 +53,22 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			Assert.AreEqual( timelineDef.Type, col.Type );
 			Assert.AreEqual( timelineDef.SourceAccount, col.SourceAccount );
 			CollectionAssert.AreEqual( timelineDef.AccountIds, col.AccountIds );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void SavingColumnsRaisesChangeEvent()
+		{
+			// Arrange
+			var fileName = Path.GetTempFileName();
+			var list = new ColumnDefinitionList( fileName );
+			bool raised = false;
+			list.ColumnsChanged += ( s, e ) => raised = true;
+
+			// Act
+			list.Save( Enumerable.Empty<ColumnDefinition>() );
+
+			// Assert
+			Assert.IsTrue( raised );
 		}
 	}
 }

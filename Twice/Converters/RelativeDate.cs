@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using Twice.Resources;
+using Twice.Utilities;
 
 namespace Twice.Converters
 {
@@ -20,15 +21,15 @@ namespace Twice.Converters
 
 			TimeSpan maxRelative = TimeSpan.MaxValue;
 
-			TimeSpan diff = DateTime.Now - date;
+			TimeSpan diff = TimeSpan.FromTicks( Math.Abs( DateProvider.Now.Ticks - date.Ticks ) );
 
 			if( diff > maxRelative )
 			{
 				return date.ToString( culture );
 			}
 
-			int amount = 0;
-			string suffix = string.Empty;
+			int amount;
+			string suffix;
 
 			// days
 			if( (int)diff.TotalDays >= 1 )
@@ -36,12 +37,14 @@ namespace Twice.Converters
 				suffix = Strings.DaysShort;
 				amount = (int)diff.TotalDays;
 			}
+
 			// hours
 			else if( (int)diff.TotalHours >= 1 )
 			{
 				suffix = Strings.HoursShort;
 				amount = (int)diff.TotalHours;
 			}
+
 			// minutes
 			else if( (int)diff.TotalMinutes >= 1 )
 			{
@@ -61,5 +64,7 @@ namespace Twice.Converters
 		{
 			throw new NotSupportedException();
 		}
+
+		internal IDateProvider DateProvider { get; set; } = Utilities.DateProvider.Default;
 	}
 }
