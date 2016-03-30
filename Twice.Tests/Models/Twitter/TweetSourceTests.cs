@@ -1,0 +1,93 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Twice.Models.Twitter;
+
+namespace Twice.Tests.Models.Twitter
+{
+	[TestClass]
+	public class TweetSourceTests
+	{
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void AppIsCorrectlyRecognized()
+		{
+			// Arrange
+			var url = "<a href=\"http://example.com\" rel=\"nofollow\">ExampleApp</a>";
+
+			// Act
+			var source = new TweetSource( url );
+
+			// Assert
+			Assert.AreEqual( "ExampleApp", source.Name );
+			Assert.AreEqual( new Uri( "http://example.com" ), source.Url );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void EmptySourceUsesWebAsFallback()
+		{
+			// Arrange
+			var url = string.Empty;
+
+			// Act
+			var source = new TweetSource( url );
+
+			// Assert
+			Assert.AreEqual( "web", source.Name );
+			Assert.AreEqual( new Uri( "https://twitter.com" ), source.Url );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void MalformedSourceThrows()
+		{
+			// Arrange
+			var url = "this is a test";
+
+			// Act
+			var ex = ExceptionAssert.Catch<ArgumentException>( () => new TweetSource( url ) );
+
+			// Assert
+			Assert.IsNotNull( ex );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void NullSourceThrowsException()
+		{
+			// Arrange Act
+			var ex = ExceptionAssert.Catch<ArgumentNullException>( () => new TweetSource( null ) );
+
+			// Assert
+			Assert.IsNotNull( ex );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void StrangeFormattedAppsAreRecognized()
+		{
+			// Arrange
+			var wrongOrderUrl = "<a rel=\"nofollow\" href=\"http://example.com\">ExampleApp</a>";
+			var noRelUrl = "<a href=\"http://example.com\">ExampleApp</a>";
+
+			// Act
+			var wrongOrderSource = new TweetSource( wrongOrderUrl );
+			var noRelSource = new TweetSource( noRelUrl );
+
+			// Assert
+			Assert.AreEqual( "ExampleApp", wrongOrderSource.Name );
+			Assert.AreEqual( new Uri( "http://example.com" ), wrongOrderSource.Url );
+			Assert.AreEqual( "ExampleApp", noRelSource.Name );
+			Assert.AreEqual( new Uri( "http://example.com" ), noRelSource.Url );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void WebIsCorrectlyRecognized()
+		{
+			// Arrange
+			var url = "web";
+
+			// Act
+			var source = new TweetSource( url );
+
+			// Assert
+			Assert.AreEqual( "web", source.Name );
+			Assert.AreEqual( new Uri( "https://twitter.com" ), source.Url );
+		}
+	}
+}

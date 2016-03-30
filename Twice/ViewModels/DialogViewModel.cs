@@ -14,7 +14,7 @@ namespace Twice.ViewModels
 		string Title { get; set; }
 	}
 
-	internal abstract class DialogViewModel : ValidationViewModel, IDialogViewModel
+	internal class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
 		public event EventHandler<CloseEventArgs> CloseRequested;
 
@@ -25,13 +25,13 @@ namespace Twice.ViewModels
 
 		protected void Close( bool result )
 		{
-			DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository.CurrentDialog );
+			DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository?.CurrentDialog );
 			CloseRequested?.Invoke( this, result ? CloseEventArgs.Ok : CloseEventArgs.Cancel );
 		}
 
 		protected virtual bool OnOk()
 		{
-			return true;
+			return !HasErrors;
 		}
 
 		private void ExecuteCancelCommand()
@@ -41,6 +41,7 @@ namespace Twice.ViewModels
 
 		private void ExecuteOkCommand()
 		{
+			ValidateAll();
 			if( OnOk() )
 			{
 				Close( true );

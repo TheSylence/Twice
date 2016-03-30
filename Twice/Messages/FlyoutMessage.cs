@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Twice.Messages
 {
@@ -9,6 +10,7 @@ namespace Twice.Messages
 		Toggle
 	}
 
+	[ExcludeFromCodeCoverage]
 	internal class FlyoutMessage : MessageBase
 	{
 		public FlyoutMessage( string name, FlyoutAction action, object dataContext = null )

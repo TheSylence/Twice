@@ -1,8 +1,10 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Twice.Messages
 {
 	/// <summary>Message that is sent when dragging occured for a resize thumb.</summary>
+	[ExcludeFromCodeCoverage]
 	internal class DragMessage : MessageBase
 	{
 		public DragMessage( object sender, bool start )

@@ -1,7 +1,9 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Twice.Messages
 {
+	[ExcludeFromCodeCoverage]
 	internal class ColumnLockMessage : MessageBase
 	{
 		public ColumnLockMessage( bool locked )

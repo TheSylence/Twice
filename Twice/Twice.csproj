@@ -189,9 +189,13 @@
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
+    <Compile Include="Models\Twitter\Text\TwitterText.cs" />
+    <Compile Include="Obscurity.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
+    <Compile Include="Utilities\DPAPI.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Utilities\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactory.cs" />

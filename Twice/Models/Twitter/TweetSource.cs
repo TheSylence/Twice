@@ -40,6 +40,6 @@ namespace Twice.Models.Twitter
 		/// <summary>Website of the application.</summary>
 		public Uri Url { get; private set; }
 
-		private static readonly Regex Pattern = new Regex( "<a href=\"(.*?)\".*>(.*?)</a>" );
+		private static readonly Regex Pattern = new Regex( "<a.*href=\"(.*?)\".*>(.*?)</a>" );
 	}
 }
