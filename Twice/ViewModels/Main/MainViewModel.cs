@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -51,9 +52,16 @@ namespace Twice.ViewModels.Main
 			if( Configuration.General.CheckForUpdates )
 			{
 				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.IO.BetaChannelUrl : Constants.IO.ReleaseChannelUrl;
-				using( var mgr = new UpdateManager( channelUrl ) )
+
+				try
 				{
-					await mgr.UpdateApp();
+					using( var mgr = new UpdateManager( channelUrl ) )
+					{
+						await mgr.UpdateApp();
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
 				}
 			}
 		}
@@ -72,12 +80,12 @@ namespace Twice.ViewModels.Main
 		{
 			var vm = sender as IColumnViewModel;
 			Debug.Assert( vm != null );
-			
+
 			ColumnNotifications columnSettings = vm.Definition.Notifications;
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
-		private async void ColumnList_ColumnsChanged( object sender, System.EventArgs e )
+		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
 		{
 			ConstructColumns();
 			await OnLoad( null );
@@ -102,7 +110,7 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
-		private void ContextList_ContextsChanged( object sender, System.EventArgs e )
+		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( HasContexts ) );
 		}
