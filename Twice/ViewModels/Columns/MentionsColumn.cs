@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
 using Twice.Resources;
+using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class MentionsColumn : ColumnViewModelBase
 	{
-		public MentionsColumn( IContextEntry context ) : base( context )
+		public MentionsColumn( IContextEntry context, ColumnDefinition definition ) : base( context, definition )
 		{
 			Icon = Icon.Mentions;
 			Title = Strings.Mentions;

@@ -1,6 +1,6 @@
 ﻿namespace Twice.ViewModels.Columns.Definitions
 {
-	class ColumnDefinition
+	internal class ColumnDefinition
 	{
 		public ColumnDefinition( ColumnType type )
 		{
@@ -8,9 +8,10 @@
 			Width = 300;
 		}
 
+		public ColumnNotifications Notifications { get; set; }
+		public ulong[] SourceAccounts { get; set; }
+		public ulong[] TargetAccounts { get; set; }
 		public ColumnType Type { get; set; }
 		public int Width { get; set; }
-		public ulong[] TargetAccounts { get; set; }
-		public ulong[] SourceAccounts { get; set; }
 	}
 }

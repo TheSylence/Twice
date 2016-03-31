@@ -60,13 +60,10 @@ namespace Twice.ViewModels.Main
 
 		private void Col_NewStatus( object sender, StatusEventArgs e )
 		{
-			ColumnNotifications columnSettings = new ColumnNotifications
-			{
-				Popup = true,
-				Sound = true,
-				Toast = true
-			};
-
+			var vm = sender as IColumnViewModel;
+			Debug.Assert( vm != null );
+			
+			ColumnNotifications columnSettings = vm.Definition.Notifications;
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 

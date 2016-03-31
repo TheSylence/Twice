@@ -48,7 +48,7 @@ namespace Twice.ViewModels.Columns
 
 		private ColumnViewModelBase MentionsColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			return new MentionsColumn( context );
+			return new MentionsColumn( context, definition );
 		}
 
 		private IContextEntry RandomContext()
@@ -59,12 +59,12 @@ namespace Twice.ViewModels.Columns
 
 		private ColumnViewModelBase TimelineColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			return new TimelineColumn( context );
+			return new TimelineColumn( context, definition );
 		}
 
 		private ColumnViewModelBase UserColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			return new UserColumn( context, definition.TargetAccounts.First() );
+			return new UserColumn( context, definition, definition.TargetAccounts.First() );
 		}
 
 		private readonly ITwitterContextList Contexts;

@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
 using Twice.Models.Twitter;
 using Twice.Utilities;
+using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
-		protected ColumnViewModelBase( IContextEntry context )
+		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition )
 		{
+			Definition = definition;
 			Context = context;
 			Width = 300;
 			IsLoading = true;
@@ -54,6 +56,7 @@ namespace Twice.ViewModels.Columns
 			NewStatus?.Invoke( this, new StatusEventArgs( status ) );
 		}
 
+		public ColumnDefinition Definition { get; }
 		public abstract Icon Icon { get; }
 		public bool IsLoading { get; private set; }
 		public IStatusMuter Muter { get; set; }
@@ -61,8 +64,7 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get { return _Title; }
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -77,8 +79,7 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough]
-			get { return _Width; }
+			[DebuggerStepThrough] get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -96,10 +97,8 @@ namespace Twice.ViewModels.Columns
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}
 }

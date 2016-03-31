@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
@@ -8,8 +9,10 @@ namespace Twice.ViewModels.Columns
 	internal interface IColumnViewModel
 	{
 		event EventHandler<StatusEventArgs> NewStatus;
+
 		Task Load();
 
+		ColumnDefinition Definition { get; }
 		Icon Icon { get; }
 		bool IsLoading { get; }
 		ICollection<StatusViewModel> Statuses { get; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
 using Twice.Resources;
+using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
@@ -11,8 +12,8 @@ namespace Twice.ViewModels.Columns
 	internal class TimelineColumn : ColumnViewModelBase
 	{
 		// TODO: Implement joined timelines for multiple contexts
-		public TimelineColumn( IContextEntry context )
-			: base( context )
+		public TimelineColumn( IContextEntry context, ColumnDefinition definition )
+			: base( context, definition )
 		{
 			Title = Strings.Home;
 		}

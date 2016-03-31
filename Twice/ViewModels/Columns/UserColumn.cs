@@ -1,16 +1,16 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Models.Twitter;
+using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class UserColumn : ColumnViewModelBase
 	{
-		public UserColumn( IContextEntry context, ulong userId )
-			: base( context )
+		public UserColumn( IContextEntry context, ColumnDefinition definition, ulong userId )
+			: base( context, definition )
 		{
 			UserId = userId;
 		}
@@ -22,7 +22,7 @@ namespace Twice.ViewModels.Columns
 
 			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == UserId ).ToListAsync();
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( t => new StatusViewModel( t, Context ) ).ToArray();
-			
+
 			await AddStatuses( list );
 		}
 
