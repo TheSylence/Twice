@@ -6,8 +6,22 @@
         WindowStartupLocation="CenterOwner" DataContext="{Binding Info, Source={StaticResource DialogLocator}}"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+        xmlns:info="clr-namespace:Twice.ViewModels.Info"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}"
         Title="{lex:Loc Info}" Height="600" Width="600">
+	<controls:MetroWindow.Resources>
+		<xaml:Markdown x:Key="Markdown">
+			<xaml:Markdown.DocumentStyle>
+				<Style TargetType="FlowDocument">
+					<Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
+					<Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
+				</Style>
+			</xaml:Markdown.DocumentStyle>
+		</xaml:Markdown>
+
+		<xaml:TextToFlowDocumentConverter x:Key="FlowDocConv" Markdown="{StaticResource Markdown}" />
+	</controls:MetroWindow.Resources>
 	<TabControl>
 		<TabItem Header="{lex:Loc About}">
 			<StackPanel Orientation="Vertical">
@@ -21,6 +35,11 @@
 				</StackPanel>
 			</StackPanel>
 		</TabItem>
-		<TabItem Header="{lex:Loc Licenses}" />
+		<TabItem Header="{lex:Loc Licenses}">
+			<DockPanel>
+				<ComboBox DockPanel.Dock="Top" ItemsSource="{Binding Licenses}" DisplayMemberPath="Name" x:Name="LicenseSelection" SelectedIndex="0" />
+				<FlowDocumentScrollViewer Document="{Binding ElementName=LicenseSelection, Path=SelectedItem.(info:LicenseItem.Content), Converter={StaticResource FlowDocConv}}" Padding="5" />
+			</DockPanel>
+		</TabItem>
 	</TabControl>
 </controls:MetroWindow>

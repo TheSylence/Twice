@@ -471,6 +471,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Resources\Documentation\Mute.md" />
+    <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>
@@ -489,6 +490,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TwitterIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\MaterialDesignInXamlToolkit.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\Twitter-Text-CS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\LinqToTwitter.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\MvvmLightToolkit.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\Squirrel.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

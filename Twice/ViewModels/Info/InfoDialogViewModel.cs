@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Twice.ViewModels.Info
@@ -8,6 +10,7 @@ namespace Twice.ViewModels.Info
 	internal interface IInfoDialogViewModel : IDialogViewModel
 	{
 		DateTime BuildDate { get; }
+		ICollection<LicenseItem> Licenses { get; }
 		string Version { get; }
 	}
 
@@ -21,6 +24,8 @@ namespace Twice.ViewModels.Info
 
 			//FileVersionInfo info = FileVersionInfo.GetVersionInfo( assembly.Location );
 			Version = assembly.GetName().Version.ToString();
+
+			Licenses = ReadLicenses( assembly ).OrderBy( l => l.Name ).ToList();
 		}
 
 		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
@@ -57,7 +62,40 @@ namespace Twice.ViewModels.Info
 			return File.GetLastWriteTime( filePath );
 		}
 
-		public string Version { get; }
+		private IEnumerable<LicenseItem> ReadLicenses( Assembly assembly )
+		{
+			const string lookupCrit = ".Resources.Licenses.";
+			foreach( var res in assembly.GetManifestResourceNames().Where( n => n.Contains( lookupCrit ) ) )
+			{
+				using( var stream = assembly.GetManifestResourceStream( res ) )
+				{
+					Debug.Assert( stream != null, "stream != null" );
+					using( var reader = new StreamReader( stream ) )
+					{
+						int resIdx = res.IndexOf( lookupCrit, StringComparison.Ordinal );
+						string name = res.Substring( resIdx + lookupCrit.Length );
+						name = name.Substring( 0, name.Length - 4 );
+
+						yield return new LicenseItem( name, reader.ReadToEnd() );
+					}
+				}
+			}
+		}
+
 		public DateTime BuildDate { get; }
+		public ICollection<LicenseItem> Licenses { get; }
+		public string Version { get; }
+	}
+
+	internal class LicenseItem
+	{
+		public LicenseItem( string name, string content )
+		{
+			Name = name;
+			Content = content;
+		}
+
+		public string Content { get; }
+		public string Name { get; }
 	}
 }
