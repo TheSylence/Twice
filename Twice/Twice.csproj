@@ -192,11 +192,6 @@
     <Compile Include="Models\Twitter\Text\TwitterText.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Obscurity.cs" />
-    <Compile Include="Resources\Strings1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
