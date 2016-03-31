@@ -44,14 +44,14 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			Assert.IsNotNull( col );
 			Assert.AreEqual( mentionDef.Width, col.Width );
 			Assert.AreEqual( mentionDef.Type, col.Type );
-			Assert.AreEqual( mentionDef.SourceAccounts, col.SourceAccounts );
+			CollectionAssert.AreEqual( mentionDef.SourceAccounts, col.SourceAccounts );
 			CollectionAssert.AreEqual( mentionDef.TargetAccounts, col.TargetAccounts );
 
 			col = loaded.SingleOrDefault( c => c.Type == ColumnType.Timeline );
 			Assert.IsNotNull( col );
 			Assert.AreEqual( timelineDef.Width, col.Width );
 			Assert.AreEqual( timelineDef.Type, col.Type );
-			Assert.AreEqual( timelineDef.SourceAccounts, col.SourceAccounts );
+			CollectionAssert.AreEqual( timelineDef.SourceAccounts, col.SourceAccounts );
 			CollectionAssert.AreEqual( timelineDef.TargetAccounts, col.TargetAccounts );
 		}
 

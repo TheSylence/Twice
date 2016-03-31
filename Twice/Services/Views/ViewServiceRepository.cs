@@ -30,10 +30,17 @@ namespace Twice.Services.Views
 		{
 			Debug.Assert( args != null );
 
+			var dictionary = new ResourceDictionary
+			{
+				Source = new Uri( "pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
+			};
+
 			var settings = new MetroDialogSettings
 			{
 				AffirmativeButtonText = Strings.Yes,
-				NegativeButtonText = Strings.No
+				NegativeButtonText = Strings.No,
+				SuppressDefaultResources = true,
+				CustomResourceDictionary = dictionary
 			};
 			var result = await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
 
