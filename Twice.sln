@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twice", "Twice\Twice.csproj", "{282A4006-E8AB-4F9B-A254-FFAA84FEDD55}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown.Xaml", "ThidParty\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj", "{34186C3B-C308-4CAE-B462-DB7B5F5E378C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twice.Tests", "Twice.Tests\Twice.Tests.csproj", "{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4FEA595-9C58-475F-8981-F97A16CFEFAC}"
+	ProjectSection(SolutionItems) = preProject
+		releasify.ps1 = releasify.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

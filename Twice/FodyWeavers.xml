@@ -2,5 +2,4 @@
 <Weavers>
   <Anotar.NLog />
   <Resourcer />
-  <Stamp />
 </Weavers>

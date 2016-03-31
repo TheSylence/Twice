@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Twice</id>
+        <version>0.0.0.0</version>
+        <title>Twice</title>
+        <authors>Matthias Specht</authors>
+        <projectUrl>http://btbsoft.org</projectUrl>
+        <iconUrl>http://software.btbsoft.org/twice/icon.ico</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A Twitter client for windows.</description>
+    </metadata>
+    <files>
+		<file src="bin\Release\*.*" target="lib\net45\" exclude="bin\release\*.pdb;bin\release\*.nupkg;bin\release\*.vshost.*;bin\release\*.xml"/>
+		<file src="bin\Release\x86\*.dll" target="lib\net45\x86" />
+		<file src="bin\Release\x64\*.dll" target="lib\net45\x64" />
+		<file src="bin\Release\de-DE\*.dll" target="lib\net45\de-DE" />
+    </files>
+</package>

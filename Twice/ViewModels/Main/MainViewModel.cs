@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using Squirrel;
 using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -44,6 +45,15 @@ namespace Twice.ViewModels.Main
 				if( await ViewServiceRepository.Confirm( csa ) )
 				{
 					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+
+			if( Configuration.General.CheckForUpdates )
+			{
+				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.IO.BetaChannelUrl : Constants.IO.ReleaseChannelUrl;
+				using( var mgr = new UpdateManager( channelUrl ) )
+				{
+					await mgr.UpdateApp();
 				}
 			}
 		}
