@@ -8,6 +8,8 @@ namespace Twice.ViewModels.Columns
 {
 	internal interface IColumnViewModel
 	{
+		IColumnActionDispatcher ActionDispatcher { get; }
+
 		event EventHandler<StatusEventArgs> NewStatus;
 
 		Task Load();

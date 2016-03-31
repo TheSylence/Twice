@@ -218,6 +218,9 @@
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
+    <Compile Include="Behaviors\ColumnHandler.cs" />
+    <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
+    <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
@@ -248,6 +251,7 @@
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionFactory.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnNotifications.cs" />
     <Compile Include="ViewModels\Columns\Definitions\IColumnDefinitionList.cs" />
+    <Compile Include="ViewModels\Columns\IColumnActionDispatcher.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
     <Compile Include="ViewModels\Info\InfoDialogViewModel.cs" />

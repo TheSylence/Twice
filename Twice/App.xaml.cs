@@ -11,6 +11,9 @@ using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Ninject;
 using Ninject.Modules;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using Twice.Injections;
 using Twice.Messages;
 using Twice.Models.Configuration;
@@ -29,6 +32,32 @@ namespace Twice
 
 			base.OnExit( e );
 		}
+		private void ConfigureLogging()
+		{
+			var config = new LoggingConfiguration();
+
+			var debuggerTarget = new DebuggerTarget
+			{
+				Layout = "[${level:uppercase=true}] ${logger}: ${message} ${exception}"
+			};
+			config.AddTarget( "debugger", debuggerTarget );
+
+			var fileTarget = new FileTarget
+			{
+				Layout = "${longdate} [${level:uppercase=true}] ${logger}: ${message} ${exception}",
+				FileName = "log.txt",
+				DeleteOldFileOnStartup = true
+			};
+			config.AddTarget( "Logfile", fileTarget );
+
+			var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
+			config.LoggingRules.Add( debuggerRule );
+
+			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
+			config.LoggingRules.Add( fileRule );
+
+			LogManager.Configuration = config;
+		}
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
@@ -36,6 +65,7 @@ namespace Twice
 			Kernel = new StandardKernel( InjectionModules.ToArray() );
 
 			base.OnStartup( e );
+			ConfigureLogging();
 
 			var conf = Kernel.Get<IConfig>();
 			var palette = new PaletteHelper();

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LinqToTwitter;
 using Twice.Models.Twitter;
@@ -13,6 +14,11 @@ namespace Twice.ViewModels.Columns
 			: base( context, definition )
 		{
 			UserId = userId;
+		}
+
+		protected override Task LoadMoreData()
+		{
+			throw new NotImplementedException();
 		}
 
 		protected override async Task OnLoad()

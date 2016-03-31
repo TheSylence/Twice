@@ -20,6 +20,10 @@ namespace Twice.ViewModels.Columns
 			Width = 300;
 			IsLoading = true;
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
+			ActionDispatcher = new ColumnActionDispatcher();
+
+			ActionDispatcher.HeaderClicked += ActionDispatcher_HeaderClicked;
+			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
 		}
 
 		public event EventHandler<StatusEventArgs> NewStatus;
@@ -38,6 +42,9 @@ namespace Twice.ViewModels.Columns
 
 		protected async Task AddStatus( StatusViewModel status )
 		{
+			SinceId = Math.Min( SinceId, status.Id );
+			MaxId = Math.Min( MaxId, status.Id );
+
 			await DispatcherHelper.RunAsync( () => StatusCollection.Add( status ) );
 			RaiseNewStatus( status );
 		}
@@ -45,9 +52,14 @@ namespace Twice.ViewModels.Columns
 		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
+			SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
+			MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
+
 			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
 			RaiseNewStatus( statusViewModels.Last() );
 		}
+
+		protected abstract Task LoadMoreData();
 
 		protected abstract Task OnLoad();
 
@@ -59,15 +71,59 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
+		{
+			IsLoading = true;
+			await Task.Run( async () =>
+			{
+				await LoadMoreData().ContinueWith( t =>
+				{
+					IsLoading = false;
+				} );
+			} );
+		}
+
+		private void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
+		{
+			if( !Configuration.General.RealtimeStreaming )
+			{
+				// TODO: Refresh column
+			}
+		}
+
+		public IColumnActionDispatcher ActionDispatcher { get; }
+
 		public ColumnDefinition Definition { get; }
+
 		public abstract Icon Icon { get; }
-		public bool IsLoading { get; private set; }
+
+		public bool IsLoading
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return _IsLoading;
+			}
+			private set
+			{
+				if( _IsLoading == value )
+				{
+					return;
+				}
+
+				_IsLoading = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public IStatusMuter Muter { get; set; }
+
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -82,7 +138,8 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough] get { return _Width; }
+			[DebuggerStepThrough]
+			get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -96,12 +153,21 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		protected ulong MaxId { get; private set; } = ulong.MaxValue;
+
+		protected ulong SinceId { get; private set; } = ulong.MinValue;
+
 		protected readonly IContextEntry Context;
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private double _Width;
 	}
 }

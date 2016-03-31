@@ -6,11 +6,19 @@ using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
+using System;
+using Anotar.NLog;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class TimelineColumn : ColumnViewModelBase
 	{
+		protected override Task LoadMoreData()
+		{
+			LogTo.Trace( "Timeline loadmore" );
+			return Task.CompletedTask;
+		}
+
 		// TODO: Implement joined timelines for multiple contexts
 		public TimelineColumn( IContextEntry context, ColumnDefinition definition )
 			: base( context, definition )

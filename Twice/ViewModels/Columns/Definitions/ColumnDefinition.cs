@@ -6,6 +6,7 @@
 		{
 			Type = type;
 			Width = 300;
+			Notifications = new ColumnNotifications();
 		}
 
 		public ColumnNotifications Notifications { get; set; }
