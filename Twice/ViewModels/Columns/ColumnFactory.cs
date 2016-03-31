@@ -24,7 +24,8 @@ namespace Twice.ViewModels.Columns
 
 		public ColumnViewModelBase Construct( ColumnDefinition def )
 		{
-			var context = Contexts.Contexts.FirstOrDefault( c => c.UserId == def.SourceAccount );
+			// TODO: We need all contexts if SourceAccounts contains more than one id
+			var context = Contexts.Contexts.FirstOrDefault( c => def.SourceAccounts.Contains( c.UserId ) );
 			if( context == null )
 			{
 				return null;
@@ -63,7 +64,7 @@ namespace Twice.ViewModels.Columns
 
 		private ColumnViewModelBase UserColumn( IContextEntry context, ColumnDefinition definition )
 		{
-			return new UserColumn( context, definition.AccountIds.First() );
+			return new UserColumn( context, definition.TargetAccounts.First() );
 		}
 
 		private readonly ITwitterContextList Contexts;

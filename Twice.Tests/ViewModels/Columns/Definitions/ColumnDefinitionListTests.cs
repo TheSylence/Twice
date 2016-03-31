@@ -15,15 +15,15 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			var mentionDef = new ColumnDefinition( ColumnType.Mentions )
 			{
 				Width = 123,
-				AccountIds = new ulong[] {1234u, 45678u},
-				SourceAccount = 456u
+				TargetAccounts = new ulong[] {1234u, 45678u},
+				SourceAccounts = new ulong[] { 456u }
 			};
 
 			var timelineDef = new ColumnDefinition( ColumnType.Timeline )
 			{
 				Width = 223,
-				AccountIds = new ulong[] {111u, 222u},
-				SourceAccount = 2344u
+				TargetAccounts = new ulong[] {111u, 222u},
+				SourceAccounts = new ulong[] { 2344u }
 			};
 
 			var definitions = new[]
@@ -44,15 +44,15 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			Assert.IsNotNull( col );
 			Assert.AreEqual( mentionDef.Width, col.Width );
 			Assert.AreEqual( mentionDef.Type, col.Type );
-			Assert.AreEqual( mentionDef.SourceAccount, col.SourceAccount );
-			CollectionAssert.AreEqual( mentionDef.AccountIds, col.AccountIds );
+			Assert.AreEqual( mentionDef.SourceAccounts, col.SourceAccounts );
+			CollectionAssert.AreEqual( mentionDef.TargetAccounts, col.TargetAccounts );
 
 			col = loaded.SingleOrDefault( c => c.Type == ColumnType.Timeline );
 			Assert.IsNotNull( col );
 			Assert.AreEqual( timelineDef.Width, col.Width );
 			Assert.AreEqual( timelineDef.Type, col.Type );
-			Assert.AreEqual( timelineDef.SourceAccount, col.SourceAccount );
-			CollectionAssert.AreEqual( timelineDef.AccountIds, col.AccountIds );
+			Assert.AreEqual( timelineDef.SourceAccounts, col.SourceAccounts );
+			CollectionAssert.AreEqual( timelineDef.TargetAccounts, col.TargetAccounts );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

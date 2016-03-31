@@ -56,12 +56,15 @@ namespace Twice.Services.Views
 			return Task.FromResult<string>( null );
 		}
 
-		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( string hostIdentifier )
+		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
 		{
+			ulong[] sourceAccounts = {accountId};
+			ulong[] targetAccounts = {accountId};
+
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
 				return vm.AvailableColumnTypes.Where( c => c.IsSelected ).Select( c => c.Content.Type )
-					.Select( ColumnDefinitionFactory.Construct ).ToArray();
+					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
 			};
 
 			return await ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null, hostIdentifier );

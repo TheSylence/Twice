@@ -10,7 +10,7 @@
 
 		public ColumnType Type { get; set; }
 		public int Width { get; set; }
-		public ulong[] AccountIds { get; set; }
-		public ulong SourceAccount { get; set; }
+		public ulong[] TargetAccounts { get; set; }
+		public ulong[] SourceAccounts { get; set; }
 	}
 }

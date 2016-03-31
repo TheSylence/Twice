@@ -1,12 +1,14 @@
-﻿using System;
-
-namespace Twice.ViewModels.Columns.Definitions
+﻿namespace Twice.ViewModels.Columns.Definitions
 {
 	internal static class ColumnDefinitionFactory
 	{
-		internal static ColumnDefinition Construct( ColumnType type )
+		internal static ColumnDefinition Construct( ColumnType type, ulong[] sourceAccounts, ulong[] targetAccounts )
 		{
-			throw new NotImplementedException();
+			return new ColumnDefinition( type )
+			{
+				SourceAccounts = sourceAccounts,
+				TargetAccounts = targetAccounts
+			};
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace Twice.Services.Views
 
 		Task ShowSettings();
 
-		Task<ColumnDefinition[]> SelectAccountColumnTypes( string hostIdentifier );
+		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier );
 
 		string TextInput( string label, string input = null, string hostIdentifier = null );
 
