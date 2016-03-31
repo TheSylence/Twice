@@ -192,6 +192,11 @@
     <Compile Include="Models\Twitter\Text\TwitterText.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Obscurity.cs" />
+    <Compile Include="Resources\Strings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
@@ -418,9 +423,10 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Resources\Strings.de-DE.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <LastGenOutput>Strings1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config">
       <SubType>Designer</SubType>

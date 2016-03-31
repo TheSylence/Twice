@@ -142,6 +142,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attach image.
+        /// </summary>
+        internal static string AttachImage {
+            get {
+                return ResourceManager.GetString("AttachImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically check for updates.
         /// </summary>
         internal static string AutomaticallyCheckForUpdates {
@@ -583,6 +592,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make default account.
+        /// </summary>
+        internal static string MakeDefaultAccount {
+            get {
+                return ResourceManager.GetString("MakeDefaultAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage columns.
         /// </summary>
         internal static string ManageColumns {
@@ -795,6 +813,15 @@ namespace Twice.Resources {
         internal static string ReportSpam {
             get {
                 return ResourceManager.GetString("ReportSpam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requires confirmation step when tweeting.
+        /// </summary>
+        internal static string RequiresConfirmationStep {
+            get {
+                return ResourceManager.GetString("RequiresConfirmationStep", resourceCulture);
             }
         }
         

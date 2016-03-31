@@ -1,96 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
+		Microsoft ResX Schema
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,19 +89,19 @@
     <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
-    <value>2.0</value>
+    <value>1.3</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Ago" xml:space="preserve">
-    <value>{0} ago</value>
+    <value>vor {0}</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Abbrechen</value>
   </data>
   <data name="DaysShort" xml:space="preserve">
     <value>d</value>
@@ -133,7 +113,7 @@
     <value>m</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Now</value>
+    <value>Gerade eben</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -142,324 +122,324 @@
     <value>Via</value>
   </data>
   <data name="FavoritedXTimes" xml:space="preserve">
-    <value>Favorited {0} times</value>
+    <value>{0} mal favorisiert</value>
   </data>
   <data name="RetweetedXTimes" xml:space="preserve">
-    <value>Retweeted {0} times</value>
+    <value>{0} mal retweeted</value>
   </data>
   <data name="UserRetweeted" xml:space="preserve">
     <value>{0} retweeted</value>
   </data>
   <data name="CopyTweet" xml:space="preserve">
-    <value>Copy tweet</value>
+    <value>Tweet kopieren</value>
   </data>
   <data name="CopyTweetUrl" xml:space="preserve">
-    <value>Copy tweet URL</value>
+    <value>Tweet URL kopieren</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Löschen</value>
   </data>
   <data name="EmbedTweet" xml:space="preserve">
-    <value>Embed tweet</value>
+    <value>Tweet einbetten</value>
   </data>
   <data name="Reply" xml:space="preserve">
-    <value>Reply</value>
+    <value>Antworten</value>
   </data>
   <data name="ReplyAll" xml:space="preserve">
-    <value>Reply all</value>
+    <value>Allen antworten</value>
   </data>
   <data name="ReportSpam" xml:space="preserve">
-    <value>Report spam</value>
+    <value>Spam melden</value>
   </data>
   <data name="Retweet" xml:space="preserve">
     <value>Retweet</value>
   </data>
   <data name="ShareTweet" xml:space="preserve">
-    <value>Share tweet</value>
+    <value>Tweet teilen</value>
   </data>
   <data name="FavoriteTweet" xml:space="preserve">
-    <value>Favorite tweet</value>
+    <value>Tweet favorisieren</value>
   </data>
   <data name="Favourites" xml:space="preserve">
-    <value>Favourites</value>
+    <value>Favoriten</value>
   </data>
   <data name="Block" xml:space="preserve">
-    <value>Block</value>
+    <value>Blocken</value>
   </data>
   <data name="InlineMediaInTimeline" xml:space="preserve">
-    <value>Show inline media in timelines</value>
+    <value>Medien in Tweets in der Timeline anzeigen</value>
   </data>
   <data name="TranslateTweet" xml:space="preserve">
-    <value>Translate tweet</value>
+    <value>Tweet übersetzen</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Speichern</value>
   </data>
   <data name="Visual" xml:space="preserve">
-    <value>Visual</value>
+    <value>Aussehen</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>General</value>
+    <value>Allgemein</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Einstellungen</value>
   </data>
   <data name="FontSize_Tiny" xml:space="preserve">
-    <value>Tiny</value>
+    <value>Winzig</value>
   </data>
   <data name="FontSize_Small" xml:space="preserve">
-    <value>Small</value>
+    <value>Klein</value>
   </data>
   <data name="FontSize_Normal" xml:space="preserve">
     <value>Normal</value>
   </data>
   <data name="FontSize_Large" xml:space="preserve">
-    <value>Large</value>
+    <value>Groß</value>
   </data>
   <data name="FontSize_Huge" xml:space="preserve">
-    <value>Huge</value>
+    <value>Riesig</value>
   </data>
   <data name="LinkColor" xml:space="preserve">
-    <value>Color of links</value>
+    <value>Farbe von Links</value>
   </data>
   <data name="MentionColor" xml:space="preserve">
-    <value>Color of user mentions</value>
+    <value>Farbe von Erwähnungen</value>
   </data>
   <data name="HashtagColor" xml:space="preserve">
-    <value>Color of hashtags</value>
+    <value>Farbe von Hashtags</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>Font size</value>
+    <value>Schriftgröße</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>Thema</value>
   </data>
   <data name="AccentColor" xml:space="preserve">
-    <value>Accent color</value>
+    <value>Akzentfarbe</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Mentions" xml:space="preserve">
-    <value>Mentions</value>
+    <value>Erwähnungen</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>Hinzufügen</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
   </data>
   <data name="ActiveUntil" xml:space="preserve">
-    <value>Active until</value>
+    <value>Aktiv bis</value>
   </data>
   <data name="ActiveMutes" xml:space="preserve">
-    <value>Active mutes</value>
+    <value>Aktive Stummschaltungen</value>
   </data>
   <data name="FilterCriteria" xml:space="preserve">
-    <value>Filter criteria</value>
+    <value>Filterkriterien</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Bestätigen</value>
   </data>
   <data name="ConfirmDeleteFilter" xml:space="preserve">
-    <value>Do you really want to delete the selected filter?</value>
+    <value>Soll der ausgewählte Filter wirklich gelöscht werden?</value>
   </data>
   <data name="ValueMustNotBeEmpty" xml:space="preserve">
-    <value>Value must not be empty</value>
+    <value>Der Wert darf nicht leer sein</value>
   </data>
   <data name="SelectAValue" xml:space="preserve">
-    <value>Select a value</value>
+    <value>Bitte einen Wert auswählen</value>
   </data>
   <data name="NameAlreadyExists" xml:space="preserve">
-    <value>Name already exists</value>
+    <value>Dieser Name wird bereits verwendet</value>
   </data>
   <data name="DastMustNotBeInThePast" xml:space="preserve">
-    <value>Date must not be in the past</value>
+    <value>Datum darf nicht in der Vergangenheit liegen</value>
   </data>
   <data name="Forever" xml:space="preserve">
-    <value>Forever</value>
+    <value>Für immer</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Ja</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Nein</value>
   </data>
   <data name="MuteHashtag" xml:space="preserve">
-    <value>Mute hashtag</value>
+    <value>Hashtag stumm schalten</value>
   </data>
   <data name="MuteUser" xml:space="preserve">
-    <value>Mute user</value>
+    <value>Benutzer stumm schalten</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Copy URL</value>
+    <value>URL kopieren</value>
   </data>
   <data name="Following" xml:space="preserve">
-    <value>Following</value>
+    <value>Folge ich</value>
   </data>
   <data name="Followers" xml:space="preserve">
-    <value>Followers</value>
+    <value>Follower</value>
   </data>
   <data name="Tweets" xml:space="preserve">
     <value>Tweets</value>
   </data>
   <data name="SoundNotification" xml:space="preserve">
-    <value>Notification sounds</value>
+    <value>Benachrichtigungstöne</value>
   </data>
   <data name="PopupNotification" xml:space="preserve">
-    <value>Notification popups</value>
+    <value>Benachrichtigungspopup</value>
   </data>
   <data name="ToastNotification" xml:space="preserve">
-    <value>Notification toasts in app</value>
+    <value>Toastbenachrichtigungen</value>
   </data>
   <data name="NoFurtherSettingsForThisNotificationType" xml:space="preserve">
-    <value>There are no further settings for this type of notifications</value>
+    <value>Für diese Benachrichtigungen gibt es keine weiteren Einstellungen</value>
   </data>
   <data name="SoundFile" xml:space="preserve">
-    <value>Sound file</value>
+    <value>Sounddatei</value>
   </data>
   <data name="AvailableNotificationMechanisms" xml:space="preserve">
-    <value>Available notification mechanisms</value>
+    <value>Verfügbare Benachrichtigungsarten</value>
   </data>
   <data name="DisplayToShowPopupsAt" xml:space="preserve">
-    <value>Display to show popups at</value>
+    <value>Zeige Popup auf Monitor</value>
   </data>
   <data name="CornerToShowPopupsIn" xml:space="preserve">
-    <value>Corner to show popups in</value>
+    <value>Zeige Popup in Ecke</value>
   </data>
   <data name="Corner_TopLeft" xml:space="preserve">
-    <value>Top left</value>
+    <value>Oben links</value>
   </data>
   <data name="Corner_TopRight" xml:space="preserve">
-    <value>Top right</value>
+    <value>Oben rechts</value>
   </data>
   <data name="Corner_BottomLeft" xml:space="preserve">
-    <value>Bottom left</value>
+    <value>Unten links</value>
   </data>
   <data name="Corner_BottomRight" xml:space="preserve">
-    <value>Bottom right</value>
+    <value>Unten rechts</value>
   </data>
   <data name="Notifications" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Benachrichtigungen</value>
   </data>
   <data name="Muting" xml:space="preserve">
-    <value>Muting</value>
+    <value>Stummschaltung</value>
   </data>
   <data name="ThemeDark" xml:space="preserve">
-    <value>Dark</value>
+    <value>Dunkel</value>
   </data>
   <data name="ThemeLight" xml:space="preserve">
-    <value>Light</value>
+    <value>Hell</value>
   </data>
   <data name="Accounts" xml:space="preserve">
-    <value>Accounts</value>
+    <value>Konten</value>
   </data>
   <data name="NewTweet" xml:space="preserve">
-    <value>Compose tweet</value>
+    <value>Tweet verfassen</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>Suchen</value>
   </data>
   <data name="PrimaryColor" xml:space="preserve">
-    <value>Primary color</value>
+    <value>Primärfarbe</value>
   </data>
   <data name="Follow" xml:space="preserve">
-    <value>Follow</value>
+    <value>Folgen</value>
   </data>
   <data name="Unfollow" xml:space="preserve">
-    <value>Unfollow</value>
+    <value>Entfolgen</value>
   </data>
   <data name="BlockedUser" xml:space="preserve">
-    <value>Blocked user</value>
+    <value>Blockierter Benutzer</value>
   </data>
   <data name="RemovedFavorite" xml:space="preserve">
-    <value>Removed favorite</value>
+    <value>Favorit entfernt</value>
   </data>
   <data name="AddedFavorite" xml:space="preserve">
-    <value>Added favorite</value>
+    <value>Favorit hinzugefügt</value>
   </data>
   <data name="RetweetedStatus" xml:space="preserve">
-    <value>Retweeted status</value>
+    <value>Status retweeted</value>
   </data>
   <data name="StatusDeleted" xml:space="preserve">
-    <value>Deleted status</value>
+    <value>Status gelöscht</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>Über</value>
   </data>
   <data name="Licenses" xml:space="preserve">
-    <value>Licenses</value>
+    <value>Lizenzen</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
   <data name="BuildDate" xml:space="preserve">
-    <value>Built on</value>
+    <value>Erstellt am</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
   <data name="ManageColumns" xml:space="preserve">
-    <value>Manage columns</value>
+    <value>Spalten verwalten</value>
   </data>
   <data name="Timeline" xml:space="preserve">
     <value>Timeline</value>
   </data>
   <data name="TimelineDescription" xml:space="preserve">
-    <value>Add the timeline of an account</value>
+    <value>Timeline eines Accounts hinzufügen</value>
   </data>
   <data name="User" xml:space="preserve">
-    <value>User</value>
+    <value>Benutzer</value>
   </data>
   <data name="MentionsDescription" xml:space="preserve">
-    <value>Add mentions of an account</value>
+    <value>Erwähnungen eines Accounts hinzufügen</value>
   </data>
   <data name="UserDescription" xml:space="preserve">
-    <value>Add tweets of a user</value>
+    <value>Tweets eines Benutzers</value>
   </data>
   <data name="TwitterPinEntry" xml:space="preserve">
-    <value>Enter the PIN that is displayed on the website after authorizing Twice to access your twitter account</value>
+    <value>Bitte den PIN eingeben, der auf der Website angezeigt wird, nachdem Twice für das Konto authorisiert wurde</value>
   </data>
   <data name="Messages" xml:space="preserve">
-    <value>Messages</value>
+    <value>Nachrichten</value>
   </data>
   <data name="MessagesDescription" xml:space="preserve">
-    <value>Messages sent from/to an account</value>
+    <value>Nachrichten die über oder an ein Konto gesendet wurden</value>
   </data>
   <data name="IsDefaultAccount" xml:space="preserve">
-    <value>Default account</value>
+    <value>Standardkonto</value>
   </data>
   <data name="NoAccountAdded" xml:space="preserve">
-    <value>No account added</value>
+    <value>Kein Konto hinzugefügt</value>
   </data>
   <data name="DoYouWantToAddANewAccount" xml:space="preserve">
-    <value>There are no accounts added. Do you want to add one right now?</value>
+    <value>Es wurde noch kein Konto hinzugefügt. Soll dies jetzt geschehen?</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Sprache</value>
   </data>
   <data name="StreamContentInRealtime" xml:space="preserve">
-    <value>Stream content in realtime</value>
+    <value>Inhalt in Echtzeit laden</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Automatically check for updates</value>
+    <value>Automatisch nach Updates suchen</value>
   </data>
   <data name="IncludePrereleases" xml:space="preserve">
-    <value>Include pre-releases</value>
+    <value>Vorabversionen berücksichtigen</value>
   </data>
   <data name="AddColumn" xml:space="preserve">
-    <value>Add column</value>
+    <value>Spalte hinzufügen</value>
   </data>
   <data name="AttachImage" xml:space="preserve">
-    <value>Attach image</value>
+    <value>Bild anhängen</value>
   </data>
   <data name="RequiresConfirmationStep" xml:space="preserve">
-    <value>Requires confirmation step when tweeting</value>
+    <value>Erfordert einen Bestätigungsschritt beim Tweeten</value>
   </data>
   <data name="MakeDefaultAccount" xml:space="preserve">
-    <value>Make default account</value>
+    <value>Dies zum Standardkonto machen</value>
   </data>
 </root>
