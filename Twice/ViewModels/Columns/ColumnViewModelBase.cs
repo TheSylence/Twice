@@ -53,7 +53,10 @@ namespace Twice.ViewModels.Columns
 
 		protected void RaiseNewStatus( StatusViewModel status )
 		{
-			NewStatus?.Invoke( this, new StatusEventArgs( status ) );
+			if( !IsLoading )
+			{
+				NewStatus?.Invoke( this, new StatusEventArgs( status ) );
+			}
 		}
 
 		public ColumnDefinition Definition { get; }
