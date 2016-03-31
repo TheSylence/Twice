@@ -5,12 +5,14 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Ninject;
 using Ninject.Modules;
 using Twice.Injections;
+using Twice.Messages;
 using Twice.Models.Configuration;
 using WPFLocalizeExtension.Engine;
 
@@ -52,13 +54,18 @@ namespace Twice
 				resDict.Add( "GlobalFontSize", (double)conf.Visual.FontSize );
 			}
 			resDict.EndInit();
-
+			
 			Resources.MergedDictionaries.Add( resDict );
 
+			ChangeLanguage( conf.General.Language );
+		}
+
+		private static void ChangeLanguage( string language )
+		{
 			LocalizeDictionary dict = LocalizeDictionary.Instance;
-			dict.IncludeInvariantCulture = false;
+			dict.IncludeInvariantCulture = true;
 			dict.SetCurrentThreadCulture = true;
-			dict.Culture = CultureInfo.GetCultureInfo( conf.General.Language );
+			dict.Culture = CultureInfo.GetCultureInfo( language );
 
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ), new FrameworkPropertyMetadata( xmlLang ) );

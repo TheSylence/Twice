@@ -420,7 +420,7 @@
     </Compile>
     <EmbeddedResource Include="Resources\Strings.de-DE.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config">

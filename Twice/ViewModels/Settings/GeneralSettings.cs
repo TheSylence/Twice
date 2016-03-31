@@ -11,8 +11,24 @@ namespace Twice.ViewModels.Settings
 	{
 		public GeneralSettings( IConfig currentConfig )
 		{
-			AvailableLanguages = new List<CultureInfo>( LocalizeDictionary.Instance.MergedAvailableCultures );
-			AvailableLanguages.Remove( CultureInfo.InvariantCulture );
+			var langs = LocalizeDictionary.Instance.MergedAvailableCultures.ToList();
+			for( int i = 0; i < langs.Count; ++i )
+			{
+				if( langs[i].Equals( CultureInfo.InvariantCulture ) )
+				{
+					langs[i] = CultureInfo.CreateSpecificCulture( "en-US" );
+				}
+			}
+
+			var neutrals = langs.Where( l => l.IsNeutralCulture ).ToArray();
+			foreach( var neutral in neutrals )
+			{
+				if( langs.Any( l => neutral.Equals( l.Parent ) ) )
+				{
+					langs.Remove( neutral );
+				}
+			}
+			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
 			RealtimeStreaming = currentConfig.General.RealtimeStreaming;
 			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? AvailableLanguages.First();
