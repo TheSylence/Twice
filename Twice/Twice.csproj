@@ -190,6 +190,7 @@
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Models\Twitter\Text\TwitterText.cs" />
+    <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Obscurity.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
@@ -440,11 +441,6 @@
       <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
       <Name>Markdown.Xaml</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DebugTokens.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TwitterIcon.ico" />

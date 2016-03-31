@@ -5,6 +5,15 @@ namespace Twice.Models.Twitter
 {
 	internal interface ITwitterContextList : IDisposable
 	{
+		event EventHandler ContextsChanged;
+
 		ICollection<IContextEntry> Contexts { get; }
+
+		/// <summary>
+		/// Add a new account to the list.
+		/// Only pass decrypted data to this. They will be encrypted when the methd returns.
+		/// </summary>
+		/// <param name="data"></param>
+		void AddContext( TwitterAccountData data );
 	}
 }

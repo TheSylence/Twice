@@ -79,6 +79,22 @@ namespace Twice.ViewModels.Accounts
 				return;
 			}
 
+			var accountData = new TwitterAccountData
+			{
+				OAuthToken = auth.CredentialStore.OAuthToken,
+				OAuthTokenSecret = auth.CredentialStore.OAuthTokenSecret,
+				AccountName = auth.CredentialStore.ScreenName,
+				UserId = auth.CredentialStore.UserID
+			};
+
+			using( var ctx = new TwitterContext( auth ) )
+			{
+				var twitterUser = await ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false ).SingleOrDefaultAsync();
+				accountData.ImageUrl = twitterUser.ProfileImageUrlHttps;
+			}
+
+			ContextList.AddContext( accountData );
+
 			var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( DialogHostIdentifier );
 			if( newColumns.Any() )
 			{

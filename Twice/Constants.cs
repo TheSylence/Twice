@@ -16,6 +16,7 @@ namespace Twice
 		{
 			internal const string ConfigFileName = "config.json";
 			internal const string ColumnDefintionFileName = "columns.json";
+			internal const string AccountsFileName = "accounts.json";
 		}
 
 		public static class Auth

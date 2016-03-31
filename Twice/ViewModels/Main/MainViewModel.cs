@@ -7,6 +7,8 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Messages;
 using Twice.Models.Twitter;
+using Twice.Resources;
+using Twice.Services.Views;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Columns.Definitions;
 using Twice.Views;
@@ -15,11 +17,14 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList list, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList )
+		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList )
 		{
+			ContextList = contextList;
+			ContextList.ContextsChanged += ContextList_ContextsChanged;
+
 			Columns = new ObservableCollection<IColumnViewModel>();
 			Notifier = notifier;
-			Factory = new ColumnFactory( list, muter );
+			Factory = new ColumnFactory( ContextList, muter );
 			ColumnList = columnList;
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
@@ -31,6 +36,26 @@ namespace Twice.ViewModels.Main
 			{
 				await col.Load();
 			}
+
+			if( !HasContexts )
+			{
+				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
+
+				if( await ViewServiceRepository.Confirm( csa ) )
+				{
+					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+		}
+
+		private bool CanExecuteAddColumnCommand()
+		{
+			return HasContexts;
+		}
+
+		private bool CanExecuteNewTweetCommand()
+		{
+			return HasContexts;
 		}
 
 		private void Col_NewStatus( object sender, StatusEventArgs e )
@@ -70,6 +95,11 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
+		private void ContextList_ContextsChanged( object sender, System.EventArgs e )
+		{
+			RaisePropertyChanged( nameof( HasContexts ) );
+		}
+
 		private async void ExecuteAccountsCommand()
 		{
 			await ViewServiceRepository.ShowAccounts();
@@ -96,10 +126,14 @@ namespace Twice.ViewModels.Main
 		}
 
 		public ICommand AccountsCommand => _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
-		public ICommand AddColumnCommand => _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand ) );
+
+		public ICommand AddColumnCommand
+			=> _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
+
 		public ICollection<IColumnViewModel> Columns { get; }
+		public bool HasContexts => ContextList.Contexts.Any();
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
-		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand ) );
+		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 		private readonly IColumnDefinitionList ColumnList;
 		private readonly ColumnFactory Factory;

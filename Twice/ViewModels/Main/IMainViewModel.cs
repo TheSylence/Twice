@@ -12,6 +12,7 @@ namespace Twice.ViewModels.Main
 
 	internal interface IMainViewModel : IViewModelBase, ILoadCallback
 	{
+		bool HasContexts { get; }
 		ICommand AccountsCommand { get; }
 		ICollection<IColumnViewModel> Columns { get; }
 		ICommand InfoCommand { get; }

@@ -67,9 +67,16 @@ namespace Twice.Services.Views
 			return await ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null, hostIdentifier );
 		}
 
-		public async Task ShowAccounts()
+		public async Task ShowAccounts( bool directlyAddAccount = false )
 		{
-			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>();
+			Action<IAccountsDialogViewModel> vmSetup = vm =>
+			{
+				if( directlyAddAccount )
+				{
+					vm.AddAccountCommand.Execute( null );
+				}
+			};
+			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>( null, vmSetup );
 		}
 
 		public async Task ShowAddColumnDialog()

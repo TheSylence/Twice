@@ -10,7 +10,7 @@ namespace Twice.Services.Views
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
-		Task ShowAccounts();
+		Task ShowAccounts( bool directlyAddNewAccount = false );
 
 		Task ShowAddColumnDialog();
 

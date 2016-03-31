@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using LinqToTwitter;
 using Twice.ViewModels;
 
@@ -7,25 +6,24 @@ namespace Twice.Models.Twitter
 {
 	internal class ContextEntry : IContextEntry
 	{
-		public ContextEntry( INotifier notifier )
+		public ContextEntry( INotifier notifier, TwitterAccountData data )
 		{
 			Notifier = notifier;
-			var lines = File.ReadAllLines( "DebugTokens.txt" );
 
-			AccountName = lines[0];
-			UserId = ulong.Parse( lines[1] );
-			ProfileImageUrl = new Uri( lines[2] );
+			AccountName = data.AccountName;
+			UserId = data.UserId;
+			ProfileImageUrl = new Uri( data.ImageUrl );
 
 			Twitter = new TwitterContext( new SingleUserAuthorizer
 			{
 				CredentialStore = new InMemoryCredentialStore
 				{
-					ScreenName = AccountName,
-					UserID = UserId,
+					ScreenName = data.AccountName,
+					UserID = data.UserId,
 					ConsumerKey = Constants.Auth.ConsumerKey,
 					ConsumerSecret = Constants.Auth.ConsumerSecret,
-					OAuthToken = lines[5],
-					OAuthTokenSecret = lines[6]
+					OAuthToken = data.OAuthToken,
+					OAuthTokenSecret = data.OAuthTokenSecret
 				}
 			} );
 		}
@@ -36,7 +34,7 @@ namespace Twice.Models.Twitter
 			GC.SuppressFinalize( this );
 		}
 
-		void Dispose( bool disposing )
+		private void Dispose( bool disposing )
 		{
 			if( disposing )
 			{
@@ -44,9 +42,9 @@ namespace Twice.Models.Twitter
 			}
 		}
 
-		public Uri ProfileImageUrl { get; }
-		public INotifier Notifier { get; }
 		public string AccountName { get; }
+		public INotifier Notifier { get; }
+		public Uri ProfileImageUrl { get; }
 		public TwitterContext Twitter { get; }
 		public ulong UserId { get; }
 	}

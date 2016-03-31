@@ -304,6 +304,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no accounts added. Do you want to add one right now?.
+        /// </summary>
+        internal static string DoYouWantToAddANewAccount {
+            get {
+                return ResourceManager.GetString("DoYouWantToAddANewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
@@ -651,6 +660,15 @@ namespace Twice.Resources {
         internal static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No account added.
+        /// </summary>
+        internal static string NoAccountAdded {
+            get {
+                return ResourceManager.GetString("NoAccountAdded", resourceCulture);
             }
         }
         

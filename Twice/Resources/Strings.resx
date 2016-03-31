@@ -435,4 +435,10 @@
   <data name="IsDefaultAccount" xml:space="preserve">
     <value>Default account</value>
   </data>
+  <data name="NoAccountAdded" xml:space="preserve">
+    <value>No account added</value>
+  </data>
+  <data name="DoYouWantToAddANewAccount" xml:space="preserve">
+    <value>There are no accounts added. Do you want to add one right now?</value>
+  </data>
 </root>
