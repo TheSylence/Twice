@@ -1,24 +1,16 @@
-﻿using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
-using System.Linq;
+﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Columns.Definitions;
-using Twice.ViewModels.Twitter;
-using System;
-using Anotar.NLog;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class TimelineColumn : ColumnViewModelBase
 	{
-		protected override Task LoadMoreData()
-		{
-			LogTo.Trace( "Timeline loadmore" );
-			return Task.CompletedTask;
-		}
-
 		// TODO: Implement joined timelines for multiple contexts
 		public TimelineColumn( IContextEntry context, ColumnDefinition definition )
 			: base( context, definition )
@@ -26,14 +18,9 @@ namespace Twice.ViewModels.Columns
 			Title = Strings.Home;
 		}
 
-		protected override async Task OnLoad()
-		{
-			var statues = await Context.Twitter.Status.Where( s => s.Type == StatusType.Home && s.UserID == Context.UserId ).ToListAsync();
-			var list = statues.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) ).ToArray();
-			
-			await AddStatuses( list );
-		}
-
 		public override Icon Icon => Icon.Home;
+
+		protected override Expression<Func<Status, bool>> StatusFilterExpression
+			=> s => s.Type == StatusType.Home; // && s.UserID == Context.UserId;
 	}
 }

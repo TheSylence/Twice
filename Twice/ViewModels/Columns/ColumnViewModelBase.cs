@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 using Twice.ViewModels.Columns.Definitions;
@@ -24,6 +26,8 @@ namespace Twice.ViewModels.Columns
 
 			ActionDispatcher.HeaderClicked += ActionDispatcher_HeaderClicked;
 			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
+
+			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 		}
 
 		public event EventHandler<StatusEventArgs> NewStatus;
@@ -52,16 +56,34 @@ namespace Twice.ViewModels.Columns
 		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
-			SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
-			MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
+			if( statusViewModels.Any() )
+			{
+				SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
+				MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
 
-			await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
-			RaiseNewStatus( statusViewModels.Last() );
+				await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
+				RaiseNewStatus( statusViewModels.Last() );
+			}
 		}
 
-		protected abstract Task LoadMoreData();
+		protected virtual async Task LoadMoreData()
+		{
+			var query = Context.Twitter.Status.Where( StatusFilterExpression );
+			query = query.Where( MaxIdFilterExpression );
 
-		protected abstract Task OnLoad();
+			var statuses = await query.ToListAsync();
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
+
+			await AddStatuses( list );
+		}
+
+		protected virtual async Task OnLoad()
+		{
+			var statuses = await Context.Twitter.Status.Where( StatusFilterExpression ).ToListAsync();
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
+
+			await AddStatuses( list );
+		}
 
 		protected void RaiseNewStatus( StatusViewModel status )
 		{
@@ -92,9 +114,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
-
 		public ColumnDefinition Definition { get; }
-
 		public abstract Icon Icon { get; }
 
 		public bool IsLoading
@@ -117,7 +137,6 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public IStatusMuter Muter { get; set; }
-
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string Title
@@ -154,9 +173,9 @@ namespace Twice.ViewModels.Columns
 		}
 
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
-
+		protected virtual Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
 		protected ulong SinceId { get; private set; } = ulong.MinValue;
-
+		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		protected readonly IContextEntry Context;
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Squirrel;
 using Twice.Messages;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
@@ -19,14 +20,15 @@ namespace Twice.ViewModels.Main
 {
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList )
+		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList,
+			IConfig config )
 		{
 			ContextList = contextList;
 			ContextList.ContextsChanged += ContextList_ContextsChanged;
 
 			Columns = new ObservableCollection<IColumnViewModel>();
 			Notifier = notifier;
-			Factory = new ColumnFactory( ContextList, muter );
+			Factory = new ColumnFactory( ContextList, muter, config );
 			ColumnList = columnList;
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
@@ -154,14 +156,19 @@ namespace Twice.ViewModels.Main
 		private readonly ColumnFactory Factory;
 		private readonly INotifier Notifier;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SettingsCommand;
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Columns.Definitions;
-using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
@@ -16,23 +16,19 @@ namespace Twice.ViewModels.Columns
 			UserId = userId;
 		}
 
-		protected override Task LoadMoreData()
-		{
-			throw new NotImplementedException();
-		}
-
 		protected override async Task OnLoad()
 		{
 			var userInfo = await Context.Twitter.User.Where( u => u.UserID == UserId && u.Type == UserType.Show ).FirstAsync();
 			Title = userInfo.ScreenNameResponse;
 
-			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == UserId ).ToListAsync();
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( t => new StatusViewModel( t, Context ) ).ToArray();
-
-			await AddStatuses( list );
+			await base.OnLoad();
 		}
 
 		public override Icon Icon => Icon.User;
+
+		protected override Expression<Func<Status, bool>> StatusFilterExpression
+									=> s => s.Type == StatusType.User && s.UserID == Context.UserId;
+
 		private readonly ulong UserId;
 	}
 }

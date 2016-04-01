@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Columns.Definitions;
 
@@ -8,10 +9,10 @@ namespace Twice.ViewModels.Columns
 {
 	internal class ColumnFactory
 	{
-		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter )
+		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config )
 		{
+			Configuration = config;
 			Muter = muter;
-			Rand = new Random();
 			Contexts = contexts;
 
 			FactoryMap = new Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>>
@@ -39,6 +40,7 @@ namespace Twice.ViewModels.Columns
 
 				column.Width = def.Width;
 				column.Muter = Muter;
+				column.Configuration = Configuration;
 
 				return column;
 			}
@@ -51,12 +53,6 @@ namespace Twice.ViewModels.Columns
 			return new MentionsColumn( context, definition );
 		}
 
-		private IContextEntry RandomContext()
-		{
-			int index = Rand.Next( Contexts.Contexts.Count );
-			return Contexts.Contexts.ElementAt( index );
-		}
-
 		private ColumnViewModelBase TimelineColumn( IContextEntry context, ColumnDefinition definition )
 		{
 			return new TimelineColumn( context, definition );
@@ -67,9 +63,9 @@ namespace Twice.ViewModels.Columns
 			return new UserColumn( context, definition, definition.TargetAccounts.First() );
 		}
 
+		private readonly IConfig Configuration;
 		private readonly ITwitterContextList Contexts;
 		private readonly Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>> FactoryMap;
 		private readonly IStatusMuter Muter;
-		private readonly Random Rand;
 	}
 }
