@@ -21,14 +21,4 @@ namespace Twice.ViewModels.Columns
 		string Title { get; set; }
 		double Width { get; set; }
 	}
-
-	internal class StatusEventArgs : EventArgs
-	{
-		public StatusEventArgs( StatusViewModel status )
-		{
-			Status = status;
-		}
-
-		public readonly StatusViewModel Status;
-	}
 }

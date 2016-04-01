@@ -55,8 +55,8 @@ namespace Twice.Services.Views
 				dlg.Filter = fsa.Filter;
 			}
 
-			return dlg.ShowDialog( Application.Current.MainWindow ) == true 
-				? Task.FromResult( dlg.FileName ) 
+			return dlg.ShowDialog( Application.Current.MainWindow ) == true
+				? Task.FromResult( dlg.FileName )
 				: Task.FromResult<string>( null );
 		}
 

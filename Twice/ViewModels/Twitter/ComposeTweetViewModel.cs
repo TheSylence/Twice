@@ -1,32 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Twitter;
-using Twice.Services;
 using Twice.Services.Views;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IComposeTweetViewModel : IResetable
-	{
-		ICollection<AccountEntry> Accounts { get; }
-		ICommand AttachImageCommand { get; }
-		bool IsSending { get; }
-		ICommand SendTweetCommand { get; }
-		string Text { get; set; }
-	}
-
+	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
 	{
-		public ComposeTweetViewModel()
-		{
-		}
-
 		public void Reset()
 		{
 			Accounts = new List<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );

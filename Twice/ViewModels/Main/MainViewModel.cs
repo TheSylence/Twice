@@ -18,6 +18,7 @@ using Twice.Views;
 
 namespace Twice.ViewModels.Main
 {
+	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
 		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList,
@@ -61,7 +62,7 @@ namespace Twice.ViewModels.Main
 					{
 						var release = await mgr.UpdateApp();
 
-						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version.ToString() ), NotificationType.Information );
+						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ), NotificationType.Information );
 					}
 				}
 				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )

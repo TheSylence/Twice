@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
-using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -15,7 +14,6 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Twice.Injections;
-using Twice.Messages;
 using Twice.Models.Configuration;
 using WPFLocalizeExtension.Engine;
 
@@ -31,32 +29,6 @@ namespace Twice
 			Kernel.Dispose();
 
 			base.OnExit( e );
-		}
-		private void ConfigureLogging()
-		{
-			var config = new LoggingConfiguration();
-
-			var debuggerTarget = new DebuggerTarget
-			{
-				Layout = "[${level:uppercase=true}] ${logger}: ${message} ${exception}"
-			};
-			config.AddTarget( "debugger", debuggerTarget );
-
-			var fileTarget = new FileTarget
-			{
-				Layout = "${longdate} [${level:uppercase=true}] ${logger}: ${message} ${exception}",
-				FileName = "log.txt",
-				DeleteOldFileOnStartup = true
-			};
-			config.AddTarget( "Logfile", fileTarget );
-
-			var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
-			config.LoggingRules.Add( debuggerRule );
-
-			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
-			config.LoggingRules.Add( fileRule );
-
-			LogManager.Configuration = config;
 		}
 
 		protected override void OnStartup( StartupEventArgs e )
@@ -100,6 +72,33 @@ namespace Twice
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ), new FrameworkPropertyMetadata( xmlLang ) );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
+		}
+
+		private void ConfigureLogging()
+		{
+			var config = new LoggingConfiguration();
+
+			var debuggerTarget = new DebuggerTarget
+			{
+				Layout = "[${level:uppercase=true}] ${logger}: ${message} ${exception}"
+			};
+			config.AddTarget( "debugger", debuggerTarget );
+
+			var fileTarget = new FileTarget
+			{
+				Layout = "${longdate} [${level:uppercase=true}] ${logger}: ${message} ${exception}",
+				FileName = "log.txt",
+				DeleteOldFileOnStartup = true
+			};
+			config.AddTarget( "Logfile", fileTarget );
+
+			var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
+			config.LoggingRules.Add( debuggerRule );
+
+			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
+			config.LoggingRules.Add( fileRule );
+
+			LogManager.Configuration = config;
 		}
 
 		public static IKernel Kernel { get; private set; }

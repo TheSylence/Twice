@@ -32,8 +32,8 @@ namespace Twice.Tests.Converters
 			var emptyString = (bool)conv.Convert( new string[0], null, null, null );
 			var emptyInt = (bool)conv.Convert( new int[0], null, null, null );
 
-			var nonEmptyString = (bool)conv.Convert( new string[] { "test" }, null, null, null );
-			var nonEmptyInt = (bool)conv.Convert( new int[] { 1, 2 }, null, null, null );
+			var nonEmptyString = (bool)conv.Convert( new[] { "test" }, null, null, null );
+			var nonEmptyInt = (bool)conv.Convert( new[] { 1, 2 }, null, null, null );
 
 			// Assert
 			Assert.IsTrue( emptyString );

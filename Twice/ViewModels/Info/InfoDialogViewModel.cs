@@ -8,25 +8,6 @@ using Newtonsoft.Json;
 
 namespace Twice.ViewModels.Info
 {
-	internal interface IInfoDialogViewModel : IDialogViewModel
-	{
-		DateTime BuildDate { get; }
-		ICollection<LicenseItem> Licenses { get; }
-		string Version { get; }
-		ICollection<ChangelogItem> Changelogs { get; }
-	}
-
-	class ChangelogItem
-	{
-		public string Version { get; set; }
-		public DateTime Date { get; set; }
-		public string Description { get; set; }
-		public List<string> Changes { get; set; }
-		public List<string> NewFeatures { get; set; }
-		public List<string> KnownIssues { get; set; }
-		public List<string> Fixes { get; set; }
-	}
-
 	internal class InfoDialogViewModel : DialogViewModel, IInfoDialogViewModel
 	{
 		public ICollection<ChangelogItem> Changelogs { get; }
@@ -103,17 +84,5 @@ namespace Twice.ViewModels.Info
 		public DateTime BuildDate { get; }
 		public ICollection<LicenseItem> Licenses { get; }
 		public string Version { get; }
-	}
-
-	internal class LicenseItem
-	{
-		public LicenseItem( string name, string content )
-		{
-			Name = name;
-			Content = content;
-		}
-
-		public string Content { get; }
-		public string Name { get; }
 	}
 }

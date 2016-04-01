@@ -9,12 +9,6 @@ namespace Twice.Behaviors
 {
 	internal class ColumnHandler : Behavior<ItemsControl>
 	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
-
-		}
-
 		private static void OnDispatcherChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
 		{
 			var handler = obj as ColumnHandler;

@@ -14,21 +14,6 @@ using Twice.Views;
 
 namespace Twice.ViewModels
 {
-
-	internal enum NotificationType
-	{
-		Information,
-		Success,
-		Error
-	}
-
-	internal interface INotifier
-	{
-		void DisplayMessage( string message, NotificationType type );
-
-		void OnStatus( StatusViewModel status, ColumnNotifications columnSettings );
-	}
-
 	internal class Notifier : INotifier
 	{
 		public Notifier( IConfig config, IMessenger messenger )

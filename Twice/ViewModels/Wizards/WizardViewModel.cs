@@ -5,31 +5,6 @@ using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {
-	internal interface IWizardViewModel : IDialogViewModel
-	{
-		WizardPageViewModel CurrentPage { get; set; }
-		ICommand GotoNextPageCommand { get; }
-		ICommand GotoPrevPageCommand { get; }
-	}
-
-	internal abstract class WizardPageViewModel
-	{
-		public virtual bool CanNavigateForward()
-		{
-			return true;
-		}
-
-		public virtual void OnNavigatedFrom( bool backward )
-		{
-		}
-
-		public virtual void OnNavigatedTo( bool forward )
-		{
-		}
-
-		public abstract int NextPageKey { get; }
-	}
-
 	internal abstract class WizardViewModel : DialogViewModel
 	{
 		private bool CanExecuteGotoNextPageCommand()

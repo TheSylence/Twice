@@ -6,11 +6,6 @@ using Twice.Services.Views;
 
 namespace Twice.ViewModels
 {
-	internal interface IViewModelBase
-	{
-		ITwitterContextList ContextList { get; set; }
-	}
-
 	internal class ViewModelBaseEx : ViewModelBase, IViewModelBase
 	{
 		[Inject]

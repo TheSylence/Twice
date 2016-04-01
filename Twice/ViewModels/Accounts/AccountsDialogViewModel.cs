@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
@@ -12,26 +11,6 @@ using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Accounts
 {
-	internal interface IAccountsDialogViewModel : IDialogViewModel
-	{
-		ICommand AddAccountCommand { get; }
-		ICollection<AccountEntry> AddedAccounts { get; }
-	}
-
-	internal class AccountEntry
-	{
-		public AccountEntry( IContextEntry context )
-		{
-			AccountName = context.AccountName;
-			ProfileImage = context.ProfileImageUrl;
-			IsDefaultAccount = true;
-		}
-
-		public string AccountName { get; }
-		public bool IsDefaultAccount { get; set; }
-		public Uri ProfileImage { get; }
-	}
-
 	internal class AccountsDialogViewModel : DialogViewModel, IAccountsDialogViewModel
 	{
 		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList )
