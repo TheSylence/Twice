@@ -27,7 +27,7 @@ namespace Twice.Behaviors
 				return;
 			}
 
-			if( e.VerticalOffset + e.ViewportHeight >= e.ExtentHeight - 100 )
+			if( e.VerticalOffset + e.ViewportHeight >= e.ExtentHeight * 0.8 )
 			{
 				HandledRange.Start = e.VerticalOffset;
 				HandledRange.End = e.ExtentHeight;

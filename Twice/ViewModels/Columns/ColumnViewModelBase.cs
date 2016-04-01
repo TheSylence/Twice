@@ -28,6 +28,7 @@ namespace Twice.ViewModels.Columns
 			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
 
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
+			SinceIdFilterExpression = s => s.SinceID == SinceId;
 		}
 
 		public event EventHandler<StatusEventArgs> NewStatus;
@@ -53,7 +54,7 @@ namespace Twice.ViewModels.Columns
 			RaiseNewStatus( status );
 		}
 
-		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses )
+		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses, bool append = true )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
 			if( statusViewModels.Any() )
@@ -61,7 +62,18 @@ namespace Twice.ViewModels.Columns
 				SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
 				MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
 
-				await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
+				foreach( var s in statusViewModels )
+				{
+					if( append )
+					{
+						await DispatcherHelper.RunAsync( () => StatusCollection.Add( s ) );
+					}
+					else
+					{
+						await DispatcherHelper.RunAsync( () => StatusCollection.Insert( 0, s ) );
+					}
+				}
+				//await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
 				RaiseNewStatus( statusViewModels.Last() );
 			}
 		}
@@ -75,6 +87,17 @@ namespace Twice.ViewModels.Columns
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 
 			await AddStatuses( list );
+		}
+
+		protected virtual async Task LoadTopData()
+		{
+			var query = Context.Twitter.Status.Where( StatusFilterExpression );
+			query = query.Where( SinceIdFilterExpression );
+
+			var statuses = await query.ToListAsync();
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) ).Reverse();
+
+			await AddStatuses( list, false );
 		}
 
 		protected virtual async Task OnLoad()
@@ -105,11 +128,18 @@ namespace Twice.ViewModels.Columns
 			} );
 		}
 
-		private void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
+		private async void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
 		{
 			if( !Configuration.General.RealtimeStreaming )
 			{
-				// TODO: Refresh column
+				IsLoading = true;
+				await Task.Run( async () =>
+				{
+					await LoadTopData().ContinueWith( t =>
+					{
+						IsLoading = false;
+					} );
+				} );
 			}
 		}
 
@@ -175,6 +205,7 @@ namespace Twice.ViewModels.Columns
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 		protected virtual Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
 		protected ulong SinceId { get; private set; } = ulong.MinValue;
+		protected virtual Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		protected readonly IContextEntry Context;
 
