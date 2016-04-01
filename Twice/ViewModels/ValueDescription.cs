@@ -63,8 +63,7 @@ namespace Twice.ViewModels
 
 			// ReSharper disable RedundantCast.0
 			if( ( (object)a == null ) || ( (object)b == null ) )
-
-				// ReSharper restore RedundantCast.0
+			// ReSharper restore RedundantCast.0
 			{
 				return false;
 			}

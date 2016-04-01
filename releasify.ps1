@@ -6,3 +6,4 @@ $nupkg = $nupkg.FullName
 Invoke-Expression "squirrel --releasify=$nupkg -b=$channel --no-msi --icon=Twice\Resources\TwitterIcon.ico"
 
 Remove-Item $nupkg
+Move-Item Releases\Setup.exe Releases\twice-setup.exe
