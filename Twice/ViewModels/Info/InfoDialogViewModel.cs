@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Twice.ViewModels.Info
 {
@@ -12,10 +13,24 @@ namespace Twice.ViewModels.Info
 		DateTime BuildDate { get; }
 		ICollection<LicenseItem> Licenses { get; }
 		string Version { get; }
+		ICollection<ChangelogItem> Changelogs { get; }
+	}
+
+	class ChangelogItem
+	{
+		public string Version { get; set; }
+		public DateTime Date { get; set; }
+		public string Description { get; set; }
+		public List<string> Changes { get; set; }
+		public List<string> NewFeatures { get; set; }
+		public List<string> KnownIssues { get; set; }
+		public List<string> Fixes { get; set; }
 	}
 
 	internal class InfoDialogViewModel : DialogViewModel, IInfoDialogViewModel
 	{
+		public ICollection<ChangelogItem> Changelogs { get; }
+
 		public InfoDialogViewModel()
 		{
 			var assembly = Assembly.GetExecutingAssembly();
@@ -26,6 +41,9 @@ namespace Twice.ViewModels.Info
 			Version = assembly.GetName().Version.ToString();
 
 			Licenses = ReadLicenses( assembly ).OrderBy( l => l.Name ).ToList();
+
+			var changelogJson = Resourcer.Resource.AsString( "Twice.Resources.Texts.Changelog.json" );
+			Changelogs = JsonConvert.DeserializeObject<List<ChangelogItem>>( changelogJson );
 		}
 
 		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]

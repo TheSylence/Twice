@@ -1,0 +1,28 @@
+﻿[
+    {
+        "Version": "0.1.1",
+        "Date": "2016-04-03",
+        "Fixes": [
+            "Fixed crash when doing anything"
+        ]
+    },
+    {
+        "Version": "0.1.0",
+        "Date": "2016-04-02",
+        "Description": "First beta release",
+        "NewFeatures": [
+            "New feature #1",
+            "Another feature"
+        ],
+        "Changes": [
+            "Everything is better now ;)"
+        ],
+        "Fixes": [
+            "Crash when doing this",
+            "Crash when doing that"
+        ],
+        "Issues": [
+            "No known issues \\o/"
+        ]
+    }
+]

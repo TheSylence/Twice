@@ -232,6 +232,8 @@
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
+    <Compile Include="Converters\EmptyList.cs" />
+    <Compile Include="Converters\EmptyString.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
@@ -469,7 +471,7 @@
     <EmbeddedResource Include="Resources\Strings.de-DE.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -477,6 +479,7 @@
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Resources\Documentation\Mute.md" />
     <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
+    <EmbeddedResource Include="Resources\Texts\Changelog.json" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>

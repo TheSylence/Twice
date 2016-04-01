@@ -28,4 +28,16 @@
 		<converters:NotNull />
 		<BooleanToVisibilityConverter />
 	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleIfItemsConv">
+		<converters:EmptyList />
+		<converters:InvertBool />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleIfStringConv">
+		<converters:EmptyString />
+		<converters:InvertBool />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
 </ResourceDictionary>
