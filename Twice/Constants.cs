@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace Twice
 {
@@ -22,11 +23,34 @@ namespace Twice
 
 		public static class IO
 		{
-			internal const string AccountsFileName = "accounts.json";
-			internal const string BetaChannelUrl = "http://software.btbsoft.org/twice/beta";
-			internal const string ColumnDefintionFileName = "columns.json";
-			internal const string ConfigFileName = "config.json";
+			internal static string AppDataFolder
+			{
+				get
+				{
+					var localAppData = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
+
+					return Path.Combine( localAppData, "Twice", "data" );
+				}
+			}
+
+			private static string P( string file )
+			{
+#if DEBUG
+				return file;
+#else
+				return Path.Combine( AppDataFolder, file );
+#endif
+			}
+
+			internal static readonly string AccountsFileName = P( "accounts.json" );
+			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
+			internal static readonly string ConfigFileName = P( "config.json" );
+		}
+
+		public static class Updates
+		{
 			internal const string ReleaseChannelUrl = "http://software.btbsoft.org/twice";
+			internal const string BetaChannelUrl = "http://software.btbsoft.org/twice/beta";
 		}
 
 		/// <summary>

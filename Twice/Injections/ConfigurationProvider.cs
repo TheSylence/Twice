@@ -1,7 +1,8 @@
-﻿using Ninject.Activation;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject.Activation;
+using Twice.Models.Configuration;
 
-namespace Twice.Models.Configuration
+namespace Twice.Injections
 {
 	[ExcludeFromCodeCoverage]
 	internal class ConfigurationProvider : Provider<IConfig>
@@ -13,9 +14,7 @@ namespace Twice.Models.Configuration
 		/// <returns>The created instance.</returns>
 		protected override IConfig CreateInstance( IContext context )
 		{
-			return Config ?? ( Config = new Config( Constants.IO.ConfigFileName ) );
+			return new Config( Constants.IO.ConfigFileName );
 		}
-
-		private static IConfig Config;
 	}
 }

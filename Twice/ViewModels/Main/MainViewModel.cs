@@ -53,7 +53,7 @@ namespace Twice.ViewModels.Main
 
 			if( Configuration.General.CheckForUpdates )
 			{
-				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.IO.BetaChannelUrl : Constants.IO.ReleaseChannelUrl;
+				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.Updates.BetaChannelUrl : Constants.Updates.ReleaseChannelUrl;
 
 				try
 				{

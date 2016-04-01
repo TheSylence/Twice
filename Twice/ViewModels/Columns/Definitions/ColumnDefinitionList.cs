@@ -8,7 +8,7 @@ namespace Twice.ViewModels.Columns.Definitions
 {
 	internal class ColumnDefinitionList : IColumnDefinitionList
 	{
-		public ColumnDefinitionList( string fileName = Constants.IO.ColumnDefintionFileName )
+		public ColumnDefinitionList( string fileName )
 		{
 			FileName = fileName;
 		}

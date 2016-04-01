@@ -24,7 +24,7 @@ namespace Twice.Injections
 		{
 			Bind<IMessenger>().ToConstant( Messenger.Default );
 
-			Bind<IColumnDefinitionList>().To<ColumnDefinitionList>().InSingletonScope();
+			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
 
 			Bind<IMainViewModel>().To<MainViewModel>();
 

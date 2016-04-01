@@ -232,11 +232,13 @@
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
+    <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Models\Twitter\Text\TwitterText.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
+    <Compile Include="Injections\TwitterContextListProvider.cs" />
     <Compile Include="Obscurity.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
@@ -423,7 +425,7 @@
     <Compile Include="Models\Cache\IDataCache.cs" />
     <Compile Include="Models\Cache\SecureBlobCacheProvider.cs" />
     <Compile Include="Models\Configuration\Config.cs" />
-    <Compile Include="Models\Configuration\ConfigurationProvider.cs" />
+    <Compile Include="Injections\ConfigurationProvider.cs" />
     <Compile Include="Models\Configuration\GeneralConfig.cs" />
     <Compile Include="Models\Configuration\VisualConfig.cs" />
     <Compile Include="Models\Twitter\ContextEntry.cs" />

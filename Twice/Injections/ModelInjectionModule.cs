@@ -19,7 +19,7 @@ namespace Twice.Injections
 			Bind<IBlobCache>().ToProvider<BlobCacheProvider>().InSingletonScope();
 			Bind<ISecureBlobCache>().ToProvider<SecureBlobCacheProvider>().InSingletonScope();
 
-			Bind<ITwitterContextList>().To<TwitterContextList>().InSingletonScope();
+			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();
 		}
