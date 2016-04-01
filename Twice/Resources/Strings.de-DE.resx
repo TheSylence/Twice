@@ -445,4 +445,7 @@
   <data name="Changelog" xml:space="preserve">
     <value>Changelog</value>
   </data>
+  <data name="UpdateHasBeenInstalled" xml:space="preserve">
+    <value>Version {0} wurde installiert. App neustarten, um die neue Version zu verwenden.</value>
+  </data>
 </root>

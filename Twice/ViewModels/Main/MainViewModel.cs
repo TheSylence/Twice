@@ -59,7 +59,9 @@ namespace Twice.ViewModels.Main
 				{
 					using( var mgr = new UpdateManager( channelUrl ) )
 					{
-						await mgr.UpdateApp();
+						var release = await mgr.UpdateApp();
+
+						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version.ToString() ), NotificationType.Information );
 					}
 				}
 				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
