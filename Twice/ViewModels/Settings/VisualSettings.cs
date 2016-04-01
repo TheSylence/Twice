@@ -90,7 +90,6 @@ namespace Twice.ViewModels.Settings
 
 		public ICollection<ColorItem> AvailableAccentColors { get; }
 		public ICollection<FontSizeItem> AvailableFontSizes { get; }
-		public ICollection<CultureInfo> AvailableLanguages { get; }
 		public ICollection<ColorItem> AvailablePrimaryColors { get; }
 
 		public bool InlineMedias

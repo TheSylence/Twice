@@ -76,12 +76,7 @@ namespace Twice.ViewModels.Twitter
 				return false;
 			}
 
-			if( TwitterHelper.CountCharacters( Text ) > Constants.Twitter.MaxTweetLength )
-			{
-				return false;
-			}
-
-			return true;
+			return TwitterHelper.CountCharacters( Text ) <= Constants.Twitter.MaxTweetLength;
 		}
 
 		private async void ExecuteAttachImageCommand()

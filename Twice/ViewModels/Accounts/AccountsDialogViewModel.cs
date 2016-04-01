@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -120,7 +118,6 @@ namespace Twice.ViewModels.Accounts
 
 		private const string DialogHostIdentifier = "AccountDialogHost";
 		private readonly IColumnDefinitionList ColumnList;
-		private readonly ITwitterContextList ContextList;
 		private RelayCommand _AddAccountCommand;
 		private bool PinEntryCancelled;
 	}

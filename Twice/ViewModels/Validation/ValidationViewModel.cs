@@ -125,7 +125,7 @@ namespace Twice.ViewModels.Validation
 			{
 				return;
 			}
-			
+
 			foreach( var v in validatorList )
 			{
 				v.Clear();

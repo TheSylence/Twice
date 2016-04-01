@@ -84,7 +84,7 @@ namespace Twice
 				resDict.Add( "GlobalFontSize", (double)conf.Visual.FontSize );
 			}
 			resDict.EndInit();
-			
+
 			Resources.MergedDictionaries.Add( resDict );
 
 			ChangeLanguage( conf.General.Language );

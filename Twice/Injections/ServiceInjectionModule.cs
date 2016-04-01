@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Ninject.Modules;
-using Twice.Services;
 using Twice.Services.Views;
 
 namespace Twice.Injections

@@ -37,7 +37,7 @@ namespace Twice.Injections
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
 
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
-			
+
 			Bind<IInfoDialogViewModel>().To<InfoDialogViewModel>();
 
 			Bind<IAccountsDialogViewModel>().To<AccountsDialogViewModel>();

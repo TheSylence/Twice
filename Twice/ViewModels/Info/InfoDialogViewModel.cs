@@ -35,19 +35,19 @@ namespace Twice.ViewModels.Info
 			{
 				try
 				{
-					const int PeHeaderOffset = 60;
-					const int LinkerTimestampOffset = 8;
+					const int peHeaderOffset = 60;
+					const int linkerTimestampOffset = 8;
 					byte[] b = new byte[2048];
 					using( Stream s = File.Open( filePath, FileMode.Open, FileAccess.Read ) )
 					{
 						s.Read( b, 0, 2048 );
 					}
 
-					int i = BitConverter.ToInt32( b, PeHeaderOffset );
+					int i = BitConverter.ToInt32( b, peHeaderOffset );
 
-					int SecondsSince1970 = BitConverter.ToInt32( b, i + LinkerTimestampOffset );
+					int secondsSince1970 = BitConverter.ToInt32( b, i + linkerTimestampOffset );
 					DateTime dt = new DateTime( 1970, 1, 1, 0, 0, 0 );
-					dt = dt.AddSeconds( SecondsSince1970 );
+					dt = dt.AddSeconds( secondsSince1970 );
 
 					int utcOffset = TimeZone.CurrentTimeZone.GetUtcOffset( dt ).Hours;
 

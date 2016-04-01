@@ -55,12 +55,9 @@ namespace Twice.Services.Views
 				dlg.Filter = fsa.Filter;
 			}
 
-			if( dlg.ShowDialog( Application.Current.MainWindow ) == true )
-			{
-				return Task.FromResult( dlg.FileName );
-			}
-
-			return Task.FromResult<string>( null );
+			return dlg.ShowDialog( Application.Current.MainWindow ) == true 
+				? Task.FromResult( dlg.FileName ) 
+				: Task.FromResult<string>( null );
 		}
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )

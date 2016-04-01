@@ -208,7 +208,7 @@ namespace Twice.Utilities
 		/// <returns>Encrypted value in a base64-encoded format.</returns>
 		public static string Encrypt( string plainText )
 		{
-			return Encrypt( defaultKeyType, plainText, string.Empty, string.Empty );
+			return Encrypt( DefaultKeyType, plainText, string.Empty, string.Empty );
 		}
 
 		/// <summary>
@@ -462,9 +462,9 @@ namespace Twice.Utilities
 		private const int CryptprotectUIForbidden = 0x1;
 
 		// It is reasonable to set default key type to user key.
-		private static readonly KeyType defaultKeyType = KeyType.UserKey;
+		private const KeyType DefaultKeyType = KeyType.UserKey;
 
 		// Wrapper for the NULL handle or pointer.
-		private static readonly IntPtr NullPtr = ( (IntPtr)0 );
+		private static readonly IntPtr NullPtr = (IntPtr)0;
 	}
 }

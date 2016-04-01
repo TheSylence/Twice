@@ -12,7 +12,7 @@ namespace Twice.Behaviors
 		protected override void OnAttached()
 		{
 			base.OnAttached();
-			
+
 		}
 
 		private static void OnDispatcherChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )

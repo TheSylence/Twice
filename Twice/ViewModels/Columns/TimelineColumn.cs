@@ -1,8 +1,6 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Anotar.NLog;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Columns.Definitions;

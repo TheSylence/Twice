@@ -268,7 +268,6 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
-    <Compile Include="ViewModels\Wizards\PageTypeAttribute.cs" />
     <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>

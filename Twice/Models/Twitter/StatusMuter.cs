@@ -33,7 +33,7 @@ namespace Twice.Models.Twitter
 			return result;
 		}
 
-		private bool CheckMute( MuteEntry entry, Status status )
+		private static bool CheckMute( MuteEntry entry, Status status )
 		{
 			char[] typeIndicators = {'#', ':', '@'};
 			string value = entry.Filter;

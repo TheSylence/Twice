@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Twice.ViewModels.Columns.Definitions
+﻿namespace Twice.ViewModels.Columns.Definitions
 {
-	class ColumnNotifications
+	internal class ColumnNotifications
 	{
-		public bool Toast { get; set; }
 		public bool Popup { get; set; }
 		public bool Sound { get; set; }
+		public bool Toast { get; set; }
 	}
 }

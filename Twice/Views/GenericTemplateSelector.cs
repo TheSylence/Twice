@@ -37,12 +37,7 @@ namespace Twice.Views
 				return true;
 			}
 
-			if( itemType.BaseType == null )
-			{
-				return false;
-			}
-
-			return IsDerived( itemType.BaseType, baseType );
+			return itemType.BaseType != null && IsDerived( itemType.BaseType, baseType );
 		}
 
 		public Collection<GenericDataTemplateSelectorItem> Templates { get; set; } = new Collection<GenericDataTemplateSelectorItem>();

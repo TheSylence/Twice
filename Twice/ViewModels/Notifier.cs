@@ -97,7 +97,7 @@ namespace Twice.ViewModels
 			DispatcherHelper.CheckBeginInvokeOnUI(
 				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
 
-			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( ( t ) =>
+			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( t =>
 			{
 				DispatcherHelper.CheckBeginInvokeOnUI( () =>
 					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );

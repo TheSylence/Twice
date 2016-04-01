@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:Twice.Controls"
              xmlns:columns="clr-namespace:Twice.ViewModels.Columns"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance columns:IColumnViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>

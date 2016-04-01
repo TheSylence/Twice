@@ -13,7 +13,7 @@ namespace Twice.ViewModels.Twitter
 			Context = context;
 			Image = new BitmapImage( context.ProfileImageUrl );
 		}
-		
+
 		public IContextEntry Context { get; }
 		public ImageSource Image { get; }
 		public string ScreenName => Context.AccountName;
