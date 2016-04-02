@@ -237,6 +237,7 @@
     <Compile Include="Converters\EmptyString.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
+    <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Configuration\Corner.cs" />

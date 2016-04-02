@@ -34,7 +34,7 @@ namespace Twice
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			DispatcherHelper.Initialize();
-			Kernel = new StandardKernel( InjectionModules.ToArray() );
+			Kernel = new Kernel( InjectionModules.ToArray() );
 
 			base.OnStartup( e );
 			ConfigureLogging();
