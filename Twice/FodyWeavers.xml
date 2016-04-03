@@ -2,4 +2,5 @@
 <Weavers>
   <Anotar.NLog />
   <Resourcer />
+  <AsyncErrorHandler />
 </Weavers>

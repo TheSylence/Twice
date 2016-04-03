@@ -214,6 +214,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncErrorHandler.cs" />
     <Compile Include="Attributes\IconAttribute.cs" />
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
