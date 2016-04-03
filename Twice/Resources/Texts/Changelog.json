@@ -1,11 +1,45 @@
 ﻿[
+    
+    {
+        "Version": "0.1.3",
+        "Date": "2016-04-03",
+        "Description": "",
+        "NewFeatures": [ ],
+        "Changes": [ ],
+        "Fixes": [
+            "Fixed update search not working"
+        ],
+        "Issues": [ ]
+    },
+    {
+        "Version": "0.1.2",
+        "Date": "2016-04-03",
+        "Description": "",
+        "NewFeatures": [ ],
+        "Changes": [ ],
+        "Fixes": [
+            "Fixed crash when looking for updates"
+        ],
+        "Issues": [ ]
+    },
+    {
+        "Version": "0.1.1",
+        "Date": "2016-04-03",
+        "Description": "",
+        "NewFeatures": [ ],
+        "Changes": [ ],
+        "Fixes": [
+            "Fixed crash when adding a new account"
+        ],
+        "Issues": [ ]
+    },
     {
         "Version": "0.1.0",
         "Date": "2016-04-03",
         "Description": "First beta release",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [],
+        "NewFeatures": [ ],
+        "Changes": [ ],
+        "Fixes": [ ],
         "Issues": [
             "Adding columns doesn't work",
             "Loading more content in the timeline column doesn't work",
