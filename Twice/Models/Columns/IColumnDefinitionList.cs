@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Twice.ViewModels.Columns.Definitions
+namespace Twice.Models.Columns
 {
 	internal interface IColumnDefinitionList
 	{

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 using Twice.Views;
 
 namespace Twice.Services.Views

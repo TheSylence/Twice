@@ -1,5 +1,5 @@
 using MaterialDesignThemes.Wpf;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 
 namespace Twice.ViewModels.ColumnManagement
 {

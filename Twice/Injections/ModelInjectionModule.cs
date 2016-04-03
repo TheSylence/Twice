@@ -2,6 +2,7 @@
 using Akavache;
 using Ninject.Modules;
 using Twice.Models.Cache;
+using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 
@@ -22,6 +23,8 @@ namespace Twice.Injections
 			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();
+			Bind<IStreamingRepository>().To<StreamingRepository>();
+			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>();
 		}
 	}
 }

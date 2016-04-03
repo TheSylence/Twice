@@ -1,4 +1,4 @@
-﻿namespace Twice.ViewModels.Columns.Definitions
+﻿namespace Twice.Models.Columns
 {
 	internal class ColumnDefinition
 	{

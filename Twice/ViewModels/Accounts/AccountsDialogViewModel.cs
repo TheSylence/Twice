@@ -5,9 +5,9 @@ using System.Windows.Input;
 using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Accounts
 {

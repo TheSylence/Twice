@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Columns
 {
-	internal class ColumnFactory
+	internal class ColumnFactory : IColumnFactory
 	{
-		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config )
+		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config, IStreamingRepository streamingRepo )
 		{
 			Configuration = config;
 			Muter = muter;
 			Contexts = contexts;
+			StreamingRepo = streamingRepo;
 
-			FactoryMap = new Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>>
+			FactoryMap = new Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>>
 			{
 				{ColumnType.User, UserColumn},
 				{ColumnType.Timeline, TimelineColumn},
@@ -32,15 +33,22 @@ namespace Twice.ViewModels.Columns
 				return null;
 			}
 
-			Func<IContextEntry, ColumnDefinition, ColumnViewModelBase> factoryAction;
+			Func<ColumnArgumentsData, ColumnViewModelBase> factoryAction;
 
 			if( FactoryMap.TryGetValue( def.Type, out factoryAction ) )
 			{
-				var column = factoryAction( context, def );
+				var argData = new ColumnArgumentsData()
+				{
+					Configuration = Configuration,
+					Context = context,
+					Definition = def,
+					Parser = StreamingRepo.GetParser( def )
+				};
+
+				var column = factoryAction( argData );
 
 				column.Width = def.Width;
 				column.Muter = Muter;
-				column.Configuration = Configuration;
 
 				return column;
 			}
@@ -48,24 +56,33 @@ namespace Twice.ViewModels.Columns
 			return null;
 		}
 
-		private ColumnViewModelBase MentionsColumn( IContextEntry context, ColumnDefinition definition )
+		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )
 		{
-			return new MentionsColumn( context, definition );
+			return new MentionsColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
-		private ColumnViewModelBase TimelineColumn( IContextEntry context, ColumnDefinition definition )
+		private ColumnViewModelBase TimelineColumn( ColumnArgumentsData args )
 		{
-			return new TimelineColumn( context, definition );
+			return new TimelineColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
-		private ColumnViewModelBase UserColumn( IContextEntry context, ColumnDefinition definition )
+		private ColumnViewModelBase UserColumn( ColumnArgumentsData args )
 		{
-			return new UserColumn( context, definition, definition.TargetAccounts.First() );
+			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		private readonly IConfig Configuration;
 		private readonly ITwitterContextList Contexts;
-		private readonly Dictionary<ColumnType, Func<IContextEntry, ColumnDefinition, ColumnViewModelBase>> FactoryMap;
+		private readonly Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>> FactoryMap;
 		private readonly IStatusMuter Muter;
+		private readonly IStreamingRepository StreamingRepo;
+
+		private class ColumnArgumentsData
+		{
+			public IConfig Configuration;
+			public IContextEntry Context;
+			public ColumnDefinition Definition;
+			public IStreamParser Parser;
+		}
 	}
 }

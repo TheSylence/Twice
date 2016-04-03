@@ -6,24 +6,34 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities;
-using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
-		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition )
+		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
+			IStreamParser parser )
 		{
+			Configuration = config;
 			Definition = definition;
 			Context = context;
 			Width = 300;
 			IsLoading = true;
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
-			ActionDispatcher = new ColumnActionDispatcher();
 
+			if( config.General.RealtimeStreaming )
+			{
+				parser.StatusReceived += Parser_StatusReceived;
+				parser.StatusDeleted += Parser_StatusDeleted;
+				parser.StartStreaming();
+			}
+
+			ActionDispatcher = new ColumnActionDispatcher();
 			ActionDispatcher.HeaderClicked += ActionDispatcher_HeaderClicked;
 			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
 
@@ -45,12 +55,22 @@ namespace Twice.ViewModels.Columns
 			} );
 		}
 
-		protected async Task AddStatus( StatusViewModel status )
+		protected async Task AddStatus( StatusViewModel status, bool append = true )
 		{
 			SinceId = Math.Min( SinceId, status.Id );
 			MaxId = Math.Min( MaxId, status.Id );
 
-			await DispatcherHelper.RunAsync( () => StatusCollection.Add( status ) );
+			await DispatcherHelper.RunAsync( () =>
+			{
+				if( append )
+				{
+					StatusCollection.Add( status );
+				}
+				else
+				{
+					StatusCollection.Insert( 0, status );
+				}
+			} );
 			RaiseNewStatus( status );
 		}
 
@@ -77,6 +97,8 @@ namespace Twice.ViewModels.Columns
 				RaiseNewStatus( statusViewModels.Last() );
 			}
 		}
+
+		protected abstract bool IsSuitableForColumn( Status status );
 
 		protected virtual async Task LoadMoreData()
 		{
@@ -141,6 +163,27 @@ namespace Twice.ViewModels.Columns
 					} );
 				} );
 			}
+		}
+
+		private void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
+		{
+			// TODO: Handle deletion
+		}
+
+		private async void Parser_StatusReceived( object sender, StatusStreamEventArgs e )
+		{
+			if( Muter.IsMuted( e.Status ) )
+			{
+				return;
+			}
+
+			if( !IsSuitableForColumn( e.Status ) )
+			{
+				return;
+			}
+
+			var s = new StatusViewModel( e.Status, Context );
+			await AddStatus( s, false );
 		}
 
 		public IColumnActionDispatcher ActionDispatcher { get; }

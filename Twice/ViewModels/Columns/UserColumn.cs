@@ -1,19 +1,35 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LinqToTwitter;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class UserColumn : ColumnViewModelBase
 	{
-		public UserColumn( IContextEntry context, ColumnDefinition definition, ulong userId )
-			: base( context, definition )
+		public UserColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
+			: base( context, definition, config, parser )
 		{
-			UserId = userId;
+			UserId = definition.TargetAccounts.First();
+		}
+
+		protected override bool IsSuitableForColumn( Status status )
+		{
+			if( status.UserID == UserId )
+			{
+				return true;
+			}
+			ulong id;
+			if( ulong.TryParse( status.User.UserIDResponse, out id ) )
+			{
+				return id == UserId;
+			}
+
+			return status.User.UserID == UserId;
 		}
 
 		protected override async Task OnLoad()

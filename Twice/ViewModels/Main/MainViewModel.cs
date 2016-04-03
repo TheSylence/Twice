@@ -8,12 +8,12 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Squirrel;
 using Twice.Messages;
+using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
 using Twice.ViewModels.Columns;
-using Twice.ViewModels.Columns.Definitions;
 using Twice.Views;
 
 namespace Twice.ViewModels.Main
@@ -22,14 +22,14 @@ namespace Twice.ViewModels.Main
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
 		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList,
-			IConfig config )
+			IConfig config, IColumnFactory columnFactory )
 		{
 			ContextList = contextList;
 			ContextList.ContextsChanged += ContextList_ContextsChanged;
 
 			Columns = new ObservableCollection<IColumnViewModel>();
 			Notifier = notifier;
-			Factory = new ColumnFactory( ContextList, muter, config );
+			Factory = columnFactory;
 			ColumnList = columnList;
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
@@ -156,7 +156,7 @@ namespace Twice.ViewModels.Main
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 		private readonly IColumnDefinitionList ColumnList;
-		private readonly ColumnFactory Factory;
+		private readonly IColumnFactory Factory;
 		private readonly INotifier Notifier;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]

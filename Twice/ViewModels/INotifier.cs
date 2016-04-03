@@ -1,4 +1,4 @@
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels

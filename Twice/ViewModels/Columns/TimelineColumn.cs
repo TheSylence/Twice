@@ -1,19 +1,25 @@
 ﻿using LinqToTwitter;
 using System;
 using System.Linq.Expressions;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.ViewModels.Columns.Definitions;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class TimelineColumn : ColumnViewModelBase
 	{
 		// TODO: Implement joined timelines for multiple contexts
-		public TimelineColumn( IContextEntry context, ColumnDefinition definition )
-			: base( context, definition )
+		public TimelineColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
+			: base( context, definition, config, parser )
 		{
 			Title = Strings.Home;
+		}
+
+		protected override bool IsSuitableForColumn( Status status )
+		{
+			return true;
 		}
 
 		public override Icon Icon => Icon.Home;

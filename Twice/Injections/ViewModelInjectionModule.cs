@@ -4,7 +4,7 @@ using Ninject.Modules;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.ViewModels.Columns;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Main;
@@ -24,9 +24,8 @@ namespace Twice.Injections
 		{
 			Bind<IMessenger>().ToConstant( Messenger.Default );
 
-			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
-
 			Bind<IMainViewModel>().To<MainViewModel>();
+			Bind<IColumnFactory>().To<ColumnFactory>();
 
 			Bind<ISettingsDialogViewModel>().To<SettingsDialogViewModel>();
 			Bind<IVisualSettings>().To<VisualSettings>();

@@ -1,5 +1,5 @@
 using Ninject.Activation;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 
 namespace Twice.Injections
 {

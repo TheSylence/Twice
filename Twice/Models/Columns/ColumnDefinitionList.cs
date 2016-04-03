@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
-namespace Twice.ViewModels.Columns.Definitions
+namespace Twice.Models.Columns
 {
 	internal class ColumnDefinitionList : IColumnDefinitionList
 	{

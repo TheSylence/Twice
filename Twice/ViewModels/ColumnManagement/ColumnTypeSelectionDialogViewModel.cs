@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 
 namespace Twice.ViewModels.ColumnManagement
 {
