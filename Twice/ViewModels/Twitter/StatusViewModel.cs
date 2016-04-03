@@ -144,7 +144,7 @@ namespace Twice.ViewModels.Twitter
 		public bool DisplayMedia => InlineMedias.Any();
 
 		public ICommand FavoriteStatusCommand => _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
-		public ulong Id => Model.ID;
+		public ulong Id => Model.StatusID;
 
 		public IEnumerable<Uri> InlineMedias
 		{

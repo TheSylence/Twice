@@ -21,12 +21,9 @@ namespace Twice.ViewModels.Settings
 			}
 
 			var neutrals = langs.Where( l => l.IsNeutralCulture ).ToArray();
-			foreach( var neutral in neutrals )
+			foreach( var neutral in neutrals.Where( neutral => langs.Any( l => neutral.Equals( l.Parent ) ) ) )
 			{
-				if( langs.Any( l => neutral.Equals( l.Parent ) ) )
-				{
-					langs.Remove( neutral );
-				}
+				langs.Remove( neutral );
 			}
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 

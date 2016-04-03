@@ -9,7 +9,7 @@ namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{
-		public TwitterContextList( INotifier notifier, string fileName = Constants.IO.AccountsFileName )
+		public TwitterContextList( INotifier notifier, string fileName )
 		{
 			FileName = fileName;
 			Notifier = notifier;

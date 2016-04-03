@@ -3,12 +3,6 @@ using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels.Dialogs
 {
-	internal interface ITextInputDialogViewModel : IDialogViewModel
-	{
-		string Input { get; set; }
-		string Label { get; set; }
-	}
-
 	internal class TextInputDialogViewModel : DialogViewModel, ITextInputDialogViewModel
 	{
 		public TextInputDialogViewModel()

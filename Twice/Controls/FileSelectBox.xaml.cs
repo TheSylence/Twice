@@ -4,12 +4,6 @@ using System.Windows;
 
 namespace Twice.Controls
 {
-	internal enum FileSelectMode
-	{
-		Open,
-		Save
-	}
-
 	/// <summary>
 	/// Interaction logic for FileSelectBox.xaml
 	/// </summary>

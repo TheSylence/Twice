@@ -69,9 +69,11 @@ namespace Twice.ViewModels.Settings
 
 		private void ExecuteEditCommand()
 		{
-			EditData = new MuteEditViewModel( MuteEditAction.Edit );
-			EditData.Filter = SelectedEntry.Filter;
-			EditData.HasEndDate = SelectedEntry.EndDate.HasValue;
+			EditData = new MuteEditViewModel( MuteEditAction.Edit )
+			{
+				Filter = SelectedEntry.Filter,
+				HasEndDate = SelectedEntry.EndDate.HasValue
+			};
 			if( EditData.HasEndDate )
 			{
 				EditData.EndDate = SelectedEntry.EndDate.Value;

@@ -3,13 +3,6 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace Twice.Messages
 {
-	internal enum FlyoutAction
-	{
-		Open,
-		Close,
-		Toggle
-	}
-
 	[ExcludeFromCodeCoverage]
 	internal class FlyoutMessage : MessageBase
 	{

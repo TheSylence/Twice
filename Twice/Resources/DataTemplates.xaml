@@ -103,7 +103,6 @@
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
 												   Path=IsMouseOver}" Value="True">
-												<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
 												<Setter Property="TextDecorations" Value="Underline" />
 											</DataTrigger>
 										</Style.Triggers>
@@ -133,24 +132,6 @@
 								</controls1:FlipView.ItemTemplate>
 							</controls1:FlipView>
 						</StackPanel>
-
-						<!--<StackPanel Margin="5" Orientation="Horizontal">
-							<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
-						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
-								<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
-							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-									<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}" />
-								</Hyperlink>
-							</ContentControl>
-
-							<TextBlock Text="{lex:LocText Via, Suffix=': '}" Margin="10,0,5,0" />
-							<ContentControl>
-								<Hyperlink CommandParameter="{Binding Model.Source, Converter={StaticResource SourceUrlConv}}"
-							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-									<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}" />
-								</Hyperlink>
-							</ContentControl>
-						</StackPanel>-->
 					</StackPanel>
 
 					<Grid.ContextMenu>
@@ -196,7 +177,6 @@
 							<Style.Triggers>
 								<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
                                                Path=IsMouseOver}" Value="True">
-									<!--<Setter Property="Effect" Value="{StaticResource MyEffect}" />-->
 									<Setter Property="TextDecorations" Value="Underline" />
 								</DataTrigger>
 							</Style.Triggers>

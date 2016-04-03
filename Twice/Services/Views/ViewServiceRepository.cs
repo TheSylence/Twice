@@ -10,10 +10,10 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
+using Twice.Models.Columns;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
-using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
@@ -55,12 +55,9 @@ namespace Twice.Services.Views
 				dlg.Filter = fsa.Filter;
 			}
 
-			if( dlg.ShowDialog( Application.Current.MainWindow ) == true )
-			{
-				return Task.FromResult( dlg.FileName );
-			}
-
-			return Task.FromResult<string>( null );
+			return dlg.ShowDialog( Application.Current.MainWindow ) == true
+				? Task.FromResult( dlg.FileName )
+				: Task.FromResult<string>( null );
 		}
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )

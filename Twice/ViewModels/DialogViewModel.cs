@@ -7,13 +7,6 @@ using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels
 {
-	internal interface IDialogViewModel : IViewController
-	{
-		ICommand CancelCommand { get; }
-		ICommand OkCommand { get; }
-		string Title { get; set; }
-	}
-
 	internal class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
 		public event EventHandler<CloseEventArgs> CloseRequested;

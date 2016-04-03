@@ -6,7 +6,6 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:wizards="clr-namespace:Twice.Views.Wizards"
         xmlns:views="clr-namespace:Twice.Views"
         xmlns:columnManagement="clr-namespace:Twice.ViewModels.ColumnManagement"
         xmlns:proxies="clr-namespace:Twice.Views.Proxies"

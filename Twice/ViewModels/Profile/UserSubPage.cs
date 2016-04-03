@@ -65,6 +65,6 @@ namespace Twice.ViewModels.Profile
 
 		private List<object> _Items;
 
-		private Func<Task<IEnumerable<object>>> LoadAction;
+		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 	}
 }

@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:Twice.Converters"
-                    xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml">
+                    xmlns:converters="clr-namespace:Twice.Converters">
 	<BooleanToVisibilityConverter x:Key="BoolToVisibleConv" />
 	<converters:StatusHighlighter x:Key="StatusHighlighterConv" />
 	<converters:UtcToLocal x:Key="UtcToLocalConv" />
@@ -27,6 +26,18 @@
 
 	<converters:ConverterChain x:Key="VisibleNotNullConv">
 		<converters:NotNull />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleIfItemsConv">
+		<converters:EmptyList />
+		<converters:InvertBool />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleIfStringConv">
+		<converters:EmptyString />
+		<converters:InvertBool />
 		<BooleanToVisibilityConverter />
 	</converters:ConverterChain>
 </ResourceDictionary>

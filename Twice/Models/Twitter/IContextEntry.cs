@@ -7,9 +7,9 @@ namespace Twice.Models.Twitter
 	internal interface IContextEntry : IDisposable
 	{
 		string AccountName { get; }
+		INotifier Notifier { get; }
+		Uri ProfileImageUrl { get; }
 		TwitterContext Twitter { get; }
 		ulong UserId { get; }
-		Uri ProfileImageUrl { get; }
-		INotifier Notifier { get; }
 	}
 }

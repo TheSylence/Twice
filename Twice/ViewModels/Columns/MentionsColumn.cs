@@ -1,30 +1,31 @@
-﻿using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using LinqToTwitter;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.ViewModels.Columns.Definitions;
-using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class MentionsColumn : ColumnViewModelBase
 	{
-		public MentionsColumn( IContextEntry context, ColumnDefinition definition ) : base( context, definition )
+		public MentionsColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
+			: base( context, definition, config, parser )
 		{
 			Icon = Icon.Mentions;
 			Title = Strings.Mentions;
 		}
 
-		protected override async Task OnLoad()
+		protected override bool IsSuitableForColumn( Status status )
 		{
-			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.Mentions && s.UserID == Context.UserId ).ToListAsync();
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
-
-			await AddStatuses( list );
+			return status.Entities.UserMentionEntities.Any( m => m.ScreenName == Context.AccountName );
 		}
 
 		public override Icon Icon { get; }
+
+		protected override Expression<Func<Status, bool>> StatusFilterExpression
+					=> s => s.Type == StatusType.Mentions && s.UserID == Context.UserId;
 	}
 }

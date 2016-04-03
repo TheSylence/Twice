@@ -35,7 +35,7 @@
 	</controls:MetroWindow.Flyouts>
 	<controls:MetroWindow.RightWindowCommands>
 		<controls:WindowCommands>
-			<Button ToolTip="{lex:Loc Information}" Command="{Binding InfoCommand}">
+			<Button ToolTip="{lex:Loc Info}" Command="{Binding InfoCommand}">
 				<materialDesign:PackIcon Kind="Information" />
 			</Button>
 		</controls:WindowCommands>
@@ -115,14 +115,24 @@
 						<DataTemplate DataType="columns:IColumnViewModel">
 							<Grid>
 								<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
-									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top" />
+									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
+										<i:Interaction.Behaviors>
+											<behaviors:ColumnHeaderHandler ActionDispatcher="{Binding ActionDispatcher}" />
+										</i:Interaction.Behaviors>
+									</controls1:ColumnHeader>
 
 									<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
 									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
 											  HorizontalContentAlignment="Stretch">
+										<i:Interaction.Behaviors>
+											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+										</i:Interaction.Behaviors>
 										<ItemsControl.Template>
 											<ControlTemplate>
 												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+													<i:Interaction.Behaviors>
+														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+													</i:Interaction.Behaviors>
 													<ItemsPresenter />
 												</ScrollViewer>
 											</ControlTemplate>

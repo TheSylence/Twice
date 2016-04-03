@@ -27,6 +27,7 @@ namespace Twice.ViewModels.Profile
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
 
+			// ReSharper disable once RedundantBoolCompare
 			User = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
 			if( User == null )
 			{

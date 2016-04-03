@@ -5,11 +5,6 @@ using Twice.Models.Configuration;
 
 namespace Twice.Models.Twitter
 {
-	interface IStatusMuter
-	{
-		bool IsMuted( Status status );
-	}
-
 	internal class StatusMuter : IStatusMuter
 	{
 		public StatusMuter( IConfig config )
@@ -33,7 +28,7 @@ namespace Twice.Models.Twitter
 			return result;
 		}
 
-		private bool CheckMute( MuteEntry entry, Status status )
+		private static bool CheckMute( MuteEntry entry, Status status )
 		{
 			char[] typeIndicators = {'#', ':', '@'};
 			string value = entry.Filter;

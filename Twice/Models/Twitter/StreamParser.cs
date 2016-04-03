@@ -2,13 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using LinqToTwitter;
 using LitJson;
 
 namespace Twice.Models.Twitter
 {
+	internal interface IStreamParser : IDisposable
+	{
+		/// <summary>Occurs when a status was deleted.</summary>
+		event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
+
+		/// <summary>Occurs when a direct message was received.</summary>
+		event EventHandler<DirectMessageStreamEventArgs> DirectMessageReceived;
+
+		/// <summary>Occurs when a status was favourited.</summary>
+		event EventHandler<FavoriteStreamEventArgs> FavoriteEventReceived;
+
+		/// <summary>Occurs when the friend list was received.</summary>
+		event EventHandler<FriendsStreamEventArgs> FriendsReceived;
+
+		/// <summary>Occurs when a status was deleted.</summary>
+		event EventHandler<DeleteStreamEventArgs> StatusDeleted;
+
+		/// <summary>Occurs when a status was received.</summary>
+		event EventHandler<StatusStreamEventArgs> StatusReceived;
+
+		/// <summary>Occurs when unknown data has been received.</summary>
+		event EventHandler<StreamEventArgs> UnknownDataReceived;
+
+		/// <summary>Occurs when an event was received.</summary>
+		event EventHandler<EventStreamEventArgs> UnknownEventReceived;
+
+		void StartStreaming();
+	}
+
 	/// <summary>Parser for twitter streams.</summary>
-	internal class StreamParser : IDisposable
+	internal class StreamParser : IDisposable, IStreamParser
 	{
 		/// <summary>Initializes a new instance of the <see cref="StreamParser"/> class.</summary>
 		/// <param name="stream">The user stream.</param>
@@ -61,6 +91,12 @@ namespace Twice.Models.Twitter
 
 		public void StartStreaming()
 		{
+			if( Started )
+			{
+				return;
+			}
+
+			Started = true;
 			Stream.StartAsync( c => Task.Run( () => ParseContent( c ) ) )
 				.ContinueWith( t => Connections = t.Result );
 		}
@@ -108,11 +144,13 @@ namespace Twice.Models.Twitter
 			switch( eventType )
 			{
 			case StreamEventType.Favorite:
+				LogTo.Debug( "Favorite received" );
 				var favhandler = FavoriteEventReceived;
 				favhandler?.Invoke( this, new FavoriteStreamEventArgs( json ) );
 				break;
 
 			default:
+				LogTo.Debug( "Unknown event received" );
 				var handler = UnknownEventReceived;
 				handler?.Invoke( this, new EventStreamEventArgs( json ) );
 				break;
@@ -134,12 +172,14 @@ namespace Twice.Models.Twitter
 			// Was this a tweet?
 			if( parsed.TryGetValue( "text", out parsedContent ) )
 			{
+				LogTo.Debug( "Status recevied" );
 				var handler = StatusReceived;
 				handler?.Invoke( this, new StatusStreamEventArgs( content.Content ) );
 			}
 			// Or a direct message?
 			else if( parsed.TryGetValue( "direct_message", out parsedContent ) )
 			{
+				LogTo.Debug( "DirectMessage received" );
 				var handler = DirectMessageReceived;
 				handler?.Invoke( this, new DirectMessageStreamEventArgs( content.Content ) );
 			}
@@ -149,11 +189,13 @@ namespace Twice.Models.Twitter
 				JsonData deleted;
 				if( parsedContent.TryGetValue( "status", out deleted ) )
 				{
+					LogTo.Debug( "Status deletion received" );
 					var handler = StatusDeleted;
 					handler?.Invoke( this, new DeleteStreamEventArgs( content.Content ) );
 				}
 				else
 				{
+					LogTo.Debug( "DirectMessage deletion received" );
 					var handler = DirectMessageDeleted;
 					handler?.Invoke( this, new DeleteStreamEventArgs( content.Content ) );
 				}
@@ -166,11 +208,13 @@ namespace Twice.Models.Twitter
 			// Is this the friend list of the user?
 			else if( parsed.TryGetValue( "friends", out parsedContent ) )
 			{
+				LogTo.Debug( "Friend list received" );
 				var handler = FriendsReceived;
 				handler?.Invoke( this, new FriendsStreamEventArgs( content.Content ) );
 			}
 			else
 			{
+				LogTo.Debug( "Unknown data received" );
 				var handler = UnknownDataReceived;
 				handler?.Invoke( this, new StreamEventArgs( content.Content ) );
 			}
@@ -178,5 +222,6 @@ namespace Twice.Models.Twitter
 
 		private readonly IQueryable<Streaming> Stream;
 		private List<Streaming> Connections;
+		private bool Started = false;
 	}
 }

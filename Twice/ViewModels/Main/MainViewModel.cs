@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -7,25 +8,28 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Squirrel;
 using Twice.Messages;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
 using Twice.ViewModels.Columns;
-using Twice.ViewModels.Columns.Definitions;
 using Twice.Views;
 
 namespace Twice.ViewModels.Main
 {
+	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList )
+		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList,
+			IConfig config, IColumnFactory columnFactory )
 		{
 			ContextList = contextList;
 			ContextList.ContextsChanged += ContextList_ContextsChanged;
 
 			Columns = new ObservableCollection<IColumnViewModel>();
 			Notifier = notifier;
-			Factory = new ColumnFactory( ContextList, muter );
+			Factory = columnFactory;
 			ColumnList = columnList;
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
@@ -50,10 +54,19 @@ namespace Twice.ViewModels.Main
 
 			if( Configuration.General.CheckForUpdates )
 			{
-				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.IO.BetaChannelUrl : Constants.IO.ReleaseChannelUrl;
-				using( var mgr = new UpdateManager( channelUrl ) )
+				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.Updates.BetaChannelUrl : Constants.Updates.ReleaseChannelUrl;
+
+				try
 				{
-					await mgr.UpdateApp();
+					using( var mgr = new UpdateManager( channelUrl ) )
+					{
+						var release = await mgr.UpdateApp();
+
+						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ), NotificationType.Information );
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
 				}
 			}
 		}
@@ -72,12 +85,12 @@ namespace Twice.ViewModels.Main
 		{
 			var vm = sender as IColumnViewModel;
 			Debug.Assert( vm != null );
-			
+
 			ColumnNotifications columnSettings = vm.Definition.Notifications;
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
-		private async void ColumnList_ColumnsChanged( object sender, System.EventArgs e )
+		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
 		{
 			ConstructColumns();
 			await OnLoad( null );
@@ -102,7 +115,7 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
-		private void ContextList_ContextsChanged( object sender, System.EventArgs e )
+		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( HasContexts ) );
 		}
@@ -143,17 +156,22 @@ namespace Twice.ViewModels.Main
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
 		public ICommand SettingsCommand => _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 		private readonly IColumnDefinitionList ColumnList;
-		private readonly ColumnFactory Factory;
+		private readonly IColumnFactory Factory;
 		private readonly INotifier Notifier;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SettingsCommand;
 	}
 }

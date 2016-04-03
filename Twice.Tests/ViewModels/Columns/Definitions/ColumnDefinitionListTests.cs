@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Twice.ViewModels.Columns.Definitions;
+using Twice.Models.Columns;
 
 namespace Twice.Tests.ViewModels.Columns.Definitions
 {

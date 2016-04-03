@@ -205,6 +205,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Changelog {
+            get {
+                return ResourceManager.GetString("Changelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -1020,6 +1029,15 @@ namespace Twice.Resources {
         public static string Unfollow {
             get {
                 return ResourceManager.GetString("Unfollow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0} has been installed. Restart the app to use the new version..
+        /// </summary>
+        public static string UpdateHasBeenInstalled {
+            get {
+                return ResourceManager.GetString("UpdateHasBeenInstalled", resourceCulture);
             }
         }
         

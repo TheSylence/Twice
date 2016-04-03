@@ -6,29 +6,14 @@ using System.Windows.Media;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using Twice.Messages;
+using Twice.Models.Columns;
 using Twice.Models.Configuration;
-using Twice.ViewModels.Columns.Definitions;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
 using Twice.Views;
 
 namespace Twice.ViewModels
 {
-
-	internal enum NotificationType
-	{
-		Information,
-		Success,
-		Error
-	}
-
-	internal interface INotifier
-	{
-		void DisplayMessage( string message, NotificationType type );
-
-		void OnStatus( StatusViewModel status, ColumnNotifications columnSettings );
-	}
-
 	internal class Notifier : INotifier
 	{
 		public Notifier( IConfig config, IMessenger messenger )
@@ -97,7 +82,7 @@ namespace Twice.ViewModels
 			DispatcherHelper.CheckBeginInvokeOnUI(
 				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
 
-			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( ( t ) =>
+			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( t =>
 			{
 				DispatcherHelper.CheckBeginInvokeOnUI( () =>
 					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );

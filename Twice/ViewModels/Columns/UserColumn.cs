@@ -1,18 +1,35 @@
-﻿using System.Linq;
+﻿using LinqToTwitter;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LinqToTwitter;
+using Twice.Models.Columns;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.ViewModels.Columns.Definitions;
-using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class UserColumn : ColumnViewModelBase
 	{
-		public UserColumn( IContextEntry context, ColumnDefinition definition, ulong userId )
-			: base( context, definition )
+		public UserColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
+			: base( context, definition, config, parser )
 		{
-			UserId = userId;
+			UserId = definition.TargetAccounts.First();
+		}
+
+		protected override bool IsSuitableForColumn( Status status )
+		{
+			if( status.UserID == UserId )
+			{
+				return true;
+			}
+			ulong id;
+			if( ulong.TryParse( status.User.UserIDResponse, out id ) )
+			{
+				return id == UserId;
+			}
+
+			return status.User.UserID == UserId;
 		}
 
 		protected override async Task OnLoad()
@@ -20,13 +37,14 @@ namespace Twice.ViewModels.Columns
 			var userInfo = await Context.Twitter.User.Where( u => u.UserID == UserId && u.Type == UserType.Show ).FirstAsync();
 			Title = userInfo.ScreenNameResponse;
 
-			var statuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == UserId ).ToListAsync();
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( t => new StatusViewModel( t, Context ) ).ToArray();
-
-			await AddStatuses( list );
+			await base.OnLoad();
 		}
 
 		public override Icon Icon => Icon.User;
+
+		protected override Expression<Func<Status, bool>> StatusFilterExpression
+									=> s => s.Type == StatusType.User && s.UserID == Context.UserId;
+
 		private readonly ulong UserId;
 	}
 }
