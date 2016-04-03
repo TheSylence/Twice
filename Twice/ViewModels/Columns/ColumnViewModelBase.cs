@@ -125,15 +125,6 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task OnLoad()
 		{
-			if( Context == null )
-			{
-				LogTo.Error( "Context == null" );
-			}
-			else if( Context.Twitter == null )
-			{
-				LogTo.Error( "Context.Twitter == null" );
-			}
-
 			var statuses = await Context.Twitter.Status.Where( StatusFilterExpression ).ToListAsync();
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 

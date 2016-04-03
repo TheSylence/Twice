@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using Squirrel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Squirrel;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -52,22 +54,36 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			if( Configuration.General.CheckForUpdates )
+			try
 			{
-				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.Updates.BetaChannelUrl : Constants.Updates.ReleaseChannelUrl;
-
-				try
+				if( Configuration?.General?.CheckForUpdates == true )
 				{
-					using( var mgr = new UpdateManager( channelUrl ) )
-					{
-						var release = await mgr.UpdateApp();
+					var channelUrl = Configuration.General.IncludePrereleaseUpdates
+						? Constants.Updates.BetaChannelUrl
+						: Constants.Updates.ReleaseChannelUrl;
 
-						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ), NotificationType.Information );
+					try
+					{
+						using( var mgr = new UpdateManager( channelUrl ) )
+						{
+							var release = await mgr.UpdateApp();
+
+							if( release.Version.Version > Assembly.GetExecutingAssembly().GetName().Version )
+							{
+								Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+									NotificationType.Information );
+							}
+						}
+					}
+					catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+					{
 					}
 				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
+			}
+			catch( NullReferenceException ex )
+			{
+				LogTo.ErrorException( "NullRef in Updatecheck", ex );
+				LogTo.Error( $"Stacktrace: {ex.StackTrace}" );
 			}
 		}
 
