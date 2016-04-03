@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
 using Squirrel;
 using System;
 using System.Collections.Generic;
@@ -53,26 +54,36 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			if( Configuration.General.CheckForUpdates )
+			try
 			{
-				var channelUrl = Configuration.General.IncludePrereleaseUpdates ? Constants.Updates.BetaChannelUrl : Constants.Updates.ReleaseChannelUrl;
-
-				try
+				if( Configuration?.General?.CheckForUpdates == true )
 				{
-					using( var mgr = new UpdateManager( channelUrl ) )
-					{
-						var release = await mgr.UpdateApp();
+					var channelUrl = Configuration.General.IncludePrereleaseUpdates
+						? Constants.Updates.BetaChannelUrl
+						: Constants.Updates.ReleaseChannelUrl;
 
-						if( release.Version.Version > Assembly.GetExecutingAssembly().GetName().Version )
+					try
+					{
+						using( var mgr = new UpdateManager( channelUrl ) )
 						{
-							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
+							var release = await mgr.UpdateApp();
+
+							if( release.Version.Version > Assembly.GetExecutingAssembly().GetName().Version )
+							{
+								Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+									NotificationType.Information );
+							}
 						}
 					}
+					catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+					{
+					}
 				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
+			}
+			catch( NullReferenceException ex )
+			{
+				LogTo.ErrorException( "NullRef in Updatecheck", ex );
+				LogTo.Error( $"Stacktrace: {ex.StackTrace}" );
 			}
 		}
 
