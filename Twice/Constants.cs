@@ -29,7 +29,12 @@ namespace Twice
 				{
 					var localAppData = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
 
-					return Path.Combine( localAppData, "Twice", "data" );
+					var path = Path.Combine( localAppData, "Twice", "data" );
+					if( !Directory.Exists( path ) )
+					{
+						Directory.CreateDirectory( path );
+					}
+					return path:
 				}
 			}
 
