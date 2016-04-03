@@ -10,7 +10,7 @@ namespace Twice.ViewModels.Info
 		public string Description { get; set; }
 		public List<string> Changes { get; set; }
 		public List<string> NewFeatures { get; set; }
-		public List<string> KnownIssues { get; set; }
+		public List<string> Issues { get; set; }
 		public List<string> Fixes { get; set; }
 	}
 }

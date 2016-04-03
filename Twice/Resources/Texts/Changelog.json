@@ -6,6 +6,10 @@
         "NewFeatures": [],
         "Changes": [],
         "Fixes": [],
-        "Issues": []
+        "Issues": [
+            "Adding columns doesn't work",
+            "Loading more content in the timeline column doesn't work",
+            "Following and unfollowing a user from the profile dialog doesn't work"
+        ]
     }
 ]
