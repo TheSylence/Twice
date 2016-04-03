@@ -34,7 +34,7 @@ namespace Twice
 					{
 						Directory.CreateDirectory( path );
 					}
-					return path:
+					return path;
 				}
 			}
 

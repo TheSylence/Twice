@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Models.Columns;
@@ -124,6 +125,15 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task OnLoad()
 		{
+			if( Context == null )
+			{
+				LogTo.Error( "Context == null" );
+			}
+			else if( Context.Twitter == null )
+			{
+				LogTo.Error( "Context.Twitter == null" );
+			}
+
 			var statuses = await Context.Twitter.Status.Where( StatusFilterExpression ).ToListAsync();
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 
