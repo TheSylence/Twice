@@ -1,12 +1,13 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Squirrel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Squirrel;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -62,7 +63,11 @@ namespace Twice.ViewModels.Main
 					{
 						var release = await mgr.UpdateApp();
 
-						Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ), NotificationType.Information );
+						if( release.Version.Version > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
+						}
 					}
 				}
 				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
