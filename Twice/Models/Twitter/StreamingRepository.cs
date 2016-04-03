@@ -26,7 +26,7 @@ namespace Twice.Models.Twitter
 			var key = new ParserKey( userId, StreamingType.User );
 			IStreamParser parser;
 
-			if( LoadedParsers.TryGetValue( key, out parser ) )
+			if( !LoadedParsers.TryGetValue( key, out parser ) )
 			{
 				parser =
 				StreamParser.Create( ContextList.Contexts.First( c => c.UserId == userId )

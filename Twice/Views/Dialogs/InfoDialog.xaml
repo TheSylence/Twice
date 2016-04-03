@@ -96,8 +96,8 @@
 										</ItemsControl.ItemTemplate>
 									</ItemsControl>
 								</StackPanel>
-								<StackPanel Orientation="Vertical" Grid.Row="5" Margin="5" Visibility="{Binding KnownIssues, Converter={StaticResource VisibleIfItemsConv}}">
-									<ItemsControl ItemsSource="{Binding KnownIssues}">
+								<StackPanel Orientation="Vertical" Grid.Row="5" Margin="5" Visibility="{Binding Issues, Converter={StaticResource VisibleIfItemsConv}}">
+									<ItemsControl ItemsSource="{Binding Issues}">
 										<ItemsControl.ItemTemplate>
 											<DataTemplate DataType="system:String">
 												<StackPanel Orientation="Horizontal">
