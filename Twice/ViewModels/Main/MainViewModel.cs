@@ -39,11 +39,6 @@ namespace Twice.ViewModels.Main
 
 		public async Task OnLoad( object data )
 		{
-			foreach( var col in Columns )
-			{
-				await col.Load();
-			}
-
 			if( !HasContexts )
 			{
 				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
@@ -54,36 +49,43 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			try
+			foreach( var col in Columns )
 			{
-				if( Configuration?.General?.CheckForUpdates == true )
+				await col.Load();
+			}
+
+			if( Configuration?.General?.CheckForUpdates == true )
+			{
+				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
+
+				var channelUrl = useBetaChannel
+					? Constants.Updates.BetaChannelUrl
+					: Constants.Updates.ReleaseChannelUrl;
+
+				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
+
+				try
 				{
-					var channelUrl = Configuration.General.IncludePrereleaseUpdates
-						? Constants.Updates.BetaChannelUrl
-						: Constants.Updates.ReleaseChannelUrl;
-
-					try
+					using( var mgr = new UpdateManager( channelUrl ) )
 					{
-						using( var mgr = new UpdateManager( channelUrl ) )
-						{
-							var release = await mgr.UpdateApp();
+						var release = await mgr.UpdateApp();
 
-							if( release.Version.Version > Assembly.GetExecutingAssembly().GetName().Version )
-							{
-								Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-									NotificationType.Information );
-							}
+						Version newVersion = release?.Version?.Version;
+
+						if( newVersion == null )
+						{
+							LogTo.Warn( "UpdateApp returned null" );
+						}
+						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
 						}
 					}
-					catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-					{
-					}
 				}
-			}
-			catch( NullReferenceException ex )
-			{
-				LogTo.ErrorException( "NullRef in Updatecheck", ex );
-				LogTo.Error( $"Stacktrace: {ex.StackTrace}" );
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
+				}
 			}
 		}
 
