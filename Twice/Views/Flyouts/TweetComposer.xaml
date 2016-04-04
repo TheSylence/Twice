@@ -10,6 +10,7 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:twice="clr-namespace:Twice"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d"  CloseButtonIsCancel="True" IsPinned="True" Theme="Accent"
 			Position="Bottom" TitleVisibility="Collapsed"
@@ -32,6 +33,10 @@
 				<TextBox.InputBindings>
 					<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 				</TextBox.InputBindings>
+				<i:Interaction.Behaviors>
+					<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
+					<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
+				</i:Interaction.Behaviors>
 			</TextBox>
 
 			<controls:ProgressRing Grid.Column="1" IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" />

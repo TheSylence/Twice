@@ -14,5 +14,7 @@ namespace Twice.ViewModels.Twitter
 		bool MediumCharsLeft { [System.Diagnostics.DebuggerStepThrough] get; set; }
 		bool LowCharsLeft { [System.Diagnostics.DebuggerStepThrough] get; set; }
 		ICollection<MediaItem> AttachedMedias { get; }
+		ICollection<string> KnownUserNames { get; }
+		ICollection<string> KnownHashtags { get; }
 	}
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Services.Views;
 
@@ -15,7 +16,12 @@ namespace Twice.ViewModels.Twitter
 	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
 	{
-		public void Reset()
+		public ComposeTweetViewModel( IDataCache cache )
+		{
+			Cache = cache;
+		}
+
+		public async Task Reset()
 		{
 			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
 			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
@@ -26,6 +32,11 @@ namespace Twice.ViewModels.Twitter
 
 			Medias.Clear();
 			AttachedMedias.Clear();
+
+			KnownUserNames = ( await Cache.GetKnownUsers() ).Select( u => u.Name ).ToList();
+			RaisePropertyChanged( nameof( KnownUserNames ) );
+			KnownHashtags = ( await Cache.GetKnownHashtags() ).ToList();
+			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
 		private static string GetMimeType( string fileName )
@@ -144,6 +155,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public ICollection<string> KnownHashtags { get; private set; }
+		public ICollection<string> KnownUserNames { get; private set; }
+
 		public bool LowCharsLeft
 		{
 			[DebuggerStepThrough] get { return _LowCharsLeft; }
@@ -210,6 +224,7 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		private readonly IDataCache Cache;
 		private readonly int LowWarnThreshold = 135;
 		private readonly List<Media> Medias = new List<Media>();
 

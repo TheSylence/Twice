@@ -1,6 +1,6 @@
 ﻿namespace Twice.Models.Cache
 {
-	class UserCacheEntry
+	internal class UserCacheEntry : ICacheEntry
 	{
 		public UserCacheEntry( ulong id, string name )
 		{

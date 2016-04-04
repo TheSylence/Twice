@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
+using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -26,12 +27,13 @@ namespace Twice.ViewModels.Columns
 			Width = 300;
 			IsLoading = true;
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
+			Parser = parser;
 
 			if( config.General.RealtimeStreaming )
 			{
-				parser.StatusReceived += Parser_StatusReceived;
-				parser.StatusDeleted += Parser_StatusDeleted;
-				parser.StartStreaming();
+				Parser.FriendsReceived += Parser_FriendsReceived;
+				Parser.StatusReceived += Parser_StatusReceived;
+				Parser.StatusDeleted += Parser_StatusDeleted;
 			}
 
 			ActionDispatcher = new ColumnActionDispatcher();
@@ -46,6 +48,8 @@ namespace Twice.ViewModels.Columns
 
 		public async Task Load()
 		{
+			Parser.StartStreaming();
+
 			await Task.Run( async () =>
 			{
 				await OnLoad().ContinueWith( t =>
@@ -73,6 +77,8 @@ namespace Twice.ViewModels.Columns
 				}
 			} );
 			RaiseNewStatus( status );
+
+			await UpdateCache( status.Model );
 		}
 
 		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses, bool append = true )
@@ -85,6 +91,8 @@ namespace Twice.ViewModels.Columns
 
 				foreach( var s in statusViewModels )
 				{
+					await UpdateCache( s.Model );
+
 					if( append )
 					{
 						await DispatcherHelper.RunAsync( () => StatusCollection.Add( s ) );
@@ -94,6 +102,7 @@ namespace Twice.ViewModels.Columns
 						await DispatcherHelper.RunAsync( () => StatusCollection.Insert( 0, s ) );
 					}
 				}
+
 				//await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
 				RaiseNewStatus( statusViewModels.Last() );
 			}
@@ -142,13 +151,7 @@ namespace Twice.ViewModels.Columns
 		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
 		{
 			IsLoading = true;
-			await Task.Run( async () =>
-			{
-				await LoadMoreData().ContinueWith( t =>
-				{
-					IsLoading = false;
-				} );
-			} );
+			await Task.Run( async () => { await LoadMoreData().ContinueWith( t => { IsLoading = false; } ); } );
 		}
 
 		private async void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
@@ -156,13 +159,29 @@ namespace Twice.ViewModels.Columns
 			if( !Configuration.General.RealtimeStreaming )
 			{
 				IsLoading = true;
-				await Task.Run( async () =>
-				{
-					await LoadTopData().ContinueWith( t =>
-					{
-						IsLoading = false;
-					} );
-				} );
+				await Task.Run( async () => { await LoadTopData().ContinueWith( t => { IsLoading = false; } ); } );
+			}
+		}
+
+		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
+		{
+			var completeList = e.Friends.ToList();
+			LogTo.Info( $"Received {completeList.Count} of user's friends" );
+			var usersToAdd = new List<User>( completeList.Count );
+
+			while( completeList.Any() )
+			{
+				var userList = string.Join( ",", completeList.Take( 100 ) );
+				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
+
+				var userData = await Context.Twitter.User.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
+				usersToAdd.AddRange( userData );
+			}
+
+			Debug.Assert( usersToAdd.Count == e.Friends.Length );
+			foreach( var user in usersToAdd )
+			{
+				await Cache.AddUser( user.GetUserId(), user.GetScreenName() );
 			}
 		}
 
@@ -187,17 +206,26 @@ namespace Twice.ViewModels.Columns
 			await AddStatus( s, false );
 		}
 
+		private async Task UpdateCache( Status status )
+		{
+			foreach( var mention in status.Entities.UserMentionEntities )
+			{
+				await Cache.AddUser( mention.Id, mention.ScreenName );
+			}
+			foreach( var hashtag in status.Entities.HashTagEntities )
+			{
+				await Cache.AddHashtag( hashtag.Tag );
+			}
+		}
+
 		public IColumnActionDispatcher ActionDispatcher { get; }
+		public IDataCache Cache { get; set; }
 		public ColumnDefinition Definition { get; }
 		public abstract Icon Icon { get; }
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _IsLoading;
-			}
+			[DebuggerStepThrough] get { return _IsLoading; }
 			private set
 			{
 				if( _IsLoading == value )
@@ -215,8 +243,7 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get { return _Title; }
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -231,8 +258,7 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough]
-			get { return _Width; }
+			[DebuggerStepThrough] get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -252,16 +278,13 @@ namespace Twice.ViewModels.Columns
 		protected virtual Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		protected readonly IContextEntry Context;
-
+		private readonly IStreamParser Parser;
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}
 }

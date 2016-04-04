@@ -204,6 +204,10 @@
       <HintPath>..\packages\WpfLocalizeExtension.2.3.2\lib\net35\WPFLocalizeExtension.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WPFTextBoxAutoComplete, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.2\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="XAMLMarkupExtensions, Version=1.2.1.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\XAMLMarkupExtensions.1.2.1.4\lib\net40\XAMLMarkupExtensions.dll</HintPath>
       <Private>True</Private>
@@ -217,6 +221,7 @@
     <Compile Include="AsyncErrorHandler.cs" />
     <Compile Include="Attributes\IconAttribute.cs" />
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
+    <Compile Include="Behaviors\AutoComplete.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
     <Compile Include="Behaviors\ColumnHandler.cs" />
@@ -241,6 +246,8 @@
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
+    <Compile Include="Models\Cache\HashtagCacheEntry.cs" />
+    <Compile Include="Models\Cache\ICacheEntry.cs" />
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
@@ -347,8 +354,6 @@
     </Compile>
     <Compile Include="Messages\ColumnLockMessage.cs" />
     <Compile Include="Messages\DragMessage.cs" />
-    <Compile Include="Models\Cache\IUserCache.cs" />
-    <Compile Include="Models\Cache\UserCache.cs" />
     <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Configuration\MuteConfig.cs" />
     <Compile Include="Models\Configuration\MuteEntry.cs" />
@@ -473,10 +478,10 @@
     <Compile Include="Injections\ModelInjectionModule.cs" />
     <Compile Include="Injections\ServiceInjectionModule.cs" />
     <Compile Include="Injections\ViewModelInjectionModule.cs" />
-    <Compile Include="Models\Cache\BlobCacheProvider.cs" />
+    <Compile Include="Injections\BlobCacheProvider.cs" />
     <Compile Include="Models\Cache\DataCache.cs" />
     <Compile Include="Models\Cache\IDataCache.cs" />
-    <Compile Include="Models\Cache\SecureBlobCacheProvider.cs" />
+    <Compile Include="Injections\SecureBlobCacheProvider.cs" />
     <Compile Include="Models\Configuration\Config.cs" />
     <Compile Include="Injections\ConfigurationProvider.cs" />
     <Compile Include="Models\Configuration\GeneralConfig.cs" />

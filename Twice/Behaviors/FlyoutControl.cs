@@ -18,7 +18,7 @@ namespace Twice.Behaviors
 			Messenger.Default.Register<FlyoutMessage>( this, OnFlyoutMessage );
 		}
 
-		private void OnFlyoutMessage( FlyoutMessage message )
+		private async void OnFlyoutMessage( FlyoutMessage message )
 		{
 			if( !message.Name.Equals( Name ) )
 			{
@@ -48,7 +48,10 @@ namespace Twice.Behaviors
 				}
 
 				var resetable = AssociatedObject.DataContext as IResetable;
-				resetable?.Reset();
+				if( resetable != null )
+				{
+					await resetable.Reset();
+				}
 			}
 		}
 

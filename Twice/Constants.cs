@@ -5,7 +5,7 @@ using System.IO;
 namespace Twice
 {
 	/// <summary>
-	///     Class containing constants that are used throughout the application.
+	/// Class containing constants that are used throughout the application.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static class Constants
@@ -19,6 +19,7 @@ namespace Twice
 		public static class Cache
 		{
 			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 100 );
+			internal static TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
 		}
 
 		public static class IO
@@ -47,6 +48,8 @@ namespace Twice
 #endif
 			}
 
+			internal static readonly string CacheFileName = P( "cache.db3" );
+			internal static readonly string SecureCacheFileName = P( "cache.crypt.db3" );
 			internal static readonly string AccountsFileName = P( "accounts.json" );
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );
@@ -59,22 +62,22 @@ namespace Twice
 		}
 
 		/// <summary>
-		///     Constants associated with twitter.
+		/// Constants associated with twitter.
 		/// </summary>
 		public static class Twitter
 		{
 			/// <summary>
-			///     Prefix for a hashtag.
+			/// Prefix for a hashtag.
 			/// </summary>
 			internal const string HashTag = "#";
 
 			/// <summary>
-			///     Maximum characters allowed in a tweet.
+			/// Maximum characters allowed in a tweet.
 			/// </summary>
 			internal const int MaxTweetLength = 140;
 
 			/// <summary>
-			///     Prefix for a user mention.
+			/// Prefix for a user mention.
 			/// </summary>
 			internal const string Mention = "@";
 		}
