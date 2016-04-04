@@ -10,7 +10,8 @@
             "Default account can be set in accounts window"
         ],
         "Changes": [
-            "Compose window is now better layouted and most of the features are working"
+            "Compose window is now better layouted and most of the features are working",
+            "Made retweeting user's image bigger"
         ],
         "Fixes": [
             "Version and build date are now readable in about dialog",
