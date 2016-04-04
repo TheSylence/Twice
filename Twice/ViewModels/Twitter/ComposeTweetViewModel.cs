@@ -80,6 +80,11 @@ namespace Twice.ViewModels.Twitter
 				return false;
 			}
 
+			if( ConfirmationRequired && !ConfirmationSet )
+			{
+				return false;
+			}
+
 			return TwitterHelper.CountCharacters( Text ) <= Constants.Twitter.MaxTweetLength;
 		}
 
@@ -135,10 +140,41 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
+
 		public ICollection<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
 			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand, CanExecuteAttachImageCommand ) );
+
+		public bool ConfirmationRequired
+		{
+			[DebuggerStepThrough] get { return _ConfirmationRequired; }
+			set
+			{
+				if( _ConfirmationRequired == value )
+				{
+					return;
+				}
+
+				_ConfirmationRequired = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool ConfirmationSet
+		{
+			[DebuggerStepThrough] get { return _ConfirmationSet; }
+			set
+			{
+				if( _ConfirmationSet == value )
+				{
+					return;
+				}
+
+				_ConfirmationSet = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public bool IsSending
 		{
@@ -156,6 +192,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
+
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -225,12 +262,18 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private readonly IDataCache Cache;
+
 		private readonly int LowWarnThreshold = 135;
+
 		private readonly List<Media> Medias = new List<Media>();
 
 		private readonly int MediumWarnThreshold = 125;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationRequired;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 

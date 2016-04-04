@@ -16,6 +16,7 @@ namespace Twice.Models.Twitter
 			OAuthTokenSecret = DpApi.Encrypt( DpApi.KeyType.UserKey, OAuthTokenSecret );
 		}
 
+		public bool RequiresConfirm { get; set; }
 		public string AccountName { get; set; }
 		public string ImageUrl { get; set; }
 		public bool IsDefault { get; set; }

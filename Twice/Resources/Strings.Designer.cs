@@ -241,6 +241,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ready to tweet?.
+        /// </summary>
+        public static string ConfirmTweet {
+            get {
+                return ResourceManager.GetString("ConfirmTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy tweet.
         /// </summary>
         public static string CopyTweet {

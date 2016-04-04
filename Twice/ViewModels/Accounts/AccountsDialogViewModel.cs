@@ -19,6 +19,15 @@ namespace Twice.ViewModels.Accounts
 			ColumnList = columnList;
 
 			AddedAccounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in AddedAccounts )
+			{
+				acc.ConfirmationChanged += Acc_ConfirmationChanged;
+			}
+		}
+
+		private void Acc_ConfirmationChanged( object sender, System.EventArgs e )
+		{
+			var acc = sender as AccountEntry;
 		}
 
 		private void DisplayPinPage( string url )

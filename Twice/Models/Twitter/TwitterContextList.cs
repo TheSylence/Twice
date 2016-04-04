@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -52,6 +52,43 @@ namespace Twice.Models.Twitter
 		{
 			Contexts.Add( new ContextEntry( Notifier, data ) );
 
+			SaveToFile();
+
+			ContextsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/// <summary>
+		///     Only pass encrypted data to this method.
+		/// </summary>
+		/// <param name="data"></param>
+		public void UpdateAccount( TwitterAccountData data )
+		{
+			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
+			Contexts.Remove( context );
+
+			Contexts.Add( new ContextEntry( Notifier, data ) );
+			SaveToFile();
+		}
+
+		private void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				foreach( var context in Contexts )
+				{
+					context.Dispose();
+				}
+			}
+		}
+
+		private void SaveToFile()
+		{
 			var json = JsonConvert.SerializeObject( Contexts.Select( ctx =>
 			{
 				var result = new TwitterAccountData
@@ -68,25 +105,6 @@ namespace Twice.Models.Twitter
 			} ).ToList(), Formatting.Indented );
 
 			File.WriteAllText( FileName, json );
-
-			ContextsChanged?.Invoke( this, EventArgs.Empty );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		private void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				foreach( var context in Contexts )
-				{
-					context.Dispose();
-				}
-			}
 		}
 
 		public ICollection<IContextEntry> Contexts { get; }

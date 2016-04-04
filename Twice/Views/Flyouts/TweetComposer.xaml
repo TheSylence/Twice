@@ -27,19 +27,29 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
-			<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
-					 Grid.Column="1" Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Text="{lex:Loc WhatsHappening}">
-				<TextBox.InputBindings>
-					<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
-				</TextBox.InputBindings>
-				<i:Interaction.Behaviors>
-					<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
-					<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
-				</i:Interaction.Behaviors>
-			</TextBox>
+			<Grid Grid.Column="1">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
 
-			<controls:ProgressRing Grid.Column="1" IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+				<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
+					 Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Text="{lex:Loc WhatsHappening}">
+					<TextBox.InputBindings>
+						<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
+					</TextBox.InputBindings>
+					<i:Interaction.Behaviors>
+						<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
+						<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
+					</i:Interaction.Behaviors>
+				</TextBox>
+
+				<controls:ProgressRing IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2" />
+
+				<CheckBox Grid.Row="1" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}"
+						  Content="{lex:Loc ConfirmTweet}" IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			</Grid>
 
 			<ItemsControl Grid.Column="0" ItemsSource="{Binding Accounts}" VerticalAlignment="Center">
 				<ItemsControl.ItemsPanel>

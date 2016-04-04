@@ -477,4 +477,7 @@
   <data name="WhatsHappening" xml:space="preserve">
     <value>What's happening?</value>
   </data>
+  <data name="ConfirmTweet" xml:space="preserve">
+    <value>Ready to tweet?</value>
+  </data>
 </root>

@@ -43,7 +43,7 @@
 								</Expander.Header>
 
 								<StackPanel Orientation="Vertical">
-									<CheckBox Content="{lex:Loc RequiresConfirmationStep}" Margin="5" />
+									<CheckBox Content="{lex:Loc RequiresConfirmationStep}" Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}" />
 									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}" />
 									<Button Margin="5">
 										<DockPanel>
