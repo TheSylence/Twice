@@ -60,7 +60,7 @@ namespace Twice.Behaviors
 			}
 
 			var text = e.Text;
-			if( text.StartsWith( TriggerChar ) )
+			if( text.StartsWith( TriggerChar, StringComparison.Ordinal ) )
 			{
 				AutoCompletePopup.IsOpen = true;
 				AutoCompleteBox.Focus();
