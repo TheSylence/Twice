@@ -437,7 +437,7 @@
     <value>Bild anhängen</value>
   </data>
   <data name="RequiresConfirmationStep" xml:space="preserve">
-    <value>Erfordert einen Bestätigungsschritt beim Tweeten</value>
+    <value>Erfordert eine Bestätigung beim Tweeten</value>
   </data>
   <data name="MakeDefaultAccount" xml:space="preserve">
     <value>Dies zum Standardkonto machen</value>
