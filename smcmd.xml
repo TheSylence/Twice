@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <sourcemonitor_commands> 
    <write_log>true</write_log> 
+   <log_all_to_console/>
    <command>
        <project_file>E:\dev\Apps\Twice\Twice.smproj</project_file>
        <file_extensions>*.cs,*.xaml|*.Designer.cs</file_extensions>

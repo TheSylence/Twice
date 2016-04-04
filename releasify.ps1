@@ -13,6 +13,6 @@ Copy-Item smcmd.xml smcmd.tmp.xml
 (Get-Content smcmd.tmp.xml).replace('@CHECKPOINT_NAME@', $version) | Set-Content smcmd.tmp.xml
 
 $sm = "C:\Program Files (x86)\SourceMonitor\SourceMonitor.exe"
-Invoke-Expression "& '$sm' /C smcmd.tmp.xml"
+Start-Process $sm -argumentlist "/C smcmd.tmp.xml" -wait
 
 Remove-Item smcmd.tmp.xml
