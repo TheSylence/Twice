@@ -47,7 +47,9 @@
 								</Expander.Header>
 
 								<StackPanel Orientation="Vertical">
-									<CheckBox Content="{lex:Loc RequiresConfirmationStep}" Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}" />
+									<CheckBox Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}">
+										<TextBlock Text="{lex:Loc RequiresConfirmationStep}" TextWrapping="Wrap" />
+									</CheckBox>
 									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
 											CommandParameter="{Binding}" Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
 									<Button Margin="5">
