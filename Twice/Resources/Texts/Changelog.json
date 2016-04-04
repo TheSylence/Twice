@@ -15,7 +15,8 @@
         ],
         "Fixes": [
             "Version and build date are now readable in about dialog",
-            "Changelogs are no longer being cut off in about dialog"
+            "Changelogs are no longer being cut off in about dialog",
+            "Using certain colors for entities no longer crashes"
         ],
         "Issues": [ ]
     },
