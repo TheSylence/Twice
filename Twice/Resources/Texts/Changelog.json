@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Remaining characters are displayed in compose window"
+            "Remaining characters are displayed in compose window",
+            "Autocomplete for usernames and hashtags in compose window"
         ],
         "Changes": [
             "Compose window is now better layouted and most of the features are working"
