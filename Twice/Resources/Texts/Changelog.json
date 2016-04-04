@@ -13,7 +13,8 @@
             "Compose window is now better layouted and most of the features are working"
         ],
         "Fixes": [
-            "Version and build date are now readable in about dialog"
+            "Version and build date are now readable in about dialog",
+            "Changelogs are no longer being cut off in about dialog"
         ],
         "Issues": [ ]
     },
