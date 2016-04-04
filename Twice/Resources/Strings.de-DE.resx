@@ -448,4 +448,13 @@
   <data name="UpdateHasBeenInstalled" xml:space="preserve">
     <value>Version {0} wurde installiert. App neustarten, um die neue Version zu verwenden.</value>
   </data>
+  <data name="SendTweet" xml:space="preserve">
+    <value>Tweet senden</value>
+  </data>
+  <data name="CharacterCounter" xml:space="preserve">
+    <value>{0} / 140</value>
+  </data>
+  <data name="WhatsHappening" xml:space="preserve">
+    <value>Was passiert gerade?</value>
+  </data>
 </root>

@@ -318,6 +318,7 @@
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\MediaItem.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />

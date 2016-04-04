@@ -10,5 +10,9 @@ namespace Twice.ViewModels.Twitter
 		bool IsSending { get; }
 		ICommand SendTweetCommand { get; }
 		string Text { get; set; }
+		int TextLength { get; set; }
+		bool MediumCharsLeft { [System.Diagnostics.DebuggerStepThrough] get; set; }
+		bool LowCharsLeft { [System.Diagnostics.DebuggerStepThrough] get; set; }
+		ICollection<MediaItem> AttachedMedias { get; }
 	}
 }

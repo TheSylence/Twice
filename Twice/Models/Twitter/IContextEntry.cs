@@ -11,5 +11,6 @@ namespace Twice.Models.Twitter
 		Uri ProfileImageUrl { get; }
 		TwitterContext Twitter { get; }
 		ulong UserId { get; }
+		bool IsDefault { get; }
 	}
 }

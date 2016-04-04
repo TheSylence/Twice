@@ -26,9 +26,9 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
-			<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="{DynamicResource NormalFontSize}"
+			<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
-					 Grid.Column="1" Margin="5">
+					 Grid.Column="1" Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Text="{lex:Loc WhatsHappening}">
 				<TextBox.InputBindings>
 					<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 				</TextBox.InputBindings>
@@ -36,7 +36,7 @@
 
 			<controls:ProgressRing Grid.Column="1" IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-			<ItemsControl Grid.Column="0" ItemsSource="{Binding Accounts}">
+			<ItemsControl Grid.Column="0" ItemsSource="{Binding Accounts}" VerticalAlignment="Center">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel Orientation="Horizontal" />
@@ -44,33 +44,76 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate DataType="twitter:AccountEntry">
-						<StackPanel Orientation="Horizontal">
-							<CheckBox IsChecked="{Binding Use, Mode=TwoWay}" />
-							<Image Source="{Binding Image, IsAsync=True}" Width="32" Height="32" VerticalAlignment="Center" />
-							<TextBlock Text="{Binding ScreenName, StringFormat=@{0}}" VerticalAlignment="Center" FontSize="{DynamicResource NormalFontSize}"
-								   Foreground="{DynamicResource IdealForegroundColorBrush}" Margin="5,0" />
+						<StackPanel Orientation="Vertical" VerticalAlignment="Center">
+							<Image Source="{Binding Image, IsAsync=True}" Width="48" Height="48" HorizontalAlignment="Center"
+								   ToolTip="{Binding ScreenName, StringFormat=@{0}}" />
+							<ToggleButton IsChecked="{Binding Use, Mode=TwoWay}" HorizontalAlignment="Center" />
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 
-			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="2">
-				<StackPanel.Resources>
-					<!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-					<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
-						<Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}"/>
-						<Setter Property="Margin" Value="5"/>
-					</Style>
-				</StackPanel.Resources>
-				
-				<Button Width="36" Height="36" ToolTip="{lex:Loc SendTweet}"
+			<Grid Grid.Column="2">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="2*" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+					<StackPanel.Resources>
+						<!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+						<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
+							<Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
+							<Setter Property="Margin" Value="5" />
+						</Style>
+					</StackPanel.Resources>
+
+					<Button Width="36" Height="36" ToolTip="{lex:Loc SendTweet}"
 						Command="{Binding SendTweetCommand}">
-					<materialDesign:PackIcon Kind="Plus" Width="16" Height="16" />
-				</Button>
-				<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}" Command="{Binding AttachImageCommand}">
-					<materialDesign:PackIcon Kind="Image" Width="16" Height="16" />
-				</Button>
-			</StackPanel>
+						<materialDesign:PackIcon Kind="Pencil" Width="16" Height="16" />
+					</Button>
+					<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}" Command="{Binding AttachImageCommand}">
+						<materialDesign:PackIcon Kind="Image" Width="16" Height="16" />
+					</Button>
+				</StackPanel>
+
+				<TextBlock Text="{Binding TextLength, StringFormat={lex:Loc CharacterCounter}}" Grid.Row="1" Margin="5,0">
+					<TextBlock.Style>
+						<Style TargetType="TextBlock">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding MediumCharsLeft}" Value="True">
+									<Setter Property="Foreground" Value="Orange" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding LowCharsLeft}" Value="True">
+									<Setter Property="Foreground" Value="Red" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+
+				<ItemsControl ItemsSource="{Binding AttachedMedias}" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="twitter:MediaItem">
+							<StackPanel Orientation="Vertical">
+								<Image Source="{Binding Image.Value, IsAsync=True}" MaxWidth="56" MaxHeight="56" />
+								<Button Style="{StaticResource MaterialDesignToolForegroundButton}" HorizontalAlignment="Center">
+									<materialDesign:PackIcon Kind="Delete" />
+								</Button>
+							</StackPanel>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Grid>
 		</Grid>
 	</Grid>
 </controls:Flyout>

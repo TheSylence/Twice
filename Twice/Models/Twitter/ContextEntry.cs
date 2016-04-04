@@ -13,6 +13,7 @@ namespace Twice.Models.Twitter
 			AccountName = data.AccountName;
 			UserId = data.UserId;
 			ProfileImageUrl = new Uri( data.ImageUrl );
+			IsDefault = data.IsDefault;
 
 			Twitter = new TwitterContext( new SingleUserAuthorizer
 			{
@@ -28,6 +29,7 @@ namespace Twice.Models.Twitter
 			} );
 		}
 
+		public bool IsDefault { get;}
 		public void Dispose()
 		{
 			Dispose( true );

@@ -1,10 +1,14 @@
 ﻿[
      {
         "Version": "0.2.0",
-        "Date": "2016-??-??",
+        "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [
+            "Remaining characters are displayed in compose window"
+        ],
+        "Changes": [
+            "Compose window is now better layouted and most of the features are working"
+        ],
         "Fixes": [
             "Version and build date are now readable in about dialog"
         ],

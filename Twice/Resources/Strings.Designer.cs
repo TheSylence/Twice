@@ -214,6 +214,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} / 140.
+        /// </summary>
+        public static string CharacterCounter {
+            get {
+                return ResourceManager.GetString("CharacterCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -889,6 +898,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send tweet.
+        /// </summary>
+        public static string SendTweet {
+            get {
+                return ResourceManager.GetString("SendTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -1101,6 +1119,15 @@ namespace Twice.Resources {
         public static string Visual {
             get {
                 return ResourceManager.GetString("Visual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What&apos;s happening?.
+        /// </summary>
+        public static string WhatsHappening {
+            get {
+                return ResourceManager.GetString("WhatsHappening", resourceCulture);
             }
         }
         

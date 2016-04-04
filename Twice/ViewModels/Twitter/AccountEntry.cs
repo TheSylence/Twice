@@ -16,15 +16,12 @@ namespace Twice.ViewModels.Twitter
 
 		public IContextEntry Context { get; }
 		public ImageSource Image { get; }
+		public bool IsDefault => Context.IsDefault;
 		public string ScreenName => Context.AccountName;
 
 		public bool Use
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Use;
-			}
+			[DebuggerStepThrough] get { return _Use; }
 			set
 			{
 				if( _Use == value )
@@ -37,7 +34,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Use;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Use;
 	}
 }
