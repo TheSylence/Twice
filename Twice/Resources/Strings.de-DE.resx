@@ -455,9 +455,12 @@
     <value>{0} / 140</value>
   </data>
   <data name="WhatsHappening" xml:space="preserve">
-    <value>Was passiert gerade?</value>
+    <value>Was gibt's Neues?</value>
   </data>
   <data name="ConfirmTweet" xml:space="preserve">
-    <value>Bereit zum tweeten?</value>
+    <value>Bereit zum Tweeten?</value>
+  </data>
+  <data name="FromAccounts" xml:space="preserve">
+    <value>Von</value>
   </data>
 </root>

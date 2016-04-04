@@ -480,4 +480,7 @@
   <data name="ConfirmTweet" xml:space="preserve">
     <value>Ready to tweet?</value>
   </data>
+  <data name="FromAccounts" xml:space="preserve">
+    <value>From</value>
+  </data>
 </root>
