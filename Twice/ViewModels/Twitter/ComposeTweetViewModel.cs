@@ -19,16 +19,28 @@ namespace Twice.ViewModels.Twitter
 		public ComposeTweetViewModel( IDataCache cache )
 		{
 			Cache = cache;
+			Accounts = new List<AccountEntry>();
 		}
 
 		public async Task Reset()
 		{
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged -= Acc_UseChanged;
+			}
+
 			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged += Acc_UseChanged;
+			}
+
 			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
 			defAccount.Use = true;
 			RaisePropertyChanged( nameof( Accounts ) );
 
 			Text = string.Empty;
+			ConfirmationSet = false;
 
 			Medias.Clear();
 			AttachedMedias.Clear();
@@ -56,6 +68,11 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			return "application/octet-stream";
+		}
+
+		private void Acc_UseChanged( object sender, System.EventArgs e )
+		{
+			RaisePropertyChanged( nameof( ConfirmationRequired ) );
 		}
 
 		private bool CanExecuteAttachImageCommand()
@@ -132,10 +149,10 @@ namespace Twice.ViewModels.Twitter
 				{
 					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) );
 				}
-			} ).ContinueWith( t =>
+			} ).ContinueWith( async t =>
 			{
 				IsSending = false;
-				Reset();
+				await Reset();
 			} );
 		}
 
@@ -148,17 +165,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool ConfirmationRequired
 		{
-			[DebuggerStepThrough] get { return _ConfirmationRequired; }
-			set
-			{
-				if( _ConfirmationRequired == value )
-				{
-					return;
-				}
-
-				_ConfirmationRequired = value;
-				RaisePropertyChanged();
-			}
+			get { return Accounts.Where( a => a.Use ).Any( a => a.Context.RequiresConfirmation ); }
 		}
 
 		public bool ConfirmationSet
@@ -270,8 +277,6 @@ namespace Twice.ViewModels.Twitter
 		private readonly int MediumWarnThreshold = 125;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationRequired;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
 

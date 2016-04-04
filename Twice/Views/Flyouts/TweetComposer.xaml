@@ -33,9 +33,9 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
-					 Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Text="{lex:Loc WhatsHappening}">
+				<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
+						 Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Text="{lex:Loc WhatsHappening}">
 					<TextBox.InputBindings>
 						<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 					</TextBox.InputBindings>
@@ -47,7 +47,7 @@
 
 				<controls:ProgressRing IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2" />
 
-				<CheckBox Grid.Row="1" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}"
+				<CheckBox Grid.Row="1" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}" Margin="2"
 						  Content="{lex:Loc ConfirmTweet}" IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 			</Grid>
 

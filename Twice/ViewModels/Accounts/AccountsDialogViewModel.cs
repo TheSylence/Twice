@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -28,6 +28,9 @@ namespace Twice.ViewModels.Accounts
 		private void Acc_ConfirmationChanged( object sender, System.EventArgs e )
 		{
 			var acc = sender as AccountEntry;
+			Debug.Assert( acc != null, "acc != null" );
+
+			acc.Data.ExecuteDecryptedAction( data => { ContextList.UpdateAccount( data ); } );
 		}
 
 		private void DisplayPinPage( string url )
@@ -75,13 +78,14 @@ namespace Twice.ViewModels.Accounts
 
 			using( var ctx = new TwitterContext( auth ) )
 			{
-				var twitterUser = await ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false ).SingleOrDefaultAsync();
+				var twitterUser =
+					await ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false ).SingleOrDefaultAsync();
 				accountData.ImageUrl = twitterUser.ProfileImageUrlHttps;
 			}
 
 			ContextList.AddContext( accountData );
 
-			var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId , DialogHostIdentifier );
+			var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
 			if( newColumns.Any() )
 			{
 				var columns = ColumnList.Load();

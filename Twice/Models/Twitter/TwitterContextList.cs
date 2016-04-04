@@ -31,18 +31,13 @@ namespace Twice.Models.Twitter
 
 				Contexts = accountData.Select( acc =>
 				{
-					acc.Decrypt();
-					try
+					return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
 					{
-						var ctx = new ContextEntry( Notifier, acc );
+						var ctx = new ContextEntry( Notifier, accDecrypted );
 
 						return ctx;
-					}
-					finally
-					{
-						acc.Encrypt();
-					}
-				} ).Cast<IContextEntry>().ToList();
+					} );
+				} ).ToList();
 			}
 		}
 
@@ -64,14 +59,14 @@ namespace Twice.Models.Twitter
 		}
 
 		/// <summary>
-		///     Only pass encrypted data to this method.
+		///     Only pass decrypted data to this method.
 		/// </summary>
 		/// <param name="data"></param>
 		public void UpdateAccount( TwitterAccountData data )
 		{
 			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
 			Contexts.Remove( context );
-
+			
 			Contexts.Add( new ContextEntry( Notifier, data ) );
 			SaveToFile();
 		}
@@ -97,7 +92,9 @@ namespace Twice.Models.Twitter
 					ImageUrl = ctx.ProfileImageUrl.AbsoluteUri,
 					OAuthToken = ctx.Twitter.Authorizer.CredentialStore.OAuthToken,
 					OAuthTokenSecret = ctx.Twitter.Authorizer.CredentialStore.OAuthTokenSecret,
-					UserId = ctx.UserId
+					UserId = ctx.UserId,
+					IsDefault = ctx.IsDefault,
+					RequiresConfirm = ctx.RequiresConfirmation
 				};
 
 				result.Encrypt();

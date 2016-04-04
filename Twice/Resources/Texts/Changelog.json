@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [
             "Remaining characters are displayed in compose window",
-            "Autocomplete for usernames and hashtags in compose window"
+            "Autocomplete for usernames and hashtags in compose window",
+            "Marking an account as 'Requires Confirmation' now forces confirmation in compose window"
         ],
         "Changes": [
             "Compose window is now better layouted and most of the features are working"

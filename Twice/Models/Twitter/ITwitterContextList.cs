@@ -17,7 +17,7 @@ namespace Twice.Models.Twitter
 		void AddContext( TwitterAccountData data );
 
 		/// <summary>
-		/// Only pass encrypted data to this method.
+		/// Only pass decrypted data to this method.
 		/// </summary>
 		/// <param name="data"></param>
 		void UpdateAccount( TwitterAccountData data );

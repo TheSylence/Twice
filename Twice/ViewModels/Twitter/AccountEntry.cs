@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -13,6 +14,8 @@ namespace Twice.ViewModels.Twitter
 			Context = context;
 			Image = new BitmapImage( context.ProfileImageUrl );
 		}
+
+		public event EventHandler UseChanged;
 
 		public IContextEntry Context { get; }
 		public ImageSource Image { get; }
@@ -31,6 +34,7 @@ namespace Twice.ViewModels.Twitter
 
 				_Use = value;
 				RaisePropertyChanged();
+				UseChanged?.Invoke( this, EventArgs.Empty );
 			}
 		}
 

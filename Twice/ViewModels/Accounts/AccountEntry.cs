@@ -9,6 +9,7 @@ namespace Twice.ViewModels.Accounts
 	{
 		public AccountEntry( IContextEntry context )
 		{
+			Context = context;
 			AccountName = context.AccountName;
 			ProfileImage = context.ProfileImageUrl;
 			IsDefaultAccount = context.IsDefault;
@@ -18,9 +19,8 @@ namespace Twice.ViewModels.Accounts
 		public event EventHandler ConfirmationChanged;
 
 		public string AccountName { get; }
-
+		public TwitterAccountData Data => Context.Data;
 		public bool IsDefaultAccount { get; set; }
-
 		public Uri ProfileImage { get; }
 
 		public bool RequiresConfirmation
@@ -35,9 +35,12 @@ namespace Twice.ViewModels.Accounts
 
 				_RequiresConfirmation = value;
 				RaisePropertyChanged();
+				Data.RequiresConfirm = value;
 				ConfirmationChanged?.Invoke( this, EventArgs.Empty );
 			}
 		}
+
+		private readonly IContextEntry Context;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RequiresConfirmation;
 	}
