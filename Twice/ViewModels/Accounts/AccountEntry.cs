@@ -10,17 +10,26 @@ namespace Twice.ViewModels.Accounts
 		public AccountEntry( IContextEntry context )
 		{
 			Context = context;
-			AccountName = context.AccountName;
-			ProfileImage = context.ProfileImageUrl;
-			IsDefaultAccount = context.IsDefault;
-			RequiresConfirmation = context.RequiresConfirmation;
+			AccountName = Context.AccountName;
+			ProfileImage = Context.ProfileImageUrl;
+			RequiresConfirmation = Context.RequiresConfirmation;
 		}
 
 		public event EventHandler ConfirmationChanged;
 
 		public string AccountName { get; }
 		public TwitterAccountData Data => Context.Data;
-		public bool IsDefaultAccount { get; set; }
+
+		public bool IsDefaultAccount
+		{
+			get { return Context.IsDefault; }
+			set
+			{
+				Context.IsDefault = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public Uri ProfileImage { get; }
 
 		public bool RequiresConfirmation

@@ -8,7 +8,7 @@ namespace Twice.Models.Twitter
 	{
 		string AccountName { get; }
 		TwitterAccountData Data { get; }
-		bool IsDefault { get; }
+		bool IsDefault { get; set; }
 		INotifier Notifier { get; }
 		Uri ProfileImageUrl { get; }
 		bool RequiresConfirmation { get; }

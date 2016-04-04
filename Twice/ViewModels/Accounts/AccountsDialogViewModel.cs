@@ -25,6 +25,21 @@ namespace Twice.ViewModels.Accounts
 			}
 		}
 
+		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
+
+		public ICommand MakeDefaultAccountCommand => _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
+			ExecuteMakeDefaultAccountCommand ) );
+
+		private void ExecuteMakeDefaultAccountCommand( AccountEntry entry )
+		{
+			foreach( var acc in AddedAccounts)
+			{
+				acc.IsDefaultAccount = acc.Data.UserId == entry.Data.UserId;
+			}
+
+			ContextList.UpdateAllAccounts();
+		}
+
 		private void Acc_ConfirmationChanged( object sender, System.EventArgs e )
 		{
 			var acc = sender as AccountEntry;

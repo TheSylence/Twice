@@ -7,9 +7,13 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:accounts="clr-namespace:Twice.ViewModels.Accounts"
+             xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              mc:Ignorable="d" Title="{lex:Loc Accounts}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Accounts, Source={StaticResource DialogLocator}}"
 			Width="600" Height="500" d:DesignHeight="300" d:DesignWidth="300">
+	<controls:MetroWindow.Resources>
+		<proxies:AccountsDialogDataProxy Data="{Binding}" x:Key="DataProxy" />
+	</controls:MetroWindow.Resources>
 	<materialDesign:DialogHost Identifier="AccountDialogHost">
 		<Grid>
 			<Grid.ColumnDefinitions>
@@ -44,7 +48,8 @@
 
 								<StackPanel Orientation="Vertical">
 									<CheckBox Content="{lex:Loc RequiresConfirmationStep}" Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}" />
-									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}" />
+									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
+											CommandParameter="{Binding}" Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
 									<Button Margin="5">
 										<DockPanel>
 											<materialDesign:PackIcon Kind="Delete" Margin="5,0" />

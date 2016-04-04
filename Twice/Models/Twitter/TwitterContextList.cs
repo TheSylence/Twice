@@ -52,6 +52,11 @@ namespace Twice.Models.Twitter
 			ContextsChanged?.Invoke( this, EventArgs.Empty );
 		}
 
+		public void UpdateAllAccounts()
+		{
+			SaveToFile();
+		}
+
 		public void Dispose()
 		{
 			Dispose( true );

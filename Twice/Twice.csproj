@@ -334,6 +334,7 @@
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>
     </Compile>

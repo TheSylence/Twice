@@ -58,7 +58,7 @@ namespace Twice.Models.Twitter
 
 		public string AccountName { get; }
 		public TwitterAccountData Data { get; }
-		public bool IsDefault { get; }
+		public bool IsDefault { get; set; }
 		public INotifier Notifier { get; }
 		public Uri ProfileImageUrl { get; }
 		public bool RequiresConfirmation { get; }

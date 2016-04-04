@@ -21,5 +21,7 @@ namespace Twice.Models.Twitter
 		/// </summary>
 		/// <param name="data"></param>
 		void UpdateAccount( TwitterAccountData data );
+
+		void UpdateAllAccounts();
 	}
 }
