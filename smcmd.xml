@@ -3,9 +3,9 @@
    <write_log>true</write_log> 
    <log_all_to_console/>
    <command>
-       <project_file>E:\dev\Apps\Twice\Twice.smproj</project_file>
+       <project_file>@PROJECT_FILE@</project_file>
        <file_extensions>*.cs,*.xaml|*.Designer.cs</file_extensions>
-       <source_directory>E:\dev\Apps\Twice</source_directory>
+       <source_directory>@SOURCE_DIR@</source_directory>
        <include_subdirectories>true</include_subdirectories>
        <checkpoint_name>@CHECKPOINT_NAME@</checkpoint_name>
    </command> 
