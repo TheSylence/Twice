@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Services.Views;
+using Twice.Views;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -152,6 +154,7 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( async t =>
 			{
 				IsSending = false;
+				MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
 				await Reset();
 			} );
 		}
