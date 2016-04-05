@@ -115,6 +115,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add account.
+        /// </summary>
+        public static string AddAccount {
+            get {
+                return ResourceManager.GetString("AddAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add column.
         /// </summary>
         public static string AddColumn {
@@ -453,6 +462,15 @@ namespace Twice.Resources {
         public static string Following {
             get {
                 return ResourceManager.GetString("Following", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follows you.
+        /// </summary>
+        public static string FollowsYou {
+            get {
+                return ResourceManager.GetString("FollowsYou", resourceCulture);
             }
         }
         
@@ -912,6 +930,15 @@ namespace Twice.Resources {
         public static string SelectAValue {
             get {
                 return ResourceManager.GetString("SelectAValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the columns you want to add for this account.
+        /// </summary>
+        public static string SelectColumnsYouWantToAddForNewAccount {
+            get {
+                return ResourceManager.GetString("SelectColumnsYouWantToAddForNewAccount", resourceCulture);
             }
         }
         

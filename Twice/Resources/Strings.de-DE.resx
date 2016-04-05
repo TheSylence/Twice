@@ -463,4 +463,13 @@
   <data name="FromAccounts" xml:space="preserve">
     <value>Von</value>
   </data>
+  <data name="AddAccount" xml:space="preserve">
+    <value>Konto hinzufügen</value>
+  </data>
+  <data name="FollowsYou" xml:space="preserve">
+    <value>Folgt dir</value>
+  </data>
+  <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
+    <value>Bitte die Spalten auswählen, die für diesen Account erstellt werden sollen</value>
+  </data>
 </root>
