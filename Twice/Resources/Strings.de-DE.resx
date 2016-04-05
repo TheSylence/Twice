@@ -472,4 +472,7 @@
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Bitte die Spalten auswählen, die für diesen Account erstellt werden sollen</value>
   </data>
+  <data name="StayOpen" xml:space="preserve">
+    <value>Offen bleiben</value>
+  </data>
 </root>

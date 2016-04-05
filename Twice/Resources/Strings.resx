@@ -492,4 +492,7 @@
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Select the columns you want to add for this account</value>
   </data>
+  <data name="StayOpen" xml:space="preserve">
+    <value>Stay open</value>
+  </data>
 </root>

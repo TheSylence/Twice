@@ -997,6 +997,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stay open.
+        /// </summary>
+        public static string StayOpen {
+            get {
+                return ResourceManager.GetString("StayOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stream content in realtime.
         /// </summary>
         public static string StreamContentInRealtime {
