@@ -14,7 +14,7 @@ namespace Twice.ViewModels.Columns
 		public TimelineColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
 			: base( context, definition, config, parser )
 		{
-			Title = Strings.Home;
+			Title = Strings.Timeline;
 		}
 
 		protected override bool IsSuitableForColumn( Status status )
