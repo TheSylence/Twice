@@ -7,6 +7,12 @@
        <file_extensions>*.cs,*.xaml|*.Designer.cs</file_extensions>
        <source_directory>@SOURCE_DIR@</source_directory>
        <include_subdirectories>true</include_subdirectories>
+	   <source_subdirectory_list>
+		<exclude_subdirectories>true</exclude_subdirectories>
+		<source_subtree>Twice\bin\</source_subtree>
+		<source_subtree>Twice\obj\</source_subtree>
+		<source_subtree>ThirdParty\</source_subtree>
+	   </source_subdirectory_list>
        <checkpoint_name>@CHECKPOINT_NAME@</checkpoint_name>
    </command> 
 </sourcemonitor_commands>
