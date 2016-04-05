@@ -34,7 +34,7 @@ namespace Twice
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			DispatcherHelper.Initialize();
-			Kernel = new Kernel( InjectionModules.ToArray() );
+			Kernel = new Kernel( );
 
 			base.OnStartup( e );
 			ConfigureLogging();
@@ -103,14 +103,6 @@ namespace Twice
 
 		public static IKernel Kernel { get; private set; }
 
-		private static IEnumerable<INinjectModule> InjectionModules
-		{
-			get
-			{
-				yield return new ModelInjectionModule();
-				yield return new ViewModelInjectionModule();
-				yield return new ServiceInjectionModule();
-			}
-		}
+		
 	}
 }

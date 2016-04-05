@@ -27,7 +27,7 @@ namespace Twice.ViewModels.Settings
 		{
 			foreach( var notifyModule in AvailableNotifications )
 			{
-				notifyModule.SaveTo( config);
+				notifyModule.SaveTo( config );
 			}
 		}
 
@@ -54,108 +54,6 @@ namespace Twice.ViewModels.Settings
 
 		public ICollection<NotificationModuleSettings> AvailableNotifications { get; }
 
-		public Corner DisplayCorner
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _DisplayCorner; }
-			set
-			{
-				if( _DisplayCorner == value )
-				{
-					return;
-				}
-
-				_DisplayCorner = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public int DisplayIndex
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _DisplayIndex; }
-			set
-			{
-				if( _DisplayIndex == value )
-				{
-					return;
-				}
-
-				_DisplayIndex = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public ICollection<NotificationModuleSettings> EnabledNotifications { get; }
-
-		public bool EnablePopups
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _EnablePopups; }
-			set
-			{
-				if( _EnablePopups == value )
-				{
-					return;
-				}
-
-				_EnablePopups = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool EnableSounds
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _EnableSounds; }
-			set
-			{
-				if( _EnableSounds == value )
-				{
-					return;
-				}
-
-				_EnableSounds = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool EnableToasts
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _EnableToasts; }
-			set
-			{
-				if( _EnableToasts == value )
-				{
-					return;
-				}
-
-				_EnableToasts = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string SoundFileName
-		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _SoundFileName; }
-			set
-			{
-				if( _SoundFileName == value )
-				{
-					return;
-				}
-
-				_SoundFileName = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private Corner _DisplayCorner;
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private int _DisplayIndex;
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private bool _EnablePopups;
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private bool _EnableSounds;
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private bool _EnableToasts;
-
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private string _SoundFileName;
 	}
 }

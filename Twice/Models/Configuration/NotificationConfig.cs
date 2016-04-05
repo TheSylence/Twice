@@ -7,7 +7,7 @@
 			ToastsEnabled = true;
 			SoundEnabled = false;
 			PopupEnabled = false;
-			PopupDisplayIndex = 0;
+			PopupDisplay = string.Empty;
 			PopupDisplayCorner = Corner.BottomRight;
 		}
 
@@ -15,7 +15,7 @@
 		public bool SoundEnabled { get; set; }
 		public string SoundFileName { get; set; }
 		public Corner PopupDisplayCorner { get; set; }
-		public int PopupDisplayIndex { get; set; }
+		public string PopupDisplay { get; set; }
 		public bool PopupEnabled { get; set; }
 	}
 }

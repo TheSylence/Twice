@@ -51,7 +51,7 @@ namespace Twice.Tests.Models.Configuration
 				Notifications =
 				{
 					PopupDisplayCorner = Corner.BottomRight,
-					PopupDisplayIndex = 2,
+					PopupDisplay = "test",
 					PopupEnabled = true,
 					SoundEnabled = false,
 					SoundFileName = "file.name",
@@ -84,7 +84,7 @@ namespace Twice.Tests.Models.Configuration
 			Assert.AreEqual( config.Visual.UseDarkTheme, cfg.Visual.UseDarkTheme );
 
 			Assert.AreEqual( config.Notifications.PopupDisplayCorner, cfg.Notifications.PopupDisplayCorner );
-			Assert.AreEqual( config.Notifications.PopupDisplayIndex, cfg.Notifications.PopupDisplayIndex );
+			Assert.AreEqual( config.Notifications.PopupDisplay, cfg.Notifications.PopupDisplay );
 			Assert.AreEqual( config.Notifications.PopupEnabled, cfg.Notifications.PopupEnabled );
 			Assert.AreEqual( config.Notifications.SoundEnabled, cfg.Notifications.SoundEnabled );
 			Assert.AreEqual( config.Notifications.SoundFileName, cfg.Notifications.SoundFileName );

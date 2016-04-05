@@ -150,6 +150,10 @@
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\NotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\PopupNotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
   </ItemGroup>

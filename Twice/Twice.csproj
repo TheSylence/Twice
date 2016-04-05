@@ -244,6 +244,7 @@
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
+    <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\HashtagCacheEntry.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="Utilities\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
+    <Compile Include="Utilities\DisplayHelper.cs" />
     <Compile Include="Utilities\DPAPI.cs" />
     <Compile Include="Utilities\IColorProvider.cs" />
     <Compile Include="Utilities\IDateProvider.cs" />
