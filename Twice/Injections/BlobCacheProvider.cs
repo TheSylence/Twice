@@ -4,7 +4,7 @@ using Ninject.Activation;
 
 namespace Twice.Models.Cache
 {
-	internal class SecureBlobCacheProvider : Provider<ISecureBlobCache>
+	internal class BlobCacheProvider : Provider<IBlobCache>
 	{
 		/// <summary>
 		/// Creates an instance within the specified context.
@@ -13,11 +13,11 @@ namespace Twice.Models.Cache
 		/// <returns>
 		/// The created instance.
 		/// </returns>
-		protected override ISecureBlobCache CreateInstance( IContext context )
+		protected override IBlobCache CreateInstance( IContext context )
 		{
-			return Cache ?? ( Cache = new SQLiteEncryptedBlobCache( "cache.crypt.db3" ) );
+			return Cache ?? ( Cache = new SQLitePersistentBlobCache( Constants.IO.CacheFileName ) );
 		}
 
-		private static ISecureBlobCache Cache;
+		private static IBlobCache Cache;
 	}
 }

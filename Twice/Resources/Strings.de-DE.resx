@@ -437,7 +437,7 @@
     <value>Bild anhängen</value>
   </data>
   <data name="RequiresConfirmationStep" xml:space="preserve">
-    <value>Erfordert einen Bestätigungsschritt beim Tweeten</value>
+    <value>Erfordert eine Bestätigung beim Tweeten</value>
   </data>
   <data name="MakeDefaultAccount" xml:space="preserve">
     <value>Dies zum Standardkonto machen</value>
@@ -447,5 +447,35 @@
   </data>
   <data name="UpdateHasBeenInstalled" xml:space="preserve">
     <value>Version {0} wurde installiert. App neustarten, um die neue Version zu verwenden.</value>
+  </data>
+  <data name="SendTweet" xml:space="preserve">
+    <value>Tweet senden</value>
+  </data>
+  <data name="CharacterCounter" xml:space="preserve">
+    <value>{0} / 140</value>
+  </data>
+  <data name="WhatsHappening" xml:space="preserve">
+    <value>Was gibt's Neues?</value>
+  </data>
+  <data name="ConfirmTweet" xml:space="preserve">
+    <value>Bereit zum Tweeten?</value>
+  </data>
+  <data name="FromAccounts" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="AddAccount" xml:space="preserve">
+    <value>Konto hinzufügen</value>
+  </data>
+  <data name="FollowsYou" xml:space="preserve">
+    <value>Folgt dir</value>
+  </data>
+  <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
+    <value>Bitte die Spalten auswählen, die für diesen Account erstellt werden sollen</value>
+  </data>
+  <data name="StayOpen" xml:space="preserve">
+    <value>Offen bleiben</value>
+  </data>
+  <data name="ClickToRemove" xml:space="preserve">
+    <value>Zum Entfernen klicken</value>
   </data>
 </root>

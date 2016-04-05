@@ -468,4 +468,34 @@
   <data name="UpdateHasBeenInstalled" xml:space="preserve">
     <value>Version {0} has been installed. Restart the app to use the new version.</value>
   </data>
+  <data name="SendTweet" xml:space="preserve">
+    <value>Send tweet</value>
+  </data>
+  <data name="CharacterCounter" xml:space="preserve">
+    <value>{0} / 140</value>
+  </data>
+  <data name="WhatsHappening" xml:space="preserve">
+    <value>What's happening?</value>
+  </data>
+  <data name="ConfirmTweet" xml:space="preserve">
+    <value>Ready to tweet?</value>
+  </data>
+  <data name="FromAccounts" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="AddAccount" xml:space="preserve">
+    <value>Add account</value>
+  </data>
+  <data name="FollowsYou" xml:space="preserve">
+    <value>Follows you</value>
+  </data>
+  <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
+    <value>Select the columns you want to add for this account</value>
+  </data>
+  <data name="StayOpen" xml:space="preserve">
+    <value>Stay open</value>
+  </data>
+  <data name="ClickToRemove" xml:space="preserve">
+    <value>Click to remove</value>
+  </data>
 </root>

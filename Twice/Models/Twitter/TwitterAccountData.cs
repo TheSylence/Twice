@@ -1,14 +1,15 @@
+using System;
 using Twice.Utilities;
 
 namespace Twice.Models.Twitter
 {
-	class TwitterAccountData
+	internal class TwitterAccountData
 	{
-		public ulong UserId { get; set; }
-		public string AccountName { get; set; }
-		public string ImageUrl { get; set; }
-		public string OAuthToken { get; set; }
-		public string OAuthTokenSecret { get; set; }
+		public void Decrypt()
+		{
+			OAuthToken = DpApi.Decrypt( OAuthToken );
+			OAuthTokenSecret = DpApi.Decrypt( OAuthTokenSecret );
+		}
 
 		public void Encrypt()
 		{
@@ -16,10 +17,40 @@ namespace Twice.Models.Twitter
 			OAuthTokenSecret = DpApi.Encrypt( DpApi.KeyType.UserKey, OAuthTokenSecret );
 		}
 
-		public void Decrypt()
+		public TResult ExecuteDecryptedAction<TResult>( Func<TwitterAccountData, TResult> action )
 		{
-			OAuthToken = DpApi.Decrypt( OAuthToken );
-			OAuthTokenSecret = DpApi.Decrypt( OAuthTokenSecret );
+			Decrypt();
+
+			try
+			{
+				return action( this );
+			}
+			finally
+			{
+				Encrypt();
+			}
 		}
+
+		public void ExecuteDecryptedAction( Action<TwitterAccountData> action )
+		{
+			Decrypt();
+
+			try
+			{
+				action( this );
+			}
+			finally
+			{
+				Encrypt();
+			}
+		}
+
+		public string AccountName { get; set; }
+		public string ImageUrl { get; set; }
+		public bool IsDefault { get; set; }
+		public string OAuthToken { get; set; }
+		public string OAuthTokenSecret { get; set; }
+		public bool RequiresConfirm { get; set; }
+		public ulong UserId { get; set; }
 	}
 }

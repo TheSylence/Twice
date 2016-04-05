@@ -1,5 +1,5 @@
-﻿using System;
-using LinqToTwitter;
+﻿using LinqToTwitter;
+using System;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -8,11 +8,14 @@ namespace Twice.Models.Twitter
 	{
 		public ContextEntry( INotifier notifier, TwitterAccountData data )
 		{
+			Data = data;
 			Notifier = notifier;
 
 			AccountName = data.AccountName;
 			UserId = data.UserId;
 			ProfileImageUrl = new Uri( data.ImageUrl );
+			IsDefault = data.IsDefault;
+			RequiresConfirmation = data.RequiresConfirm;
 
 			Twitter = new TwitterContext( new SingleUserAuthorizer
 			{
@@ -34,6 +37,17 @@ namespace Twice.Models.Twitter
 			GC.SuppressFinalize( this );
 		}
 
+		public override bool Equals( object obj )
+		{
+			var other = obj as ContextEntry;
+			return other?.UserId == UserId;
+		}
+
+		public override int GetHashCode()
+		{
+			return UserId.GetHashCode();
+		}
+
 		private void Dispose( bool disposing )
 		{
 			if( disposing )
@@ -43,8 +57,11 @@ namespace Twice.Models.Twitter
 		}
 
 		public string AccountName { get; }
+		public TwitterAccountData Data { get; }
+		public bool IsDefault { get; set; }
 		public INotifier Notifier { get; }
 		public Uri ProfileImageUrl { get; }
+		public bool RequiresConfirmation { get; }
 		public TwitterContext Twitter { get; }
 		public ulong UserId { get; }
 	}

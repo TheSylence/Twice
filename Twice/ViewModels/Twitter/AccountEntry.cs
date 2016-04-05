@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
@@ -14,17 +15,16 @@ namespace Twice.ViewModels.Twitter
 			Image = new BitmapImage( context.ProfileImageUrl );
 		}
 
+		public event EventHandler UseChanged;
+
 		public IContextEntry Context { get; }
 		public ImageSource Image { get; }
+		public bool IsDefault => Context.IsDefault;
 		public string ScreenName => Context.AccountName;
 
 		public bool Use
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Use;
-			}
+			[DebuggerStepThrough] get { return _Use; }
 			set
 			{
 				if( _Use == value )
@@ -34,10 +34,10 @@ namespace Twice.ViewModels.Twitter
 
 				_Use = value;
 				RaisePropertyChanged();
+				UseChanged?.Invoke( this, EventArgs.Empty );
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Use;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Use;
 	}
 }

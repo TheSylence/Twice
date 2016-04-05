@@ -38,7 +38,7 @@
 	<DockPanel>
 		<DockPanel Dock="Bottom">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="5">
-				<Button Content="{lex:Loc Ok}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
+				<Button Content="{lex:Loc Save}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
 										Style="{DynamicResource MaterialDesignFlatButton}" />
 				<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
 										Margin="5"  Style="{DynamicResource MaterialDesignFlatButton}" />

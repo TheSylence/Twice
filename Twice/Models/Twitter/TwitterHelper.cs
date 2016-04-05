@@ -30,6 +30,11 @@ namespace Twice.Models.Twitter
 			return user.ScreenName ?? user.ScreenNameResponse;
 		}
 
+		public static ulong GetUserId( this User user )
+		{
+			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
+		}
+
 		public static Uri GetUrl( this Status status )
 		{
 			string userName = status.User.GetScreenName();

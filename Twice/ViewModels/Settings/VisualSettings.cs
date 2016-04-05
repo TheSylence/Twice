@@ -1,11 +1,10 @@
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using MahApps.Metro;
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using WPFLocalizeExtension.Engine;
@@ -76,9 +75,12 @@ namespace Twice.ViewModels.Settings
 
 			config.Visual.InlineMedia = InlineMedias;
 
-			Application.Current.Resources["HashtagBrush"] = ThemeManager.GetAccent( config.Visual.HashtagColor ).Resources["HighlightBrush"];
-			Application.Current.Resources["LinkBrush"] = ThemeManager.GetAccent( config.Visual.LinkColor ).Resources["HighlightBrush"];
-			Application.Current.Resources["MentionBrush"] = ThemeManager.GetAccent( config.Visual.MentionColor ).Resources["HighlightBrush"];
+			var swatches = new SwatchesProvider().Swatches.ToArray();
+
+			Application.Current.Resources["HashtagBrush"] =
+				new SolidColorBrush( swatches.First( s => s.Name == config.Visual.HashtagColor ).ExemplarHue.Color );
+			Application.Current.Resources["LinkBrush"] = new SolidColorBrush( swatches.First( s => s.Name == config.Visual.LinkColor ).ExemplarHue.Color );
+			Application.Current.Resources["MentionBrush"] = new SolidColorBrush( swatches.First( s => s.Name == config.Visual.MentionColor ).ExemplarHue.Color );
 			Application.Current.Resources["GlobalFontSize"] = (double)config.Visual.FontSize;
 
 			var palette = new PaletteHelper();

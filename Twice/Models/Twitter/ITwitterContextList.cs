@@ -15,5 +15,13 @@ namespace Twice.Models.Twitter
 		/// </summary>
 		/// <param name="data"></param>
 		void AddContext( TwitterAccountData data );
+
+		/// <summary>
+		/// Only pass decrypted data to this method.
+		/// </summary>
+		/// <param name="data"></param>
+		void UpdateAccount( TwitterAccountData data );
+
+		void UpdateAllAccounts();
 	}
 }

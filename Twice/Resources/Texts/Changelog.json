@@ -1,5 +1,26 @@
 ﻿[
-    
+     {
+        "Version": "0.2.0",
+        "Date": "2016-04-05",
+        "Description": "",
+        "NewFeatures": [
+            "Remaining characters are displayed in compose window",
+            "Autocomplete for usernames and hashtags in compose window",
+            "Marking an account as 'Requires Confirmation' now forces confirmation in compose window",
+            "Default account can be set in accounts window"
+        ],
+        "Changes": [
+            "Compose window is now better layouted and most of the features are working",
+            "Made retweeting user's image bigger",
+            "Compose window closes itself after tweeting (except when StayOpen option is checked)"
+        ],
+        "Fixes": [
+            "Version and build date are now readable in about dialog",
+            "Changelogs are no longer being cut off in about dialog",
+            "Using certain colors for entities no longer crashes"
+        ],
+        "Issues": [ ]
+    },
     {
         "Version": "0.1.3",
         "Date": "2016-04-03",

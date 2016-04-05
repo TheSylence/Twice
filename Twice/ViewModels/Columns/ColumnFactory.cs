@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -9,8 +10,10 @@ namespace Twice.ViewModels.Columns
 {
 	internal class ColumnFactory : IColumnFactory
 	{
-		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config, IStreamingRepository streamingRepo )
+		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config, IStreamingRepository streamingRepo,
+			IDataCache cache )
 		{
+			Cache = cache;
 			Configuration = config;
 			Muter = muter;
 			Contexts = contexts;
@@ -37,7 +40,7 @@ namespace Twice.ViewModels.Columns
 
 			if( FactoryMap.TryGetValue( def.Type, out factoryAction ) )
 			{
-				var argData = new ColumnArgumentsData()
+				var argData = new ColumnArgumentsData
 				{
 					Configuration = Configuration,
 					Context = context,
@@ -49,6 +52,7 @@ namespace Twice.ViewModels.Columns
 
 				column.Width = def.Width;
 				column.Muter = Muter;
+				column.Cache = Cache;
 
 				return column;
 			}
@@ -71,6 +75,7 @@ namespace Twice.ViewModels.Columns
 			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
+		private readonly IDataCache Cache;
 		private readonly IConfig Configuration;
 		private readonly ITwitterContextList Contexts;
 		private readonly Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>> FactoryMap;

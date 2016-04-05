@@ -15,7 +15,7 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Style="{StaticResource WindowStyle}"
+        Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
