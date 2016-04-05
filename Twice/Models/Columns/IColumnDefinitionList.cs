@@ -12,5 +12,7 @@ namespace Twice.Models.Columns
 		IEnumerable<ColumnDefinition> Load();
 
 		void Save( IEnumerable<ColumnDefinition> definitions );
+
+		void Update( IEnumerable<ColumnDefinition> definitions );
 	}
 }

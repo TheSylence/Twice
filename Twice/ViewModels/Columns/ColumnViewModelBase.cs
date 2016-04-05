@@ -24,7 +24,7 @@ namespace Twice.ViewModels.Columns
 			Configuration = config;
 			Definition = definition;
 			Context = context;
-			Width = 300;
+			Width = definition.Width;
 			IsLoading = true;
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
 			Parser = parser;
@@ -45,6 +45,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public event EventHandler<StatusEventArgs> NewStatus;
+		public event EventHandler Resized;
 
 		public async Task Load()
 		{
@@ -268,7 +269,9 @@ namespace Twice.ViewModels.Columns
 				}
 
 				_Width = value;
+				Definition.Width = (int)value;
 				RaisePropertyChanged();
+				Resized?.Invoke( this, EventArgs.Empty );
 			}
 		}
 

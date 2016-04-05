@@ -1,7 +1,4 @@
-﻿using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using Squirrel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -9,6 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using Squirrel;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -108,6 +108,21 @@ namespace Twice.ViewModels.Main
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
+		private void Col_Reizsed( object sender, EventArgs e )
+		{
+			var col = sender as IColumnViewModel;
+			Debug.Assert( col != null, "col != null" );
+
+			var def = col.Definition;
+
+			var definitions = ColumnList.Load().ToArray();
+
+			var updated = definitions.First( d => d.Id == def.Id );
+			updated.Width = def.Width;
+
+			ColumnList.Update( definitions );
+		}
+
 		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
 		{
 			ConstructColumns();
@@ -119,6 +134,7 @@ namespace Twice.ViewModels.Main
 			foreach( var c in Columns )
 			{
 				c.NewStatus -= Col_NewStatus;
+				c.Resized -= Col_Reizsed;
 			}
 			Columns.Clear();
 
@@ -129,6 +145,7 @@ namespace Twice.ViewModels.Main
 			foreach( var c in constructed )
 			{
 				c.NewStatus += Col_NewStatus;
+				c.Resized += Col_Reizsed;
 				Columns.Add( c );
 			}
 		}

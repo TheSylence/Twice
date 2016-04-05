@@ -14,7 +14,7 @@
 									 VerticalAlignment="Center"
 									 Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 
-			<local:ResizeThumb DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="SizeWE">
+			<local:ResizeThumb Margin="0,0,3,0" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Stretch" Cursor="SizeWE">
 				<local:ResizeThumb.Template>
 					<ControlTemplate TargetType="local:ResizeThumb">
 						<Rectangle Fill="{DynamicResource WindowBackgroundBrush}" Width="3" />

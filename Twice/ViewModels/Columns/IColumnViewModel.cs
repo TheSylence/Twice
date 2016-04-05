@@ -8,12 +8,13 @@ namespace Twice.ViewModels.Columns
 {
 	internal interface IColumnViewModel
 	{
-		IColumnActionDispatcher ActionDispatcher { get; }
-
 		event EventHandler<StatusEventArgs> NewStatus;
+
+		event EventHandler Resized;
 
 		Task Load();
 
+		IColumnActionDispatcher ActionDispatcher { get; }
 		ColumnDefinition Definition { get; }
 		Icon Icon { get; }
 		bool IsLoading { get; }

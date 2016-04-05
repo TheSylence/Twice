@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Twice.Models.Columns
@@ -11,6 +12,8 @@ namespace Twice.Models.Columns
 			Width = 300;
 			Notifications = new ColumnNotifications();
 		}
+
+		public Guid Id { get; set; }
 
 		public override bool Equals( object obj )
 		{

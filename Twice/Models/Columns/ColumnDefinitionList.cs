@@ -36,10 +36,15 @@ namespace Twice.Models.Columns
 
 		public void Save( IEnumerable<ColumnDefinition> definitions )
 		{
-			var json = JsonConvert.SerializeObject( definitions.ToList(), Formatting.Indented );
-			File.WriteAllText( FileName, json );
+			Update( definitions );
 
 			ColumnsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
+		public void Update( IEnumerable<ColumnDefinition> definitions )
+		{
+			var json = JsonConvert.SerializeObject( definitions.ToList(), Formatting.Indented );
+			File.WriteAllText( FileName, json );
 		}
 
 		private readonly string FileName;
