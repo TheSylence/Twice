@@ -270,9 +270,13 @@
     <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
+    <Compile Include="Utilities\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
     <Compile Include="Utilities\DPAPI.cs" />
+    <Compile Include="Utilities\IColorProvider.cs" />
     <Compile Include="Utilities\IDateProvider.cs" />
+    <Compile Include="Utilities\ILanguageProvider.cs" />
+    <Compile Include="Utilities\LanguageProvider.cs" />
     <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Utilities\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />

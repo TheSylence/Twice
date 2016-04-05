@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -99,7 +100,8 @@ namespace Twice.Tests
 				{typeof( decimal? ), (decimal?)1},
 				{typeof( string ), string.Empty},
 				{typeof( DateTime ), DateTime.Now},
-				{typeof( bool ), true}
+				{typeof( bool ), true},
+				{typeof(CultureInfo), CultureInfo.CurrentUICulture}
 			};
 
 			object v;

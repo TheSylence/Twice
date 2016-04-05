@@ -66,6 +66,10 @@
       <HintPath>..\packages\linqtotwitter.4.1.0\lib\net45\LinqToTwitter.net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +82,7 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
@@ -144,6 +149,8 @@
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

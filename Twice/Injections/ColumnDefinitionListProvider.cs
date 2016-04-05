@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Ninject.Activation;
 using Twice.Models.Columns;
 
 namespace Twice.Injections
 {
+	[ExcludeFromCodeCoverage]
 	class ColumnDefinitionListProvider : Provider<IColumnDefinitionList>
 	{
 		/// <summary>

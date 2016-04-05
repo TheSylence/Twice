@@ -1,6 +1,9 @@
-﻿namespace Twice.Services.Views
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Twice.Services.Views
 {
 
+	[ExcludeFromCodeCoverage]
 	class FileServiceArgs
 	{
 		public FileServiceArgs( params string[] fileTypes )

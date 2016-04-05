@@ -3,15 +3,15 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Twice.Models.Configuration;
-using WPFLocalizeExtension.Engine;
+using Twice.Utilities;
 
 namespace Twice.ViewModels.Settings
 {
 	internal class GeneralSettings : ViewModelBaseEx, IGeneralSettings
 	{
-		public GeneralSettings( IConfig currentConfig )
+		public GeneralSettings( IConfig currentConfig, ILanguageProvider languageProvider )
 		{
-			var langs = LocalizeDictionary.Instance.MergedAvailableCultures.ToList();
+			var langs = languageProvider.AvailableLanguages.ToList();
 			for( int i = 0; i < langs.Count; ++i )
 			{
 				if( langs[i].Equals( CultureInfo.InvariantCulture ) )
@@ -27,8 +27,10 @@ namespace Twice.ViewModels.Settings
 			}
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
+			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
+
 			RealtimeStreaming = currentConfig.General.RealtimeStreaming;
-			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? AvailableLanguages.First();
+			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? english;
 			CheckForUpdates = currentConfig.General.CheckForUpdates;
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
 		}
@@ -39,6 +41,13 @@ namespace Twice.ViewModels.Settings
 			config.General.RealtimeStreaming = RealtimeStreaming;
 			config.General.CheckForUpdates = CheckForUpdates;
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
+		}
+
+		private static bool IsEnglish( CultureInfo lang )
+		{
+			var english = CultureInfo.CreateSpecificCulture( "en" );
+
+			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
 		}
 
 		public ICollection<CultureInfo> AvailableLanguages { get; }

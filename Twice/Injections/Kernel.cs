@@ -1,10 +1,12 @@
-﻿using Ninject;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Ninject.Infrastructure;
 using Ninject.Modules;
 using Ninject.Planning.Bindings;
 
 namespace Twice.Injections
 {
+	[ExcludeFromCodeCoverage]
 	internal class Kernel : StandardKernel
 	{
 		public Kernel( params INinjectModule[] modules )
