@@ -74,6 +74,7 @@
 
 			<Grid Grid.Column="0">
 				<TextBlock Text="{lex:Loc FromAccounts}" VerticalAlignment="Top" Margin="5,3" />
+				<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}" VerticalAlignment="Bottom" Margin="5,3" />
 
 				<ItemsControl ItemsSource="{Binding Accounts}" VerticalAlignment="Center" Margin="0,0,10,0">
 					<ItemsControl.ItemsPanel>

@@ -11,7 +11,8 @@
         ],
         "Changes": [
             "Compose window is now better layouted and most of the features are working",
-            "Made retweeting user's image bigger"
+            "Made retweeting user's image bigger",
+            "Compose window closes itself after tweeting (except when StayOpen option is checked)"
         ],
         "Fixes": [
             "Version and build date are now readable in about dialog",

@@ -16,6 +16,7 @@ namespace Twice.ViewModels.Twitter
 		bool LowCharsLeft { get; set; }
 		bool MediumCharsLeft { get; set; }
 		ICommand SendTweetCommand { get; }
+		bool StayOpen { get; set; }
 		string Text { get; set; }
 		int TextLength { get; set; }
 	}

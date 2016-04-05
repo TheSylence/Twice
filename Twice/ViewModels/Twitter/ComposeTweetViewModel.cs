@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Messages;
 using Twice.Models.Cache;
@@ -154,8 +155,15 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( async t =>
 			{
 				IsSending = false;
-				MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
-				await Reset();
+				await DispatcherHelper.RunAsync( async () =>
+				{
+					if( !StayOpen )
+					{
+						MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
+					}
+
+					await Reset();
+				} );
 			} );
 		}
 
@@ -237,6 +245,21 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand SendTweetCommand => _SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) );
 
+		public bool StayOpen
+		{
+			[DebuggerStepThrough] get { return _StayOpen; }
+			set
+			{
+				if( _StayOpen == value )
+				{
+					return;
+				}
+
+				_StayOpen = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public string Text
 		{
 			[DebuggerStepThrough] get { return _Text; }
@@ -290,6 +313,8 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 
