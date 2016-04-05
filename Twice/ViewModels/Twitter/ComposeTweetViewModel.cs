@@ -137,6 +137,13 @@ namespace Twice.ViewModels.Twitter
 			AttachedMedias.Add( new MediaItem( media, mediaData ) );
 		}
 
+		private void ExecuteDeleteMediaCommand( MediaItem item )
+		{
+			// TODO: Confirm removal
+			Medias.RemoveAll( m => m.MediaID == item.MediaId );
+			AttachedMedias.Remove( item );
+		}
+
 		private async void ExecuteSendTweetCommand()
 		{
 			await SendTweet();
@@ -168,7 +175,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
-
 		public ICollection<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -194,6 +200,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<MediaItem>(
+			ExecuteDeleteMediaCommand ) );
+
 		public bool IsSending
 		{
 			[DebuggerStepThrough] get { return _IsSending; }
@@ -210,7 +219,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
-
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -295,16 +303,15 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private readonly IDataCache Cache;
-
 		private readonly int LowWarnThreshold = 135;
-
 		private readonly List<Media> Medias = new List<Media>();
-
 		private readonly int MediumWarnThreshold = 125;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
+
+		private RelayCommand<MediaItem> _DeleteMediaCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 

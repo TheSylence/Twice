@@ -475,4 +475,7 @@
   <data name="StayOpen" xml:space="preserve">
     <value>Offen bleiben</value>
   </data>
+  <data name="ClickToRemove" xml:space="preserve">
+    <value>Zum Entfernen klicken</value>
+  </data>
 </root>

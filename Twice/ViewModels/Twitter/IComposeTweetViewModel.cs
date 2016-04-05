@@ -10,6 +10,7 @@ namespace Twice.ViewModels.Twitter
 		ICommand AttachImageCommand { get; }
 		bool ConfirmationRequired { get; }
 		bool ConfirmationSet { get; set; }
+		ICommand DeleteMediaCommand { get; }
 		bool IsSending { get; }
 		ICollection<string> KnownHashtags { get; }
 		ICollection<string> KnownUserNames { get; }

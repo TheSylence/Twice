@@ -11,10 +11,15 @@
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:twice="clr-namespace:Twice"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
+             xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d"  CloseButtonIsCancel="True" IsPinned="True" Theme="Accent"
 			Position="Bottom" TitleVisibility="Collapsed"
              d:DesignHeight="300" d:DesignWidth="300" Height="75">
+	<controls:Flyout.Resources>
+		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
+	</controls:Flyout.Resources>
 	<i:Interaction.Behaviors>
 		<behaviors:FlyoutControl Name="{x:Static views:FlyoutNames.TweetComposer}" />
 	</i:Interaction.Behaviors>
@@ -127,12 +132,26 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate DataType="twitter:MediaItem">
-							<StackPanel Orientation="Vertical">
-								<Image Source="{Binding Image.Value, IsAsync=True}" MaxWidth="56" MaxHeight="56" />
-								<Button Style="{StaticResource MaterialDesignToolForegroundButton}" HorizontalAlignment="Center">
-									<materialDesign:PackIcon Kind="Delete" />
-								</Button>
-							</StackPanel>
+							<Grid Margin="5,0,0,0">
+								<Image Source="{Binding Image.Value, IsAsync=True}" MaxWidth="48" MaxHeight="48" Stretch="Fill"
+									   ToolTip="{lex:Loc ClickToRemove}">
+									<i:Interaction.Triggers>
+										<i:EventTrigger EventName="MouseDown">
+											<command:EventToCommand Command="{Binding Data.DeleteMediaCommand, Source={StaticResource DataProxy}}"
+																	CommandParameter="{Binding}" PassEventArgsToCommand="False" />
+										</i:EventTrigger>
+									</i:Interaction.Triggers>
+									<Image.Style>
+										<Style TargetType="Image">
+											<Style.Triggers>
+												<Trigger Property="IsMouseOver" Value="True">
+													<Setter Property="Cursor" Value="Hand" />
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</Image.Style>
+								</Image>
+							</Grid>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

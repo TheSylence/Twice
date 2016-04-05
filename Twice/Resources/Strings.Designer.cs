@@ -232,6 +232,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click to remove.
+        /// </summary>
+        public static string ClickToRemove {
+            get {
+                return ResourceManager.GetString("ClickToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
