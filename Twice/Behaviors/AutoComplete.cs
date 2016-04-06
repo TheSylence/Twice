@@ -6,6 +6,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using MaterialDesignThemes.Wpf;
 using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
@@ -64,6 +65,7 @@ namespace Twice.Behaviors
 			{
 				AutoCompletePopup.IsOpen = true;
 				AutoCompleteBox.Focus();
+				TextFieldAssist.SetHint( AutoCompleteBox, TriggerChar );
 				AutoCompleteBox.Text = string.Empty;
 				e.Handled = true;
 			}
@@ -71,9 +73,11 @@ namespace Twice.Behaviors
 
 		private void AutoCompleteBox_PreviewKeyDown( object sender, KeyEventArgs e )
 		{
+			bool close = false;
+
 			if( e.Key == Key.Escape )
 			{
-				AutoCompletePopup.IsOpen = false;
+				close = true;
 			}
 			else if( e.Key == Key.Return )
 			{
@@ -81,12 +85,17 @@ namespace Twice.Behaviors
 				var currentCaret = AssociatedObject.CaretIndex;
 
 				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret , insertText );
-
-				AutoCompletePopup.IsOpen = false;
-				e.Handled = true;
 				
-				AssociatedObject.Focus();
+				close = true;
+				
 				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
+			}
+
+			if( close )
+			{
+				e.Handled = true;
+				AutoCompletePopup.IsOpen = false;
+				AssociatedObject.Focus();
 			}
 		}
 

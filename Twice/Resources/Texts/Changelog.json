@@ -4,8 +4,12 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [ ],
-        "Changes": [ ],
-        "Fixes": [ ],
+        "Changes": [
+            "UI should keep responsive for most of the time"
+        ],
+        "Fixes": [
+            "Closing the autocomplete box during compose gives focus back"
+        ],
         "Issues": [ ]
     },
     {
