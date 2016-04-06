@@ -140,6 +140,8 @@
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />

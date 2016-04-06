@@ -103,8 +103,7 @@ namespace Twice.ViewModels.Accounts
 			var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
 			if( newColumns.Any() )
 			{
-				var columns = ColumnList.Load();
-				ColumnList.Save( columns.Concat( newColumns ) );
+				ColumnList.AddColumns( newColumns );
 			}
 
 			Close( true );

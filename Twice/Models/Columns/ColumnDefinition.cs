@@ -1,4 +1,7 @@
-﻿namespace Twice.Models.Columns
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+namespace Twice.Models.Columns
 {
 	internal class ColumnDefinition
 	{
@@ -7,6 +10,31 @@
 			Type = type;
 			Width = 300;
 			Notifications = new ColumnNotifications();
+		}
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as ColumnDefinition;
+			if( other?.Type != Type )
+			{
+				return false;
+			}
+
+			return SourceAccounts.Compare( other.SourceAccounts ) &&
+			       TargetAccounts.Compare( other.TargetAccounts );
+		}
+
+		[SuppressMessage( "ReSharper", "NonReadonlyMemberInGetHashCode" )]
+		public override int GetHashCode()
+		{
+			int hash = 17;
+			unchecked
+			{
+				hash = hash * 23 + Type.GetHashCode();
+				hash = SourceAccounts.OrderBy( x => x ).Aggregate( hash, ( current, acc ) => current * 23 + acc.GetHashCode() );
+				hash = TargetAccounts.OrderBy( x => x ).Aggregate( hash, ( current, acc ) => current * 23 + acc.GetHashCode() );
+			}
+			return hash;
 		}
 
 		public ColumnNotifications Notifications { get; set; }
