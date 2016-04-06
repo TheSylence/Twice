@@ -232,6 +232,7 @@
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
+    <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
@@ -301,6 +302,7 @@
     <Compile Include="Models\Columns\ColumnDefinitionFactory.cs" />
     <Compile Include="Models\Columns\ColumnNotifications.cs" />
     <Compile Include="Models\Columns\IColumnDefinitionList.cs" />
+    <Compile Include="ViewModels\Columns\ColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnActionDispatcher.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />

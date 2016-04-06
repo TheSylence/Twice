@@ -113,7 +113,7 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate DataType="columns:IColumnViewModel">
-							<Grid>
+							<Grid Margin="0,0,5,0">
 								<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
 									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
 										<i:Interaction.Behaviors>

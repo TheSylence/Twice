@@ -232,6 +232,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear column.
+        /// </summary>
+        public static string ClearColumn {
+            get {
+                return ResourceManager.GetString("ClearColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click to remove.
         /// </summary>
         public static string ClickToRemove {

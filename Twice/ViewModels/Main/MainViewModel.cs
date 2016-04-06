@@ -108,7 +108,7 @@ namespace Twice.ViewModels.Main
 			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
-		private void Col_Reizsed( object sender, EventArgs e )
+		private void Col_Changed( object sender, EventArgs e )
 		{
 			var col = sender as IColumnViewModel;
 			Debug.Assert( col != null, "col != null" );
@@ -119,6 +119,7 @@ namespace Twice.ViewModels.Main
 
 			var updated = definitions.First( d => d.Id == def.Id );
 			updated.Width = def.Width;
+			updated.Notifications = def.Notifications;
 
 			ColumnList.Update( definitions );
 		}
@@ -134,7 +135,7 @@ namespace Twice.ViewModels.Main
 			foreach( var c in Columns )
 			{
 				c.NewStatus -= Col_NewStatus;
-				c.Resized -= Col_Reizsed;
+				c.Changed -= Col_Changed;
 			}
 			Columns.Clear();
 
@@ -145,7 +146,7 @@ namespace Twice.ViewModels.Main
 			foreach( var c in constructed )
 			{
 				c.NewStatus += Col_NewStatus;
-				c.Resized += Col_Reizsed;
+				c.Changed += Col_Changed;
 				Columns.Add( c );
 			}
 		}

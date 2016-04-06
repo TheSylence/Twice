@@ -475,4 +475,7 @@
   <data name="ClickToRemove" xml:space="preserve">
     <value>Zum Entfernen klicken</value>
   </data>
+  <data name="ClearColumn" xml:space="preserve">
+    <value>Spalte leeren</value>
+  </data>
 </root>

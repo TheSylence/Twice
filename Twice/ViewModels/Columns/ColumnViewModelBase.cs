@@ -31,6 +31,9 @@ namespace Twice.ViewModels.Columns
 			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
 			Parser = parser;
 
+			ColumnConfiguration = new ColumnConfigurationViewModel( definition );
+			ColumnConfiguration.Saved += ColumnConfiguration_Saved;
+
 			if( config.General.RealtimeStreaming )
 			{
 				Parser.FriendsReceived += Parser_FriendsReceived;
@@ -46,9 +49,9 @@ namespace Twice.ViewModels.Columns
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 		}
 
-		public event EventHandler<StatusEventArgs> NewStatus;
+		public event EventHandler Changed;
 
-		public event EventHandler Resized;
+		public event EventHandler<StatusEventArgs> NewStatus;
 
 		public async Task Load()
 		{
@@ -167,6 +170,11 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		private void ColumnConfiguration_Saved( object sender, EventArgs e )
+		{
+			Changed?.Invoke( this, EventArgs.Empty );
+		}
+
 		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
 		{
 			var completeList = e.Friends.ToList();
@@ -224,7 +232,9 @@ namespace Twice.ViewModels.Columns
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
 		public IDataCache Cache { get; set; }
+		public IColumnConfigurationViewModel ColumnConfiguration { get; }
 		public ColumnDefinition Definition { get; }
+
 		public abstract Icon Icon { get; }
 
 		public bool IsLoading
@@ -244,6 +254,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public IStatusMuter Muter { get; set; }
+
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string Title
@@ -277,17 +288,24 @@ namespace Twice.ViewModels.Columns
 				_Width = value;
 				Definition.Width = (int)value;
 				RaisePropertyChanged();
-				Resized?.Invoke( this, EventArgs.Empty );
+				Changed?.Invoke( this, EventArgs.Empty );
 			}
 		}
 
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
+
 		protected virtual Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
+
 		protected ulong SinceId { get; private set; } = ulong.MinValue;
+
 		protected virtual Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
+
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
+
 		protected readonly IContextEntry Context;
+
 		private readonly IStreamParser Parser;
+
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
