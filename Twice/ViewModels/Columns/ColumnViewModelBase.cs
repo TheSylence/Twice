@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Anotar.NLog;
+using Fody;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Models.Cache;
@@ -16,6 +17,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
+	[ConfigureAwait( false )]
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
 		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
@@ -45,6 +47,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public event EventHandler<StatusEventArgs> NewStatus;
+
 		public event EventHandler Resized;
 
 		public async Task Load()
@@ -226,7 +229,8 @@ namespace Twice.ViewModels.Columns
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 			private set
 			{
 				if( _IsLoading == value )
@@ -244,7 +248,8 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -259,7 +264,8 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough] get { return _Width; }
+			[DebuggerStepThrough]
+			get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -284,10 +290,13 @@ namespace Twice.ViewModels.Columns
 		private readonly IStreamParser Parser;
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private double _Width;
 	}
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
 using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -9,13 +10,9 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Profile
 {
+	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
-		public void Setup( ulong profileId )
-		{
-			ProfileId = profileId;
-		}
-
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -46,6 +43,11 @@ namespace Twice.ViewModels.Profile
 			RaisePropertyChanged( nameof( UserPages ) );
 
 			IsBusy = false;
+		}
+
+		public void Setup( ulong profileId )
+		{
+			ProfileId = profileId;
 		}
 
 		private async Task<IEnumerable<object>> LoadFollowers()

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Fody;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -24,6 +25,7 @@ using Twice.Views.Wizards;
 namespace Twice.Services.Views
 {
 	[ExcludeFromCodeCoverage]
+	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
@@ -62,8 +64,8 @@ namespace Twice.Services.Views
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
 		{
-			ulong[] sourceAccounts = {accountId};
-			ulong[] targetAccounts = {accountId};
+			ulong[] sourceAccounts = { accountId };
+			ulong[] targetAccounts = { accountId };
 
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
@@ -155,7 +157,7 @@ namespace Twice.Services.Views
 				return null;
 			}
 
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 			var resSetup = resultSetup ?? defaultResultSetup;
 			return resSetup( vm );
 		}
@@ -206,7 +208,7 @@ namespace Twice.Services.Views
 
 			if( dlg.ShowDialog() == true )
 			{
-				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+				Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 				var resSetup = resultSetup ?? defaultResultSetup;
 				result = resSetup( vm );
 			}

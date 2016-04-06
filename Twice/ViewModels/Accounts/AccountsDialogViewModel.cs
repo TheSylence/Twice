@@ -71,7 +71,7 @@ namespace Twice.ViewModels.Accounts
 
 			try
 			{
-				await auth.AuthorizeAsync();
+				await auth.AuthorizeAsync().ConfigureAwait(false);
 			}
 			catch( TwitterQueryException ex )
 			{
