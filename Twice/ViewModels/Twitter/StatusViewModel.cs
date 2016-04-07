@@ -21,11 +21,12 @@ namespace Twice.ViewModels.Twitter
 			Context = context;
 
 			Model = model;
+			User = new UserViewModel( model.User );
 			OriginalStatus = Model;
 			if( OriginalStatus.RetweetedStatus != null && OriginalStatus.RetweetedStatus.StatusID != 0 )
 			{
 				Model = OriginalStatus.RetweetedStatus;
-				SourceUser = OriginalStatus.User;
+				SourceUser = new UserViewModel( OriginalStatus.User );
 			}
 			else
 			{
@@ -90,6 +91,8 @@ namespace Twice.ViewModels.Twitter
 		{
 			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted, NotificationType.Success );
 		}
+
+		public UserViewModel User { get; }
 
 		private void ExecuteFavoriteStatusCommand()
 		{
@@ -194,7 +197,7 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
 
-		public User SourceUser { get; }
+		public UserViewModel SourceUser { get; }
 
 		private readonly IContextEntry Context;
 
