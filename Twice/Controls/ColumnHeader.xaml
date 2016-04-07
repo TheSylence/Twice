@@ -41,7 +41,7 @@
 		<materialDesign:Card Grid.Row="1" Margin="3" Background="{StaticResource PrimaryHueDarkBrush}"
 							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Visibility="{Binding ColumnConfiguration.IsExpanded, Converter={StaticResource BoolToVisibleConv}}" >
 			<StackPanel Orientation="Vertical" Margin="5" DataContext="{Binding ColumnConfiguration}">
-				<TextBlock Text="{lex:Loc Settings}" Style="{StaticResource MaterialDesignTitleTextBlock}"/>
+				<TextBlock Text="{lex:Loc ColumnSettings}" Style="{StaticResource MaterialDesignTitleTextBlock}"/>
 				<CheckBox Content="{lex:Loc SoundNotification}" IsChecked="{Binding SoundEnabled, Mode=TwoWay}" />
 				<CheckBox Content="{lex:Loc ToastNotification}" IsChecked="{Binding ToastsEnabled, Mode=TwoWay}" />
 				<CheckBox Content="{lex:Loc PopupNotification}" IsChecked="{Binding PopupEnabled, Mode=TwoWay}" />

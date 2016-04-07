@@ -478,4 +478,7 @@
   <data name="ClearColumn" xml:space="preserve">
     <value>Spalte leeren</value>
   </data>
+  <data name="ColumnSettings" xml:space="preserve">
+    <value>Spalteneinstellungen</value>
+  </data>
 </root>

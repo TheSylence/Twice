@@ -498,4 +498,7 @@
   <data name="ClearColumn" xml:space="preserve">
     <value>Clear column</value>
   </data>
+  <data name="ColumnSettings" xml:space="preserve">
+    <value>Column settings</value>
+  </data>
 </root>

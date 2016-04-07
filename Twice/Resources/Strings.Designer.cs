@@ -250,6 +250,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Column settings.
+        /// </summary>
+        public static string ColumnSettings {
+            get {
+                return ResourceManager.GetString("ColumnSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
