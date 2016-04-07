@@ -9,6 +9,7 @@
         xmlns:views="clr-namespace:Twice.Views"
         xmlns:columnManagement="clr-namespace:Twice.ViewModels.ColumnManagement"
         xmlns:proxies="clr-namespace:Twice.Views.Proxies"
+        xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         DataContext="{Binding AddColumn, Source={StaticResource DialogLocator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         Title="{lex:Loc AddColumn}" Height="400" Width="600">
@@ -36,7 +37,7 @@
 								</ItemsControl.ItemsPanel>
 								<ItemsControl.ItemTemplate>
 									<DataTemplate DataType="columnManagement:ColumnTypeItem">
-										<Button Command="{Binding Data.GotoNextPageCommand, Source={StaticResource DataProxy}}" CommandParameter="{Binding Type}"
+										<Button Command="{Binding Data.AddColumnTypeCommand, Source={StaticResource DataProxy}}" CommandParameter="{Binding Type}"
 												ToolTip="{Binding Description}" Margin="5">
 											<DockPanel>
 												<materialDesign:PackIcon Kind="{Binding Icon}" VerticalAlignment="Center" DockPanel.Dock="Left" />
@@ -46,6 +47,31 @@
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
+						</DataTemplate>
+					</views:GenericDataTemplateSelectorItem>
+					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:SourceAccountSelectorPage">
+						<DataTemplate DataType="columnManagement:SourceAccountSelectorPage">
+							<StackPanel Orientation="Vertical">
+								<TextBlock Text="{lex:Loc SelectAccountYouWantToAddColumnFor}" Margin="5" />
+								<ItemsControl ItemsSource="{Binding Accounts}">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<WrapPanel Orientation="Horizontal" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate DataType="twitter:AccountEntry">
+											<materialDesign:Card Margin="5" Foreground="{StaticResource IdealForegroundColorBrush}">
+												<StackPanel Orientation="Vertical">
+													<Image Source="{Binding Image}" Width="72" Height="72" Margin="5" />
+
+													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" />
+												</StackPanel>
+											</materialDesign:Card>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</StackPanel>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>
 				</views:GenericTemplateSelector>

@@ -14,15 +14,27 @@ namespace Twice.ViewModels.Wizards
 
 		private bool CanExecuteGotoPrevPageCommand()
 		{
-			return true;
+			return NavigationHistory.Count > 0;
 		}
 
 		private void ExecuteGotoNextPageCommand()
 		{
+			WizardPageViewModel nextPage;
+			if( Pages.TryGetValue( CurrentPage.NextPageKey, out nextPage ) )
+			{
+				NavigationHistory.Push( CurrentPageKey );
+				CurrentPage = nextPage;
+				CurrentPageKey = CurrentPage.NextPageKey;
+			}
+
+			// TODO: Handle this
 		}
 
 		private void ExecuteGotoPrevPageCommand()
 		{
+			var key = NavigationHistory.Pop();
+			CurrentPageKey = key;
+			CurrentPage = Pages[key];
 		}
 
 		public WizardPageViewModel CurrentPage
@@ -45,10 +57,9 @@ namespace Twice.ViewModels.Wizards
 		}
 
 		public ICommand GotoNextPageCommand => _GotoNextPageCommand ?? ( _GotoNextPageCommand = new RelayCommand( ExecuteGotoNextPageCommand, CanExecuteGotoNextPageCommand ) );
-
 		public ICommand GotoPrevPageCommand => _GotoPrevPageCommand ?? ( _GotoPrevPageCommand = new RelayCommand( ExecuteGotoPrevPageCommand, CanExecuteGotoPrevPageCommand ) );
-
 		protected readonly Dictionary<int, WizardPageViewModel> Pages = new Dictionary<int, WizardPageViewModel>();
+		private readonly Stack<int> NavigationHistory = new Stack<int>();
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private WizardPageViewModel _CurrentPage;
@@ -58,5 +69,7 @@ namespace Twice.ViewModels.Wizards
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _GotoPrevPageCommand;
+
+		private int CurrentPageKey = 0;
 	}
 }

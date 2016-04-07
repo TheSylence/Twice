@@ -501,4 +501,7 @@
   <data name="ColumnSettings" xml:space="preserve">
     <value>Column settings</value>
   </data>
+  <data name="SelectAccountYouWantToAddColumnFor" xml:space="preserve">
+    <value>Select the account you want to add the new column for</value>
+  </data>
 </root>

@@ -481,4 +481,7 @@
   <data name="ColumnSettings" xml:space="preserve">
     <value>Spalteneinstellungen</value>
   </data>
+  <data name="SelectAccountYouWantToAddColumnFor" xml:space="preserve">
+    <value>Bitte das Konto auswählen, für welches die neue Spalte hinzugefügt werden soll</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 using LinqToTwitter;
 using System.Collections.Generic;
 using Twice.ViewModels.Main;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Profile
 {
@@ -10,7 +11,7 @@ namespace Twice.ViewModels.Profile
 
 		Friendship Friendship { get; }
 		bool IsBusy { get; }
-		User User { get; }
+		UserViewModel User { get; }
 		ICollection<UserSubPage> UserPages { get; }
 	}
 }

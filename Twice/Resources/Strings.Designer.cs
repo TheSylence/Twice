@@ -943,6 +943,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the account you want to add the new column for.
+        /// </summary>
+        public static string SelectAccountYouWantToAddColumnFor {
+            get {
+                return ResourceManager.GetString("SelectAccountYouWantToAddColumnFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a value.
         /// </summary>
         public static string SelectAValue {

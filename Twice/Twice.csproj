@@ -303,6 +303,8 @@
     <Compile Include="ViewModels\ColumnManagement\AddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\IAddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\IColumnTypeSelectionDialogViewModel.cs" />
+    <Compile Include="ViewModels\ColumnManagement\SourceAccountSelectorPage.cs" />
+    <Compile Include="ViewModels\ColumnManagement\UserSelectorPage.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcher.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactory.cs" />
     <Compile Include="Models\Columns\ColumnNotifications.cs" />

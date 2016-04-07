@@ -25,20 +25,21 @@ namespace Twice.ViewModels.Profile
 			Context = ContextList.Contexts.First();
 
 			// ReSharper disable once RedundantBoolCompare
-			User = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
-			if( User == null )
+			var user = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
+			if( user == null )
 			{
 				// TODO: Handle errors
 				return;
 			}
 
+			User = new UserViewModel( user );
 			Friendship = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.Show && f.SourceUserID == Context.UserId && f.TargetUserID == User.UserID ).SingleOrDefaultAsync();
 
 			UserPages = new List<UserSubPage>
 			{
-				new UserSubPage( Strings.Tweets, LoadStatuses, User.StatusesCount ),
-				new UserSubPage( Strings.Following, LoadFollowings, User.FriendsCount ),
-				new UserSubPage( Strings.Followers, LoadFollowers, User.FollowersCount )
+				new UserSubPage( Strings.Tweets, LoadStatuses, User.Model.StatusesCount ),
+				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount ),
+				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 
@@ -124,7 +125,7 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		public User User
+		public UserViewModel User
 		{
 			[DebuggerStepThrough]
 			get
@@ -152,7 +153,7 @@ namespace Twice.ViewModels.Profile
 		private bool _IsBusy;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private User _User;
+		private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong ProfileId;

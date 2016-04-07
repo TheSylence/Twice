@@ -95,7 +95,7 @@ namespace Twice.ViewModels.Accounts
 			{
 				var twitterUser =
 					await ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false ).SingleOrDefaultAsync();
-				accountData.ImageUrl = twitterUser.ProfileImageUrlHttps;
+				accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
 			}
 
 			ContextList.AddContext( accountData );
