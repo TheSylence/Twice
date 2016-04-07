@@ -7,7 +7,7 @@ namespace Twice.ViewModels.Columns
 	internal interface IColumnConfigurationViewModel
 	{
 		event EventHandler Saved;
-
+		
 		ColumnDefinition Definition { get; }
 		bool IsExpanded { get; set; }
 
