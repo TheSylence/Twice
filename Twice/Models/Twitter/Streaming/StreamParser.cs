@@ -6,43 +6,14 @@ using Anotar.NLog;
 using LinqToTwitter;
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
-	internal interface IStreamParser : IDisposable
-	{
-		/// <summary>Occurs when a status was deleted.</summary>
-		event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
-
-		/// <summary>Occurs when a direct message was received.</summary>
-		event EventHandler<DirectMessageStreamEventArgs> DirectMessageReceived;
-
-		/// <summary>Occurs when a status was favourited.</summary>
-		event EventHandler<FavoriteStreamEventArgs> FavoriteEventReceived;
-
-		/// <summary>Occurs when the friend list was received.</summary>
-		event EventHandler<FriendsStreamEventArgs> FriendsReceived;
-
-		/// <summary>Occurs when a status was deleted.</summary>
-		event EventHandler<DeleteStreamEventArgs> StatusDeleted;
-
-		/// <summary>Occurs when a status was received.</summary>
-		event EventHandler<StatusStreamEventArgs> StatusReceived;
-
-		/// <summary>Occurs when unknown data has been received.</summary>
-		event EventHandler<StreamEventArgs> UnknownDataReceived;
-
-		/// <summary>Occurs when an event was received.</summary>
-		event EventHandler<EventStreamEventArgs> UnknownEventReceived;
-
-		void StartStreaming();
-	}
-
 	/// <summary>Parser for twitter streams.</summary>
 	internal class StreamParser : IDisposable, IStreamParser
 	{
 		/// <summary>Initializes a new instance of the <see cref="StreamParser"/> class.</summary>
 		/// <param name="stream">The user stream.</param>
-		private StreamParser( IQueryable<Streaming> stream )
+		private StreamParser( IQueryable<LinqToTwitter.Streaming> stream )
 		{
 			Stream = stream;
 		}
@@ -74,7 +45,7 @@ namespace Twice.Models.Twitter
 		/// <summary>Creates a new parser for the specified stream.</summary>
 		/// <param name="userStream">The stream.</param>
 		/// <returns>The created parser.</returns>
-		public static StreamParser Create( IQueryable<Streaming> userStream )
+		public static StreamParser Create( IQueryable<LinqToTwitter.Streaming> userStream )
 		{
 			return new StreamParser( userStream );
 		}
@@ -112,7 +83,7 @@ namespace Twice.Models.Twitter
 			{
 				if( Connections != null )
 				{
-					foreach( Streaming s in Connections )
+					foreach( LinqToTwitter.Streaming s in Connections )
 					{
 						s.CloseStream();
 					}
@@ -220,8 +191,8 @@ namespace Twice.Models.Twitter
 			}
 		}
 
-		private readonly IQueryable<Streaming> Stream;
-		private List<Streaming> Connections;
+		private readonly IQueryable<LinqToTwitter.Streaming> Stream;
+		private List<LinqToTwitter.Streaming> Connections;
 		private bool Started = false;
 	}
 }

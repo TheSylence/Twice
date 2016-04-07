@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Twice.Models.Columns;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	interface IStreamingRepository : IDisposable
 	{

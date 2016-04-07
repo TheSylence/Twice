@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Twice.Tests
 {
@@ -16,7 +17,7 @@ namespace Twice.Tests
 			var e = new[] {2, 3};
 			var f = new[] {1, 2, 3, 4};
 			var g = new[] {5, 6, 7};
-			var h = new[] {8, 9, 2, 3, 1};
+			var h = new List<int> {8, 9, 2, 3, 1};
 
 			// Act
 			var ab = a.Compare( b );
@@ -29,6 +30,7 @@ namespace Twice.Tests
 			var af = a.Compare( f );
 			var ag = a.Compare( g );
 			var ah = a.Compare( h );
+			var ha = h.Compare( a );
 
 			// Assert
 			Assert.IsTrue( ab );
@@ -41,6 +43,7 @@ namespace Twice.Tests
 			Assert.IsFalse( af );
 			Assert.IsFalse( ag );
 			Assert.IsFalse( ah );
+			Assert.IsFalse( ha );
 		}
 	}
 }

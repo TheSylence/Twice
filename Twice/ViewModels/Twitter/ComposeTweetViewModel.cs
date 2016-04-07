@@ -56,7 +56,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
-		private static string GetMimeType( string fileName )
+		internal static string GetMimeType( string fileName )
 		{
 			var ext = Path.GetExtension( fileName );
 
@@ -79,12 +79,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
 		}
-
-		private bool CanExecuteAttachImageCommand()
-		{
-			return true;
-		}
-
+		
 		private bool CanExecuteSendTweetCommand()
 		{
 			if( IsSending )
@@ -136,14 +131,21 @@ namespace Twice.ViewModels.Twitter
 			} );
 
 			Medias.Add( media );
-			AttachedMedias.Add( new MediaItem( media, mediaData ) );
+			AttachedMedias.Add( new MediaItem( media.MediaID, mediaData ) );
 		}
 
-		private void ExecuteDeleteMediaCommand( MediaItem item )
+		private void ExecuteDeleteMediaCommand( ulong id )
 		{
 			// TODO: Confirm removal
-			Medias.RemoveAll( m => m.MediaID == item.MediaId );
-			AttachedMedias.Remove( item );
+			Medias.RemoveAll( m => m.MediaID == id );
+			for( int i=0; i<AttachedMedias.Count; ++i  )
+			{
+				if( AttachedMedias[i].MediaId == id )
+				{
+					AttachedMedias.RemoveAt( i );
+					break;
+				}
+			}
 		}
 
 		private async void ExecuteSendTweetCommand()
@@ -177,10 +179,10 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
-		public ICollection<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
+		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
-			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand, CanExecuteAttachImageCommand ) );
+			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
 
 		public bool ConfirmationRequired
 		{
@@ -203,7 +205,7 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<MediaItem>(
+		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
 			ExecuteDeleteMediaCommand ) );
 
 		public bool IsSending
@@ -322,7 +324,7 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _ConfirmationSet;
 
-		private RelayCommand<MediaItem> _DeleteMediaCommand;
+		private RelayCommand<ulong> _DeleteMediaCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsSending;

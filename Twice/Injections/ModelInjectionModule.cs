@@ -5,6 +5,7 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Streaming;
 
 namespace Twice.Injections
 {

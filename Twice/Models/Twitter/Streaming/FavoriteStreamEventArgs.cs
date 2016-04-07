@@ -1,7 +1,7 @@
 using LinqToTwitter;
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arugments for a streaming event involing a favorite.</summary>
 	internal class FavoriteStreamEventArgs : EventStreamEventArgs

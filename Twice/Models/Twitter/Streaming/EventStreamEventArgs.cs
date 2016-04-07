@@ -3,7 +3,7 @@ using System.Globalization;
 using LinqToTwitter;
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arguments for a streaming event associated with a non-tweet event.</summary>
 	internal class EventStreamEventArgs : StreamEventArgs

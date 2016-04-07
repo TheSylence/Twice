@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Twice.Utilities
 {
+	[ExcludeFromCodeCoverage]
 	internal class WaitOperation : IDisposable
 	{
 		public WaitOperation()

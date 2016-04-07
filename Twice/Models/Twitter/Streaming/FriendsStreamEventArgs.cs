@@ -1,7 +1,7 @@
 using System.Linq;
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arguments for a streaming event containing friends of the authorizing user.</summary>
 	internal class FriendsStreamEventArgs : StreamEventArgs

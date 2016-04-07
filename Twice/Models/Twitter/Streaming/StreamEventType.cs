@@ -1,4 +1,4 @@
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Enumeration for streaming events.</summary>
 	internal enum StreamEventType

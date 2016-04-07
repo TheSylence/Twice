@@ -1,10 +1,10 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LinqToTwitter;
 using Twice.Models.Columns;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	internal class StreamingRepository : IStreamingRepository
 	{
@@ -29,8 +29,8 @@ namespace Twice.Models.Twitter
 			if( !LoadedParsers.TryGetValue( key, out parser ) )
 			{
 				parser =
-				StreamParser.Create( ContextList.Contexts.First( c => c.UserId == userId )
-					.Twitter.Streaming.Where( s => s.Type == StreamingType.User ) );
+				StreamParser.Create( Queryable.Where<LinqToTwitter.Streaming>( ContextList.Contexts.First( c => c.UserId == userId )
+						.Twitter.Streaming, s => s.Type == StreamingType.User ) );
 
 				LoadedParsers.Add( key, parser );
 			}

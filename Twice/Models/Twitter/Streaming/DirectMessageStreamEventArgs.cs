@@ -1,7 +1,7 @@
 using LinqToTwitter;
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arguments for a streaming event associated with a direct message.</summary>
 	internal class DirectMessageStreamEventArgs : StreamEventArgs

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arguments for events that are send by the Stream parser.</summary>
 	internal class StreamEventArgs : EventArgs

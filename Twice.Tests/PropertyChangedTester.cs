@@ -27,7 +27,10 @@ namespace Twice.Tests
 			Errors.Clear();
 
 			var properties =
-				Object.GetType().GetProperties( BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly ).Where( p => p.CanRead && p.CanWrite ).ToArray();
+				Object.GetType()
+				.GetProperties( BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly )
+				.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic )
+				.ToArray();
 			if( !properties.Any() )
 			{
 				Errors.Add( "No properties found" );

@@ -1,5 +1,5 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
+using LinqToTwitter;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -17,7 +17,7 @@ namespace Twice.Models.Twitter
 			IsDefault = data.IsDefault;
 			RequiresConfirmation = data.RequiresConfirm;
 
-			Twitter = new TwitterContext( new SingleUserAuthorizer
+			Twitter = new TwitterContextWrapper( new TwitterContext( new SingleUserAuthorizer
 			{
 				CredentialStore = new InMemoryCredentialStore
 				{
@@ -28,7 +28,7 @@ namespace Twice.Models.Twitter
 					OAuthToken = data.OAuthToken,
 					OAuthTokenSecret = data.OAuthTokenSecret
 				}
-			} );
+			} ) );
 		}
 
 		public void Dispose()
@@ -62,7 +62,7 @@ namespace Twice.Models.Twitter
 		public INotifier Notifier { get; }
 		public Uri ProfileImageUrl { get; }
 		public bool RequiresConfirmation { get; }
-		public TwitterContext Twitter { get; }
+		public ITwitterContext Twitter { get; }
 		public ulong UserId { get; }
 	}
 }

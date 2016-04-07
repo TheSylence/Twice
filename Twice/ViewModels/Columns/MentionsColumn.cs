@@ -5,6 +5,7 @@ using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
 
 namespace Twice.ViewModels.Columns

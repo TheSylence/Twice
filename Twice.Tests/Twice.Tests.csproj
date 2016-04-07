@@ -141,6 +141,7 @@
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyChangedTester.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
@@ -157,6 +160,8 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
+    <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

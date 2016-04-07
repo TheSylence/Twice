@@ -6,7 +6,7 @@ namespace Twice.ViewModels.Twitter
 	internal interface IComposeTweetViewModel : IResetable
 	{
 		ICollection<AccountEntry> Accounts { get; }
-		ICollection<MediaItem> AttachedMedias { get; }
+		IList<MediaItem> AttachedMedias { get; }
 		ICommand AttachImageCommand { get; }
 		bool ConfirmationRequired { get; }
 		bool ConfirmationSet { get; set; }

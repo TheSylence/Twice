@@ -1,6 +1,6 @@
 using LitJson;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>Arguments for a streaming event involding a deletion.</summary>
 	internal class DeleteStreamEventArgs : StreamEventArgs

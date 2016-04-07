@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Streaming;
 
 namespace Twice.ViewModels.Columns
 {
