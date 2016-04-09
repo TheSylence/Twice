@@ -34,6 +34,13 @@ namespace Twice.Models.Columns
 			return JsonConvert.DeserializeObject<List<ColumnDefinition>>( json );
 		}
 
+		public void Remove( IEnumerable<ColumnDefinition> columnDefinitions )
+		{
+			var columns = Load().Except( columnDefinitions );
+
+			Save( columns );
+		}
+
 		public void Save( IEnumerable<ColumnDefinition> definitions )
 		{
 			Update( definitions );

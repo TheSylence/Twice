@@ -11,14 +11,5 @@ namespace Twice.ViewModels.ColumnManagement
 		}
 
 		public ICollection<ColumnTypeItem> ColumnTypes { get; }
-
-		public void SetNextPage( int key )
-		{
-			_NextPageKey = key;
-		}
-
-		public override int NextPageKey => _NextPageKey;
-
-		private int _NextPageKey;
 	}
 }

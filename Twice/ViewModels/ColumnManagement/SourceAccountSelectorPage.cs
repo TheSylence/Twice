@@ -15,6 +15,6 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public ICollection<AccountEntry> Accounts { get; }
 
-		public override int NextPageKey { get; } = -1;
+		public override int NextPageKey { get; protected set; } = -1;
 	}
 }

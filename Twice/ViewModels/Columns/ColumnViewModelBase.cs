@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Anotar.NLog;
 using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Twice.Models.Cache;
@@ -51,6 +53,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public event EventHandler Changed;
+
+		public event EventHandler Deleted;
 
 		public event EventHandler<StatusEventArgs> NewStatus;
 
@@ -176,6 +180,17 @@ namespace Twice.ViewModels.Columns
 			Changed?.Invoke( this, EventArgs.Empty );
 		}
 
+		private void ExecuteClearCommand()
+		{
+			Statuses.Clear();
+		}
+
+		private void ExecuteDeleteCommand()
+		{
+			// TODO: Ask for confirmation
+			Deleted?.Invoke( this, EventArgs.Empty );
+		}
+
 		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
 		{
 			var completeList = e.Friends.ToList();
@@ -232,9 +247,16 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
+
 		public IDataCache Cache { get; set; }
+
+		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
+
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
+
 		public ColumnDefinition Definition { get; }
+
+		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
 
 		public abstract Icon Icon { get; }
 
@@ -308,6 +330,12 @@ namespace Twice.ViewModels.Columns
 		private readonly IStreamParser Parser;
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ClearCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _DeleteCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;

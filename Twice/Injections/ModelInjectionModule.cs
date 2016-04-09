@@ -25,7 +25,7 @@ namespace Twice.Injections
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();
 			Bind<IStreamingRepository>().To<StreamingRepository>();
-			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>();
+			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
 		}
 	}
 }

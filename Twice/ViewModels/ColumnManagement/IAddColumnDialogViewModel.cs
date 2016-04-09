@@ -5,6 +5,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal interface IAddColumnDialogViewModel : IWizardViewModel
 	{
+		ICommand SelectAccountCommand { get; }
 		ICommand AddColumnTypeCommand { get; }
 	}
 }

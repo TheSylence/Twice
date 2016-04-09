@@ -9,8 +9,12 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance columns:IColumnViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<proxies:ColumnDataProxy Data="{Binding}" x:Key="ColumnDataProxy" />
+	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -46,27 +50,29 @@
 				<CheckBox Content="{lex:Loc ToastNotification}" IsChecked="{Binding ToastsEnabled, Mode=TwoWay}" />
 				<CheckBox Content="{lex:Loc PopupNotification}" IsChecked="{Binding PopupEnabled, Mode=TwoWay}" />
 				<Label />
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5,0">
+				<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
+							Command="{Binding Data.DeleteCommand, Source={StaticResource ColumnDataProxy}}">
 						<DockPanel>
 							<materialDesign:PackIcon Kind="Delete" />
 							<TextBlock Text="{lex:Loc Delete}" Margin="5,0" />
 						</DockPanel>
 					</Button>
-					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5,0">
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
+							Command="{Binding Data.ClearCommand, Source={StaticResource ColumnDataProxy}}">
 						<DockPanel>
 							<materialDesign:PackIcon Kind="NotificationClearAll" />
 							<TextBlock Text="{lex:Loc ClearColumn}" Margin="5,0" />
 						</DockPanel>
 					</Button>
-					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5,0"
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
 							Command="{Binding SaveCommand}">
 						<DockPanel>
 							<materialDesign:PackIcon Kind="ContentSave" />
 							<TextBlock Text="{lex:Loc Save}" Margin="5,0" />
 						</DockPanel>
 					</Button>
-				</StackPanel>
+				</WrapPanel>
 			</StackPanel>
 		</materialDesign:Card>
 	</Grid>

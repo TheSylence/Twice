@@ -7,6 +7,13 @@ namespace Twice.ViewModels.Wizards
 			return true;
 		}
 
+		public bool IsLastPage { get; protected set; } = false;
+
+		public void SetNextPage( int key )
+		{
+			NextPageKey = key;
+		}
+
 		public virtual void OnNavigatedFrom( bool backward )
 		{
 		}
@@ -15,6 +22,6 @@ namespace Twice.ViewModels.Wizards
 		{
 		}
 
-		public abstract int NextPageKey { get; }
+		public virtual int NextPageKey { get; protected set; }
 	}
 }

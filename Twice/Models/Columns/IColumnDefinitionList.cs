@@ -11,6 +11,8 @@ namespace Twice.Models.Columns
 
 		IEnumerable<ColumnDefinition> Load();
 
+		void Remove( IEnumerable<ColumnDefinition> columnDefinitions );
+
 		void Save( IEnumerable<ColumnDefinition> definitions );
 
 		void Update( IEnumerable<ColumnDefinition> definitions );

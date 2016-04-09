@@ -10,9 +10,17 @@
         xmlns:columnManagement="clr-namespace:Twice.ViewModels.ColumnManagement"
         xmlns:proxies="clr-namespace:Twice.Views.Proxies"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors"
+        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         DataContext="{Binding AddColumn, Source={StaticResource DialogLocator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         Title="{lex:Loc AddColumn}" Height="400" Width="600">
+	<i:Interaction.Behaviors>
+		<behaviors:CloseableView />
+		<behaviors:StaticWindow />
+		<behaviours:BorderlessWindowBehavior />
+	</i:Interaction.Behaviors>
 	<controls:MetroWindow.LeftWindowCommands>
 		<controls:WindowCommands>
 			<Button Command="{Binding GotoPrevPageCommand}">
@@ -23,7 +31,11 @@
 	<controls:MetroWindow.Resources>
 		<proxies:AddColumnDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
-	<Grid>
+	<DockPanel>
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+			<Button Content="{lex:Loc Finish}" Visibility="{Binding CurrentPage.IsLastPage, Converter={StaticResource BoolToVisibleConv}}"
+					Command="{Binding FinishCommand}" Margin="5" />
+		</StackPanel>
 		<ContentControl Content="{Binding CurrentPage}">
 			<ContentControl.ContentTemplateSelector>
 				<views:GenericTemplateSelector>
@@ -65,7 +77,9 @@
 												<StackPanel Orientation="Vertical">
 													<Image Source="{Binding Image}" Width="72" Height="72" Margin="5" />
 
-													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}" />
+													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"
+															Command="{Binding Data.SelectAccountCommand, Source={StaticResource DataProxy}}"
+															CommandParameter="{Binding Context.UserId}"/>
 												</StackPanel>
 											</materialDesign:Card>
 										</DataTemplate>
@@ -74,8 +88,13 @@
 							</StackPanel>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>
+					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:FinishPage">
+						<DataTemplate DataType="columnManagement:FinishPage">
+							<TextBlock Text="TODO: Display column type, account, etc" />
+						</DataTemplate>
+					</views:GenericDataTemplateSelectorItem>
 				</views:GenericTemplateSelector>
 			</ContentControl.ContentTemplateSelector>
 		</ContentControl>
-	</Grid>
+	</DockPanel>
 </controls:MetroWindow>

@@ -4,6 +4,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	class UserSelectorPage : WizardPageViewModel
 	{
-		public override int NextPageKey { get; } = -1;
+		public override int NextPageKey { get; protected set; } = -1;
+
 	}
 }

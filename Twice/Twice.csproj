@@ -301,6 +301,7 @@
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelctorPage.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelectionDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\AddColumnDialogViewModel.cs" />
+    <Compile Include="ViewModels\ColumnManagement\FinishPage.cs" />
     <Compile Include="ViewModels\ColumnManagement\IAddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\IColumnTypeSelectionDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\SourceAccountSelectorPage.cs" />
@@ -356,6 +357,7 @@
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
+    <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
     <Compile Include="Views\Proxies\ComposeTweetDataProxy.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>

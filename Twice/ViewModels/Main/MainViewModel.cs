@@ -123,6 +123,13 @@ namespace Twice.ViewModels.Main
 
 			ColumnList.Update( definitions );
 		}
+		private void Col_Deleted( object sender, EventArgs e )
+		{
+			var col = sender as IColumnViewModel;
+			Debug.Assert( col != null, "col != null" );
+
+			ColumnList.Remove( new[] { col.Definition });
+		}
 
 		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
 		{
@@ -136,6 +143,7 @@ namespace Twice.ViewModels.Main
 			{
 				c.NewStatus -= Col_NewStatus;
 				c.Changed -= Col_Changed;
+				c.Deleted -= Col_Deleted;
 			}
 			Columns.Clear();
 
@@ -147,9 +155,11 @@ namespace Twice.ViewModels.Main
 			{
 				c.NewStatus += Col_NewStatus;
 				c.Changed += Col_Changed;
+				c.Deleted += Col_Deleted;
 				Columns.Add( c );
 			}
 		}
+
 
 		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
