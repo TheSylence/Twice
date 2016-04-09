@@ -21,7 +21,6 @@ namespace Twice.ViewModels.Twitter
 			Context = context;
 
 			Model = model;
-			User = new UserViewModel( model.User );
 			OriginalStatus = Model;
 			if( OriginalStatus.RetweetedStatus != null && OriginalStatus.RetweetedStatus.StatusID != 0 )
 			{
@@ -33,6 +32,8 @@ namespace Twice.ViewModels.Twitter
 				Model = OriginalStatus;
 				SourceUser = null;
 			}
+
+			User = new UserViewModel( Model.User );
 		}
 
 		private bool CanExecuteBlockUserCommand()
