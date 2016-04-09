@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Fody;
+using GalaSoft.MvvmLight.Threading;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Fody;
-using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
 using Twice.Models.Columns;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
@@ -217,6 +217,6 @@ namespace Twice.Services.Views
 		}
 
 		public Dialog CurrentDialog { get; private set; }
-		private static MetroWindow Window => Application.Current.MainWindow as MetroWindow;
+		private static MetroWindow Window => Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
 	}
 }

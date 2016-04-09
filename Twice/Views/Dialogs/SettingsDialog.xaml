@@ -36,239 +36,241 @@
 		<Thickness x:Key="Spacing" Top="0" Left="0" Right="0" Bottom="20" />
 	</controls:MetroWindow.Resources>
 
-	<DockPanel>
-		<DockPanel Dock="Bottom">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="5">
-				<Button Content="{lex:Loc Save}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
+	<materialDesign:DialogHost Identifier="SettingsDialogHost">
+		<DockPanel>
+			<DockPanel Dock="Bottom">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="5">
+					<Button Content="{lex:Loc Save}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
 										Style="{DynamicResource MaterialDesignFlatButton}" />
-				<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
+					<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
 										Margin="5"  Style="{DynamicResource MaterialDesignFlatButton}" />
-			</StackPanel>
-		</DockPanel>
+				</StackPanel>
+			</DockPanel>
 
-		<TabControl controls:TabControlHelper.IsUnderlined="True" Margin="5">
-			<TabItem Header="{lex:Loc General}" DataContext="{Binding General}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+			<TabControl controls:TabControlHelper.IsUnderlined="True" Margin="5">
+				<TabItem Header="{lex:Loc General}" DataContext="{Binding General}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<StackPanel Orientation="Vertical">
-						<TextBlock Text="{lex:Loc Language}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="{lex:Loc Language}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 								  DisplayMemberPath="NativeName" />
 
-						<CheckBox Content="{lex:Loc StreamContentInRealtime}" Margin="{StaticResource Spacing}"
+							<CheckBox Content="{lex:Loc StreamContentInRealtime}" Margin="{StaticResource Spacing}"
 								  IsChecked="{Binding RealtimeStreaming,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
+							<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+							<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"
 								  IsChecked="{Binding IncludePrereleaseUpdates,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-					</StackPanel>
-				</Grid>
-			</TabItem>
-			<TabItem Header="{lex:Loc Visual}" DataContext="{Binding Visual}">
-				<Grid>
-					<Grid.Resources>
-						<DataTemplate x:Key="ColorDataTemplate" DataType="settings:ColorItem">
-							<DockPanel>
-								<Ellipse Fill="{Binding ColorBrush}" Stroke="{Binding BorderBrush}" Width="18" Height="18" />
-								<TextBlock Text="{Binding Name}" Margin="5,0" />
-							</DockPanel>
-						</DataTemplate>
-					</Grid.Resources>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-
-					<StackPanel Orientation="Vertical">
-						<TextBlock Text="{lex:Loc Theme}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<StackPanel Orientation="Horizontal" Margin="{StaticResource Spacing}">
-							<TextBlock Text="{lex:Loc ThemeLight}" />
-							<ToggleButton IsChecked="{Binding UseDarkTheme}" Margin="5,0" />
-							<TextBlock Text="{lex:Loc ThemeDark}" />
 						</StackPanel>
+					</Grid>
+				</TabItem>
+				<TabItem Header="{lex:Loc Visual}" DataContext="{Binding Visual}">
+					<Grid>
+						<Grid.Resources>
+							<DataTemplate x:Key="ColorDataTemplate" DataType="settings:ColorItem">
+								<DockPanel>
+									<Ellipse Fill="{Binding ColorBrush}" Stroke="{Binding BorderBrush}" Width="18" Height="18" />
+									<TextBlock Text="{Binding Name}" Margin="5,0" />
+								</DockPanel>
+							</DataTemplate>
+						</Grid.Resources>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-						<TextBlock Text="{lex:Loc PrimaryColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox Margin="{StaticResource Spacing}" Style="{DynamicResource MaterialDesignComboBox}"
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="{lex:Loc Theme}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<StackPanel Orientation="Horizontal" Margin="{StaticResource Spacing}">
+								<TextBlock Text="{lex:Loc ThemeLight}" />
+								<ToggleButton IsChecked="{Binding UseDarkTheme}" Margin="5,0" />
+								<TextBlock Text="{lex:Loc ThemeDark}" />
+							</StackPanel>
+
+							<TextBlock Text="{lex:Loc PrimaryColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox Margin="{StaticResource Spacing}" Style="{DynamicResource MaterialDesignComboBox}"
 								  ItemTemplate="{StaticResource ColorDataTemplate}"
 								  ItemsSource="{Binding AvailablePrimaryColors}" SelectedItem="{Binding SelectedPrimaryColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-						<TextBlock Text="{lex:Loc AccentColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox Margin="{StaticResource Spacing}" Style="{DynamicResource MaterialDesignComboBox}"
+							<TextBlock Text="{lex:Loc AccentColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox Margin="{StaticResource Spacing}" Style="{DynamicResource MaterialDesignComboBox}"
 								  ItemTemplate="{StaticResource ColorDataTemplate}"
 								  ItemsSource="{Binding AvailableAccentColors}" SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-						<TextBlock Text="{lex:Loc FontSize}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableFontSizes}" Style="{DynamicResource MaterialDesignComboBox}"
+							<TextBlock Text="{lex:Loc FontSize}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableFontSizes}" Style="{DynamicResource MaterialDesignComboBox}"
 								  SelectedItem="{Binding SelectedFontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-							<ComboBox.ItemTemplate>
-								<DataTemplate>
-									<TextBlock Text="{Binding DisplayName}" FontSize="{Binding Size}" />
-								</DataTemplate>
-							</ComboBox.ItemTemplate>
-						</ComboBox>
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding DisplayName}" FontSize="{Binding Size}" />
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
 
-						<TextBlock Text="{lex:Loc HashtagColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}" Style="{DynamicResource MaterialDesignComboBox}"
+							<TextBlock Text="{lex:Loc HashtagColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}" Style="{DynamicResource MaterialDesignComboBox}"
 								  ItemsSource="{Binding AvailableAccentColors}"
 								  SelectedItem="{Binding SelectedHashtagColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBlock Text="{lex:Loc MentionColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}" Style="{DynamicResource MaterialDesignComboBox}"
+							<TextBlock Text="{lex:Loc MentionColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}" Style="{DynamicResource MaterialDesignComboBox}"
 								  ItemsSource="{Binding AvailableAccentColors}"
 								  SelectedItem="{Binding SelectedMentionColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBlock Text="{lex:Loc LinkColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
-						<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}"
+							<TextBlock Text="{lex:Loc LinkColor}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
+							<ComboBox ItemTemplate="{StaticResource ColorDataTemplate}"
 								  ItemsSource="{Binding AvailableAccentColors}" Margin="{StaticResource Spacing}"
 								  SelectedItem="{Binding SelectedLinkColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-					</StackPanel>
-				</Grid>
-			</TabItem>
-			<TabItem Header="{lex:Loc Muting}" DataContext="{Binding Mute}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+							<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						</StackPanel>
+					</Grid>
+				</TabItem>
+				<TabItem Header="{lex:Loc Muting}" DataContext="{Binding Mute}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<DockPanel>
-						<TextBlock Text="{lex:Loc ActiveMutes}" DockPanel.Dock="Top" />
+						<DockPanel>
+							<TextBlock Text="{lex:Loc ActiveMutes}" DockPanel.Dock="Top" />
 
-						<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-							<Button Command="{Binding AddCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+							<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+								<Button Command="{Binding AddCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Add}" Margin="5,0">
-								<materialDesign:PackIcon Kind="Plus" />
-							</Button>
-							<Button Command="{Binding EditCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									<materialDesign:PackIcon Kind="Plus" />
+								</Button>
+								<Button Command="{Binding EditCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Edit}" Margin="5,0">
-								<materialDesign:PackIcon Kind="Pencil" />
-							</Button>
-							<Button Command="{Binding RemoveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									<materialDesign:PackIcon Kind="Pencil" />
+								</Button>
+								<Button Command="{Binding RemoveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Delete}" Margin="5,0">
-								<materialDesign:PackIcon Kind="Delete" />
-							</Button>
-						</StackPanel>
+									<materialDesign:PackIcon Kind="Delete" />
+								</Button>
+							</StackPanel>
 
-						<ListView ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-							<ListView.InputBindings>
-								<KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
-								<KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
-								<KeyBinding Key="N" Modifiers="Control" Command="{Binding AddCommand}" />
-							</ListView.InputBindings>
-							<ListView.ItemTemplate>
-								<DataTemplate DataType="configuration:MuteEntry">
-									<StackPanel Orientation="Vertical">
-										<TextBlock Text="{Binding Filter}" />
-										<Grid>
-											<TextBlock Text="{Binding EndDate}" Visibility="{Binding HasEndDate, Converter={StaticResource BoolToVisibleConv}}" />
-											<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding HasEndDate, Converter={StaticResource InvertBoolToVisibleConv}}" />
-										</Grid>
-									</StackPanel>
-								</DataTemplate>
-							</ListView.ItemTemplate>
-						</ListView>
-					</DockPanel>
+							<ListView ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+								<ListView.InputBindings>
+									<KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
+									<KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
+									<KeyBinding Key="N" Modifiers="Control" Command="{Binding AddCommand}" />
+								</ListView.InputBindings>
+								<ListView.ItemTemplate>
+									<DataTemplate DataType="configuration:MuteEntry">
+										<StackPanel Orientation="Vertical">
+											<TextBlock Text="{Binding Filter}" />
+											<Grid>
+												<TextBlock Text="{Binding EndDate}" Visibility="{Binding HasEndDate, Converter={StaticResource BoolToVisibleConv}}" />
+												<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding HasEndDate, Converter={StaticResource InvertBoolToVisibleConv}}" />
+											</Grid>
+										</StackPanel>
+									</DataTemplate>
+								</ListView.ItemTemplate>
+							</ListView>
+						</DockPanel>
 
-					<StackPanel Orientation="Vertical" Grid.Column="1" DataContext="{Binding EditData}" IsEnabled="{Binding Converter={StaticResource NotNullConv}}">
-						<TextBlock Text="{lex:Loc Filter}" Margin="5" />
-						<TextBox Margin="5,0" controls:TextBoxHelper.Watermark="{lex:Loc FilterCriteria}" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						<CheckBox Content="{lex:Loc ActiveUntil}" Margin="5" IsChecked="{Binding HasEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						<DatePicker Margin="5,0" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding HasEndDate}" />
-						<StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-							<Button Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+						<StackPanel Orientation="Vertical" Grid.Column="1" DataContext="{Binding EditData}" IsEnabled="{Binding Converter={StaticResource NotNullConv}}">
+							<TextBlock Text="{lex:Loc Filter}" Margin="5" />
+							<TextBox Margin="5,0" controls:TextBoxHelper.Watermark="{lex:Loc FilterCriteria}" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+							<CheckBox Content="{lex:Loc ActiveUntil}" Margin="5" IsChecked="{Binding HasEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+							<DatePicker Margin="5,0" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding HasEndDate}" />
+							<StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+								<Button Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Apply}" Margin="5,0">
-								<materialDesign:PackIcon Kind="Check" />
-							</Button>
-							<Button Command="{Binding CancelCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									<materialDesign:PackIcon Kind="Check" />
+								</Button>
+								<Button Command="{Binding CancelCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Cancel}" Margin="5,0">
-								<materialDesign:PackIcon Kind="Close" />
-							</Button>
+									<materialDesign:PackIcon Kind="Close" />
+								</Button>
+							</StackPanel>
 						</StackPanel>
-					</StackPanel>
 
-					<FlowDocumentScrollViewer Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
-				</Grid>
-			</TabItem>
-			<TabItem Header="{lex:Loc Notifications}" DataContext="{Binding Notifications}">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+						<FlowDocumentScrollViewer Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
+					</Grid>
+				</TabItem>
+				<TabItem Header="{lex:Loc Notifications}" DataContext="{Binding Notifications}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
 
-					<GroupBox Header="{lex:Loc AvailableNotificationMechanisms}">
-						<ItemsControl ItemsSource="{Binding AvailableNotifications}">
+						<GroupBox Header="{lex:Loc AvailableNotificationMechanisms}">
+							<ItemsControl ItemsSource="{Binding AvailableNotifications}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate DataType="settings:NotificationModuleSettings">
+										<CheckBox Content="{Binding Title}" IsChecked="{Binding Enabled, Mode=TwoWay}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</GroupBox>
+
+						<ItemsControl ItemsSource="{Binding EnabledNotifications}" Grid.Column="1">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate DataType="settings:NotificationModuleSettings">
-									<CheckBox Content="{Binding Title}" IsChecked="{Binding Enabled, Mode=TwoWay}" />
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</GroupBox>
+									<GroupBox Header="{Binding Title}">
+										<ContentControl Content="{Binding}">
+											<ContentControl.ContentTemplateSelector>
+												<views:GenericTemplateSelector>
+													<views:GenericDataTemplateSelectorItem TemplatedType="settings:SoundNotificationSettings">
+														<DataTemplate DataType="settings:SoundNotificationSettings">
+															<Grid>
+																<Grid.ColumnDefinitions>
+																	<ColumnDefinition Width="Auto" />
+																	<ColumnDefinition />
+																</Grid.ColumnDefinitions>
 
-					<ItemsControl ItemsSource="{Binding EnabledNotifications}" Grid.Column="1">
-						<ItemsControl.ItemTemplate>
-							<DataTemplate DataType="settings:NotificationModuleSettings">
-								<GroupBox Header="{Binding Title}">
-									<ContentControl Content="{Binding}">
-										<ContentControl.ContentTemplateSelector>
-											<views:GenericTemplateSelector>
-												<views:GenericDataTemplateSelectorItem TemplatedType="settings:SoundNotificationSettings">
-													<DataTemplate DataType="settings:SoundNotificationSettings">
-														<Grid>
-															<Grid.ColumnDefinitions>
-																<ColumnDefinition Width="Auto" />
-																<ColumnDefinition />
-															</Grid.ColumnDefinitions>
+																<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
+																<controls1:FileSelectBox Grid.Column="1" />
+															</Grid>
+														</DataTemplate>
+													</views:GenericDataTemplateSelectorItem>
+													<views:GenericDataTemplateSelectorItem TemplatedType="settings:ToastNotificationSettings">
+														<DataTemplate DataType="settings:ToastNotificationSettings">
+															<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" />
+														</DataTemplate>
+													</views:GenericDataTemplateSelectorItem>
+													<views:GenericDataTemplateSelectorItem TemplatedType="settings:PopupNotificationSettings">
+														<DataTemplate DataType="settings:PopupNotificationSettings">
+															<Grid>
+																<Grid.RowDefinitions>
+																	<RowDefinition />
+																	<RowDefinition />
+																</Grid.RowDefinitions>
+																<Grid.ColumnDefinitions>
+																	<ColumnDefinition Width="Auto" />
+																	<ColumnDefinition />
+																</Grid.ColumnDefinitions>
 
-															<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
-															<controls1:FileSelectBox Grid.Column="1" />
-														</Grid>
-													</DataTemplate>
-												</views:GenericDataTemplateSelectorItem>
-												<views:GenericDataTemplateSelectorItem TemplatedType="settings:ToastNotificationSettings">
-													<DataTemplate DataType="settings:ToastNotificationSettings">
-														<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" />
-													</DataTemplate>
-												</views:GenericDataTemplateSelectorItem>
-												<views:GenericDataTemplateSelectorItem TemplatedType="settings:PopupNotificationSettings">
-													<DataTemplate DataType="settings:PopupNotificationSettings">
-														<Grid>
-															<Grid.RowDefinitions>
-																<RowDefinition />
-																<RowDefinition />
-															</Grid.RowDefinitions>
-															<Grid.ColumnDefinitions>
-																<ColumnDefinition Width="Auto" />
-																<ColumnDefinition />
-															</Grid.ColumnDefinitions>
-
-															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" />
-															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name"
+																<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" />
+																<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name"
 																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedDisplay, Mode=TwoWay}"
 																	  ItemsSource="{Binding AvailableDisplays}" />
 
-															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
-															<ComboBox ItemsSource="{Binding AvailableCorners}" DisplayMemberPath="Name" Grid.Column="1"
+																<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
+																<ComboBox ItemsSource="{Binding AvailableCorners}" DisplayMemberPath="Name" Grid.Column="1"
 																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedCorner, Mode=TwoWay}"
 																	  Grid.Row="1" VerticalAlignment="Center" Margin="5,0" />
-														</Grid>
-													</DataTemplate>
-												</views:GenericDataTemplateSelectorItem>
-											</views:GenericTemplateSelector>
-										</ContentControl.ContentTemplateSelector>
-									</ContentControl>
-								</GroupBox>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</Grid>
-			</TabItem>
-		</TabControl>
-	</DockPanel>
+															</Grid>
+														</DataTemplate>
+													</views:GenericDataTemplateSelectorItem>
+												</views:GenericTemplateSelector>
+											</ContentControl.ContentTemplateSelector>
+										</ContentControl>
+									</GroupBox>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</Grid>
+				</TabItem>
+			</TabControl>
+		</DockPanel>
+	</materialDesign:DialogHost>
 </controls:MetroWindow>
