@@ -12,6 +12,7 @@
 			xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 			xmlns:behaviors="clr-namespace:Twice.Behaviors" WindowStartupLocation="CenterOwner"
 			xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+			xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
@@ -138,20 +139,34 @@
 					<DockPanel>
 						<TextBlock Text="{lex:Loc ActiveMutes}" DockPanel.Dock="Top" />
 
-						<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-							<Button Content="{lex:Loc Add}" Command="{Binding AddCommand}" />
-							<Button Content="{lex:Loc Edit}" Command="{Binding EditCommand}" />
-							<Button Content="{lex:Loc Delete}" Command="{Binding RemoveCommand}" />
+						<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+							<Button Command="{Binding AddCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									ToolTip="{lex:Loc Add}" Margin="5,0">
+								<materialDesign:PackIcon Kind="Plus" />
+							</Button>
+							<Button Command="{Binding EditCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									ToolTip="{lex:Loc Edit}" Margin="5,0">
+								<materialDesign:PackIcon Kind="Pencil" />
+							</Button>
+							<Button Command="{Binding RemoveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									ToolTip="{lex:Loc Delete}" Margin="5,0">
+								<materialDesign:PackIcon Kind="Delete" />
+							</Button>
 						</StackPanel>
 
 						<ListView ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							<ListView.InputBindings>
+								<KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
+								<KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
+								<KeyBinding Key="N" Modifiers="Control" Command="{Binding AddCommand}" />
+							</ListView.InputBindings>
 							<ListView.ItemTemplate>
 								<DataTemplate DataType="configuration:MuteEntry">
 									<StackPanel Orientation="Vertical">
 										<TextBlock Text="{Binding Filter}" />
 										<Grid>
-											<TextBlock Text="{Binding EndDate}" Visibility="{Binding EndDate.HasValue, Converter={StaticResource BoolToVisibleConv}}" />
-											<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding EndDate.HasValue, Converter={StaticResource InvertBoolToVisibleConv}}" />
+											<TextBlock Text="{Binding EndDate}" Visibility="{Binding HasEndDate, Converter={StaticResource BoolToVisibleConv}}" />
+											<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding HasEndDate, Converter={StaticResource InvertBoolToVisibleConv}}" />
 										</Grid>
 									</StackPanel>
 								</DataTemplate>
@@ -165,8 +180,14 @@
 						<CheckBox Content="{lex:Loc ActiveUntil}" Margin="5" IsChecked="{Binding HasEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<DatePicker Margin="5,0" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding HasEndDate}" />
 						<StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-							<Button Content="{lex:Loc Save}" Command="{Binding SaveCommand}" />
-							<Button Content="{lex:Loc Cancel}" Command="{Binding CancelCommand}" />
+							<Button Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									ToolTip="{lex:Loc Apply}" Margin="5,0">
+								<materialDesign:PackIcon Kind="Check" />
+							</Button>
+							<Button Command="{Binding CancelCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+									ToolTip="{lex:Loc Cancel}" Margin="5,0">
+								<materialDesign:PackIcon Kind="Close" />
+							</Button>
 						</StackPanel>
 					</StackPanel>
 

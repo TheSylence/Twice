@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Resourcer;
@@ -46,6 +47,8 @@ namespace Twice.ViewModels.Settings
 
 		private void EditData_Saved( object sender, MuteEditArgs e )
 		{
+			Entries.Remove( SelectedEntry );
+
 			var entry = new MuteEntry { Filter = EditData.Filter, EndDate = null };
 
 			if( EditData.HasEndDate )

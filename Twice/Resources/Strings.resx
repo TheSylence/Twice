@@ -504,4 +504,10 @@
   <data name="SelectAccountYouWantToAddColumnFor" xml:space="preserve">
     <value>Select the account you want to add the new column for</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
 </root>
