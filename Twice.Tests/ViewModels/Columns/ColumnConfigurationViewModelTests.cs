@@ -22,7 +22,7 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void SaveCommandRaisesEvent()
+		public void SaveCommandRaisesEventWhenChanged()
 		{
 			// Arrange
 			var vm = new ColumnConfigurationViewModel( new ColumnDefinition( ColumnType.Activity ) );
@@ -31,9 +31,15 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Act
 			vm.SaveCommand.Execute( null );
+			bool noChange = raised;
+
+			vm.PopupEnabled = !vm.PopupEnabled;
+			vm.SaveCommand.Execute( null );
+			bool change = raised;
 
 			// Assert
-			Assert.IsTrue( raised );
+			Assert.IsFalse( noChange );
+			Assert.IsTrue( change );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
