@@ -7,6 +7,8 @@ namespace Twice.Models.Columns
 		Timeline,
 		Favorites,
 		Mentions,
-		Activity
+		Activity,
+
+		DebugOrTest
 	}
 }

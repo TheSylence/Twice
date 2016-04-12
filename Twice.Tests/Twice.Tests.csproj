@@ -82,6 +82,10 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -141,6 +145,7 @@
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="ITypeResolver.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
@@ -152,6 +157,8 @@
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />

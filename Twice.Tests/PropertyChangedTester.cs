@@ -12,9 +12,11 @@ namespace Twice.Tests
 	[ExcludeFromCodeCoverage]
 	internal class PropertyChangedTester
 	{
-		public PropertyChangedTester( INotifyPropertyChanged obj )
+		public PropertyChangedTester( INotifyPropertyChanged obj, bool includeInherited = false, ITypeResolver typeResolver = null )
 		{
 			Object = obj;
+			IncludeInherited = includeInherited;
+			TypeResolver = typeResolver;
 		}
 
 		public void Test( params string[] propsToSkip )
@@ -26,9 +28,15 @@ namespace Twice.Tests
 		{
 			Errors.Clear();
 
+			var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+			if( !IncludeInherited )
+			{
+				bindingFlags |= BindingFlags.DeclaredOnly;
+			}
+
 			var properties =
 				Object.GetType()
-				.GetProperties( BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly )
+				.GetProperties( bindingFlags )
 				.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic )
 				.ToArray();
 			if( !properties.Any() )
@@ -79,7 +87,7 @@ namespace Twice.Tests
 			return null;
 		}
 
-		private static object GetNonDefaultValue( Type type )
+		private object GetNonDefaultValue( Type type )
 		{
 			var typeMap = new Dictionary<Type, object>
 			{
@@ -124,10 +132,17 @@ namespace Twice.Tests
 				return constructor.Invoke( null );
 			}
 
+			if( TypeResolver!=null)
+			{
+				return TypeResolver.Resolve( type );
+			}
+
 			throw new InvalidOperationException( $"{type.Name} - Don't known how to create non default value" );
 		}
 
 		private readonly List<string> Errors = new List<string>();
 		private readonly INotifyPropertyChanged Object;
+		private readonly bool IncludeInherited;
+		private readonly ITypeResolver TypeResolver;
 	}
 }
