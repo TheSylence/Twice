@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Ninject;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
@@ -8,6 +9,7 @@ using Twice.ViewModels.Settings;
 
 namespace Twice.ViewModels
 {
+	[ExcludeFromCodeCoverage]
 	internal class DialogViewModelLocator
 	{
 		public DialogViewModelLocator()

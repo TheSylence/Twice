@@ -288,10 +288,14 @@
     <Compile Include="Services\Views\FileServiceArgs.cs" />
     <Compile Include="Utilities\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
+    <Compile Include="Utilities\DispatcherHelperWrapper.cs" />
     <Compile Include="Utilities\DisplayHelper.cs" />
     <Compile Include="Utilities\DPAPI.cs" />
+    <Compile Include="Utilities\FileSystem.cs" />
     <Compile Include="Utilities\IColorProvider.cs" />
     <Compile Include="Utilities\IDateProvider.cs" />
+    <Compile Include="Utilities\IDispatcher.cs" />
+    <Compile Include="Utilities\IFileSystem.cs" />
     <Compile Include="Utilities\ILanguageProvider.cs" />
     <Compile Include="Utilities\LanguageProvider.cs" />
     <Compile Include="Utilities\NativeMethods.cs" />

@@ -143,6 +143,7 @@
     <Compile Include="Converters\InvertBoolTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
+    <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ITypeResolver.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyChangedTester.cs" />
+    <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\NotifierTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\NotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\PopupNotificationSettingsTests.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
+    <Compile Include="ViewModels\ValueDescriptionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Twice\Twice.csproj">
