@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Ninject;
-using Ninject.Modules;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -28,6 +27,7 @@ namespace Twice
 	{
 		protected override void OnExit( ExitEventArgs e )
 		{
+			LogTo.Info( "Application exit" );
 			Kernel.Dispose();
 
 			base.OnExit( e );
@@ -36,10 +36,11 @@ namespace Twice
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			DispatcherHelper.Initialize();
-			Kernel = new Kernel( );
+			Kernel = new Kernel();
 
 			base.OnStartup( e );
 			ConfigureLogging();
+			LogTo.Info( "Application start" );
 
 			var conf = Kernel.Get<IConfig>();
 			var palette = new PaletteHelper();
@@ -104,7 +105,5 @@ namespace Twice
 		}
 
 		public static IKernel Kernel { get; private set; }
-
-		
 	}
 }

@@ -24,7 +24,7 @@ namespace Twice.Injections
 			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();
-			Bind<IStreamingRepository>().To<StreamingRepository>();
+			Bind<IStreamingRepository>().To<StreamingRepository>().InSingletonScope();
 			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
 		}
 	}

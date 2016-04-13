@@ -29,8 +29,8 @@ namespace Twice.Models.Twitter.Streaming
 			if( !LoadedParsers.TryGetValue( key, out parser ) )
 			{
 				parser =
-				StreamParser.Create( Queryable.Where<LinqToTwitter.Streaming>( ContextList.Contexts.First( c => c.UserId == userId )
-						.Twitter.Streaming, s => s.Type == StreamingType.User ) );
+				StreamParser.Create( ContextList.Contexts.First( c => c.UserId == userId )
+					.Twitter.Streaming.Where( s => s.Type == StreamingType.User ) );
 
 				LoadedParsers.Add( key, parser );
 			}
