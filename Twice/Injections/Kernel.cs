@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Ninject;
+using Ninject.Modules;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Ninject;
-using Ninject.Infrastructure;
-using Ninject.Modules;
-using Ninject.Planning.Bindings;
 
 namespace Twice.Injections
 {
@@ -14,12 +12,6 @@ namespace Twice.Injections
 		public Kernel()
 			: base( InjectionModules.ToArray() )
 		{
-		}
-
-		public override void AddBinding( IBinding binding )
-		{
-			binding.ScopeCallback = StandardScopeCallbacks.Singleton;
-			base.AddBinding( binding );
 		}
 
 		private static IEnumerable<INinjectModule> InjectionModules
