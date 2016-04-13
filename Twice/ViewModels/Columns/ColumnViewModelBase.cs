@@ -264,7 +264,7 @@ namespace Twice.ViewModels.Columns
 		{
 			[DebuggerStepThrough]
 			get { return _IsLoading; }
-			private set
+			protected set
 			{
 				if( _IsLoading == value )
 				{
