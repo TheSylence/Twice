@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using MaterialDesignThemes.Wpf;
 using Twice.ViewModels.Validation;
 
@@ -18,8 +19,11 @@ namespace Twice.ViewModels
 
 		protected void Close( bool result )
 		{
-			DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository?.CurrentDialog );
-			CloseRequested?.Invoke( this, result ? CloseEventArgs.Ok : CloseEventArgs.Cancel );
+			DispatcherHelper.CheckBeginInvokeOnUI( () =>
+			{
+				DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository?.CurrentDialog );
+				CloseRequested?.Invoke( this, result ? CloseEventArgs.Ok : CloseEventArgs.Cancel );
+			} );
 		}
 
 		protected virtual bool OnOk()
