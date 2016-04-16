@@ -40,12 +40,15 @@
 				<materialDesign:PackIcon Kind="DotsHorizontal" />
 			</Button>
 
-			<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" VerticalAlignment="Center" />
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+				<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" VerticalAlignment="Bottom" />
+				<TextBlock Text="{Binding SubTitle}" VerticalAlignment="Center" Margin="5,0" />
+			</StackPanel>
 		</DockPanel>
 		<materialDesign:Card Grid.Row="1" Margin="3" Background="{StaticResource PrimaryHueDarkBrush}"
-							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Visibility="{Binding ColumnConfiguration.IsExpanded, Converter={StaticResource BoolToVisibleConv}}" >
+							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Visibility="{Binding ColumnConfiguration.IsExpanded, Converter={StaticResource BoolToVisibleConv}}">
 			<StackPanel Orientation="Vertical" Margin="5" DataContext="{Binding ColumnConfiguration}">
-				<TextBlock Text="{lex:Loc ColumnSettings}" Style="{StaticResource MaterialDesignTitleTextBlock}"/>
+				<TextBlock Text="{lex:Loc ColumnSettings}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
 				<CheckBox Content="{lex:Loc SoundNotification}" IsChecked="{Binding SoundEnabled, Mode=TwoWay}" />
 				<CheckBox Content="{lex:Loc ToastNotification}" IsChecked="{Binding ToastsEnabled, Mode=TwoWay}" />
 				<CheckBox Content="{lex:Loc PopupNotification}" IsChecked="{Binding PopupEnabled, Mode=TwoWay}" />

@@ -10,7 +10,9 @@ namespace Twice.ViewModels.Columns
 	internal interface IColumnViewModel
 	{
 		event EventHandler Changed;
+
 		event EventHandler Deleted;
+
 		event EventHandler<StatusEventArgs> NewStatus;
 
 		Task Load();
@@ -23,6 +25,7 @@ namespace Twice.ViewModels.Columns
 		Icon Icon { get; }
 		bool IsLoading { get; }
 		ICollection<StatusViewModel> Statuses { get; }
+		string SubTitle { get; set; }
 		string Title { get; set; }
 		double Width { get; set; }
 	}

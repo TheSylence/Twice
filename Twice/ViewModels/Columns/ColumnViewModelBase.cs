@@ -50,26 +50,7 @@ namespace Twice.ViewModels.Columns
 
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
-		}
-
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<StatusEventArgs> NewStatus;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await Task.Run( async () =>
-			{
-				await OnLoad().ContinueWith( t =>
-				{
-					IsLoading = false;
-					RaisePropertyChanged( nameof( IsLoading ) );
-				} );
-			} );
+			SubTitle = "@" + context.AccountName;
 		}
 
 		protected async Task AddStatus( StatusViewModel status, bool append = true )
@@ -202,7 +183,10 @@ namespace Twice.ViewModels.Columns
 				var userList = string.Join( ",", completeList.Take( 100 ) );
 				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
 
-				var userData = await Context.Twitter.User.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
+				var userData =
+					await
+						Context.Twitter.User.Where(
+							s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
 				usersToAdd.AddRange( userData );
 			}
 
@@ -246,9 +230,27 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IColumnActionDispatcher ActionDispatcher { get; }
+		public event EventHandler Changed;
 
-		public IDataCache Cache { get; set; }
+		public event EventHandler Deleted;
+
+		public event EventHandler<StatusEventArgs> NewStatus;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await Task.Run( async () =>
+			{
+				await OnLoad().ContinueWith( t =>
+				{
+					IsLoading = false;
+					RaisePropertyChanged( nameof( IsLoading ) );
+				} );
+			} );
+		}
+
+		public IColumnActionDispatcher ActionDispatcher { get; }
 
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
@@ -262,8 +264,7 @@ namespace Twice.ViewModels.Columns
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
+			[DebuggerStepThrough] get { return _IsLoading; }
 			protected set
 			{
 				if( _IsLoading == value )
@@ -276,14 +277,26 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IStatusMuter Muter { get; set; }
-
 		public ICollection<StatusViewModel> Statuses { get; }
+
+		public string SubTitle
+		{
+			[DebuggerStepThrough] get { return _SubTitle; }
+			set
+			{
+				if( _SubTitle == value )
+				{
+					return;
+				}
+
+				_SubTitle = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get { return _Title; }
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -298,8 +311,7 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough]
-			get { return _Width; }
+			[DebuggerStepThrough] get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -314,6 +326,10 @@ namespace Twice.ViewModels.Columns
 				Changed?.Invoke( this, EventArgs.Empty );
 			}
 		}
+
+		public IDataCache Cache { get; set; }
+
+		public IStatusMuter Muter { get; set; }
 
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 
@@ -339,6 +355,9 @@ namespace Twice.ViewModels.Columns
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _SubTitle;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _Title;
