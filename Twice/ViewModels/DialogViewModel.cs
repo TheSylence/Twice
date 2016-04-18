@@ -1,9 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using MaterialDesignThemes.Wpf;
+using Ninject;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using MaterialDesignThemes.Wpf;
+using Twice.Utilities;
 using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels
@@ -19,7 +20,7 @@ namespace Twice.ViewModels
 
 		protected void Close( bool result )
 		{
-			DispatcherHelper.CheckBeginInvokeOnUI( () =>
+			Dispatcher.CheckBeginInvokeOnUI( () =>
 			{
 				DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository?.CurrentDialog );
 				CloseRequested?.Invoke( this, result ? CloseEventArgs.Ok : CloseEventArgs.Cancel );
@@ -47,11 +48,15 @@ namespace Twice.ViewModels
 
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
 
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
 		public string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -64,10 +69,13 @@ namespace Twice.ViewModels
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _OkCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _OkCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 	}
 }
