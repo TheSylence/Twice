@@ -1,0 +1,5 @@
+https://github.com/punker76/gong-wpf-dragdrop
+722d2240f962a5ddbe8d680b121101f1083ff084
+
+https://github.com/theunrepentantgeek/Markdown.XAML
+e48e9b9c7af55ec3bc5287188df74f623c817e53
