@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using GongSolutions.Wpf.DragDrop;
+using Squirrel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -6,12 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using Squirrel;
 using Twice.Messages;
 using Twice.Models.Columns;
-using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
@@ -23,8 +23,7 @@ namespace Twice.ViewModels.Main
 	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList contextList, IStatusMuter muter, INotifier notifier, IColumnDefinitionList columnList,
-			IConfig config, IColumnFactory columnFactory )
+		public MainViewModel( ITwitterContextList contextList, INotifier notifier, IColumnDefinitionList columnList, IColumnFactory columnFactory )
 		{
 			ContextList = contextList;
 			ContextList.ContextsChanged += ContextList_ContextsChanged;
@@ -35,6 +34,8 @@ namespace Twice.ViewModels.Main
 			ColumnList = columnList;
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
+
+			DropHandler = new DropHandler( columnList );
 		}
 
 		public async Task OnLoad( object data )
@@ -99,15 +100,6 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
-		private void Col_NewStatus( object sender, StatusEventArgs e )
-		{
-			var vm = sender as IColumnViewModel;
-			Debug.Assert( vm != null );
-
-			ColumnNotifications columnSettings = vm.Definition.Notifications;
-			Notifier.OnStatus( e.Status, columnSettings );
-		}
-
 		private void Col_Changed( object sender, EventArgs e )
 		{
 			var col = sender as IColumnViewModel;
@@ -123,12 +115,22 @@ namespace Twice.ViewModels.Main
 
 			ColumnList.Update( definitions );
 		}
+
 		private void Col_Deleted( object sender, EventArgs e )
 		{
 			var col = sender as IColumnViewModel;
 			Debug.Assert( col != null, "col != null" );
 
-			ColumnList.Remove( new[] { col.Definition });
+			ColumnList.Remove( new[] { col.Definition } );
+		}
+
+		private void Col_NewStatus( object sender, StatusEventArgs e )
+		{
+			var vm = sender as IColumnViewModel;
+			Debug.Assert( vm != null );
+
+			ColumnNotifications columnSettings = vm.Definition.Notifications;
+			Notifier.OnStatus( e.Status, columnSettings );
 		}
 
 		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
@@ -159,7 +161,6 @@ namespace Twice.ViewModels.Main
 				Columns.Add( c );
 			}
 		}
-
 
 		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
@@ -197,6 +198,7 @@ namespace Twice.ViewModels.Main
 			=> _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
 
 		public ICollection<IColumnViewModel> Columns { get; }
+		public IDropTarget DropHandler { get; }
 		public bool HasContexts => ContextList.Contexts.Any();
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );

@@ -341,6 +341,7 @@
     <Compile Include="ViewModels\ItemSelection.cs" />
     <Compile Include="ViewModels\IViewController.cs" />
     <Compile Include="ViewModels\IViewModelBase.cs" />
+    <Compile Include="ViewModels\Main\DropHandler.cs" />
     <Compile Include="ViewModels\Main\ILoadCallback.cs" />
     <Compile Include="ViewModels\NotificationType.cs" />
     <Compile Include="ViewModels\Notifier.cs" />

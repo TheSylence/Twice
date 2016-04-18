@@ -34,6 +34,11 @@ namespace Twice.Models.Columns
 			return JsonConvert.DeserializeObject<List<ColumnDefinition>>( json );
 		}
 
+		public void RaiseChanged()
+		{
+			ColumnsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
 		public void Remove( IEnumerable<ColumnDefinition> columnDefinitions )
 		{
 			var columns = Load().Except( columnDefinitions );
@@ -45,7 +50,7 @@ namespace Twice.Models.Columns
 		{
 			Update( definitions );
 
-			ColumnsChanged?.Invoke( this, EventArgs.Empty );
+			RaiseChanged();
 		}
 
 		public void Update( IEnumerable<ColumnDefinition> definitions )
