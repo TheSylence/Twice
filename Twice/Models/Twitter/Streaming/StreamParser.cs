@@ -1,51 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using LinqToTwitter;
 using LitJson;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	/// <summary>Parser for twitter streams.</summary>
+	/// <summary>
+	/// Parser for twitter streams.
+	/// </summary>
 	internal class StreamParser : IDisposable, IStreamParser
 	{
-		/// <summary>Initializes a new instance of the <see cref="StreamParser"/> class.</summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StreamParser"/> class.
+		/// </summary>
 		/// <param name="stream">The user stream.</param>
-		private StreamParser( IQueryable<LinqToTwitter.Streaming> stream )
+		private StreamParser( IStreamingConnection stream )
 		{
+			Connections = new List<IStreaming>();
 			Stream = stream;
 		}
 
-		/// <summary>Occurs when a status was deleted.</summary>
+		/// <summary>
+		/// Occurs when a status was deleted.
+		/// </summary>
 		public event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
 
-		/// <summary>Occurs when a direct message was received.</summary>
+		/// <summary>
+		/// Occurs when a direct message was received.
+		/// </summary>
 		public event EventHandler<DirectMessageStreamEventArgs> DirectMessageReceived;
 
-		/// <summary>Occurs when a status was favourited.</summary>
+		/// <summary>
+		/// Occurs when a status was favourited.
+		/// </summary>
 		public event EventHandler<FavoriteStreamEventArgs> FavoriteEventReceived;
 
-		/// <summary>Occurs when the friend list was received.</summary>
+		/// <summary>
+		/// Occurs when the friend list was received.
+		/// </summary>
 		public event EventHandler<FriendsStreamEventArgs> FriendsReceived;
 
-		/// <summary>Occurs when a status was deleted.</summary>
+		/// <summary>
+		/// Occurs when a status was deleted.
+		/// </summary>
 		public event EventHandler<DeleteStreamEventArgs> StatusDeleted;
 
-		/// <summary>Occurs when a status was received.</summary>
+		/// <summary>
+		/// Occurs when a status was received.
+		/// </summary>
 		public event EventHandler<StatusStreamEventArgs> StatusReceived;
 
-		/// <summary>Occurs when unknown data has been received.</summary>
+		/// <summary>
+		/// Occurs when unknown data has been received.
+		/// </summary>
 		public event EventHandler<StreamEventArgs> UnknownDataReceived;
 
-		/// <summary>Occurs when an event was received.</summary>
+		/// <summary>
+		/// Occurs when an event was received.
+		/// </summary>
 		public event EventHandler<EventStreamEventArgs> UnknownEventReceived;
 
-		/// <summary>Creates a new parser for the specified stream.</summary>
+		/// <summary>
+		/// Creates a new parser for the specified stream.
+		/// </summary>
 		/// <param name="userStream">The stream.</param>
 		/// <returns>The created parser.</returns>
-		public static StreamParser Create( IQueryable<LinqToTwitter.Streaming> userStream )
+		public static StreamParser Create( IStreamingConnection userStream )
 		{
 			return new StreamParser( userStream );
 		}
@@ -68,14 +90,18 @@ namespace Twice.Models.Twitter.Streaming
 			}
 
 			Started = true;
-			Stream.StartAsync( c => Task.Run( () => ParseContent( c ) ) )
-				.ContinueWith( t => Connections = t.Result );
+			StreamingTask = Stream.Start( c => Task.Run( () => ParseContent( c ) ) )
+				.ContinueWith( t => Connections.AddRange( t.Result ) );
 		}
 
-		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+		public Task StreamingTask { get; private set; }
+
+		/// <summary>
+		/// Releases unmanaged and - optionally - managed resources.
+		/// </summary>
 		/// <param name="disposing">
-		/// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
-		/// only unmanaged resources.
+		/// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+		/// unmanaged resources.
 		/// </param>
 		protected void Dispose( bool disposing )
 		{
@@ -83,7 +109,7 @@ namespace Twice.Models.Twitter.Streaming
 			{
 				if( Connections != null )
 				{
-					foreach( LinqToTwitter.Streaming s in Connections )
+					foreach( var s in Connections )
 					{
 						s.CloseStream();
 					}
@@ -91,7 +117,9 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		/// <summary>Handles a twitter event.</summary>
+		/// <summary>
+		/// Handles a twitter event.
+		/// </summary>
 		/// <param name="json">The json describing the event.</param>
 		private void HandleEvent( string json )
 		{
@@ -128,7 +156,9 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		/// <summary>Parses the content and raises events.</summary>
+		/// <summary>
+		/// Parses the content and raises events.
+		/// </summary>
 		/// <param name="content">The content.</param>
 		private void ParseContent( IStreamContent content )
 		{
@@ -191,8 +221,8 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		private readonly IQueryable<LinqToTwitter.Streaming> Stream;
-		private List<LinqToTwitter.Streaming> Connections;
+		private readonly IStreamingConnection Stream;
+		private readonly List<IStreaming> Connections;
 		private bool Started = false;
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToTwitter;
 using Twice.Models.Columns;
 
 namespace Twice.Models.Twitter.Streaming
@@ -29,8 +29,8 @@ namespace Twice.Models.Twitter.Streaming
 			if( !LoadedParsers.TryGetValue( key, out parser ) )
 			{
 				parser =
-				StreamParser.Create( ContextList.Contexts.First( c => c.UserId == userId )
-					.Twitter.Streaming.Where( s => s.Type == StreamingType.User ) );
+				StreamParser.Create( new StreamingConnection( ContextList.Contexts.First( c => c.UserId == userId )
+					.Twitter.Streaming.Where( s => s.Type == StreamingType.User ) ) );
 
 				LoadedParsers.Add( key, parser );
 			}
@@ -51,9 +51,9 @@ namespace Twice.Models.Twitter.Streaming
 
 		private readonly ITwitterContextList ContextList;
 
-		private readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
+		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 
-		private class ParserKey
+		protected class ParserKey
 		{
 			public ParserKey( ulong id, StreamingType type )
 			{
