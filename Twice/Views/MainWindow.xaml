@@ -109,7 +109,9 @@
 				<ItemsControl ItemsSource="{Binding Columns}" 
 							  dragDrop:DragDrop.IsDragSource="True"
 							  dragDrop:DragDrop.IsDropTarget="True"
-							  dragDrop:DragDrop.DropHandler="{Binding DropHandler}">
+							  dragDrop:DragDrop.DragSourceIgnore="False"
+							  dragDrop:DragDrop.DragHandler="{Binding DragDropHandler}"
+							  dragDrop:DragDrop.DropHandler="{Binding DragDropHandler}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" />

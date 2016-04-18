@@ -1,6 +1,5 @@
 ﻿using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
-using GongSolutions.Wpf.DragDrop;
 using Squirrel;
 using System;
 using System.Collections.Generic;
@@ -35,7 +34,7 @@ namespace Twice.ViewModels.Main
 			ColumnList.ColumnsChanged += ColumnList_ColumnsChanged;
 			ConstructColumns();
 
-			DropHandler = new DropHandler( columnList );
+			DragDropHandler = new DragDropHandler( columnList, MessengerInstance );
 		}
 
 		public async Task OnLoad( object data )
@@ -198,7 +197,7 @@ namespace Twice.ViewModels.Main
 			=> _ManageColumnsCommand ?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
 
 		public ICollection<IColumnViewModel> Columns { get; }
-		public IDropTarget DropHandler { get; }
+		public IDragDropHandler DragDropHandler { get; }
 		public bool HasContexts => ContextList.Contexts.Any();
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 		public ICommand NewTweetCommand => _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );

@@ -10,7 +10,7 @@ namespace Twice.ViewModels.Main
 		ICommand AccountsCommand { get; }
 		ICommand AddColumnCommand { get; }
 		ICollection<IColumnViewModel> Columns { get; }
-		IDropTarget DropHandler { get; }
+		IDragDropHandler DragDropHandler { get; }
 		bool HasContexts { get; }
 		ICommand InfoCommand { get; }
 		ICommand NewTweetCommand { get; }
