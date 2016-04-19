@@ -7,11 +7,9 @@ namespace Twice.Models.Twitter
 	{
 		event EventHandler ContextsChanged;
 
-		ICollection<IContextEntry> Contexts { get; }
-
 		/// <summary>
-		/// Add a new account to the list.
-		/// Only pass decrypted data to this. They will be encrypted when the methd returns.
+		/// Add a new account to the list. Only pass decrypted data to this. They will be encrypted
+		/// when the methd returns.
 		/// </summary>
 		/// <param name="data"></param>
 		void AddContext( TwitterAccountData data );
@@ -23,5 +21,7 @@ namespace Twice.Models.Twitter
 		void UpdateAccount( TwitterAccountData data );
 
 		void UpdateAllAccounts();
+
+		ICollection<IContextEntry> Contexts { get; }
 	}
 }

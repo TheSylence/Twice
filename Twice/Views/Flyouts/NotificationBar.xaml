@@ -7,7 +7,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
-             xmlns:views="clr-namespace:Twice.Views" 
+             xmlns:views="clr-namespace:Twice.Views"
              xmlns:flyouts="clr-namespace:Twice.ViewModels.Flyouts"
              d:DataContext="{d:DesignInstance flyouts:NotificationViewModel}"
              mc:Ignorable="d" Position="Top" TitleVisibility="Collapsed" Theme="Accent"

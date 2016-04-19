@@ -13,8 +13,6 @@ namespace Twice.Models.Columns
 			Notifications = new ColumnNotifications();
 		}
 
-		public Guid Id { get; set; }
-
 		public override bool Equals( object obj )
 		{
 			var other = obj as ColumnDefinition;
@@ -24,7 +22,7 @@ namespace Twice.Models.Columns
 			}
 
 			return SourceAccounts.Compare( other.SourceAccounts ) &&
-			       TargetAccounts.Compare( other.TargetAccounts );
+				   TargetAccounts.Compare( other.TargetAccounts );
 		}
 
 		[SuppressMessage( "ReSharper", "NonReadonlyMemberInGetHashCode" )]
@@ -40,6 +38,7 @@ namespace Twice.Models.Columns
 			return hash;
 		}
 
+		public Guid Id { get; set; }
 		public ColumnNotifications Notifications { get; set; }
 		public ulong[] SourceAccounts { get; set; }
 		public ulong[] TargetAccounts { get; set; }

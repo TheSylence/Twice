@@ -1,5 +1,4 @@
-﻿using GongSolutions.Wpf.DragDrop;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Twice.ViewModels.Columns;
 

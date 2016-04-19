@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
@@ -22,8 +22,6 @@ namespace Twice.ViewModels.Settings
 			EndDate = DateTime.Now.AddMonths( 1 );
 			HasEndDate = false;
 		}
-
-		private readonly MuteEditAction Action;
 
 		public event EventHandler Cancelled;
 
@@ -118,6 +116,7 @@ namespace Twice.ViewModels.Settings
 		}
 
 		public ICommand SaveCommand => _SaveCommand ?? ( _SaveCommand = new RelayCommand( ExecuteSaveCommand, CanExecuteSaveCommand ) );
+		private readonly MuteEditAction Action;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _CancelCommand;

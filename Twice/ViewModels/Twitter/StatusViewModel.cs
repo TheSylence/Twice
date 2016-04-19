@@ -1,14 +1,14 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 
@@ -93,8 +93,6 @@ namespace Twice.ViewModels.Twitter
 			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted, NotificationType.Success );
 		}
 
-		public UserViewModel User { get; }
-
 		private void ExecuteFavoriteStatusCommand()
 		{
 			ExecAsync( async () =>
@@ -136,17 +134,11 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand BlockUserCommand => _BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) );
-
 		public ICommand CopyTweetCommand => _CopyTweetCommand ?? ( _CopyTweetCommand = new RelayCommand( ExecuteCopyTweetCommand ) );
-
 		public ICommand CopyTweetUrlCommand => _CopyTweetUrlCommand ?? ( _CopyTweetUrlCommand = new RelayCommand( ExecuteCopyTweetUrlCommand ) );
-
 		public DateTime CreatedAt => Model.CreatedAt;
-
 		public ICommand DeleteStatusCommand => _DeleteStatusCommand ?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
-
 		public bool DisplayMedia => InlineMedias.Any();
-
 		public ICommand FavoriteStatusCommand => _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
 		public ulong Id => Model.StatusID;
 
@@ -189,17 +181,13 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public bool IsRetweeted => Model.Retweeted;
-
 		public Status Model { get; }
-
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
 		public ICommand ReplyToAllCommand => _ReplyToAllCommand ?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand ) );
 		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
-
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
-
 		public UserViewModel SourceUser { get; }
-
+		public UserViewModel User { get; }
 		private readonly IContextEntry Context;
 
 		private readonly Status OriginalStatus;

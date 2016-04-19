@@ -5,7 +5,7 @@ namespace Twice.Utilities
 {
 	internal interface ILanguageProvider
 	{
-		CultureInfo CurrentCulture { get; }
 		IEnumerable<CultureInfo> AvailableLanguages { get; }
+		CultureInfo CurrentCulture { get; }
 	}
 }

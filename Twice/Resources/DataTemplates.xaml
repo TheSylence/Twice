@@ -52,7 +52,7 @@
 					<StackPanel Grid.Row="1" Grid.Column="0">
 						<Image Source="{Binding User.ProfileImageUrlHttps}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
 
-							<Grid>
+						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition />
 								<ColumnDefinition />

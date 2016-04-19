@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Ninject.Activation;
+﻿using Ninject.Activation;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Configuration;
 
 namespace Twice.Injections

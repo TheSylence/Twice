@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;

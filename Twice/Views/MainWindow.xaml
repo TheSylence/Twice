@@ -106,7 +106,7 @@
 			</DockPanel>
 
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
-				<ItemsControl ItemsSource="{Binding Columns}" 
+				<ItemsControl ItemsSource="{Binding Columns}"
 							  dragDrop:DragDrop.IsDragSource="True"
 							  dragDrop:DragDrop.IsDropTarget="True"
 							  dragDrop:DragDrop.DragSourceIgnore="False"
@@ -131,13 +131,13 @@
 									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
 											  HorizontalContentAlignment="Stretch">
 										<i:Interaction.Behaviors>
-											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
 										</i:Interaction.Behaviors>
 										<ItemsControl.Template>
 											<ControlTemplate>
 												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 													<i:Interaction.Behaviors>
-														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
 													</i:Interaction.Behaviors>
 													<ItemsPresenter />
 												</ScrollViewer>

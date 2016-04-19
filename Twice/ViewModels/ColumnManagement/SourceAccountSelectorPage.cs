@@ -6,7 +6,7 @@ using Twice.ViewModels.Wizards;
 
 namespace Twice.ViewModels.ColumnManagement
 {
-	class SourceAccountSelectorPage : WizardPageViewModel
+	internal class SourceAccountSelectorPage : WizardPageViewModel
 	{
 		public SourceAccountSelectorPage( ITwitterContextList contextList )
 		{

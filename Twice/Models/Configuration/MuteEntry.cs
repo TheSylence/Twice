@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Diagnostics;
-using GalaSoft.MvvmLight;
 
 namespace Twice.Models.Configuration
 {

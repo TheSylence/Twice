@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,7 +7,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using MaterialDesignThemes.Wpf;
 using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
@@ -84,10 +84,10 @@ namespace Twice.Behaviors
 				var insertText = $"{TriggerChar}{AutoCompleteBox.Text}";
 				var currentCaret = AssociatedObject.CaretIndex;
 
-				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret , insertText );
-				
+				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret, insertText );
+
 				close = true;
-				
+
 				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
 			}
 
@@ -126,7 +126,7 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty ItemsSourceProperty =
 			DependencyProperty.Register( "ItemsSource", typeof( IEnumerable<string> ), typeof( AutoComplete ),
-				new PropertyMetadata( new string[] {}, OnItemsSourceChanged ) );
+				new PropertyMetadata( new string[] { }, OnItemsSourceChanged ) );
 
 		public static readonly DependencyProperty TriggerCharProperty =
 			DependencyProperty.Register( "TriggerChar", typeof( string ), typeof( AutoComplete ), new PropertyMetadata( string.Empty ) );

@@ -104,8 +104,7 @@ namespace Twice.ViewModels
 			return Strings.ResourceManager.GetString( key );
 		}
 
-		// ReSharper disable once MemberCanBePrivate.Global
-		// ReSharper disable once UnusedAutoPropertyAccessor.Global
+		// ReSharper disable once MemberCanBePrivate.Global ReSharper disable once UnusedAutoPropertyAccessor.Global
 		public string Name { get; }
 
 		// ReSharper disable once MemberCanBePrivate.Global

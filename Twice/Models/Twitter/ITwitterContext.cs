@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
@@ -15,6 +15,10 @@ namespace Twice.Models.Twitter
 
 		Task<Status> DestroyFavoriteAsync( ulong statusID );
 
+		Task<List<User>> LookupUsers( string userList );
+
+		Task<Status> RetweetAsync( ulong statusID );
+
 		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
 
 		Task<Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
@@ -24,8 +28,5 @@ namespace Twice.Models.Twitter
 		ITwitterQueryable<Status> Status { get; }
 		ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
 		ITwitterQueryable<User> User { get; }
-		Task<Status> RetweetAsync( ulong statusID );
-
-		Task<List<User>> LookupUsers( string userList );
 	}
 }

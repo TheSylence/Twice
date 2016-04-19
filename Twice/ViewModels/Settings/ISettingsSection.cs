@@ -2,7 +2,7 @@ using Twice.Models.Configuration;
 
 namespace Twice.ViewModels.Settings
 {
-	interface ISettingsSection
+	internal interface ISettingsSection
 	{
 		void SaveTo( IConfig config );
 	}

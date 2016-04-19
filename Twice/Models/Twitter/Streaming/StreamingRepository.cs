@@ -49,9 +49,8 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		private readonly ITwitterContextList ContextList;
-
 		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
+		private readonly ITwitterContextList ContextList;
 
 		protected class ParserKey
 		{

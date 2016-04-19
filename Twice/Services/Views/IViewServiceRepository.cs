@@ -10,6 +10,8 @@ namespace Twice.Services.Views
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
+		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier );
+
 		Task ShowAccounts( bool directlyAddNewAccount = false );
 
 		Task ShowAddColumnDialog();
@@ -17,8 +19,6 @@ namespace Twice.Services.Views
 		Task ShowInfo();
 
 		Task ShowSettings();
-
-		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier );
 
 		string TextInput( string label, string input = null, string hostIdentifier = null );
 

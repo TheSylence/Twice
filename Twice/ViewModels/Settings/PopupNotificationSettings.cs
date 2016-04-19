@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities;
@@ -28,7 +27,6 @@ namespace Twice.ViewModels.Settings
 
 		private static IEnumerable<ValueDescription<string>> ListDisplays()
 		{
-
 			return DisplayHelper.GetAvailableDisplays().Select( ( kvp ) => new ValueDescription<string>( kvp.Key, kvp.Value ) );
 		}
 
@@ -37,7 +35,8 @@ namespace Twice.ViewModels.Settings
 
 		public Corner SelectedCorner
 		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _SelectedCorner; }
+			[System.Diagnostics.DebuggerStepThrough]
+			get { return _SelectedCorner; }
 			set
 			{
 				if( _SelectedCorner == value )
@@ -52,7 +51,8 @@ namespace Twice.ViewModels.Settings
 
 		public string SelectedDisplay
 		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _SelectedDisplay; }
+			[System.Diagnostics.DebuggerStepThrough]
+			get { return _SelectedDisplay; }
 			set
 			{
 				if( _SelectedDisplay == value )
@@ -67,8 +67,10 @@ namespace Twice.ViewModels.Settings
 
 		public override string Title => Strings.PopupNotification;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private Corner _SelectedCorner;
+		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		private Corner _SelectedCorner;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private string _SelectedDisplay;
+		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		private string _SelectedDisplay;
 	}
 }

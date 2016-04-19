@@ -1,14 +1,16 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
 using Twice.Models.Configuration;
 using Twice.Services.Views;
 
 namespace Twice.ViewModels
 {
-	/// <summary>Class containing commands that are available everywhere in the application.</summary>
+	/// <summary>
+	/// Class containing commands that are available everywhere in the application.
+	/// </summary>
 	internal class GlobalCommands
 	{
 		static GlobalCommands()
@@ -45,7 +47,9 @@ namespace Twice.ViewModels
 		public static ICommand CreateMuteCommand => _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
 		public static ICommand OpenProfileCommand => _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );
 
-		/// <summary>Command to open an URL in the default webbrowser.</summary>
+		/// <summary>
+		/// Command to open an URL in the default webbrowser.
+		/// </summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
 														( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
 

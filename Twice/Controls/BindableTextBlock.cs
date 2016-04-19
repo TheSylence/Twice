@@ -12,7 +12,9 @@ namespace Twice.Controls
 	[ExcludeFromCodeCoverage]
 	internal class BindableTextBlock : TextBlock
 	{
-		/// <summary>Called when the Elements property changed its value.</summary>
+		/// <summary>
+		/// Called when the Elements property changed its value.
+		/// </summary>
 		/// <param name="d">The object on which the property was chagned.</param>
 		/// <param name="e">
 		/// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
@@ -43,7 +45,9 @@ namespace Twice.Controls
 			}
 		}
 
-		/// <summary>Collection of Inlines this TextBox uses..</summary>
+		/// <summary>
+		/// Collection of Inlines this TextBox uses..
+		/// </summary>
 		public IEnumerable<Inline> Elements
 		{
 			get { return (IEnumerable<Inline>)GetValue( ElementsProperty ); }

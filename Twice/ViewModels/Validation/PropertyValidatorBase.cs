@@ -4,10 +4,8 @@
 	{
 		protected PropertyValidatorBase( bool isManual = false )
 		{
-
 			IsManual = isManual;
 		}
-		public bool IsManual { get; }
 
 		public void Clear()
 		{
@@ -19,5 +17,6 @@
 
 		public string Error { get; protected set; }
 		public bool HasError { get; protected set; }
+		public bool IsManual { get; }
 	}
 }

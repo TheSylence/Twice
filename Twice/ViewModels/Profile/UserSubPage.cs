@@ -1,12 +1,12 @@
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 
 namespace Twice.ViewModels.Profile
 {
-	class UserSubPage : ObservableObject
+	internal class UserSubPage : ObservableObject
 	{
 		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, int count )
 		{
@@ -60,11 +60,11 @@ namespace Twice.ViewModels.Profile
 
 		public string Title { get; private set; }
 
+		private readonly Func<Task<IEnumerable<object>>> LoadAction;
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
 
 		private List<object> _Items;
-
-		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 	}
 }

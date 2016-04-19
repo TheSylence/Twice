@@ -79,7 +79,7 @@
 
 													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"
 															Command="{Binding Data.SelectAccountCommand, Source={StaticResource DataProxy}}"
-															CommandParameter="{Binding Context.UserId}"/>
+															CommandParameter="{Binding Context.UserId}" />
 												</StackPanel>
 											</materialDesign:Card>
 										</DataTemplate>

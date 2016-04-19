@@ -1,5 +1,4 @@
 ﻿using System;
-using LinqToTwitter;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter

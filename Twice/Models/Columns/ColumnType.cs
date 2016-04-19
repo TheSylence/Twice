@@ -1,6 +1,6 @@
 namespace Twice.Models.Columns
 {
-	enum ColumnType
+	internal enum ColumnType
 	{
 		User,
 		Messages,

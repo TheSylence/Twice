@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {
@@ -22,6 +22,11 @@ namespace Twice.ViewModels.Wizards
 			return true;
 		}
 
+		protected virtual void ExecuteFinishCommand()
+		{
+			Close( true );
+		}
+
 		private bool CanExecuteGotoNextPageCommand()
 		{
 			return true;
@@ -30,11 +35,6 @@ namespace Twice.ViewModels.Wizards
 		private bool CanExecuteGotoPrevPageCommand()
 		{
 			return NavigationHistory.Count > 0;
-		}
-
-		protected virtual void ExecuteFinishCommand()
-		{
-			Close( true );
 		}
 
 		private void ExecuteGotoNextPageCommand()

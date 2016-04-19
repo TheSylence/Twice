@@ -6,12 +6,12 @@ namespace Twice.ViewModels.Settings
 {
 	internal interface IMuteSettings : ISettingsSection
 	{
-		MuteEntry SelectedEntry { get; set; }
 		ICommand AddCommand { get; }
 		ICommand EditCommand { get; }
-		ICollection<MuteEntry> Entries { get; }
-		ICommand RemoveCommand { get; }
-		string HelpDocument { get; }
 		IMuteEditViewModel EditData { get; }
+		ICollection<MuteEntry> Entries { get; }
+		string HelpDocument { get; }
+		ICommand RemoveCommand { get; }
+		MuteEntry SelectedEntry { get; set; }
 	}
 }

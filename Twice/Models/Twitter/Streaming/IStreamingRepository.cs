@@ -3,7 +3,7 @@ using Twice.Models.Columns;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	interface IStreamingRepository : IDisposable
+	internal interface IStreamingRepository : IDisposable
 	{
 		IStreamParser GetParser( ColumnDefinition column );
 	}

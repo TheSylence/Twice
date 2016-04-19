@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using LinqToTwitter;
+using System.Linq;
 using Twice.Models.Configuration;
 
 namespace Twice.Models.Twitter
@@ -30,7 +30,7 @@ namespace Twice.Models.Twitter
 
 		private static bool CheckMute( MuteEntry entry, Status status )
 		{
-			char[] typeIndicators = {'#', ':', '@'};
+			char[] typeIndicators = { '#', ':', '@' };
 			string value = entry.Filter;
 
 			char typeIndicator = value[0];

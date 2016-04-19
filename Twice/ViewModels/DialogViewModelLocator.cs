@@ -1,5 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using Ninject;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;

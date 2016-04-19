@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Akavache;
+﻿using Akavache;
 using Ninject.Modules;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;

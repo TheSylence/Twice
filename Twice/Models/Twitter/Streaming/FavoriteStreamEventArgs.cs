@@ -3,7 +3,9 @@ using LitJson;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	/// <summary>Arugments for a streaming event involing a favorite.</summary>
+	/// <summary>
+	/// Arugments for a streaming event involing a favorite.
+	/// </summary>
 	internal class FavoriteStreamEventArgs : EventStreamEventArgs
 	{
 		/// <summary>
@@ -25,7 +27,9 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		/// <summary>The target status.</summary>
+		/// <summary>
+		/// The target status.
+		/// </summary>
 		public Status TargetStatus { get; private set; }
 	}
 }

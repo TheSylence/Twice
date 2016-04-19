@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Fody;
+using LinqToTwitter;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;

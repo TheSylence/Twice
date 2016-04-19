@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -52,11 +52,6 @@ namespace Twice.Models.Twitter
 			ContextsChanged?.Invoke( this, EventArgs.Empty );
 		}
 
-		public void UpdateAllAccounts()
-		{
-			SaveToFile();
-		}
-
 		public void Dispose()
 		{
 			Dispose( true );
@@ -64,15 +59,20 @@ namespace Twice.Models.Twitter
 		}
 
 		/// <summary>
-		///     Only pass decrypted data to this method.
+		/// Only pass decrypted data to this method.
 		/// </summary>
 		/// <param name="data"></param>
 		public void UpdateAccount( TwitterAccountData data )
 		{
 			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
 			Contexts.Remove( context );
-			
+
 			Contexts.Add( new ContextEntry( Notifier, data ) );
+			SaveToFile();
+		}
+
+		public void UpdateAllAccounts()
+		{
 			SaveToFile();
 		}
 

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace Twice.Utilities
 {
 	/// <summary>
-	///     Class holding native interop methods.
+	/// Class holding native interop methods.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static class NativeMethods
@@ -16,34 +16,34 @@ namespace Twice.Utilities
 		public enum DisplayDeviceStateFlags
 		{
 			/// <summary>
-			///     The device is part of the desktop.
+			/// The device is part of the desktop.
 			/// </summary>
 			AttachedToDesktop = 0x1,
 
 			MultiDriver = 0x2,
 
 			/// <summary>
-			///     The device is part of the desktop.
+			/// The device is part of the desktop.
 			/// </summary>
 			PrimaryDevice = 0x4,
 
 			/// <summary>
-			///     Represents a pseudo device used to mirror application drawing for remoting or other purposes.
+			/// Represents a pseudo device used to mirror application drawing for remoting or other purposes.
 			/// </summary>
 			MirroringDriver = 0x8,
 
 			/// <summary>
-			///     The device is VGA compatible.
+			/// The device is VGA compatible.
 			/// </summary>
 			VGACompatible = 0x10,
 
 			/// <summary>
-			///     The device is removable; it cannot be the primary display.
+			/// The device is removable; it cannot be the primary display.
 			/// </summary>
 			Removable = 0x20,
 
 			/// <summary>
-			///     The device has more display modes than its output devices support.
+			/// The device has more display modes than its output devices support.
 			/// </summary>
 			ModesPruned = 0x8000000,
 
@@ -69,21 +69,27 @@ namespace Twice.Utilities
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Ansi )]
 		public struct DISPLAY_DEVICE
 		{
-			[MarshalAs( UnmanagedType.U4 )] public int cb;
+			[MarshalAs( UnmanagedType.U4 )]
+			public int cb;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 32 )] public string DeviceName;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 32 )]
+			public string DeviceName;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceString;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
+			public string DeviceString;
 
-			[MarshalAs( UnmanagedType.U4 )] public DisplayDeviceStateFlags StateFlags;
+			[MarshalAs( UnmanagedType.U4 )]
+			public DisplayDeviceStateFlags StateFlags;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceID;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
+			public string DeviceID;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceKey;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
+			public string DeviceKey;
 		}
 
 		/// <summary>
-		///     Prompt structure to be used for required parameters.
+		/// Prompt structure to be used for required parameters.
 		/// </summary>
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Unicode )]
 		internal struct CRYPTPROTECT_PROMPTSTRUCT
@@ -95,7 +101,7 @@ namespace Twice.Utilities
 		}
 
 		/// <summary>
-		///     BLOB structure used to pass data to DPAPI functions.
+		/// BLOB structure used to pass data to DPAPI functions.
 		/// </summary>
 		internal struct DATA_BLOB
 		{

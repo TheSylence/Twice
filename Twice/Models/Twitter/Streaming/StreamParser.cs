@@ -94,8 +94,6 @@ namespace Twice.Models.Twitter.Streaming
 				.ContinueWith( t => Connections.AddRange( t.Result ) );
 		}
 
-		public Task StreamingTask { get; private set; }
-
 		/// <summary>
 		/// Releases unmanaged and - optionally - managed resources.
 		/// </summary>
@@ -221,8 +219,9 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		private readonly IStreamingConnection Stream;
+		public Task StreamingTask { get; private set; }
 		private readonly List<IStreaming> Connections;
+		private readonly IStreamingConnection Stream;
 		private bool Started = false;
 	}
 }

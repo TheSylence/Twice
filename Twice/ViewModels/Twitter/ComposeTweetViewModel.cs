@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -6,10 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
@@ -50,7 +49,7 @@ namespace Twice.ViewModels.Twitter
 			Medias.Clear();
 			AttachedMedias.Clear();
 
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait(false) ).Select( u => u.Name ).ToList();
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
@@ -79,7 +78,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
 		}
-		
+
 		private bool CanExecuteSendTweetCommand()
 		{
 			if( IsSending )
@@ -108,7 +107,7 @@ namespace Twice.ViewModels.Twitter
 		private async void ExecuteAttachImageCommand()
 		{
 			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
-			var selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait(false);
+			var selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
 			if( selectedFile == null )
 			{
 				return;
@@ -138,7 +137,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			// TODO: Confirm removal
 			Medias.RemoveAll( m => m.MediaID == id );
-			for( int i=0; i<AttachedMedias.Count; ++i  )
+			for( int i = 0; i < AttachedMedias.Count; ++i )
 			{
 				if( AttachedMedias[i].MediaId == id )
 				{
@@ -161,7 +160,7 @@ namespace Twice.ViewModels.Twitter
 			{
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) ).ConfigureAwait(false);
+					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) ).ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{

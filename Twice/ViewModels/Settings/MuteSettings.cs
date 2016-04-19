@@ -1,11 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Resourcer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Resourcer;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Services.Views;

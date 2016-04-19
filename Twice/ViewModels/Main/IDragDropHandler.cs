@@ -2,8 +2,7 @@
 
 namespace Twice.ViewModels.Main
 {
-	interface IDragDropHandler : IDropTarget, IDragSource
+	internal interface IDragDropHandler : IDropTarget, IDragSource
 	{
-		
 	}
 }

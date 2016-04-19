@@ -1,9 +1,11 @@
-using System.Linq;
 using LitJson;
+using System.Linq;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	/// <summary>Arguments for a streaming event containing friends of the authorizing user.</summary>
+	/// <summary>
+	/// Arguments for a streaming event containing friends of the authorizing user.
+	/// </summary>
 	internal class FriendsStreamEventArgs : StreamEventArgs
 	{
 		/// <summary>
@@ -17,7 +19,9 @@ namespace Twice.Models.Twitter.Streaming
 			Friends = parsed.Cast<JsonData>().Select( j => (ulong)j ).ToArray();
 		}
 
-		/// <summary>IDs of the user's friends.</summary>
+		/// <summary>
+		/// IDs of the user's friends.
+		/// </summary>
 		public ulong[] Friends { get; private set; }
 	}
 }

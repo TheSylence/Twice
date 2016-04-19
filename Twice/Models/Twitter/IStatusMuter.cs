@@ -2,7 +2,7 @@ using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
-	interface IStatusMuter
+	internal interface IStatusMuter
 	{
 		bool IsMuted( Status status );
 	}

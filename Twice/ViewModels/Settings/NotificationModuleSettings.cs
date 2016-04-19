@@ -9,7 +9,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool Enabled
 		{
-			[System.Diagnostics.DebuggerStepThrough] get { return _Enabled; }
+			[System.Diagnostics.DebuggerStepThrough]
+			get { return _Enabled; }
 			set
 			{
 				if( _Enabled == value )
@@ -24,6 +25,7 @@ namespace Twice.ViewModels.Settings
 
 		public abstract string Title { get; }
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )] private bool _Enabled;
+		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		private bool _Enabled;
 	}
 }

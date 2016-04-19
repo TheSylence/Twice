@@ -3,7 +3,9 @@ using LitJson;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	/// <summary>Arguments for a streaming event associated with a direct message.</summary>
+	/// <summary>
+	/// Arguments for a streaming event associated with a direct message.
+	/// </summary>
 	internal class DirectMessageStreamEventArgs : StreamEventArgs
 	{
 		/// <summary>
@@ -16,7 +18,9 @@ namespace Twice.Models.Twitter.Streaming
 			Message = new DirectMessage( JsonMapper.ToObject( json ) );
 		}
 
-		/// <summary>The associated message.</summary>
+		/// <summary>
+		/// The associated message.
+		/// </summary>
 		public DirectMessage Message { get; private set; }
 	}
 }

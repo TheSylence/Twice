@@ -2,9 +2,8 @@
 
 namespace Twice.Services.Views
 {
-
 	[ExcludeFromCodeCoverage]
-	class FileServiceArgs
+	internal class FileServiceArgs
 	{
 		public FileServiceArgs( params string[] fileTypes )
 		{

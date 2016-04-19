@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Anotar.NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Anotar.NLog;
 
 namespace Twice.Utilities
 {
 	[ExcludeFromCodeCoverage]
 	internal class DisplayHelper
 	{
-		public static IEnumerable<KeyValuePair<string,string>> GetAvailableDisplays()
+		public static IEnumerable<KeyValuePair<string, string>> GetAvailableDisplays()
 		{
 			Dictionary<string, string> result = new Dictionary<string, string>();
 

@@ -1,19 +1,17 @@
-using System.Diagnostics.CodeAnalysis;
 using Ninject.Activation;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 
 namespace Twice.Injections
 {
 	[ExcludeFromCodeCoverage]
-	class ColumnDefinitionListProvider : Provider<IColumnDefinitionList>
+	internal class ColumnDefinitionListProvider : Provider<IColumnDefinitionList>
 	{
 		/// <summary>
 		/// Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context">The context.</param>
-		/// <returns>
-		/// The created instance.
-		/// </returns>
+		/// <returns>The created instance.</returns>
 		protected override IColumnDefinitionList CreateInstance( IContext context )
 		{
 			return new ColumnDefinitionList( Constants.IO.ColumnDefintionFileName );
