@@ -10,6 +10,7 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
+using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -58,7 +59,7 @@ namespace Twice.ViewModels.Columns
 			SinceId = Math.Min( SinceId, status.Id );
 			MaxId = Math.Min( MaxId, status.Id );
 
-			await DispatcherHelper.RunAsync( () =>
+			await Dispatcher.RunAsync( () =>
 			{
 				if( append )
 				{
@@ -88,15 +89,14 @@ namespace Twice.ViewModels.Columns
 
 					if( append )
 					{
-						await DispatcherHelper.RunAsync( () => StatusCollection.Add( s ) );
+						await Dispatcher.RunAsync( () => StatusCollection.Add( s ) );
 					}
 					else
 					{
-						await DispatcherHelper.RunAsync( () => StatusCollection.Insert( 0, s ) );
+						await Dispatcher.RunAsync( () => StatusCollection.Insert( 0, s ) );
 					}
 				}
-
-				//await DispatcherHelper.RunAsync( () => StatusCollection.AddRange( statusViewModels ) );
+				
 				RaiseNewStatus( statusViewModels.Last() );
 			}
 		}
@@ -183,10 +183,7 @@ namespace Twice.ViewModels.Columns
 				var userList = string.Join( ",", completeList.Take( 100 ) );
 				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
 
-				var userData =
-					await
-						Context.Twitter.User.Where(
-							s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
+				var userData = await Context.Twitter.LookupUsers( userList );
 				usersToAdd.AddRange( userData );
 			}
 
@@ -249,6 +246,9 @@ namespace Twice.ViewModels.Columns
 				} );
 			} );
 		}
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
 

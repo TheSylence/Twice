@@ -145,6 +145,7 @@
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="MockExtensions.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />

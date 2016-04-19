@@ -25,5 +25,7 @@ namespace Twice.Models.Twitter
 		ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
 		ITwitterQueryable<User> User { get; }
 		Task<Status> RetweetAsync( ulong statusID );
+
+		Task<List<User>> LookupUsers( string userList );
 	}
 }

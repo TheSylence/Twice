@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LinqToTwitter;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Twitter
 {
@@ -41,6 +42,16 @@ namespace Twice.Models.Twitter
 			Context.Dispose();
 		}
 
+		public Task<List<User>> LookupUsers( string userList )
+		{
+			return User.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
+		}
+
+		public Task<Status> RetweetAsync( ulong statusID )
+		{
+			return Context.RetweetAsync( statusID );
+		}
+
 		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias )
 		{
 			return Context.TweetAsync( text, medias );
@@ -56,11 +67,6 @@ namespace Twice.Models.Twitter
 		public ITwitterQueryable<Status> Status { get; }
 		public ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
 		public ITwitterQueryable<User> User { get; }
-		public Task<Status> RetweetAsync( ulong statusID )
-		{
-			return Context.RetweetAsync( statusID );
-		}
-
 		private readonly TwitterContext Context;
 	}
 }
