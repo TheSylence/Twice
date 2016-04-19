@@ -10,6 +10,54 @@ namespace Twice.Tests.ViewModels.Settings
 	public class NotificationSettingsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public void DisablingNotificationRemovesFromCollection()
+		{
+			// Arrange
+			var notifi = new NotificationConfig
+			{
+				PopupEnabled = true,
+				SoundEnabled = true,
+				ToastsEnabled = true
+			};
+
+			var cfg = new Mock<IConfig>();
+			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
+
+			var vm = new NotificationSettings( cfg.Object );
+
+			// Act
+			vm.AvailableNotifications.First().Enabled = false;
+
+			// Assert
+			Assert.AreEqual( 2, vm.EnabledNotifications.Count );
+			CollectionAssert.DoesNotContain( vm.EnabledNotifications.ToArray(), vm.AvailableNotifications.First() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public void EnablingNotificationAddsToCollection()
+		{
+			// Arrange
+			var notifi = new NotificationConfig
+			{
+				PopupEnabled = false,
+				SoundEnabled = false,
+				ToastsEnabled = false
+			};
+
+			var cfg = new Mock<IConfig>();
+			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
+
+			var vm = new NotificationSettings( cfg.Object );
+
+			// Act
+			vm.AvailableNotifications.First().Enabled = true;
+
+			// Assert
+			Assert.AreEqual( 1, vm.EnabledNotifications.Count );
+			CollectionAssert.Contains( vm.EnabledNotifications.ToArray(), vm.AvailableNotifications.First() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void SavedValuesAreAppliedDuringConstruction()
 		{
 			// Arrange
