@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -7,6 +8,7 @@ using Twice.ViewModels.Columns;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class ColumnHandler : Behavior<ItemsControl>
 	{
 		private static void OnDispatcherChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
