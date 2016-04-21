@@ -125,9 +125,6 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus()
 			};
 
-			var statusQuery = new Mock<ITwitterQueryable<Status>>();
-			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
-
 			var twitterContext = new Mock<ITwitterContext>();
 
 			var statusRepo = new Mock<ITwitterStatusRepository>();
@@ -166,10 +163,7 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			var waitHandle = new ManualResetEvent( false );
-
-			var statusQuery = new Mock<ITwitterQueryable<Status>>();
-			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
-
+			
 			var twitterContext = new Mock<ITwitterContext>();
 
 			var statusRepo = new Mock<ITwitterStatusRepository>();
@@ -477,9 +471,6 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			var waitHandle = new ManualResetEvent( false );
-
-			var statusQuery = new Mock<ITwitterQueryable<Status>>();
-			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
 
 			var twitterContext = new Mock<ITwitterContext>();
 
