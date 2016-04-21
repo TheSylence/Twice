@@ -20,6 +20,13 @@ namespace Twice.Models.Twitter
 			return Queryable.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
 		}
 
+		public Task<User> ShowUser( ulong userId, bool includeEntities )
+		{
+			return
+				Queryable.Where( s => s.UserID == userId && s.IncludeEntities == includeEntities && s.Type == UserType.Show )
+					.SingleOrDefaultAsync();
+		}
+
 		public ITwitterQueryable<User> Queryable { get; }
 	}
 }

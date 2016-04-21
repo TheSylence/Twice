@@ -33,12 +33,10 @@ namespace Twice.Converters
 			Status tweet = value as Status;
 			if( tweet == null )
 			{
-				throw new ArgumentException( @"Value is not an ITweet object", nameof( value ) );
+				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
 			}
-
-			IEnumerable<Inline> inlines = GenerateInlines( tweet ).ToArray();
-
-			return inlines;
+			
+			return GenerateInlines( tweet ).ToArray();
 		}
 
 		/// <summary>
@@ -136,14 +134,14 @@ namespace Twice.Converters
 			entities = entities.Concat( tweet.Entities.UrlEntities );
 			entities = entities.Concat( tweet.Entities.UserMentionEntities );
 
-			entities = entities.OrderBy( e => e.Start );
+			var allEntities = entities.OrderBy( e => e.Start ).ToArray();
 			List<Inline> mediaPreviews = new List<Inline>();
 
-			if( entities.Any() )
+			if( allEntities.Any() )
 			{
 				int lastEnd = 0;
 
-				foreach( EntityBase entity in entities )
+				foreach( EntityBase entity in allEntities )
 				{
 					if( entity.Start > lastEnd )
 					{
@@ -245,8 +243,6 @@ namespace Twice.Converters
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
-		[SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-			MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
 		private static Inline GenerateMention( UserMentionEntity entity )
 		{
 			Hyperlink link = new Hyperlink();

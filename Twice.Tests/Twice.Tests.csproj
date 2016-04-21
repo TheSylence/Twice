@@ -121,6 +121,7 @@
       <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -143,6 +144,7 @@
     <Compile Include="Converters\InvertBoolTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
+    <Compile Include="Converters\StatusHighlighterTests.cs" />
     <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="MockExtensions.cs" />

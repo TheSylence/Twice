@@ -25,7 +25,7 @@ namespace Twice.ViewModels.Profile
 			Context = ContextList.Contexts.First();
 
 			// ReSharper disable once RedundantBoolCompare
-			var user = await Context.Twitter.Users.Queryable.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
+			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
 			if( user == null )
 			{
 				// TODO: Handle errors
@@ -33,7 +33,7 @@ namespace Twice.ViewModels.Profile
 			}
 
 			User = new UserViewModel( user );
-			Friendship = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.Show && f.SourceUserID == Context.UserId && f.TargetUserID == User.UserID ).SingleOrDefaultAsync();
+			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserID );
 
 			UserPages = new List<UserSubPage>
 			{
@@ -54,7 +54,7 @@ namespace Twice.ViewModels.Profile
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
 			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
-			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FollowersList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}
@@ -62,7 +62,7 @@ namespace Twice.ViewModels.Profile
 		private async Task<IEnumerable<object>> LoadFollowings()
 		{
 			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
-			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FriendsList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}

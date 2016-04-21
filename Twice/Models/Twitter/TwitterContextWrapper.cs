@@ -12,9 +12,9 @@ namespace Twice.Models.Twitter
 
 			Users = new TwitterUserRepository( context );
 			Statuses = new TwitterStatusRepository( context );
+			Friendships = new TwitterFriendshipRepository( context );
 
 			Streaming = new TwitterQueryableWrapper<LinqToTwitter.Streaming>( context.Streaming );
-			Friendship = new TwitterQueryableWrapper<Friendship>( context.Friendship );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userID, string screenName, bool skipStatus )
@@ -58,7 +58,7 @@ namespace Twice.Models.Twitter
 		}
 
 		public IAuthorizer Authorizer => Context.Authorizer;
-		public ITwitterQueryable<Friendship> Friendship { get; }
+		public ITwitterFriendshipRepository Friendships { get; }
 		public ITwitterStatusRepository Statuses { get; }
 		public ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
 		public ITwitterUserRepository Users { get; }
