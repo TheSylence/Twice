@@ -25,7 +25,7 @@ namespace Twice.ViewModels.Profile
 			Context = ContextList.Contexts.First();
 
 			// ReSharper disable once RedundantBoolCompare
-			var user = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
+			var user = await Context.Twitter.Users.Queryable.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
 			if( user == null )
 			{
 				// TODO: Handle errors
@@ -77,11 +77,11 @@ namespace Twice.ViewModels.Profile
 			{
 				ulong since = cached.Max( c => c.StatusID );
 
-				newStatuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == User.UserID && s.SinceID == since ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.Queryable.Where( s => s.Type == StatusType.User && s.UserID == User.UserID && s.SinceID == since ).ToListAsync();
 			}
 			else
 			{
-				newStatuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == User.UserID ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.Queryable.Where( s => s.Type == StatusType.User && s.UserID == User.UserID ).ToListAsync();
 			}
 
 			return cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select( s => new StatusViewModel( s, Context ) );

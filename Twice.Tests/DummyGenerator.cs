@@ -1,13 +1,9 @@
-﻿using System;
+﻿using LinqToTwitter;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LinqToTwitter;
 
 namespace Twice.Tests
 {
-	static class DummyGenerator
+	internal static class DummyGenerator
 	{
 		internal static Status CreateDummyStatus( User user = null )
 		{
@@ -15,7 +11,15 @@ namespace Twice.Tests
 
 			return new Status
 			{
-				User = user
+				User = user,
+				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>(),
+					MediaEntities = new List<MediaEntity>(),
+					SymbolEntities = new List<SymbolEntity>(),
+					UrlEntities = new List<UrlEntity>(),
+					UserMentionEntities = new List<UserMentionEntity>()
+				}
 			};
 		}
 

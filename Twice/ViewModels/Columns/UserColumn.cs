@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Columns
 
 		protected override async Task OnLoad()
 		{
-			var userInfo = await Context.Twitter.User.Where( u => u.UserID == UserId && u.Type == UserType.Show ).FirstAsync();
+			var userInfo = await Context.Twitter.Users.Queryable.Where( u => u.UserID == UserId && u.Type == UserType.Show ).FirstAsync();
 			Title = userInfo.ScreenNameResponse;
 
 			await base.OnLoad();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Twice.Models.Cache;
@@ -6,20 +7,14 @@ using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
+using Twice.Utilities;
 
 namespace Twice.ViewModels.Columns
 {
 	internal class ColumnFactory : IColumnFactory
 	{
-		public ColumnFactory( ITwitterContextList contexts, IStatusMuter muter, IConfig config, IStreamingRepository streamingRepo,
-			IDataCache cache )
+		public ColumnFactory()
 		{
-			Cache = cache;
-			Configuration = config;
-			Muter = muter;
-			Contexts = contexts;
-			StreamingRepo = streamingRepo;
-
 			FactoryMap = new Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>>
 			{
 				{ColumnType.User, UserColumn},
@@ -54,6 +49,7 @@ namespace Twice.ViewModels.Columns
 				column.Width = def.Width;
 				column.Muter = Muter;
 				column.Cache = Cache;
+				column.Dispatcher = Dispatcher;
 
 				return column;
 			}
@@ -76,12 +72,25 @@ namespace Twice.ViewModels.Columns
 			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
-		private readonly IDataCache Cache;
-		private readonly IConfig Configuration;
-		private readonly ITwitterContextList Contexts;
+		[Inject]
+		public IDataCache Cache { get; set; }
+
+		[Inject]
+		public IConfig Configuration { get; set; }
+
+		[Inject]
+		public ITwitterContextList Contexts { get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
+		[Inject]
+		public IStatusMuter Muter { get; set; }
+
+		[Inject]
+		public IStreamingRepository StreamingRepo { get; set; }
+
 		private readonly Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>> FactoryMap;
-		private readonly IStatusMuter Muter;
-		private readonly IStreamingRepository StreamingRepo;
 
 		private class ColumnArgumentsData
 		{

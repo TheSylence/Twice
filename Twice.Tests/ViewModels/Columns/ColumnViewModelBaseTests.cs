@@ -3,7 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -103,6 +106,91 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.IsTrue( raised );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public async Task InitialLoadingAddsStatuses()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+
+			var statuses = new List<Status>
+			{
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus()
+			};
+
+			var statusQuery = new Mock<ITwitterQueryable<Status>>();
+			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
+
+			var twitterContext = new Mock<ITwitterContext>();
+
+			var statusRepo = new Mock<ITwitterStatusRepository>();
+			statusRepo.Setup( s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
+			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
+			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+			var muter = new Mock<IStatusMuter>();
+			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
+			vm.Muter = muter.Object;
+			vm.Dispatcher = new SyncDispatcher();
+
+			// Act
+			await vm.Load();
+
+			// Assert
+			Assert.AreEqual( 3, vm.Statuses.Count );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void LoadingMoreDataAddsStatuses()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			var parser = new Mock<IStreamParser>();
+
+			var statuses = new List<Status>
+			{
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus()
+			};
+
+			var waitHandle = new ManualResetEvent( false );
+
+			var statusQuery = new Mock<ITwitterQueryable<Status>>();
+			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
+
+			var twitterContext = new Mock<ITwitterContext>();
+
+			var statusRepo = new Mock<ITwitterStatusRepository>();
+			statusRepo.Setup( s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
+			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
+			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+			var muter = new Mock<IStatusMuter>();
+			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
+			vm.Muter = muter.Object;
+			vm.Dispatcher = new SyncDispatcher();
+
+			vm.NewStatus += ( s, e ) => waitHandle.Set();
+
+			// Act
+			vm.ActionDispatcher.OnBottomReached();
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			Assert.AreEqual( 3, vm.Statuses.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -347,7 +435,9 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			var twitterContext = new Mock<ITwitterContext>();
-			twitterContext.Setup( t => t.LookupUsers( "123,456,789" ) ).Returns( Task.FromResult( userList ) );
+			var userRepo = new Mock<ITwitterUserRepository>();
+			userRepo.Setup( t => t.LookupUsers( "123,456,789" ) ).Returns( Task.FromResult( userList ) );
+			twitterContext.SetupGet( c => c.Users ).Returns( userRepo.Object );
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Twitter ).Returns( twitterContext.Object );
@@ -367,6 +457,51 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			cache.Verify( c => c.AddUser( It.IsAny<ulong>(), It.IsAny<string>() ), Times.Exactly( 3 ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void RefereshingDataAddsStatuses()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			var parser = new Mock<IStreamParser>();
+
+			var statuses = new List<Status>
+			{
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus(),
+				DummyGenerator.CreateDummyStatus()
+			};
+
+			var waitHandle = new ManualResetEvent( false );
+
+			var statusQuery = new Mock<ITwitterQueryable<Status>>();
+			statusQuery.SetupIQueryable( statuses.AsQueryable(), new TwitterQueryProvider() );
+
+			var twitterContext = new Mock<ITwitterContext>();
+
+			var statusRepo = new Mock<ITwitterStatusRepository>();
+			statusRepo.Setup( s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
+			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
+			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+			var muter = new Mock<IStatusMuter>();
+			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
+			vm.Muter = muter.Object;
+			vm.Dispatcher = new SyncDispatcher();
+
+			vm.NewStatus += ( s, e ) => waitHandle.Set();
+
+			// Act
+			vm.ActionDispatcher.OnHeaderClicked();
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			Assert.AreEqual( 3, vm.Statuses.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

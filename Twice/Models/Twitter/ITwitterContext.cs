@@ -15,8 +15,6 @@ namespace Twice.Models.Twitter
 
 		Task<Status> DestroyFavoriteAsync( ulong statusID );
 
-		Task<List<User>> LookupUsers( string userList );
-
 		Task<Status> RetweetAsync( ulong statusID );
 
 		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
@@ -25,8 +23,8 @@ namespace Twice.Models.Twitter
 
 		IAuthorizer Authorizer { get; }
 		ITwitterQueryable<Friendship> Friendship { get; }
-		ITwitterQueryable<Status> Status { get; }
 		ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
-		ITwitterQueryable<User> User { get; }
+		ITwitterUserRepository Users { get; }
+		ITwitterStatusRepository Statuses { get; }
 	}
 }

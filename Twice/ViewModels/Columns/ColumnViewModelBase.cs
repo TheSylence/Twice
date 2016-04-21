@@ -124,10 +124,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task LoadMoreData()
 		{
-			var query = Context.Twitter.Status.Where( StatusFilterExpression );
-			query = query.Where( MaxIdFilterExpression );
-
-			var statuses = await query.ToListAsync();
+			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, MaxIdFilterExpression );
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 
 			await AddStatuses( list );
@@ -135,10 +132,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task LoadTopData()
 		{
-			var query = Context.Twitter.Status.Where( StatusFilterExpression );
-			query = query.Where( SinceIdFilterExpression );
-
-			var statuses = await query.ToListAsync();
+			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, SinceIdFilterExpression );
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) ).Reverse();
 
 			await AddStatuses( list, false );
@@ -146,7 +140,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task OnLoad()
 		{
-			var statuses = await Context.Twitter.Status.Where( StatusFilterExpression ).ToListAsync();
+			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression );
 			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
 
 			await AddStatuses( list );
@@ -202,7 +196,7 @@ namespace Twice.ViewModels.Columns
 				var userList = string.Join( ",", completeList.Take( 100 ) );
 				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
 
-				var userData = await Context.Twitter.LookupUsers( userList );
+				var userData = await Context.Twitter.Users.LookupUsers( userList );
 				usersToAdd.AddRange( userData );
 			}
 

@@ -262,6 +262,8 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Twitter\ITwitterStatusRepository.cs" />
+    <Compile Include="Models\Twitter\ITwitterUserRepository.cs" />
     <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
@@ -286,6 +288,9 @@
     <Compile Include="Injections\TwitterContextListProvider.cs" />
     <Compile Include="Models\Twitter\TwitterContextWrapper.cs" />
     <Compile Include="Models\Twitter\TwitterQueryableWrapper.cs" />
+    <Compile Include="Models\Twitter\TwitterRepositoryBase.cs" />
+    <Compile Include="Models\Twitter\TwitterStatusRepository.cs" />
+    <Compile Include="Models\Twitter\TwitterUserRepository.cs" />
     <Compile Include="Obscurity.cs" />
     <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />

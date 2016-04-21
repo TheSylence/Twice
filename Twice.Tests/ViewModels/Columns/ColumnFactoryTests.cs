@@ -31,14 +31,17 @@ namespace Twice.Tests.ViewModels.Columns
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
 
 			var parser = new Mock<IStreamParser>();
-
-			var muter = new Mock<IStatusMuter>();
+			
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
 			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) ).Returns( parser.Object );
-			var cache = new Mock<IDataCache>();
-			var factory = new ColumnFactory( contexts.Object, muter.Object, config.Object, streamingRepo.Object, cache.Object );
+			var factory = new ColumnFactory
+			{
+				Contexts = contexts.Object,
+				StreamingRepo = streamingRepo.Object,
+				Configuration = config.Object
+			};
 
 			var testCases = new Dictionary<ColumnType, Type>
 			{
@@ -76,13 +79,16 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var contexts = new Mock<ITwitterContextList>();
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
-
-			var muter = new Mock<IStatusMuter>();
+			
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
-			var cache = new Mock<IDataCache>();
-			var factory = new ColumnFactory( contexts.Object, muter.Object, config.Object, streamingRepo.Object, cache.Object );
+			var factory = new ColumnFactory
+			{
+				Contexts = contexts.Object,
+				StreamingRepo = streamingRepo.Object,
+				Configuration = config.Object
+			};
 
 			// Act
 			var constructed = factory.Construct( new ColumnDefinition( ColumnType.User )
@@ -111,14 +117,17 @@ namespace Twice.Tests.ViewModels.Columns
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
 
 			var parser = new Mock<IStreamParser>();
-
-			var muter = new Mock<IStatusMuter>();
+			
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
 			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) ).Returns( parser.Object );
-			var cache = new Mock<IDataCache>();
-			var factory = new ColumnFactory( contexts.Object, muter.Object, config.Object, streamingRepo.Object, cache.Object );
+			var factory = new ColumnFactory
+			{
+				Contexts = contexts.Object,
+				StreamingRepo = streamingRepo.Object,
+				Configuration = config.Object
+			};
 
 			// Act
 			var constructed = factory.Construct( new ColumnDefinition( ColumnType.DebugOrTest )

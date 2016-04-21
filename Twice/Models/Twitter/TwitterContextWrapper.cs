@@ -1,6 +1,5 @@
 using LinqToTwitter;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Twice.Models.Twitter
@@ -11,9 +10,10 @@ namespace Twice.Models.Twitter
 		{
 			Context = context;
 
+			Users = new TwitterUserRepository( context );
+			Statuses = new TwitterStatusRepository( context );
+
 			Streaming = new TwitterQueryableWrapper<LinqToTwitter.Streaming>( context.Streaming );
-			Status = new TwitterQueryableWrapper<Status>( context.Status );
-			User = new TwitterQueryableWrapper<User>( context.User );
 			Friendship = new TwitterQueryableWrapper<Friendship>( context.Friendship );
 		}
 
@@ -42,11 +42,6 @@ namespace Twice.Models.Twitter
 			Context.Dispose();
 		}
 
-		public Task<List<User>> LookupUsers( string userList )
-		{
-			return User.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false ).ToListAsync();
-		}
-
 		public Task<Status> RetweetAsync( ulong statusID )
 		{
 			return Context.RetweetAsync( statusID );
@@ -64,9 +59,9 @@ namespace Twice.Models.Twitter
 
 		public IAuthorizer Authorizer => Context.Authorizer;
 		public ITwitterQueryable<Friendship> Friendship { get; }
-		public ITwitterQueryable<Status> Status { get; }
+		public ITwitterStatusRepository Statuses { get; }
 		public ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
-		public ITwitterQueryable<User> User { get; }
+		public ITwitterUserRepository Users { get; }
 		private readonly TwitterContext Context;
 	}
 }
