@@ -21,7 +21,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<DockPanel>
-			<materialDesign:PackIcon DockPanel.Dock="Left" Height="24" Width="24" Margin="5"
+			<materialDesign:PackIcon DockPanel.Dock="Left" Height="24" Width="24" Margin="3,5"
 									 VerticalAlignment="Center"
 									 Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 
