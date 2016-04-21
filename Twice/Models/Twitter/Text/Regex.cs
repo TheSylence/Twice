@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+// ReSharper disable All
 
 namespace Twice.Models.Twitter.Text
 {
