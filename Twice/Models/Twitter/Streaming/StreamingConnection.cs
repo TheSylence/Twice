@@ -15,7 +15,7 @@ namespace Twice.Models.Twitter.Streaming
 			Wrapped = obj;
 		}
 
-		public async Task<List<IStreaming>> Start( Func<StreamContent, Task> callback )
+		public async Task<List<IStreaming>> Start( Func<IStreamContent, Task> callback )
 		{
 			var toWrap = await Wrapped.StartAsync( callback );
 

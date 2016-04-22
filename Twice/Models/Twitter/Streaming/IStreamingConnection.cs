@@ -7,6 +7,6 @@ namespace Twice.Models.Twitter.Streaming
 {
 	internal interface IStreamingConnection
 	{
-		Task<List<IStreaming>> Start( Func<StreamContent, Task> callback );
+		Task<List<IStreaming>> Start( Func<IStreamContent, Task> callback );
 	}
 }

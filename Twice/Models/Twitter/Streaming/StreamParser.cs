@@ -162,6 +162,7 @@ namespace Twice.Models.Twitter.Streaming
 		{
 			if( string.IsNullOrEmpty( content.Content ) )
 			{
+				LogTo.Trace( "Received Keep-Alive on streaming connection" );
 				return;
 			}
 

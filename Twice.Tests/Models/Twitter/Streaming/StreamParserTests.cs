@@ -25,7 +25,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			};
 
 			var userStream = new Mock<IStreamingConnection>();
-			userStream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) ).Returns( Task.FromResult( streamingList ) );
+			userStream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) ).Returns( Task.FromResult( streamingList ) );
 
 			var parser = StreamParser.Create( userStream.Object );
 
@@ -48,7 +48,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
 			var stream = new Mock<IStreamingConnection>();
-			stream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
@@ -70,7 +70,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
 			var stream = new Mock<IStreamingConnection>();
-			stream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
@@ -102,7 +102,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
 			var stream = new Mock<IStreamingConnection>();
-			stream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
@@ -135,7 +135,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
 			var stream = new Mock<IStreamingConnection>();
-			stream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
@@ -168,7 +168,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
 			var stream = new Mock<IStreamingConnection>();
-			stream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
@@ -196,7 +196,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		{
 			// Arrange
 			var userStream = new Mock<IStreamingConnection>();
-			userStream.Setup( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ) )
+			userStream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) ).Verifiable();
 
 			var parser = StreamParser.Create( userStream.Object );
@@ -206,7 +206,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			parser.StartStreaming();
 
 			// Assert
-			userStream.Verify( s => s.Start( It.IsAny<Func<StreamContent, Task>>() ), Times.AtMostOnce() );
+			userStream.Verify( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ), Times.AtMostOnce() );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
