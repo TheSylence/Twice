@@ -3,6 +3,7 @@ using System.Linq;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 
 namespace Twice.ViewModels.Settings
 {

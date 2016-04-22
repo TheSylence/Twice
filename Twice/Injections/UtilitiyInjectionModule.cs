@@ -1,6 +1,8 @@
 ﻿using Ninject.Modules;
 using System.Diagnostics.CodeAnalysis;
 using Twice.Utilities;
+using Twice.Utilities.Os;
+using Twice.Utilities.Ui;
 
 namespace Twice.Injections
 {
@@ -16,6 +18,7 @@ namespace Twice.Injections
 			Bind<ILanguageProvider>().To<LanguageProvider>();
 			Bind<IDispatcher>().To<DispatcherHelperWrapper>().InSingletonScope();
 			Bind<IFileSystem>().To<FileSystem>();
+			Bind<ITimerFactory>().To<TimerFactory>();
 		}
 	}
 }

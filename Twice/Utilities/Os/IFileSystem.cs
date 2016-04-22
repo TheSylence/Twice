@@ -1,4 +1,4 @@
-﻿namespace Twice.Utilities
+﻿namespace Twice.Utilities.Os
 {
 	internal interface IFileSystem
 	{

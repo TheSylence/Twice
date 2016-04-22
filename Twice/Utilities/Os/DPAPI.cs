@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Os
 {
 	/// <summary>
 	/// Encrypts and decrypts data using DPAPI functions.

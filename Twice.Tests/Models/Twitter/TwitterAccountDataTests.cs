@@ -2,6 +2,7 @@
 using System;
 using Twice.Models.Twitter;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 
 namespace Twice.Tests.Models.Twitter
 {

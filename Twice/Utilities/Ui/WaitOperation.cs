@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
 	internal class WaitOperation : IDisposable

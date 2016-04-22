@@ -5,6 +5,7 @@ using System.Windows.Media;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
 {

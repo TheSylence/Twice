@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 
 namespace Twice.ViewModels.Twitter
 {

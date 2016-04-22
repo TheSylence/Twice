@@ -4,19 +4,20 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
+using Twice.Utilities;
 using Twice.ViewModels.Wizards;
 
 namespace Twice.ViewModels.ColumnManagement
 {
 	internal class AddColumnDialogViewModel : WizardViewModel, IAddColumnDialogViewModel
 	{
-		public AddColumnDialogViewModel( ITwitterContextList contextList, IColumnDefinitionList columnList )
+		public AddColumnDialogViewModel( ITwitterContextList contextList, IColumnDefinitionList columnList, ITimerFactory timerFactory )
 		{
 			ColumnList = columnList;
 
 			Pages.Add( 0, new ColumnTypeSelctorPage() );
 			Pages.Add( 1, new SourceAccountSelectorPage( contextList ) );
-			Pages.Add( 2, new UserSelectorPage() );
+			Pages.Add( 2, new UserSelectorPage( contextList, timerFactory ) );
 			Pages.Add( 3, new FinishPage() );
 
 			SetProperty( SourceAccountsKey, new ulong[0] );

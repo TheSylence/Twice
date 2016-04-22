@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Os
 {
 	/// <summary>
 	/// Class holding native interop methods.

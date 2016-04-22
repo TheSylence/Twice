@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Os
 {
 	[ExcludeFromCodeCoverage]
 	internal class FileSystem : IFileSystem

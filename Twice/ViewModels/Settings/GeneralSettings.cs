@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Twice.Models.Configuration;
 using Twice.Utilities;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
 {

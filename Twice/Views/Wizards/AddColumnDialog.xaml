@@ -13,12 +13,14 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:vm="clr-namespace:Twice.ViewModels"
         DataContext="{Binding AddColumn, Source={StaticResource DialogLocator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         Title="{lex:Loc AddColumn}" Height="400" Width="600">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
+		<!--<behaviors:StaticWindow />-->
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.LeftWindowCommands>
@@ -86,6 +88,79 @@
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
 							</StackPanel>
+						</DataTemplate>
+					</views:GenericDataTemplateSelectorItem>
+					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:UserSelectorPage">
+						<DataTemplate DataType="columnManagement:UserSelectorPage">
+							<DockPanel>
+								<TextBox materialDesign:TextFieldAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
+										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+								<Grid>
+									<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+										<ItemsControl ItemsSource="{Binding Users}">
+											<ItemsControl.ItemsPanel>
+												<ItemsPanelTemplate>
+													<StackPanel Orientation="Vertical" />
+												</ItemsPanelTemplate>
+											</ItemsControl.ItemsPanel>
+											<ItemsControl.ItemTemplate>
+												<DataTemplate DataType="twitter:UserViewModel">
+													<materialDesign:Card Margin="5">
+														<Grid>
+															<Grid.RowDefinitions>
+																<RowDefinition Height="Auto" />
+																<RowDefinition />
+															</Grid.RowDefinitions>
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition Width="Auto" />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+
+															<StackPanel Orientation="Vertical"  Grid.RowSpan="2">
+																<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="52" Height="52" VerticalAlignment="Top" Margin="5" />
+																<Button CommandParameter="{Binding UserID}"
+																	HorizontalAlignment="Center" Margin="3">
+																	<DockPanel>
+																		<materialDesign:PackIcon Kind="Plus" />
+																		<TextBlock Text="{lex:Loc Add}" Margin="5,0" />
+																	</DockPanel>
+																</Button>
+															</StackPanel>
+
+															<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5" Grid.Row="0" Grid.Column="1">
+																<StackPanel.Resources>
+																	<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+																		<Style.Triggers>
+																			<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
+																				<Setter Property="TextDecorations" Value="Underline" />
+																			</DataTrigger>
+																		</Style.Triggers>
+																	</Style>
+																</StackPanel.Resources>
+																<i:Interaction.Triggers>
+																	<i:EventTrigger EventName="MouseDown">
+																		<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
+																	</i:EventTrigger>
+																</i:Interaction.Triggers>
+																<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+																<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+							VerticalAlignment="Center" />
+															</StackPanel>
+
+															<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
+																	TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}" />
+														</Grid>
+													</materialDesign:Card>
+												</DataTemplate>
+											</ItemsControl.ItemTemplate>
+										</ItemsControl>
+									</ScrollViewer>
+
+									<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+								</Grid>
+							</DockPanel>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>
 					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:FinishPage">

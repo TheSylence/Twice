@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WPFLocalizeExtension.Engine;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
 	internal class LanguageProvider : ILanguageProvider

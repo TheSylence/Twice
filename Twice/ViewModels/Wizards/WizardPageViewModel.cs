@@ -1,6 +1,8 @@
+using GalaSoft.MvvmLight;
+
 namespace Twice.ViewModels.Wizards
 {
-	internal abstract class WizardPageViewModel
+	internal abstract class WizardPageViewModel : ObservableObject
 	{
 		public virtual bool CanNavigateForward()
 		{

@@ -1,10 +1,10 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using Anotar.NLog;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Os
 {
 	[ExcludeFromCodeCoverage]
 	internal class DisplayHelper

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Ui
 {
 	internal interface IDispatcher
 	{

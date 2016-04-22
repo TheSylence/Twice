@@ -3,6 +3,7 @@ using Moq;
 using System;
 using Twice.Models.Twitter;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter

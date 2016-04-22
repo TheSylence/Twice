@@ -1,9 +1,9 @@
-using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Threading;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
 	internal class DispatcherHelperWrapper : IDispatcher

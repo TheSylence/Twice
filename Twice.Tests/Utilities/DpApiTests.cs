@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 
 namespace Twice.Tests.Utilities
 {

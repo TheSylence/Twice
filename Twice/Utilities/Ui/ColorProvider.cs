@@ -1,12 +1,12 @@
-﻿using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 
-namespace Twice.Utilities
+namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
 	internal class ColorProvider : IColorProvider

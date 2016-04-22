@@ -8,6 +8,7 @@ using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 using Twice.Utilities;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Columns
 {
