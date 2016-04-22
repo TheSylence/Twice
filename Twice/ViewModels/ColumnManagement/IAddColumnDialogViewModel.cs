@@ -7,5 +7,6 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		ICommand AddColumnTypeCommand { get; }
 		ICommand SelectAccountCommand { get; }
+		ICommand SelectUserCommand { get; }
 	}
 }

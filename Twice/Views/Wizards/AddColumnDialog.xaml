@@ -94,9 +94,10 @@
 						<DataTemplate DataType="columnManagement:UserSelectorPage">
 							<DockPanel>
 								<TextBox materialDesign:TextFieldAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
-										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+										 Margin="5" />
 
-								<Grid>
+								<Grid Margin="5">
 									<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 										<ItemsControl ItemsSource="{Binding Users}">
 											<ItemsControl.ItemsPanel>
@@ -120,6 +121,7 @@
 															<StackPanel Orientation="Vertical"  Grid.RowSpan="2">
 																<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="52" Height="52" VerticalAlignment="Top" Margin="5" />
 																<Button CommandParameter="{Binding UserID}"
+																		Command="{Binding Data.SelectUserCommand, Source={StaticResource DataProxy}}"
 																	HorizontalAlignment="Center" Margin="3">
 																	<DockPanel>
 																		<materialDesign:PackIcon Kind="Plus" />

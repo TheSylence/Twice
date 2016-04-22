@@ -16,6 +16,7 @@ namespace Twice.ViewModels.Columns
 			: base( context, definition, config, parser )
 		{
 			UserId = definition.TargetAccounts.First();
+			SubTitle = "";
 		}
 
 		protected override bool IsSuitableForColumn( Status status )
@@ -44,7 +45,7 @@ namespace Twice.ViewModels.Columns
 		public override Icon Icon => Icon.User;
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression
-									=> s => s.Type == StatusType.User && s.UserID == Context.UserId;
+									=> s => s.Type == StatusType.User && s.UserID == UserId;
 
 		private readonly ulong UserId;
 	}

@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
+using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -20,6 +21,6 @@ namespace Twice.ViewModels.Twitter
 		public string ProfileImageUrlHttpsBig { get; }
 		public string ProfileImageUrlHttpsMini { get; }
 		public string ProfileImageUrlHttpsOrig { get; }
-		public ulong UserID => Model.UserID;
+		public ulong UserID => Model.GetUserId();
 	}
 }
