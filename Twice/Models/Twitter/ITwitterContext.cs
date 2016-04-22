@@ -2,20 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
 {
 	internal interface ITwitterContext : IDisposable
 	{
-		Task<User> CreateBlockAsync( ulong userID, string screenName, bool skipStatus );
+		Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus );
 
-		Task<Status> CreateFavoriteAsync( ulong statusID );
+		Task<Status> CreateFavoriteAsync( ulong statusId );
 
-		Task<Status> DeleteTweetAsync( ulong statusID );
+		Task<Status> DeleteTweetAsync( ulong statusId );
 
-		Task<Status> DestroyFavoriteAsync( ulong statusID );
+		Task<Status> DestroyFavoriteAsync( ulong statusId );
 
-		Task<Status> RetweetAsync( ulong statusID );
+		Task<Status> RetweetAsync( ulong statusId );
 
 		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
 
@@ -24,7 +25,7 @@ namespace Twice.Models.Twitter
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }
 		ITwitterStatusRepository Statuses { get; }
-		ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
+		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }
 	}
 }

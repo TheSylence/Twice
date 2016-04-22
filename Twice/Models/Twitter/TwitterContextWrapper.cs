@@ -1,9 +1,12 @@
 using LinqToTwitter;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
 {
+	[ExcludeFromCodeCoverage]
 	internal class TwitterContextWrapper : ITwitterContext
 	{
 		public TwitterContextWrapper( TwitterContext context )
@@ -13,28 +16,27 @@ namespace Twice.Models.Twitter
 			Users = new TwitterUserRepository( context );
 			Statuses = new TwitterStatusRepository( context );
 			Friendships = new TwitterFriendshipRepository( context );
-
-			Streaming = new TwitterQueryableWrapper<LinqToTwitter.Streaming>( context.Streaming );
+			Streaming = new TwitterStreamingRepository( context );
 		}
 
-		public Task<User> CreateBlockAsync( ulong userID, string screenName, bool skipStatus )
+		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
 		{
-			return Context.CreateBlockAsync( userID, screenName, skipStatus );
+			return Context.CreateBlockAsync( userId, screenName, skipStatus );
 		}
 
-		public Task<Status> CreateFavoriteAsync( ulong statusID )
+		public Task<Status> CreateFavoriteAsync( ulong statusId )
 		{
-			return Context.CreateFavoriteAsync( statusID );
+			return Context.CreateFavoriteAsync( statusId );
 		}
 
-		public Task<Status> DeleteTweetAsync( ulong statusID )
+		public Task<Status> DeleteTweetAsync( ulong statusId )
 		{
-			return Context.DeleteTweetAsync( statusID );
+			return Context.DeleteTweetAsync( statusId );
 		}
 
-		public Task<Status> DestroyFavoriteAsync( ulong statusID )
+		public Task<Status> DestroyFavoriteAsync( ulong statusId )
 		{
-			return Context.DestroyFavoriteAsync( statusID );
+			return Context.DestroyFavoriteAsync( statusId );
 		}
 
 		public void Dispose()
@@ -42,9 +44,9 @@ namespace Twice.Models.Twitter
 			Context.Dispose();
 		}
 
-		public Task<Status> RetweetAsync( ulong statusID )
+		public Task<Status> RetweetAsync( ulong statusId )
 		{
-			return Context.RetweetAsync( statusID );
+			return Context.RetweetAsync( statusId );
 		}
 
 		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias )
@@ -60,7 +62,7 @@ namespace Twice.Models.Twitter
 		public IAuthorizer Authorizer => Context.Authorizer;
 		public ITwitterFriendshipRepository Friendships { get; }
 		public ITwitterStatusRepository Statuses { get; }
-		public ITwitterQueryable<LinqToTwitter.Streaming> Streaming { get; }
+		public ITwitterStreamingRepository Streaming { get; }
 		public ITwitterUserRepository Users { get; }
 		private readonly TwitterContext Context;
 	}

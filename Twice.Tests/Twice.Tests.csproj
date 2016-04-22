@@ -158,6 +158,8 @@
     <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
+    <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />
+    <Compile Include="Models\Twitter\TwitterContextListTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyChangedTester.cs" />
     <Compile Include="SyncDispatcher.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
     <Compile Include="ViewModels\NotifierTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\NotificationSettingsTests.cs" />

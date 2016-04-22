@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -22,7 +23,9 @@ namespace Twice.ViewModels.Main
 	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class MainViewModel : ViewModelBaseEx, IMainViewModel
 	{
-		public MainViewModel( ITwitterContextList contextList, INotifier notifier, IColumnDefinitionList columnList, IColumnFactory columnFactory )
+		public MainViewModel( ITwitterContextList contextList, INotifier notifier, IColumnDefinitionList columnList, IColumnFactory columnFactory,
+			IMessenger messenger = null )
+			: base( messenger )
 		{
 			ContextList = contextList;
 			ContextList.ContextsChanged += ContextList_ContextsChanged;

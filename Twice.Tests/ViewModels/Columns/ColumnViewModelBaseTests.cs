@@ -12,6 +12,7 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;

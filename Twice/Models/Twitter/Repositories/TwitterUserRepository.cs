@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LinqToTwitter;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
 	internal class TwitterUserRepository : TwitterRepositoryBase, ITwitterUserRepository
@@ -12,7 +12,6 @@ namespace Twice.Models.Twitter
 		public TwitterUserRepository( TwitterContext context )
 			: base( context )
 		{
-			Queryable = new TwitterQueryableWrapper<User>( context.User );
 		}
 
 		public Task<List<User>> LookupUsers( string userList )
@@ -27,6 +26,6 @@ namespace Twice.Models.Twitter
 					.SingleOrDefaultAsync();
 		}
 
-		public ITwitterQueryable<User> Queryable { get; }
+		public TwitterQueryable<User> Queryable => Context.User;
 	}
 }

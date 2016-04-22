@@ -66,7 +66,7 @@ namespace Twice.Tests.ViewModels.Validation
 			Assert.IsFalse( setup.CheckFunc( null ) );
 		}
 
-		[TestMethod, TestCategory( "ViewMOdels.Validation" )]
+		[TestMethod, TestCategory( "ViewModels.Validation" )]
 		public void UniqueConstrainIsChecked()
 		{
 			// Arrange

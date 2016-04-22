@@ -22,7 +22,8 @@ namespace Twice.Models.Twitter
 
 				try
 				{
-					accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json );
+					accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json ) ??
+						new List<TwitterAccountData>();
 				}
 				catch( JsonReaderException )
 				{

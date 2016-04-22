@@ -77,11 +77,11 @@ namespace Twice.ViewModels.Profile
 			{
 				ulong since = cached.Max( c => c.StatusID );
 
-				newStatuses = await Context.Twitter.Statuses.Queryable.Where( s => s.Type == StatusType.User && s.UserID == User.UserID && s.SinceID == since ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID ,since );
 			}
 			else
 			{
-				newStatuses = await Context.Twitter.Statuses.Queryable.Where( s => s.Type == StatusType.User && s.UserID == User.UserID ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID );
 			}
 
 			return cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select( s => new StatusViewModel( s, Context ) );

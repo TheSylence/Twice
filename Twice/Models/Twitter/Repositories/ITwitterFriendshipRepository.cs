@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LinqToTwitter;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Repositories
 {
 	internal interface ITwitterFriendshipRepository
 	{
@@ -10,7 +10,5 @@ namespace Twice.Models.Twitter
 
 		Task<List<User>> ListFollowers( ulong userId, int maxCount = 200, bool skipStatus = true );
 		Task<List<User>> ListFriends( ulong userId, int maxCount = 200, bool skipStatus = true );
-
-		ITwitterQueryable<Friendship> Queryable { get; }
 	}
 }

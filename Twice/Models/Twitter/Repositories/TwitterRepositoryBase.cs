@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using LinqToTwitter;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
 	internal abstract class TwitterRepositoryBase

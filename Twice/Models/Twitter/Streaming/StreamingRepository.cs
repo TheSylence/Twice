@@ -30,7 +30,7 @@ namespace Twice.Models.Twitter.Streaming
 			{
 				parser =
 				StreamParser.Create( new StreamingConnection( ContextList.Contexts.First( c => c.UserId == userId )
-					.Twitter.Streaming.Where( s => s.Type == StreamingType.User ) ) );
+					.Twitter.Streaming.GetUserStream() ) );
 
 				LoadedParsers.Add( key, parser );
 			}

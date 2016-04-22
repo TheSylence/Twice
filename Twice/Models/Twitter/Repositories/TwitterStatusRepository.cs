@@ -1,12 +1,12 @@
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LinqToTwitter;
 
-namespace Twice.Models.Twitter
+namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
 	internal class TwitterStatusRepository : TwitterRepositoryBase, ITwitterStatusRepository
@@ -14,7 +14,6 @@ namespace Twice.Models.Twitter
 		public TwitterStatusRepository( TwitterContext context )
 			: base( context )
 		{
-			Queryable = new TwitterQueryableWrapper<Status>( context.Status );
 		}
 
 		public Task<List<Status>> Filter( params Expression<Func<Status, bool>>[] filterExpressions )
@@ -29,6 +28,21 @@ namespace Twice.Models.Twitter
 			return query.ToListAsync();
 		}
 
-		public ITwitterQueryable<Status> Queryable { get; }
+		public Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 )
+		{
+			var query = Queryable.Where( s => s.Type == StatusType.User && s.UserID == userId );
+			if( since != 0 )
+			{
+				query = query.Where( s => s.SinceID == since );
+			}
+			if( max != 0 )
+			{
+				query = query.Where( s => s.MaxID == max );
+			}
+
+			return query.ToListAsync();
+		}
+
+		public TwitterQueryable<Status> Queryable => Context.Status;
 	}
 }
