@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows;
-using System.Windows.Input;
+using GalaSoft.MvvmLight.Messaging;
+using Twice.Messages;
 
 namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
 	internal class WaitOperation : IDisposable
 	{
-		public WaitOperation()
+		public WaitOperation( IMessenger messenger = null )
 		{
-			MainWindow = Application.Current.MainWindow;
-
-			OldCursor = MainWindow.Cursor;
-			MainWindow.Cursor = Cursors.Wait;
+			MessengerInstance = messenger ?? Messenger.Default;
+			MessengerInstance.Send( new WaitMessage( true ) );
 		}
 
 		public void Dispose()
 		{
-			MainWindow.Cursor = OldCursor;
+			MessengerInstance.Send( new WaitMessage( false ) );
 
 			GC.SuppressFinalize( this );
 		}
 
-		private readonly Window MainWindow;
-		private readonly Cursor OldCursor;
+		private readonly IMessenger MessengerInstance;
 	}
 }

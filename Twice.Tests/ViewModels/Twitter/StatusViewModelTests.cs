@@ -1,8 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using Twice.Models.Twitter;
-using Twice.Utilities;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
 
@@ -24,7 +27,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			var vm = new StatusViewModel( status, context.Object );
 
 			var clipboard = new Mock<IClipboard>();
-			clipboard.Setup( c => c.SetText( It.Is<string>( str => Uri.IsWellFormedUriString( str, UriKind.Absolute ) ) ) ).Verifiable();
+			clipboard.Setup( c => c.SetText( It.Is<string>( str => Uri.IsWellFormedUriString( str, UriKind.Absolute ) ) ) )
+				.Verifiable();
 			vm.Clipboard = clipboard.Object;
 
 			// Act
@@ -208,11 +212,11 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
-			status.Entities = new LinqToTwitter.Entities
+			status.Entities = new Entities
 			{
-				UserMentionEntities = new System.Collections.Generic.List<LinqToTwitter.UserMentionEntity>
+				UserMentionEntities = new List<UserMentionEntity>
 				{
-					new LinqToTwitter.UserMentionEntity {Id = 123}
+					new UserMentionEntity {Id = 123}
 				}
 			};
 			var vm = new StatusViewModel( status, context.Object );
@@ -225,6 +229,77 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			Assert.IsFalse( single );
 			Assert.IsTrue( multiple );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void StatusCanBeRetweeted()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 111;
+			status.StatusID = 12345;
+
+			var twitter = new Mock<ITwitterContext>();
+			twitter.Setup( t => t.RetweetAsync( 12345 ) ).Returns( Task.FromResult( status ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+			var waitHandle = new ManualResetEvent( false );
+			var vm = new StatusViewModel( status, context.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.RetweetStatusCommand.Execute( null );
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			twitter.Verify( t => t.RetweetAsync( 12345 ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void UserCanBeBlocked()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 111;
+			status.UserID = 111;
+
+			var twitter = new Mock<ITwitterContext>();
+			twitter.Setup( t => t.CreateBlockAsync( 111, It.IsAny<string>(), It.IsAny<bool>() ) ).Returns(
+				Task.FromResult( status.User ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+			var waitHandle = new ManualResetEvent( false );
+			var vm = new StatusViewModel( status, context.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.BlockUserCommand.Execute( null );
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			twitter.Verify( t => t.CreateBlockAsync( 111, It.IsAny<string>(), It.IsAny<bool>() ), Times.Once() );
 		}
 	}
 }

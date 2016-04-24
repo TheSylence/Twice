@@ -12,6 +12,7 @@ using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Utilities;
 using Twice.Utilities.Os;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -35,7 +36,10 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			User = new UserViewModel( Model.User );
+			Dispatcher = new DispatcherHelperWrapper();
 		}
+
+		public IDispatcher Dispatcher { get; set; }
 
 		private bool CanExecuteBlockUserCommand()
 		{
@@ -74,7 +78,7 @@ namespace Twice.ViewModels.Twitter
 			IsLoading = true;
 			Task.Run( action ).ContinueWith( t =>
 			{
-				DispatcherHelper.CheckBeginInvokeOnUI( () => IsLoading = false );
+				Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false );
 			} ).ContinueWith( t =>
 			{
 				if( !string.IsNullOrWhiteSpace( message ) )

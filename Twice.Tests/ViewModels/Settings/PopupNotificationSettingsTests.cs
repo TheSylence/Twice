@@ -29,5 +29,32 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( notify.PopupDisplayCorner, vm.SelectedCorner );
 			Assert.AreEqual( notify.PopupDisplay, vm.SelectedDisplay );
 		}
+
+		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		public void ValuesAreCorrectlySaved()
+		{
+			// Arrange
+			var notify = new NotificationConfig
+			{
+				PopupEnabled = true,
+				PopupDisplayCorner = Corner.TopLeft,
+				PopupDisplay = "TestDisplay"
+			};
+			var cfg = new Mock<IConfig>();
+			cfg.SetupGet( c => c.Notifications ).Returns( notify );
+
+			var vm = new PopupNotificationSettings( cfg.Object );
+
+			// Act
+			vm.SelectedCorner = Corner.BottomRight;
+			vm.SelectedDisplay = "test";
+			vm.Enabled = false;
+			vm.SaveTo( cfg.Object );
+
+			// Assert
+			Assert.AreEqual( vm.SelectedDisplay, notify.PopupDisplay );
+			Assert.AreEqual( vm.SelectedCorner, notify.PopupDisplayCorner );
+			Assert.AreEqual( vm.Enabled, notify.PopupEnabled );
+		}
 	}
 }

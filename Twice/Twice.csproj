@@ -317,6 +317,8 @@
     <Compile Include="Utilities\Os\NativeMethods.cs" />
     <Compile Include="Utilities\Ui\Timer.cs" />
     <Compile Include="Utilities\Ui\TimerFactory.cs" />
+    <Compile Include="Messages\WaitMessage.cs" />
+    <Compile Include="Utilities\Ui\WaitMessageHandler.cs" />
     <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
