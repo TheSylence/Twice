@@ -164,6 +164,8 @@
     <Compile Include="PropertyChangedTester.cs" />
     <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
+    <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
@@ -172,7 +174,11 @@
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
     <Compile Include="ViewModels\NotifierTests.cs" />
+    <Compile Include="ViewModels\Profile\ProfileDialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Profile\UserSubPageTests.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\MuteEditViewModelTests.cs" />
+    <Compile Include="ViewModels\Settings\MuteSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\NotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\PopupNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModelTests.cs" />
@@ -199,6 +205,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\Image.png" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

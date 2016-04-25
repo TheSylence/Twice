@@ -37,6 +37,11 @@ namespace Twice.ViewModels.ColumnManagement
 			{
 				yield return new ColumnTypeItem( ColumnType.Messages, Strings.Messages, Strings.MessagesDescription, PackIconKind.Message );
 			}
+
+			if( typeList.Contains( ColumnType.Favorites ) )
+			{
+				yield return new ColumnTypeItem( ColumnType.Favorites, Strings.Favourites, Strings.FavouritesDescription, PackIconKind.Star );
+			}
 		}
 	}
 }

@@ -58,7 +58,7 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		public string Title { get; private set; }
+		public string Title { get; }
 
 		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 

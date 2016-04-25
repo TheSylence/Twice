@@ -510,4 +510,7 @@
   <data name="Finish" xml:space="preserve">
     <value>Finish</value>
   </data>
+  <data name="FavouritesDescription" xml:space="preserve">
+    <value>Tweets favorited from an account</value>
+  </data>
 </root>

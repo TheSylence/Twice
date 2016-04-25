@@ -12,7 +12,7 @@ namespace Twice.ViewModels.Accounts
 			Context = context;
 			AccountName = Context.AccountName;
 			ProfileImage = Context.ProfileImageUrl;
-			RequiresConfirmation = Context.RequiresConfirmation;
+			_RequiresConfirmation = Context.RequiresConfirmation;
 		}
 
 		public event EventHandler ConfirmationChanged;

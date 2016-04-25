@@ -490,4 +490,7 @@
   <data name="Finish" xml:space="preserve">
     <value>Fertig</value>
   </data>
+  <data name="FavouritesDescription" xml:space="preserve">
+    <value>Tweets die von einem Konto favorisiert wurden</value>
+  </data>
 </root>

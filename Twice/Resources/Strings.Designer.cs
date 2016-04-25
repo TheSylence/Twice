@@ -457,6 +457,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweets favorited from an account.
+        /// </summary>
+        public static string FavouritesDescription {
+            get {
+                return ResourceManager.GetString("FavouritesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         public static string Filter {

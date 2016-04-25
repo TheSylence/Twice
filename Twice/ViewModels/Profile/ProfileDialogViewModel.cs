@@ -23,8 +23,7 @@ namespace Twice.ViewModels.Profile
 
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
-
-			// ReSharper disable once RedundantBoolCompare
+			
 			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
 			if( user == null )
 			{
@@ -53,7 +52,6 @@ namespace Twice.ViewModels.Profile
 
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
-			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
 			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );
@@ -61,7 +59,6 @@ namespace Twice.ViewModels.Profile
 
 		private async Task<IEnumerable<object>> LoadFollowings()
 		{
-			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
 			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );

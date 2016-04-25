@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
@@ -133,6 +134,30 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void InlineMediasAreExtractedCorrectly()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 222;
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1" } );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2" } );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3" } );
+
+			// Act
+			var vm = new StatusViewModel( status, context.Object );
+			var medias = vm.InlineMedias.ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, medias.Length );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.AbsoluteUri == "https://example.com/1" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.AbsoluteUri == "https://example.com/2" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.AbsoluteUri == "https://example.com/3" ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeDeleted()
 		{
 			// Arrange
@@ -232,6 +257,42 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void StatusCanBeFavorited()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 111;
+			status.StatusID = 12345;
+
+			var twitter = new Mock<ITwitterContext>();
+			twitter.Setup( c => c.CreateFavoriteAsync( 12345 ) ).Returns( Task.FromResult( status ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+			var waitHandle = new ManualResetEvent( false );
+			var vm = new StatusViewModel( status, context.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.FavoriteStatusCommand.Execute( null );
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			twitter.Verify( t => t.CreateFavoriteAsync( 12345 ), Times.Once() );
+			Assert.IsTrue( status.Favorited );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void StatusCanBeRetweeted()
 		{
 			// Arrange
@@ -264,6 +325,43 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			twitter.Verify( t => t.RetweetAsync( 12345 ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void StatusCanBeUnfavorited()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 111;
+			status.StatusID = 12345;
+			status.Favorited = true;
+
+			var twitter = new Mock<ITwitterContext>();
+			twitter.Setup( c => c.DestroyFavoriteAsync( 12345 ) ).Returns( Task.FromResult( status ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+			var waitHandle = new ManualResetEvent( false );
+			var vm = new StatusViewModel( status, context.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.FavoriteStatusCommand.Execute( null );
+			waitHandle.WaitOne( 1000 );
+
+			// Assert
+			twitter.Verify( t => t.DestroyFavoriteAsync( 12345 ), Times.Once() );
+			Assert.IsFalse( status.Favorited );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

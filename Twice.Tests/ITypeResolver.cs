@@ -4,7 +4,7 @@ using Twice.Injections;
 
 namespace Twice.Tests
 {
-	internal interface ITypeResolver
+	public interface ITypeResolver
 	{
 		object Resolve( Type type );
 	}
