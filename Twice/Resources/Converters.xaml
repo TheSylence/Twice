@@ -13,6 +13,10 @@
 	<converters:NotNull x:Key="NotNullConv" />
 	<converters:DebugConverter x:Key="DebugConv" />
 	<converters:InvertBool x:Key="InvertBoolConv" />
+	<converters:MathConverter x:Key="MathAddConv" Operation="Add" />
+	<converters:MathConverter x:Key="MathSubConv" Operation="Substract" />
+	<converters:MathConverter x:Key="MathDivConv" Operation="Divide" />
+	<converters:MathConverter x:Key="MathMulConv" Operation="Multiply" />
 
 	<converters:ConverterChain x:Key="RelativeDateConv">
 		<converters:UtcToLocal />

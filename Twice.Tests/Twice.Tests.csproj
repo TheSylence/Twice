@@ -142,6 +142,7 @@
     <Compile Include="Converters\EmptyListTests.cs" />
     <Compile Include="Converters\EmptyStringTests.cs" />
     <Compile Include="Converters\InvertBoolTests.cs" />
+    <Compile Include="Converters\MathConverterTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="Converters\StatusHighlighterTests.cs" />

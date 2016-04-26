@@ -250,6 +250,7 @@
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
+    <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
