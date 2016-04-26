@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Twice.Models.Twitter;
 using Twice.Utilities;
@@ -9,7 +11,8 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class UserSelectorPage : WizardPageViewModel
 	{
-		public UserSelectorPage( ITwitterContextList contextList, ITimerFactory timerFactory )
+		public UserSelectorPage( WizardViewModel wizard, ITwitterContextList contextList, ITimerFactory timerFactory )
+			: base( wizard )
 		{
 			ContextList = contextList;
 			Timer = timerFactory.Create( 1000 );
@@ -18,7 +21,17 @@ namespace Twice.ViewModels.ColumnManagement
 			UserCollection = new SmartCollection<UserViewModel>();
 		}
 
-		private async void Timer_Tick( object sender, System.EventArgs e )
+		protected override void ExecuteGotoNextPageCommand( object args )
+		{
+			ulong userId = (ulong)args;
+			var targetAccounts = Wizard.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ).ToList();
+			targetAccounts.Add( userId );
+			int pageKey = 3;
+			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
+			Wizard.GotoPage( pageKey );
+		}
+
+		private async void Timer_Tick( object sender, EventArgs e )
 		{
 			IsLoading = true;
 			Timer.Stop();
@@ -33,11 +46,7 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public bool IsLoading
 		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return _IsLoading;
-			}
+			[DebuggerStepThrough] get { return _IsLoading; }
 			set
 			{
 				if( _IsLoading == value )
@@ -50,15 +59,9 @@ namespace Twice.ViewModels.ColumnManagement
 			}
 		}
 
-		public override int NextPageKey { get; protected set; } = -1;
-
 		public string SearchText
 		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return _SearchText;
-			}
+			[DebuggerStepThrough] get { return _SearchText; }
 			set
 			{
 				if( _SearchText == value )
@@ -79,10 +82,10 @@ namespace Twice.ViewModels.ColumnManagement
 		private readonly ITimer Timer;
 		private readonly SmartCollection<UserViewModel> UserCollection;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _SearchText;
 	}
 }

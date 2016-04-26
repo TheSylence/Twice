@@ -8,13 +8,26 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class SourceAccountSelectorPage : WizardPageViewModel
 	{
-		public SourceAccountSelectorPage( ITwitterContextList contextList )
+		public SourceAccountSelectorPage( WizardViewModel wizard, ITwitterContextList contextList )
+			: base( wizard )
 		{
 			Accounts = contextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
 		}
 
-		public ICollection<AccountEntry> Accounts { get; }
+		protected override void ExecuteGotoNextPageCommand( object args )
+		{
+			ulong accountId = (ulong)args;
+			List<ulong> sourceAccounts = new List<ulong>
+			{
+				accountId
+			};
 
-		public override int NextPageKey { get; protected set; } = 1;
+			int pageKey = 1;
+			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[0] );
+			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountsKey, sourceAccounts.ToArray() );
+			Wizard.GotoPage( pageKey );
+		}
+
+		public ICollection<AccountEntry> Accounts { get; }
 	}
 }

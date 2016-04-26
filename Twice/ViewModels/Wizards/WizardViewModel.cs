@@ -1,22 +1,12 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {
-	internal abstract class WizardViewModel : DialogViewModel
+	internal abstract class WizardViewModel : DialogViewModel, IWizardViewModel
 	{
-		public TValue GetProperty<TValue>( string key )
-		{
-			return (TValue)Properties[key];
-		}
-
-		public void SetProperty( string key, object value )
-		{
-			Properties[key] = value;
-		}
-
 		protected virtual bool CanExecuteFinishCommand()
 		{
 			return true;
@@ -27,43 +17,52 @@ namespace Twice.ViewModels.Wizards
 			Close( true );
 		}
 
-		private bool CanExecuteGotoNextPageCommand()
-		{
-			return true;
-		}
-
 		private bool CanExecuteGotoPrevPageCommand()
 		{
 			return NavigationHistory.Count > 0;
 		}
 
-		private void ExecuteGotoNextPageCommand()
+		private void ExecuteGotoPrevPageCommand()
 		{
+			CurrentPage?.OnNavigatedFrom( true );
+
+			var key = NavigationHistory.Pop();
+			CurrentPageKey = key;
+			CurrentPage = Pages[key];
+
+			CurrentPage?.OnNavigatedTo( false );
+		}
+
+		public TValue GetProperty<TValue>( string key )
+		{
+			return (TValue)Properties[key];
+		}
+
+		public void GotoPage( int key )
+		{
+			CurrentPage?.OnNavigatedFrom( false );
+
 			WizardPageViewModel nextPage;
-			if( Pages.TryGetValue( CurrentPage.NextPageKey, out nextPage ) )
+			if( Pages.TryGetValue( key, out nextPage ) )
 			{
 				NavigationHistory.Push( CurrentPageKey );
 				CurrentPage = nextPage;
-				CurrentPageKey = CurrentPage.NextPageKey;
+				CurrentPageKey = key;
+
+				CurrentPage?.OnNavigatedTo( true );
 			}
 
 			// TODO: Handle this
 		}
 
-		private void ExecuteGotoPrevPageCommand()
+		public void SetProperty( string key, object value )
 		{
-			var key = NavigationHistory.Pop();
-			CurrentPageKey = key;
-			CurrentPage = Pages[key];
+			Properties[key] = value;
 		}
 
 		public WizardPageViewModel CurrentPage
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _CurrentPage;
-			}
+			[DebuggerStepThrough] get { return _CurrentPage; }
 			set
 			{
 				if( _CurrentPage == value )
@@ -76,16 +75,17 @@ namespace Twice.ViewModels.Wizards
 			}
 		}
 
-		public ICommand FinishCommand => _FinishCommand ?? ( _FinishCommand = new RelayCommand( ExecuteFinishCommand, CanExecuteFinishCommand ) );
+		public ICommand FinishCommand
+			=> _FinishCommand ?? ( _FinishCommand = new RelayCommand( ExecuteFinishCommand, CanExecuteFinishCommand ) );
 
-		public ICommand GotoNextPageCommand => _GotoNextPageCommand ?? ( _GotoNextPageCommand = new RelayCommand( ExecuteGotoNextPageCommand, CanExecuteGotoNextPageCommand ) );
-
-		public ICommand GotoPrevPageCommand => _GotoPrevPageCommand ?? ( _GotoPrevPageCommand = new RelayCommand( ExecuteGotoPrevPageCommand, CanExecuteGotoPrevPageCommand ) );
-
-		protected readonly Dictionary<int, WizardPageViewModel> Pages = new Dictionary<int, WizardPageViewModel>();
+		public ICommand GotoPrevPageCommand
+			=>
+				_GotoPrevPageCommand
+				?? ( _GotoPrevPageCommand = new RelayCommand( ExecuteGotoPrevPageCommand, CanExecuteGotoPrevPageCommand ) );
 
 		private readonly Stack<int> NavigationHistory = new Stack<int>();
 
+		protected readonly Dictionary<int, WizardPageViewModel> Pages = new Dictionary<int, WizardPageViewModel>();
 		private readonly Dictionary<string, object> Properties = new Dictionary<string, object>();
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
@@ -93,9 +93,6 @@ namespace Twice.ViewModels.Wizards
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _FinishCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _GotoNextPageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _GotoPrevPageCommand;

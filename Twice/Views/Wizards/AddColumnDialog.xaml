@@ -51,7 +51,7 @@
 								</ItemsControl.ItemsPanel>
 								<ItemsControl.ItemTemplate>
 									<DataTemplate DataType="columnManagement:ColumnTypeItem">
-										<Button Command="{Binding Data.AddColumnTypeCommand, Source={StaticResource DataProxy}}" CommandParameter="{Binding Type}"
+										<Button Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}" CommandParameter="{Binding Type}"
 												ToolTip="{Binding Description}" Margin="5">
 											<DockPanel>
 												<materialDesign:PackIcon Kind="{Binding Icon}" VerticalAlignment="Center" DockPanel.Dock="Left" />
@@ -80,7 +80,7 @@
 													<Image Source="{Binding Image}" Width="72" Height="72" Margin="5" />
 
 													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"
-															Command="{Binding Data.SelectAccountCommand, Source={StaticResource DataProxy}}"
+															Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}"
 															CommandParameter="{Binding Context.UserId}" />
 												</StackPanel>
 											</materialDesign:Card>
@@ -121,7 +121,7 @@
 															<StackPanel Orientation="Vertical"  Grid.RowSpan="2">
 																<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="52" Height="52" VerticalAlignment="Top" Margin="5" />
 																<Button CommandParameter="{Binding UserID}"
-																		Command="{Binding Data.SelectUserCommand, Source={StaticResource DataProxy}}"
+																		Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}"
 																	HorizontalAlignment="Center" Margin="3">
 																	<DockPanel>
 																		<materialDesign:PackIcon Kind="Plus" />
