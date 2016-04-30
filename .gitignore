@@ -232,3 +232,7 @@ _Pvt_Extensions
 .fake/
 
 /Twice/DebugTokens.txt
+/ThirdParty/Gong-WPF-DragDrop/Examples
+/ThirdParty/Gong-WPF-DragDrop/GongSolutions.Wpf.DragDrop.png
+/ThirdParty/Gong-WPF-DragDrop/GongSolutions.Wpf.DragDrop.Full.png
+/ThirdParty/Gong-WPF-DragDrop/.editorconfig

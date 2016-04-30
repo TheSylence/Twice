@@ -10,9 +10,7 @@ namespace Twice.Models.Cache
 		/// Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context">The context.</param>
-		/// <returns>
-		/// The created instance.
-		/// </returns>
+		/// <returns>The created instance.</returns>
 		protected override ISecureBlobCache CreateInstance( IContext context )
 		{
 			return Cache ?? ( Cache = new SQLiteEncryptedBlobCache( Constants.IO.SecureCacheFileName ) );

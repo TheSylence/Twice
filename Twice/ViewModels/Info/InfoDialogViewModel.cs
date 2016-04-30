@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
 
 namespace Twice.ViewModels.Info
 {
 	internal class InfoDialogViewModel : DialogViewModel, IInfoDialogViewModel
 	{
-		public ICollection<ChangelogItem> Changelogs { get; }
-
 		public InfoDialogViewModel()
 		{
 			var assembly = Assembly.GetExecutingAssembly();
@@ -82,6 +80,7 @@ namespace Twice.ViewModels.Info
 		}
 
 		public DateTime BuildDate { get; }
+		public ICollection<ChangelogItem> Changelogs { get; }
 		public ICollection<LicenseItem> Licenses { get; }
 		public string Version { get; }
 	}

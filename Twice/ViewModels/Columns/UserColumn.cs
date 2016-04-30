@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Streaming;
 
 namespace Twice.ViewModels.Columns
 {
@@ -15,6 +16,7 @@ namespace Twice.ViewModels.Columns
 			: base( context, definition, config, parser )
 		{
 			UserId = definition.TargetAccounts.First();
+			SubTitle = "";
 		}
 
 		protected override bool IsSuitableForColumn( Status status )
@@ -34,7 +36,7 @@ namespace Twice.ViewModels.Columns
 
 		protected override async Task OnLoad()
 		{
-			var userInfo = await Context.Twitter.User.Where( u => u.UserID == UserId && u.Type == UserType.Show ).FirstAsync();
+			var userInfo = await Context.Twitter.Users.ShowUser( UserId, false );
 			Title = userInfo.ScreenNameResponse;
 
 			await base.OnLoad();
@@ -43,7 +45,7 @@ namespace Twice.ViewModels.Columns
 		public override Icon Icon => Icon.User;
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression
-									=> s => s.Type == StatusType.User && s.UserID == Context.UserId;
+									=> s => s.Type == StatusType.User && s.UserID == UserId;
 
 		private readonly ulong UserId;
 	}

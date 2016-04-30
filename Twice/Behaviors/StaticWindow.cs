@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Interactivity;
 using System.Windows.Interop;
+
 // ReSharper disable InconsistentNaming
 
 namespace Twice.Behaviors

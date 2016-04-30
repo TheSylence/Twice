@@ -11,7 +11,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		
+
 		<TextBlock Text="{Binding Label}" Grid.Row="0" />
 		<TextBox Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" />
 	</Grid>

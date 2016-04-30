@@ -56,6 +56,10 @@
       <HintPath>..\packages\Anotar.NLog.Fody.3.0.0\lib\Anotar.NLog.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ConfigureAwait, Version=0.3.1.0, Culture=neutral, PublicKeyToken=233850a516558a98, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConfigureAwait.Fody.0.3.1\lib\portable-net45+wp8+win+wpa81\ConfigureAwait.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DeltaCompressionDotNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
       <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +82,10 @@
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.2.0.37226, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0-ALPHA013\lib\net40\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
@@ -196,6 +204,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Undisposed.Fody, Version=1.2.5911.18183, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Undisposed.Fody.1.2.5911.18183\lib\net45\Undisposed.Fody.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Windows" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -228,6 +240,7 @@
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
+    <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
@@ -241,9 +254,12 @@
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
+    <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
+    <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\HashtagCacheEntry.cs" />
@@ -251,30 +267,64 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
-    <Compile Include="Models\Twitter\DeleteStreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\DirectMessageStreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\EventStreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\FavoriteStreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\FriendsStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
+    <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\FavoriteStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\FriendsStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\IStatusMuter.cs" />
-    <Compile Include="Models\Twitter\IStreamingRepository.cs" />
+    <Compile Include="Models\Twitter\Streaming\IStreaming.cs" />
+    <Compile Include="Models\Twitter\Streaming\IStreamingConnection.cs" />
+    <Compile Include="Models\Twitter\Streaming\IStreamingRepository.cs" />
+    <Compile Include="Models\Twitter\ITwitterContext.cs" />
+    <Compile Include="Models\Twitter\ITwitterQueryable.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
-    <Compile Include="Models\Twitter\StatusStreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\StreamEventType.cs" />
-    <Compile Include="Models\Twitter\StreamingRepository.cs" />
+    <Compile Include="Models\Twitter\Streaming\IStreamParser.cs" />
+    <Compile Include="Models\Twitter\Streaming\StatusStreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamEventType.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamingConnection.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamingRepository.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamingWrapper.cs" />
     <Compile Include="Models\Twitter\Text\Regex.cs" />
     <Compile Include="Models\Twitter\Text\TldLib.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Injections\TwitterContextListProvider.cs" />
+    <Compile Include="Models\Twitter\TwitterContextWrapper.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterRepositoryBase.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterStatusRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterStreamingRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterUserRepository.cs" />
     <Compile Include="Obscurity.cs" />
     <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
+    <Compile Include="Utilities\Os\ClipboardWrapper.cs" />
+    <Compile Include="Utilities\Ui\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
-    <Compile Include="Utilities\DPAPI.cs" />
+    <Compile Include="Utilities\Ui\DispatcherHelperWrapper.cs" />
+    <Compile Include="Utilities\Os\DisplayHelper.cs" />
+    <Compile Include="Utilities\Os\DPAPI.cs" />
+    <Compile Include="Utilities\Os\FileSystem.cs" />
+    <Compile Include="Utilities\Os\IClipboard.cs" />
+    <Compile Include="Utilities\Ui\IColorProvider.cs" />
     <Compile Include="Utilities\IDateProvider.cs" />
-    <Compile Include="Utilities\NativeMethods.cs" />
-    <Compile Include="Utilities\WaitOperation.cs" />
+    <Compile Include="Utilities\Ui\IDispatcher.cs" />
+    <Compile Include="Utilities\Os\IFileSystem.cs" />
+    <Compile Include="Utilities\Ui\ILanguageProvider.cs" />
+    <Compile Include="Utilities\ITimer.cs" />
+    <Compile Include="Utilities\ITimerFactory.cs" />
+    <Compile Include="Utilities\Ui\LanguageProvider.cs" />
+    <Compile Include="Utilities\Os\NativeMethods.cs" />
+    <Compile Include="Utilities\Ui\Timer.cs" />
+    <Compile Include="Utilities\Ui\TimerFactory.cs" />
+    <Compile Include="Messages\WaitMessage.cs" />
+    <Compile Include="Utilities\Ui\WaitMessageHandler.cs" />
+    <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
     <Compile Include="ViewModels\Accounts\IAccountsDialogViewModel.cs" />
@@ -284,13 +334,18 @@
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelctorPage.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelectionDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\AddColumnDialogViewModel.cs" />
+    <Compile Include="ViewModels\ColumnManagement\FinishPage.cs" />
     <Compile Include="ViewModels\ColumnManagement\IAddColumnDialogViewModel.cs" />
     <Compile Include="ViewModels\ColumnManagement\IColumnTypeSelectionDialogViewModel.cs" />
+    <Compile Include="ViewModels\ColumnManagement\SourceAccountSelectorPage.cs" />
+    <Compile Include="ViewModels\ColumnManagement\UserSelectorPage.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcher.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactory.cs" />
     <Compile Include="Models\Columns\ColumnNotifications.cs" />
     <Compile Include="Models\Columns\IColumnDefinitionList.cs" />
+    <Compile Include="ViewModels\Columns\ColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnActionDispatcher.cs" />
+    <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
@@ -307,6 +362,8 @@
     <Compile Include="ViewModels\ItemSelection.cs" />
     <Compile Include="ViewModels\IViewController.cs" />
     <Compile Include="ViewModels\IViewModelBase.cs" />
+    <Compile Include="ViewModels\Main\DragDropHandler.cs" />
+    <Compile Include="ViewModels\Main\IDragDropHandler.cs" />
     <Compile Include="ViewModels\Main\ILoadCallback.cs" />
     <Compile Include="ViewModels\NotificationType.cs" />
     <Compile Include="ViewModels\Notifier.cs" />
@@ -335,6 +392,7 @@
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
+    <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
     <Compile Include="Views\Proxies\ComposeTweetDataProxy.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>
@@ -359,8 +417,8 @@
     <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Configuration\MuteConfig.cs" />
     <Compile Include="Models\Configuration\MuteEntry.cs" />
-    <Compile Include="Models\Twitter\StreamEventArgs.cs" />
-    <Compile Include="Models\Twitter\StreamParser.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamEventArgs.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamParser.cs" />
     <Compile Include="Services\Views\IViewServiceRepository.cs" />
     <Compile Include="Services\Views\ViewServiceRepository.cs" />
     <Compile Include="Utilities\SmartCollection.cs" />
@@ -548,7 +606,7 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThidParty\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
+    <ProjectReference Include="..\ThirdParty\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
       <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
       <Name>Markdown.Xaml</Name>
     </ProjectReference>
@@ -571,6 +629,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Licenses\Squirrel.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Licenses\GongSolutions.WPF.DragDrop.txt" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

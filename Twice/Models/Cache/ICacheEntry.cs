@@ -1,6 +1,6 @@
 ﻿namespace Twice.Models.Cache
 {
-	interface ICacheEntry
+	internal interface ICacheEntry
 	{
 		string GetKey();
 	}

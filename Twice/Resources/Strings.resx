@@ -237,9 +237,6 @@
   <data name="AccentColor" xml:space="preserve">
     <value>Accent color</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
   <data name="Mentions" xml:space="preserve">
     <value>Mentions</value>
   </data>
@@ -497,5 +494,23 @@
   </data>
   <data name="ClickToRemove" xml:space="preserve">
     <value>Click to remove</value>
+  </data>
+  <data name="ClearColumn" xml:space="preserve">
+    <value>Clear column</value>
+  </data>
+  <data name="ColumnSettings" xml:space="preserve">
+    <value>Column settings</value>
+  </data>
+  <data name="SelectAccountYouWantToAddColumnFor" xml:space="preserve">
+    <value>Select the account you want to add the new column for</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="FavouritesDescription" xml:space="preserve">
+    <value>Tweets favorited from an account</value>
   </data>
 </root>

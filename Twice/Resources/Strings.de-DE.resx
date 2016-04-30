@@ -217,9 +217,6 @@
   <data name="AccentColor" xml:space="preserve">
     <value>Akzentfarbe</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
   <data name="Mentions" xml:space="preserve">
     <value>Erwähnungen</value>
   </data>
@@ -477,5 +474,23 @@
   </data>
   <data name="ClickToRemove" xml:space="preserve">
     <value>Zum Entfernen klicken</value>
+  </data>
+  <data name="ClearColumn" xml:space="preserve">
+    <value>Spalte leeren</value>
+  </data>
+  <data name="ColumnSettings" xml:space="preserve">
+    <value>Spalteneinstellungen</value>
+  </data>
+  <data name="SelectAccountYouWantToAddColumnFor" xml:space="preserve">
+    <value>Bitte das Konto auswählen, für welches die neue Spalte hinzugefügt werden soll</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Fertig</value>
+  </data>
+  <data name="FavouritesDescription" xml:space="preserve">
+    <value>Tweets die von einem Konto favorisiert wurden</value>
   </data>
 </root>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,6 +12,7 @@ using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class AutoComplete : Behavior<TextBox>
 	{
 		public AutoComplete()
@@ -64,6 +67,7 @@ namespace Twice.Behaviors
 			{
 				AutoCompletePopup.IsOpen = true;
 				AutoCompleteBox.Focus();
+				TextFieldAssist.SetHint( AutoCompleteBox, TriggerChar );
 				AutoCompleteBox.Text = string.Empty;
 				e.Handled = true;
 			}
@@ -71,22 +75,29 @@ namespace Twice.Behaviors
 
 		private void AutoCompleteBox_PreviewKeyDown( object sender, KeyEventArgs e )
 		{
+			bool close = false;
+
 			if( e.Key == Key.Escape )
 			{
-				AutoCompletePopup.IsOpen = false;
+				close = true;
 			}
 			else if( e.Key == Key.Return )
 			{
 				var insertText = $"{TriggerChar}{AutoCompleteBox.Text}";
 				var currentCaret = AssociatedObject.CaretIndex;
 
-				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret , insertText );
+				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret, insertText );
 
-				AutoCompletePopup.IsOpen = false;
-				e.Handled = true;
-				
-				AssociatedObject.Focus();
+				close = true;
+
 				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
+			}
+
+			if( close )
+			{
+				e.Handled = true;
+				AutoCompletePopup.IsOpen = false;
+				AssociatedObject.Focus();
 			}
 		}
 
@@ -117,7 +128,7 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty ItemsSourceProperty =
 			DependencyProperty.Register( "ItemsSource", typeof( IEnumerable<string> ), typeof( AutoComplete ),
-				new PropertyMetadata( new string[] {}, OnItemsSourceChanged ) );
+				new PropertyMetadata( new string[] { }, OnItemsSourceChanged ) );
 
 		public static readonly DependencyProperty TriggerCharProperty =
 			DependencyProperty.Register( "TriggerChar", typeof( string ), typeof( AutoComplete ), new PropertyMetadata( string.Empty ) );

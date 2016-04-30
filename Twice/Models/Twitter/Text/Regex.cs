@@ -1,34 +1,32 @@
 ﻿using System.Text.RegularExpressions;
+// ReSharper disable All
 
 namespace Twice.Models.Twitter.Text
 {
+#pragma disable CodeMaid cleanup
+
 	/// <summary>
 	/// Patterns and regular expressions used by the twitter text methods.
 	/// </summary>
 	internal static class Regex
 	{
-
-		// Create the equivalent of Java's \p{Alpha}
-		// \p{Alpha}: An alphabetic character:[\p{Lower}\p{Upper}]
-		// \p{Lower}: A lower-case alphabetic character: [a-z]
+		// Create the equivalent of Java's \p{Alpha} \p{Alpha}: An alphabetic
+		// character:[\p{Lower}\p{Upper}] \p{Lower}: A lower-case alphabetic character: [a-z]
 		// \p{Upper}: An upper-case alphabetic character:[A-Z]
 		private const string ALPHA_CHARS = "a-zA-Z";
 
-		// Create the equivalent of Java's \p{Digit}
-		// \p{Digit}: A decimal digit: [0-9]
+		// Create the equivalent of Java's \p{Digit} \p{Digit}: A decimal digit: [0-9]
 		private const string NUM_CHARS = "0-9";
 
-		// Create the equivalent of Java's \p{Alnum}
-		// \p{Alnum}: An alphanumeric character:[\p{Alpha}\p{Digit}]
+		// Create the equivalent of Java's \p{Alnum} \p{Alnum}: An alphanumeric character:[\p{Alpha}\p{Digit}]
 		private const string ALNUM_CHARS = ALPHA_CHARS + NUM_CHARS;
 
-		// Create the quivalent of Java's \p{Punct}
-		// \p{Punct}: Punctuation: One of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+		// Create the quivalent of Java's \p{Punct} \p{Punct}: Punctuation: One of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 		private static readonly string PUNCT_CHARS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~".Replace( @"\", @"\\" ).Replace( @"]", @"\]" ).Replace( @"-", @"\-" );
 
-		// Space is more than %20, U+3000 for example is the full-width space used with Kanji. Provide a short-hand
-		// to access both the list of characters and a pattern suitible for use with String#split
-		// Taken from: ActiveSupport::Multibyte::Handlers::UTF8Handler::UNICODE_WHITESPACE
+		// Space is more than %20, U+3000 for example is the full-width space used with Kanji.
+		// Provide a short-hand to access both the list of characters and a pattern suitible for use
+		// with String#split Taken from: ActiveSupport::Multibyte::Handlers::UTF8Handler::UNICODE_WHITESPACE
 		private const string UNICODE_SPACES = "[" +
 											"\u0009-\u000d" +     // White_Space # Cc [5]    <control-0009>..<control-000D>
 											"\u0020" +            // White_Space # Zs        SPACE
@@ -51,9 +49,8 @@ namespace Twice.Models.Twitter.Text
 													"\u202a-\u202e" +   // Directional change
 													"]";
 
-		// Latin accented characters
-		// Excludes 0xd7 from the range (the multiplication sign, confusable with "x").
-		// Also excludes 0xf7, the division sign
+		// Latin accented characters Excludes 0xd7 from the range (the multiplication sign,
+		// confusable with "x"). Also excludes 0xf7, the division sign
 		private const string LATIN_ACCENTS_CHARS =
 			"\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff" +                                     // Latin-1
 			"\u0100-\u024f" +                                                               // Latin Extended A and B
@@ -70,7 +67,9 @@ namespace Twice.Models.Twitter.Text
 
 		// Hashtag related patterns
 		private const string HASHTAG_LETTERS = "\\p{L}\\p{M}";
+
 		private const string HASHTAG_NUMERALS = "\\p{Nd}";
+
 		private const string HASHTAG_SPECIAL_CHARS = "_" +       // underscore
 													"\\u200c" + // ZERO WIDTH NON-JOINER (ZWNJ)
 													"\\u200d" + // ZERO WIDTH JOINER (ZWJ)
@@ -106,6 +105,7 @@ namespace Twice.Models.Twitter.Text
 
 		// Any non-space, non-punctuation characters. \p{Z} = any kind of whitespace or invisible separator.
 		private static readonly string URL_VALID_UNICODE_CHARS = "(?:\\.|[^" + PUNCT_CHARS + "\\s\\p{Z}\\p{IsGeneralPunctuation}])";
+
 		private static readonly string URL_VALID_GTLD = "(?:(?:" + string.Join( "|", TldLib.Generic ) + ")(?=[^" + ALNUM_CHARS + "@]|$))";
 		private static readonly string URL_VALID_CCTLD = "(?:(?:" + string.Join( "|", TldLib.Country ) + ")(?=[^" + ALNUM_CHARS + "@]|$))";
 		private const string URL_PUNYCODE = "(?:xn--[0-9a-z]+)";
@@ -184,7 +184,7 @@ namespace Twice.Models.Twitter.Text
 			"(/" +
 			"(?>" + URL_VALID_PATH + "*)" +
 			")?" +                                          //  $7 URL Path and anchor
-			"(\\?" + URL_VALID_URL_QUERY_CHARS + "*" +      //  $8 Query string 
+			"(\\?" + URL_VALID_URL_QUERY_CHARS + "*" +      //  $8 Query string
 			URL_VALID_URL_QUERY_ENDING_CHARS + ")?" +
 			")" +
 			")";
@@ -196,9 +196,7 @@ namespace Twice.Models.Twitter.Text
 		// Cashtag related patterns
 		private const string CASHTAG = "[a-z]{1,6}(?:[._][a-z]{1,2})?";
 
-		//
 		// Begin internal constants
-		//
 		internal static readonly System.Text.RegularExpressions.Regex INVALID_CHARACTERS = new System.Text.RegularExpressions.Regex( INVALID_CONTROL_CHARS, RegexOptions.IgnoreCase );
 
 		internal static readonly System.Text.RegularExpressions.Regex VALID_HASHTAG = new System.Text.RegularExpressions.Regex( VALID_HASHTAG_STRING, RegexOptions.IgnoreCase );

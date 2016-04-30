@@ -15,6 +15,7 @@ namespace Twice.Tests.ViewModels
 
 			bool? result = null;
 			vm.CloseRequested += ( s, e ) => result = e.Result;
+			vm.Dispatcher = new SyncDispatcher();
 
 			// Act
 			vm.CancelCommand.Execute( null );
@@ -27,7 +28,10 @@ namespace Twice.Tests.ViewModels
 		public void CommandInvocationWithoutListenersDoesNotCrash()
 		{
 			// Arrange
-			var vm = new DialogViewModel();
+			var vm = new DialogViewModel
+			{
+				Dispatcher = new SyncDispatcher()
+			};
 
 			// Act
 			vm.CancelCommand.Execute( null );
@@ -44,6 +48,7 @@ namespace Twice.Tests.ViewModels
 
 			bool? result = null;
 			vm.CloseRequested += ( s, e ) => result = e.Result;
+			vm.Dispatcher = new SyncDispatcher();
 
 			// Act
 			vm.OkCommand.Execute( null );
@@ -60,6 +65,7 @@ namespace Twice.Tests.ViewModels
 
 			bool? result = null;
 			vm.CloseRequested += ( s, e ) => result = e.Result;
+			vm.Dispatcher = new SyncDispatcher();
 
 			// Act
 			vm.Data = "test";

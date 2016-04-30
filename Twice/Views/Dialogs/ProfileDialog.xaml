@@ -14,7 +14,7 @@
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource DialogLocator}}"
              d:DesignHeight="300" d:DesignWidth="300" Padding="30" Width="1000" Height="700"
-			WindowStartupLocation="CenterOwner" Title="{Binding User.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
+			WindowStartupLocation="CenterOwner" Title="{Binding User.Model.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 		<behaviors:CloseableView />
@@ -35,7 +35,7 @@
 				</Grid.ColumnDefinitions>
 
 				<StackPanel Margin="5">
-					<Image Source="{Binding User.ProfileImageUrlHttps}" Width="96" Height="96" VerticalAlignment="Top" Margin="5" />
+					<Image Source="{Binding User.ProfileImageUrlHttpsOrig}" Width="96" Height="96" VerticalAlignment="Top" Margin="5" />
 					<Button Content="{lex:Loc Follow}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
 					<Button Content="{lex:Loc Unfollow}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />
 					<StackPanel Orientation="Horizontal" Visibility="{Binding Friendship.TargetRelationship.Following, Converter={StaticResource BoolToVisibleConv}}">
@@ -45,22 +45,22 @@
 
 				<StackPanel Grid.Column="1" Margin="5,0" HorizontalAlignment="Left">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding User.Name}" FontWeight="Bold" />
-						<TextBlock Text="{Binding User.ScreenNameResponse, StringFormat=@{0}}" FontWeight="Thin" Margin="5,0" />
+						<TextBlock Text="{Binding User.Model.Name}" FontWeight="Bold" />
+						<TextBlock Text="{Binding User.Model.ScreenNameResponse, StringFormat=@{0}}" FontWeight="Thin" Margin="5,0" />
 					</StackPanel>
-					<TextBlock Text="{Binding User.Description}" TextWrapping="Wrap" Margin="0,10" />
+					<TextBlock Text="{Binding User.Model.Description}" TextWrapping="Wrap" Margin="0,10" />
 
 					<StackPanel Orientation="Horizontal" Margin="0,5">
 						<materialDesign:PackIcon Kind="Clock" Width="12" Height="12" />
-						<TextBlock Text="{Binding User.CreatedAt}" Margin="10,0" />
+						<TextBlock Text="{Binding User.Model.CreatedAt}" Margin="10,0" />
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,5">
 						<materialDesign:PackIcon Kind="AccountLocation" Width="12" Height="12" />
-						<TextBlock Text="{Binding User.Location}" Margin="10,0" />
+						<TextBlock Text="{Binding User.Model.Location}" Margin="10,0" />
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,5">
 						<materialDesign:PackIcon Kind="Link" Width="12" Height="12" />
-						<TextBlock Text="{Binding User.Url}" Margin="10,0" />
+						<TextBlock Text="{Binding User.Model.Url}" Margin="10,0" />
 					</StackPanel>
 				</StackPanel>
 			</Grid>

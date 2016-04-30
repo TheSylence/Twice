@@ -1,23 +1,21 @@
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media;
 using Twice.Models.Configuration;
 using Twice.Resources;
-using WPFLocalizeExtension.Engine;
+using Twice.Utilities;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
 {
 	internal class VisualSettings : ViewModelBaseEx, IVisualSettings
 	{
-		public VisualSettings( IConfig currentConfig )
+		public VisualSettings( IConfig currentConfig, IColorProvider colorProvider, ILanguageProvider languageProvider )
 		{
-			var swatches = new SwatchesProvider().Swatches.ToArray();
+			ColorProvider = colorProvider;
 
-			AvailableAccentColors = new List<ColorItem>( swatches.Where( a => a.IsAccented ).Select( a =>
+			AvailableAccentColors = new List<ColorItem>( ColorProvider.AvailableAccentColors.Select( a =>
 				new ColorItem
 				{
 					Name = a.Name,
@@ -25,7 +23,7 @@ namespace Twice.ViewModels.Settings
 				}
 				) );
 
-			AvailablePrimaryColors = new List<ColorItem>( swatches.Select( a =>
+			AvailablePrimaryColors = new List<ColorItem>( ColorProvider.AvailablePrimaryColors.Select( a =>
 				new ColorItem
 				{
 					Name = a.Name,
@@ -33,8 +31,8 @@ namespace Twice.ViewModels.Settings
 				}
 				) );
 
-			SelectedPrimaryColor = AvailablePrimaryColors.First( c => c.Name == currentConfig.Visual.PrimaryColor );
-			SelectedAccentColor = AvailableAccentColors.First( c => c.Name == currentConfig.Visual.AccentColor );
+			SelectedPrimaryColor = AvailablePrimaryColors.FirstOrDefault( c => c.Name == currentConfig.Visual.PrimaryColor );
+			SelectedAccentColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.AccentColor );
 
 			AvailableFontSizes = new List<FontSizeItem>();
 			foreach( var kvp in new Dictionary<int, string>
@@ -46,7 +44,7 @@ namespace Twice.ViewModels.Settings
 				{20, "Huge"}
 			} )
 			{
-				string name = Strings.ResourceManager.GetString( $"FontSize_{kvp.Value}", LocalizeDictionary.CurrentCulture );
+				string name = Strings.ResourceManager.GetString( $"FontSize_{kvp.Value}", languageProvider.CurrentCulture );
 				AvailableFontSizes.Add( new FontSizeItem
 				{
 					DisplayName = name,
@@ -75,18 +73,15 @@ namespace Twice.ViewModels.Settings
 
 			config.Visual.InlineMedia = InlineMedias;
 
-			var swatches = new SwatchesProvider().Swatches.ToArray();
+			ColorProvider.SetHashtagColor( config.Visual.HashtagColor );
+			ColorProvider.SetLinkColor( config.Visual.LinkColor );
+			ColorProvider.SetMentionColor( config.Visual.MentionColor );
 
-			Application.Current.Resources["HashtagBrush"] =
-				new SolidColorBrush( swatches.First( s => s.Name == config.Visual.HashtagColor ).ExemplarHue.Color );
-			Application.Current.Resources["LinkBrush"] = new SolidColorBrush( swatches.First( s => s.Name == config.Visual.LinkColor ).ExemplarHue.Color );
-			Application.Current.Resources["MentionBrush"] = new SolidColorBrush( swatches.First( s => s.Name == config.Visual.MentionColor ).ExemplarHue.Color );
-			Application.Current.Resources["GlobalFontSize"] = (double)config.Visual.FontSize;
+			ColorProvider.SetFontSize( config.Visual.FontSize );
 
-			var palette = new PaletteHelper();
-			palette.SetLightDark( config.Visual.UseDarkTheme );
-			palette.ReplaceAccentColor( config.Visual.AccentColor );
-			palette.ReplacePrimaryColor( config.Visual.PrimaryColor );
+			ColorProvider.SetDarkTheme( config.Visual.UseDarkTheme );
+			ColorProvider.SetAccentColor( config.Visual.AccentColor );
+			ColorProvider.SetPrimaryColor( config.Visual.PrimaryColor );
 		}
 
 		public ICollection<ColorItem> AvailableAccentColors { get; }
@@ -220,6 +215,8 @@ namespace Twice.ViewModels.Settings
 				RaisePropertyChanged();
 			}
 		}
+
+		private readonly IColorProvider ColorProvider;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _InlineMedias;

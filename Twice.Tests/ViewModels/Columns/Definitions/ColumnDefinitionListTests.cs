@@ -9,6 +9,58 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 	public class ColumnDefinitionListTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void AddingColumnsPreservesExistingOnes()
+		{
+			// Arrange
+			var fileName = Path.GetTempFileName();
+			var list = new ColumnDefinitionList( fileName );
+
+			var mentionDef = new ColumnDefinition( ColumnType.Mentions )
+			{
+				Width = 123,
+				TargetAccounts = new ulong[] {1234u, 45678u},
+				SourceAccounts = new ulong[] {456u}
+			};
+
+			var timelineDef = new ColumnDefinition( ColumnType.Timeline )
+			{
+				Width = 223,
+				TargetAccounts = new ulong[] {111u, 222u},
+				SourceAccounts = new ulong[] {2344u}
+			};
+
+			var definitions = new[]
+			{
+				timelineDef
+			};
+
+			list.Save( definitions );
+
+			// Act
+			list.AddColumns( new[] {mentionDef} );
+			var loaded = list.Load().ToArray();
+
+			// Assert
+			Assert.AreEqual( 2, loaded.Length );
+			Assert.IsNotNull( loaded.SingleOrDefault( c => c.Type == ColumnType.Mentions ) );
+			Assert.IsNotNull( loaded.SingleOrDefault( c => c.Type == ColumnType.Timeline ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void LoadingNonExistentFileReturnsEmptyList()
+		{
+			// Arrange
+			string fileName = "non.existing.file";
+			var list = new ColumnDefinitionList( fileName );
+
+			// Act
+			var loaded = list.Load().ToArray();
+
+			// Assert
+			Assert.AreEqual( 0, loaded.Length );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void SavedColumnDefinitionsCanBeLoaded()
 		{
 			// Arrange
@@ -16,14 +68,14 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			{
 				Width = 123,
 				TargetAccounts = new ulong[] {1234u, 45678u},
-				SourceAccounts = new ulong[] { 456u }
+				SourceAccounts = new ulong[] {456u}
 			};
 
 			var timelineDef = new ColumnDefinition( ColumnType.Timeline )
 			{
 				Width = 223,
 				TargetAccounts = new ulong[] {111u, 222u},
-				SourceAccounts = new ulong[] { 2344u }
+				SourceAccounts = new ulong[] {2344u}
 			};
 
 			var definitions = new[]

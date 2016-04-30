@@ -3,15 +3,16 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Twice.Models.Configuration;
-using WPFLocalizeExtension.Engine;
+using Twice.Utilities;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
 {
 	internal class GeneralSettings : ViewModelBaseEx, IGeneralSettings
 	{
-		public GeneralSettings( IConfig currentConfig )
+		public GeneralSettings( IConfig currentConfig, ILanguageProvider languageProvider )
 		{
-			var langs = LocalizeDictionary.Instance.MergedAvailableCultures.ToList();
+			var langs = languageProvider.AvailableLanguages.ToList();
 			for( int i = 0; i < langs.Count; ++i )
 			{
 				if( langs[i].Equals( CultureInfo.InvariantCulture ) )
@@ -27,8 +28,10 @@ namespace Twice.ViewModels.Settings
 			}
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
+			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
+
 			RealtimeStreaming = currentConfig.General.RealtimeStreaming;
-			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? AvailableLanguages.First();
+			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? english;
 			CheckForUpdates = currentConfig.General.CheckForUpdates;
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
 		}
@@ -41,11 +44,19 @@ namespace Twice.ViewModels.Settings
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 		}
 
+		private static bool IsEnglish( CultureInfo lang )
+		{
+			var english = CultureInfo.CreateSpecificCulture( "en" );
+
+			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
+		}
+
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		public bool CheckForUpdates
 		{
-			[DebuggerStepThrough] get { return _CheckForUpdates; }
+			[DebuggerStepThrough]
+			get { return _CheckForUpdates; }
 			set
 			{
 				if( _CheckForUpdates == value )
@@ -60,7 +71,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool IncludePrereleaseUpdates
 		{
-			[DebuggerStepThrough] get { return _IncludePrereleaseUpdates; }
+			[DebuggerStepThrough]
+			get { return _IncludePrereleaseUpdates; }
 			set
 			{
 				if( _IncludePrereleaseUpdates == value )
@@ -75,7 +87,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool RealtimeStreaming
 		{
-			[DebuggerStepThrough] get { return _RealtimeStreaming; }
+			[DebuggerStepThrough]
+			get { return _RealtimeStreaming; }
 			set
 			{
 				if( _RealtimeStreaming == value )
@@ -90,7 +103,8 @@ namespace Twice.ViewModels.Settings
 
 		public CultureInfo SelectedLanguage
 		{
-			[DebuggerStepThrough] get { return _SelectedLanguage; }
+			[DebuggerStepThrough]
+			get { return _SelectedLanguage; }
 			set
 			{
 				if( _SelectedLanguage?.Name == value?.Name )
@@ -103,12 +117,16 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CheckForUpdates;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _CheckForUpdates;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IncludePrereleaseUpdates;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IncludePrereleaseUpdates;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RealtimeStreaming;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _RealtimeStreaming;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CultureInfo _SelectedLanguage;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private CultureInfo _SelectedLanguage;
 	}
 }

@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Twice.Models.Columns
 {
@@ -15,6 +15,14 @@ namespace Twice.Models.Columns
 
 		public event EventHandler ColumnsChanged;
 
+		public void AddColumns( IEnumerable<ColumnDefinition> newColumns )
+		{
+			var columns = Load();
+			var columnsToAdd = newColumns.Where( c => !columns.Contains( c ) );
+
+			Save( columns.Concat( columnsToAdd ) );
+		}
+
 		public IEnumerable<ColumnDefinition> Load()
 		{
 			if( !File.Exists( FileName ) )
@@ -26,12 +34,29 @@ namespace Twice.Models.Columns
 			return JsonConvert.DeserializeObject<List<ColumnDefinition>>( json );
 		}
 
+		public void RaiseChanged()
+		{
+			ColumnsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
+		public void Remove( IEnumerable<ColumnDefinition> columnDefinitions )
+		{
+			var columns = Load().Except( columnDefinitions );
+
+			Save( columns );
+		}
+
 		public void Save( IEnumerable<ColumnDefinition> definitions )
+		{
+			Update( definitions );
+
+			RaiseChanged();
+		}
+
+		public void Update( IEnumerable<ColumnDefinition> definitions )
 		{
 			var json = JsonConvert.SerializeObject( definitions.ToList(), Formatting.Indented );
 			File.WriteAllText( FileName, json );
-
-			ColumnsChanged?.Invoke( this, EventArgs.Empty );
 		}
 
 		private readonly string FileName;

@@ -151,6 +151,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attach image.
         /// </summary>
         public static string AttachImage {
@@ -232,11 +241,29 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear column.
+        /// </summary>
+        public static string ClearColumn {
+            get {
+                return ResourceManager.GetString("ClearColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click to remove.
         /// </summary>
         public static string ClickToRemove {
             get {
                 return ResourceManager.GetString("ClickToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column settings.
+        /// </summary>
+        public static string ColumnSettings {
+            get {
+                return ResourceManager.GetString("ColumnSettings", resourceCulture);
             }
         }
         
@@ -430,6 +457,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweets favorited from an account.
+        /// </summary>
+        public static string FavouritesDescription {
+            get {
+                return ResourceManager.GetString("FavouritesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         public static string Filter {
@@ -444,6 +480,15 @@ namespace Twice.Resources {
         public static string FilterCriteria {
             get {
                 return ResourceManager.GetString("FilterCriteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finish.
+        /// </summary>
+        public static string Finish {
+            get {
+                return ResourceManager.GetString("Finish", resourceCulture);
             }
         }
         
@@ -570,15 +615,6 @@ namespace Twice.Resources {
         public static string HashtagColor {
             get {
                 return ResourceManager.GetString("HashtagColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home.
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
@@ -930,6 +966,15 @@ namespace Twice.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the account you want to add the new column for.
+        /// </summary>
+        public static string SelectAccountYouWantToAddColumnFor {
+            get {
+                return ResourceManager.GetString("SelectAccountYouWantToAddColumnFor", resourceCulture);
             }
         }
         

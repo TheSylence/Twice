@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -7,43 +8,46 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using LinqToTwitter;
 using Twice.Resources;
 using Twice.ViewModels;
 
 namespace Twice.Converters
 {
-	/// <summary>Converts a Status to an InlineCollection.</summary>
+	/// <summary>
+	/// Converts a Status to an InlineCollection.
+	/// </summary>
 	internal class StatusHighlighter : IValueConverter
 	{
-		/// <summary>Converts a value.</summary>
+		/// <summary>
+		/// Converts a value.
+		/// </summary>
 		/// <param name="value">The value produced by the binding source.</param>
 		/// <param name="targetType">The type of the binding target property.</param>
 		/// <param name="parameter">The converter parameter to use.</param>
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
+		/// A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			Status tweet = value as Status;
 			if( tweet == null )
 			{
-				throw new ArgumentException( @"Value is not an ITweet object", nameof( value ) );
+				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
 			}
-
-			IEnumerable<Inline> inlines = GenerateInlines( tweet ).ToArray();
-
-			return inlines;
+			
+			return GenerateInlines( tweet ).ToArray();
 		}
 
-		/// <summary>Converts a value.</summary>
+		/// <summary>
+		/// Converts a value.
+		/// </summary>
 		/// <param name="value">The value that is produced by the binding target.</param>
 		/// <param name="targetType">The type to convert to.</param>
 		/// <param name="parameter">The converter parameter to use.</param>
 		/// <param name="culture">The culture to use in the converter.</param>
 		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
+		/// A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
@@ -102,7 +106,9 @@ namespace Twice.Converters
 			return menu;
 		}
 
-		/// <summary>Generates an inline from a hashtag entity.</summary>
+		/// <summary>
+		/// Generates an inline from a hashtag entity.
+		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
 		private static Inline GenerateHashTag( HashTagEntity entity )
@@ -116,7 +122,9 @@ namespace Twice.Converters
 			return link;
 		}
 
-		/// <summary>Generates a collection of inlines from a tweet.</summary>
+		/// <summary>
+		/// Generates a collection of inlines from a tweet.
+		/// </summary>
 		/// <param name="tweet">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
 		private static IEnumerable<Inline> GenerateInlines( Status tweet )
@@ -126,14 +134,14 @@ namespace Twice.Converters
 			entities = entities.Concat( tweet.Entities.UrlEntities );
 			entities = entities.Concat( tweet.Entities.UserMentionEntities );
 
-			entities = entities.OrderBy( e => e.Start );
+			var allEntities = entities.OrderBy( e => e.Start ).ToArray();
 			List<Inline> mediaPreviews = new List<Inline>();
 
-			if( entities.Any() )
+			if( allEntities.Any() )
 			{
 				int lastEnd = 0;
 
-				foreach( EntityBase entity in entities )
+				foreach( EntityBase entity in allEntities )
 				{
 					if( entity.Start > lastEnd )
 					{
@@ -194,7 +202,9 @@ namespace Twice.Converters
 			}
 		}
 
-		/// <summary>Generates an inline from a link entity.</summary>
+		/// <summary>
+		/// Generates an inline from a link entity.
+		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
 		private static Inline GenerateLink( UrlEntity entity )
@@ -210,7 +220,9 @@ namespace Twice.Converters
 			return link;
 		}
 
-		/// <summary>Generates an inline from a media entity.</summary>
+		/// <summary>
+		/// Generates an inline from a media entity.
+		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
 		private static Inline GenerateMedia( MediaEntity entity )
@@ -226,11 +238,11 @@ namespace Twice.Converters
 			return link;
 		}
 
-		/// <summary>Generates an inline from a mention entity.</summary>
+		/// <summary>
+		/// Generates an inline from a mention entity.
+		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
-		[SuppressMessage( "Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-			MessageId = "System.Windows.Documents.InlineCollection.Add(System.String)", Justification = "Character is always the same" )]
 		private static Inline GenerateMention( UserMentionEntity entity )
 		{
 			Hyperlink link = new Hyperlink();

@@ -1,21 +1,28 @@
 ﻿using Ninject;
-using Ninject.Infrastructure;
 using Ninject.Modules;
-using Ninject.Planning.Bindings;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Twice.Injections
 {
+	[ExcludeFromCodeCoverage]
 	internal class Kernel : StandardKernel
 	{
-		public Kernel( params INinjectModule[] modules )
-			: base( modules )
+		public Kernel()
+			: base( InjectionModules.ToArray() )
 		{
 		}
 
-		public override void AddBinding( IBinding binding )
+		private static IEnumerable<INinjectModule> InjectionModules
 		{
-			binding.ScopeCallback = StandardScopeCallbacks.Singleton;
-			base.AddBinding( binding );
+			get
+			{
+				yield return new ModelInjectionModule();
+				yield return new ViewModelInjectionModule();
+				yield return new ServiceInjectionModule();
+				yield return new UtilitiyInjectionModule();
+			}
 		}
 	}
 }

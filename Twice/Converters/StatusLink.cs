@@ -6,7 +6,9 @@ using Twice.Models.Twitter;
 
 namespace Twice.Converters
 {
-	/// <summary>Converter that converts a tweet to an URL that points to the tweet.</summary>
+	/// <summary>
+	/// Converter that converts a tweet to an URL that points to the tweet.
+	/// </summary>
 	internal class StatusLink : IValueConverter
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )

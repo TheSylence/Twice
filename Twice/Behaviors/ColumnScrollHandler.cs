@@ -1,10 +1,12 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using Twice.ViewModels.Columns;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class ColumnScrollHandler : Behavior<ScrollViewer>
 	{
 		protected override void OnAttached()
@@ -41,7 +43,8 @@ namespace Twice.Behaviors
 			set { SetValue( ActionDispatcherProperty, value ); }
 		}
 
-		// Using a DependencyProperty as the backing store for ActionDispatcher.  This enables animation, styling, binding, etc...
+		// Using a DependencyProperty as the backing store for ActionDispatcher. This enables
+		// animation, styling, binding, etc...
 		public static readonly DependencyProperty ActionDispatcherProperty =
 			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnScrollHandler ), new PropertyMetadata( null ) );
 

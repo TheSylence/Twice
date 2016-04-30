@@ -1,4 +1,6 @@
-﻿namespace Twice.Models.Columns
+﻿using System;
+
+namespace Twice.Models.Columns
 {
 	internal static class ColumnDefinitionFactory
 	{
@@ -6,6 +8,7 @@
 		{
 			return new ColumnDefinition( type )
 			{
+				Id = Guid.NewGuid(),
 				SourceAccounts = sourceAccounts,
 				TargetAccounts = targetAccounts
 			};

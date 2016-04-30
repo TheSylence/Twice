@@ -1,5 +1,28 @@
 ﻿[
-     {
+    {
+        "Version": "0.3.0",
+        "Date": "2016-04-30",
+        "Description": "",
+        "NewFeatures": [
+            "Resizing a column now saves the width for future starts",
+            "Notification can now configured for individual columns",
+            "Columns can be removed",
+            "Column content can be cleared",
+            "New columns can be added"
+        ],
+        "Changes": [
+            "UI should keep responsive for most of the time",
+            "Adding the same column twice won't result in duplicate column"
+        ],
+        "Fixes": [
+            "Closing the autocomplete box during compose gives focus back",
+            "Timeline is now named timeline everywhere",
+            "Profile pictures are now sharp in every dialog",
+            "Editing a muting no longer creates a new one"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.2.0",
         "Date": "2016-04-05",
         "Description": "",

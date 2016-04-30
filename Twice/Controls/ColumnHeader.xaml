@@ -6,11 +6,22 @@
              xmlns:local="clr-namespace:Twice.Controls"
              xmlns:columns="clr-namespace:Twice.ViewModels.Columns"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance columns:IColumnViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<proxies:ColumnDataProxy Data="{Binding}" x:Key="ColumnDataProxy" />
+	</UserControl.Resources>
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
 		<DockPanel>
-			<materialDesign:PackIcon DockPanel.Dock="Left" Height="24" Width="24" Margin="5" 
+			<materialDesign:PackIcon DockPanel.Dock="Left" Height="24" Width="24" Margin="3,5"
 									 VerticalAlignment="Center"
 									 Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 
@@ -22,7 +33,50 @@
 				</local:ResizeThumb.Template>
 			</local:ResizeThumb>
 
-			<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignTitleTextBlock}" VerticalAlignment="Center" />
+			<Button Style="{StaticResource MaterialDesignToolForegroundButton}" DockPanel.Dock="Right" Margin="5,0">
+				<i:Interaction.Behaviors>
+					<behaviors:ManualToggleButton IsChecked="{Binding ColumnConfiguration.IsExpanded, Mode=TwoWay}" />
+				</i:Interaction.Behaviors>
+				<materialDesign:PackIcon Kind="DotsHorizontal" />
+			</Button>
+
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+				<TextBlock Text="{Binding Title}" Style="{StaticResource MaterialDesignHeadlineTextBlock}" VerticalAlignment="Bottom" />
+				<TextBlock Text="{Binding SubTitle}" VerticalAlignment="Center" Margin="5,0" />
+			</StackPanel>
 		</DockPanel>
+		<materialDesign:Card Grid.Row="1" Margin="3" Background="{StaticResource PrimaryHueDarkBrush}"
+							Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Visibility="{Binding ColumnConfiguration.IsExpanded, Converter={StaticResource BoolToVisibleConv}}">
+			<StackPanel Orientation="Vertical" Margin="5" DataContext="{Binding ColumnConfiguration}">
+				<TextBlock Text="{lex:Loc ColumnSettings}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+				<CheckBox Content="{lex:Loc SoundNotification}" IsChecked="{Binding SoundEnabled, Mode=TwoWay}" />
+				<CheckBox Content="{lex:Loc ToastNotification}" IsChecked="{Binding ToastsEnabled, Mode=TwoWay}" />
+				<CheckBox Content="{lex:Loc PopupNotification}" IsChecked="{Binding PopupEnabled, Mode=TwoWay}" />
+				<Label />
+				<WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
+							Command="{Binding Data.DeleteCommand, Source={StaticResource ColumnDataProxy}}">
+						<DockPanel>
+							<materialDesign:PackIcon Kind="Delete" />
+							<TextBlock Text="{lex:Loc Delete}" Margin="5,0" />
+						</DockPanel>
+					</Button>
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
+							Command="{Binding Data.ClearCommand, Source={StaticResource ColumnDataProxy}}">
+						<DockPanel>
+							<materialDesign:PackIcon Kind="NotificationClearAll" />
+							<TextBlock Text="{lex:Loc ClearColumn}" Margin="5,0" />
+						</DockPanel>
+					</Button>
+					<Button Style="{StaticResource MaterialDesignRaisedButton}" Margin="5"
+							Command="{Binding SaveCommand}">
+						<DockPanel>
+							<materialDesign:PackIcon Kind="ContentSave" />
+							<TextBlock Text="{lex:Loc Save}" Margin="5,0" />
+						</DockPanel>
+					</Button>
+				</WrapPanel>
+			</StackPanel>
+		</materialDesign:Card>
 	</Grid>
 </UserControl>

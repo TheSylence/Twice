@@ -11,10 +11,11 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:controls1="clr-namespace:Twice.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Twice.Behaviors"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors" IconOverlayBehavior="Flyouts"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        xmlns:flyouts="clr-namespace:Twice.Views.Flyouts"
+        xmlns:flyouts="clr-namespace:Twice.Views.Flyouts" WindowButtonCommandsOverlayBehavior="Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -105,7 +106,12 @@
 			</DockPanel>
 
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
-				<ItemsControl ItemsSource="{Binding Columns}">
+				<ItemsControl ItemsSource="{Binding Columns}"
+							  dragDrop:DragDrop.IsDragSource="True"
+							  dragDrop:DragDrop.IsDropTarget="True"
+							  dragDrop:DragDrop.DragSourceIgnore="False"
+							  dragDrop:DragDrop.DragHandler="{Binding DragDropHandler}"
+							  dragDrop:DragDrop.DropHandler="{Binding DragDropHandler}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" />
@@ -113,7 +119,7 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate DataType="columns:IColumnViewModel">
-							<Grid>
+							<Grid Margin="0,0,5,0">
 								<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
 									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
 										<i:Interaction.Behaviors>
@@ -125,13 +131,13 @@
 									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
 											  HorizontalContentAlignment="Stretch">
 										<i:Interaction.Behaviors>
-											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
 										</i:Interaction.Behaviors>
 										<ItemsControl.Template>
 											<ControlTemplate>
 												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 													<i:Interaction.Behaviors>
-														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}"/>
+														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
 													</i:Interaction.Behaviors>
 													<ItemsPresenter />
 												</ScrollViewer>

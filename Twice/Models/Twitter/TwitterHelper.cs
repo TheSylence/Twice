@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using LinqToTwitter;
 using Regex = Twice.Models.Twitter.Text.Regex;
 
 namespace Twice.Models.Twitter
@@ -30,15 +30,15 @@ namespace Twice.Models.Twitter
 			return user.ScreenName ?? user.ScreenNameResponse;
 		}
 
-		public static ulong GetUserId( this User user )
-		{
-			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
-		}
-
 		public static Uri GetUrl( this Status status )
 		{
 			string userName = status.User.GetScreenName();
 			return new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}/status/{1}", userName, status.StatusID ) );
+		}
+
+		public static ulong GetUserId( this User user )
+		{
+			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
 		}
 
 		// FIXME: The length params must be kept up to date

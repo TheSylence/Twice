@@ -1,7 +1,17 @@
+using System.Diagnostics;
+using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+
 namespace Twice.ViewModels.Wizards
 {
-	internal abstract class WizardPageViewModel
+	internal abstract class WizardPageViewModel : ObservableObject
 	{
+		protected WizardPageViewModel( IWizardViewModel wizard )
+		{
+			Wizard = wizard;
+		}
+
 		public virtual bool CanNavigateForward()
 		{
 			return true;
@@ -15,6 +25,24 @@ namespace Twice.ViewModels.Wizards
 		{
 		}
 
-		public abstract int NextPageKey { get; }
+		protected virtual bool CanExecuteGotoNextPageCommand( object args )
+		{
+			return true;
+		}
+
+		protected virtual void ExecuteGotoNextPageCommand( object args )
+		{
+		}
+
+		public ICommand GotoNextPageCommand
+			=>
+				_GotoNextPageCommand
+				?? ( _GotoNextPageCommand = new RelayCommand<object>( ExecuteGotoNextPageCommand, CanExecuteGotoNextPageCommand ) );
+
+		public bool IsLastPage { get; protected set; } = false;
+		protected readonly IWizardViewModel Wizard;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand<object> _GotoNextPageCommand;
 	}
 }

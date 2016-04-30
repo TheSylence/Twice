@@ -66,6 +66,10 @@
       <HintPath>..\packages\linqtotwitter.4.1.0\lib\net45\LinqToTwitter.net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +82,11 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
@@ -112,6 +121,7 @@
       <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -132,19 +142,56 @@
     <Compile Include="Converters\EmptyListTests.cs" />
     <Compile Include="Converters\EmptyStringTests.cs" />
     <Compile Include="Converters\InvertBoolTests.cs" />
+    <Compile Include="Converters\MathConverterTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
+    <Compile Include="Converters\StatusHighlighterTests.cs" />
+    <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="MockExtensions.cs" />
+    <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="ITypeResolver.cs" />
+    <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
+    <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
+    <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
+    <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />
+    <Compile Include="Models\Twitter\TwitterContextListTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyChangedTester.cs" />
+    <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
+    <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
+    <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
+    <Compile Include="ViewModels\NotifierTests.cs" />
+    <Compile Include="ViewModels\Profile\ProfileDialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Profile\UserSubPageTests.cs" />
+    <Compile Include="ViewModels\Settings\GeneralSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\MuteEditViewModelTests.cs" />
+    <Compile Include="ViewModels\Settings\MuteSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\NotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\PopupNotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\SettingsDialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
+    <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
+    <Compile Include="ViewModels\Twitter\MediaItemTests.cs" />
+    <Compile Include="ViewModels\Twitter\StatusViewModelTests.cs" />
+    <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
+    <Compile Include="ViewModels\ValueDescriptionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Twice\Twice.csproj">
@@ -156,6 +203,10 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Image.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

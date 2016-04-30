@@ -1,16 +1,18 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
+using Twice.Utilities;
+using Twice.Utilities.Os;
+using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -25,33 +27,50 @@ namespace Twice.ViewModels.Twitter
 			if( OriginalStatus.RetweetedStatus != null && OriginalStatus.RetweetedStatus.StatusID != 0 )
 			{
 				Model = OriginalStatus.RetweetedStatus;
-				SourceUser = OriginalStatus.User;
+				SourceUser = new UserViewModel( OriginalStatus.User );
 			}
 			else
 			{
 				Model = OriginalStatus;
 				SourceUser = null;
 			}
+
+			User = new UserViewModel( Model.User );
+			Dispatcher = new DispatcherHelperWrapper();
 		}
+
+		public IDispatcher Dispatcher { get; set; }
 
 		private bool CanExecuteBlockUserCommand()
 		{
-			return OriginalStatus.UserID != Context.UserId;
+			return OriginalStatus.User.GetUserId() != Context.UserId;
 		}
 
 		private bool CanExecuteDeleteStatusCommand()
 		{
-			return OriginalStatus.UserID == Context.UserId;
+			return OriginalStatus.User.GetUserId() == Context.UserId;
+		}
+
+		private bool CanExecuteReplyToAllCommand()
+		{
+			List<ulong> userIds = new List<ulong>
+			{
+				OriginalStatus.User.GetUserId(),
+				Model.User.GetUserId()
+			};
+			userIds.AddRange( Model.Entities.UserMentionEntities.Select( m => m.Id ) );
+
+			return userIds.Distinct().Count() > 1;
 		}
 
 		private bool CanExecuteReportSpamCommand()
 		{
-			return OriginalStatus.UserID != Context.UserId;
+			return OriginalStatus.User.GetUserId() != Context.UserId;
 		}
 
 		private bool CanExecuteRetweetStatusCommand()
 		{
-			return ulong.Parse( OriginalStatus.User.UserIDResponse ) != Context.UserId;
+			return OriginalStatus.User.GetUserId() != Context.UserId;
 		}
 
 		private void ExecAsync( Action action, string message = null, NotificationType type = NotificationType.Information )
@@ -59,7 +78,7 @@ namespace Twice.ViewModels.Twitter
 			IsLoading = true;
 			Task.Run( action ).ContinueWith( t =>
 			{
-				DispatcherHelper.CheckBeginInvokeOnUI( () => IsLoading = false );
+				Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false );
 			} ).ContinueWith( t =>
 			{
 				if( !string.IsNullOrWhiteSpace( message ) )
@@ -133,16 +152,17 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand BlockUserCommand => _BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) );
 
+		public IClipboard Clipboard
+		{
+			get { return _Clipboard ?? DefaultClipboard; }
+			set { _Clipboard = value; }
+		}
+
 		public ICommand CopyTweetCommand => _CopyTweetCommand ?? ( _CopyTweetCommand = new RelayCommand( ExecuteCopyTweetCommand ) );
-
 		public ICommand CopyTweetUrlCommand => _CopyTweetUrlCommand ?? ( _CopyTweetUrlCommand = new RelayCommand( ExecuteCopyTweetUrlCommand ) );
-
 		public DateTime CreatedAt => Model.CreatedAt;
-
 		public ICommand DeleteStatusCommand => _DeleteStatusCommand ?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
-
 		public bool DisplayMedia => InlineMedias.Any();
-
 		public ICommand FavoriteStatusCommand => _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
 		public ulong Id => Model.StatusID;
 
@@ -185,23 +205,21 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public bool IsRetweeted => Model.Retweeted;
-
 		public Status Model { get; }
-
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
-		public ICommand ReplyToAllCommand => _ReplyToAllCommand ?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand ) );
+		public ICommand ReplyToAllCommand => _ReplyToAllCommand ?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
 		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
-
 		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
-
-		public User SourceUser { get; }
-
+		public UserViewModel SourceUser { get; }
+		public UserViewModel User { get; }
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 		private readonly IContextEntry Context;
-
 		private readonly Status OriginalStatus;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _BlockUserCommand;
+
+		private IClipboard _Clipboard;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _CopyTweetCommand;

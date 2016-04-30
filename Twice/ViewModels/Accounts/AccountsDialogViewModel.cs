@@ -1,6 +1,7 @@
 ﻿using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,22 +26,7 @@ namespace Twice.ViewModels.Accounts
 			}
 		}
 
-		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
-
-		public ICommand MakeDefaultAccountCommand => _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
-			ExecuteMakeDefaultAccountCommand ) );
-
-		private void ExecuteMakeDefaultAccountCommand( AccountEntry entry )
-		{
-			foreach( var acc in AddedAccounts)
-			{
-				acc.IsDefaultAccount = acc.Data.UserId == entry.Data.UserId;
-			}
-
-			ContextList.UpdateAllAccounts();
-		}
-
-		private void Acc_ConfirmationChanged( object sender, System.EventArgs e )
+		private void Acc_ConfirmationChanged( object sender, EventArgs e )
 		{
 			var acc = sender as AccountEntry;
 			Debug.Assert( acc != null, "acc != null" );
@@ -71,7 +57,7 @@ namespace Twice.ViewModels.Accounts
 
 			try
 			{
-				await auth.AuthorizeAsync();
+				await auth.AuthorizeAsync().ConfigureAwait( false );
 			}
 			catch( TwitterQueryException ex )
 			{
@@ -91,23 +77,37 @@ namespace Twice.ViewModels.Accounts
 				UserId = auth.CredentialStore.UserID
 			};
 
-			using( var ctx = new TwitterContext( auth ) )
+			if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )
 			{
-				var twitterUser =
-					await ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false ).SingleOrDefaultAsync();
-				accountData.ImageUrl = twitterUser.ProfileImageUrlHttps;
-			}
+				using( var ctx = new TwitterContext( auth ) )
+				{
+					var twitterUser =
+						await
+							ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false )
+								.SingleOrDefaultAsync();
+					accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
+				}
 
-			ContextList.AddContext( accountData );
+				ContextList.AddContext( accountData );
 
-			var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
-			if( newColumns.Any() )
-			{
-				var columns = ColumnList.Load();
-				ColumnList.Save( columns.Concat( newColumns ) );
+				var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
+				if( newColumns.Any() )
+				{
+					ColumnList.AddColumns( newColumns );
+				}
 			}
 
 			Close( true );
+		}
+
+		private void ExecuteMakeDefaultAccountCommand( AccountEntry entry )
+		{
+			foreach( var acc in AddedAccounts )
+			{
+				acc.IsDefaultAccount = acc.Data.UserId == entry.Data.UserId;
+			}
+
+			ContextList.UpdateAllAccounts();
 		}
 
 		private string GetPinFromUser()
@@ -123,9 +123,13 @@ namespace Twice.ViewModels.Accounts
 		public ICommand AddAccountCommand => _AddAccountCommand ?? ( _AddAccountCommand = new RelayCommand( ExecuteAddAccountCommand ) );
 		public ICollection<AccountEntry> AddedAccounts { get; }
 
+		public ICommand MakeDefaultAccountCommand => _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
+			ExecuteMakeDefaultAccountCommand ) );
+
 		private const string DialogHostIdentifier = "AccountDialogHost";
 		private readonly IColumnDefinitionList ColumnList;
 		private RelayCommand _AddAccountCommand;
+		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
 		private bool PinEntryCancelled;
 	}
 }

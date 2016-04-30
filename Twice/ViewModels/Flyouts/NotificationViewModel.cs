@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
+using System.Diagnostics;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Flyouts

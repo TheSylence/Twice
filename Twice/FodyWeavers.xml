@@ -3,4 +3,6 @@
   <Anotar.NLog />
   <Resourcer />
   <AsyncErrorHandler />
+  <ConfigureAwait />
+  <Undisposed />
 </Weavers>

@@ -1,6 +1,6 @@
 namespace Twice.ViewModels.Settings
 {
-	enum MuteEditAction
+	internal enum MuteEditAction
 	{
 		Add,
 		Edit

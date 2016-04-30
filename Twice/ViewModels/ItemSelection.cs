@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
+using System.Diagnostics;
 
 namespace Twice.ViewModels
 {
@@ -15,7 +15,8 @@ namespace Twice.ViewModels
 
 		public bool IsSelected
 		{
-			[DebuggerStepThrough] get { return _IsSelected; }
+			[DebuggerStepThrough]
+			get { return _IsSelected; }
 			set
 			{
 				if( _IsSelected == value )
@@ -28,6 +29,7 @@ namespace Twice.ViewModels
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSelected;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSelected;
 	}
 }

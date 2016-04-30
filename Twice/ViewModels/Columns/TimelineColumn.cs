@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
 
 namespace Twice.ViewModels.Columns
@@ -14,7 +15,7 @@ namespace Twice.ViewModels.Columns
 		public TimelineColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
 			: base( context, definition, config, parser )
 		{
-			Title = Strings.Home;
+			Title = Strings.Timeline;
 		}
 
 		protected override bool IsSuitableForColumn( Status status )

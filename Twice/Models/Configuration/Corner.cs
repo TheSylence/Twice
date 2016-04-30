@@ -1,6 +1,6 @@
 namespace Twice.Models.Configuration
 {
-	enum Corner
+	internal enum Corner
 	{
 		TopLeft,
 		TopRight,

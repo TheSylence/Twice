@@ -2,15 +2,14 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using LinqToTwitter;
 
 namespace Twice.ViewModels.Twitter
 {
 	internal class MediaItem
 	{
-		public MediaItem( Media media, byte[] mediaData )
+		public MediaItem( ulong mediaId, byte[] mediaData )
 		{
-			Media = media;
+			MediaId = mediaId;
 			MediaData = mediaData;
 		}
 
@@ -36,8 +35,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public Lazy<ImageSource> Image => new Lazy<ImageSource>( () => LoadImage( MediaData ) );
-		public ulong MediaId => Media.MediaID;
+		public ulong MediaId { get; }
 		private readonly byte[] MediaData;
-		private readonly Media Media;
 	}
 }

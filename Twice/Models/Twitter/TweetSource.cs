@@ -3,10 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace Twice.Models.Twitter
 {
-	/// <summary>Represents an application that was used to write a tweet.</summary>
+	/// <summary>
+	/// Represents an application that was used to write a tweet.
+	/// </summary>
 	internal class TweetSource
 	{
-		/// <summary>Initializes a new instance of the <see cref="TweetSource"/> class.</summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TweetSource"/> class.
+		/// </summary>
 		/// <param name="source">The source tweeter told for the status.</param>
 		internal TweetSource( string source )
 		{
@@ -34,10 +38,14 @@ namespace Twice.Models.Twitter
 			}
 		}
 
-		/// <summary>Name of the Application.</summary>
+		/// <summary>
+		/// Name of the Application.
+		/// </summary>
 		public string Name { get; private set; }
 
-		/// <summary>Website of the application.</summary>
+		/// <summary>
+		/// Website of the application.
+		/// </summary>
 		public Uri Url { get; private set; }
 
 		private static readonly Regex Pattern = new Regex( "<a.*href=\"(.*?)\".*>(.*?)</a>" );

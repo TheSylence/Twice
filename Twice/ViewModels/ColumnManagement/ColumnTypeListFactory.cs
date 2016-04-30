@@ -1,15 +1,15 @@
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MaterialDesignThemes.Wpf;
 using Twice.Models.Columns;
 using Twice.Resources;
 
 namespace Twice.ViewModels.ColumnManagement
 {
-	static class ColumnTypeListFactory
+	internal static class ColumnTypeListFactory
 	{
-		internal static IEnumerable<ColumnTypeItem> GetItems(  )
+		internal static IEnumerable<ColumnTypeItem> GetItems()
 		{
 			return GetItems( Enum.GetValues( typeof( ColumnType ) ).Cast<ColumnType>() );
 		}
@@ -33,9 +33,14 @@ namespace Twice.ViewModels.ColumnManagement
 				yield return new ColumnTypeItem( ColumnType.User, Strings.User, Strings.UserDescription, PackIconKind.Account );
 			}
 
-			if( typeList.Contains( ColumnType.Messages ))
+			if( typeList.Contains( ColumnType.Messages ) )
 			{
 				yield return new ColumnTypeItem( ColumnType.Messages, Strings.Messages, Strings.MessagesDescription, PackIconKind.Message );
+			}
+
+			if( typeList.Contains( ColumnType.Favorites ) )
+			{
+				yield return new ColumnTypeItem( ColumnType.Favorites, Strings.Favourites, Strings.FavouritesDescription, PackIconKind.Star );
 			}
 		}
 	}

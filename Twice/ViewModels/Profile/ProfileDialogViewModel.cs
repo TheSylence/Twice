@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Fody;
+using LinqToTwitter;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Profile
 {
+	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
-		public void Setup( ulong profileId )
-		{
-			ProfileId = profileId;
-		}
-
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -26,40 +23,43 @@ namespace Twice.ViewModels.Profile
 
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
-
-			// ReSharper disable once RedundantBoolCompare
-			User = await Context.Twitter.User.Where( tw => tw.Type == UserType.Show && tw.UserID == ProfileId && tw.IncludeEntities == true ).SingleOrDefaultAsync();
-			if( User == null )
+			
+			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+			if( user == null )
 			{
 				// TODO: Handle errors
 				return;
 			}
 
-			Friendship = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.Show && f.SourceUserID == Context.UserId && f.TargetUserID == User.UserID ).SingleOrDefaultAsync();
+			User = new UserViewModel( user );
+			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserID );
 
 			UserPages = new List<UserSubPage>
 			{
-				new UserSubPage( Strings.Tweets, LoadStatuses, User.StatusesCount ),
-				new UserSubPage( Strings.Following, LoadFollowings, User.FriendsCount ),
-				new UserSubPage( Strings.Followers, LoadFollowers, User.FollowersCount )
+				new UserSubPage( Strings.Tweets, LoadStatuses, User.Model.StatusesCount ),
+				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount ),
+				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 
 			IsBusy = false;
 		}
 
+		public void Setup( ulong profileId )
+		{
+			ProfileId = profileId;
+		}
+
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
-			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
-			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FollowersList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}
 
 		private async Task<IEnumerable<object>> LoadFollowings()
 		{
-			// ReSharper disable once RedundantBoolCompare (No results are found when omitting ==true)
-			var users = await Context.Twitter.Friendship.Where( f => f.Type == FriendshipType.FriendsList && f.UserID == User.UserID.ToString() && f.Count == 200 && f.SkipStatus == true ).SelectMany( f => f.Users ).ToListAsync();
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}
@@ -74,11 +74,11 @@ namespace Twice.ViewModels.Profile
 			{
 				ulong since = cached.Max( c => c.StatusID );
 
-				newStatuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == User.UserID && s.SinceID == since ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID ,since );
 			}
 			else
 			{
-				newStatuses = await Context.Twitter.Status.Where( s => s.Type == StatusType.User && s.UserID == User.UserID ).ToListAsync();
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID );
 			}
 
 			return cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select( s => new StatusViewModel( s, Context ) );
@@ -122,7 +122,7 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		public User User
+		public UserViewModel User
 		{
 			[DebuggerStepThrough]
 			get
@@ -150,7 +150,7 @@ namespace Twice.ViewModels.Profile
 		private bool _IsBusy;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private User _User;
+		private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong ProfileId;

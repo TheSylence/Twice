@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
@@ -48,13 +49,13 @@ namespace Twice.ViewModels.Twitter
 			Medias.Clear();
 			AttachedMedias.Clear();
 
-			KnownUserNames = ( await Cache.GetKnownUsers() ).Select( u => u.Name ).ToList();
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
 			RaisePropertyChanged( nameof( KnownUserNames ) );
-			KnownHashtags = ( await Cache.GetKnownHashtags() ).ToList();
+			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
-		private static string GetMimeType( string fileName )
+		internal static string GetMimeType( string fileName )
 		{
 			var ext = Path.GetExtension( fileName );
 
@@ -73,14 +74,9 @@ namespace Twice.ViewModels.Twitter
 			return "application/octet-stream";
 		}
 
-		private void Acc_UseChanged( object sender, System.EventArgs e )
+		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
-		}
-
-		private bool CanExecuteAttachImageCommand()
-		{
-			return true;
 		}
 
 		private bool CanExecuteSendTweetCommand()
@@ -111,7 +107,7 @@ namespace Twice.ViewModels.Twitter
 		private async void ExecuteAttachImageCommand()
 		{
 			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
-			var selectedFile = await ViewServiceRepository.OpenFile( fsa );
+			var selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
 			if( selectedFile == null )
 			{
 				return;
@@ -134,14 +130,21 @@ namespace Twice.ViewModels.Twitter
 			} );
 
 			Medias.Add( media );
-			AttachedMedias.Add( new MediaItem( media, mediaData ) );
+			AttachedMedias.Add( new MediaItem( media.MediaID, mediaData ) );
 		}
 
-		private void ExecuteDeleteMediaCommand( MediaItem item )
+		private void ExecuteDeleteMediaCommand( ulong id )
 		{
 			// TODO: Confirm removal
-			Medias.RemoveAll( m => m.MediaID == item.MediaId );
-			AttachedMedias.Remove( item );
+			Medias.RemoveAll( m => m.MediaID == id );
+			for( int i = 0; i < AttachedMedias.Count; ++i )
+			{
+				if( AttachedMedias[i].MediaId == id )
+				{
+					AttachedMedias.RemoveAt( i );
+					break;
+				}
+			}
 		}
 
 		private async void ExecuteSendTweetCommand()
@@ -157,7 +160,7 @@ namespace Twice.ViewModels.Twitter
 			{
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) );
+					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) ).ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{
@@ -175,10 +178,10 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
-		public ICollection<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
+		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
-			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand, CanExecuteAttachImageCommand ) );
+			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
 
 		public bool ConfirmationRequired
 		{
@@ -187,7 +190,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool ConfirmationSet
 		{
-			[DebuggerStepThrough] get { return _ConfirmationSet; }
+			[DebuggerStepThrough]
+			get { return _ConfirmationSet; }
 			set
 			{
 				if( _ConfirmationSet == value )
@@ -200,12 +204,13 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<MediaItem>(
+		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
 			ExecuteDeleteMediaCommand ) );
 
 		public bool IsSending
 		{
-			[DebuggerStepThrough] get { return _IsSending; }
+			[DebuggerStepThrough]
+			get { return _IsSending; }
 			set
 			{
 				if( _IsSending == value )
@@ -223,7 +228,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool LowCharsLeft
 		{
-			[DebuggerStepThrough] get { return _LowCharsLeft; }
+			[DebuggerStepThrough]
+			get { return _LowCharsLeft; }
 			set
 			{
 				if( _LowCharsLeft == value )
@@ -238,7 +244,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool MediumCharsLeft
 		{
-			[DebuggerStepThrough] get { return _MediumCharsLeft; }
+			[DebuggerStepThrough]
+			get { return _MediumCharsLeft; }
 			set
 			{
 				if( _MediumCharsLeft == value )
@@ -255,7 +262,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool StayOpen
 		{
-			[DebuggerStepThrough] get { return _StayOpen; }
+			[DebuggerStepThrough]
+			get { return _StayOpen; }
 			set
 			{
 				if( _StayOpen == value )
@@ -270,7 +278,8 @@ namespace Twice.ViewModels.Twitter
 
 		public string Text
 		{
-			[DebuggerStepThrough] get { return _Text; }
+			[DebuggerStepThrough]
+			get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -286,7 +295,8 @@ namespace Twice.ViewModels.Twitter
 
 		public int TextLength
 		{
-			[DebuggerStepThrough] get { return _TextLength; }
+			[DebuggerStepThrough]
+			get { return _TextLength; }
 			set
 			{
 				if( _TextLength == value )
@@ -307,24 +317,33 @@ namespace Twice.ViewModels.Twitter
 		private readonly List<Media> Medias = new List<Media>();
 		private readonly int MediumWarnThreshold = 125;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AttachImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _ConfirmationSet;
 
-		private RelayCommand<MediaItem> _DeleteMediaCommand;
+		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _LowCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _MediumCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _StayOpen;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private int _TextLength;
 	}
 }
