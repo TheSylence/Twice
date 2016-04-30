@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		smcmd.xml = smcmd.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.Wpf.DragDrop (NET4)", "ThirdParty\Gong-WPF-DragDrop\GongSolutions.Wpf.DragDrop\GongSolutions.Wpf.DragDrop (NET4).csproj", "{0C6674CC-6D49-414A-9B41-D4E175028FFB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Analysis|Any CPU = Analysis|Any CPU
@@ -44,18 +42,11 @@ Global
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Analysis|Any CPU.Build.0 = Release|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{34186C3B-C308-4CAE-B462-DB7B5F5E378C} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
-		{0C6674CC-6D49-414A-9B41-D4E175028FFB} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
 	EndGlobalSection
 EndGlobal
