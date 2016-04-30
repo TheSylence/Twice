@@ -7,7 +7,8 @@
             "Resizing a column now saves the width for future starts",
             "Notification can now configured for individual columns",
             "Columns can be removed",
-            "Column content can be cleared"
+            "Column content can be cleared",
+            "New columns can be added"
         ],
         "Changes": [
             "UI should keep responsive for most of the time",
