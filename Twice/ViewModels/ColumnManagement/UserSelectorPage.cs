@@ -28,6 +28,8 @@ namespace Twice.ViewModels.ColumnManagement
 			targetAccounts.Add( userId );
 			int pageKey = 3;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
+			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey,
+				Users.Single( usr => usr.UserID == userId ).Model.GetScreenName() );
 			Wizard.GotoPage( pageKey );
 		}
 

@@ -167,7 +167,24 @@
 					</views:GenericDataTemplateSelectorItem>
 					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:FinishPage">
 						<DataTemplate DataType="columnManagement:FinishPage">
-							<TextBlock Text="TODO: Display column type, account, etc" />
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Text="{lex:Loc Account}" FontWeight="Bold" />
+								<TextBlock Text="{Binding SourceAccount}" Grid.Column="1"/>
+
+								<TextBlock Text="{lex:Loc Column}" FontWeight="Bold" Grid.Row="1"/>
+								<TextBlock Text="{Binding ColumnTypeDescription}" Grid.Column="1" Grid.Row="1"/>
+								
+								<TextBlock Text="{lex:Loc ClickFinishToAddColumn}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+							</Grid>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>
 				</views:GenericTemplateSelector>

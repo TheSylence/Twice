@@ -19,6 +19,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 			SetProperty( SourceAccountsKey, new ulong[0] );
 			SetProperty( TargetAccountsKey, new ulong[0] );
+			SetProperty( SourceAccountNamesKey, string.Empty );
+			SetProperty( TargetAccountNamesKey, string.Empty );
 
 			CurrentPage = Pages[0];
 		}
@@ -37,9 +39,10 @@ namespace Twice.ViewModels.ColumnManagement
 		}
 
 		internal const string ColumnTypeKey = "ColumnType";
+		internal const string SourceAccountNamesKey = "SourceAccountNames";
 		internal const string SourceAccountsKey = "SourceAccounts";
+		internal const string TargetAccountNamesKey = "TargetAccountNames";
 		internal const string TargetAccountsKey = "TargetAccounts";
-
 		private readonly IColumnDefinitionList ColumnList;
 	}
 }
