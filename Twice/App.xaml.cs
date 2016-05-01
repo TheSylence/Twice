@@ -2,10 +2,13 @@
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
+using NBug;
+using NBug.Enums;
 using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -20,11 +23,28 @@ using WPFLocalizeExtension.Engine;
 namespace Twice
 {
 	/// <summary>
-	/// Interaction logic for App.xaml
+	///     Interaction logic for App.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class App
 	{
+		public App()
+		{
+			Settings.UIMode = UIMode.Full;
+			Settings.MiniDumpType = MiniDumpType.Tiny;
+			Settings.StoragePath = StoragePath.CurrentDirectory;
+			Settings.UIProvider = UIProvider.WPF;
+			Settings.AdditionalReportFiles.Add( "log*.txt" );
+			Settings.SleepBeforeSend = 20;
+			Settings.StopReportingAfter = 100;
+			Settings.AddDestinationFromConnectionString( "Type=Http;Url=http://software.btbsoft.org/twice/crash/report.php;" );
+
+			Settings.ReleaseMode = true;
+
+			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
+			Current.DispatcherUnhandledException += Handler.DispatcherUnhandledException;
+		}
+
 		protected override void OnExit( ExitEventArgs e )
 		{
 			LogTo.Info( "Application exit" );
@@ -53,9 +73,12 @@ namespace Twice
 			var resDict = new ResourceDictionary();
 			resDict.BeginInit();
 			{
-				resDict.Add( "HashtagBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.HashtagColor ).ExemplarHue.Color ) );
-				resDict.Add( "LinkBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.LinkColor ).ExemplarHue.Color ) );
-				resDict.Add( "MentionBrush", new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.MentionColor ).ExemplarHue.Color ) );
+				resDict.Add( "HashtagBrush",
+					new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.HashtagColor ).ExemplarHue.Color ) );
+				resDict.Add( "LinkBrush",
+					new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.LinkColor ).ExemplarHue.Color ) );
+				resDict.Add( "MentionBrush",
+					new SolidColorBrush( swatches.First( s => s.Name == conf.Visual.MentionColor ).ExemplarHue.Color ) );
 				resDict.Add( "GlobalFontSize", (double)conf.Visual.FontSize );
 			}
 			resDict.EndInit();
@@ -73,8 +96,9 @@ namespace Twice
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ), new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
+				new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private void ConfigureLogging()
