@@ -1,16 +1,15 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.Utilities;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 
@@ -18,8 +17,9 @@ namespace Twice.ViewModels.Twitter
 {
 	internal class StatusViewModel : ObservableObject
 	{
-		public StatusViewModel( Status model, IContextEntry context )
+		public StatusViewModel( Status model, IContextEntry context, IConfig config )
 		{
+			Config = config;
 			Context = context;
 
 			Model = model;
@@ -38,8 +38,6 @@ namespace Twice.ViewModels.Twitter
 			User = new UserViewModel( Model.User );
 			Dispatcher = new DispatcherHelperWrapper();
 		}
-
-		public IDispatcher Dispatcher { get; set; }
 
 		private bool CanExecuteBlockUserCommand()
 		{
@@ -76,21 +74,20 @@ namespace Twice.ViewModels.Twitter
 		private void ExecAsync( Action action, string message = null, NotificationType type = NotificationType.Information )
 		{
 			IsLoading = true;
-			Task.Run( action ).ContinueWith( t =>
-			{
-				Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false );
-			} ).ContinueWith( t =>
-			{
-				if( !string.IsNullOrWhiteSpace( message ) )
+			Task.Run( action ).ContinueWith( t => { Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false ); } ).ContinueWith(
+				t =>
 				{
-					Context.Notifier.DisplayMessage( message, type );
-				}
-			} );
+					if( !string.IsNullOrWhiteSpace( message ) )
+					{
+						Context.Notifier.DisplayMessage( message, type );
+					}
+				} );
 		}
 
 		private void ExecuteBlockUserCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.UserID, null, true ), Strings.BlockedUser, NotificationType.Success );
+			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.UserID, null, true ),
+				Strings.BlockedUser, NotificationType.Success );
 		}
 
 		private void ExecuteCopyTweetCommand()
@@ -107,7 +104,8 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteDeleteStatusCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted, NotificationType.Success );
+			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
+				NotificationType.Success );
 		}
 
 		private void ExecuteFavoriteStatusCommand()
@@ -125,7 +123,9 @@ namespace Twice.ViewModels.Twitter
 
 				Model.Favorited = !Model.Favorited;
 				RaisePropertyChanged( nameof( IsFavorited ) );
-			}, Model.Favorited ? Strings.RemovedFavorite : Strings.AddedFavorite, NotificationType.Success );
+			}, Model.Favorited
+				? Strings.RemovedFavorite
+				: Strings.AddedFavorite, NotificationType.Success );
 		}
 
 		private void ExecuteReplyCommand()
@@ -150,7 +150,12 @@ namespace Twice.ViewModels.Twitter
 			}, Strings.RetweetedStatus );
 		}
 
-		public ICommand BlockUserCommand => _BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) );
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+
+		public ICommand BlockUserCommand
+			=>
+				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
+			;
 
 		public IClipboard Clipboard
 		{
@@ -158,12 +163,25 @@ namespace Twice.ViewModels.Twitter
 			set { _Clipboard = value; }
 		}
 
-		public ICommand CopyTweetCommand => _CopyTweetCommand ?? ( _CopyTweetCommand = new RelayCommand( ExecuteCopyTweetCommand ) );
-		public ICommand CopyTweetUrlCommand => _CopyTweetUrlCommand ?? ( _CopyTweetUrlCommand = new RelayCommand( ExecuteCopyTweetUrlCommand ) );
+		public ICommand CopyTweetCommand
+			=> _CopyTweetCommand ?? ( _CopyTweetCommand = new RelayCommand( ExecuteCopyTweetCommand ) );
+
+		public ICommand CopyTweetUrlCommand
+			=> _CopyTweetUrlCommand ?? ( _CopyTweetUrlCommand = new RelayCommand( ExecuteCopyTweetUrlCommand ) );
+
 		public DateTime CreatedAt => Model.CreatedAt;
-		public ICommand DeleteStatusCommand => _DeleteStatusCommand ?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
+
+		public ICommand DeleteStatusCommand
+			=>
+				_DeleteStatusCommand
+				?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
+
+		public IDispatcher Dispatcher { get; set; }
 		public bool DisplayMedia => InlineMedias.Any();
-		public ICommand FavoriteStatusCommand => _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
+
+		public ICommand FavoriteStatusCommand
+			=> _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
+
 		public ulong Id => Model.StatusID;
 
 		public IEnumerable<Uri> InlineMedias
@@ -172,11 +190,19 @@ namespace Twice.ViewModels.Twitter
 			{
 				if( _InlineMedias == null )
 				{
-					var entities = Model.Entities.MediaEntities.Select( m => new Uri( m.MediaUrlHttps ) );
-					//var custom = Services.GetService<IMediaService>().ExtractMedias( Model );
+					if( Config.Visual.InlineMedia )
+					{
+						var entities = Model.Entities.MediaEntities.Select( m => new Uri( m.MediaUrlHttps ) );
 
-					//_InlineMedias = new List<Uri>( entities.Concat( custom ) );
-					_InlineMedias = new List<Uri>( entities );
+						//var custom = Services.GetService<IMediaService>().ExtractMedias( Model );
+
+						//_InlineMedias = new List<Uri>( entities.Concat( custom ) );
+						_InlineMedias = new List<Uri>( entities );
+					}
+					else
+					{
+						_InlineMedias = new List<Uri>();
+					}
 				}
 
 				return _InlineMedias;
@@ -187,11 +213,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _IsLoading;
-			}
+			[DebuggerStepThrough] get { return _IsLoading; }
 			set
 			{
 				if( _IsLoading == value )
@@ -207,12 +229,25 @@ namespace Twice.ViewModels.Twitter
 		public bool IsRetweeted => Model.Retweeted;
 		public Status Model { get; }
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
-		public ICommand ReplyToAllCommand => _ReplyToAllCommand ?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
-		public ICommand ReportSpamCommand => _ReportSpamCommand ?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
-		public ICommand RetweetStatusCommand => _RetweetStatusCommand ?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
+
+		public ICommand ReplyToAllCommand
+			=>
+				_ReplyToAllCommand
+				?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
+
+		public ICommand ReportSpamCommand
+			=>
+				_ReportSpamCommand
+				?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
+
+		public ICommand RetweetStatusCommand
+			=>
+				_RetweetStatusCommand
+				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
+
 		public UserViewModel SourceUser { get; }
 		public UserViewModel User { get; }
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private readonly IConfig Config;
 		private readonly IContextEntry Context;
 		private readonly Status OriginalStatus;
 

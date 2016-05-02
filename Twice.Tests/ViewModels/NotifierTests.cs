@@ -61,7 +61,7 @@ namespace Twice.Tests.ViewModels
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
-			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object );
+			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null );
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
@@ -81,7 +81,7 @@ namespace Twice.Tests.ViewModels
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
-			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object );
+			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null );
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
@@ -101,7 +101,7 @@ namespace Twice.Tests.ViewModels
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
-			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object );
+			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null );
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act

@@ -1,57 +1,31 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using LinqToTwitter;
+using Ninject;
+using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.ViewModels;
 
 namespace Twice.Converters
 {
 	/// <summary>
-	/// Converts a Status to an InlineCollection.
+	///     Converts a Status to an InlineCollection.
 	/// </summary>
 	internal class StatusHighlighter : IValueConverter
 	{
-		/// <summary>
-		/// Converts a value.
-		/// </summary>
-		/// <param name="value">The value produced by the binding source.</param>
-		/// <param name="targetType">The type of the binding target property.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		public StatusHighlighter( IConfig config )
 		{
-			Status tweet = value as Status;
-			if( tweet == null )
-			{
-				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
-			}
-			
-			return GenerateInlines( tweet ).ToArray();
+			OverrideConfig = config;
 		}
 
-		/// <summary>
-		/// Converts a value.
-		/// </summary>
-		/// <param name="value">The value that is produced by the binding target.</param>
-		/// <param name="targetType">The type to convert to.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+		public StatusHighlighter()
 		{
-			throw new NotSupportedException();
 		}
 
 		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
@@ -107,7 +81,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a hashtag entity.
+		///     Generates an inline from a hashtag entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -123,7 +97,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates a collection of inlines from a tweet.
+		///     Generates a collection of inlines from a tweet.
 		/// </summary>
 		/// <param name="tweet">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
@@ -157,8 +131,11 @@ namespace Twice.Converters
 					{
 						if( entity is MediaEntity )
 						{
-							MediaEntity mediaEnttiy = entity as MediaEntity;
-							yield return GenerateMedia( mediaEnttiy );
+							if( !Config.Visual.InlineMedia )
+							{
+								MediaEntity mediaEnttiy = entity as MediaEntity;
+								yield return GenerateMedia( mediaEnttiy );
+							}
 
 							//IMediaService service = PluginManager.Instance.MediaServices.FirstOrDefault( s => s.CanExpand( mediaEnttiy.MediaUrlHttps ) );
 							//if( service != null )
@@ -203,7 +180,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a link entity.
+		///     Generates an inline from a link entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -221,7 +198,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a media entity.
+		///     Generates an inline from a media entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -239,7 +216,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a mention entity.
+		///     Generates an inline from a mention entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -262,5 +239,45 @@ namespace Twice.Converters
 
 			return text;
 		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value produced by the binding source.</param>
+		/// <param name="targetType">The type of the binding target property.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			Status tweet = value as Status;
+			if( tweet == null )
+			{
+				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
+			}
+
+			return GenerateInlines( tweet ).ToArray();
+		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value that is produced by the binding target.</param>
+		/// <param name="targetType">The type to convert to.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			throw new NotSupportedException();
+		}
+
+		private static IConfig OverrideConfig;
+
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
 	}
 }

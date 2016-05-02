@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
@@ -25,7 +26,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			status.Text = "hello world";
 			status.User.ScreenName = "Testi";
 			status.ID = 123;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			var clipboard = new Mock<IClipboard>();
 			clipboard.Setup( c => c.SetText( It.Is<string>( str => Uri.IsWellFormedUriString( str, UriKind.Absolute ) ) ) )
@@ -48,7 +49,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var status = DummyGenerator.CreateDummyStatus();
 			status.Text = "hello world";
 			status.User.ScreenName = "Testi";
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			var clipboard = new Mock<IClipboard>();
 			clipboard.Setup( c => c.SetText( "@Testi: hello world" ) ).Verifiable();
@@ -70,7 +71,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.ReportSpamCommand.CanExecute( null );
@@ -88,7 +89,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.RetweetStatusCommand.CanExecute( null );
@@ -106,7 +107,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.DeleteStatusCommand.CanExecute( null );
@@ -124,7 +125,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.BlockUserCommand.CanExecute( null );
@@ -146,8 +147,12 @@ namespace Twice.Tests.ViewModels.Twitter
 			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2" } );
 			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3" } );
 
+			var config = new Mock<IConfig>();
+			var visualConfig = new VisualConfig {InlineMedia = true};
+			config.SetupGet( c => c.Visual ).Returns( visualConfig );
+
 			// Act
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, config.Object );
 			var medias = vm.InlineMedias.ToArray();
 
 			// Assert
@@ -166,7 +171,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.DeleteStatusCommand.CanExecute( null );
@@ -184,7 +189,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.ReportSpamCommand.CanExecute( null );
@@ -202,7 +207,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.RetweetStatusCommand.CanExecute( null );
@@ -220,7 +225,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool canExecute = vm.BlockUserCommand.CanExecute( null );
@@ -244,7 +249,7 @@ namespace Twice.Tests.ViewModels.Twitter
 					new UserMentionEntity {Id = 123}
 				}
 			};
-			var vm = new StatusViewModel( status, context.Object );
+			var vm = new StatusViewModel( status, context.Object, null );
 
 			// Act
 			bool single = vm.ReplyToAllCommand.CanExecute( null );
@@ -271,7 +276,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			var waitHandle = new ManualResetEvent( false );
-			var vm = new StatusViewModel( status, context.Object )
+			var vm = new StatusViewModel( status, context.Object, null )
 			{
 				Dispatcher = new SyncDispatcher()
 			};
@@ -307,7 +312,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			var waitHandle = new ManualResetEvent( false );
-			var vm = new StatusViewModel( status, context.Object )
+			var vm = new StatusViewModel( status, context.Object, null )
 			{
 				Dispatcher = new SyncDispatcher()
 			};
@@ -343,7 +348,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			var waitHandle = new ManualResetEvent( false );
-			var vm = new StatusViewModel( status, context.Object )
+			var vm = new StatusViewModel( status, context.Object, null )
 			{
 				Dispatcher = new SyncDispatcher()
 			};
@@ -380,7 +385,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			var waitHandle = new ManualResetEvent( false );
-			var vm = new StatusViewModel( status, context.Object )
+			var vm = new StatusViewModel( status, context.Object, null )
 			{
 				Dispatcher = new SyncDispatcher()
 			};

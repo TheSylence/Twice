@@ -1,9 +1,9 @@
-﻿using Fody;
-using LinqToTwitter;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
@@ -13,6 +13,42 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		private async Task<IEnumerable<object>> LoadFollowers()
+		{
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowings()
+		{
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses()
+		{
+			//IEnumerable<Status> cached = Services.GetService<IStatusCache>().GetStatusesOfUser( ProfileID );
+			IEnumerable<Status> cached = Enumerable.Empty<Status>().ToArray();
+			IEnumerable<Status> newStatuses;
+
+			if( cached.Any() )
+			{
+				ulong since = cached.Max( c => c.StatusID );
+
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID, since );
+			}
+			else
+			{
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID );
+			}
+
+			return
+				cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select(
+					s => new StatusViewModel( s, Context, Configuration ) );
+		}
+
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -23,7 +59,7 @@ namespace Twice.ViewModels.Profile
 
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
-			
+
 			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
 			if( user == null )
 			{
@@ -50,47 +86,9 @@ namespace Twice.ViewModels.Profile
 			ProfileId = profileId;
 		}
 
-		private async Task<IEnumerable<object>> LoadFollowers()
-		{
-			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowings()
-		{
-			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses()
-		{
-			//IEnumerable<Status> cached = Services.GetService<IStatusCache>().GetStatusesOfUser( ProfileID );
-			IEnumerable<Status> cached = Enumerable.Empty<Status>().ToArray();
-			IEnumerable<Status> newStatuses;
-
-			if( cached.Any() )
-			{
-				ulong since = cached.Max( c => c.StatusID );
-
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID ,since );
-			}
-			else
-			{
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID );
-			}
-
-			return cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select( s => new StatusViewModel( s, Context ) );
-		}
-
 		public Friendship Friendship
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Friendship;
-			}
+			[DebuggerStepThrough] get { return _Friendship; }
 			set
 			{
 				if( _Friendship == value )
@@ -105,11 +103,7 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsBusy
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _IsBusy;
-			}
+			[DebuggerStepThrough] get { return _IsBusy; }
 			set
 			{
 				if( _IsBusy == value )
@@ -124,11 +118,7 @@ namespace Twice.ViewModels.Profile
 
 		public UserViewModel User
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _User;
-			}
+			[DebuggerStepThrough] get { return _User; }
 			set
 			{
 				if( _User == value )

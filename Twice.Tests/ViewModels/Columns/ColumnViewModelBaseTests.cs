@@ -55,9 +55,9 @@ namespace Twice.Tests.ViewModels.Columns
 			var parser = new Mock<IStreamParser>();
 
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object ) );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object ) );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object ) );
+			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null ) );
+			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null ) );
+			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null ) );
 
 			// Act
 			int countBefore = vm.Statuses.Count;
@@ -262,7 +262,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 
 			// Act
-			vm.RaiseStatusWrapper( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object ) );
+			vm.RaiseStatusWrapper( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null ) );
 
 			// Assert
 			Assert.IsTrue( true ); // HACK: This is ugly...
@@ -308,7 +308,7 @@ namespace Twice.Tests.ViewModels.Columns
 			bool raised = false;
 			vm.NewStatus += ( s, e ) => raised = true;
 
-			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object );
+			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null );
 
 			// Act
 			vm.SetLoading( true );

@@ -1,8 +1,3 @@
-using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -52,26 +52,6 @@ namespace Twice.ViewModels.Columns
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 			SubTitle = "@" + context.AccountName;
-		}
-
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<StatusEventArgs> NewStatus;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await Task.Run( async () =>
-			{
-				await OnLoad().ContinueWith( t =>
-				{
-					IsLoading = false;
-					RaisePropertyChanged( nameof( IsLoading ) );
-				} );
-			} );
 		}
 
 		protected async Task AddStatus( StatusViewModel status, bool append = true )
@@ -126,7 +106,7 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task LoadMoreData()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, MaxIdFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel );
 
 			await AddStatuses( list );
 		}
@@ -134,7 +114,7 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task LoadTopData()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, SinceIdFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) ).Reverse();
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel ).Reverse();
 
 			await AddStatuses( list, false );
 		}
@@ -142,7 +122,7 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task OnLoad()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( s => new StatusViewModel( s, Context ) );
+			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel );
 
 			await AddStatuses( list );
 		}
@@ -173,6 +153,11 @@ namespace Twice.ViewModels.Columns
 		private void ColumnConfiguration_Saved( object sender, EventArgs e )
 		{
 			Changed?.Invoke( this, EventArgs.Empty );
+		}
+
+		private StatusViewModel CreateViewModel( Status s )
+		{
+			return new StatusViewModel( s, Context, Configuration );
 		}
 
 		private void ExecuteClearCommand()
@@ -225,7 +210,7 @@ namespace Twice.ViewModels.Columns
 				return;
 			}
 
-			var s = new StatusViewModel( e.Status, Context );
+			var s = CreateViewModel( e.Status );
 			await AddStatus( s, false );
 		}
 
@@ -241,9 +226,27 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IColumnActionDispatcher ActionDispatcher { get; }
+		public event EventHandler Changed;
 
-		public IDataCache Cache { get; set; }
+		public event EventHandler Deleted;
+
+		public event EventHandler<StatusEventArgs> NewStatus;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await Task.Run( async () =>
+			{
+				await OnLoad().ContinueWith( t =>
+				{
+					IsLoading = false;
+					RaisePropertyChanged( nameof( IsLoading ) );
+				} );
+			} );
+		}
+
+		public IColumnActionDispatcher ActionDispatcher { get; }
 
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
@@ -253,15 +256,11 @@ namespace Twice.ViewModels.Columns
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
 
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
-
 		public abstract Icon Icon { get; }
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
+			[DebuggerStepThrough] get { return _IsLoading; }
 			protected set
 			{
 				if( _IsLoading == value )
@@ -274,13 +273,11 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IStatusMuter Muter { get; set; }
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string SubTitle
 		{
-			[DebuggerStepThrough]
-			get { return _SubTitle; }
+			[DebuggerStepThrough] get { return _SubTitle; }
 			set
 			{
 				if( _SubTitle == value )
@@ -295,8 +292,7 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get { return _Title; }
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -311,8 +307,7 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough]
-			get { return _Width; }
+			[DebuggerStepThrough] get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -327,6 +322,13 @@ namespace Twice.ViewModels.Columns
 				Changed?.Invoke( this, EventArgs.Empty );
 			}
 		}
+
+		public IDataCache Cache { get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
+		public IStatusMuter Muter { get; set; }
 
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 
