@@ -1,5 +1,20 @@
 ﻿[
     {
+        "Version": "0.4.0",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [
+            "Added possibility to send crash reports to the developer"
+        ],
+        "Changes": [
+            "When inline media are displayed, media url is no longer shown in status text"
+        ],
+        "Fixes": [
+            "Inline media option is now taken into account when displaying statuses"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.3.0",
         "Date": "2016-04-30",
         "Description": "",
