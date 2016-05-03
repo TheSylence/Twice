@@ -1,7 +1,9 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using LinqToTwitter;
 using Regex = Twice.Models.Twitter.Text.Regex;
 
 namespace Twice.Models.Twitter
@@ -14,7 +16,7 @@ namespace Twice.Models.Twitter
 
 			try
 			{
-				var norm = text.Normalize( System.Text.NormalizationForm.FormC );
+				var norm = NormalizeText( text );
 
 				var inf = new StringInfo( norm );
 				return inf.LengthInTextElements;
@@ -23,6 +25,20 @@ namespace Twice.Models.Twitter
 			{
 				return text.Length;
 			}
+		}
+
+		public static int[] FindEmojis( string text )
+		{
+			var matches = EmojiPattern.Matches( text );
+			List<int> indices = new List<int>( matches.Count );
+
+			foreach( Match m in matches )
+			{
+				Debug.Assert( m.Length == 1 );
+				indices.Add( m.Index );
+			}
+
+			return indices.ToArray();
 		}
 
 		public static string GetScreenName( this User user )
@@ -39,6 +55,18 @@ namespace Twice.Models.Twitter
 		public static ulong GetUserId( this User user )
 		{
 			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
+		}
+
+		public static string NormalizeText( string text )
+		{
+			try
+			{
+				return text.Normalize( System.Text.NormalizationForm.FormC );
+			}
+			catch( ArgumentException )
+			{
+				return text;
+			}
 		}
 
 		// FIXME: The length params must be kept up to date
@@ -82,5 +110,7 @@ namespace Twice.Models.Twitter
 
 			return text;
 		}
+
+		private static readonly System.Text.RegularExpressions.Regex EmojiPattern = new System.Text.RegularExpressions.Regex( @"\p{Cs}" );
 	}
 }

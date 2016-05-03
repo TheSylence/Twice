@@ -111,15 +111,19 @@ namespace Twice.Converters
 			var allEntities = entities.OrderBy( e => e.Start ).ToArray();
 			List<Inline> mediaPreviews = new List<Inline>();
 
+			var statusText = TwitterHelper.NormalizeText( tweet.Text );
+			var emojis = TwitterHelper.FindEmojis( statusText );
+
 			if( allEntities.Any() )
 			{
 				int lastEnd = 0;
+				int lastEntityEnd = 0;
 
 				foreach( EntityBase entity in allEntities )
 				{
-					if( entity.Start > lastEnd )
+					if( entity.Start > lastEntityEnd )
 					{
-						string text = tweet.Text.Substring( lastEnd, entity.Start - lastEnd );
+						string text = statusText.Substring( lastEntityEnd, entity.Start - lastEntityEnd + 1 );
 						yield return new Run( PrepareText( text ) );
 					}
 
@@ -161,11 +165,12 @@ namespace Twice.Converters
 					}
 
 					lastEnd = entity.End;
+					lastEntityEnd = lastEntityEnd + emojis.Count( e => e < entity.End );
 				}
 
-				if( lastEnd < tweet.Text.Length )
+				if( lastEnd < statusText.Length )
 				{
-					yield return new Run( PrepareText( tweet.Text.Substring( lastEnd ) ) );
+					yield return new Run( PrepareText( statusText.Substring( lastEnd ) ) );
 				}
 
 				foreach( Inline preview in mediaPreviews )
@@ -175,7 +180,7 @@ namespace Twice.Converters
 			}
 			else
 			{
-				yield return new Run( PrepareText( tweet.Text ) );
+				yield return new Run( PrepareText( statusText ) );
 			}
 		}
 
@@ -205,7 +210,7 @@ namespace Twice.Converters
 		private static Inline GenerateMedia( MediaEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( entity.MediaUrlHttps );
+			link.Inlines.Add( entity.DisplayUrl );
 			link.NavigateUri = new Uri( entity.MediaUrlHttps );
 			link.CommandParameter = entity.MediaUrlHttps;
 			link.Command = GlobalCommands.OpenUrlCommand;
