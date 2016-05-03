@@ -9,6 +9,7 @@ using System.Windows.Documents;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
 
