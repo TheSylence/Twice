@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -9,7 +10,6 @@ using System.Windows.Documents;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
-using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
 
@@ -81,6 +81,57 @@ namespace Twice.Converters
 			return menu;
 		}
 
+		private static IEnumerable<EntityBase> ExtractEntities( Status tweet )
+		{
+			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
+			entities = entities.Concat( tweet.Entities.MediaEntities );
+			entities = entities.Concat( tweet.Entities.UrlEntities );
+			entities = entities.Concat( tweet.Entities.UserMentionEntities );
+
+			var allEntities = entities.ToArray();
+			foreach( var entity in allEntities )
+			{
+				int length = entity.End - entity.Start - 1;
+				var extractedText = ExtractEntityText( entity );
+				var actualText = tweet.Text.Substring( entity.Start, length );
+
+				// When the tweet contains emojis, the twitter API returns wrong indices for entities
+				if( extractedText != actualText )
+				{
+					var newIndex = tweet.Text.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
+					Debug.Assert( newIndex != -1 );
+
+					entity.Start = newIndex;
+					entity.End = entity.Start + length + 1;
+				}
+			}
+
+			return allEntities.OrderBy( e => e.Start );
+		}
+
+		private static string ExtractEntityText( EntityBase entity )
+		{
+			var mentionEntity = entity as UserMentionEntity;
+			if( mentionEntity != null )
+			{
+				return "@" + mentionEntity.ScreenName;
+			}
+
+			var tagEntity = entity as HashTagEntity;
+			if( tagEntity != null )
+			{
+				return "#" + tagEntity.Tag;
+			}
+
+			var urlEntity = entity as UrlEntity;
+			if( urlEntity != null )
+			{
+				return urlEntity.Url;
+			}
+
+			return string.Empty;
+		}
+
 		/// <summary>
 		///     Generates an inline from a hashtag entity.
 		/// </summary>
@@ -104,27 +155,18 @@ namespace Twice.Converters
 		/// <returns>The generated inlines.</returns>
 		private static IEnumerable<Inline> GenerateInlines( Status tweet )
 		{
-			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
-			entities = entities.Concat( tweet.Entities.MediaEntities );
-			entities = entities.Concat( tweet.Entities.UrlEntities );
-			entities = entities.Concat( tweet.Entities.UserMentionEntities );
-
-			var allEntities = entities.OrderBy( e => e.Start ).ToArray();
+			var allEntities = ExtractEntities( tweet );
 			List<Inline> mediaPreviews = new List<Inline>();
-
-			var statusText = TwitterHelper.NormalizeText( tweet.Text );
-			var emojis = TwitterHelper.FindEmojis( statusText );
 
 			if( allEntities.Any() )
 			{
 				int lastEnd = 0;
-				int lastEntityEnd = 0;
 
 				foreach( EntityBase entity in allEntities )
 				{
-					if( entity.Start > lastEntityEnd )
+					if( entity.Start > lastEnd )
 					{
-						string text = statusText.Substring( lastEntityEnd, entity.Start - lastEntityEnd + 1 );
+						string text = tweet.Text.Substring( lastEnd, entity.Start - lastEnd );
 						yield return new Run( PrepareText( text ) );
 					}
 
@@ -166,12 +208,11 @@ namespace Twice.Converters
 					}
 
 					lastEnd = entity.End;
-					lastEntityEnd = lastEntityEnd + emojis.Count( e => e < entity.End );
 				}
 
-				if( lastEnd < statusText.Length )
+				if( lastEnd < tweet.Text.Length )
 				{
-					yield return new Run( PrepareText( statusText.Substring( lastEnd ) ) );
+					yield return new Run( PrepareText( tweet.Text.Substring( lastEnd ) ) );
 				}
 
 				foreach( Inline preview in mediaPreviews )
@@ -181,7 +222,7 @@ namespace Twice.Converters
 			}
 			else
 			{
-				yield return new Run( PrepareText( statusText ) );
+				yield return new Run( PrepareText( tweet.Text ) );
 			}
 		}
 
