@@ -5,7 +5,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class FinishPage : WizardPageViewModel
 	{
-		public FinishPage( WizardViewModel wizard )
+		public FinishPage( IWizardViewModel wizard )
 			: base( wizard )
 		{
 			IsLastPage = true;

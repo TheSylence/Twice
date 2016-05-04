@@ -167,6 +167,8 @@
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelctorPageTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\FinishPageTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
@@ -207,7 +209,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\Image.png" />
+    <EmbeddedResource Include="Data\Image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Choose>

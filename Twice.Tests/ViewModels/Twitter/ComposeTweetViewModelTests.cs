@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
+using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
@@ -13,6 +16,70 @@ namespace Twice.Tests.ViewModels.Twitter
 	[TestClass]
 	public class ComposeTweetViewModelTests
 	{
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void AttachImageUploadsToTwitter()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEvent( false );
+
+			var cache = new Mock<IDataCache>();
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) ).Verifiable();
+
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				ViewServiceRepository = viewServices.Object
+			};
+
+			var media = new Media {MediaID = 123456, Type = MediaType.Image};
+
+			const string mimeType = "image/png";
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
+			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns( Task.FromResult( media ) ).Verifiable();
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.AttachImageCommand.Execute( null );
+			waitHandle.WaitOne( 1000 );
+			Thread.Sleep( 50 );
+
+			// Assert
+			context.Verify( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ), Times.Once() );
+
+			Assert.IsNotNull( vm.AttachedMedias.SingleOrDefault( m => m.MediaId == media.MediaID ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void CancellingImageSelectionDoesNotUpload()
+		{
+			// Arrange
+			var cache = new Mock<IDataCache>();
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult<string>( null ) ).Verifiable();
+
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				ViewServiceRepository = viewServices.Object
+			};
+
+			// Act
+			vm.AttachImageCommand.Execute( null );
+
+			// Assert
+			viewServices.Verify( v => v.OpenFile( It.IsAny<FileServiceArgs>() ), Times.Once() );
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public async Task DefaultAccountIsPreselectedForTweeting()
 		{

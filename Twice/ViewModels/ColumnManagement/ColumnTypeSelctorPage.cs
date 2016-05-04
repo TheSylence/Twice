@@ -7,7 +7,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class ColumnTypeSelctorPage : WizardPageViewModel
 	{
-		public ColumnTypeSelctorPage( WizardViewModel wizard )
+		public ColumnTypeSelctorPage( IWizardViewModel wizard )
 			: base( wizard )
 		{
 			ColumnTypes = new List<ColumnTypeItem>( ColumnTypeListFactory.GetItems() );
@@ -15,11 +15,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		protected override void ExecuteGotoNextPageCommand( object args )
 		{
-			SelectColumnType( (ColumnType)args );
-		}
+			var type = (ColumnType)args;
 
-		private void SelectColumnType( ColumnType type )
-		{
 			var targetAccounts = Wizard.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ).ToList();
 			var sourceAccounts = Wizard.GetProperty<ulong[]>( AddColumnDialogViewModel.SourceAccountsKey );
 
