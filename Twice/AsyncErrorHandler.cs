@@ -1,6 +1,6 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Anotar.NLog;
 
 namespace Twice
 {

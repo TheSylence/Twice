@@ -1,6 +1,6 @@
-﻿using LinqToTwitter;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using LinqToTwitter;
 
 namespace Twice.Models.Twitter.Repositories
 {

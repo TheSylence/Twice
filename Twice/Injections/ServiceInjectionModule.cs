@@ -1,5 +1,5 @@
-﻿using Ninject.Modules;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject.Modules;
 using Twice.Services.Views;
 
 namespace Twice.Injections
@@ -9,7 +9,7 @@ namespace Twice.Injections
 
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

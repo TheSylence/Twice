@@ -17,6 +17,7 @@ namespace Twice.Tests.Models.Configuration
 			File.WriteAllText( fileName, @"Hello world this is a test" );
 
 			// Act ReSharper disable once ObjectCreationAsStatement
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName ) );
 
 			// Assert

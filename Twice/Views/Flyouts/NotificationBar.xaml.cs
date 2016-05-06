@@ -3,7 +3,7 @@
 namespace Twice.Views.Flyouts
 {
 	/// <summary>
-	/// Interaction logic for NotificationBar.xaml
+	///     Interaction logic for NotificationBar.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class NotificationBar

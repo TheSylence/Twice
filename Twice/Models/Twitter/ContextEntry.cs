@@ -1,5 +1,5 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
+using LinqToTwitter;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -31,12 +31,6 @@ namespace Twice.Models.Twitter
 			} ) );
 		}
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
 		public override bool Equals( object obj )
 		{
 			var other = obj as ContextEntry;
@@ -54,6 +48,12 @@ namespace Twice.Models.Twitter
 			{
 				Twitter?.Dispose();
 			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
 		}
 
 		public string AccountName { get; }

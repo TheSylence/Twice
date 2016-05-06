@@ -21,6 +21,6 @@ namespace Twice.ViewModels.Twitter
 		public string ProfileImageUrlHttpsBig { get; }
 		public string ProfileImageUrlHttpsMini { get; }
 		public string ProfileImageUrlHttpsOrig { get; }
-		public ulong UserID => Model.GetUserId();
+		public ulong UserId => Model.GetUserId();
 	}
 }

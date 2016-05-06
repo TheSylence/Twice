@@ -2,12 +2,12 @@
 using Akavache.Sqlite3;
 using Ninject.Activation;
 
-namespace Twice.Models.Cache
+namespace Twice.Injections
 {
 	internal class SecureBlobCacheProvider : Provider<ISecureBlobCache>
 	{
 		/// <summary>
-		/// Creates an instance within the specified context.
+		///     Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <returns>The created instance.</returns>

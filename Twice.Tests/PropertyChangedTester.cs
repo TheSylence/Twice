@@ -79,12 +79,9 @@ namespace Twice.Tests
 
 		private static object GetDefaultValue( Type type )
 		{
-			if( type.IsValueType )
-			{
-				return Activator.CreateInstance( type );
-			}
-
-			return null;
+			return type.IsValueType
+				? Activator.CreateInstance( type )
+				: null;
 		}
 
 		private object GetNonDefaultValue( Type type )

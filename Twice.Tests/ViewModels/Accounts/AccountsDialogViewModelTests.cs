@@ -31,7 +31,7 @@ namespace Twice.Tests.ViewModels.Accounts
 			{
 				ctx1.Object,
 				ctx2.Object,
-				ctx3.Object,
+				ctx3.Object
 			} );
 
 			// Act

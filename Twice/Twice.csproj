@@ -285,7 +285,6 @@
     <Compile Include="Models\Twitter\Streaming\IStreamingConnection.cs" />
     <Compile Include="Models\Twitter\Streaming\IStreamingRepository.cs" />
     <Compile Include="Models\Twitter\ITwitterContext.cs" />
-    <Compile Include="Models\Twitter\ITwitterQueryable.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Models\Twitter\Streaming\IStreamParser.cs" />
     <Compile Include="Models\Twitter\Streaming\StatusStreamEventArgs.cs" />

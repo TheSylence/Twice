@@ -1,7 +1,4 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -9,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
+using LinqToTwitter;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
@@ -24,35 +24,6 @@ namespace Twice.ViewModels.Twitter
 		{
 			Cache = cache;
 			Accounts = new List<AccountEntry>();
-		}
-
-		public async Task Reset()
-		{
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged -= Acc_UseChanged;
-			}
-
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged += Acc_UseChanged;
-			}
-
-			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
-			defAccount.Use = true;
-			RaisePropertyChanged( nameof( Accounts ) );
-
-			Text = string.Empty;
-			ConfirmationSet = false;
-
-			Medias.Clear();
-			AttachedMedias.Clear();
-
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
-			RaisePropertyChanged( nameof( KnownUserNames ) );
-			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
-			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -177,6 +148,35 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
+		public async Task Reset()
+		{
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged -= Acc_UseChanged;
+			}
+
+			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged += Acc_UseChanged;
+			}
+
+			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
+			defAccount.Use = true;
+			RaisePropertyChanged( nameof( Accounts ) );
+
+			Text = string.Empty;
+			ConfirmationSet = false;
+
+			Medias.Clear();
+			AttachedMedias.Clear();
+
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
+			RaisePropertyChanged( nameof( KnownUserNames ) );
+			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
+			RaisePropertyChanged( nameof( KnownHashtags ) );
+		}
+
 		public ICollection<AccountEntry> Accounts { get; private set; }
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
@@ -190,8 +190,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool ConfirmationSet
 		{
-			[DebuggerStepThrough]
-			get { return _ConfirmationSet; }
+			[DebuggerStepThrough] get { return _ConfirmationSet; }
 			set
 			{
 				if( _ConfirmationSet == value )
@@ -209,8 +208,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsSending
 		{
-			[DebuggerStepThrough]
-			get { return _IsSending; }
+			[DebuggerStepThrough] get { return _IsSending; }
 			set
 			{
 				if( _IsSending == value )
@@ -228,8 +226,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool LowCharsLeft
 		{
-			[DebuggerStepThrough]
-			get { return _LowCharsLeft; }
+			[DebuggerStepThrough] get { return _LowCharsLeft; }
 			set
 			{
 				if( _LowCharsLeft == value )
@@ -244,8 +241,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool MediumCharsLeft
 		{
-			[DebuggerStepThrough]
-			get { return _MediumCharsLeft; }
+			[DebuggerStepThrough] get { return _MediumCharsLeft; }
 			set
 			{
 				if( _MediumCharsLeft == value )
@@ -258,12 +254,14 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public ICommand SendTweetCommand => _SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) );
+		public ICommand SendTweetCommand
+			=>
+				_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
+			;
 
 		public bool StayOpen
 		{
-			[DebuggerStepThrough]
-			get { return _StayOpen; }
+			[DebuggerStepThrough] get { return _StayOpen; }
 			set
 			{
 				if( _StayOpen == value )
@@ -278,8 +276,7 @@ namespace Twice.ViewModels.Twitter
 
 		public string Text
 		{
-			[DebuggerStepThrough]
-			get { return _Text; }
+			[DebuggerStepThrough] get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -295,8 +292,7 @@ namespace Twice.ViewModels.Twitter
 
 		public int TextLength
 		{
-			[DebuggerStepThrough]
-			get { return _TextLength; }
+			[DebuggerStepThrough] get { return _TextLength; }
 			set
 			{
 				if( _TextLength == value )

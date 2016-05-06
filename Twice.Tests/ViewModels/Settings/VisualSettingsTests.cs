@@ -5,7 +5,6 @@ using MaterialDesignColors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Settings;
 
@@ -54,7 +53,8 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Visual ).Returns( visual );
 
 			var colors = new Mock<IColorProvider>();
-			var colorList = new[] {CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
+			var colorList = new[]
+			{CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
 			colors.SetupGet( c => c.AvailableAccentColors ).Returns( colorList );
 			colors.SetupGet( c => c.AvailablePrimaryColors ).Returns( colorList );
 
@@ -79,7 +79,8 @@ namespace Twice.Tests.ViewModels.Settings
 		public void SettingsAreCorrectlySaved()
 		{
 			// Arrange
-			var colorList = new[] {CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
+			var colorList = new[]
+			{CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
 
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Visual ).Returns( new VisualConfig() );

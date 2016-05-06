@@ -155,7 +155,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			// Act
 			parser.StartStreaming();
 			waitHandle.WaitOne( 1000 );
-			
+
 			// Assert
 			Assert.IsNotNull( receivedData );
 			Assert.AreNotEqual( 0ul, receivedData.Message.GetMessageId() );
@@ -219,7 +219,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne(1000);
+			waitHandle.WaitOne( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );

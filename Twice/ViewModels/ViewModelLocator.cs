@@ -1,5 +1,5 @@
-﻿using Ninject;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Twitter;
 

@@ -30,7 +30,7 @@ namespace Twice.ViewModels.ColumnManagement
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
 
 			var screenNames = Wizard.GetProperty<string[]>( AddColumnDialogViewModel.TargetAccountNamesKey ).ToList();
-			var screenName = Users.Single( usr => usr.UserID == userId ).Model.GetScreenName();
+			var screenName = Users.Single( usr => usr.UserId == userId ).Model.GetScreenName();
 			screenNames.Add( screenName );
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, screenNames.ToArray() );
 			Wizard.GotoPage( pageKey );

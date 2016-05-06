@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -31,11 +30,12 @@ namespace Twice.Tests.ViewModels.Columns
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
 
 			var parser = new Mock<IStreamParser>();
-			
+
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
-			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) ).Returns( parser.Object );
+			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) )
+				.Returns( parser.Object );
 			var factory = new ColumnFactory
 			{
 				Contexts = contexts.Object,
@@ -45,9 +45,9 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var testCases = new Dictionary<ColumnType, Type>
 			{
-				{ColumnType.Mentions, typeof( MentionsColumn )},
-				{ColumnType.User, typeof( UserColumn )},
-				{ColumnType.Timeline, typeof( TimelineColumn )}
+				{ColumnType.Mentions, typeof(MentionsColumn)},
+				{ColumnType.User, typeof(UserColumn)},
+				{ColumnType.Timeline, typeof(TimelineColumn)}
 			};
 
 			// Act & Assert
@@ -79,7 +79,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var contexts = new Mock<ITwitterContextList>();
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
-			
+
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
@@ -93,8 +93,8 @@ namespace Twice.Tests.ViewModels.Columns
 			// Act
 			var constructed = factory.Construct( new ColumnDefinition( ColumnType.User )
 			{
-				SourceAccounts = new ulong[] { 1 },
-				TargetAccounts = new ulong[] { 1 }
+				SourceAccounts = new ulong[] {1},
+				TargetAccounts = new ulong[] {1}
 			} );
 
 			// Assert
@@ -117,11 +117,12 @@ namespace Twice.Tests.ViewModels.Columns
 			contexts.SetupGet( c => c.Contexts ).Returns( contextList );
 
 			var parser = new Mock<IStreamParser>();
-			
+
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var streamingRepo = new Mock<IStreamingRepository>();
-			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) ).Returns( parser.Object );
+			streamingRepo.Setup( s => s.GetParser( It.Is<ColumnDefinition>( d => d.SourceAccounts.Contains( (ulong)1 ) ) ) )
+				.Returns( parser.Object );
 			var factory = new ColumnFactory
 			{
 				Contexts = contexts.Object,

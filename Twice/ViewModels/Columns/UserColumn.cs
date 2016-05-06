@@ -1,8 +1,8 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -25,6 +25,7 @@ namespace Twice.ViewModels.Columns
 			{
 				return true;
 			}
+
 			ulong id;
 			if( ulong.TryParse( status.User.UserIDResponse, out id ) )
 			{
@@ -45,7 +46,7 @@ namespace Twice.ViewModels.Columns
 		public override Icon Icon => Icon.User;
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression
-									=> s => s.Type == StatusType.User && s.UserID == UserId;
+			=> s => s.Type == StatusType.User && s.UserID == UserId;
 
 		private readonly ulong UserId;
 	}

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
@@ -15,66 +15,33 @@ namespace Twice.Models.Twitter
 			Notifier = notifier;
 			Contexts = new List<IContextEntry>();
 
-			if( File.Exists( FileName ) )
+			if( !File.Exists( FileName ) )
 			{
-				var json = File.ReadAllText( FileName );
-				List<TwitterAccountData> accountData;
-
-				try
-				{
-					accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json ) ??
-						new List<TwitterAccountData>();
-				}
-				catch( JsonReaderException )
-				{
-					accountData = new List<TwitterAccountData>();
-				}
-
-				Contexts = accountData.Select( acc =>
-				{
-					return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
-					{
-						var ctx = new ContextEntry( Notifier, accDecrypted );
-
-						return ctx;
-					} );
-				} ).ToList();
+				return;
 			}
-		}
 
-		public event EventHandler ContextsChanged;
+			var json = File.ReadAllText( FileName );
+			List<TwitterAccountData> accountData;
 
-		public void AddContext( TwitterAccountData data )
-		{
-			Contexts.Add( new ContextEntry( Notifier, data ) );
+			try
+			{
+				accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json ) ??
+							new List<TwitterAccountData>();
+			}
+			catch( JsonReaderException )
+			{
+				accountData = new List<TwitterAccountData>();
+			}
 
-			SaveToFile();
+			Contexts = accountData.Select( acc =>
+			{
+				return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
+				{
+					var ctx = new ContextEntry( Notifier, accDecrypted );
 
-			ContextsChanged?.Invoke( this, EventArgs.Empty );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		/// <summary>
-		/// Only pass decrypted data to this method.
-		/// </summary>
-		/// <param name="data"></param>
-		public void UpdateAccount( TwitterAccountData data )
-		{
-			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
-			Contexts.Remove( context );
-
-			Contexts.Add( new ContextEntry( Notifier, data ) );
-			SaveToFile();
-		}
-
-		public void UpdateAllAccounts()
-		{
-			SaveToFile();
+					return ctx;
+				} );
+			} ).ToList();
 		}
 
 		private void Dispose( bool disposing )
@@ -108,6 +75,41 @@ namespace Twice.Models.Twitter
 			} ).ToList(), Formatting.Indented );
 
 			File.WriteAllText( FileName, json );
+		}
+
+		public event EventHandler ContextsChanged;
+
+		public void AddContext( TwitterAccountData data )
+		{
+			Contexts.Add( new ContextEntry( Notifier, data ) );
+
+			SaveToFile();
+
+			ContextsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/// <summary>
+		///     Only pass decrypted data to this method.
+		/// </summary>
+		/// <param name="data"></param>
+		public void UpdateAccount( TwitterAccountData data )
+		{
+			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
+			Contexts.Remove( context );
+
+			Contexts.Add( new ContextEntry( Notifier, data ) );
+			SaveToFile();
+		}
+
+		public void UpdateAllAccounts()
+		{
+			SaveToFile();
 		}
 
 		public ICollection<IContextEntry> Contexts { get; }

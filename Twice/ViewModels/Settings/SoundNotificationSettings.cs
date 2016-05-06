@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Twice.Models.Configuration;
 using Twice.Resources;
 
@@ -19,8 +20,7 @@ namespace Twice.ViewModels.Settings
 
 		public string SoundFile
 		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get { return _SoundFile; }
+			[DebuggerStepThrough] get { return _SoundFile; }
 			set
 			{
 				if( _SoundFile == value )
@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Settings
 
 		public override string Title => Strings.SoundNotification;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _SoundFile;
 	}
 }

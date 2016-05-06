@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using GongSolutions.Wpf.DragDrop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
+using GongSolutions.Wpf.DragDrop;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.ViewModels.Columns;
@@ -19,6 +19,11 @@ namespace Twice.ViewModels.Main
 			ColumnList = columnList;
 
 			messenger.Register<DragMessage>( this, OnDragMessage );
+		}
+
+		private void OnDragMessage( DragMessage msg )
+		{
+			ResizeInProgress = msg.Start;
 		}
 
 		bool IDragSource.CanStartDrag( IDragInfo dragInfo )
@@ -63,11 +68,6 @@ namespace Twice.ViewModels.Main
 			var columns = dropInfo.TargetCollection as IEnumerable<IColumnViewModel>;
 			Debug.Assert( columns != null );
 			ColumnList.Save( columns.Select( c => c.Definition ) );
-		}
-
-		private void OnDragMessage( DragMessage msg )
-		{
-			ResizeInProgress = msg.Start;
 		}
 
 		private readonly IColumnDefinitionList ColumnList;

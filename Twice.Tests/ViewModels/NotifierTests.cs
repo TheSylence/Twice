@@ -17,7 +17,6 @@ namespace Twice.Tests.ViewModels
 		public void MessageIsDisplayedWhenToastsAreEnabled()
 		{
 			// Arrange
-			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
 			var messenger = new Mock<IMessenger>();
@@ -36,7 +35,6 @@ namespace Twice.Tests.ViewModels
 		public void MessageIsNotDisplayedWhenToastsAreDisabled()
 		{
 			// Arrange
-			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = false} );
 			var messenger = new Mock<IMessenger>();

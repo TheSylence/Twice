@@ -19,6 +19,7 @@ namespace Twice.ViewModels.Twitter
 			{
 				return null;
 			}
+
 			var image = new BitmapImage();
 			using( var mem = new MemoryStream( imageData ) )
 			{

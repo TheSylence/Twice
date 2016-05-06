@@ -1,12 +1,11 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -15,7 +14,8 @@ namespace Twice.ViewModels.Accounts
 {
 	internal class AccountsDialogViewModel : DialogViewModel, IAccountsDialogViewModel
 	{
-		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList, ITwitterAuthorizer authorizer )
+		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList,
+			ITwitterAuthorizer authorizer )
 		{
 			ContextList = contextList;
 			ColumnList = columnList;
@@ -35,14 +35,12 @@ namespace Twice.ViewModels.Accounts
 
 			acc.Data.ExecuteDecryptedAction( data => { ContextList.UpdateAccount( data ); } );
 		}
-		
+
 		private void DisplayPinPage( string url )
 		{
 			// TODO: An in-app browser would be cleaner I guess
 			ProcessStarter.Start( url );
 		}
-
-		private readonly ITwitterAuthorizer Authorizer;
 
 		private async void ExecuteAddAccountCommand()
 		{
@@ -87,7 +85,7 @@ namespace Twice.ViewModels.Accounts
 
 			ContextList.UpdateAllAccounts();
 		}
-		
+
 		private string GetPinFromUser()
 		{
 			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null, DialogHostIdentifier );
@@ -98,13 +96,17 @@ namespace Twice.ViewModels.Accounts
 			return input;
 		}
 
-		public ICommand AddAccountCommand => _AddAccountCommand ?? ( _AddAccountCommand = new RelayCommand( ExecuteAddAccountCommand ) );
+		public ICommand AddAccountCommand
+			=> _AddAccountCommand ?? ( _AddAccountCommand = new RelayCommand( ExecuteAddAccountCommand ) );
+
 		public ICollection<AccountEntry> AddedAccounts { get; }
 
-		public ICommand MakeDefaultAccountCommand => _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
-			ExecuteMakeDefaultAccountCommand ) );
+		public ICommand MakeDefaultAccountCommand
+			=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
+				ExecuteMakeDefaultAccountCommand ) );
 
 		private const string DialogHostIdentifier = "AccountDialogHost";
+		private readonly ITwitterAuthorizer Authorizer;
 		private readonly IColumnDefinitionList ColumnList;
 		private RelayCommand _AddAccountCommand;
 		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;

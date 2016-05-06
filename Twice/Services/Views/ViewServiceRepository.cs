@@ -1,16 +1,16 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Fody;
+using GalaSoft.MvvmLight.Threading;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Twice.Models.Columns;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
@@ -28,13 +28,104 @@ namespace Twice.Services.Views
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
+		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
+		{
+			CurrentDialog = null;
+		}
+
+		private void OpenHandler( object sender, DialogOpenedEventArgs eventargs )
+		{
+			CurrentDialog = sender as Dialog;
+		}
+
+		private async Task<TResult> ShowDialog<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null,
+			string hostIdentifier = null )
+			where TDialog : Dialog, new()
+			where TViewModel : class
+			where TResult : class
+		{
+			var dlg = new TDialog();
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			var result = await DialogHost.Show( dlg, hostIdentifier, OpenHandler, CloseHandler ) as bool?;
+			if( result != true )
+			{
+				return null;
+			}
+
+			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			var resSetup = resultSetup ?? defaultResultSetup;
+			return resSetup( vm );
+		}
+
+		private TResult ShowDialogSync<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null,
+			string hostIdentifier = null )
+			where TDialog : Dialog, new()
+			where TViewModel : class
+			where TResult : class
+		{
+			ManualResetEvent waitHandle = new ManualResetEvent( false );
+
+			TResult result = null;
+			DispatcherHelper.CheckBeginInvokeOnUI( async () =>
+			{
+				result = await ShowDialog<TDialog, TViewModel, TResult>( resultSetup, vmSetup, hostIdentifier );
+				waitHandle.Set();
+			} );
+
+			waitHandle.WaitOne();
+			return result;
+		}
+
+		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : Window, new()
+		{
+			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
+		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var dlg = new TWindow
+			{
+				Owner = Window
+			};
+
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			TResult result = null;
+
+			if( dlg.ShowDialog() == true )
+			{
+				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+				var resSetup = resultSetup ?? defaultResultSetup;
+				result = resSetup( vm );
+			}
+
+			return Task.FromResult( result );
+		}
+
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
 			Debug.Assert( args != null );
 
 			var dictionary = new ResourceDictionary
 			{
-				Source = new Uri( "pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
+				Source =
+					new Uri(
+						"pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
 			};
 
 			var settings = new MetroDialogSettings
@@ -44,7 +135,8 @@ namespace Twice.Services.Views
 				SuppressDefaultResources = true,
 				CustomResourceDictionary = dictionary
 			};
-			var result = await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
+			var result =
+				await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
 
 			return result == MessageDialogResult.Affirmative;
 		}
@@ -64,8 +156,8 @@ namespace Twice.Services.Views
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
 		{
-			ulong[] sourceAccounts = { accountId };
-			ulong[] targetAccounts = { accountId };
+			ulong[] sourceAccounts = {accountId};
+			ulong[] targetAccounts = {accountId};
 
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
@@ -73,7 +165,10 @@ namespace Twice.Services.Views
 					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
 			};
 
-			return await ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null, hostIdentifier );
+			return
+				await
+					ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null,
+						hostIdentifier );
 		}
 
 		public async Task ShowAccounts( bool directlyAddAccount = false )
@@ -129,94 +224,9 @@ namespace Twice.Services.Views
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
-		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
-		{
-			CurrentDialog = null;
-		}
-
-		private void OpenHandler( object sender, DialogOpenedEventArgs eventargs )
-		{
-			CurrentDialog = sender as Dialog;
-		}
-
-		private async Task<TResult> ShowDialog<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null, Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			var dlg = new TDialog();
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			var result = await DialogHost.Show( dlg, hostIdentifier, OpenHandler, CloseHandler ) as bool?;
-			if( result != true )
-			{
-				return null;
-			}
-
-			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
-			var resSetup = resultSetup ?? defaultResultSetup;
-			return resSetup( vm );
-		}
-
-		private TResult ShowDialogSync<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null, Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
-
-			TResult result = null;
-			DispatcherHelper.CheckBeginInvokeOnUI( async () =>
-			{
-				result = await ShowDialog<TDialog, TViewModel, TResult>( resultSetup, vmSetup, hostIdentifier );
-				waitHandle.Set();
-			} );
-
-			waitHandle.WaitOne();
-			return result;
-		}
-
-		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TWindow : Window, new()
-		{
-			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
-		}
-
-		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			var dlg = new TWindow
-			{
-				Owner = Window
-			};
-
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			TResult result = null;
-
-			if( dlg.ShowDialog() == true )
-			{
-				Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
-				var resSetup = resultSetup ?? defaultResultSetup;
-				result = resSetup( vm );
-			}
-
-			return Task.FromResult( result );
-		}
-
 		public Dialog CurrentDialog { get; private set; }
-		private static MetroWindow Window => Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
+
+		private static MetroWindow Window
+			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
 	}
 }

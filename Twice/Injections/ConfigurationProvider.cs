@@ -1,5 +1,5 @@
-﻿using Ninject.Activation;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject.Activation;
 using Twice.Models.Configuration;
 
 namespace Twice.Injections
@@ -8,7 +8,7 @@ namespace Twice.Injections
 	internal class ConfigurationProvider : Provider<IConfig>
 	{
 		/// <summary>
-		/// Creates an instance within the specified context.
+		///     Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <returns>The created instance.</returns>

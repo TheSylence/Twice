@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Twice.Models.Configuration;
 using Twice.Resources;
-using Twice.Utilities;
 using Twice.Utilities.Os;
 
 namespace Twice.ViewModels.Settings
@@ -36,8 +36,7 @@ namespace Twice.ViewModels.Settings
 
 		public Corner SelectedCorner
 		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get { return _SelectedCorner; }
+			[DebuggerStepThrough] get { return _SelectedCorner; }
 			set
 			{
 				if( _SelectedCorner == value )
@@ -52,8 +51,7 @@ namespace Twice.ViewModels.Settings
 
 		public string SelectedDisplay
 		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get { return _SelectedDisplay; }
+			[DebuggerStepThrough] get { return _SelectedDisplay; }
 			set
 			{
 				if( _SelectedDisplay == value )
@@ -68,10 +66,10 @@ namespace Twice.ViewModels.Settings
 
 		public override string Title => Strings.PopupNotification;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private Corner _SelectedCorner;
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _SelectedDisplay;
 	}
 }

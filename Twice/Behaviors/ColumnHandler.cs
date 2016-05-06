@@ -37,13 +37,14 @@ namespace Twice.Behaviors
 			}
 		}
 
+		public static readonly DependencyProperty ActionDispatcherProperty =
+			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnHandler),
+				new PropertyMetadata( null, OnDispatcherChanged ) );
+
 		public IColumnActionDispatcher ActionDispatcher
 		{
 			get { return (IColumnActionDispatcher)GetValue( ActionDispatcherProperty ); }
 			set { SetValue( ActionDispatcherProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ActionDispatcherProperty =
-			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnHandler ), new PropertyMetadata( null, OnDispatcherChanged ) );
 	}
 }

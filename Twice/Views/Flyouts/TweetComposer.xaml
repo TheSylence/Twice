@@ -10,7 +10,6 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:twice="clr-namespace:Twice"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"

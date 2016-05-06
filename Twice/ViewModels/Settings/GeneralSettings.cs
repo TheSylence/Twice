@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
@@ -26,6 +25,7 @@ namespace Twice.ViewModels.Settings
 			{
 				langs.Remove( neutral );
 			}
+
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
 			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
@@ -36,6 +36,13 @@ namespace Twice.ViewModels.Settings
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
 		}
 
+		private static bool IsEnglish( CultureInfo lang )
+		{
+			var english = CultureInfo.CreateSpecificCulture( "en" );
+
+			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
+		}
+
 		public void SaveTo( IConfig config )
 		{
 			config.General.Language = SelectedLanguage.Name;
@@ -44,19 +51,11 @@ namespace Twice.ViewModels.Settings
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 		}
 
-		private static bool IsEnglish( CultureInfo lang )
-		{
-			var english = CultureInfo.CreateSpecificCulture( "en" );
-
-			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
-		}
-
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		public bool CheckForUpdates
 		{
-			[DebuggerStepThrough]
-			get { return _CheckForUpdates; }
+			[DebuggerStepThrough] get { return _CheckForUpdates; }
 			set
 			{
 				if( _CheckForUpdates == value )
@@ -71,8 +70,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool IncludePrereleaseUpdates
 		{
-			[DebuggerStepThrough]
-			get { return _IncludePrereleaseUpdates; }
+			[DebuggerStepThrough] get { return _IncludePrereleaseUpdates; }
 			set
 			{
 				if( _IncludePrereleaseUpdates == value )
@@ -87,8 +85,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool RealtimeStreaming
 		{
-			[DebuggerStepThrough]
-			get { return _RealtimeStreaming; }
+			[DebuggerStepThrough] get { return _RealtimeStreaming; }
 			set
 			{
 				if( _RealtimeStreaming == value )
@@ -103,8 +100,7 @@ namespace Twice.ViewModels.Settings
 
 		public CultureInfo SelectedLanguage
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedLanguage; }
+			[DebuggerStepThrough] get { return _SelectedLanguage; }
 			set
 			{
 				if( _SelectedLanguage?.Name == value?.Name )

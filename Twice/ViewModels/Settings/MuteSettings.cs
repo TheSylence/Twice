@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Resourcer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Resourcer;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Services.Views;
@@ -19,12 +19,6 @@ namespace Twice.ViewModels.Settings
 
 			// TODO: Load for correct language
 			HelpDocument = Resource.AsString( "Twice.Resources.Documentation.Mute.md" );
-		}
-
-		public void SaveTo( IConfig config )
-		{
-			config.Mute.Entries.Clear();
-			config.Mute.Entries.AddRange( Entries );
 		}
 
 		private bool CanExecuteEditCommand()
@@ -48,7 +42,7 @@ namespace Twice.ViewModels.Settings
 		{
 			Entries.Remove( SelectedEntry );
 
-			var entry = new MuteEntry { Filter = EditData.Filter, EndDate = null };
+			var entry = new MuteEntry {Filter = EditData.Filter, EndDate = null};
 
 			if( EditData.HasEndDate )
 			{
@@ -97,17 +91,20 @@ namespace Twice.ViewModels.Settings
 			SelectedEntry = null;
 		}
 
+		public void SaveTo( IConfig config )
+		{
+			config.Mute.Entries.Clear();
+			config.Mute.Entries.AddRange( Entries );
+		}
+
 		public ICommand AddCommand => _AddCommand ?? ( _AddCommand = new RelayCommand( ExecuteAddCommand ) );
 
-		public ICommand EditCommand => _EditCommand ?? ( _EditCommand = new RelayCommand( ExecuteEditCommand, CanExecuteEditCommand ) );
+		public ICommand EditCommand
+			=> _EditCommand ?? ( _EditCommand = new RelayCommand( ExecuteEditCommand, CanExecuteEditCommand ) );
 
 		public IMuteEditViewModel EditData
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _EditData;
-			}
+			[DebuggerStepThrough] get { return _EditData; }
 			set
 			{
 				if( _EditData == value )
@@ -124,15 +121,12 @@ namespace Twice.ViewModels.Settings
 
 		public string HelpDocument { get; }
 
-		public ICommand RemoveCommand => _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
+		public ICommand RemoveCommand
+			=> _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
 
 		public MuteEntry SelectedEntry
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedEntry;
-			}
+			[DebuggerStepThrough] get { return _SelectedEntry; }
 			set
 			{
 				if( _SelectedEntry == value )

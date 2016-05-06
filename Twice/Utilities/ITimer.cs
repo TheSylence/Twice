@@ -4,9 +4,9 @@ namespace Twice.Utilities
 {
 	interface ITimer
 	{
+		event EventHandler Tick;
 		void Start();
 		void Stop();
-		event EventHandler Tick;
 		bool IsEnabled { get; }
 	}
 }

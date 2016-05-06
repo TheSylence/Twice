@@ -44,6 +44,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var items = page.Items.ToArray();
 
 			// Assert
+			Assert.IsNull( temp );
 			Assert.IsTrue( called );
 			Assert.AreEqual( 2, loadChanges );
 			Assert.AreEqual( 2, items.Length );

@@ -39,6 +39,7 @@ namespace Twice.Behaviors
 				}
 				break;
 			}
+
 			return IntPtr.Zero;
 		}
 

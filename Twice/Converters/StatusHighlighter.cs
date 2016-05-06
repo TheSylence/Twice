@@ -155,7 +155,7 @@ namespace Twice.Converters
 		/// <returns>The generated inlines.</returns>
 		private static IEnumerable<Inline> GenerateInlines( Status tweet )
 		{
-			var allEntities = ExtractEntities( tweet );
+			var allEntities = ExtractEntities( tweet ).ToArray();
 			List<Inline> mediaPreviews = new List<Inline>();
 
 			if( allEntities.Any() )
@@ -170,9 +170,10 @@ namespace Twice.Converters
 						yield return new Run( PrepareText( text ) );
 					}
 
-					if( entity is HashTagEntity )
+					var tagEntity = entity as HashTagEntity;
+					if( tagEntity != null )
 					{
-						yield return GenerateHashTag( (HashTagEntity)entity );
+						yield return GenerateHashTag( tagEntity );
 					}
 					else if( entity is UrlEntity )
 					{

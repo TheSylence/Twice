@@ -12,8 +12,7 @@ namespace Twice.ViewModels.Dialogs
 
 		public string Input
 		{
-			[DebuggerStepThrough]
-			get { return _Input; }
+			[DebuggerStepThrough] get { return _Input; }
 			set
 			{
 				if( _Input == value )
@@ -28,8 +27,7 @@ namespace Twice.ViewModels.Dialogs
 
 		public string Label
 		{
-			[DebuggerStepThrough]
-			get { return _Label; }
+			[DebuggerStepThrough] get { return _Label; }
 			set
 			{
 				if( _Label == value )

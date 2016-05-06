@@ -1,6 +1,6 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Diagnostics;
+using GalaSoft.MvvmLight;
 
 namespace Twice.Models.Configuration
 {
@@ -8,11 +8,7 @@ namespace Twice.Models.Configuration
 	{
 		public DateTime? EndDate
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _EndDate;
-			}
+			[DebuggerStepThrough] get { return _EndDate; }
 			set
 			{
 				if( _EndDate == value )
@@ -28,11 +24,7 @@ namespace Twice.Models.Configuration
 
 		public string Filter
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Filter;
-			}
+			[DebuggerStepThrough] get { return _Filter; }
 			set
 			{
 				if( _Filter == value )
@@ -47,11 +39,7 @@ namespace Twice.Models.Configuration
 
 		public bool HasEndDate
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _EndDate.HasValue;
-			}
+			[DebuggerStepThrough] get { return _EndDate.HasValue; }
 		}
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]

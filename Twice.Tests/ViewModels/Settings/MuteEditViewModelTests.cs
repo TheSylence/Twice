@@ -39,10 +39,12 @@ namespace Twice.Tests.ViewModels.Settings
 		public void InputValidationIsApplied()
 		{
 			// Arrange
-			var vm = new MuteEditViewModel( MuteEditAction.Add );
+			var vm = new MuteEditViewModel( MuteEditAction.Add )
+			{
+				Filter = string.Empty
+			};
 
 			// Act
-			vm.Filter = string.Empty;
 			bool allEmpty = vm.SaveCommand.CanExecute( null );
 
 			vm.Filter = "test";

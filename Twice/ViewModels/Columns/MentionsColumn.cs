@@ -1,7 +1,7 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -27,6 +27,6 @@ namespace Twice.ViewModels.Columns
 		public override Icon Icon { get; }
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression
-					=> s => s.Type == StatusType.Mentions && s.UserID == Context.UserId;
+			=> s => s.Type == StatusType.Mentions && s.UserID == Context.UserId;
 	}
 }

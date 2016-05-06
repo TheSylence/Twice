@@ -1,5 +1,5 @@
-﻿using Ninject.Modules;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject.Modules;
 using Twice.Utilities;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
@@ -10,7 +10,7 @@ namespace Twice.Injections
 	internal class UtilitiyInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

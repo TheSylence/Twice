@@ -15,14 +15,14 @@ namespace Twice.ViewModels.Profile
 	{
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
-			var users = await Context.Twitter.Friendships.ListFollowers( User.UserID );
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}
 
 		private async Task<IEnumerable<object>> LoadFollowings()
 		{
-			var users = await Context.Twitter.Friendships.ListFriends( User.UserID );
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
 
 			return users.Select( u => new UserViewModel( u ) );
 		}
@@ -37,11 +37,11 @@ namespace Twice.ViewModels.Profile
 			{
 				ulong since = cached.Max( c => c.StatusID );
 
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID, since );
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, since );
 			}
 			else
 			{
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserID );
+				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId );
 			}
 
 			return
@@ -68,7 +68,7 @@ namespace Twice.ViewModels.Profile
 			}
 
 			User = new UserViewModel( user );
-			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserID );
+			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserId );
 
 			UserPages = new List<UserSubPage>
 			{

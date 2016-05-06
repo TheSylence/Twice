@@ -5,7 +5,7 @@ using System.IO;
 namespace Twice
 {
 	/// <summary>
-	/// Class containing constants that are used throughout the application.
+	///     Class containing constants that are used throughout the application.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static class Constants
@@ -13,7 +13,9 @@ namespace Twice
 		public static class Auth
 		{
 			internal static readonly string ConsumerKey = Obscurity.Deobscure( "==gV1Mlc2V2b5MTNhZHbzdEM4pFdVVke0J3T" );
-			internal static readonly string ConsumerSecret = Obscurity.Deobscure( "=g3c1RGboNTRXFTe1IEUiBzTCdjWY1ERxgGNHJFN24UYwJ0YvNDc6N2crNVVkR0U380V" );
+
+			internal static readonly string ConsumerSecret =
+				Obscurity.Deobscure( "=g3c1RGboNTRXFTe1IEUiBzTCdjWY1ERxgGNHJFN24UYwJ0YvNDc6N2crNVVkR0U380V" );
 		}
 
 		public static class Cache
@@ -24,21 +26,6 @@ namespace Twice
 
 		public static class IO
 		{
-			internal static string AppDataFolder
-			{
-				get
-				{
-					var localAppData = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
-
-					var path = Path.Combine( localAppData, "Twice", "data" );
-					if( !Directory.Exists( path ) )
-					{
-						Directory.CreateDirectory( path );
-					}
-					return path;
-				}
-			}
-
 			private static string P( string file )
 			{
 #if DEBUG
@@ -53,6 +40,21 @@ namespace Twice
 			internal static readonly string AccountsFileName = P( "accounts.json" );
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );
+
+			internal static string AppDataFolder
+			{
+				get
+				{
+					var localAppData = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
+
+					var path = Path.Combine( localAppData, "Twice", "data" );
+					if( !Directory.Exists( path ) )
+					{
+						Directory.CreateDirectory( path );
+					}
+					return path;
+				}
+			}
 		}
 
 		public static class Updates
@@ -62,22 +64,22 @@ namespace Twice
 		}
 
 		/// <summary>
-		/// Constants associated with twitter.
+		///     Constants associated with twitter.
 		/// </summary>
 		public static class Twitter
 		{
 			/// <summary>
-			/// Prefix for a hashtag.
+			///     Prefix for a hashtag.
 			/// </summary>
 			internal const string HashTag = "#";
 
 			/// <summary>
-			/// Maximum characters allowed in a tweet.
+			///     Maximum characters allowed in a tweet.
 			/// </summary>
 			internal const int MaxTweetLength = 140;
 
 			/// <summary>
-			/// Prefix for a user mention.
+			///     Prefix for a user mention.
 			/// </summary>
 			internal const string Mention = "@";
 		}

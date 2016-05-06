@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
+using Newtonsoft.Json;
 
 namespace Twice.Models.Configuration
 {
@@ -36,18 +36,18 @@ namespace Twice.Models.Configuration
 			}
 		}
 
-		public void Save()
-		{
-			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
-			File.WriteAllText( FileName, json );
-		}
-
 		private void DefaultConfig()
 		{
 			General = new GeneralConfig();
 			Visual = new VisualConfig();
 			Mute = new MuteConfig();
 			Notifications = new NotificationConfig();
+		}
+
+		public void Save()
+		{
+			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
+			File.WriteAllText( FileName, json );
 		}
 
 		public GeneralConfig General { get; set; }

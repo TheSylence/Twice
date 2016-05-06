@@ -6,6 +6,7 @@ namespace Twice.ViewModels.Accounts
 {
 	interface ITwitterAuthorizer
 	{
-		Task<AuthorizeResult> Authorize( Action<string> displayPinPageAction, Func<string> getPinAction, CancellationToken? token );
+		Task<AuthorizeResult> Authorize( Action<string> displayPinPageAction, Func<string> getPinAction,
+			CancellationToken? token );
 	}
 }

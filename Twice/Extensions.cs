@@ -11,8 +11,8 @@ namespace Twice
 			var a = value as T[] ?? value.ToArray();
 
 			return a.Length == b.Length
-				   && !a.Except( b ).Any()
-				   && !b.Except( a ).Any();
+					&& !a.Except( b ).Any()
+					&& !b.Except( a ).Any();
 		}
 	}
 }

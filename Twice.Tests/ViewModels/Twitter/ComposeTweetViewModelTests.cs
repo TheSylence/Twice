@@ -181,6 +181,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			bool requiresConfirmation = true;
 			var contextEntry = new Mock<IContextEntry>();
 			contextEntry.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com" ) );
+			// ReSharper disable once AccessToModifiedClosure
 			contextEntry.SetupGet( c => c.RequiresConfirmation ).Returns( () => requiresConfirmation );
 
 			// Act

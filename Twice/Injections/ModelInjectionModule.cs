@@ -1,6 +1,6 @@
-﻿using Akavache;
+﻿using System.Diagnostics.CodeAnalysis;
+using Akavache;
 using Ninject.Modules;
-using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -13,7 +13,7 @@ namespace Twice.Injections
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

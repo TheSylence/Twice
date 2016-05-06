@@ -1,13 +1,12 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
@@ -32,35 +31,6 @@ namespace Twice.ViewModels
 			if( config.Notifications.PopupEnabled )
 			{
 				PopupNotify = new NotifyIcon();
-			}
-		}
-
-		public void DisplayMessage( string message, NotificationType type )
-		{
-			if( !Config.Notifications.ToastsEnabled )
-			{
-				return;
-			}
-
-			var context = new NotificationViewModel( message, type );
-			NotifyToast( context );
-		}
-
-		public void OnStatus( StatusViewModel status, ColumnNotifications columnSettings )
-		{
-			if( Config.Notifications.SoundEnabled && columnSettings.Sound )
-			{
-				NotifySound( status );
-			}
-
-			if( Config.Notifications.ToastsEnabled && columnSettings.Toast )
-			{
-				NotifyToast( status );
-			}
-
-			if( Config.Notifications.PopupEnabled && columnSettings.Popup )
-			{
-				NotifyPopup( status );
 			}
 		}
 
@@ -90,6 +60,35 @@ namespace Twice.ViewModels
 				Dispatcher.CheckBeginInvokeOnUI( () =>
 					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
 			} );
+		}
+
+		public void DisplayMessage( string message, NotificationType type )
+		{
+			if( !Config.Notifications.ToastsEnabled )
+			{
+				return;
+			}
+
+			var context = new NotificationViewModel( message, type );
+			NotifyToast( context );
+		}
+
+		public void OnStatus( StatusViewModel status, ColumnNotifications columnSettings )
+		{
+			if( Config.Notifications.SoundEnabled && columnSettings.Sound )
+			{
+				NotifySound( status );
+			}
+
+			if( Config.Notifications.ToastsEnabled && columnSettings.Toast )
+			{
+				NotifyToast( status );
+			}
+
+			if( Config.Notifications.PopupEnabled && columnSettings.Popup )
+			{
+				NotifyPopup( status );
+			}
 		}
 
 		private readonly IConfig Config;

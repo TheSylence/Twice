@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 
 namespace Twice.Tests

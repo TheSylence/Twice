@@ -1,8 +1,8 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Interactivity;
+using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using Twice.Messages;
 using Twice.ViewModels;
 
@@ -55,12 +55,13 @@ namespace Twice.Behaviors
 			}
 		}
 
+		public static readonly DependencyProperty NameProperty = DependencyProperty.Register( "Name", typeof(string),
+			typeof(FlyoutControl), new PropertyMetadata( null ) );
+
 		public string Name
 		{
 			get { return (string)GetValue( NameProperty ); }
 			set { SetValue( NameProperty, value ); }
 		}
-
-		public static readonly DependencyProperty NameProperty = DependencyProperty.Register( "Name", typeof( string ), typeof( FlyoutControl ), new PropertyMetadata( null ) );
 	}
 }

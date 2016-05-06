@@ -1,7 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
@@ -22,10 +22,6 @@ namespace Twice.ViewModels.Settings
 			EndDate = DateTime.Now.AddMonths( 1 );
 			HasEndDate = false;
 		}
-
-		public event EventHandler Cancelled;
-
-		public event EventHandler<MuteEditArgs> Saved;
 
 		private bool CanExecuteSaveCommand()
 		{
@@ -54,15 +50,15 @@ namespace Twice.ViewModels.Settings
 			Saved?.Invoke( this, new MuteEditArgs( Action, Filter, dt ) );
 		}
 
+		public event EventHandler Cancelled;
+
+		public event EventHandler<MuteEditArgs> Saved;
+
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
 
 		public DateTime EndDate
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _EndDate;
-			}
+			[DebuggerStepThrough] get { return _EndDate; }
 			set
 			{
 				if( _EndDate == value )
@@ -77,11 +73,7 @@ namespace Twice.ViewModels.Settings
 
 		public string Filter
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Filter;
-			}
+			[DebuggerStepThrough] get { return _Filter; }
 			set
 			{
 				if( _Filter == value )
@@ -96,11 +88,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool HasEndDate
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _HasEndDate;
-			}
+			[DebuggerStepThrough] get { return _HasEndDate; }
 			set
 			{
 				if( _HasEndDate == value )
@@ -115,7 +103,9 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public ICommand SaveCommand => _SaveCommand ?? ( _SaveCommand = new RelayCommand( ExecuteSaveCommand, CanExecuteSaveCommand ) );
+		public ICommand SaveCommand
+			=> _SaveCommand ?? ( _SaveCommand = new RelayCommand( ExecuteSaveCommand, CanExecuteSaveCommand ) );
+
 		private readonly MuteEditAction Action;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]

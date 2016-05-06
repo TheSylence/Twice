@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Accounts;
 
@@ -35,18 +35,22 @@ namespace Twice.Tests.ViewModels.Accounts
 		public void SettingConfirmationUpdatesContext()
 		{
 			// Arrange
-			var data = new TwitterAccountData();
-			data.RequiresConfirm = false;
+			var data = new TwitterAccountData
+			{
+				RequiresConfirm = false
+			};
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Data ).Returns( data );
 
-			var entry = new AccountEntry( context.Object );
-
 			// Act
-			entry.RequiresConfirmation = true;
+			var entry = new AccountEntry( context.Object )
+			{
+				RequiresConfirmation = true
+			};
 
 			// Assert
+			Assert.IsNotNull( entry );
 			Assert.IsTrue( data.RequiresConfirm );
 		}
 
@@ -57,12 +61,14 @@ namespace Twice.Tests.ViewModels.Accounts
 			var context = new Mock<IContextEntry>();
 			context.SetupSet( c => c.IsDefault = true ).Verifiable();
 
-			var entry = new AccountEntry( context.Object );
-
 			// Act
-			entry.IsDefaultAccount = true;
+			var entry = new AccountEntry( context.Object )
+			{
+				IsDefaultAccount = true
+			};
 
 			// Assert
+			Assert.IsNotNull( entry );
 			context.VerifySet( c => c.IsDefault = true, Times.Once() );
 		}
 	}

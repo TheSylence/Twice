@@ -43,12 +43,14 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
-			var vm = new PopupNotificationSettings( cfg.Object );
-
 			// Act
-			vm.SelectedCorner = Corner.BottomRight;
-			vm.SelectedDisplay = "test";
-			vm.Enabled = false;
+			var vm = new PopupNotificationSettings( cfg.Object )
+			{
+				SelectedCorner = Corner.BottomRight,
+				SelectedDisplay = "test",
+				Enabled = false
+			};
+
 			vm.SaveTo( cfg.Object );
 
 			// Assert
