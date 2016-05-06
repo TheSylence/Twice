@@ -7,6 +7,7 @@ using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
+using Twice.Services.Views;
 using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Columns
@@ -21,21 +22,6 @@ namespace Twice.ViewModels.Columns
 				{ColumnType.Timeline, TimelineColumn},
 				{ColumnType.Mentions, MentionsColumn}
 			};
-		}
-
-		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )
-		{
-			return new MentionsColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase TimelineColumn( ColumnArgumentsData args )
-		{
-			return new TimelineColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase UserColumn( ColumnArgumentsData args )
-		{
-			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		public ColumnViewModelBase Construct( ColumnDefinition def )
@@ -65,11 +51,27 @@ namespace Twice.ViewModels.Columns
 				column.Muter = Muter;
 				column.Cache = Cache;
 				column.Dispatcher = Dispatcher;
+				column.ViewServiceRepository = ViewServiceRepository;
 
 				return column;
 			}
 
 			return null;
+		}
+
+		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )
+		{
+			return new MentionsColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase TimelineColumn( ColumnArgumentsData args )
+		{
+			return new TimelineColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase UserColumn( ColumnArgumentsData args )
+		{
+			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		[Inject]
@@ -89,6 +91,9 @@ namespace Twice.ViewModels.Columns
 
 		[Inject]
 		public IStreamingRepository StreamingRepo { get; set; }
+
+		[Inject]
+		public IViewServiceRepository ViewServiceRepository { get; set; }
 
 		private readonly Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>> FactoryMap;
 

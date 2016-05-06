@@ -34,6 +34,11 @@ namespace Twice.ViewModels
 			config.Save();
 		}
 
+		private static async void ExecuteOpenImageCommand( Uri imageUrl )
+		{
+			await ViewServices.ViewImage( new[] {imageUrl}, imageUrl );
+		}
+
 		private static async void ExecuteOpenProfileCommand( ulong args )
 		{
 			await ViewServices.ViewProfile( args );
@@ -44,17 +49,11 @@ namespace Twice.ViewModels
 			Process.Start( args.AbsoluteUri );
 		}
 
-		private static readonly IKernel Kernel;
-		private static RelayCommand<string> _CreateMuteCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<ulong> _OpenProfileCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<Uri> _OpenUrlCommand;
-
 		public static ICommand CreateMuteCommand
 			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
+
+		public static ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand<Uri>(
+			ExecuteOpenImageCommand ) );
 
 		public static ICommand OpenProfileCommand
 			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );
@@ -63,8 +62,16 @@ namespace Twice.ViewModels
 		///     Command to open an URL in the default webbrowser.
 		/// </summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
-												( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+		                                         ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
 
 		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
+		private static readonly IKernel Kernel;
+		private static RelayCommand<string> _CreateMuteCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<ulong> _OpenProfileCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
 	}
 }

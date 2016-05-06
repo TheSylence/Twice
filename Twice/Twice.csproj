@@ -361,6 +361,7 @@
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
+    <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModelLocator.cs" />
@@ -396,11 +397,15 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
+    <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardPageViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
+    <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
+      <DependentUpon>ImageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
     </Compile>
@@ -486,6 +491,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\ImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TextInputDialog.xaml">
       <SubType>Designer</SubType>

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Twice.Models.Columns;
 using Twice.Views;
 
@@ -21,6 +23,8 @@ namespace Twice.Services.Views
 		Task ShowSettings();
 
 		string TextInput( string label, string input = null, string hostIdentifier = null );
+
+		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );
 

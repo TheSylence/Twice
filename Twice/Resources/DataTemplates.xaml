@@ -126,7 +126,13 @@
 							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}" ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False">
 								<controls1:FlipView.ItemTemplate>
 									<DataTemplate>
-										<Image Source="{Binding}" Stretch="Uniform" />
+										<Image Source="{Binding Url}" Stretch="Uniform">
+											<i:Interaction.Triggers>
+												<i:EventTrigger EventName="MouseDown">
+													<command:EventToCommand Command="{Binding OpenImageCommand}" />
+												</i:EventTrigger>
+											</i:Interaction.Triggers>
+										</Image>
 									</DataTemplate>
 								</controls1:FlipView.ItemTemplate>
 							</controls1:FlipView>

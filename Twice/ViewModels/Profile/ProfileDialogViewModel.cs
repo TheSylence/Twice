@@ -46,7 +46,7 @@ namespace Twice.ViewModels.Profile
 
 			return
 				cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select(
-					s => new StatusViewModel( s, Context, Configuration ) );
+					s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) );
 		}
 
 		public async Task OnLoad( object data )

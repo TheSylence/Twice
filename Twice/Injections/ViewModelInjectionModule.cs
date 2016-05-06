@@ -44,6 +44,7 @@ namespace Twice.Injections
 			Bind<IColumnTypeSelectionDialogViewModel>().To<ColumnTypeSelectionDialogViewModel>();
 
 			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();
+			Bind<IImageDialogViewModel>().To<ImageDialogViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

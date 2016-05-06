@@ -157,7 +157,7 @@ namespace Twice.ViewModels.Columns
 
 		private StatusViewModel CreateViewModel( Status s )
 		{
-			return new StatusViewModel( s, Context, Configuration );
+			return new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 		}
 
 		private void ExecuteClearCommand()
