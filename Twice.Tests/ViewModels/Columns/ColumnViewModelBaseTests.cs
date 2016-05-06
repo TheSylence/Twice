@@ -1,13 +1,11 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -153,7 +151,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var context = new Mock<IContextEntry>();
 			var definition = new ColumnDefinition( ColumnType.User );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
 			var parser = new Mock<IStreamParser>();
 
 			var statuses = new List<Status>
@@ -164,11 +162,13 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			var waitHandle = new ManualResetEvent( false );
-			
+
 			var twitterContext = new Mock<ITwitterContext>();
 
 			var statusRepo = new Mock<ITwitterStatusRepository>();
-			statusRepo.Setup( s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
+			statusRepo.Setup(
+				s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns(
+					Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
 
@@ -411,8 +411,11 @@ namespace Twice.Tests.ViewModels.Columns
 			var tester = new PropertyChangedTester( vm, true, new NinjectTypeResolver() );
 
 			// Act
-			tester.Test( nameof( ColumnViewModelBase.Muter ), nameof( ColumnViewModelBase.ContextList ), nameof( ColumnViewModelBase.ViewServiceRepository ),
-				nameof( ColumnViewModelBase.Cache ), nameof( ColumnViewModelBase.Configuration ), nameof( ColumnViewModelBase.Dispatcher ) );
+			tester.Test( nameof( ColumnViewModelBase.Muter ), nameof( ColumnViewModelBase.ContextList ),
+				nameof( ColumnViewModelBase.ViewServiceRepository ),
+				nameof( ColumnViewModelBase.Cache ), nameof( ColumnViewModelBase.Configuration ),
+				nameof( ColumnViewModelBase.Dispatcher ),
+				nameof( ColumnViewModelBase.ProcessStarter ) );
 
 			// Assert
 			tester.Verify();
@@ -424,9 +427,9 @@ namespace Twice.Tests.ViewModels.Columns
 			// Arrange
 			var userList = new List<User>
 			{
-				new User {  UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789" },
-				new User {  UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789" },
-				new User {  UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789" }
+				new User {UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new User {UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new User {UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"}
 			};
 
 			var twitterContext = new Mock<ITwitterContext>();
@@ -461,7 +464,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var context = new Mock<IContextEntry>();
 			var definition = new ColumnDefinition( ColumnType.User );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
 			var parser = new Mock<IStreamParser>();
 
 			var statuses = new List<Status>
@@ -476,7 +479,9 @@ namespace Twice.Tests.ViewModels.Columns
 			var twitterContext = new Mock<ITwitterContext>();
 
 			var statusRepo = new Mock<ITwitterStatusRepository>();
-			statusRepo.Setup( s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
+			statusRepo.Setup(
+				s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns(
+					Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
 

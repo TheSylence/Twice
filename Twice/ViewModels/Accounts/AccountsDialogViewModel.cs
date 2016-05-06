@@ -1,10 +1,11 @@
-﻿using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
+﻿using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -14,10 +15,11 @@ namespace Twice.ViewModels.Accounts
 {
 	internal class AccountsDialogViewModel : DialogViewModel, IAccountsDialogViewModel
 	{
-		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList )
+		public AccountsDialogViewModel( IColumnDefinitionList columnList, ITwitterContextList contextList, ITwitterAuthorizer authorizer )
 		{
 			ContextList = contextList;
 			ColumnList = columnList;
+			Authorizer = authorizer;
 
 			AddedAccounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
 			foreach( var acc in AddedAccounts )
@@ -33,53 +35,29 @@ namespace Twice.ViewModels.Accounts
 
 			acc.Data.ExecuteDecryptedAction( data => { ContextList.UpdateAccount( data ); } );
 		}
-
+		
 		private void DisplayPinPage( string url )
 		{
 			// TODO: An in-app browser would be cleaner I guess
-			Process.Start( url );
+			ProcessStarter.Start( url );
 		}
+
+		private readonly ITwitterAuthorizer Authorizer;
 
 		private async void ExecuteAddAccountCommand()
 		{
-			PinEntryCancelled = false;
+			PinEntryCancelled = new CancellationTokenSource();
 
-			var auth = new PinAuthorizer
+			var result = await Authorizer.Authorize( DisplayPinPage, GetPinFromUser, PinEntryCancelled.Token );
+			var accountData = result.Data;
+			if( accountData == null )
 			{
-				CredentialStore = new InMemoryCredentialStore
-				{
-					ConsumerKey = Constants.Auth.ConsumerKey,
-					ConsumerSecret = Constants.Auth.ConsumerSecret
-				},
-				GoToTwitterAuthorization = DisplayPinPage,
-				GetPin = GetPinFromUser
-			};
-
-			try
-			{
-				await auth.AuthorizeAsync().ConfigureAwait( false );
-			}
-			catch( TwitterQueryException ex )
-			{
-				if( !PinEntryCancelled )
-				{
-					LogTo.ErrorException( "Failed to authorize user", ex );
-				}
-
 				return;
 			}
 
-			var accountData = new TwitterAccountData
-			{
-				OAuthToken = auth.CredentialStore.OAuthToken,
-				OAuthTokenSecret = auth.CredentialStore.OAuthTokenSecret,
-				AccountName = auth.CredentialStore.ScreenName,
-				UserId = auth.CredentialStore.UserID
-			};
-
 			if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )
 			{
-				using( var ctx = new TwitterContext( auth ) )
+				using( var ctx = new TwitterContext( result.Auth ) )
 				{
 					var twitterUser =
 						await
@@ -109,13 +87,13 @@ namespace Twice.ViewModels.Accounts
 
 			ContextList.UpdateAllAccounts();
 		}
-
+		
 		private string GetPinFromUser()
 		{
 			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null, DialogHostIdentifier );
 			if( string.IsNullOrWhiteSpace( input ) )
 			{
-				PinEntryCancelled = true;
+				PinEntryCancelled.Cancel();
 			}
 			return input;
 		}
@@ -130,6 +108,6 @@ namespace Twice.ViewModels.Accounts
 		private readonly IColumnDefinitionList ColumnList;
 		private RelayCommand _AddAccountCommand;
 		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
-		private bool PinEntryCancelled;
+		private CancellationTokenSource PinEntryCancelled;
 	}
 }

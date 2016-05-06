@@ -19,6 +19,8 @@ namespace Twice.Injections
 			Bind<IDispatcher>().To<DispatcherHelperWrapper>().InSingletonScope();
 			Bind<IFileSystem>().To<FileSystem>();
 			Bind<ITimerFactory>().To<TimerFactory>();
+			Bind<IAppUpdaterFactory>().To<AppUpdaterFactory>();
+			Bind<IProcessStarter>().To<ProcessStarter>();
 		}
 	}
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using LinqToTwitter;
-using Regex = Twice.Models.Twitter.Text.Regex;
 
 namespace Twice.Models.Twitter
 {
@@ -41,6 +41,13 @@ namespace Twice.Models.Twitter
 			return indices.ToArray();
 		}
 
+		public static ulong GetMessageId( this DirectMessage message )
+		{
+			return message.ID != 0
+				? message.ID
+				: ulong.Parse( message.IDString );
+		}
+
 		public static string GetScreenName( this User user )
 		{
 			return user.ScreenName ?? user.ScreenNameResponse;
@@ -49,19 +56,23 @@ namespace Twice.Models.Twitter
 		public static Uri GetUrl( this Status status )
 		{
 			string userName = status.User.GetScreenName();
-			return new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}/status/{1}", userName, status.StatusID ) );
+			return
+				new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}/status/{1}", userName,
+					status.StatusID ) );
 		}
 
 		public static ulong GetUserId( this User user )
 		{
-			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
+			return user.UserID != 0
+				? user.UserID
+				: ulong.Parse( user.UserIDResponse );
 		}
 
 		public static string NormalizeText( string text )
 		{
 			try
 			{
-				return text.Normalize( System.Text.NormalizationForm.FormC );
+				return text.Normalize( NormalizationForm.FormC );
 			}
 			catch( ArgumentException )
 			{
@@ -79,24 +90,25 @@ namespace Twice.Models.Twitter
 				return text;
 			}
 
-			MatchCollection matcher = Regex.VALID_URL.Matches( text );
+			MatchCollection matcher = Text.Regex.VALID_URL.Matches( text );
 			foreach( Match match in matcher )
 			{
-				if( !match.Groups[Regex.VALID_URL_GROUP_PROTOCOL].Success )
+				if( !match.Groups[Text.Regex.VALID_URL_GROUP_PROTOCOL].Success )
 				{
 					// Skip if protocol is not present and 'extractURLWithoutProtocol' is false or
 					// URL is preceded by invalid character.
-					if( Regex.INVALID_URL_WITHOUT_PROTOCOL_MATCH_BEGIN.IsMatch( match.Groups[Regex.VALID_URL_GROUP_BEFORE].Value ) )
+					if(
+						Text.Regex.INVALID_URL_WITHOUT_PROTOCOL_MATCH_BEGIN.IsMatch( match.Groups[Text.Regex.VALID_URL_GROUP_BEFORE].Value ) )
 					{
 						continue;
 					}
 				}
 
-				string url = match.Groups[Regex.VALID_URL_GROUP_URL].Value;
+				string url = match.Groups[Text.Regex.VALID_URL_GROUP_URL].Value;
 
 				//int start = match.Groups[Regex.VALID_URL_GROUP_URL].Index;
 				//int end = match.Groups[Regex.VALID_URL_GROUP_URL].Index + match.Groups[Regex.VALID_URL_GROUP_URL].Length;
-				Match tcoMatcher = Regex.VALID_TCO_URL.Match( url );
+				Match tcoMatcher = Text.Regex.VALID_TCO_URL.Match( url );
 				if( tcoMatcher.Success )
 				{
 					// In the case of t.co URLs, don't allow additional path characters.
@@ -111,6 +123,6 @@ namespace Twice.Models.Twitter
 			return text;
 		}
 
-		private static readonly System.Text.RegularExpressions.Regex EmojiPattern = new System.Text.RegularExpressions.Regex( @"\p{Cs}" );
+		private static readonly Regex EmojiPattern = new Regex( @"\p{Cs}" );
 	}
 }

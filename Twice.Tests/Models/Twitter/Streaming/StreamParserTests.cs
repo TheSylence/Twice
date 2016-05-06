@@ -1,10 +1,12 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 
 namespace Twice.Tests.Models.Twitter.Streaming
@@ -86,18 +88,19 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne();
+			waitHandle.WaitOne( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-			CollectionAssert.AreEqual( new ulong[] { 123, 456, 789 }, receivedData.Friends );
+			CollectionAssert.AreEqual( new ulong[] {123, 456, 789}, receivedData.Friends );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
 		public void ReceivingMessageDeleteRaisesEvent()
 		{
 			// Arrange
-			string strContent = "{\"delete\":{\"direct_message\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}";
+			string strContent =
+				"{\"delete\":{\"direct_message\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
@@ -118,12 +121,44 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne();
+			waitHandle.WaitOne( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedDelete );
 			Assert.AreEqual( 1234ul, receivedDelete.Id );
 			Assert.AreEqual( 3ul, receivedDelete.UserId );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
+		public void ReceivingMessageRaisesEvent()
+		{
+			// Arrange
+			var strContent = File.ReadAllText( "Data/message.json" );
+			var execute = new Mock<ITwitterExecute>();
+			StreamContent content = new StreamContent( execute.Object, strContent );
+
+			var stream = new Mock<IStreamingConnection>();
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
+				.Callback<Func<StreamContent, Task>>( func => func( content ) )
+				.Returns( Task.FromResult( new List<IStreaming>() ) );
+
+			var parser = StreamParser.Create( stream.Object );
+			DirectMessageStreamEventArgs receivedData = null;
+			ManualResetEvent waitHandle = new ManualResetEvent( false );
+
+			parser.DirectMessageReceived += ( s, e ) =>
+			{
+				receivedData = e;
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.StartStreaming();
+			waitHandle.WaitOne( 1000 );
+			
+			// Assert
+			Assert.IsNotNull( receivedData );
+			Assert.AreNotEqual( 0ul, receivedData.Message.GetMessageId() );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -151,12 +186,44 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne();
+			waitHandle.WaitOne( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedDelete );
 			Assert.AreEqual( 1234ul, receivedDelete.Id );
 			Assert.AreEqual( 3ul, receivedDelete.UserId );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
+		public void ReceivingStatusRaisesEvent()
+		{
+			// Arrange
+			var strContent = File.ReadAllText( "Data/tweet.json" );
+			var execute = new Mock<ITwitterExecute>();
+			StreamContent content = new StreamContent( execute.Object, strContent );
+
+			var stream = new Mock<IStreamingConnection>();
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
+				.Callback<Func<StreamContent, Task>>( func => func( content ) )
+				.Returns( Task.FromResult( new List<IStreaming>() ) );
+
+			var parser = StreamParser.Create( stream.Object );
+			StatusStreamEventArgs receivedData = null;
+			ManualResetEvent waitHandle = new ManualResetEvent( false );
+
+			parser.StatusReceived += ( s, e ) =>
+			{
+				receivedData = e;
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.StartStreaming();
+			waitHandle.WaitOne(1000);
+
+			// Assert
+			Assert.IsNotNull( receivedData );
+			Assert.AreNotEqual( 0ul, receivedData.Status.StatusID );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -184,7 +251,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne();
+			waitHandle.WaitOne( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );

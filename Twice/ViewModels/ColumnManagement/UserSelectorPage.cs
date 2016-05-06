@@ -11,7 +11,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class UserSelectorPage : WizardPageViewModel
 	{
-		public UserSelectorPage( WizardViewModel wizard, ITwitterContextList contextList, ITimerFactory timerFactory )
+		public UserSelectorPage( IWizardViewModel wizard, ITwitterContextList contextList, ITimerFactory timerFactory )
 			: base( wizard )
 		{
 			ContextList = contextList;
@@ -28,8 +28,11 @@ namespace Twice.ViewModels.ColumnManagement
 			targetAccounts.Add( userId );
 			int pageKey = 3;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
-			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey,
-				Users.Single( usr => usr.UserID == userId ).Model.GetScreenName() );
+
+			var screenNames = Wizard.GetProperty<string[]>( AddColumnDialogViewModel.TargetAccountNamesKey ).ToList();
+			var screenName = Users.Single( usr => usr.UserID == userId ).Model.GetScreenName();
+			screenNames.Add( screenName );
+			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, screenNames.ToArray() );
 			Wizard.GotoPage( pageKey );
 		}
 
