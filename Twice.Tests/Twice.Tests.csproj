@@ -251,6 +251,9 @@
     <None Include="Data\tweet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\tweet_casedentities.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\tweet_emoji.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

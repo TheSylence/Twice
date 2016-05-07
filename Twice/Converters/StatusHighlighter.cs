@@ -99,6 +99,10 @@ namespace Twice.Converters
 				if( extractedText != actualText )
 				{
 					var newIndex = tweet.Text.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
+					if( newIndex == -1 )
+					{
+						newIndex = tweet.Text.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
+					}
 					Debug.Assert( newIndex != -1 );
 
 					entity.Start = newIndex;

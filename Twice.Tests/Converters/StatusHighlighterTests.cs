@@ -29,6 +29,32 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
+		public void DifferentCasingInEntitiesIsHandledCorrectly()
+		{
+			// Arrange
+
+			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 5, links.Length );
+
+			Assert.AreEqual( "@spurs", ( (Run)links[0].Inlines.First( ) ).Text );
+			Assert.AreEqual( "@okcthunder", ( (Run)links[1].Inlines.First( ) ).Text );
+			Assert.AreEqual( "#PhantomCam", ( (Run)links[2].Inlines.First(  ) ).Text );
+			Assert.AreEqual( "#SPURSvTHUNDER", ( (Run)links[3].Inlines.First(  ) ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
 		public void EmojiDoesNotBreakEntities()
 		{
 			// Arrange

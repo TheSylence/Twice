@@ -13,7 +13,8 @@
         ],
         "Fixes": [
             "Inline media option is now taken into account when displaying statuses",
-            "When a status contains multiple images, all of them are now displayed"
+            "When a status contains multiple images, all of them are now displayed",
+            "Emojis in statuses no longer break following entities"
         ],
         "Issues": [ ]
     },
