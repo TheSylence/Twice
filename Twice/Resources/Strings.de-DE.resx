@@ -493,4 +493,7 @@
   <data name="FavouritesDescription" xml:space="preserve">
     <value>Tweets die von einem Konto favorisiert wurden</value>
   </data>
+  <data name="ImageViewer" xml:space="preserve">
+    <value>Bildbetrachter</value>
+  </data>
 </root>

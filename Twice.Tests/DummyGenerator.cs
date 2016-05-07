@@ -1,5 +1,5 @@
-﻿using LinqToTwitter;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LinqToTwitter;
 
 namespace Twice.Tests
 {
@@ -13,6 +13,14 @@ namespace Twice.Tests
 			{
 				User = user,
 				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>(),
+					MediaEntities = new List<MediaEntity>(),
+					SymbolEntities = new List<SymbolEntity>(),
+					UrlEntities = new List<UrlEntity>(),
+					UserMentionEntities = new List<UserMentionEntity>()
+				},
+				ExtendedEntities = new Entities
 				{
 					HashTagEntities = new List<HashTagEntity>(),
 					MediaEntities = new List<MediaEntity>(),

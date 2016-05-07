@@ -13,12 +13,14 @@ using MahApps.Metro.Controls.Dialogs;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Twice.Models.Columns;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
+using Twice.ViewModels.Twitter;
 using Twice.Views;
 using Twice.Views.Dialogs;
 using Twice.Views.Wizards;
@@ -29,125 +31,6 @@ namespace Twice.Services.Views
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
-		public async Task<bool> Confirm( ConfirmServiceArgs args )
-		{
-			Debug.Assert( args != null );
-
-			var dictionary = new ResourceDictionary
-			{
-				Source =
-					new Uri(
-						"pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
-			};
-
-			var settings = new MetroDialogSettings
-			{
-				AffirmativeButtonText = Strings.Yes,
-				NegativeButtonText = Strings.No,
-				SuppressDefaultResources = true,
-				CustomResourceDictionary = dictionary
-			};
-			var result =
-				await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
-
-			return result == MessageDialogResult.Affirmative;
-		}
-
-		public Task<string> OpenFile( FileServiceArgs fsa = null )
-		{
-			OpenFileDialog dlg = new OpenFileDialog();
-			if( fsa != null )
-			{
-				dlg.Filter = fsa.Filter;
-			}
-
-			return dlg.ShowDialog( Application.Current.MainWindow ) == true
-				? Task.FromResult( dlg.FileName )
-				: Task.FromResult<string>( null );
-		}
-
-		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
-		{
-			ulong[] sourceAccounts = {accountId};
-			ulong[] targetAccounts = {accountId};
-
-			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
-			{
-				return vm.AvailableColumnTypes.Where( c => c.IsSelected ).Select( c => c.Content.Type )
-					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
-			};
-
-			return
-				await
-					ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null,
-						hostIdentifier );
-		}
-
-		public async Task ShowAccounts( bool directlyAddAccount = false )
-		{
-			Action<IAccountsDialogViewModel> vmSetup = vm =>
-			{
-				if( directlyAddAccount )
-				{
-					vm.AddAccountCommand.Execute( null );
-				}
-			};
-			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>( null, vmSetup );
-		}
-
-		public async Task ShowAddColumnDialog()
-		{
-			await ShowWindow<AddColumnDialog, IAddColumnDialogViewModel>();
-		}
-
-		public async Task ShowInfo()
-		{
-			await ShowWindow<InfoDialog, IInfoDialogViewModel>();
-		}
-
-		public Task ShowSettings()
-		{
-			var dlg = new SettingsDialog
-			{
-				Owner = Window
-			};
-
-			dlg.ShowDialog();
-
-			return Task.CompletedTask;
-		}
-
-		public string TextInput( string label, string input = null, string hostIdentifier = null )
-		{
-			Func<ITextInputDialogViewModel, string> resultSetup = vm => vm.Input;
-			Action<ITextInputDialogViewModel> vmSetup = vm =>
-			{
-				vm.Label = label;
-				vm.Input = input ?? string.Empty;
-			};
-
-			return ShowDialogSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup, hostIdentifier );
-		}
-
-		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
-		{
-			Action<IImageDialogViewModel> setup = vm =>
-			{
-				vm.SetImages( imageSet );
-				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
-				                   ?? vm.Images.FirstOrDefault();
-			};
-
-			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
-		}
-
-		public async Task ViewProfile( ulong userId )
-		{
-			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( userId ); };
-
-			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
-		}
-
 		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
 		{
 			CurrentDialog = null;
@@ -235,6 +118,135 @@ namespace Twice.Services.Views
 			}
 
 			return Task.FromResult( result );
+		}
+
+		public async Task ComposeTweet()
+		{
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
+		}
+
+		public async Task<bool> Confirm( ConfirmServiceArgs args )
+		{
+			Debug.Assert( args != null );
+
+			var dictionary = new ResourceDictionary
+			{
+				Source =
+					new Uri(
+						"pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
+			};
+
+			var settings = new MetroDialogSettings
+			{
+				AffirmativeButtonText = Strings.Yes,
+				NegativeButtonText = Strings.No,
+				SuppressDefaultResources = true,
+				CustomResourceDictionary = dictionary
+			};
+			var result =
+				await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
+
+			return result == MessageDialogResult.Affirmative;
+		}
+
+		public Task<string> OpenFile( FileServiceArgs fsa = null )
+		{
+			OpenFileDialog dlg = new OpenFileDialog();
+			if( fsa != null )
+			{
+				dlg.Filter = fsa.Filter;
+			}
+
+			return dlg.ShowDialog( Application.Current.MainWindow ) == true
+				? Task.FromResult( dlg.FileName )
+				: Task.FromResult<string>( null );
+		}
+
+		public Task<RetweetOptions> Retweet( StatusViewModel status )
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
+		{
+			ulong[] sourceAccounts = {accountId};
+			ulong[] targetAccounts = {accountId};
+
+			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
+			{
+				return vm.AvailableColumnTypes.Where( c => c.IsSelected ).Select( c => c.Content.Type )
+					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
+			};
+
+			return
+				await
+					ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null,
+						hostIdentifier );
+		}
+
+		public async Task ShowAccounts( bool directlyAddAccount = false )
+		{
+			Action<IAccountsDialogViewModel> vmSetup = vm =>
+			{
+				if( directlyAddAccount )
+				{
+					vm.AddAccountCommand.Execute( null );
+				}
+			};
+			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>( null, vmSetup );
+		}
+
+		public async Task ShowAddColumnDialog()
+		{
+			await ShowWindow<AddColumnDialog, IAddColumnDialogViewModel>();
+		}
+
+		public async Task ShowInfo()
+		{
+			await ShowWindow<InfoDialog, IInfoDialogViewModel>();
+		}
+
+		public Task ShowSettings()
+		{
+			var dlg = new SettingsDialog
+			{
+				Owner = Window
+			};
+
+			dlg.ShowDialog();
+
+			return Task.CompletedTask;
+		}
+
+		public string TextInput( string label, string input = null, string hostIdentifier = null )
+		{
+			Func<ITextInputDialogViewModel, string> resultSetup = vm => vm.Input;
+			Action<ITextInputDialogViewModel> vmSetup = vm =>
+			{
+				vm.Label = label;
+				vm.Input = input ?? string.Empty;
+			};
+
+			return ShowDialogSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup, hostIdentifier );
+		}
+
+		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
+		{
+			Action<IImageDialogViewModel> setup = vm =>
+			{
+				vm.SetImages( imageSet );
+				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
+									?? vm.Images.FirstOrDefault();
+			};
+
+			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
+		}
+
+		public async Task ViewProfile( ulong userId )
+		{
+			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( userId ); };
+
+			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
 		public Dialog CurrentDialog { get; private set; }

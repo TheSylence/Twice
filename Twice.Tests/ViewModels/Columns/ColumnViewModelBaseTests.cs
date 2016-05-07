@@ -262,7 +262,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 
 			// Act
-			vm.RaiseStatusWrapper( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null , null) );
+			vm.RaiseStatusWrapper( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
 
 			// Assert
 			Assert.IsTrue( true ); // HACK: This is ugly...

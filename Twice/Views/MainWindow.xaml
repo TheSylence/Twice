@@ -30,7 +30,6 @@
 	</controls:MetroWindow.InputBindings>
 	<controls:MetroWindow.Flyouts>
 		<controls:FlyoutsControl>
-			<flyouts:TweetComposer />
 			<flyouts:NotificationBar />
 		</controls:FlyoutsControl>
 	</controls:MetroWindow.Flyouts>

@@ -271,10 +271,12 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
+    <Compile Include="Models\Twitter\RetweetOptions.cs" />
     <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
@@ -296,6 +298,7 @@
     <Compile Include="Models\Twitter\Text\TldLib.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Injections\TwitterContextListProvider.cs" />
+    <Compile Include="Models\Twitter\Comparers\TwitterComparers.cs" />
     <Compile Include="Models\Twitter\TwitterContextWrapper.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterFriendshipRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterRepositoryBase.cs" />
@@ -400,6 +403,7 @@
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\RetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
@@ -429,7 +433,7 @@
     <Compile Include="Views\Flyouts\NotificationBar.xaml.cs">
       <DependentUpon>NotificationBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
+    <Compile Include="Views\Dialogs\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\ColumnLockMessage.cs" />
@@ -518,7 +522,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Flyouts\TweetComposer.xaml">
+    <Page Include="Views\Dialogs\TweetComposer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

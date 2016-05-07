@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Twice.Views.Flyouts
+namespace Twice.Views.Dialogs
 {
 	/// <summary>
 	///     Interaction logic for TweetComposer.xaml

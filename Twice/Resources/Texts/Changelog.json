@@ -4,13 +4,16 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Added possibility to send crash reports to the developer"
+            "Added possibility to send crash reports to the developer",
+            "Images can now be viewed in big"
         ],
         "Changes": [
-            "When inline media are displayed, media url is no longer shown in status text"
+            "When inline media are displayed, media url is no longer shown in status text",
+            "Composing a new tweet is now done in a separate dialog"
         ],
         "Fixes": [
-            "Inline media option is now taken into account when displaying statuses"
+            "Inline media option is now taken into account when displaying statuses",
+            "When a status contains multiple images, all of them are now displayed"
         ],
         "Issues": [ ]
     },

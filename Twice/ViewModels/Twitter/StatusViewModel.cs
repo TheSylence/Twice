@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Comparers;
 using Twice.Resources;
 using Twice.Services.Views;
 using Twice.Utilities.Os;
@@ -146,7 +147,16 @@ namespace Twice.ViewModels.Twitter
 		{
 			ExecAsync( async () =>
 			{
-				await Context.Twitter.RetweetAsync( Model.StatusID );
+				var data = await ViewServiceRepository.Retweet( this );
+
+				if( data.Quote )
+				{
+				}
+				else
+				{
+					await Context.Twitter.RetweetAsync( data.StatusId );
+				}
+
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus );
@@ -162,6 +172,8 @@ namespace Twice.ViewModels.Twitter
 
 			ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
+
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 
 		public ICommand BlockUserCommand
 			=>
@@ -205,7 +217,9 @@ namespace Twice.ViewModels.Twitter
 
 					if( Config.Visual.InlineMedia )
 					{
-						var entities = Model.Entities.MediaEntities.Select( m => new Uri( m.MediaUrlHttps ) );
+						var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
+							.Distinct( TwitterComparers.MediaEntityComparer )
+							.Select( m => new Uri( m.MediaUrlHttps ) );
 
 						foreach( var entity in entities )
 						{
@@ -258,34 +272,43 @@ namespace Twice.ViewModels.Twitter
 
 		public UserViewModel SourceUser { get; }
 		public UserViewModel User { get; }
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 		private readonly IConfig Config;
 		private readonly IContextEntry Context;
 		private readonly Status OriginalStatus;
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _BlockUserCommand;
 
 		private IClipboard _Clipboard;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CopyTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CopyTweetUrlCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _DeleteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _FavoriteStatusCommand;
 
 		private List<StatusMediaViewModel> _InlineMedias;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyToAllCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReportSpamCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReportSpamCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _RetweetStatusCommand;
 	}
 }

@@ -9,8 +9,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        mc:Ignorable="d" Title="{lex:Loc ImageViewer}"
-		Padding="30" WindowStartupLocation="CenterOwner" 
+        mc:Ignorable="d" Title="{lex:Loc ImageViewer}" Style="{StaticResource DialogStyle}"
+		Padding="30" WindowStartupLocation="CenterOwner"
 		DataContext="{Binding Image, Source={StaticResource DialogLocator}}"
         Width="1000" Height="700">
 	<i:Interaction.Behaviors>

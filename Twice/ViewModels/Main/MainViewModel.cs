@@ -135,9 +135,9 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowInfo();
 		}
 
-		private void ExecuteNewTweetCommand()
+		private async void ExecuteNewTweetCommand()
 		{
-			MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Open ) );
+			await ViewServiceRepository.ComposeTweet();
 		}
 
 		private async void ExecuteSettingsCommand()

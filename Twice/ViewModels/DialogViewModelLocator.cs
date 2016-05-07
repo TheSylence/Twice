@@ -6,6 +6,7 @@ using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Settings;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels
 {
@@ -17,6 +18,7 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
+		public IRetweetDialogViewModel RetweetDialog => Kernel.Get<IRetweetDialogViewModel>();
 		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();

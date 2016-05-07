@@ -143,12 +143,12 @@ namespace Twice.ViewModels.Twitter
 						MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
 					}
 
-					await Reset();
+					await OnLoad(null);
 				} );
 			} );
 		}
 
-		public async Task Reset()
+		public async Task OnLoad(object data)
 		{
 			foreach( var acc in Accounts )
 			{

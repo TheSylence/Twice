@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Columns;
+using Twice.Models.Twitter;
+using Twice.ViewModels.Twitter;
 using Twice.Views;
 
 namespace Twice.Services.Views
 {
 	internal interface IViewServiceRepository
 	{
+		Task ComposeTweet();
+
 		Task<bool> Confirm( ConfirmServiceArgs args );
 
 		Task<string> OpenFile( FileServiceArgs args = null );
+
+		Task<RetweetOptions> Retweet( StatusViewModel status );
 
 		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier );
 

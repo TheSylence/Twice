@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Windows.Input;
+using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IComposeTweetViewModel : IResetable
+	internal interface IComposeTweetViewModel : ILoadCallback
 	{
 		ICollection<AccountEntry> Accounts { get; }
 		IList<MediaItem> AttachedMedias { get; }

@@ -1,11 +1,13 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
@@ -60,6 +62,27 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			clipboard.Verify( c => c.SetText( "@Testi: hello world" ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ExtendedMediasAreIncludedInInlineMedias()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_extmedia.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+
+			var context = new Mock<IContextEntry>();
+			var config = new Mock<IConfig>();
+			var visualConfig = new VisualConfig {InlineMedia = true};
+			config.SetupGet( c => c.Visual ).Returns( visualConfig );
+			var vm = new StatusViewModel( status, context.Object, config.Object, null );
+
+			// Act
+			var medias = vm.InlineMedias.ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, medias.Length );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -143,9 +166,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1" } );
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2" } );
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3" } );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
 
 			var config = new Mock<IConfig>();
 			var visualConfig = new VisualConfig {InlineMedia = true};

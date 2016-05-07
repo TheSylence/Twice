@@ -216,9 +216,9 @@ namespace Twice.Tests.ViewModels.Main
 			Assert.IsFalse( withoutAccount );
 			Assert.IsTrue( withAccount );
 		}
-
+		
 		[TestMethod, TestCategory( "ViewModels.Main" )]
-		public void NewTweetCommandSendsFlyoutMessage()
+		public void NewTweetCommandOpensWindow()
 		{
 			// Arrange
 			var contexts = new[] {new Mock<IContextEntry>().Object};
@@ -227,24 +227,18 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
+			
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 
-			var messenger = new Mock<IMessenger>();
-			messenger.Setup(
-				m =>
-					m.Send( It.Is<FlyoutMessage>( msg => msg.Name == FlyoutNames.TweetComposer && msg.Action == FlyoutAction.Open ) ) )
-				.Verifiable();
-
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object,
-				messenger.Object );
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.ComposeTweet() ).Returns( Task.CompletedTask ).Verifiable();
+			vm.ViewServiceRepository = viewServices.Object;
 
 			// Act
 			vm.NewTweetCommand.Execute( null );
 
 			// Assert
-			messenger.Verify(
-				m =>
-					m.Send( It.Is<FlyoutMessage>( msg => msg.Name == FlyoutNames.TweetComposer && msg.Action == FlyoutAction.Open ) ),
-				Times.Once() );
+			viewServices.Verify( v => v.ComposeTweet(), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]

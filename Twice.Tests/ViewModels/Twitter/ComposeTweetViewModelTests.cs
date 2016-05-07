@@ -101,7 +101,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			};
 
 			// Act
-			await vm.Reset();
+			await vm.OnLoad(null);
 
 			// Assert
 			var usedAccount = vm.Accounts.SingleOrDefault( a => a.Use );

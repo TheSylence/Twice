@@ -513,4 +513,7 @@
   <data name="FavouritesDescription" xml:space="preserve">
     <value>Tweets favorited from an account</value>
   </data>
+  <data name="ImageViewer" xml:space="preserve">
+    <value>Image viewer</value>
+  </data>
 </root>
