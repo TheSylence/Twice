@@ -162,11 +162,6 @@ namespace Twice.Services.Views
 				: Task.FromResult<string>( null );
 		}
 
-		public Task<RetweetOptions> Retweet( StatusViewModel status )
-		{
-			throw new NotImplementedException();
-		}
-
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
 		{
 			ulong[] sourceAccounts = {accountId};

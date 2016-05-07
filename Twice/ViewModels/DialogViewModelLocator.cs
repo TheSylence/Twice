@@ -17,8 +17,7 @@ namespace Twice.ViewModels
 		{
 			Kernel = App.Kernel;
 		}
-
-		public IRetweetDialogViewModel RetweetDialog => Kernel.Get<IRetweetDialogViewModel>();
+		
 		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();

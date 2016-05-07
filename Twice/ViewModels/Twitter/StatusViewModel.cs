@@ -147,16 +147,8 @@ namespace Twice.ViewModels.Twitter
 		{
 			ExecAsync( async () =>
 			{
-				var data = await ViewServiceRepository.Retweet( this );
-
-				if( data.Quote )
-				{
-				}
-				else
-				{
-					await Context.Twitter.RetweetAsync( data.StatusId );
-				}
-
+				await Context.Twitter.RetweetAsync( Model.StatusID );
+				
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus );
@@ -170,7 +162,7 @@ namespace Twice.ViewModels.Twitter
 			var allUris = InlineMedias.Select( e => e.Url ).ToList();
 			var selectedUri = selected.Url;
 
-			ViewServiceRepository.ViewImage( allUris, selectedUri );
+			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
 
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();

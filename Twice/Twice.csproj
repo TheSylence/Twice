@@ -276,7 +276,6 @@
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
-    <Compile Include="Models\Twitter\RetweetOptions.cs" />
     <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
@@ -403,7 +402,6 @@
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
-    <Compile Include="ViewModels\Twitter\RetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
