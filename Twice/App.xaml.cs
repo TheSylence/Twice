@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -71,6 +72,7 @@ namespace Twice
 			base.OnStartup( e );
 			ConfigureLogging();
 			LogTo.Info( "Application start" );
+			LogEnvironmentInfo();
 
 			var conf = Kernel.Get<IConfig>();
 			var palette = new PaletteHelper();
@@ -109,6 +111,37 @@ namespace Twice
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
+		}
+
+		private static void LogEnvironmentInfo()
+		{
+			LogTo.Info( $"App version: {Assembly.GetExecutingAssembly().GetName().Version}" );
+
+			string osVersionString;
+			if( OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
+			{
+				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit";
+			}
+			else
+			{
+				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
+			}
+
+			LogTo.Info( osVersionString );
+			if( !string.IsNullOrEmpty( OsVersionInfo.ServicePack ) )
+			{
+				LogTo.Info( $"Service Pack {OsVersionInfo.ServicePack}" );
+			}
+			LogTo.Info( $"Version {OsVersionInfo.Version}" );
+			if( OsVersionInfo.ProcessorBits == OsVersionInfo.ProcessorArchitecture.Bit64 )
+			{
+				LogTo.Info( "64bit CPU" );
+			}
+			if( OsVersionInfo.ProgramBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
+			{
+				LogTo.Info( "64bit app" );
+			}
+			LogTo.Info( $"CLR version: {Environment.Version}" );
 		}
 
 		private void ConfigureLogging()

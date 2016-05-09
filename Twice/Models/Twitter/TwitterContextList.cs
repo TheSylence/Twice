@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Anotar.NLog;
 using Newtonsoft.Json;
 using Twice.ViewModels;
 
@@ -38,6 +39,7 @@ namespace Twice.Models.Twitter
 				return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
 				{
 					var ctx = new ContextEntry( Notifier, accDecrypted );
+					LogTo.Info( $"Loaded context for {accDecrypted.AccountName} ({accDecrypted.UserId})" );
 
 					return ctx;
 				} );
@@ -81,6 +83,7 @@ namespace Twice.Models.Twitter
 
 		public void AddContext( TwitterAccountData data )
 		{
+			LogTo.Info( $"Adding account data for {data.AccountName} ({data.UserId})" );
 			Contexts.Add( new ContextEntry( Notifier, data ) );
 
 			SaveToFile();
@@ -100,6 +103,7 @@ namespace Twice.Models.Twitter
 		/// <param name="data"></param>
 		public void UpdateAccount( TwitterAccountData data )
 		{
+			LogTo.Info( $"Updating account data for {data.AccountName} ({data.UserId})" );
 			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
 			Contexts.Remove( context );
 

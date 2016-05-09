@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,20 +23,6 @@ namespace Twice.Models.Twitter
 			{
 				return text.Length;
 			}
-		}
-
-		public static int[] FindEmojis( string text )
-		{
-			var matches = EmojiPattern.Matches( text );
-			List<int> indices = new List<int>( matches.Count );
-
-			foreach( Match m in matches )
-			{
-				Debug.Assert( m.Length == 1 );
-				indices.Add( m.Index );
-			}
-
-			return indices.ToArray();
 		}
 
 		public static ulong GetMessageId( this DirectMessage message )
@@ -68,7 +52,7 @@ namespace Twice.Models.Twitter
 				: ulong.Parse( user.UserIDResponse );
 		}
 
-		public static string NormalizeText( string text )
+		private static string NormalizeText( string text )
 		{
 			try
 			{
@@ -105,16 +89,12 @@ namespace Twice.Models.Twitter
 				}
 
 				string url = match.Groups[Text.Regex.VALID_URL_GROUP_URL].Value;
-
-				//int start = match.Groups[Regex.VALID_URL_GROUP_URL].Index;
-				//int end = match.Groups[Regex.VALID_URL_GROUP_URL].Index + match.Groups[Regex.VALID_URL_GROUP_URL].Length;
+				
 				Match tcoMatcher = Text.Regex.VALID_TCO_URL.Match( url );
 				if( tcoMatcher.Success )
 				{
 					// In the case of t.co URLs, don't allow additional path characters.
 					url = tcoMatcher.Value;
-
-					//end = start + url.Length;
 				}
 
 				text = text.Replace( url, httpsString );
@@ -122,7 +102,5 @@ namespace Twice.Models.Twitter
 
 			return text;
 		}
-
-		private static readonly Regex EmojiPattern = new Regex( @"\p{Cs}" );
 	}
 }

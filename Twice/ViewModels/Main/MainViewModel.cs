@@ -170,6 +170,7 @@ namespace Twice.ViewModels.Main
 					? Constants.Updates.BetaChannelUrl
 					: Constants.Updates.ReleaseChannelUrl;
 
+				LogTo.Info( "Searching for app updates..." );
 				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
 
 				try
@@ -186,13 +187,22 @@ namespace Twice.ViewModels.Main
 						}
 						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
 						{
+							LogTo.Info( $"Updated app to {release.Version}" );
 							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
 								NotificationType.Information );
+						}
+						else
+						{
+							LogTo.Info( "App is up to date" );
 						}
 					}
 				}
 				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
 				{
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( "Error during update check", ex );
 				}
 			}
 		}

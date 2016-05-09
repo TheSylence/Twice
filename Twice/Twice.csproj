@@ -313,6 +313,7 @@
     <Compile Include="Utilities\IAppUpdaterFactory.cs" />
     <Compile Include="Utilities\Os\ClipboardWrapper.cs" />
     <Compile Include="Utilities\Os\IProcessStarter.cs" />
+    <Compile Include="Utilities\Os\OsVersionInfo.cs" />
     <Compile Include="Utilities\Os\ProessStarter.cs" />
     <Compile Include="Utilities\Os\SingleInstance.cs" />
     <Compile Include="Utilities\Ui\ColorProvider.cs" />

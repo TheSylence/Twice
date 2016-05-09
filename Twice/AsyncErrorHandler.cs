@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Anotar.NLog;
+// ReSharper disable UnusedMember.Global
 
 namespace Twice
 {
@@ -10,6 +11,7 @@ namespace Twice
 		public static void HandleException( Exception exception )
 		{
 			LogTo.FatalException( "Exception in async code", exception );
+			LogTo.Fatal( exception.StackTrace );
 		}
 	}
 }
