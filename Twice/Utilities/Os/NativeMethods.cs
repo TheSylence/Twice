@@ -12,24 +12,6 @@ namespace Twice.Utilities.Os
 	[ExcludeFromCodeCoverage]
 	internal static class NativeMethods
 	{
-		// Wrapper for DPAPI CryptProtectData function.
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptProtectData( ref DATA_BLOB pPlainText, string szDescription, ref DATA_BLOB pEntropy,
-			IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pCipherText );
-
-		// Wrapper for DPAPI CryptUnprotectData function.
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptUnprotectData( ref DATA_BLOB pCipherText, ref string pszDescription,
-			ref DATA_BLOB pEntropy, IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pPlainText );
-
-		[DllImport( "user32.dll" )]
-		internal static extern bool EnumDisplayDevices( string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice,
-			uint dwFlags );
-
 		[Flags]
 		public enum DisplayDeviceStateFlags
 		{
@@ -69,26 +51,45 @@ namespace Twice.Utilities.Os
 			Disconnect = 0x2000000
 		}
 
+		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
+		[return: MarshalAs( UnmanagedType.Bool )]
+		internal static extern bool CryptProtectData( ref DATA_BLOB pPlainText, string szDescription, ref DATA_BLOB pEntropy,
+			IntPtr pReserved,
+			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pCipherText );
+
+		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
+		[return: MarshalAs( UnmanagedType.Bool )]
+		internal static extern bool CryptUnprotectData( ref DATA_BLOB pCipherText, ref string pszDescription,
+			ref DATA_BLOB pEntropy, IntPtr pReserved,
+			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pPlainText );
+
+		[DllImport( "user32.dll" )]
+		internal static extern bool EnumDisplayDevices( string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice,
+			uint dwFlags );
+
+		[DllImport( "user32" )]
+		internal static extern int RegisterWindowMessage( [MarshalAs( UnmanagedType.LPWStr )] string message );
+
+		[return: MarshalAs( UnmanagedType.Bool )]
+		[DllImport( "user32.dll", SetLastError = true )]
+		internal static extern bool PostMessage( IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam );
+
+		public const int HWND_BROADCAST = 0xffff;
+
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Ansi )]
 		public struct DISPLAY_DEVICE
 		{
-			[MarshalAs( UnmanagedType.U4 )]
-			public int cb;
+			[MarshalAs( UnmanagedType.U4 )] public int cb;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 32 )]
-			public string DeviceName;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 32 )] public string DeviceName;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
-			public string DeviceString;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceString;
 
-			[MarshalAs( UnmanagedType.U4 )]
-			public DisplayDeviceStateFlags StateFlags;
+			[MarshalAs( UnmanagedType.U4 )] public DisplayDeviceStateFlags StateFlags;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
-			public string DeviceID;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceID;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
-			public string DeviceKey;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string DeviceKey;
 		}
 
 		/// <summary>

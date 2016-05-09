@@ -18,6 +18,7 @@ using NLog.Config;
 using NLog.Targets;
 using Twice.Injections;
 using Twice.Models.Configuration;
+using Twice.Utilities.Os;
 using WPFLocalizeExtension.Engine;
 
 namespace Twice
@@ -47,14 +48,23 @@ namespace Twice
 
 		protected override void OnExit( ExitEventArgs e )
 		{
+			SingleInstance.Stop();
+
 			LogTo.Info( "Application exit" );
-			Kernel.Dispose();
+			Kernel?.Dispose();
 
 			base.OnExit( e );
 		}
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
+			if( !SingleInstance.Start() )
+			{
+				SingleInstance.ShowFirstInstance();
+				Shutdown( 0 );
+				return;
+			}
+
 			DispatcherHelper.Initialize();
 			Kernel = new Kernel();
 
@@ -96,9 +106,9 @@ namespace Twice
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private void ConfigureLogging()
