@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Columns;
-using Twice.Models.Twitter;
 using Twice.ViewModels.Twitter;
 using Twice.Views;
 
@@ -31,6 +30,8 @@ namespace Twice.Services.Views
 		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );
+
+		Task ViewStatus( StatusViewModel vm );
 
 		Dialog CurrentDialog { get; }
 	}

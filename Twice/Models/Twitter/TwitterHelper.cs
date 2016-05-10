@@ -45,6 +45,11 @@ namespace Twice.Models.Twitter
 					status.StatusID ) );
 		}
 
+		public static ulong GetStatusId( this Status status )
+		{
+			return status.ID != 0 ? status.ID : status.StatusID;
+		}
+
 		public static ulong GetUserId( this User user )
 		{
 			return user.UserID != 0

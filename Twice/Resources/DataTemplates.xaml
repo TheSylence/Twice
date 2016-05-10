@@ -10,6 +10,12 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseDown">
+					<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+											 CommandParameter="{Binding}" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
 			<Grid>
 				<Grid Background="Transparent">
 					<Grid.ColumnDefinitions>

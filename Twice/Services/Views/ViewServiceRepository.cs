@@ -244,6 +244,12 @@ namespace Twice.Services.Views
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
+		public Task ViewStatus( StatusViewModel vm )
+		{
+			// TODO: Implement
+			return Task.CompletedTask;
+		}
+
 		public Dialog CurrentDialog { get; private set; }
 
 		private static MetroWindow Window

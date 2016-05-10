@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
 using Twice.Models.Configuration;
 using Twice.Services.Views;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels
 {
@@ -16,6 +17,16 @@ namespace Twice.ViewModels
 		static GlobalCommands()
 		{
 			Kernel = App.Kernel;
+		}
+
+		private static RelayCommand<StatusViewModel> _OpenStatusCommand;
+
+		public static ICommand OpenStatusCommand => _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
+			ExecuteOpenStatusCommand ) );
+
+		private static async void ExecuteOpenStatusCommand( StatusViewModel vm )
+		{
+			await ViewServices.ViewStatus( vm );
 		}
 
 		private static bool CanExecuteOpenUrlCommand( Uri args )
