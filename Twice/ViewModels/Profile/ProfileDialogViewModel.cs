@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,42 +14,6 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
-		private async Task<IEnumerable<object>> LoadFollowers()
-		{
-			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowings()
-		{
-			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses()
-		{
-			//IEnumerable<Status> cached = Services.GetService<IStatusCache>().GetStatusesOfUser( ProfileID );
-			IEnumerable<Status> cached = Enumerable.Empty<Status>().ToArray();
-			IEnumerable<Status> newStatuses;
-
-			if( cached.Any() )
-			{
-				ulong since = cached.Max( c => c.StatusID );
-
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, since );
-			}
-			else
-			{
-				newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId );
-			}
-
-			return
-				cached.Concat( newStatuses ).OrderByDescending( s => s.StatusID ).Select(
-					s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) );
-		}
-
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -72,7 +37,7 @@ namespace Twice.ViewModels.Profile
 
 			UserPages = new List<UserSubPage>
 			{
-				new UserSubPage( Strings.Tweets, LoadStatuses, User.Model.StatusesCount ),
+				new UserSubPage( Strings.Tweets, LoadStatuses, LoadMoreStatuses, User.Model.StatusesCount ),
 				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount ),
 				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
 			};
@@ -84,6 +49,44 @@ namespace Twice.ViewModels.Profile
 		public void Setup( ulong profileId )
 		{
 			ProfileId = profileId;
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowers()
+		{
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowings()
+		{
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadMoreStatuses()
+		{
+			return await LoadStatuses( MaxId );
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses( ulong? maxId )
+		{
+			var newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, 0, maxId ?? 0 );
+
+			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
+				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
+
+			if( statuses.Any() )
+			{
+				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
+			}
+			return statuses;
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses()
+		{
+			return await LoadStatuses( null );
 		}
 
 		public Friendship Friendship
@@ -133,16 +136,14 @@ namespace Twice.ViewModels.Profile
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private Friendship _Friendship;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsBusy;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private UserViewModel _User;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private UserViewModel _User;
 
 		private IContextEntry Context;
+		private ulong MaxId = ulong.MaxValue;
 		private ulong ProfileId;
 	}
 }

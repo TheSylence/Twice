@@ -25,7 +25,6 @@ namespace Twice.ViewModels.Columns
 
 		public override Icon Icon => Icon.Home;
 
-		protected override Expression<Func<Status, bool>> StatusFilterExpression
-			=> s => s.Type == StatusType.Home; // && s.UserID == Context.UserId;
+		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Type == StatusType.Home;
 	}
 }

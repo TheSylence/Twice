@@ -72,6 +72,9 @@
 					<DataTemplate DataType="profile:UserSubPage">
 						<Grid>
 							<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+								<i:Interaction.Behaviors>
+									<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+								</i:Interaction.Behaviors>
 								<ItemsControl ItemsSource="{Binding Items, IsAsync=True}" HorizontalContentAlignment="Stretch">
 									<ItemsControl.ItemTemplateSelector>
 										<views:GenericTemplateSelector>
