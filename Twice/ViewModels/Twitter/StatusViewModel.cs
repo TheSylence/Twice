@@ -107,6 +107,7 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteDeleteStatusCommand()
 		{
+			// TODO: Confirm deletion
 			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
 				NotificationType.Success );
 		}

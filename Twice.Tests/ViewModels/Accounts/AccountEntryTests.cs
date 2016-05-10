@@ -31,7 +31,7 @@ namespace Twice.Tests.ViewModels.Accounts
 			Assert.AreEqual( context.ProfileImageUrl, entry.ProfileImage );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Account" )]
+		[TestMethod, TestCategory( "ViewModels.Accounts" )]
 		public void SettingConfirmationUpdatesContext()
 		{
 			// Arrange

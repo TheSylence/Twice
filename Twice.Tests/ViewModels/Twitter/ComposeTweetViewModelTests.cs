@@ -20,7 +20,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void AttachImageUploadsToTwitter()
 		{
 			// Arrange
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 
 			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
@@ -51,7 +51,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			vm.AttachImageCommand.Execute( null );
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 			Thread.Sleep( 50 );
 
 			// Assert
@@ -101,7 +101,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			};
 
 			// Act
-			await vm.OnLoad(null);
+			await vm.OnLoad( null );
 
 			// Assert
 			var usedAccount = vm.Accounts.SingleOrDefault( a => a.Use );
@@ -172,6 +172,39 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void SendingTweetCallsTwitterApi()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEventSlim( false );
+			var cache = new Mock<IDataCache>();
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				Text = "Hello world"
+			};
+
+			var context = new Mock<IContextEntry>();
+			var status = DummyGenerator.CreateDummyStatus();
+			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ) ).Returns( Task.FromResult( status ) ).Verifiable();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.SendTweetCommand.Execute( null );
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			context.Verify( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void TweetCommandIsCorrectlyDisabled()
 		{
 			// Arrange
@@ -181,6 +214,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			bool requiresConfirmation = true;
 			var contextEntry = new Mock<IContextEntry>();
 			contextEntry.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com" ) );
+
 			// ReSharper disable once AccessToModifiedClosure
 			contextEntry.SetupGet( c => c.RequiresConfirmation ).Returns( () => requiresConfirmation );
 

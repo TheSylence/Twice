@@ -32,7 +32,6 @@ namespace Twice.Tests.Converters
 		public void DifferentCasingInEntitiesIsHandledCorrectly()
 		{
 			// Arrange
-
 			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
 			var data = JsonMapper.ToObject( json );
 			var status = new Status( data );

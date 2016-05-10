@@ -65,6 +65,40 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DeletingStatusCallsTwitterApi()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+			context.Setup( c => c.Notifier.DisplayMessage( It.IsAny<string>(), Twice.ViewModels.NotificationType.Success ) ).Verifiable();
+			context.Setup( c => c.Twitter.DeleteTweetAsync( 456 ) ).Returns( Task.FromResult<Status>( null ) ).Verifiable();
+
+			var waitHandle = new ManualResetEventSlim( false );
+			var status = DummyGenerator.CreateDummyStatus();
+			status.StatusID = 456;
+			status.User.UserID = 123;
+			var vm = new StatusViewModel( status, context.Object, null, null )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.DeleteStatusCommand.Execute( null );
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			context.Verify( c => c.Twitter.DeleteTweetAsync( 456 ), Times.Once() );
+			context.Verify( c => c.Notifier.DisplayMessage( It.IsAny<string>(), Twice.ViewModels.NotificationType.Success ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ExtendedMediasAreIncludedInInlineMedias()
 		{
 			// Arrange
@@ -258,6 +292,22 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ReplyCanAlwaysBeExecuted()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			var context = new Mock<IContextEntry>();
+
+			var vm = new StatusViewModel( status, context.Object, null, null );
+
+			// Act
+			bool canExecute = vm.ReplyCommand.CanExecute( null );
+
+			// Assert
+			Assert.IsTrue( canExecute );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ReplyToAllNeedsAtLeastTwoUsers()
 		{
 			// Arrange
@@ -298,7 +348,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			var vm = new StatusViewModel( status, context.Object, null, null )
 			{
 				Dispatcher = new SyncDispatcher()
@@ -313,7 +363,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			vm.FavoriteStatusCommand.Execute( null );
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			twitter.Verify( t => t.CreateFavoriteAsync( 12345 ), Times.Once() );
@@ -334,7 +384,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			var vm = new StatusViewModel( status, context.Object, null, null )
 			{
 				Dispatcher = new SyncDispatcher()
@@ -349,7 +399,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			vm.RetweetStatusCommand.Execute( null );
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			twitter.Verify( t => t.RetweetAsync( 12345 ), Times.Once() );
@@ -370,7 +420,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			var vm = new StatusViewModel( status, context.Object, null, null )
 			{
 				Dispatcher = new SyncDispatcher()
@@ -385,7 +435,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			vm.FavoriteStatusCommand.Execute( null );
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			twitter.Verify( t => t.DestroyFavoriteAsync( 12345 ), Times.Once() );
@@ -407,7 +457,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			var vm = new StatusViewModel( status, context.Object, null, null )
 			{
 				Dispatcher = new SyncDispatcher()
@@ -422,7 +472,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			vm.BlockUserCommand.Execute( null );
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			twitter.Verify( t => t.CreateBlockAsync( 111, It.IsAny<string>(), It.IsAny<bool>() ), Times.Once() );

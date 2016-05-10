@@ -8,7 +8,7 @@ namespace Twice.Tests.ViewModels.Settings
 	[TestClass]
 	public class PopupNotificationSettingsTests
 	{
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void SavedValuesAreAppliedDuringConstruction()
 		{
 			// Arrange
@@ -30,7 +30,7 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( notify.PopupDisplay, vm.SelectedDisplay );
 		}
 
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void ValuesAreCorrectlySaved()
 		{
 			// Arrange

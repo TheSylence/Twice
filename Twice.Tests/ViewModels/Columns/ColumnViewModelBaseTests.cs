@@ -161,7 +161,7 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus()
 			};
 
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 
 			var twitterContext = new Mock<ITwitterContext>();
 
@@ -177,14 +177,21 @@ namespace Twice.Tests.ViewModels.Columns
 			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
-
-			vm.NewStatus += ( s, e ) => waitHandle.Set();
+			
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ColumnViewModelBase.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
 
 			// Act
 			vm.ActionDispatcher.OnBottomReached();
-			waitHandle.WaitOne( 1000 );
+			bool wasSet = waitHandle.Wait( 1000 );
 
 			// Assert
+			Assert.IsTrue( wasSet );
 			Assert.AreEqual( 3, vm.Statuses.Count );
 		}
 
@@ -474,7 +481,7 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus()
 			};
 
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 
 			var twitterContext = new Mock<ITwitterContext>();
 
@@ -491,13 +498,20 @@ namespace Twice.Tests.ViewModels.Columns
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
 
-			vm.NewStatus += ( s, e ) => waitHandle.Set();
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ColumnViewModelBase.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
 
 			// Act
 			vm.ActionDispatcher.OnHeaderClicked();
-			waitHandle.WaitOne( 1000 );
+			bool wasSet = waitHandle.Wait( 1000 );
 
 			// Assert
+			Assert.IsTrue( wasSet );
 			Assert.AreEqual( 3, vm.Statuses.Count );
 		}
 

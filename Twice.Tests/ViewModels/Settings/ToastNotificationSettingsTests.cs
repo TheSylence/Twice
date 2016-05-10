@@ -8,7 +8,7 @@ namespace Twice.Tests.ViewModels.Settings
 	[TestClass]
 	public class ToastNotificationSettingsTests
 	{
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void SavedValuesAreAppliedDuringConstruction()
 		{
 			// Arrange

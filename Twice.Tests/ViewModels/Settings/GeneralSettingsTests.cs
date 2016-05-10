@@ -33,7 +33,7 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( "en-US", vm.SelectedLanguage.Name );
 		}
 
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void InvariantCultureIsNotDisplayed()
 		{
 			// Arrange

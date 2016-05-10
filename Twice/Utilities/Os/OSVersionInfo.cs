@@ -20,6 +20,7 @@ namespace Twice.Utilities.Os
 	[SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" )]
 	[SuppressMessage( "ReSharper", "FieldCanBeMadeReadOnly.Global" )]
 	[SuppressMessage( "ReSharper", "MemberCanBePrivate.Local" )]
+	[ExcludeFromCodeCoverage]
 	public static class OsVersionInfo
 	{
 		private delegate bool IsWow64ProcessDelegate( [In] IntPtr handle, [Out] out bool isWow64Process );
