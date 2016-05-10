@@ -889,6 +889,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quote.
+        /// </summary>
+        public static string QuoteTweet {
+            get {
+                return ResourceManager.GetString("QuoteTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removed favorite.
         /// </summary>
         public static string RemovedFavorite {

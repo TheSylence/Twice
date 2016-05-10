@@ -67,20 +67,27 @@
 								</Grid>
 							</Button>
 
-							<Button Width="28" Height="28" Grid.Column="1" ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}"
-						Command="{Binding RetweetStatusCommand}" ToolTipService.ShowOnDisabled="True">
-								<materialDesign:PackIcon Kind="TwitterRetweet" />
+							<materialDesign:PopupBox  Grid.Column="1" StaysOpen="True">
+								<materialDesign:PopupBox.ToggleContent>
+									<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
+															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}">
+										<materialDesign:PackIcon.Style>
+											<Style TargetType="materialDesign:PackIcon">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+														<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</materialDesign:PackIcon.Style>
+									</materialDesign:PackIcon>
+								</materialDesign:PopupBox.ToggleContent>
 
-								<Button.Style>
-									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
-												<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</Button.Style>
-							</Button>
+								<StackPanel Orientation="Vertical">
+									<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}"/>
+									<Button Content="{lex:Loc QuoteTweet}" />
+								</StackPanel>
+							</materialDesign:PopupBox>
 						</Grid>
 					</StackPanel>
 

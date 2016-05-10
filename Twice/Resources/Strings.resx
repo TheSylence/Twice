@@ -516,4 +516,7 @@
   <data name="ImageViewer" xml:space="preserve">
     <value>Image viewer</value>
   </data>
+  <data name="QuoteTweet" xml:space="preserve">
+    <value>Quote</value>
+  </data>
 </root>
