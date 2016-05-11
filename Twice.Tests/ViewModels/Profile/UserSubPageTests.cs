@@ -22,7 +22,7 @@ namespace Twice.Tests.ViewModels.Profile
 				return Task.FromResult( Enumerable.Range( 1, 2 ).Cast<object>() );
 			};
 
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			int loadChanges = 0;
 			var page = new UserSubPage( "", loadAction, 2 );
 			page.PropertyChanged += ( s, e ) =>
@@ -40,7 +40,7 @@ namespace Twice.Tests.ViewModels.Profile
 
 			// Act
 			var temp = page.Items;
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 			var items = page.Items.ToArray();
 
 			// Assert

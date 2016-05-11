@@ -64,6 +64,41 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
+		public void ReceivingFavoriteRaisesEvent()
+		{
+			// Arrange
+			string strContent =
+				"{ \"event\":\"favorite\", \"created_at\": \"Sat Sep 04 16:10:54 +0000 2010\", \"target\": { \"id\": 123 }, \"source\": { \"id\": 456 }, \"target_object\": { \"created_at\": \"Wed Jun 06 20:07:10 +0000 2012\", \"id_str\": \"210462857140252672\" } }";
+			var execute = new Mock<ITwitterExecute>();
+			StreamContent content = new StreamContent( execute.Object, strContent );
+
+			var stream = new Mock<IStreamingConnection>();
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
+				.Callback<Func<StreamContent, Task>>( func => func( content ) )
+				.Returns( Task.FromResult( new List<IStreaming>() ) );
+
+			var parser = StreamParser.Create( stream.Object );
+			EventStreamEventArgs receivedData = null;
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+
+			parser.FavoriteEventReceived += ( s, e ) =>
+			{
+				receivedData = e;
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.StartStreaming();
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsNotNull( receivedData );
+			Assert.AreEqual( StreamEventType.Favorite, receivedData.Event );
+			Assert.AreEqual( 456ul, receivedData.Source.GetUserId() );
+			Assert.AreEqual( 123ul, receivedData.Target.GetUserId() );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
 		public void ReceivingFriendlistRaisesEvent()
 		{
 			// Arrange
@@ -78,7 +113,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			FriendsStreamEventArgs receivedData = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.FriendsReceived += ( s, e ) =>
 			{
@@ -88,7 +123,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );
@@ -111,7 +146,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			DeleteStreamEventArgs receivedDelete = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.DirectMessageDeleted += ( s, e ) =>
 			{
@@ -121,7 +156,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedDelete );
@@ -144,7 +179,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			DirectMessageStreamEventArgs receivedData = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.DirectMessageReceived += ( s, e ) =>
 			{
@@ -154,7 +189,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );
@@ -176,7 +211,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			DeleteStreamEventArgs receivedDelete = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.StatusDeleted += ( s, e ) =>
 			{
@@ -186,7 +221,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedDelete );
@@ -209,7 +244,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			StatusStreamEventArgs receivedData = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.StatusReceived += ( s, e ) =>
 			{
@@ -219,7 +254,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );
@@ -241,7 +276,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			var parser = StreamParser.Create( stream.Object );
 			StreamEventArgs receivedData = null;
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			parser.UnknownDataReceived += ( s, e ) =>
 			{
@@ -251,11 +286,43 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Act
 			parser.StartStreaming();
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 
 			// Assert
 			Assert.IsNotNull( receivedData );
 			Assert.AreEqual( strContent, receivedData.Json );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
+		public void ReceivingUnkownDataRaisesEvent()
+		{
+			// Arrange
+			string strContent =
+				"{ \"event\":\"unknown\", \"created_at\": \"Sat Sep 04 16:10:54 +0000 2010\", \"target\": { \"id\": 123 }, \"source\": { \"id\": 456 }, \"target_object\": { \"created_at\": \"Wed Jun 06 20:07:10 +0000 2012\", \"id_str\": \"210462857140252672\" } }";
+			var execute = new Mock<ITwitterExecute>();
+			StreamContent content = new StreamContent( execute.Object, strContent );
+
+			var stream = new Mock<IStreamingConnection>();
+			stream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
+				.Callback<Func<StreamContent, Task>>( func => func( content ) )
+				.Returns( Task.FromResult( new List<IStreaming>() ) );
+
+			var parser = StreamParser.Create( stream.Object );
+			EventStreamEventArgs receivedData = null;
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+
+			parser.UnknownEventReceived += ( s, e ) =>
+			{
+				receivedData = e;
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.StartStreaming();
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsNotNull( receivedData );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

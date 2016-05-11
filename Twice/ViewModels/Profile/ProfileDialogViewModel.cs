@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
+using Ninject;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
@@ -14,11 +15,14 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
 			{
-				Debugger.Break();
+				Close( false );
 				return;
 			}
 
@@ -28,7 +32,8 @@ namespace Twice.ViewModels.Profile
 			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
 			if( user == null )
 			{
-				// TODO: Handle errors
+				Notifier.DisplayMessage( Strings.UserNotFound, NotificationType.Error );
+				Close( false );
 				return;
 			}
 

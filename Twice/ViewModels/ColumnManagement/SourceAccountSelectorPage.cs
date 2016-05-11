@@ -8,7 +8,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class SourceAccountSelectorPage : WizardPageViewModel
 	{
-		public SourceAccountSelectorPage( WizardViewModel wizard, ITwitterContextList contextList )
+		public SourceAccountSelectorPage( IWizardViewModel wizard, ITwitterContextList contextList )
 			: base( wizard )
 		{
 			Accounts = contextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();

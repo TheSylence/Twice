@@ -499,4 +499,7 @@
   <data name="QuoteTweet" xml:space="preserve">
     <value>Zitieren</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Benutzer nicht gefunden</value>
+  </data>
 </root>

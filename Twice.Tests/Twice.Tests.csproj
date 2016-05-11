@@ -209,7 +209,9 @@
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelctorPageTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\ColumnTypeSelectionDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\FinishPageTests.cs" />
+    <Compile Include="ViewModels\ColumnManagement\SourceAccountSelectorPageTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\UserSelectorPageTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnActionDispatcherTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnConfigurationViewModelTests.cs" />

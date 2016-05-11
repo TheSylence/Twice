@@ -72,7 +72,7 @@ namespace Twice.Services.Views
 			where TViewModel : class
 			where TResult : class
 		{
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
 			TResult result = null;
 			DispatcherHelper.CheckBeginInvokeOnUI( async () =>
@@ -81,7 +81,7 @@ namespace Twice.Services.Views
 				waitHandle.Set();
 			} );
 
-			waitHandle.WaitOne();
+			waitHandle.Wait();
 			return result;
 		}
 
