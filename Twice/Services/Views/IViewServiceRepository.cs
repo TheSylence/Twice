@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Columns;
 using Twice.ViewModels.Twitter;
-using Twice.Views;
 
 namespace Twice.Services.Views
 {
@@ -32,7 +31,5 @@ namespace Twice.Services.Views
 		Task ViewProfile( ulong userId );
 
 		Task ViewStatus( StatusViewModel vm );
-
-		Dialog CurrentDialog { get; }
 	}
 }

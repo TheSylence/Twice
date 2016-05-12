@@ -20,7 +20,6 @@ namespace Twice.ViewModels
 		{
 			Dispatcher.CheckBeginInvokeOnUI( () =>
 			{
-				DialogHost.CloseDialogCommand.Execute( result, ViewServiceRepository?.CurrentDialog );
 				CloseRequested?.Invoke( this, result
 					? CloseEventArgs.Ok
 					: CloseEventArgs.Cancel );

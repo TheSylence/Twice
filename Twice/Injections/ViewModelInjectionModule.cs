@@ -34,6 +34,7 @@ namespace Twice.Injections
 			Bind<INotificationSettings>().To<NotificationSettings>();
 
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
+			Bind<ITwitterAuthorizer>().To<TwitterAuthorizer>();
 
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
 

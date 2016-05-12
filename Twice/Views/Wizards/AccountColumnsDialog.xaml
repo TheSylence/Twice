@@ -1,12 +1,21 @@
-﻿<views:Dialog x:Class="Twice.Views.Wizards.AccountColumnsDialog"
+﻿<controls:MetroWindow x:Class="Twice.Views.Wizards.AccountColumnsDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="clr-namespace:Twice.Views"
 			  DataContext="{Binding AccountColumns, Source={StaticResource DialogLocator}}"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com" mc:Ignorable="d"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+             mc:Ignorable="d" Style="{StaticResource DialogStyle}"
              d:DesignHeight="300" d:DesignWidth="300">
+	<i:Interaction.Behaviors>
+		<behaviors:CloseableView />
+		<behaviors:StaticWindow />
+		<behaviours:BorderlessWindowBehavior />
+	</i:Interaction.Behaviors>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -27,4 +36,4 @@
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
 	</Grid>
-</views:Dialog>
+</controls:MetroWindow>

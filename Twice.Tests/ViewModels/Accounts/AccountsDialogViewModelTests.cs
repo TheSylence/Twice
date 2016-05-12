@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Columns;
@@ -42,6 +43,34 @@ namespace Twice.Tests.ViewModels.Accounts
 			Assert.IsNotNull( vm.AddedAccounts.SingleOrDefault( a => a.AccountName == "1" ) );
 			Assert.IsNotNull( vm.AddedAccounts.SingleOrDefault( a => a.AccountName == "2" ) );
 			Assert.IsNotNull( vm.AddedAccounts.SingleOrDefault( a => a.AccountName == "3" ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Accounts" )]
+		public void AddingExistingAccountDoesNothing()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var columnList = new Mock<IColumnDefinitionList>();
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.Setup( c => c.AddContext( It.IsAny<TwitterAccountData>() ) ).Verifiable();
+
+			var data = new TwitterAccountData {UserId = 123};
+			var authResult = new AuthorizeResult( data, new Mock<IAuthorizer>().Object );
+
+			var auth = new Mock<ITwitterAuthorizer>();
+			auth.Setup( c => c.Authorize( It.IsAny<Action<string>>(), It.IsAny<Func<string>>(), It.IsAny<CancellationToken>() ) )
+				.Returns( Task.FromResult( authResult ) );
+
+			var vm = new AccountsDialogViewModel( columnList.Object, contextList.Object, auth.Object );
+
+			// Act
+			vm.AddAccountCommand.Execute( null );
+
+			// Assert
+			contextList.Verify( c => c.AddContext( It.IsAny<TwitterAccountData>() ), Times.Never() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Accounts" )]

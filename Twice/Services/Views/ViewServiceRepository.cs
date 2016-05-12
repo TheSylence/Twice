@@ -10,10 +10,8 @@ using Fody;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Twice.Models.Columns;
-using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
@@ -31,60 +29,6 @@ namespace Twice.Services.Views
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
-		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
-		{
-			CurrentDialog = null;
-		}
-
-		private void OpenHandler( object sender, DialogOpenedEventArgs eventargs )
-		{
-			CurrentDialog = sender as Dialog;
-		}
-
-		private async Task<TResult> ShowDialog<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			var dlg = new TDialog();
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			var result = await DialogHost.Show( dlg, hostIdentifier, OpenHandler, CloseHandler ) as bool?;
-			if( result != true )
-			{
-				return null;
-			}
-
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
-			var resSetup = resultSetup ?? defaultResultSetup;
-			return resSetup( vm );
-		}
-
-		private TResult ShowDialogSync<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
-
-			TResult result = null;
-			DispatcherHelper.CheckBeginInvokeOnUI( async () =>
-			{
-				result = await ShowDialog<TDialog, TViewModel, TResult>( resultSetup, vmSetup, hostIdentifier );
-				waitHandle.Set();
-			} );
-
-			waitHandle.Wait();
-			return result;
-		}
-
 		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
 			where TViewModel : class
 			where TWindow : Window, new()
@@ -118,6 +62,23 @@ namespace Twice.Services.Views
 			}
 
 			return Task.FromResult( result );
+		}
+
+		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+
+			TResult result = null;
+
+			DispatcherHelper.CheckBeginInvokeOnUI(
+				async () => { result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup ); } );
+
+			waitHandle.Wait();
+			return result;
 		}
 
 		public async Task ComposeTweet()
@@ -173,10 +134,7 @@ namespace Twice.Services.Views
 					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
 			};
 
-			return
-				await
-					ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null,
-						hostIdentifier );
+			return await ShowWindow<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup );
 		}
 
 		public async Task ShowAccounts( bool directlyAddAccount = false )
@@ -222,7 +180,7 @@ namespace Twice.Services.Views
 				vm.Input = input ?? string.Empty;
 			};
 
-			return ShowDialogSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup, hostIdentifier );
+			return ShowWindowSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup );
 		}
 
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
@@ -250,7 +208,7 @@ namespace Twice.Services.Views
 			return Task.CompletedTask;
 		}
 
-		public Dialog CurrentDialog { get; private set; }
+		public Dialog CurrentDialog { get; }
 
 		private static MetroWindow Window
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );

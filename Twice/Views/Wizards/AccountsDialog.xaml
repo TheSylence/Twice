@@ -14,63 +14,61 @@
 	<controls:MetroWindow.Resources>
 		<proxies:AccountsDialogDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
-	<materialDesign:DialogHost Identifier="AccountDialogHost">
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
 
-			<ItemsControl ItemsSource="{Binding AddedAccounts}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="accounts:AccountEntry">
-						<materialDesign:Card Margin="5">
-							<Expander Margin="5">
-								<Expander.Header>
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition />
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition />
-											<RowDefinition />
-										</Grid.RowDefinitions>
+		<ItemsControl ItemsSource="{Binding AddedAccounts}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="accounts:AccountEntry">
+					<materialDesign:Card Margin="5">
+						<Expander Margin="5">
+							<Expander.Header>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition />
+										<RowDefinition />
+									</Grid.RowDefinitions>
 
-										<Image Source="{Binding ProfileImage, IsAsync=True}" Grid.RowSpan="2" Width="48" Height="48" Margin="5"
+									<Image Source="{Binding ProfileImage, IsAsync=True}" Grid.RowSpan="2" Width="48" Height="48" Margin="5"
 									   VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-										<TextBlock Text="{Binding AccountName}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
-										<TextBlock Text="{lex:Loc IsDefaultAccount}" Visibility="{Binding IsDefaultAccount, Converter={StaticResource BoolToVisibleConv}}"
+									<TextBlock Text="{Binding AccountName}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
+									<TextBlock Text="{lex:Loc IsDefaultAccount}" Visibility="{Binding IsDefaultAccount, Converter={StaticResource BoolToVisibleConv}}"
 									   Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
-									</Grid>
-								</Expander.Header>
+								</Grid>
+							</Expander.Header>
 
-								<StackPanel Orientation="Vertical">
-									<CheckBox Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}">
-										<TextBlock Text="{lex:Loc RequiresConfirmationStep}" TextWrapping="Wrap" />
-									</CheckBox>
-									<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
+							<StackPanel Orientation="Vertical">
+								<CheckBox Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}">
+									<TextBlock Text="{lex:Loc RequiresConfirmationStep}" TextWrapping="Wrap" />
+								</CheckBox>
+								<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
 											CommandParameter="{Binding}" Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
-									<Button Margin="5">
-										<DockPanel>
-											<materialDesign:PackIcon Kind="Delete" Margin="5,0" />
-											<TextBlock Text="{lex:Loc Delete}" />
-										</DockPanel>
-									</Button>
-								</StackPanel>
-							</Expander>
-						</materialDesign:Card>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+								<Button Margin="5">
+									<DockPanel>
+										<materialDesign:PackIcon Kind="Delete" Margin="5,0" />
+										<TextBlock Text="{lex:Loc Delete}" />
+									</DockPanel>
+								</Button>
+							</StackPanel>
+						</Expander>
+					</materialDesign:Card>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 
-			<Button Grid.Column="1" VerticalAlignment="Top" Margin="5" Command="{Binding AddAccountCommand}">
-				<DockPanel>
-					<materialDesign:PackIcon Kind="AccountPlus" DockPanel.Dock="Left" Margin="5,0" />
-					<TextBlock Text="{lex:Loc AddAccount}" />
-				</DockPanel>
-			</Button>
-		</Grid>
-	</materialDesign:DialogHost>
+		<Button Grid.Column="1" VerticalAlignment="Top" Margin="5" Command="{Binding AddAccountCommand}">
+			<DockPanel>
+				<materialDesign:PackIcon Kind="AccountPlus" DockPanel.Dock="Left" Margin="5,0" />
+				<TextBlock Text="{lex:Loc AddAccount}" />
+			</DockPanel>
+		</Button>
+	</Grid>
 </controls:MetroWindow>

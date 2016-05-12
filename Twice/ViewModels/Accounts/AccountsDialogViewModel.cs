@@ -1,11 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -48,28 +48,26 @@ namespace Twice.ViewModels.Accounts
 
 			var result = await Authorizer.Authorize( DisplayPinPage, GetPinFromUser, PinEntryCancelled.Token );
 			var accountData = result.Data;
-			if( accountData == null )
+			if( accountData != null )
 			{
-				return;
-			}
-
-			if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )
-			{
-				using( var ctx = new TwitterContext( result.Auth ) )
+				if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )
 				{
-					var twitterUser =
-						await
-							ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false )
-								.SingleOrDefaultAsync();
-					accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
-				}
+					using( var ctx = new TwitterContext( result.Auth ) )
+					{
+						var twitterUser =
+							await
+								ctx.User.Where( tw => tw.Type == UserType.Show && tw.UserID == accountData.UserId && tw.IncludeEntities == false )
+									.SingleOrDefaultAsync();
+						accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
+					}
 
-				ContextList.AddContext( accountData );
+					ContextList.AddContext( accountData );
 
-				var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
-				if( newColumns.Any() )
-				{
-					ColumnList.AddColumns( newColumns );
+					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
+					if( newColumns.Any() )
+					{
+						ColumnList.AddColumns( newColumns );
+					}
 				}
 			}
 
