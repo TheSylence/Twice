@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
 
@@ -81,6 +82,9 @@ namespace Twice.Converters
 			return menu;
 		}
 
+		const string AlternativeAtSign = "\uFF20";
+		const string AlternativeHashtagSign = "\uFF03";
+
 		private static IEnumerable<EntityBase> ExtractEntities( Status tweet )
 		{
 			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
@@ -88,26 +92,51 @@ namespace Twice.Converters
 			entities = entities.Concat( tweet.Entities.UrlEntities );
 			entities = entities.Concat( tweet.Entities.UserMentionEntities );
 
+			var tweetText = TwitterHelper.NormalizeText( tweet.Text );
+
 			var allEntities = entities.ToArray();
 			foreach( var entity in allEntities )
 			{
 				int length = entity.End - entity.Start - 1;
-				var extractedText = ExtractEntityText( entity );
-				var actualText = tweet.Text.Substring( entity.Start, length );
-
-				// When the tweet contains emojis, the twitter API returns wrong indices for entities
-				if( extractedText != actualText )
+				List<string> extractedTextVersions = new List<string>
 				{
-					var newIndex = tweet.Text.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
-					if( newIndex == -1 )
-					{
-						newIndex = tweet.Text.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
-					}
-					Debug.Assert( newIndex != -1 );
+					ExtractEntityText( entity )
+				};
 
-					entity.Start = newIndex;
-					entity.End = entity.Start + length + 1;
+				if( entity is UserMentionEntity )
+				{
+					extractedTextVersions.Add( AlternativeAtSign + extractedTextVersions[0].Substring( 1 ) );
 				}
+				else if( entity is HashTagEntity )
+				{
+					extractedTextVersions.Add( AlternativeHashtagSign + extractedTextVersions[0].Substring( 1 ) );
+				}
+
+				var actualText = tweetText.Substring( entity.Start, length );
+
+				bool found = false;
+				foreach( var extractedText in extractedTextVersions )
+				{
+					// When the tweet contains emojis, the twitter API returns wrong indices for entities
+					if( extractedText != actualText )
+					{
+						var newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
+						if( newIndex == -1 )
+						{
+							newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
+						}
+						if( newIndex == -1 )
+						{
+							continue;
+						}
+
+						found = true;
+						entity.Start = newIndex;
+						entity.End = entity.Start + length + 1;
+					}
+				}
+
+				Debug.Assert( found );
 			}
 
 			return allEntities.OrderBy( e => e.Start );

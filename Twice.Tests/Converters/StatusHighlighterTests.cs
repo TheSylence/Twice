@@ -29,6 +29,29 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
+		public void NonStandardMentionSignIsHandledCorrectly()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_unicodemention.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = true } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, inlines.Length );
+
+			Assert.AreEqual( 1, links.Length );
+			Assert.AreEqual( "@BVB", ( (Run)links[0].Inlines.First() ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
 		public void DifferentCasingInEntitiesIsHandledCorrectly()
 		{
 			// Arrange

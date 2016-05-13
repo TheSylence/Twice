@@ -57,7 +57,7 @@ namespace Twice.Models.Twitter
 				: ulong.Parse( user.UserIDResponse );
 		}
 
-		private static string NormalizeText( string text )
+		public static string NormalizeText( string text )
 		{
 			try
 			{
