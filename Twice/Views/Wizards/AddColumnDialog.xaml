@@ -93,7 +93,7 @@
 					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:UserSelectorPage">
 						<DataTemplate DataType="columnManagement:UserSelectorPage">
 							<DockPanel>
-								<TextBox materialDesign:TextFieldAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
+								<TextBox materialDesign:HintAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
 										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 										 Margin="5" />
 

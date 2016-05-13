@@ -67,7 +67,7 @@ namespace Twice.Behaviors
 			{
 				AutoCompletePopup.IsOpen = true;
 				AutoCompleteBox.Focus();
-				TextFieldAssist.SetHint( AutoCompleteBox, TriggerChar );
+				HintAssist.SetHint( AutoCompleteBox, TriggerChar );
 				AutoCompleteBox.Text = string.Empty;
 				e.Handled = true;
 			}

@@ -63,7 +63,7 @@ namespace Twice.ViewModels.Validation
 			ErrorsChanged?.Invoke( this, new DataErrorsChangedEventArgs( propertyName ) );
 		}
 
-		protected override void RaisePropertyChanged( [CallerMemberName] string propertyName = null )
+		public override void RaisePropertyChanged( [CallerMemberName] string propertyName = null )
 		{
 			ClearValidationErrors( propertyName );
 			ValidateProperty( propertyName );

@@ -89,8 +89,7 @@
 											<ItemsControl.ItemTemplate>
 												<DataTemplate DataType="system:String">
 													<StackPanel Orientation="Horizontal">
-														<!-- TODO: Replace with CheckCircleOutline when package was updated -->
-														<materialDesign:PackIcon Kind="CheckboxMarkedCircleOutline" />
+														<materialDesign:PackIcon Kind="CheckCircleOutline" />
 														<TextBlock Text="{Binding}" Margin="5,0" />
 													</StackPanel>
 												</DataTemplate>
@@ -102,8 +101,7 @@
 											<ItemsControl.ItemTemplate>
 												<DataTemplate DataType="system:String">
 													<StackPanel Orientation="Horizontal">
-														<!-- TODO: Replace with CheckCircleOutline when package was updated -->
-														<materialDesign:PackIcon Kind="AlertCircle" />
+														<materialDesign:PackIcon Kind="AlertCircleOutline" />
 														<TextBlock Text="{Binding}" Margin="5,0" />
 													</StackPanel>
 												</DataTemplate>

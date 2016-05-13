@@ -45,7 +45,7 @@
 
 				<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 						 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" Grid.ColumnSpan="2"
-						 Margin="5" TextWrapping="Wrap" materialDesign:TextFieldAssist.Hint="{lex:Loc WhatsHappening}">
+						 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}">
 					<TextBox.InputBindings>
 						<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 					</TextBox.InputBindings>
