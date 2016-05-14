@@ -7,6 +7,7 @@ using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Cache;
+using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
@@ -24,7 +25,8 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
-			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) ).Verifiable();
+			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) )
+				.Verifiable();
 
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
@@ -37,7 +39,8 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
-			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns( Task.FromResult( media ) ).Verifiable();
+			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns(
+				Task.FromResult( media ) ).Verifiable();
 
 			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
 
@@ -66,7 +69,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
-			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult<string>( null ) ).Verifiable();
+			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult<string>( null ) )
+				.Verifiable();
 
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
@@ -160,15 +164,60 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void PropertyChangedIsImplementedCorrectly()
 		{
 			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			var typeResolver = new Mock<ITypeResolver>();
+			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null, null ) );
+
 			var cache = new Mock<IDataCache>();
 			var obj = new ComposeTweetViewModel( cache.Object );
-			var tester = new PropertyChangedTester( obj );
+			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
 			tester.Test();
 
 			// Assert
 			tester.Verify();
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void QuotedTweetsUrlIsAppendedToUrl()
+		{
+			// Arrange
+			var config = new Mock<IConfig>();
+			var viewServiceRepo = new Mock<IViewServiceRepository>();
+
+			var quotedTweet = DummyGenerator.CreateDummyStatus();
+			var url = quotedTweet.GetUrl();
+
+			var context = new Mock<IContextEntry>();
+			var status = DummyGenerator.CreateDummyStatus();
+			context.Setup( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ) ).Returns(
+				Task.FromResult( status ) ).Verifiable();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			var cache = new Mock<IDataCache>();
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				Text = "Hello world",
+				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
+			};
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.SendTweetCommand.Execute( null );
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -184,7 +233,8 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ) ).Returns( Task.FromResult( status ) ).Verifiable();
+			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ) ).Returns(
+				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
 			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );

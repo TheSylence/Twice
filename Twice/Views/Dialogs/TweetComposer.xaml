@@ -14,7 +14,7 @@
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d" Style="{StaticResource DialogStyle}" Title="{lex:Loc ComposeTweet}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="640" Height="480">
+             d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="500">
 	<controls:MetroWindow.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
@@ -22,18 +22,53 @@
 		<behaviors:CloseableView />
 		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
-		<behaviors:CallbackOnLoad Callback="{Binding}"/>
+		<behaviors:CallbackOnLoad Callback="{Binding}" />
 	</i:Interaction.Behaviors>
 
-	<Grid>
-		<Grid>
+	<DockPanel LastChildFill="True">
+		<Grid DockPanel.Dock="Bottom">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="2*" />
-				<ColumnDefinition Width="*" />
+				<ColumnDefinition />
+				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 
-			<Grid Grid.Column="1" Margin="10,0">
+			<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}" VerticalAlignment="Bottom" Margin="5,3" Grid.Column="0" />
+
+			<Button Content="{lex:Loc SendTweet}" Command="{Binding SendTweetCommand}" Grid.Column="0" Grid.ColumnSpan="2"
+				HorizontalAlignment="Right" Margin="5" />
+		</Grid>
+
+		<StackPanel Orientation="Vertical">
+			<!-- Account Selection Start -->
+			<Grid Margin="5">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<TextBlock Text="{lex:Loc FromAccounts}" VerticalAlignment="Top" Grid.Row="0" />
+
+				<ItemsControl ItemsSource="{Binding Accounts}" VerticalAlignment="Center" Grid.Row="1">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="twitter:AccountEntry">
+							<Grid VerticalAlignment="Center" Margin="3">
+								<ToggleButton IsChecked="{Binding Use, Mode=TwoWay}" Style="{StaticResource MaterialDesignActionToggleButton}"
+											  ToolTip="{Binding ScreenName, StringFormat=@{0}}">
+									<Image Source="{Binding Image, IsAsync=True}" />
+								</ToggleButton>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Grid>
+			<!-- Account Selection End -->
+
+			<!-- Tweet Input Start -->
+			<Grid Margin="5">
 				<Grid.RowDefinitions>
 					<RowDefinition />
 					<RowDefinition Height="Auto" />
@@ -77,31 +112,10 @@
 					</TextBlock.Style>
 				</TextBlock>
 			</Grid>
+			<!-- Tweet Input End -->
 
-			<Grid Grid.Column="0">
-				<TextBlock Text="{lex:Loc FromAccounts}" VerticalAlignment="Top" Margin="5,3" />
-				<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}" VerticalAlignment="Bottom" Margin="5,3" />
-
-				<ItemsControl ItemsSource="{Binding Accounts}" VerticalAlignment="Center" Margin="0,0,10,0">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="twitter:AccountEntry">
-							<Grid VerticalAlignment="Center" Margin="3">
-								<ToggleButton IsChecked="{Binding Use, Mode=TwoWay}" Style="{StaticResource MaterialDesignActionToggleButton}"
-											  ToolTip="{Binding ScreenName, StringFormat=@{0}}">
-									<Image Source="{Binding Image, IsAsync=True}" />
-								</ToggleButton>
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</Grid>
-
-			<Grid Grid.Column="2" Margin="10,0,0,0">
+			<!-- Media Attachment Start -->
+			<Grid Margin="10,0,0,0">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
@@ -116,10 +130,6 @@
 						</Style>
 					</StackPanel.Resources>
 
-					<Button Width="36" Height="36" ToolTip="{lex:Loc SendTweet}"
-						Command="{Binding SendTweetCommand}">
-						<materialDesign:PackIcon Kind="Pencil" Width="16" Height="16" />
-					</Button>
 					<Button Width="36" Height="36" ToolTip="{lex:Loc AttachImage}" Command="{Binding AttachImageCommand}">
 						<materialDesign:PackIcon Kind="Image" Width="16" Height="16" />
 					</Button>
@@ -157,6 +167,62 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</Grid>
-		</Grid>
-	</Grid>
+			<!-- Media Attachment End -->
+
+			<!-- Quoted Tweet Start -->
+			<GroupBox Visibility="{Binding QuotedTweet, Converter={StaticResource VisibleNotNullConv}}"
+					  Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+				<GroupBox.HeaderTemplate>
+					<DataTemplate>
+						<DockPanel LastChildFill="True">
+							<Button Command="{Binding RemoveQuoteCommand}" Margin="5" VerticalAlignment="Center"
+									DockPanel.Dock="Right" Width="16" Height="16" ToolTip="{lex:Loc RemoveQuote}">
+								<Button.Template>
+									<ControlTemplate>
+										<Grid>
+											<Ellipse x:Name="Bg" Fill="#FFA6A6A6" Stroke="#FF009587" StrokeThickness="0" />
+											<materialDesign:PackIcon Kind="Close" Width="12" Height="12"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center" />
+										</Grid>
+										<ControlTemplate.Triggers>
+											<Trigger Property="IsMouseOver" Value="True">
+												<Setter TargetName="Bg" Property="StrokeThickness" Value="1" />
+											</Trigger>
+										</ControlTemplate.Triggers>
+									</ControlTemplate>
+								</Button.Template>
+								<materialDesign:PackIcon Kind="CloseCircleOutline" />
+							</Button>
+
+							<TextBlock Text="{lex:Loc QuotedTweet}" VerticalAlignment="Center" FontWeight="Bold" />
+						</DockPanel>
+					</DataTemplate>
+				</GroupBox.HeaderTemplate>
+
+				<StackPanel Orientation="Vertical">
+					<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+						<TextBlock Text="{Binding QuotedTweet.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding QuotedTweet.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+					</StackPanel>
+					<TextBlock Text="{Binding QuotedTweet.Model.Text}" TextWrapping="Wrap" Margin="5" />
+				</StackPanel>
+			</GroupBox>
+
+			<!--<Grid Visibility="{Binding QuotedTweet, Converter={StaticResource VisibleNotNullConv}}">
+				<materialDesign:Card Margin="5">
+					<StackPanel Orientation="Vertical">
+						<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+							<TextBlock Text="{Binding QuotedTweet.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
+							<TextBlock Text="{Binding QuotedTweet.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+						</StackPanel>
+						<TextBlock Text="{Binding QuotedTweet.Model.Text}" TextWrapping="Wrap" Margin="5" />
+					</StackPanel>
+				</materialDesign:Card>
+			</Grid>-->
+			<!-- Quoted Tweet End -->
+		</StackPanel>
+	</DockPanel>
 </controls:MetroWindow>

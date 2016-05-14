@@ -502,4 +502,13 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>Benutzer nicht gefunden</value>
   </data>
+  <data name="ComposeTweet" xml:space="preserve">
+    <value>Status verfassen</value>
+  </data>
+  <data name="RemoveQuote" xml:space="preserve">
+    <value>Zitat entfernen</value>
+  </data>
+  <data name="QuotedTweet" xml:space="preserve">
+    <value>Zitierter Status</value>
+  </data>
 </root>

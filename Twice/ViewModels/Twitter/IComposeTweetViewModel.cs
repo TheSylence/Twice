@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Input;
 using Twice.ViewModels.Main;
 
@@ -17,6 +18,8 @@ namespace Twice.ViewModels.Twitter
 		ICollection<string> KnownUserNames { get; }
 		bool LowCharsLeft { get; set; }
 		bool MediumCharsLeft { get; set; }
+		StatusViewModel QuotedTweet { [DebuggerStepThrough] get; set; }
+		ICommand RemoveQuoteCommand { get; }
 		ICommand SendTweetCommand { get; }
 		bool StayOpen { get; set; }
 		string Text { get; set; }

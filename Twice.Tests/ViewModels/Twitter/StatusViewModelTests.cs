@@ -11,6 +11,7 @@ using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
+using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
@@ -70,7 +71,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 123 );
-			context.Setup( c => c.Notifier.DisplayMessage( It.IsAny<string>(), Twice.ViewModels.NotificationType.Success ) ).Verifiable();
+			context.Setup( c => c.Notifier.DisplayMessage( It.IsAny<string>(), NotificationType.Success ) ).Verifiable();
 			context.Setup( c => c.Twitter.DeleteTweetAsync( 456 ) ).Returns( Task.FromResult<Status>( null ) ).Verifiable();
 
 			var waitHandle = new ManualResetEventSlim( false );
@@ -95,7 +96,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			context.Verify( c => c.Twitter.DeleteTweetAsync( 456 ), Times.Once() );
-			context.Verify( c => c.Notifier.DisplayMessage( It.IsAny<string>(), Twice.ViewModels.NotificationType.Success ), Times.Once() );
+			context.Verify( c => c.Notifier.DisplayMessage( It.IsAny<string>(), NotificationType.Success ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -117,6 +118,24 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.AreEqual( 3, medias.Length );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ForeignStatusCanBeQuoted()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 222;
+			var vm = new StatusViewModel( status, context.Object, null, null );
+
+			// Act
+			bool canExecute = vm.QuoteStatusCommand.CanExecute( null );
+
+			// Assert
+			Assert.IsTrue( canExecute );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -232,6 +251,24 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			bool canExecute = vm.DeleteStatusCommand.CanExecute( null );
+
+			// Assert
+			Assert.IsTrue( canExecute );
+		}
+
+		[TestMethod, TestCategory( "ViewMoels.Twitter" )]
+		public void OwnStatusCanBeQuoted()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 123;
+			var vm = new StatusViewModel( status, context.Object, null, null );
+
+			// Act
+			bool canExecute = vm.QuoteStatusCommand.CanExecute( null );
 
 			// Assert
 			Assert.IsTrue( canExecute );

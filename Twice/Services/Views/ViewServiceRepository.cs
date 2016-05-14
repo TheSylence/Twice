@@ -86,6 +86,16 @@ namespace Twice.Services.Views
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
 		}
 
+		public async Task QuoteTweet( StatusViewModel status )
+		{
+			Action<IComposeTweetViewModel> vmSetup = vm =>
+			{
+				vm.QuotedTweet = status;
+			};
+
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+		}
+
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
 			Debug.Assert( args != null );

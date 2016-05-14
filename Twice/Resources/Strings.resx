@@ -522,4 +522,13 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found</value>
   </data>
+  <data name="ComposeTweet" xml:space="preserve">
+    <value>Compose tweet</value>
+  </data>
+  <data name="RemoveQuote" xml:space="preserve">
+    <value>Remove quote</value>
+  </data>
+  <data name="QuotedTweet" xml:space="preserve">
+    <value>Quoted tweet</value>
+  </data>
 </root>

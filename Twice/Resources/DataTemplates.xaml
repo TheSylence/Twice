@@ -91,7 +91,7 @@
 
 								<StackPanel Orientation="Vertical">
 									<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}"/>
-									<Button Content="{lex:Loc QuoteTweet}" />
+									<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
 								</StackPanel>
 							</materialDesign:PopupBox>
 						</Grid>

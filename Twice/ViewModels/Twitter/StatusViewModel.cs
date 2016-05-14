@@ -132,6 +132,11 @@ namespace Twice.ViewModels.Twitter
 				: Strings.AddedFavorite, NotificationType.Success );
 		}
 
+		private async void ExecuteQuoteStatusCommand()
+		{
+			await ViewServiceRepository.QuoteTweet( this );
+		}
+
 		private void ExecuteReplyCommand()
 		{
 		}
@@ -149,7 +154,7 @@ namespace Twice.ViewModels.Twitter
 			ExecAsync( async () =>
 			{
 				await Context.Twitter.RetweetAsync( Model.StatusID );
-				
+
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus );
@@ -246,6 +251,12 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsRetweeted => Model.Retweeted;
 		public Status Model { get; }
+
+		public ICommand QuoteStatusCommand
+			=>
+				_QuoteStatusCommand
+				?? ( _QuoteStatusCommand = new RelayCommand( ExecuteQuoteStatusCommand ) );
+
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
 
 		public ICommand ReplyToAllCommand
@@ -266,8 +277,11 @@ namespace Twice.ViewModels.Twitter
 		public UserViewModel SourceUser { get; }
 		public UserViewModel User { get; }
 		private readonly IConfig Config;
+
 		private readonly IContextEntry Context;
+
 		private readonly Status OriginalStatus;
+
 		private readonly IViewServiceRepository ViewServiceRepository;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
@@ -291,6 +305,9 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _QuoteStatusCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _ReplyCommand;

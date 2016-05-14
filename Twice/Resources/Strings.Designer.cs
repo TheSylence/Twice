@@ -268,6 +268,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compose tweet.
+        /// </summary>
+        public static string ComposeTweet {
+            get {
+                return ResourceManager.GetString("ComposeTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -889,6 +898,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quoted tweet.
+        /// </summary>
+        public static string QuotedTweet {
+            get {
+                return ResourceManager.GetString("QuotedTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quote.
         /// </summary>
         public static string QuoteTweet {
@@ -903,6 +921,15 @@ namespace Twice.Resources {
         public static string RemovedFavorite {
             get {
                 return ResourceManager.GetString("RemovedFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove quote.
+        /// </summary>
+        public static string RemoveQuote {
+            get {
+                return ResourceManager.GetString("RemoveQuote", resourceCulture);
             }
         }
         

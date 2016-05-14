@@ -50,6 +50,11 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
 		}
 
+		private bool CanExecuteRemoveQuoteCommand()
+		{
+			return QuotedTweet != null;
+		}
+
 		private bool CanExecuteSendTweetCommand()
 		{
 			if( IsSending )
@@ -118,6 +123,11 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		private void ExecuteRemoveQuoteCommand()
+		{
+			QuotedTweet = null;
+		}
+
 		private async void ExecuteSendTweetCommand()
 		{
 			await SendTweet();
@@ -127,11 +137,17 @@ namespace Twice.ViewModels.Twitter
 		{
 			IsSending = true;
 
+			var textToTweet = Text;
+			if( QuotedTweet != null )
+			{
+				textToTweet += " " + QuotedTweet.Model.GetUrl().AbsoluteUri;
+			}
+
 			await Task.Run( async () =>
 			{
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await acc.Context.Twitter.TweetAsync( Text, Medias.Select( m => m.MediaID ) ).ConfigureAwait( false );
+					await acc.Context.Twitter.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ) ).ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{
@@ -143,12 +159,12 @@ namespace Twice.ViewModels.Twitter
 						MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
 					}
 
-					await OnLoad(null);
+					await OnLoad( null );
 				} );
 			} );
 		}
 
-		public async Task OnLoad(object data)
+		public async Task OnLoad( object data )
 		{
 			foreach( var acc in Accounts )
 			{
@@ -178,6 +194,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
+
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -222,6 +239,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
+
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -253,6 +271,26 @@ namespace Twice.ViewModels.Twitter
 				RaisePropertyChanged();
 			}
 		}
+
+		public StatusViewModel QuotedTweet
+		{
+			[DebuggerStepThrough] get { return _QuotedTweet; }
+			set
+			{
+				if( _QuotedTweet == value )
+				{
+					return;
+				}
+
+				_QuotedTweet = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public ICommand RemoveQuoteCommand
+			=>
+				_RemoveQuoteCommand
+				?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
 
 		public ICommand SendTweetCommand
 			=>
@@ -286,7 +324,13 @@ namespace Twice.ViewModels.Twitter
 
 				_Text = value;
 				RaisePropertyChanged();
-				TextLength = TwitterHelper.CountCharacters( Text );
+
+				var len = TwitterHelper.CountCharacters( Text );
+				if( QuotedTweet != null )
+				{
+					len += 24; // TODO: Don't hardcode URL length
+				}
+				TextLength = len;
 			}
 		}
 
@@ -309,8 +353,11 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private readonly IDataCache Cache;
+
 		private readonly int LowWarnThreshold = 135;
+
 		private readonly List<Media> Medias = new List<Media>();
+
 		private readonly int MediumWarnThreshold = 125;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
@@ -329,6 +376,12 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _MediumCharsLeft;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _QuotedTweet;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _RemoveQuoteCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _SendTweetCommand;
