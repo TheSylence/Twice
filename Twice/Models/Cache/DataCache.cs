@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Akavache;
 
 namespace Twice.Models.Cache
 {
 	internal class DataCache : IDataCache
 	{
-		public DataCache( ISecureBlobCache secure, IBlobCache data )
+		public DataCache()
+			: this( Constants.IO.CacheFileName )
 		{
-			Secure = secure;
-			Cache = data;
+		}
+
+		public DataCache( string fileName )
+		{
+			
 		}
 
 		public async Task AddHashtag( string hashtag )
@@ -59,8 +62,5 @@ namespace Twice.Models.Cache
 		}
 
 		private const string ConfigurationKey = "twitter.help.configuration";
-
-		public IBlobCache Cache { get; }
-		public ISecureBlobCache Secure { get; }
 	}
 }

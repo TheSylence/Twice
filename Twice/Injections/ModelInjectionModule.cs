@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Akavache;
 using Ninject.Modules;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -18,8 +17,6 @@ namespace Twice.Injections
 		public override void Load()
 		{
 			Bind<IDataCache>().To<DataCache>().InSingletonScope();
-			Bind<IBlobCache>().ToProvider<BlobCacheProvider>().InSingletonScope();
-			Bind<ISecureBlobCache>().ToProvider<SecureBlobCacheProvider>().InSingletonScope();
 
 			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
