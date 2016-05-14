@@ -1,6 +1,7 @@
 using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using Twice.Models.Twitter.Repositories;
 
@@ -37,6 +38,13 @@ namespace Twice.Models.Twitter
 		public Task<Status> DestroyFavoriteAsync( ulong statusId )
 		{
 			return Context.DestroyFavoriteAsync( statusId );
+		}
+
+		public async Task<LinqToTwitter.Configuration> GetConfig()
+		{
+			var help = await Context.Help.Where( h => h.Type == HelpType.Configuration ).SingleOrDefaultAsync();
+
+			return help.Configuration;
 		}
 
 		public void Dispose()

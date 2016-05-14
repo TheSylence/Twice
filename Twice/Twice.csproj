@@ -272,6 +272,7 @@
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />
+    <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Injections\TwitterContextListProvider.cs" />
     <Compile Include="Models\Twitter\Comparers\TwitterComparers.cs" />
+    <Compile Include="Models\Twitter\TwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\TwitterContextWrapper.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterFriendshipRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterRepositoryBase.cs" />

@@ -26,6 +26,7 @@ namespace Twice.Injections
 			Bind<IStatusMuter>().To<StatusMuter>();
 			Bind<IStreamingRepository>().To<StreamingRepository>().InSingletonScope();
 			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
+			Bind<ITwitterConfiguration>().To<TwitterConfiguration>().InSingletonScope();
 		}
 	}
 }

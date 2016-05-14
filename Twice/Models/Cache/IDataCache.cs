@@ -14,5 +14,9 @@ namespace Twice.Models.Cache
 		Task<IEnumerable<ulong>> GetKnownUserIds();
 
 		Task<IEnumerable<UserCacheEntry>> GetKnownUsers();
+
+		Task<LinqToTwitter.Configuration> ReadTwitterConfig();
+
+		Task SaveTwitterConfig( LinqToTwitter.Configuration cfg );
 	}
 }

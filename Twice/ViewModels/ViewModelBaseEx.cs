@@ -25,6 +25,9 @@ namespace Twice.ViewModels
 		public IProcessStarter ProcessStarter { get; set; }
 
 		[Inject]
+		public ITwitterConfiguration TwitterConfig { get; set; }
+
+		[Inject]
 		public IViewServiceRepository ViewServiceRepository { get; set; }
 	}
 }

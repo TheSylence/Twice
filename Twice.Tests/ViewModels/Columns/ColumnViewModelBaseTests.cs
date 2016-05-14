@@ -177,7 +177,7 @@ namespace Twice.Tests.ViewModels.Columns
 			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
-			
+
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ColumnViewModelBase.IsLoading ) && vm.IsLoading == false )
@@ -422,7 +422,7 @@ namespace Twice.Tests.ViewModels.Columns
 				nameof( ColumnViewModelBase.ViewServiceRepository ),
 				nameof( ColumnViewModelBase.Cache ), nameof( ColumnViewModelBase.Configuration ),
 				nameof( ColumnViewModelBase.Dispatcher ),
-				nameof( ColumnViewModelBase.ProcessStarter ) );
+				nameof( ColumnViewModelBase.ProcessStarter ), nameof( ColumnViewModelBase.TwitterConfig ) );
 
 			// Assert
 			tester.Verify();

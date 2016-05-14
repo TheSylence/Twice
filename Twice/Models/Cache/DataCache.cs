@@ -47,6 +47,19 @@ namespace Twice.Models.Cache
 			return await Cache.GetAllObjects<UserCacheEntry>();
 		}
 
+		public async Task<LinqToTwitter.Configuration> ReadTwitterConfig()
+		{
+			return await Cache.GetObject<LinqToTwitter.Configuration>( ConfigurationKey )
+				.Catch( Observable.Return<LinqToTwitter.Configuration>( null ) );
+		}
+
+		public async Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
+		{
+			await Cache.InsertObject( ConfigurationKey, cfg, TimeSpan.FromDays( 1 ) );
+		}
+
+		private const string ConfigurationKey = "twitter.help.configuration";
+
 		public IBlobCache Cache { get; }
 		public ISecureBlobCache Secure { get; }
 	}

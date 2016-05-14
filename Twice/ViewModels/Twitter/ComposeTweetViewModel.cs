@@ -77,7 +77,7 @@ namespace Twice.ViewModels.Twitter
 				return false;
 			}
 
-			return TwitterHelper.CountCharacters( Text ) <= Constants.Twitter.MaxTweetLength;
+			return TwitterHelper.CountCharacters( Text, TwitterConfig ) <= Constants.Twitter.MaxTweetLength;
 		}
 
 		private async void ExecuteAttachImageCommand()
@@ -325,10 +325,12 @@ namespace Twice.ViewModels.Twitter
 				_Text = value;
 				RaisePropertyChanged();
 
-				var len = TwitterHelper.CountCharacters( Text );
+				var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
 				if( QuotedTweet != null )
 				{
-					len += 24; // TODO: Don't hardcode URL length
+					// Keep the space in mind that separates the tweet text
+					// and the status URL
+					len += TwitterConfig.UrlLengthHttps + 1;
 				}
 				TextLength = len;
 			}

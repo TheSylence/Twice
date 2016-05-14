@@ -162,6 +162,15 @@ namespace Twice.ViewModels.Main
 				await col.Load();
 			}
 
+			try
+			{
+				await TwitterConfig.QueryConfig();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to read current config from twitter", ex );
+			}
+
 			if( Configuration?.General?.CheckForUpdates == true )
 			{
 				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;

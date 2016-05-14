@@ -101,6 +101,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
+				TwitterConfig = MockTwitterConfig(),
 				ContextList = contextList.Object
 			};
 
@@ -169,7 +170,10 @@ namespace Twice.Tests.ViewModels.Twitter
 			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null, null ) );
 
 			var cache = new Mock<IDataCache>();
-			var obj = new ComposeTweetViewModel( cache.Object );
+			var obj = new ComposeTweetViewModel( cache.Object )
+			{
+				TwitterConfig = MockTwitterConfig()
+			};
 			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
@@ -199,6 +203,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var cache = new Mock<IDataCache>();
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
+				TwitterConfig = MockTwitterConfig(),
 				Text = "Hello world",
 				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
 			};
@@ -220,6 +225,15 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
 		}
 
+		static ITwitterConfiguration MockTwitterConfig()
+		{
+			var cfg = new Mock<ITwitterConfiguration>();
+			cfg.SetupGet( c => c.UrlLength ).Returns( 23 );
+			cfg.SetupGet( c => c.UrlLengthHttps ).Returns( 23 );
+
+			return cfg.Object;
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void SendingTweetCallsTwitterApi()
 		{
@@ -228,6 +242,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var cache = new Mock<IDataCache>();
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
+				TwitterConfig = MockTwitterConfig(),
 				Text = "Hello world"
 			};
 
@@ -259,7 +274,10 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var cache = new Mock<IDataCache>();
-			var vm = new ComposeTweetViewModel( cache.Object );
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				TwitterConfig = MockTwitterConfig()
+			};
 
 			bool requiresConfirmation = true;
 			var contextEntry = new Mock<IContextEntry>();

@@ -8,9 +8,9 @@ namespace Twice.Models.Twitter
 {
 	internal static class TwitterHelper
 	{
-		public static int CountCharacters( string text )
+		public static int CountCharacters( string text, ITwitterConfiguration twitterConfig )
 		{
-			text = ReplaceUrls( text );
+			text = ReplaceUrls( text, twitterConfig.UrlLength, twitterConfig.UrlLengthHttps );
 
 			try
 			{
@@ -68,9 +68,8 @@ namespace Twice.Models.Twitter
 				return text;
 			}
 		}
-
-		// FIXME: The length params must be kept up to date
-		private static string ReplaceUrls( string text, int httpLength = 22, int httpsLength = 23 )
+		
+		private static string ReplaceUrls( string text, int httpLength, int httpsLength )
 		{
 			string httpsString = new string( 'x', httpsLength );
 

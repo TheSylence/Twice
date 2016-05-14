@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LinqToTwitter;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
@@ -15,6 +15,8 @@ namespace Twice.Models.Twitter
 		Task<Status> DeleteTweetAsync( ulong statusId );
 
 		Task<Status> DestroyFavoriteAsync( ulong statusId );
+
+		Task<LinqToTwitter.Configuration> GetConfig();
 
 		Task<Status> RetweetAsync( ulong statusId );
 
