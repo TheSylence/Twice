@@ -49,7 +49,7 @@ namespace Twice.Models.Twitter
 			bool result = Muting.Entries.Any( mute => CheckMute( mute, status ) );
 			if( result )
 			{
-				LogTo.Debug( $"Muted status {status.ID}" );
+				LogTo.Debug( $"Muted status {status.GetStatusId()}" );
 			}
 
 			return result;
