@@ -7,9 +7,10 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:views="clr-namespace:Twice.Views">
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3">
+		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="MouseDown">
 					<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
@@ -65,8 +66,21 @@
 							</Grid.ColumnDefinitions>
 
 							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
-									Style="{StaticResource MaterialDesignToolForegroundButton}"
 									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}">
+								<Button.Style>
+									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsFavorited}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
 								<Grid>
 									<materialDesign:PackIcon Kind="StarOutline" Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
 									<materialDesign:PackIcon Kind="Star" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
@@ -74,23 +88,30 @@
 							</Button>
 
 							<materialDesign:PopupBox  Grid.Column="1" StaysOpen="True">
+								<materialDesign:PopupBox.Style>
+									<Style TargetType="materialDesign:PopupBox">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False" 
+														 views:TriggerTracing.TriggerName="RetweetButton.MouseOver" views:TriggerTracing.TraceEnabled="True">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsRetweeted}" Value="True" views:TriggerTracing.TriggerName="Status.IsRetweeted" 
+														 views:TriggerTracing.TraceEnabled="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}"/>
+												<Setter Property="IsEnabled" Value="False"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</materialDesign:PopupBox.Style>
 								<materialDesign:PopupBox.ToggleContent>
 									<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
-															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}">
-										<materialDesign:PackIcon.Style>
-											<Style TargetType="materialDesign:PackIcon">
-												<Style.Triggers>
-													<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
-														<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}" />
-													</DataTrigger>
-												</Style.Triggers>
-											</Style>
-										</materialDesign:PackIcon.Style>
-									</materialDesign:PackIcon>
+															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}" />
 								</materialDesign:PopupBox.ToggleContent>
 
 								<StackPanel Orientation="Vertical">
-									<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}"/>
+									<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
 									<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
 								</StackPanel>
 							</materialDesign:PopupBox>
@@ -136,7 +157,8 @@
 							<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
 
-							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}" ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False">
+							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 								<controls1:FlipView.ItemTemplate>
 									<DataTemplate>
 										<Image Source="{Binding Url}" Stretch="Uniform">
