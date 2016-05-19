@@ -169,6 +169,7 @@
 												<TextBlock Text="{Binding EndDate}" Visibility="{Binding HasEndDate, Converter={StaticResource BoolToVisibleConv}}" />
 												<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding HasEndDate, Converter={StaticResource InvertBoolToVisibleConv}}" />
 											</Grid>
+											<CheckBox IsChecked="{Binding CaseSensitive, Mode=TwoWay}" Content="{lex:Loc CaseSensitive}" />
 										</StackPanel>
 									</DataTemplate>
 								</ListView.ItemTemplate>

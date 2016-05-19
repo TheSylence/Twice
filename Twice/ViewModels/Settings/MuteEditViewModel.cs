@@ -21,7 +21,12 @@ namespace Twice.ViewModels.Settings
 
 			EndDate = DateTime.Now.AddMonths( 1 );
 			HasEndDate = false;
+			CaseSensitive = false;
 		}
+
+		public event EventHandler Cancelled;
+
+		public event EventHandler<MuteEditArgs> Saved;
 
 		private bool CanExecuteSaveCommand()
 		{
@@ -50,11 +55,22 @@ namespace Twice.ViewModels.Settings
 			Saved?.Invoke( this, new MuteEditArgs( Action, Filter, dt ) );
 		}
 
-		public event EventHandler Cancelled;
-
-		public event EventHandler<MuteEditArgs> Saved;
-
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
+
+		public bool CaseSensitive
+		{
+			[DebuggerStepThrough] get { return _CaseSensitive; }
+			set
+			{
+				if( _CaseSensitive == value )
+				{
+					return;
+				}
+
+				_CaseSensitive = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public DateTime EndDate
 		{
@@ -108,19 +124,16 @@ namespace Twice.ViewModels.Settings
 
 		private readonly MuteEditAction Action;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private DateTime _EndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CaseSensitive;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Filter;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _EndDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _HasEndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Filter;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SaveCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasEndDate;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SaveCommand;
 	}
 }

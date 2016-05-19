@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Anotar.NLog;
 using LinqToTwitter;
 using Twice.Models.Configuration;
@@ -10,33 +11,6 @@ namespace Twice.Models.Twitter
 		public StatusMuter( IConfig config )
 		{
 			Muting = config.Mute;
-		}
-
-		private static bool CheckMute( MuteEntry entry, Status status )
-		{
-			char[] typeIndicators = {'#', ':', '@'};
-			string value = entry.Filter;
-
-			char typeIndicator = value[0];
-			if( typeIndicators.Contains( typeIndicator ) )
-			{
-				value = value.Substring( 1 );
-			}
-
-			switch( typeIndicator )
-			{
-			case '#':
-				return status.Entities.HashTagEntities.Any( h => h.Tag == value );
-
-			case ':':
-				return new TweetSource( status.Source ).Name == value;
-
-			case '@':
-				return status.Entities.UserMentionEntities.Any( m => m.ScreenName == value );
-
-			default:
-				return status.Text.Contains( value );
-			}
 		}
 
 		public bool IsMuted( Status status )
@@ -53,6 +27,40 @@ namespace Twice.Models.Twitter
 			}
 
 			return result;
+		}
+
+		private static bool CheckMute( MuteEntry entry, Status status )
+		{
+			char[] typeIndicators = {'#', ':', '@'};
+			string value = entry.Filter;
+
+			char typeIndicator = value[0];
+			if( typeIndicators.Contains( typeIndicator ) )
+			{
+				value = value.Substring( 1 );
+			}
+
+			StringComparer comp = entry.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
+
+			switch( typeIndicator )
+			{
+			case '#':
+				return status.Entities.HashTagEntities.Any( h => comp.Compare( h.Tag, value ) == 0 );
+
+			case ':':
+				return comp.Compare( new TweetSource( status.Source ).Name, value ) == 0;
+
+			case '@':
+				return status.Entities.UserMentionEntities.Any( m => comp.Compare( m.ScreenName, value ) == 0 );
+
+			default:
+				if( !entry.CaseSensitive )
+				{
+					return status.Text.ToLower().Contains( value.ToLower() );
+				}
+
+				return status.Text.Contains( value );
+			}
 		}
 
 		private readonly MuteConfig Muting;

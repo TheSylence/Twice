@@ -12,6 +12,88 @@ namespace Twice.Tests.Models.Twitter
 	public class StatusMuterTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void CasingIsAppliedDuringTextMuting()
+		{
+			// Arrange
+			var muteConfig = new MuteConfig();
+			muteConfig.Entries.Add( new MuteEntry {Filter = "Text", CaseSensitive = true} );
+
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Mute ).Returns( muteConfig );
+
+			var muter = new StatusMuter( config.Object );
+
+			// Act
+			bool matchedCaseWhenSensitive = muter.IsMuted( new Status {Text = "This is a Text"} );
+			bool unmatchedCaseWhenSensitive = muter.IsMuted( new Status {Text = "This is a text"} );
+
+			muteConfig.Entries[0].CaseSensitive = false;
+			bool matchedCaseWhenInsensitive = muter.IsMuted( new Status {Text = "This is a Text"} );
+			bool unmatchedCaseWhenInsensitive = muter.IsMuted( new Status {Text = "This is a text"} );
+
+			// Assert
+			Assert.IsTrue( matchedCaseWhenInsensitive );
+			Assert.IsTrue( matchedCaseWhenSensitive );
+			Assert.IsTrue( unmatchedCaseWhenInsensitive );
+			Assert.IsFalse( unmatchedCaseWhenSensitive );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void CasingIsAppliedForHashtags()
+		{
+			// Arrange
+			var muteConfig = new MuteConfig();
+			muteConfig.Entries.Add( new MuteEntry {Filter = "#Text", CaseSensitive = true} );
+
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Mute ).Returns( muteConfig );
+
+			var muter = new StatusMuter( config.Object );
+
+			var upperStatus = new Status
+			{
+				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>
+					{
+						new HashTagEntity
+						{
+							Tag = "Text"
+						}
+					}
+				}
+			};
+
+			var lowerStatus = new Status
+			{
+				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>
+					{
+						new HashTagEntity
+						{
+							Tag = "text"
+						}
+					}
+				}
+			};
+
+			// Act
+			bool matchedCaseWhenSensitive = muter.IsMuted( upperStatus );
+			bool unmatchedCaseWhenSensitive = muter.IsMuted( lowerStatus );
+
+			muteConfig.Entries[0].CaseSensitive = false;
+			bool matchedCaseWhenInsensitive = muter.IsMuted( upperStatus );
+			bool unmatchedCaseWhenInsensitive = muter.IsMuted( lowerStatus );
+
+			// Assert
+			Assert.IsTrue( matchedCaseWhenInsensitive );
+			Assert.IsTrue( matchedCaseWhenSensitive );
+			Assert.IsTrue( unmatchedCaseWhenInsensitive );
+			Assert.IsFalse( unmatchedCaseWhenSensitive );
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
 		public void EmptyMutingsWillNotMatchAnything()
 		{
 			// Arrange

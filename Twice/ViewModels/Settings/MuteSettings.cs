@@ -42,7 +42,12 @@ namespace Twice.ViewModels.Settings
 		{
 			Entries.Remove( SelectedEntry );
 
-			var entry = new MuteEntry {Filter = EditData.Filter, EndDate = null};
+			var entry = new MuteEntry
+			{
+				Filter = EditData.Filter,
+				EndDate = null,
+				CaseSensitive = EditData.CaseSensitive
+			};
 
 			if( EditData.HasEndDate )
 			{
@@ -68,9 +73,10 @@ namespace Twice.ViewModels.Settings
 			EditData = new MuteEditViewModel( MuteEditAction.Edit )
 			{
 				Filter = SelectedEntry.Filter,
-				HasEndDate = SelectedEntry.EndDate.HasValue
+				HasEndDate = SelectedEntry.EndDate.HasValue,
+				 CaseSensitive = SelectedEntry.CaseSensitive
 			};
-			if( EditData.HasEndDate )
+			if( EditData.HasEndDate && SelectedEntry.EndDate.HasValue )
 			{
 				EditData.EndDate = SelectedEntry.EndDate.Value;
 			}

@@ -10,6 +10,7 @@ namespace Twice.ViewModels.Settings
 		event EventHandler<MuteEditArgs> Saved;
 
 		ICommand CancelCommand { get; }
+		bool CaseSensitive { get; set; }
 		DateTime EndDate { get; set; }
 		string Filter { get; set; }
 		bool HasEndDate { get; set; }
