@@ -106,7 +106,11 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task LoadMoreData()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, MaxIdFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
 
 			await AddStatuses( list );
 		}
@@ -114,7 +118,11 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task LoadTopData()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, SinceIdFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel ).Reverse();
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
 
 			await AddStatuses( list, false );
 		}
@@ -122,7 +130,11 @@ namespace Twice.ViewModels.Columns
 		protected virtual async Task OnLoad()
 		{
 			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression );
-			var list = statuses.Where( s => !Muter.IsMuted( s ) ).Select( CreateViewModel );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
 
 			await AddStatuses( list );
 		}
@@ -155,9 +167,18 @@ namespace Twice.ViewModels.Columns
 			Changed?.Invoke( this, EventArgs.Empty );
 		}
 
-		private StatusViewModel CreateViewModel( Status s )
+		private async Task<StatusViewModel> CreateViewModel( Status s )
 		{
-			return new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
+			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
+
+			var quoteId = vm.ExtractQuotedTweetUrl();
+			if( quoteId != 0 )
+			{
+				// TODO: Caching
+				vm.QuotedTweet = await CreateViewModel( await Context.Twitter.Statuses.GetTweet( quoteId, false ) );
+			}
+
+			return vm;
 		}
 
 		private void ExecuteClearCommand()
@@ -210,7 +231,7 @@ namespace Twice.ViewModels.Columns
 				return;
 			}
 
-			var s = CreateViewModel( e.Status );
+			var s = await CreateViewModel( e.Status );
 			await AddStatus( s, false );
 		}
 

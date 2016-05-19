@@ -25,6 +25,17 @@ namespace Twice.Models.Twitter
 			}
 		}
 
+		public static ulong ExtractTweetId( string url )
+		{
+			var match = TweetUrlPattern.Match( url );
+			if( match?.Success != true )
+			{
+				return 0;
+			}
+
+			return ulong.Parse( match.Groups[2].Value );
+		}
+
 		public static ulong GetMessageId( this DirectMessage message )
 		{
 			return message.ID != 0
@@ -37,6 +48,11 @@ namespace Twice.Models.Twitter
 			return user.ScreenName ?? user.ScreenNameResponse;
 		}
 
+		public static ulong GetStatusId( this Status status )
+		{
+			return status.ID != 0 ? status.ID : status.StatusID;
+		}
+
 		public static Uri GetUrl( this Status status )
 		{
 			string userName = status.User.GetScreenName();
@@ -45,16 +61,21 @@ namespace Twice.Models.Twitter
 					status.StatusID ) );
 		}
 
-		public static ulong GetStatusId( this Status status )
-		{
-			return status.ID != 0 ? status.ID : status.StatusID;
-		}
-
 		public static ulong GetUserId( this User user )
 		{
 			return user.UserID != 0
 				? user.UserID
 				: ulong.Parse( user.UserIDResponse );
+		}
+
+		public static bool IsTweetUrl( Uri uri )
+		{
+			return IsTweetUrl( uri.AbsoluteUri );
+		}
+
+		public static bool IsTweetUrl( string url )
+		{
+			return TweetUrlPattern.IsMatch( url );
 		}
 
 		public static string NormalizeText( string text )
@@ -68,7 +89,7 @@ namespace Twice.Models.Twitter
 				return text;
 			}
 		}
-		
+
 		private static string ReplaceUrls( string text, int httpLength, int httpsLength )
 		{
 			string httpsString = new string( 'x', httpsLength );
@@ -93,7 +114,7 @@ namespace Twice.Models.Twitter
 				}
 
 				string url = match.Groups[Text.Regex.VALID_URL_GROUP_URL].Value;
-				
+
 				Match tcoMatcher = Text.Regex.VALID_TCO_URL.Match( url );
 				if( tcoMatcher.Success )
 				{
@@ -106,5 +127,7 @@ namespace Twice.Models.Twitter
 
 			return text;
 		}
+
+		private static readonly Regex TweetUrlPattern = new Regex( "(https:\\/\\/)?twitter.com\\/\\w+\\/status\\/(\\d+)", RegexOptions.Compiled );
 	}
 }

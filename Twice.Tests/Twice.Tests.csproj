@@ -204,6 +204,7 @@
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
     <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />
     <Compile Include="Models\Twitter\TwitterContextListTests.cs" />
+    <Compile Include="Models\Twitter\TwitterHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyChangedTester.cs" />
     <Compile Include="SyncDispatcher.cs" />
