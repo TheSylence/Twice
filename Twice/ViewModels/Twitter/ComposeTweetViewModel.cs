@@ -9,9 +9,11 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
+using Ninject;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
+using Twice.Resources;
 using Twice.Services.Views;
 using Twice.Views;
 
@@ -24,6 +26,35 @@ namespace Twice.ViewModels.Twitter
 		{
 			Cache = cache;
 			Accounts = new List<AccountEntry>();
+		}
+
+		public async Task OnLoad( object data )
+		{
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged -= Acc_UseChanged;
+			}
+
+			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged += Acc_UseChanged;
+			}
+
+			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
+			defAccount.Use = true;
+			RaisePropertyChanged( nameof( Accounts ) );
+
+			Text = string.Empty;
+			ConfirmationSet = false;
+
+			Medias.Clear();
+			AttachedMedias.Clear();
+
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
+			RaisePropertyChanged( nameof( KnownUserNames ) );
+			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
+			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -88,17 +119,23 @@ namespace Twice.ViewModels.Twitter
 			{
 				return;
 			}
+			
+			IsSending = true;
+
+			byte[] mediaData = File.ReadAllBytes( selectedFile );
+			if( mediaData.Length > TwitterConfig.MaxImageSize )
+			{
+				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+				IsSending = false;
+				return;
+			}
 
 			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
 
 			var acc = usedAccounts.First();
 			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
 
-			IsSending = true;
-
 			string mediaType = GetMimeType( selectedFile );
-			byte[] mediaData = File.ReadAllBytes( selectedFile );
-
 			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
 			{
 				IsSending = false;
@@ -162,35 +199,6 @@ namespace Twice.ViewModels.Twitter
 					await OnLoad( null );
 				} );
 			} );
-		}
-
-		public async Task OnLoad( object data )
-		{
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged -= Acc_UseChanged;
-			}
-
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged += Acc_UseChanged;
-			}
-
-			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
-			defAccount.Use = true;
-			RaisePropertyChanged( nameof( Accounts ) );
-
-			Text = string.Empty;
-			ConfirmationSet = false;
-
-			Medias.Clear();
-			AttachedMedias.Clear();
-
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
-			RaisePropertyChanged( nameof( KnownUserNames ) );
-			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
-			RaisePropertyChanged( nameof( KnownHashtags ) );
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
@@ -272,6 +280,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		public StatusViewModel QuotedTweet
 		{
 			[DebuggerStepThrough] get { return _QuotedTweet; }
@@ -328,8 +339,7 @@ namespace Twice.ViewModels.Twitter
 				var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
 				if( QuotedTweet != null )
 				{
-					// Keep the space in mind that separates the tweet text
-					// and the status URL
+					// Keep the space in mind that separates the tweet text and the status URL
 					len += TwitterConfig.UrlLengthHttps + 1;
 				}
 				TextLength = len;
@@ -362,39 +372,28 @@ namespace Twice.ViewModels.Twitter
 
 		private readonly int MediumWarnThreshold = 125;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AttachImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private StatusViewModel _QuotedTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _QuotedTweet;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RemoveQuoteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
 	}
 }

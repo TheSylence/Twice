@@ -6,6 +6,7 @@ namespace Twice.Models.Twitter
 	{
 		Task QueryConfig();
 
+		int MaxImageSize { get; }
 		int UrlLength { get; }
 		int UrlLengthHttps { get; }
 	}

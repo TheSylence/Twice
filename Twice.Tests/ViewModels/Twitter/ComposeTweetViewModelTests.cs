@@ -9,7 +9,9 @@ using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Resources;
 using Twice.Services.Views;
+using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
@@ -28,9 +30,13 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) )
 				.Verifiable();
 
+			var twitterConfig = new Mock<ITwitterConfiguration>();
+			twitterConfig.SetupGet( t => t.MaxImageSize ).Returns( int.MaxValue );
+
 			var vm = new ComposeTweetViewModel( cache.Object )
 			{
-				ViewServiceRepository = viewServices.Object
+				ViewServiceRepository = viewServices.Object,
+				TwitterConfig = twitterConfig.Object
 			};
 
 			var media = new Media {MediaID = 123456, Type = MediaType.Image};
@@ -61,6 +67,51 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Verify( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ), Times.Once() );
 
 			Assert.IsNotNull( vm.AttachedMedias.SingleOrDefault( m => m.MediaId == media.MediaID ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void AttachingTooLargeImageRaisesError()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEventSlim( false );
+
+			var cache = new Mock<IDataCache>();
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) )
+				.Verifiable();
+
+			var twitterConfig = new Mock<ITwitterConfiguration>();
+			twitterConfig.SetupGet( t => t.MaxImageSize ).Returns( 1 );
+
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error ) ).Verifiable();
+
+			var vm = new ComposeTweetViewModel( cache.Object )
+			{
+				ViewServiceRepository = viewServices.Object,
+				TwitterConfig = twitterConfig.Object,
+				Notifier = notifier.Object
+			};
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.AttachImageCommand.Execute( null );
+			waitHandle.Wait( 1000 );
+			Thread.Sleep( 50 );
+
+			// Assert
+			notifier.Verify( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -167,7 +218,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null, null ) );
+			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null, null ) );
 
 			var cache = new Mock<IDataCache>();
 			var obj = new ComposeTweetViewModel( cache.Object )
@@ -177,7 +228,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
-			tester.Test();
+			tester.Test( nameof( ComposeTweetViewModel.Notifier ) );
 
 			// Assert
 			tester.Verify();
@@ -208,7 +259,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -223,15 +274,6 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
-		}
-
-		static ITwitterConfiguration MockTwitterConfig()
-		{
-			var cfg = new Mock<ITwitterConfiguration>();
-			cfg.SetupGet( c => c.UrlLength ).Returns( 23 );
-			cfg.SetupGet( c => c.UrlLengthHttps ).Returns( 23 );
-
-			return cfg.Object;
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -313,6 +355,15 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( noConfirmationSet );
 			Assert.IsFalse( tooLong );
 			Assert.IsTrue( ok );
+		}
+
+		private static ITwitterConfiguration MockTwitterConfig()
+		{
+			var cfg = new Mock<ITwitterConfiguration>();
+			cfg.SetupGet( c => c.UrlLength ).Returns( 23 );
+			cfg.SetupGet( c => c.UrlLengthHttps ).Returns( 23 );
+
+			return cfg.Object;
 		}
 	}
 }

@@ -49,4 +49,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{34186C3B-C308-4CAE-B462-DB7B5F5E378C} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_ConfirmAddLanguageFile = True
+	EndGlobalSection
 EndGlobal

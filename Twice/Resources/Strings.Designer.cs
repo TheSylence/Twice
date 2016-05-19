@@ -637,6 +637,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One of the images is too big to be uploaded.
+        /// </summary>
+        public static string ImageSizeTooBig {
+            get {
+                return ResourceManager.GetString("ImageSizeTooBig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image viewer.
         /// </summary>
         public static string ImageViewer {

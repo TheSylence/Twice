@@ -531,4 +531,7 @@
   <data name="QuotedTweet" xml:space="preserve">
     <value>Quoted tweet</value>
   </data>
+  <data name="ImageSizeTooBig" xml:space="preserve">
+    <value>One of the images is too big to be uploaded</value>
+  </data>
 </root>
