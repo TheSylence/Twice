@@ -92,12 +92,10 @@
 									<Style TargetType="materialDesign:PopupBox">
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False" 
-														 views:TriggerTracing.TriggerName="RetweetButton.MouseOver" views:TriggerTracing.TraceEnabled="True">
+														 Value="False" >
 												<Setter Property="Visibility" Value="Hidden" />
 											</DataTrigger>
-											<DataTrigger Binding="{Binding IsRetweeted}" Value="True" views:TriggerTracing.TriggerName="Status.IsRetweeted" 
-														 views:TriggerTracing.TraceEnabled="True">
+											<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
 												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}"/>
 												<Setter Property="IsEnabled" Value="False"/>
