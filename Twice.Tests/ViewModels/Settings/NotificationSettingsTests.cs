@@ -1,12 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class NotificationSettingsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
@@ -83,6 +84,30 @@ namespace Twice.Tests.ViewModels.Settings
 
 			var popup = vm.EnabledNotifications.OfType<PopupNotificationSettings>().SingleOrDefault();
 			Assert.IsNotNull( popup );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public void SaveWritesModuleSettingsToConfig()
+		{
+			// Arrange
+			var notifi = new NotificationConfig
+			{
+				PopupEnabled = true,
+				SoundEnabled = false,
+				ToastsEnabled = false
+			};
+
+			var cfg = new Mock<IConfig>();
+			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
+
+			var vm = new NotificationSettings( cfg.Object );
+
+			// Act
+			vm.AvailableNotifications.First( n => n.Enabled ).Enabled = false;
+			vm.SaveTo( cfg.Object );
+
+			// Assert
+			Assert.AreEqual( false, notifi.PopupEnabled );
 		}
 	}
 }

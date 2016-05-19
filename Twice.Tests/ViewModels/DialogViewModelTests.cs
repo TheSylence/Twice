@@ -1,10 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.ViewModels;
 using Twice.ViewModels.Validation;
 
 namespace Twice.Tests.ViewModels
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class DialogViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels" )]

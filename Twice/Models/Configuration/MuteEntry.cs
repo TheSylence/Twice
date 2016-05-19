@@ -6,6 +6,21 @@ namespace Twice.Models.Configuration
 {
 	internal class MuteEntry : ObservableObject
 	{
+		public bool CaseSensitive
+		{
+			[DebuggerStepThrough] get { return _CaseSensitive; }
+			set
+			{
+				if( _CaseSensitive == value )
+				{
+					return;
+				}
+
+				_CaseSensitive = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public DateTime? EndDate
 		{
 			[DebuggerStepThrough] get { return _EndDate; }
@@ -42,10 +57,10 @@ namespace Twice.Models.Configuration
 			[DebuggerStepThrough] get { return _EndDate.HasValue; }
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private DateTime? _EndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CaseSensitive;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Filter;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime? _EndDate;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Filter;
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -7,7 +8,7 @@ using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MuteSettingsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]

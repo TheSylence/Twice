@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Columns
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ColumnViewModelBaseTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

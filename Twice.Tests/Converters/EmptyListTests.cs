@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class EmptyListTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

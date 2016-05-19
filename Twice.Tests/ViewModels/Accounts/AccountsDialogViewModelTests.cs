@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ using Twice.ViewModels.Accounts;
 
 namespace Twice.Tests.ViewModels.Accounts
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class AccountsDialogViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Accounts" )]

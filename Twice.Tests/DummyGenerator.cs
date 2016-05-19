@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LinqToTwitter;
 
 namespace Twice.Tests
 {
+	[ExcludeFromCodeCoverage]
 	internal static class DummyGenerator
 	{
 		internal static Status CreateDummyStatus( User user = null )

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +19,7 @@ using Twice.Views;
 
 namespace Twice.Tests.ViewModels.Main
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MainViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Main" )]

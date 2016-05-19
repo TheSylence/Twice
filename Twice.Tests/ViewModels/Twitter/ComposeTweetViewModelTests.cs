@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ComposeTweetViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -235,6 +236,22 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void QuoteCanBeRemoved()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel( null );
+
+			// Act
+			bool without = vm.RemoveQuoteCommand.CanExecute( null );
+			vm.QuotedTweet = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null );
+			bool with = vm.RemoveQuoteCommand.CanExecute( null );
+
+			// Assert
+			Assert.IsFalse( without );
+			Assert.IsTrue( with );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void QuotedTweetsUrlIsAppendedToUrl()
 		{
 			// Arrange
@@ -274,6 +291,22 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void RemoveQuoteRemoves()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel( null )
+			{
+				QuotedTweet = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null )
+			};
+
+			// Act
+			vm.RemoveQuoteCommand.Execute( null );
+
+			// Assert
+			Assert.IsNull( vm.QuotedTweet );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

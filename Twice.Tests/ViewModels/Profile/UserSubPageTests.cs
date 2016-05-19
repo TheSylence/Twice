@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Twice.ViewModels.Profile;
 
 namespace Twice.Tests.ViewModels.Profile
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class UserSubPageTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
@@ -73,7 +74,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var tester = new PropertyChangedTester( page );
 
 			// Act
-			tester.Test();
+			tester.Test( nameof( UserSubPage.Dispatcher ) );
 
 			// Assert
 			tester.Verify();

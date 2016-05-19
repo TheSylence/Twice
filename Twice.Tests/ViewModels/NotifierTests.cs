@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Messages;
@@ -10,7 +11,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class NotifierTests
 	{
 		[TestMethod, TestCategory( "ViewModels" )]

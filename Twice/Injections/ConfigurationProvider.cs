@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Ninject.Activation;
 using Twice.Models.Configuration;
+using Twice.Utilities;
 
 namespace Twice.Injections
 {
@@ -14,7 +16,7 @@ namespace Twice.Injections
 		/// <returns>The created instance.</returns>
 		protected override IConfig CreateInstance( IContext context )
 		{
-			return new Config( Constants.IO.ConfigFileName );
+			return new Config( Constants.IO.ConfigFileName, context.Kernel.Get<ISerializer>() );
 		}
 	}
 }

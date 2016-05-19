@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MuteEditViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]

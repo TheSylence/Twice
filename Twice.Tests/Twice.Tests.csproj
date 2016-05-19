@@ -186,14 +186,17 @@
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="Converters\StatusHighlighterTests.cs" />
+    <Compile Include="Converters\UtcToLocalTests.cs" />
     <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
-    <Compile Include="MockExtensions.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
+    <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
+    <Compile Include="Models\Twitter\ContextEntryTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
@@ -205,6 +208,7 @@
     <Compile Include="PropertyChangedTester.cs" />
     <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
+    <Compile Include="Utilities\SerializerTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />

@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Wizards;
 
 namespace Twice.Tests.ViewModels.ColumnManagement
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class FinishPageTests
 	{
 		[TestMethod, TestCategory( "ViewModels.ColumnManagement" )]

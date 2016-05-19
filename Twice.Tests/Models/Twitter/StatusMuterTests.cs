@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -7,7 +8,7 @@ using Twice.Models.Twitter;
 
 namespace Twice.Tests.Models.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StatusMuterTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter" )]

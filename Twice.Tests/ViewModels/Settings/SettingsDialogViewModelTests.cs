@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class SettingsDialogViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]

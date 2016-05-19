@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,7 @@ using Twice.Models.Configuration;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StatusHighlighterTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

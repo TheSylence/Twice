@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using MaterialDesignColors;
@@ -10,7 +11,7 @@ using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class VisualSettingsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
 using Twice.Models.Twitter;
@@ -7,7 +8,7 @@ using Twice.ViewModels.Wizards;
 
 namespace Twice.Tests.ViewModels.ColumnManagement
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class SourceAccountSelectorPageTests
 	{
 		[TestMethod, TestCategory( "ViewModels.ColumnManagement" )]

@@ -1,12 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Accounts;
 
 namespace Twice.Tests.ViewModels.Accounts
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class AccountEntryTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Accounts" )]

@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Twice.Models.Columns;
 using Twice.ViewModels.ColumnManagement;
 
 namespace Twice.Tests.ViewModels.ColumnManagement
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ColumnTypeSelectionDialogViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.ColumnManagement" )]

@@ -1,13 +1,15 @@
 ﻿using System.IO;
 using Anotar.NLog;
 using Newtonsoft.Json;
+using Twice.Utilities;
 
 namespace Twice.Models.Configuration
 {
 	internal class Config : IConfig
 	{
-		public Config( string fileName )
+		public Config( string fileName, ISerializer serializer )
 		{
+			Serializer = serializer;
 			bool defaultNeeded = true;
 			FileName = fileName;
 			
@@ -20,7 +22,7 @@ namespace Twice.Models.Configuration
 				{
 					try
 					{
-						Config tmp = JsonConvert.DeserializeObject<Config>( json );
+						Config tmp = Serializer.Deserialize<Config>( json );
 						Visual = tmp.Visual;
 						General = tmp.General;
 						Mute = tmp.Mute;
@@ -39,9 +41,11 @@ namespace Twice.Models.Configuration
 			}
 		}
 
+		private readonly ISerializer Serializer;
+
 		public void Save()
 		{
-			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
+			string json = Serializer.Serialize( this );
 			File.WriteAllText( FileName, json );
 		}
 

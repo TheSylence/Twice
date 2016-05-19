@@ -36,9 +36,9 @@ namespace Twice.Tests
 
 			var properties =
 				Object.GetType()
-				.GetProperties( bindingFlags )
-				.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic )
-				.ToArray();
+					.GetProperties( bindingFlags )
+					.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic )
+					.ToArray();
 			if( !properties.Any() )
 			{
 				Errors.Add( "No properties found" );
@@ -109,7 +109,8 @@ namespace Twice.Tests
 				{typeof( string ), string.Empty},
 				{typeof( DateTime ), DateTime.Now},
 				{typeof( bool ), true},
-				{typeof(CultureInfo), CultureInfo.CurrentUICulture}
+				{typeof( CultureInfo ), CultureInfo.CurrentUICulture},
+				{typeof( DateTime? ), DateTime.Now}
 			};
 
 			object v;
@@ -129,7 +130,7 @@ namespace Twice.Tests
 				return constructor.Invoke( null );
 			}
 
-			if( TypeResolver!=null)
+			if( TypeResolver != null )
 			{
 				return TypeResolver.Resolve( type );
 			}
@@ -138,8 +139,8 @@ namespace Twice.Tests
 		}
 
 		private readonly List<string> Errors = new List<string>();
-		private readonly INotifyPropertyChanged Object;
 		private readonly bool IncludeInherited;
+		private readonly INotifyPropertyChanged Object;
 		private readonly ITypeResolver TypeResolver;
 	}
 }

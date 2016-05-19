@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Twice.Tests
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ExtensionsTests
 	{
 		[TestMethod, TestCategory( "Extensions" )]

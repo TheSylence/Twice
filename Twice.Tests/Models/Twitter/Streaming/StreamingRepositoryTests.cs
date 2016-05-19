@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -6,7 +7,7 @@ using Twice.Models.Twitter.Streaming;
 
 namespace Twice.Tests.Models.Twitter.Streaming
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StreamingRepositoryTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

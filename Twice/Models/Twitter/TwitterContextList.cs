@@ -4,14 +4,16 @@ using System.IO;
 using System.Linq;
 using Anotar.NLog;
 using Newtonsoft.Json;
+using Twice.Utilities;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{
-		public TwitterContextList( INotifier notifier, string fileName )
+		public TwitterContextList( INotifier notifier, string fileName, ISerializer serializer )
 		{
+			Serializer = serializer;
 			FileName = fileName;
 			Notifier = notifier;
 			Contexts = new List<IContextEntry>();
@@ -26,8 +28,8 @@ namespace Twice.Models.Twitter
 
 			try
 			{
-				accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json ) ??
-							new List<TwitterAccountData>();
+				accountData = Serializer.Deserialize<List<TwitterAccountData>>( json ) ??
+				              new List<TwitterAccountData>();
 			}
 			catch( JsonReaderException )
 			{
@@ -44,39 +46,6 @@ namespace Twice.Models.Twitter
 					return ctx;
 				} );
 			} ).ToList();
-		}
-
-		private void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				foreach( var context in Contexts )
-				{
-					context.Dispose();
-				}
-			}
-		}
-
-		private void SaveToFile()
-		{
-			var json = JsonConvert.SerializeObject( Contexts.Select( ctx =>
-			{
-				var result = new TwitterAccountData
-				{
-					AccountName = ctx.AccountName,
-					ImageUrl = ctx.ProfileImageUrl.AbsoluteUri,
-					OAuthToken = ctx.Twitter.Authorizer.CredentialStore.OAuthToken,
-					OAuthTokenSecret = ctx.Twitter.Authorizer.CredentialStore.OAuthTokenSecret,
-					UserId = ctx.UserId,
-					IsDefault = ctx.IsDefault,
-					RequiresConfirm = ctx.RequiresConfirmation
-				};
-
-				result.Encrypt();
-				return result;
-			} ).ToList(), Formatting.Indented );
-
-			File.WriteAllText( FileName, json );
 		}
 
 		public event EventHandler ContextsChanged;
@@ -116,8 +85,42 @@ namespace Twice.Models.Twitter
 			SaveToFile();
 		}
 
+		private void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				foreach( var context in Contexts )
+				{
+					context.Dispose();
+				}
+			}
+		}
+
+		private void SaveToFile()
+		{
+			var json = Serializer.Serialize( Contexts.Select( ctx =>
+			{
+				var result = new TwitterAccountData
+				{
+					AccountName = ctx.AccountName,
+					ImageUrl = ctx.ProfileImageUrl.AbsoluteUri,
+					OAuthToken = ctx.Twitter.Authorizer.CredentialStore.OAuthToken,
+					OAuthTokenSecret = ctx.Twitter.Authorizer.CredentialStore.OAuthTokenSecret,
+					UserId = ctx.UserId,
+					IsDefault = ctx.IsDefault,
+					RequiresConfirm = ctx.RequiresConfirmation
+				};
+
+				result.Encrypt();
+				return result;
+			} ).ToList() );
+
+			File.WriteAllText( FileName, json );
+		}
+
 		public ICollection<IContextEntry> Contexts { get; }
 		private readonly string FileName;
 		private readonly INotifier Notifier;
+		private readonly ISerializer Serializer;
 	}
 }

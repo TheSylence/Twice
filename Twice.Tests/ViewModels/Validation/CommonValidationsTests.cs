@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
 namespace Twice.Tests.ViewModels.Validation
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class CommonValidationsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Validation" )]
@@ -94,6 +95,7 @@ namespace Twice.Tests.ViewModels.Validation
 			Assert.AreEqual( Strings.NameAlreadyExists, setup.MessageString );
 		}
 
+		[ExcludeFromCodeCoverage]
 		private class ValidationSetup<TValue> : IValidationSetup<TValue>
 		{
 			public IValidationSetup<TValue> Check( Func<TValue, bool> action )

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Columns;
@@ -7,7 +8,7 @@ using Twice.ViewModels.Wizards;
 
 namespace Twice.Tests.ViewModels.ColumnManagement
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ColumnTypeSelctorPageTests
 	{
 		[TestMethod, TestCategory( "ViewModels.ColumnManagement" )]

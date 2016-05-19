@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Akavache.Sqlite3;
 
 // Note: This class file is *required* for iOS to work correctly, and is
@@ -6,7 +7,7 @@ using Akavache.Sqlite3;
 
 namespace Twice.Tests
 {
-	[Preserve]
+	[Preserve, ExcludeFromCodeCoverage]
 	public static class LinkerPreserve
 	{
 		static LinkerPreserve()

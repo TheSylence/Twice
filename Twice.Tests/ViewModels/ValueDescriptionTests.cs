@@ -7,7 +7,7 @@ using Twice.ViewModels;
 
 namespace Twice.Tests.ViewModels
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ValueDescriptionTests
 	{
 		private enum TestEnum

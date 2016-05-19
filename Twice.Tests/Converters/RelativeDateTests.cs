@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Converters;
@@ -7,7 +8,7 @@ using Twice.Utilities;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class RelativeDateTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

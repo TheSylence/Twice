@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,7 +17,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StatusViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -369,6 +370,32 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			Assert.IsFalse( single );
 			Assert.IsTrue( multiple );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void RetweetsAreHandledCorrectly()
+		{
+			// Arrange
+			var origUser = DummyGenerator.CreateDummyUser();
+			origUser.UserID = 11;
+
+			var originalStatus = DummyGenerator.CreateDummyStatus( origUser );
+			originalStatus.ID = originalStatus.StatusID = 1;
+
+			var rtUser = DummyGenerator.CreateDummyUser();
+			rtUser.UserID = 22;
+			var retweet = DummyGenerator.CreateDummyStatus( rtUser );
+			retweet.RetweetedStatus = originalStatus;
+			retweet.ID = retweet.StatusID = 2;
+
+			// Act
+			var vm = new StatusViewModel( retweet, null, null, null );
+
+			// Assert
+			Assert.AreEqual( 22ul, vm.SourceUser.UserId );
+			Assert.AreEqual( 11ul, vm.User.UserId );
+
+			Assert.AreEqual( 1ul, vm.Model.ID );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

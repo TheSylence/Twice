@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Configuration;
+using Twice.Utilities;
 
 namespace Twice.Tests.Models.Configuration
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ConfigTests
 	{
 		[TestMethod, TestCategory( "Models.Configuration" )]
@@ -18,7 +20,7 @@ namespace Twice.Tests.Models.Configuration
 
 			// Act ReSharper disable once ObjectCreationAsStatement
 			// ReSharper disable once ObjectCreationAsStatement
-			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName ) );
+			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName, new Serializer() ) );
 
 			// Assert
 			Assert.IsNull( ex, ex?.ToString() );
@@ -29,7 +31,7 @@ namespace Twice.Tests.Models.Configuration
 		{
 			// Arrange
 			var fileName = Path.GetTempFileName();
-			var config = new Config( fileName )
+			var config = new Config( fileName, new Serializer() )
 			{
 				General =
 				{
@@ -68,7 +70,7 @@ namespace Twice.Tests.Models.Configuration
 
 			// Act
 			config.Save();
-			var cfg = new Config( fileName );
+			var cfg = new Config( fileName, new Serializer() );
 
 			// Assert
 			Assert.AreEqual( config.General.CheckForUpdates, cfg.General.CheckForUpdates );

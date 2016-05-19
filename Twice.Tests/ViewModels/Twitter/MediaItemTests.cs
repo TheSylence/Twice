@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MediaItemTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

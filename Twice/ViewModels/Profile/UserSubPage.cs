@@ -5,12 +5,15 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
+using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 
 namespace Twice.ViewModels.Profile
 {
 	internal class UserSubPage : ObservableObject
 	{
+		public IDispatcher Dispatcher { get; set; }
+
 		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, Func<Task<IEnumerable<object>>> loadMoreAction, int count )
 			: this( title, loadAction, count )
 		{
@@ -39,11 +42,10 @@ namespace Twice.ViewModels.Profile
 			{
 				var newData = await LoadMoreAction();
 
-				await DispatcherHelper.RunAsync( () =>
+				await Dispatcher.RunAsync( () =>
 				{
 					foreach( var item in newData )
 					{
-
 						_Items.Add( item );
 					}
 				} );

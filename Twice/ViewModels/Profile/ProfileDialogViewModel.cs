@@ -42,9 +42,18 @@ namespace Twice.ViewModels.Profile
 
 			UserPages = new List<UserSubPage>
 			{
-				new UserSubPage( Strings.Tweets, LoadStatuses, LoadMoreStatuses, User.Model.StatusesCount ),
-				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount ),
+				new UserSubPage( Strings.Tweets, LoadStatuses, LoadMoreStatuses, User.Model.StatusesCount )
+				{
+					Dispatcher = Dispatcher
+				},
+				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount )
+				{
+					Dispatcher = Dispatcher
+				},
 				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
+				{
+					Dispatcher = Dispatcher
+				}
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 

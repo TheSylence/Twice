@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Ninject.Activation;
 using Twice.Models.Columns;
+using Twice.Utilities;
 
 namespace Twice.Injections
 {
@@ -14,7 +16,10 @@ namespace Twice.Injections
 		/// <returns>The created instance.</returns>
 		protected override IColumnDefinitionList CreateInstance( IContext context )
 		{
-			return new ColumnDefinitionList( Constants.IO.ColumnDefintionFileName );
+			return new ColumnDefinitionList( Constants.IO.ColumnDefintionFileName )
+			{
+				Serializer = context.Kernel.Get<ISerializer>()
+			};
 		}
 	}
 }

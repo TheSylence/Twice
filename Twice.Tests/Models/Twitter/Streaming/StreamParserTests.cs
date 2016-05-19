@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using Twice.Models.Twitter.Streaming;
 
 namespace Twice.Tests.Models.Twitter.Streaming
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StreamParserTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

@@ -320,6 +320,7 @@
     <Compile Include="Utilities\Os\OsVersionInfo.cs" />
     <Compile Include="Utilities\Os\ProessStarter.cs" />
     <Compile Include="Utilities\Os\SingleInstance.cs" />
+    <Compile Include="Utilities\Serializer.cs" />
     <Compile Include="Utilities\Ui\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
     <Compile Include="Utilities\Ui\DispatcherHelperWrapper.cs" />

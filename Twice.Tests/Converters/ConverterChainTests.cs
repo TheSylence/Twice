@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +8,7 @@ using Twice.Converters;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ConverterChainTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

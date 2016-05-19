@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +8,7 @@ using Twice.ViewModels.Validation;
 
 namespace Twice.Tests.ViewModels.Validation
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ValidationViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Validation" )]
