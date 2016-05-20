@@ -38,82 +38,97 @@
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="{lex:Loc Changelog}">
-			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding Changelogs}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="info:ChangelogItem">
-							<materialDesign:Card Margin="5">
-								<Grid>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
-									</Grid.RowDefinitions>
-									<StackPanel Orientation="Horizontal" Margin="5">
-										<TextBlock Text="{Binding Version}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-										<TextBlock Text="-" Margin="5,0" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-										<TextBlock Text="{Binding Date, StringFormat=d}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
-									</StackPanel>
-									<TextBlock Text="{Binding Description}" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Grid.Row="1" Margin="5"
+			<DockPanel>
+				<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+					<materialDesign:PackIcon Kind="PlusCircleOutline" />
+					<TextBlock Text="{lex:Loc NewFeature}" Margin="5,0,15,0" />
+
+					<materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" />
+					<TextBlock Text="{lex:Loc Change}" Margin="5,0,15,0" />
+
+					<materialDesign:PackIcon Kind="CheckCircleOutline" />
+					<TextBlock Text="{lex:Loc Bugfix}" Margin="5,0,15,0" />
+
+					<materialDesign:PackIcon Kind="AlertCircleOutline" />
+					<TextBlock Text="{lex:Loc KnownIssue}" Margin="5,0,15,0" />
+				</StackPanel>
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<ItemsControl ItemsSource="{Binding Changelogs}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="info:ChangelogItem">
+								<materialDesign:Card Margin="5">
+									<Grid>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+										<StackPanel Orientation="Horizontal" Margin="5">
+											<TextBlock Text="{Binding Version}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+											<TextBlock Text="-" Margin="5,0" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+											<TextBlock Text="{Binding Date, StringFormat=d}" Style="{StaticResource MaterialDesignTitleTextBlock}" />
+										</StackPanel>
+										<TextBlock Text="{Binding Description}" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Grid.Row="1" Margin="5"
 										   Visibility="{Binding Description, Converter={StaticResource VisibleIfStringConv}}" />
 
-									<StackPanel Orientation="Vertical" Grid.Row="2" Margin="5" Visibility="{Binding NewFeatures, Converter={StaticResource VisibleIfItemsConv}}">
-										<ItemsControl ItemsSource="{Binding NewFeatures}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate DataType="system:String">
-													<StackPanel Orientation="Horizontal">
-														<materialDesign:PackIcon Kind="PlusCircleOutline" />
-														<TextBlock Text="{Binding}" Margin="5,0" />
-													</StackPanel>
-												</DataTemplate>
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
-									</StackPanel>
-									<StackPanel Orientation="Vertical" Grid.Row="3" Margin="5" Visibility="{Binding Changes, Converter={StaticResource VisibleIfItemsConv}}">
-										<ItemsControl ItemsSource="{Binding Changes}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate DataType="system:String">
-													<StackPanel Orientation="Horizontal">
-														<materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" />
-														<TextBlock Text="{Binding}" Margin="5,0" />
-													</StackPanel>
-												</DataTemplate>
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
-									</StackPanel>
-									<StackPanel Orientation="Vertical" Grid.Row="4" Margin="5" Visibility="{Binding Fixes, Converter={StaticResource VisibleIfItemsConv}}">
-										<ItemsControl ItemsSource="{Binding Fixes}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate DataType="system:String">
-													<StackPanel Orientation="Horizontal">
-														<materialDesign:PackIcon Kind="CheckCircleOutline" />
-														<TextBlock Text="{Binding}" Margin="5,0" />
-													</StackPanel>
-												</DataTemplate>
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
-									</StackPanel>
-									<StackPanel Orientation="Vertical" Grid.Row="5" Margin="5" Visibility="{Binding Issues, Converter={StaticResource VisibleIfItemsConv}}">
-										<ItemsControl ItemsSource="{Binding Issues}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate DataType="system:String">
-													<StackPanel Orientation="Horizontal">
-														<materialDesign:PackIcon Kind="AlertCircleOutline" />
-														<TextBlock Text="{Binding}" Margin="5,0" />
-													</StackPanel>
-												</DataTemplate>
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
-									</StackPanel>
-								</Grid>
-							</materialDesign:Card>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
+										<StackPanel Orientation="Vertical" Grid.Row="2" Margin="5" Visibility="{Binding NewFeatures, Converter={StaticResource VisibleIfItemsConv}}">
+											<ItemsControl ItemsSource="{Binding NewFeatures}">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate DataType="system:String">
+														<StackPanel Orientation="Horizontal">
+															<materialDesign:PackIcon Kind="PlusCircleOutline" />
+															<TextBlock Text="{Binding}" Margin="5,0" />
+														</StackPanel>
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+											</ItemsControl>
+										</StackPanel>
+										<StackPanel Orientation="Vertical" Grid.Row="3" Margin="5" Visibility="{Binding Changes, Converter={StaticResource VisibleIfItemsConv}}">
+											<ItemsControl ItemsSource="{Binding Changes}">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate DataType="system:String">
+														<StackPanel Orientation="Horizontal">
+															<materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" />
+															<TextBlock Text="{Binding}" Margin="5,0" />
+														</StackPanel>
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+											</ItemsControl>
+										</StackPanel>
+										<StackPanel Orientation="Vertical" Grid.Row="4" Margin="5" Visibility="{Binding Fixes, Converter={StaticResource VisibleIfItemsConv}}">
+											<ItemsControl ItemsSource="{Binding Fixes}">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate DataType="system:String">
+														<StackPanel Orientation="Horizontal">
+															<materialDesign:PackIcon Kind="CheckCircleOutline" />
+															<TextBlock Text="{Binding}" Margin="5,0" />
+														</StackPanel>
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+											</ItemsControl>
+										</StackPanel>
+										<StackPanel Orientation="Vertical" Grid.Row="5" Margin="5" Visibility="{Binding Issues, Converter={StaticResource VisibleIfItemsConv}}">
+											<ItemsControl ItemsSource="{Binding Issues}">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate DataType="system:String">
+														<StackPanel Orientation="Horizontal">
+															<materialDesign:PackIcon Kind="AlertCircleOutline" />
+															<TextBlock Text="{Binding}" Margin="5,0" />
+														</StackPanel>
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+											</ItemsControl>
+										</StackPanel>
+									</Grid>
+								</materialDesign:Card>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</DockPanel>
 		</TabItem>
 		<TabItem Header="{lex:Loc Licenses}">
 			<DockPanel>

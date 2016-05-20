@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using LinqToTwitter;
 
 namespace Twice.Models.Twitter.Repositories
@@ -37,8 +38,9 @@ namespace Twice.Models.Twitter.Repositories
 
 				return status;
 			}
-			catch( TwitterQueryException )
+			catch( TwitterQueryException ex )
 			{
+				LogTo.ErrorException( $"Failed to retrieve status with id {statusId}", ex );
 				return null;
 			}
 		}

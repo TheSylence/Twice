@@ -205,6 +205,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bugfix.
+        /// </summary>
+        public static string Bugfix {
+            get {
+                return ResourceManager.GetString("Bugfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Built on.
         /// </summary>
         public static string BuildDate {
@@ -219,6 +228,15 @@ namespace Twice.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
             }
         }
         
@@ -691,6 +709,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Known issue.
+        /// </summary>
+        public static string KnownIssue {
+            get {
+                return ResourceManager.GetString("KnownIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -822,6 +849,15 @@ namespace Twice.Resources {
         public static string NameAlreadyExists {
             get {
                 return ResourceManager.GetString("NameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New feature.
+        /// </summary>
+        public static string NewFeature {
+            get {
+                return ResourceManager.GetString("NewFeature", resourceCulture);
             }
         }
         

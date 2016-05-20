@@ -5,10 +5,11 @@
         "Description": "",
         "NewFeatures": [
             "Added possibility to send crash reports to the developer",
-            "Images can now be viewed in big",
+            "Images can now be viewed in large",
             "Tweets can be quoted",
             "More tweets can be loaded when viewing a user profile",
-            "Mutings can be case(in)sensitive"
+            "Mutings can be case(in)sensitive",
+            "Legend in changelog for the differnet symbols"
         ],
         "Changes": [
             "When inline media are displayed, media url is no longer shown in status text",

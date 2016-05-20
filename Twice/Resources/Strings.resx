@@ -534,4 +534,16 @@
   <data name="ImageSizeTooBig" xml:space="preserve">
     <value>One of the images is too big to be uploaded</value>
   </data>
+  <data name="Bugfix" xml:space="preserve">
+    <value>Bugfix</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="KnownIssue" xml:space="preserve">
+    <value>Known issue</value>
+  </data>
+  <data name="NewFeature" xml:space="preserve">
+    <value>New feature</value>
+  </data>
 </root>
