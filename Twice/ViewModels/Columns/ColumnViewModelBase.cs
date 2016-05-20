@@ -210,7 +210,7 @@ namespace Twice.ViewModels.Columns
 			Debug.Assert( usersToAdd.Count == e.Friends.Length );
 			foreach( var user in usersToAdd )
 			{
-				await Cache.AddUser( user.GetUserId(), user.GetScreenName() );
+				await Cache.AddUser( new UserCacheEntry( user ) );
 			}
 		}
 
@@ -239,7 +239,7 @@ namespace Twice.ViewModels.Columns
 		{
 			foreach( var mention in status.Entities.UserMentionEntities )
 			{
-				await Cache.AddUser( mention.Id, mention.ScreenName );
+				await Cache.AddUser( new UserCacheEntry(mention));
 			}
 			foreach( var hashtag in status.Entities.HashTagEntities )
 			{
@@ -344,7 +344,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IDataCache Cache { get; set; }
+		public ICache Cache { get; set; }
 
 		[Inject]
 		public IDispatcher Dispatcher { get; set; }

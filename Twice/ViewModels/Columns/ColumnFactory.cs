@@ -75,7 +75,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		[Inject]
-		public IDataCache Cache { get; set; }
+		public ICache Cache { get; set; }
 
 		[Inject]
 		public IConfig Configuration { get; set; }

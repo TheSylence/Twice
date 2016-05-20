@@ -36,7 +36,6 @@ namespace Twice
 			}
 
 			internal static readonly string CacheFileName = P( "cache.db3" );
-			internal static readonly string SecureCacheFileName = P( "cache.crypt.db3" );
 			internal static readonly string AccountsFileName = P( "accounts.json" );
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );

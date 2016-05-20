@@ -7,7 +7,7 @@ namespace Twice.Models.Twitter
 {
 	internal class TwitterConfiguration : ITwitterConfiguration
 	{
-		public TwitterConfiguration( IDataCache cache, ITwitterContextList contextList )
+		public TwitterConfiguration( ICache cache, ITwitterContextList contextList )
 		{
 			ContextList = contextList;
 			Cache = cache;
@@ -38,7 +38,7 @@ namespace Twice.Models.Twitter
 		public int UrlLength => Configuration?.ShortUrlLength ?? 23;
 		public int UrlLengthHttps => Configuration?.ShortUrlLengthHttps ?? 23;
 
-		private readonly IDataCache Cache;
+		private readonly ICache Cache;
 		private readonly ITwitterContextList ContextList;
 		private LinqToTwitter.Configuration Configuration;
 	}

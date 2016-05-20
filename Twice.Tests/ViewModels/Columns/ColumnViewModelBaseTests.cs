@@ -391,8 +391,9 @@ namespace Twice.Tests.ViewModels.Columns
 
 			vm.Dispatcher = new SyncDispatcher();
 
-			var cache = new Mock<IDataCache>();
-			cache.Setup( c => c.AddUser( 123, "testi" ) ).Returns( Task.CompletedTask ).Verifiable();
+			var cache = new Mock<ICache>();
+			cache.Setup( c => c.AddUser( It.Is<UserCacheEntry>( ca => ca.UserId == 123 ) ) ).Returns( Task.CompletedTask )
+				.Verifiable();
 			cache.Setup( c => c.AddHashtag( "tag" ) ).Returns( Task.CompletedTask ).Verifiable();
 
 			vm.Cache = cache.Object;
@@ -401,7 +402,7 @@ namespace Twice.Tests.ViewModels.Columns
 			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( status ) );
 
 			// Assert
-			cache.Verify( c => c.AddUser( 123, "testi" ), Times.Once() );
+			cache.Verify( c => c.AddUser( It.Is<UserCacheEntry>( ca => ca.UserId == 123 ) ), Times.Once() );
 			cache.Verify( c => c.AddHashtag( "hashtag" ), Times.Once() );
 		}
 
@@ -454,15 +455,15 @@ namespace Twice.Tests.ViewModels.Columns
 			var parser = new Mock<IStreamParser>();
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 
-			var cache = new Mock<IDataCache>();
-			cache.Setup( c => c.AddUser( It.IsAny<ulong>(), It.IsAny<string>() ) ).Returns( Task.CompletedTask );
+			var cache = new Mock<ICache>();
+			cache.Setup( c => c.AddUser( It.IsAny<UserCacheEntry>() ) ).Returns( Task.CompletedTask );
 			vm.Cache = cache.Object;
 
 			// Act
 			parser.Raise( p => p.FriendsReceived += null, new FriendsStreamEventArgs( "{\"friends\":[123,456,789]}" ) );
 
 			// Assert
-			cache.Verify( c => c.AddUser( It.IsAny<ulong>(), It.IsAny<string>() ), Times.Exactly( 3 ) );
+			cache.Verify( c => c.AddUser( It.IsAny<UserCacheEntry>() ), Times.Exactly( 3 ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

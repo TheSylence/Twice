@@ -26,7 +26,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) )
 				.Verifiable();
@@ -34,7 +33,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var twitterConfig = new Mock<ITwitterConfiguration>();
 			twitterConfig.SetupGet( t => t.MaxImageSize ).Returns( int.MaxValue );
 
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				ViewServiceRepository = viewServices.Object,
 				TwitterConfig = twitterConfig.Object
@@ -76,7 +75,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult( "Data/Image.png" ) )
 				.Verifiable();
@@ -87,7 +85,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var notifier = new Mock<INotifier>();
 			notifier.Setup( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error ) ).Verifiable();
 
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				ViewServiceRepository = viewServices.Object,
 				TwitterConfig = twitterConfig.Object,
@@ -119,12 +117,11 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void CancellingImageSelectionDoesNotUpload()
 		{
 			// Arrange
-			var cache = new Mock<IDataCache>();
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenFile( It.IsAny<FileServiceArgs>() ) ).Returns( Task.FromResult<string>( null ) )
 				.Verifiable();
 
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				ViewServiceRepository = viewServices.Object
 			};
@@ -147,14 +144,16 @@ namespace Twice.Tests.ViewModels.Twitter
 			otherAcc.SetupGet( a => a.IsDefault ).Returns( false );
 			otherAcc.SetupGet( a => a.ProfileImageUrl ).Returns( new Uri( "http://example.com" ) );
 
-			var cache = new Mock<IDataCache>();
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {otherAcc.Object, defAcc.Object} );
 
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var cache = new Mock<ICache>();
+
+			var vm = new ComposeTweetViewModel
 			{
 				TwitterConfig = MockTwitterConfig(),
-				ContextList = contextList.Object
+				ContextList = contextList.Object,
+				Cache = cache.Object
 			};
 
 			// Act
@@ -172,8 +171,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void MediaCanBeRemoved()
 		{
 			// Arrange
-			var cache = new Mock<IDataCache>();
-			var vm = new ComposeTweetViewModel( cache.Object );
+			var vm = new ComposeTweetViewModel();
 			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {} ) );
 
 			// Act
@@ -219,17 +217,17 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null, null ) );
+			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
+				null ) );
 
-			var cache = new Mock<IDataCache>();
-			var obj = new ComposeTweetViewModel( cache.Object )
+			var obj = new ComposeTweetViewModel
 			{
 				TwitterConfig = MockTwitterConfig()
 			};
 			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
-			tester.Test( nameof( ComposeTweetViewModel.Notifier ) );
+			tester.Test( nameof( ComposeTweetViewModel.Notifier ), nameof( ComposeTweetViewModel.Cache ) );
 
 			// Assert
 			tester.Verify();
@@ -239,7 +237,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void QuoteCanBeRemoved()
 		{
 			// Arrange
-			var vm = new ComposeTweetViewModel( null );
+			var vm = new ComposeTweetViewModel();
 
 			// Act
 			bool without = vm.RemoveQuoteCommand.CanExecute( null );
@@ -268,8 +266,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
 			var waitHandle = new ManualResetEventSlim( false );
-			var cache = new Mock<IDataCache>();
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				TwitterConfig = MockTwitterConfig(),
 				Text = "Hello world",
@@ -297,7 +294,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void RemoveQuoteRemoves()
 		{
 			// Arrange
-			var vm = new ComposeTweetViewModel( null )
+			var vm = new ComposeTweetViewModel
 			{
 				QuotedTweet = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null )
 			};
@@ -314,8 +311,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
-			var cache = new Mock<IDataCache>();
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				TwitterConfig = MockTwitterConfig(),
 				Text = "Hello world"
@@ -348,8 +344,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void TweetCommandIsCorrectlyDisabled()
 		{
 			// Arrange
-			var cache = new Mock<IDataCache>();
-			var vm = new ComposeTweetViewModel( cache.Object )
+			var vm = new ComposeTweetViewModel
 			{
 				TwitterConfig = MockTwitterConfig()
 			};

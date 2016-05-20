@@ -22,11 +22,13 @@ namespace Twice.ViewModels.Twitter
 	// ReSharper disable once ClassNeverInstantiated.Global
 	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
 	{
-		public ComposeTweetViewModel( IDataCache cache )
+		public ComposeTweetViewModel()
 		{
-			Cache = cache;
 			Accounts = new List<AccountEntry>();
 		}
+
+		[Inject]
+		public ICache Cache { get; set; }
 
 		public async Task OnLoad( object data )
 		{
@@ -51,7 +53,7 @@ namespace Twice.ViewModels.Twitter
 			Medias.Clear();
 			AttachedMedias.Clear();
 
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.Name ).ToList();
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.UserName ).ToList();
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
@@ -363,9 +365,7 @@ namespace Twice.ViewModels.Twitter
 				MediumCharsLeft = value >= MediumWarnThreshold;
 			}
 		}
-
-		private readonly IDataCache Cache;
-
+		
 		private readonly int LowWarnThreshold = 135;
 
 		private readonly List<Media> Medias = new List<Media>();

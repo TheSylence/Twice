@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Twice.Models.Cache
 {
-	internal interface IDataCache
+	internal interface ICache : IDisposable
 	{
-		Task AddHashtag( string hashtag );
+		Task AddHashtag( string hashTag );
 
-		Task AddUser( ulong id, string name );
-
-		Task<IEnumerable<string>> GetKnownHashtags();
-
-		Task<IEnumerable<ulong>> GetKnownUserIds();
+		Task AddUser( UserCacheEntry user );
 
 		Task<IEnumerable<UserCacheEntry>> GetKnownUsers();
+
+		Task<IEnumerable<string>> GetKnownHashtags();
 
 		Task<LinqToTwitter.Configuration> ReadTwitterConfig();
 
