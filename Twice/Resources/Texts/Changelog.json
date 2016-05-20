@@ -5,11 +5,16 @@
         "Description": "",
         "NewFeatures": [
             "Added possibility to send crash reports to the developer",
-            "Images can now be viewed in big"
+            "Images can now be viewed in big",
+            "Tweets can be quoted",
+            "More tweets can be loaded when viewing a user profile",
+            "Mutings can be case(in)sensitive"
         ],
         "Changes": [
             "When inline media are displayed, media url is no longer shown in status text",
-            "Composing a new tweet is now done in a separate dialog"
+            "Composing a new tweet is now done in a separate dialog",
+            "Only one instance of the application can run at the same time",
+            "Quick actions for tweets are only displayed when the mouse is over the tweet"
         ],
         "Fixes": [
             "Inline media option is now taken into account when displaying statuses",
