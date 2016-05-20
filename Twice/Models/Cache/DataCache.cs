@@ -1,66 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Akavache;
+using Newtonsoft.Json;
+using SimpleCacheSharp;
 
 namespace Twice.Models.Cache
 {
 	internal class DataCache : IDataCache
 	{
-		public DataCache( ISecureBlobCache secure, IBlobCache data )
+		public DataCache( ICache cache )
 		{
-			Secure = secure;
-			Cache = data;
+			Cache = cache;
+		}
+
+		[ExcludeFromCodeCoverage]
+		public DataCache( string fileName )
+		{
+			FileName = fileName;
+		}
+
+		[ExcludeFromCodeCoverage]
+		private async Task ConstructCache()
+		{
+			if( Cache != null )
+			{
+				return;
+			}
+
+			Cache = await CacheFactory.Configure().UsingFile( FileName ).BuildCache();
 		}
 
 		public async Task AddHashtag( string hashtag )
 		{
+			await ConstructCache();
+
 			var data = new HashtagCacheEntry( hashtag );
-			await Cache.InsertObject( data.GetKey(), data, DateTimeOffset.Now.Add( Constants.Cache.HashtagExpiration ) );
+			var key = data.GetKey();
+			var value = JsonConvert.SerializeObject( data );
+
+			await Cache.Set( key, value, Constants.Cache.HashtagExpiration );
 		}
 
 		public async Task AddUser( ulong id, string name )
 		{
-			UserCacheEntry data = new UserCacheEntry( id, name );
+			await ConstructCache();
 
-			await Cache.InsertObject( data.GetKey(), data, DateTimeOffset.Now.Add( Constants.Cache.UserInfoExpiration ) );
+			UserCacheEntry data = new UserCacheEntry( id, name );
+			var key = data.GetKey();
+			var value = JsonConvert.SerializeObject( data );
+
+			await Cache.Set( key, value, Constants.Cache.UserInfoExpiration );
 		}
 
 		public async Task<IEnumerable<string>> GetKnownHashtags()
 		{
-			var result = await Cache.GetAllObjects<HashtagCacheEntry>();
+			await ConstructCache();
 
-			return result.Select( r => r.Hashtag );
+			var keys = ( await Cache.GetKeys() ).Where( k => k.StartsWith( $"{HashtagCacheEntry.Key}:", StringComparison.Ordinal ) );
+			var result = new List<string>();
+
+			foreach( var key in keys )
+			{
+				var json = await Cache.Get( key );
+				var tag = JsonConvert.DeserializeObject<HashtagCacheEntry>( json );
+
+				result.Add( tag.Hashtag );
+			}
+
+			return result;
 		}
 
 		public async Task<IEnumerable<ulong>> GetKnownUserIds()
 		{
-			var result = await Cache.GetAllObjects<UserCacheEntry>();
-
-			return result.Select( u => u.Id );
+			var users = await GetKnownUsers();
+			return users.Select( u => u.Id );
 		}
 
 		public async Task<IEnumerable<UserCacheEntry>> GetKnownUsers()
 		{
-			return await Cache.GetAllObjects<UserCacheEntry>();
+			await ConstructCache();
+
+			var keys = ( await Cache.GetKeys() ).Where( k => k.StartsWith( $"{UserCacheEntry.Key}:", StringComparison.Ordinal ) );
+			var result = new List<UserCacheEntry>();
+
+			foreach( var key in keys )
+			{
+				var json = await Cache.Get( key );
+				var user = JsonConvert.DeserializeObject<UserCacheEntry>( json );
+
+				result.Add( user );
+			}
+
+			return result;
 		}
 
 		public async Task<LinqToTwitter.Configuration> ReadTwitterConfig()
 		{
-			return await Cache.GetObject<LinqToTwitter.Configuration>( ConfigurationKey )
-				.Catch( Observable.Return<LinqToTwitter.Configuration>( null ) );
+			await ConstructCache();
+
+			var json = await Cache.Get( ConfigurationKey );
+			if( json == null )
+			{
+				return null;
+			}
+
+			return JsonConvert.DeserializeObject<LinqToTwitter.Configuration>( json );
 		}
 
 		public async Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
 		{
-			await Cache.InsertObject( ConfigurationKey, cfg, TimeSpan.FromDays( 1 ) );
+			var json = JsonConvert.SerializeObject( cfg );
+			await Cache.Set( ConfigurationKey, json, TimeSpan.FromDays( 1 ) );
 		}
 
-		private const string ConfigurationKey = "twitter.help.configuration";
-
-		public IBlobCache Cache { get; }
-		public ISecureBlobCache Secure { get; }
+		internal const string ConfigurationKey = "twitter.help.configuration";
+		private readonly string FileName;
+		private ICache Cache;
 	}
 }

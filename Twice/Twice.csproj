@@ -44,14 +44,6 @@
     <ApplicationIcon>Resources\TwitterIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akavache, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\akavache.core.4.1.2\lib\net45\Akavache.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Akavache.Sqlite3, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\akavache.sqlite3.4.1.2\lib\Portable-Net45+Win8+WP8+Wpa81\Akavache.Sqlite3.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Anotar.NLog, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9d5b24f0733c26f7, processorArchitecture=MSIL">
       <HintPath>..\packages\Anotar.NLog.Fody.3.0.1\lib\Anotar.NLog.dll</HintPath>
       <Private>False</Private>
@@ -160,12 +152,12 @@
       <HintPath>..\packages\Resourcer.Fody.1.4.1\lib\portable-net45+netcore45+wpa81+wp8\Resourcer.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
+    <Reference Include="SimpleCacheSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleCacheSharp.1.0.1\lib\SimpleCacheSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SQLitePCL.raw, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLitePCL.raw_basic.0.8.6\lib\net45\SQLitePCL.raw.dll</HintPath>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Squirrel, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -200,11 +192,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -262,6 +250,7 @@
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
+    <Compile Include="Injections\DataCacheProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
@@ -543,7 +532,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="LinkerPreserve.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -564,10 +552,8 @@
     <Compile Include="Injections\ModelInjectionModule.cs" />
     <Compile Include="Injections\ServiceInjectionModule.cs" />
     <Compile Include="Injections\ViewModelInjectionModule.cs" />
-    <Compile Include="Injections\BlobCacheProvider.cs" />
     <Compile Include="Models\Cache\DataCache.cs" />
     <Compile Include="Models\Cache\IDataCache.cs" />
-    <Compile Include="Injections\SecureBlobCacheProvider.cs" />
     <Compile Include="Models\Configuration\Config.cs" />
     <Compile Include="Injections\ConfigurationProvider.cs" />
     <Compile Include="Models\Configuration\GeneralConfig.cs" />
@@ -666,9 +652,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets'))" />
   </Target>
-  <Import Project="..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets" Condition="Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" />
   <Import Project="..\packages\OctoPack.3.0.60\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.0.60\tools\OctoPack.targets')" />
   <Target Name="EnsureOctoPackImported" BeforeTargets="BeforeBuild" Condition="'$(OctoPackImported)' == ''">
     <Error Condition="!Exists('..\packages\OctoPack.3.0.60\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="You are trying to build with OctoPack, but the NuGet targets file that OctoPack depends on is not available on this computer. This is probably because the OctoPack package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />

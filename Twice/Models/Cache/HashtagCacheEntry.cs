@@ -9,8 +9,10 @@
 
 		public string GetKey()
 		{
-			return $"HASHTAG:{Hashtag}";
+			return $"{Key}:{Hashtag}";
 		}
+
+		public const string Key = "HASHTAG";
 
 		public string Hashtag { get; }
 	}
