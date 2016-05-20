@@ -15,6 +15,30 @@ namespace Twice.Tests.Models.Cache
 	public class SqliteCacheTests
 	{
 		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task AddingUserTwiceUpdatesData()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var user = DummyGenerator.CreateDummyUser();
+				user.UserID = 123;
+				user.ScreenName = "test";
+
+				await cache.AddUser( new UserCacheEntry( user ) );
+
+				// Act
+				user.ScreenName = "testi";
+				await cache.AddUser( new UserCacheEntry( user ) );
+
+				// Assert
+				var fromDb = ( await cache.GetKnownUsers() ).First();
+
+				Assert.AreEqual( "testi", fromDb.UserName );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
 		public async Task CachedHastagsCanBeRetrieved()
 		{
 			// Arrange

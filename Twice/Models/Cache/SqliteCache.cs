@@ -73,7 +73,7 @@ namespace Twice.Models.Cache
 		{
 			using( var cmd = Connection.CreateCommand() )
 			{
-				cmd.CommandText = "INSERT INTO Users (Id, UserName, UserData, Expires) VALUES " +
+				cmd.CommandText = "INSERT OR REPLACE INTO Users (Id, UserName, UserData, Expires) VALUES " +
 								"(@userId, @userName, @json, @expires);";
 
 				cmd.AddParameter( "userId", user.UserId );

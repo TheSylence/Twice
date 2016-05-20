@@ -175,7 +175,11 @@ namespace Twice.ViewModels.Columns
 			if( quoteId != 0 )
 			{
 				// TODO: Caching
-				vm.QuotedTweet = await CreateViewModel( await Context.Twitter.Statuses.GetTweet( quoteId, false ) );
+				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
+				if( quoted != null )
+				{
+					vm.QuotedTweet = await CreateViewModel( quoted );
+				}
 			}
 
 			return vm;

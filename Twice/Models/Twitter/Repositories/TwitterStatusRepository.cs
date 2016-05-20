@@ -30,10 +30,17 @@ namespace Twice.Models.Twitter.Repositories
 
 		public async Task<Status> GetTweet( ulong statusId, bool includeEntities )
 		{
-			var status = await Queryable.Where( s => s.Type == StatusType.Show && s.StatusID == statusId
-			                                         && s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
+			try
+			{
+				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.StatusID == statusId
+														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
-			return status;
+				return status;
+			}
+			catch( TwitterQueryException )
+			{
+				return null;
+			}
 		}
 
 		public Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 )
