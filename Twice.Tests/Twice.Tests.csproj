@@ -174,10 +174,12 @@
     <Compile Include="Converters\EmptyListTests.cs" />
     <Compile Include="Converters\EmptyStringTests.cs" />
     <Compile Include="Converters\InvertBoolTests.cs" />
+    <Compile Include="Converters\LocalizeTests.cs" />
     <Compile Include="Converters\MathConverterTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="Converters\StatusHighlighterTests.cs" />
+    <Compile Include="Converters\UserToIdTests.cs" />
     <Compile Include="Converters\UtcToLocalTests.cs" />
     <Compile Include="DummyGenerator.cs" />
     <Compile Include="ExceptionAssert.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
+    <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
     <Compile Include="ViewModels\NotifierTests.cs" />

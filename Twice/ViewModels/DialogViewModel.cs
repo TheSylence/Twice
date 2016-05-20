@@ -13,7 +13,7 @@ namespace Twice.ViewModels
 	{
 		protected virtual bool CanExecuteOkCommand()
 		{
-			return true;
+			return !HasErrors;
 		}
 
 		protected void Close( bool result )
