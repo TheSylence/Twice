@@ -10,9 +10,10 @@
 
 		public string GetKey()
 		{
-			return $"USER:{Id}";
+			return $"{Key}:{Id}";
 		}
 
+		public const string Key = "USER";
 		public ulong Id { get; }
 		public string Name { get; }
 	}

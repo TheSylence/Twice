@@ -152,8 +152,8 @@
       <HintPath>..\packages\Resourcer.Fody.1.4.1\lib\portable-net45+netcore45+wpa81+wp8\Resourcer.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SimpleCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleCacheSharp.1.0.0\lib\SimpleCache.dll</HintPath>
+    <Reference Include="SimpleCacheSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleCacheSharp.1.0.1\lib\SimpleCacheSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -250,6 +250,7 @@
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
+    <Compile Include="Injections\DataCacheProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />

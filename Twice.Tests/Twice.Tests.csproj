@@ -124,6 +124,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SimpleCacheSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleCacheSharp.1.0.1\lib\SimpleCacheSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
@@ -137,6 +141,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -191,6 +196,7 @@
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ITypeResolver.cs" />
+    <Compile Include="Models\Cache\DataCacheTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
