@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Configuration;
+using Twice.Models.Media;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
 using Twice.Resources;
@@ -234,6 +235,17 @@ namespace Twice.ViewModels.Twitter
 						foreach( var entity in entities )
 						{
 							var vm = new StatusMediaViewModel( entity );
+							vm.OpenRequested += Image_OpenRequested;
+							_InlineMedias.Add( vm );
+						}
+
+						var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
+							.Distinct( TwitterComparers.UrlEntityComparer )
+							.Select( e => MediaExtractorRepository.ExtractMedia( e.ExpandedUrl ) );
+
+						foreach( var url in urls.Where( u => u != null ) )
+						{
+							var vm = new StatusMediaViewModel( url );
 							vm.OpenRequested += Image_OpenRequested;
 							_InlineMedias.Add( vm );
 						}

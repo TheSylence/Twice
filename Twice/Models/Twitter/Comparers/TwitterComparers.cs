@@ -8,8 +8,10 @@ namespace Twice.Models.Twitter.Comparers
 		static TwitterComparers()
 		{
 			MediaEntityComparer = new MediaEntityComparer();
+			UrlEntityComparer = new UrlEntityComparer();
 		}
 
 		public static IEqualityComparer<MediaEntity> MediaEntityComparer { get; }
+		public static IEqualityComparer<UrlEntity> UrlEntityComparer { get; }
 	}
 }
