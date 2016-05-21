@@ -22,7 +22,7 @@ namespace Twice.Models.Twitter
 
 		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
 
-		Task<Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
+		Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
 
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }

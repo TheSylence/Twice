@@ -63,7 +63,7 @@ namespace Twice.Models.Twitter
 			return Context.TweetAsync( text, medias );
 		}
 
-		public Task<Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners )
+		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners )
 		{
 			return Context.UploadMediaAsync( mediaData, mediaType, additionalOwners );
 		}

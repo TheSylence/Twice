@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
@@ -84,6 +85,43 @@ namespace Twice.Models.Cache
 				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
 
 				await cmd.ExecuteNonQueryAsync();
+			}
+		}
+
+		public async Task AddStatuses( IList<Status> statuses )
+		{
+			using( var tx = Connection.BeginTransaction() )
+			{
+				int count = statuses.Count;
+				const int batchSize = 100;
+				int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+
+				for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+				{
+					var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
+
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "INSERT OR REPLACE INTO Statuses (Id, UserId, StatusData, Expires) VALUES ";
+
+						cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+						{
+							// ReSharper disable AccessToDisposedClosure
+							cmd.AddParameter( $"id{i}", s.GetStatusId() );
+							cmd.AddParameter( $"userid{i}", s.User.GetUserId() );
+							cmd.AddParameter( $"json{i}", JsonConvert.SerializeObject( s ) );
+
+							// ReSharper restore AccessToDisposedClosure
+
+							return $"( @id{i}, @userid{i}, @json{i}, @expires )";
+						} ) );
+
+						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
+						await cmd.ExecuteNonQueryAsync();
+					}
+				}
+
+				tx.Commit();
 			}
 		}
 

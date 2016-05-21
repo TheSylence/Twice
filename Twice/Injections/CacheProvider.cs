@@ -16,7 +16,7 @@ namespace Twice.Injections
 			var sb = new SQLiteConnectionStringBuilder
 			{
 				DataSource = Constants.IO.CacheFileName,
-				JournalMode = SQLiteJournalModeEnum.Memory
+				JournalMode = SQLiteJournalModeEnum.Off
 			};
 
 			return new SqliteCache( sb.ToString() );

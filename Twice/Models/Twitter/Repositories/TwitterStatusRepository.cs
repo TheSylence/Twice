@@ -28,10 +28,7 @@ namespace Twice.Models.Twitter.Repositories
 			}
 
 			var statusList = await query.ToListAsync();
-			foreach( var status in statusList )
-			{
-				await Cache.AddStatus( status );
-			}
+			await Cache.AddStatuses( statusList );
 			return statusList;
 		}
 
@@ -71,10 +68,7 @@ namespace Twice.Models.Twitter.Repositories
 			}
 
 			var statusList = await query.ToListAsync();
-			foreach( var status in statusList )
-			{
-				await Cache.AddStatus( status );
-			}
+			await Cache.AddStatuses( statusList );
 			return statusList;
 		}
 
