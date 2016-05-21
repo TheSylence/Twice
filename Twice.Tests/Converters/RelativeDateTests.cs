@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Converters;
@@ -12,7 +13,7 @@ namespace Twice.Tests.Converters
 	public class RelativeDateTests
 	{
 		[TestMethod, TestCategory( "Converters" )]
-		public void ConvertBackThrosException()
+		public void ConvertBackThrowsException()
 		{
 			// Arrange
 			var conv = new RelativeDate();
@@ -86,6 +87,19 @@ namespace Twice.Tests.Converters
 
 			// Assert
 			Assert.AreEqual( Strings.Now, result );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void WrongTimeReturnsUnsetValue()
+		{
+			// Arrange
+			var conv = new RelativeDate();
+
+			// Act
+			var v = conv.Convert( string.Empty, null, null, null );
+
+			// Assert
+			Assert.AreEqual( DependencyProperty.UnsetValue, v );
 		}
 	}
 }

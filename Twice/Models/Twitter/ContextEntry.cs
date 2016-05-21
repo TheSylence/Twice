@@ -1,12 +1,13 @@
 ﻿using System;
 using LinqToTwitter;
+using Twice.Models.Cache;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class ContextEntry : IContextEntry
 	{
-		public ContextEntry( INotifier notifier, TwitterAccountData data )
+		public ContextEntry( INotifier notifier, TwitterAccountData data, ICache cache )
 		{
 			Data = data;
 			Notifier = notifier;
@@ -28,7 +29,7 @@ namespace Twice.Models.Twitter
 					OAuthToken = data.OAuthToken,
 					OAuthTokenSecret = data.OAuthTokenSecret
 				}
-			} ) );
+			} ), cache );
 		}
 
 		public override bool Equals( object obj )

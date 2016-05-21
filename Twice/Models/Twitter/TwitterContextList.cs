@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Anotar.NLog;
 using Newtonsoft.Json;
+using Twice.Models.Cache;
 using Twice.Utilities;
 using Twice.ViewModels;
 
@@ -11,8 +12,9 @@ namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{
-		public TwitterContextList( INotifier notifier, string fileName, ISerializer serializer )
+		public TwitterContextList( INotifier notifier, string fileName, ISerializer serializer, ICache cache )
 		{
+			Cache = cache;
 			Serializer = serializer;
 			FileName = fileName;
 			Notifier = notifier;
@@ -40,7 +42,7 @@ namespace Twice.Models.Twitter
 			{
 				return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
 				{
-					var ctx = new ContextEntry( Notifier, accDecrypted );
+					var ctx = new ContextEntry( Notifier, accDecrypted, cache );
 					LogTo.Info( $"Loaded context for {accDecrypted.AccountName} ({accDecrypted.UserId})" );
 
 					return ctx;
@@ -53,12 +55,14 @@ namespace Twice.Models.Twitter
 		public void AddContext( TwitterAccountData data )
 		{
 			LogTo.Info( $"Adding account data for {data.AccountName} ({data.UserId})" );
-			Contexts.Add( new ContextEntry( Notifier, data ) );
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
 
 			SaveToFile();
 
 			ContextsChanged?.Invoke( this, EventArgs.Empty );
 		}
+
+		private readonly ICache Cache;
 
 		public void Dispose()
 		{
@@ -76,7 +80,7 @@ namespace Twice.Models.Twitter
 			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
 			Contexts.Remove( context );
 
-			Contexts.Add( new ContextEntry( Notifier, data ) );
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
 			SaveToFile();
 		}
 

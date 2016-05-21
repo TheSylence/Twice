@@ -19,13 +19,13 @@ namespace Twice.Tests.Models.Twitter
 				UserId = 123,
 				ImageUrl = "http://example.com/image.png"
 			};
-			var a = new ContextEntry( notifier.Object, data );
-			var b = new ContextEntry( notifier.Object, data );
+			var a = new ContextEntry( notifier.Object, data, null );
+			var b = new ContextEntry( notifier.Object, data, null );
 			var c = new ContextEntry( notifier.Object, new TwitterAccountData
 			{
 				UserId = 111,
 				ImageUrl = "http://example.com/image.png"
-			} );
+			}, null );
 
 			// Act
 			var ab = a.Equals( b );
@@ -52,7 +52,7 @@ namespace Twice.Tests.Models.Twitter
 				UserId = 123,
 				ImageUrl = "http://example.com/image.png"
 			};
-			var entry = new ContextEntry( notifier.Object, data );
+			var entry = new ContextEntry( notifier.Object, data, null );
 
 			// Act
 			var hash = entry.GetHashCode();

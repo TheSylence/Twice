@@ -3,14 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using LinqToTwitter;
+using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
 	internal class TwitterUserRepository : TwitterRepositoryBase, ITwitterUserRepository
 	{
-		public TwitterUserRepository( TwitterContext context )
-			: base( context )
+		public TwitterUserRepository( TwitterContext context, ICache cache )
+			: base( context, cache )
 		{
 		}
 

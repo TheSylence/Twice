@@ -19,7 +19,7 @@ namespace Twice.Tests.Models.Twitter
 			string fileName = Path.GetTempFileName();
 			var notifier = new Mock<INotifier>();
 			var serializer = new Mock<ISerializer>();
-			var list = new TwitterContextList( notifier.Object, fileName, serializer.Object );
+			var list = new TwitterContextList( notifier.Object, fileName, serializer.Object, null );
 
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Dispose() ).Verifiable();
@@ -41,7 +41,7 @@ namespace Twice.Tests.Models.Twitter
 			var serializer = new Mock<ISerializer>( MockBehavior.Strict );
 
 			// Act
-			var ex = ExceptionAssert.Catch<Exception>( () => new TwitterContextList( notifier.Object, fileName, serializer.Object ) );
+			var ex = ExceptionAssert.Catch<Exception>( () => new TwitterContextList( notifier.Object, fileName, serializer.Object, null ) );
 
 			// Assert
 			Assert.IsNull( ex );
@@ -53,7 +53,7 @@ namespace Twice.Tests.Models.Twitter
 			// Arrange
 			string fileName = Path.GetTempFileName();
 			var notifier = new Mock<INotifier>();
-			var list = new TwitterContextList( notifier.Object, fileName, new Serializer() );
+			var list = new TwitterContextList( notifier.Object, fileName, new Serializer(), null );
 
 			var toAdd = new TwitterAccountData
 			{

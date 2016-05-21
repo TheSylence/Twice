@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Twice.Models.Cache;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
@@ -10,14 +11,14 @@ namespace Twice.Models.Twitter
 	[ExcludeFromCodeCoverage]
 	internal class TwitterContextWrapper : ITwitterContext
 	{
-		public TwitterContextWrapper( TwitterContext context )
+		public TwitterContextWrapper( TwitterContext context, ICache cache )
 		{
 			Context = context;
 
-			Users = new TwitterUserRepository( context );
-			Statuses = new TwitterStatusRepository( context );
-			Friendships = new TwitterFriendshipRepository( context );
-			Streaming = new TwitterStreamingRepository( context );
+			Users = new TwitterUserRepository( context, cache );
+			Statuses = new TwitterStatusRepository( context, cache );
+			Friendships = new TwitterFriendshipRepository( context, cache );
+			Streaming = new TwitterStreamingRepository( context, cache );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )

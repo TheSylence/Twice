@@ -12,7 +12,7 @@ namespace Twice.Models.Cache
 				"CREATE TABLE IF NOT EXISTS Users ( Id INT PRIMARY KEY, UserName TEXT NOT NULL, UserData TEXT, Expires BIGINT );";
 
 			yield return
-				"CREATE TABLE IF NOT EXISTS Statuses ( Id INT PRIMARY KEY, UserId INT NOT NULL, Json TEXT NOT NULL, Expires BIGINT );"
+				"CREATE TABLE IF NOT EXISTS Statuses ( Id INT PRIMARY KEY, UserId INT NOT NULL, StatusData TEXT NOT NULL, Expires BIGINT );"
 				;
 
 			yield return "CREATE TABLE IF NOT EXISTS TwitterConfig ( Data TEXT, Expires BIG INT );";

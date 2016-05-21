@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Threading.Tasks;
 using Fody;
+using LinqToTwitter;
 using Newtonsoft.Json;
+using Twice.Models.Twitter;
 
 namespace Twice.Models.Cache
 {
@@ -64,6 +66,22 @@ namespace Twice.Models.Cache
 				cmd.CommandText = "INSERT INTO Hashtags (Tag, Expires) VALUES (@tag, @expires);";
 				cmd.AddParameter( "tag", hashTag );
 				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( HashtagExpiration ) ) );
+
+				await cmd.ExecuteNonQueryAsync();
+			}
+		}
+
+		public async Task AddStatus( Status status )
+		{
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "INSERT OR REPLACE INTO Statuses (Id, UserId, StatusData, Expires) "
+								+ "VALUES (@id, @userid, @json, @expires);";
+
+				cmd.AddParameter( "id", status.GetStatusId() );
+				cmd.AddParameter( "userid", status.User.GetUserId() );
+				cmd.AddParameter( "json", JsonConvert.SerializeObject( status ) );
+				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
 
 				await cmd.ExecuteNonQueryAsync();
 			}
@@ -132,6 +150,25 @@ namespace Twice.Models.Cache
 			return result;
 		}
 
+		public async Task<Status> GetStatus( ulong id )
+		{
+			await Cleanup();
+
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT StatusData FROM Statuses WHERE id = @id;";
+				cmd.AddParameter( "id", id );
+
+				var json = await cmd.ExecuteScalarAsync() as string;
+				if( json == null )
+				{
+					return null;
+				}
+
+				return JsonConvert.DeserializeObject<Status>( json );
+			}
+		}
+
 		public async Task<LinqToTwitter.Configuration> ReadTwitterConfig()
 		{
 			await Cleanup();
@@ -169,6 +206,7 @@ namespace Twice.Models.Cache
 
 		private readonly SQLiteConnection Connection;
 		private readonly TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
+		private readonly TimeSpan StatusExpiration = TimeSpan.FromDays( 20 );
 		private readonly TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
 		private readonly TimeSpan UserExpiration = TimeSpan.FromDays( 14 );
 	}

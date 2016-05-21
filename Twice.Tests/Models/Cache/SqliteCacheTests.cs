@@ -267,6 +267,68 @@ namespace Twice.Tests.Models.Cache
 		}
 
 		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusCanBeAdded()
+		{
+			// Arrange
+
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.Text = "hello world";
+				status.User.UserID = status.UserID = 222;
+				status.ID = 111;
+
+				// Act
+				await cache.AddStatus( status );
+
+				// Assert
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT Id, UserId, StatusData FROM Statuses";
+					using( var reader = cmd.ExecuteReader() )
+					{
+						Assert.IsTrue( reader.Read() );
+
+						Assert.AreEqual( 111, reader.GetInt32( 0 ) );
+						Assert.AreEqual( 222, reader.GetInt32( 1 ) );
+
+						var from = JsonConvert.DeserializeObject<Status>( reader.GetString( 2 ) );
+
+						Assert.AreEqual( status.Text, from.Text );
+					}
+				}
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusCanBeRetrieved()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.Text = "hello world";
+				status.UserID = 222;
+				status.ID = 111;
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO Statuses (Id, UserId, StatusData) VALUES (111, 222, @json);";
+					cmd.AddParameter( "json", JsonConvert.SerializeObject( status ) );
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				var fromDb = await cache.GetStatus( 111 );
+
+				// Assert
+				Assert.AreEqual( status.UserID, fromDb.UserID );
+				Assert.AreEqual( status.Text, fromDb.Text );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
 		public async Task TwitterConfigCanBeRetrieved()
 		{
 			// Arrange

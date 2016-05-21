@@ -1,23 +1,24 @@
+using Anotar.NLog;
+using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Anotar.NLog;
-using LinqToTwitter;
+using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
 	internal class TwitterStatusRepository : TwitterRepositoryBase, ITwitterStatusRepository
 	{
-		public TwitterStatusRepository( TwitterContext context )
-			: base( context )
+		public TwitterStatusRepository( TwitterContext context, ICache cache )
+			: base( context, cache )
 		{
 		}
 
-		public Task<List<Status>> Filter( params Expression<Func<Status, bool>>[] filterExpressions )
+		public async Task<List<Status>> Filter( params Expression<Func<Status, bool>>[] filterExpressions )
 		{
 			IQueryable<Status> query = Queryable;
 
@@ -26,16 +27,28 @@ namespace Twice.Models.Twitter.Repositories
 				query = query.Where( filter );
 			}
 
-			return query.ToListAsync();
+			var statusList = await query.ToListAsync();
+			foreach( var status in statusList )
+			{
+				await Cache.AddStatus( status );
+			}
+			return statusList;
 		}
 
 		public async Task<Status> GetTweet( ulong statusId, bool includeEntities )
 		{
+			var cached = await Cache.GetStatus( statusId );
+			if( cached != null )
+			{
+				return cached;
+			}
+
 			try
 			{
 				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.StatusID == statusId
 														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
+				await Cache.AddStatus( status );
 				return status;
 			}
 			catch( TwitterQueryException ex )
@@ -45,7 +58,7 @@ namespace Twice.Models.Twitter.Repositories
 			}
 		}
 
-		public Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 )
+		public async Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 )
 		{
 			var query = Queryable.Where( s => s.Type == StatusType.User && s.UserID == userId );
 			if( since != 0 )
@@ -57,7 +70,12 @@ namespace Twice.Models.Twitter.Repositories
 				query = query.Where( s => s.MaxID == max );
 			}
 
-			return query.ToListAsync();
+			var statusList = await query.ToListAsync();
+			foreach( var status in statusList )
+			{
+				await Cache.AddStatus( status );
+			}
+			return statusList;
 		}
 
 		public TwitterQueryable<Status> Queryable => Context.Status;

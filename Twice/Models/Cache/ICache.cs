@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LinqToTwitter;
 
 namespace Twice.Models.Cache
 {
@@ -8,11 +9,15 @@ namespace Twice.Models.Cache
 	{
 		Task AddHashtag( string hashTag );
 
+		Task AddStatus( Status status );
+
 		Task AddUser( UserCacheEntry user );
+
+		Task<IEnumerable<string>> GetKnownHashtags();
 
 		Task<IEnumerable<UserCacheEntry>> GetKnownUsers();
 
-		Task<IEnumerable<string>> GetKnownHashtags();
+		Task<Status> GetStatus( ulong id );
 
 		Task<LinqToTwitter.Configuration> ReadTwitterConfig();
 
