@@ -155,13 +155,13 @@
 								</Button>
 							</StackPanel>
 
-							<ListView ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-								<ListView.InputBindings>
+							<ListBox ItemsSource="{Binding Entries}" Margin="5" SelectedItem="{Binding SelectedEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+								<ListBox.InputBindings>
 									<KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
 									<KeyBinding Key="E" Modifiers="Control" Command="{Binding EditCommand}" />
 									<KeyBinding Key="N" Modifiers="Control" Command="{Binding AddCommand}" />
-								</ListView.InputBindings>
-								<ListView.ItemTemplate>
+								</ListBox.InputBindings>
+								<ListBox.ItemTemplate>
 									<DataTemplate DataType="configuration:MuteEntry">
 										<StackPanel Orientation="Vertical">
 											<TextBlock Text="{Binding Filter}" />
@@ -169,11 +169,10 @@
 												<TextBlock Text="{Binding EndDate}" Visibility="{Binding HasEndDate, Converter={StaticResource BoolToVisibleConv}}" />
 												<TextBlock Text="{lex:Loc Forever}" FontStyle="Italic" Visibility="{Binding HasEndDate, Converter={StaticResource InvertBoolToVisibleConv}}" />
 											</Grid>
-											<CheckBox IsChecked="{Binding CaseSensitive, Mode=TwoWay}" Content="{lex:Loc CaseSensitive}" />
 										</StackPanel>
 									</DataTemplate>
-								</ListView.ItemTemplate>
-							</ListView>
+								</ListBox.ItemTemplate>
+							</ListBox>
 						</DockPanel>
 
 						<StackPanel Orientation="Vertical" Grid.Column="1" DataContext="{Binding EditData}" IsEnabled="{Binding Converter={StaticResource NotNullConv}}">
@@ -181,6 +180,7 @@
 							<TextBox Margin="5,0" controls:TextBoxHelper.Watermark="{lex:Loc FilterCriteria}" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 							<CheckBox Content="{lex:Loc ActiveUntil}" Margin="5" IsChecked="{Binding HasEndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 							<DatePicker Margin="5,0" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding HasEndDate}" />
+							<CheckBox IsChecked="{Binding CaseSensitive, Mode=TwoWay}" Content="{lex:Loc CaseSensitive}" />
 							<StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
 								<Button Command="{Binding SaveCommand}" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 									ToolTip="{lex:Loc Apply}" Margin="5,0">
