@@ -241,14 +241,19 @@ namespace Twice.ViewModels.Columns
 
 		private async Task UpdateCache( Status status )
 		{
+			List<Task> tasks = new List<Task>( status.Entities.UserMentionEntities.Count +
+				status.Entities.HashTagEntities.Count );
+
 			foreach( var mention in status.Entities.UserMentionEntities )
 			{
-				await Cache.AddUser( new UserCacheEntry(mention));
+				tasks.Add( Cache.AddUser( new UserCacheEntry( mention ) ) );
 			}
 			foreach( var hashtag in status.Entities.HashTagEntities )
 			{
-				await Cache.AddHashtag( hashtag.Tag );
+				tasks.Add( Cache.AddHashtag( hashtag.Tag ) );
 			}
+
+			await Task.WhenAll( tasks );
 		}
 
 		public event EventHandler Changed;
@@ -260,14 +265,11 @@ namespace Twice.ViewModels.Columns
 		public async Task Load()
 		{
 			Parser.StartStreaming();
-
-			await Task.Run( async () =>
+			
+			await OnLoad().ContinueWith( t =>
 			{
-				await OnLoad().ContinueWith( t =>
-				{
-					IsLoading = false;
-					RaisePropertyChanged( nameof( IsLoading ) );
-				} );
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
 			} );
 		}
 

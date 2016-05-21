@@ -95,6 +95,7 @@ namespace Twice.Models.Cache
 				int count = statuses.Count;
 				const int batchSize = 100;
 				int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+				List<Task> tasks = new List<Task>( runsNeeded );
 
 				for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
 				{
@@ -117,10 +118,11 @@ namespace Twice.Models.Cache
 						} ) );
 
 						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
-						await cmd.ExecuteNonQueryAsync();
+						tasks.Add( cmd.ExecuteNonQueryAsync() );
 					}
 				}
 
+				await Task.WhenAll( tasks );
 				tx.Commit();
 			}
 		}

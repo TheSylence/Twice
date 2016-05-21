@@ -157,10 +157,8 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			foreach( var col in Columns )
-			{
-				await col.Load();
-			}
+			var loadTasks = Columns.Select( c => c.Load() );
+			await Task.WhenAll( loadTasks );
 
 			try
 			{
