@@ -16,6 +16,9 @@ namespace Twice.Models.Cache
 				;
 
 			yield return "CREATE TABLE IF NOT EXISTS TwitterConfig ( Data TEXT, Expires BIG INT );";
+
+			yield return
+				"CREATE TABLE IF NOT EXISTS ColumnStatuses ( StatusId INT, ColumnId GUID, PRIMARY KEY( StatusId, ColumnId ) );";
 		}
 	}
 }

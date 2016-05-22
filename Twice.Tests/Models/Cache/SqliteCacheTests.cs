@@ -147,7 +147,7 @@ namespace Twice.Tests.Models.Cache
 				}
 
 				// Assert
-				CollectionAssert.AreEquivalent( new[] {"Hashtags", "Users", "TwitterConfig", "Statuses"}, tableNames );
+				CollectionAssert.AreEquivalent( new[] {"Hashtags", "Users", "TwitterConfig", "Statuses", "ColumnStatuses"}, tableNames );
 			}
 		}
 

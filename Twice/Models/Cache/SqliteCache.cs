@@ -209,6 +209,66 @@ namespace Twice.Models.Cache
 			}
 		}
 
+		public async Task<List<Status>> GetStatusesForColumn( Guid columnId )
+		{
+			List<Status> result = new List<Status>();
+
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText =
+					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id "+
+					" WHERE c.ColumnId = @columnId ORDER BY s.Id";
+				cmd.AddParameter( "columnId", columnId );
+
+				using( var reader = await cmd.ExecuteReaderAsync() )
+				{
+					while( await reader.ReadAsync() )
+					{
+						var json = await reader.GetFieldValueAsync<string>( 0 );
+						result.Add( JsonConvert.DeserializeObject<Status>( json ) );
+					}
+				}
+			}
+
+			return result;
+		}
+
+		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
+		{
+			using( var tx = Connection.BeginTransaction() )
+			{
+				int count = statuses.Count;
+				const int batchSize = 100;
+				int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+				List<Task> tasks = new List<Task>( runsNeeded );
+				for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+				{
+					var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
+
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "INSERT OR REPLACE INTO ColumnStatuses (ColumnId, StatusId) VALUES ";
+						cmd.AddParameter( "columnId", columnId );
+
+						cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+						{
+							// ReSharper disable AccessToDisposedClosure
+							cmd.AddParameter( $"statusId{i}", s.GetStatusId() );
+
+							// ReSharper restore AccessToDisposedClosure
+
+							return $"( @columnId, @statusId{i} )";
+						} ) );
+
+						tasks.Add( cmd.ExecuteNonQueryAsync() );
+					}
+				}
+
+				await Task.WhenAll( tasks );
+				tx.Commit();
+			}
+		}
+
 		public async Task<LinqToTwitter.Configuration> ReadTwitterConfig()
 		{
 			await Cleanup();
