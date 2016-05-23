@@ -16,10 +16,14 @@ namespace Twice.Injections
 			var sb = new SQLiteConnectionStringBuilder
 			{
 				DataSource = Constants.IO.CacheFileName,
-				JournalMode = SQLiteJournalModeEnum.Off
+				JournalMode = SQLiteJournalModeEnum.Wal,
+				Enlist = true,
+				PageSize = 4096,
+				SyncMode = SynchronizationModes.Off
 			};
 
 			return new SqliteCache( sb.ToString() );
+			//return new NullCache();
 		}
 	}
 }

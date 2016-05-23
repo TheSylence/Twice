@@ -20,5 +20,10 @@ namespace Twice.Models.Cache
 			yield return
 				"CREATE TABLE IF NOT EXISTS ColumnStatuses ( StatusId INT, ColumnId GUID, PRIMARY KEY( StatusId, ColumnId ) );";
 		}
+
+		private IEnumerable<string> GetInitQueries()
+		{
+			yield return "PRAGMA synchronous = off;";
+		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
@@ -37,20 +38,33 @@ namespace Twice.Models.Cache
 
 			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
 
-			foreach( var table in tables )
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
 			{
-				using( var cmd = Connection.CreateCommand() )
+				using( var tx = new Transaction( Connection ) )
 				{
-					cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
-					cmd.AddParameter( "now", now );
-					await cmd.ExecuteNonQueryAsync();
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
+							cmd.AddParameter( "now", now );
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
 				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
 		private void Init()
 		{
-			foreach( var qry in GetDdlQueries() )
+			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
 			{
 				using( var cmd = Connection.CreateCommand() )
 				{
@@ -60,86 +74,132 @@ namespace Twice.Models.Cache
 			}
 		}
 
-		public async Task AddHashtag( string hashTag )
+		public async Task AddHashtags( IList<string> hashTags )
 		{
-			using( var cmd = Connection.CreateCommand() )
+			if( !hashTags.Any() )
 			{
-				cmd.CommandText = "INSERT INTO Hashtags (Tag, Expires) VALUES (@tag, @expires);";
-				cmd.AddParameter( "tag", hashTag );
-				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( HashtagExpiration ) ) );
-
-				await cmd.ExecuteNonQueryAsync();
+				return;
 			}
-		}
 
-		public async Task AddStatus( Status status )
-		{
-			using( var cmd = Connection.CreateCommand() )
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
 			{
-				cmd.CommandText = "INSERT OR REPLACE INTO Statuses (Id, UserId, StatusData, Expires) "
-								+ "VALUES (@id, @userid, @json, @expires);";
+				using( var tx = new Transaction( Connection ) )
+				{
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "INSERT INTO Hashtags (Tag, Expires) VALUES ";
+						cmd.CommandText += string.Join( ",", hashTags.Select( ( h, i ) =>
+						{
+							// ReSharper disable AccessToDisposedClosure
+							cmd.AddParameter( $"tag{i}", h );
 
-				cmd.AddParameter( "id", status.GetStatusId() );
-				cmd.AddParameter( "userid", status.User.GetUserId() );
-				cmd.AddParameter( "json", JsonConvert.SerializeObject( status ) );
-				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
+							// ReSharper restore AccessToDisposedClosure
 
-				await cmd.ExecuteNonQueryAsync();
+							return $"( @tag{i}, @expires )";
+						} ) );
+
+						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( HashtagExpiration ) ) );
+
+						await cmd.ExecuteNonQueryAsync();
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
 		public async Task AddStatuses( IList<Status> statuses )
 		{
-			using( var tx = Connection.BeginTransaction() )
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
 			{
-				int count = statuses.Count;
-				const int batchSize = 100;
-				int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
-				List<Task> tasks = new List<Task>( runsNeeded );
-
-				for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+				using( var tx = new Transaction( Connection ) )
 				{
-					var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
+					int count = statuses.Count;
+					const int batchSize = 100;
+					int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
 
-					using( var cmd = Connection.CreateCommand() )
+					for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
 					{
-						cmd.CommandText = "INSERT OR REPLACE INTO Statuses (Id, UserId, StatusData, Expires) VALUES ";
+						var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
 
-						cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+						using( var cmd = Connection.CreateCommand() )
 						{
-							// ReSharper disable AccessToDisposedClosure
-							cmd.AddParameter( $"id{i}", s.GetStatusId() );
-							cmd.AddParameter( $"userid{i}", s.User.GetUserId() );
-							cmd.AddParameter( $"json{i}", JsonConvert.SerializeObject( s ) );
+							cmd.CommandText = "INSERT OR REPLACE INTO Statuses (Id, UserId, StatusData, Expires) VALUES ";
 
-							// ReSharper restore AccessToDisposedClosure
+							cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								cmd.AddParameter( $"id{i}", s.GetStatusId() );
+								cmd.AddParameter( $"userid{i}", s.User.GetUserId() );
+								cmd.AddParameter( $"json{i}", JsonConvert.SerializeObject( s ) );
 
-							return $"( @id{i}, @userid{i}, @json{i}, @expires )";
-						} ) );
+								// ReSharper restore AccessToDisposedClosure
 
-						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
-						tasks.Add( cmd.ExecuteNonQueryAsync() );
+								return $"( @id{i}, @userid{i}, @json{i}, @expires )";
+							} ) );
+
+							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
+							await cmd.ExecuteNonQueryAsync();
+						}
 					}
-				}
 
-				await Task.WhenAll( tasks );
-				tx.Commit();
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
-		public async Task AddUser( UserCacheEntry user )
+		public async Task AddUsers( IList<UserCacheEntry> users )
 		{
-			using( var cmd = Connection.CreateCommand() )
+			int count = users.Count;
+			const int batchSize = 100;
+			int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+			await Semaphore.WaitAsync( SemaphoreWait );
+
+			try
 			{
-				cmd.CommandText = "INSERT OR REPLACE INTO Users (Id, UserName, UserData, Expires) VALUES " +
-								"(@userId, @userName, @json, @expires);";
+				using( var tx = new Transaction( Connection ) )
+				{
+					for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+					{
+						var items = users.Skip( batchIdx * batchSize ).Take( batchSize );
 
-				cmd.AddParameter( "userId", user.UserId );
-				cmd.AddParameter( "userName", user.UserName );
-				cmd.AddParameter( "json", user.Data );
-				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( UserExpiration ) ) );
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = "INSERT OR REPLACE INTO Users (Id, UserName, UserData, Expires) VALUES ";
 
-				await cmd.ExecuteNonQueryAsync();
+							cmd.CommandText += string.Join( ",", items.Select( ( u, i ) =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								cmd.AddParameter( $"userId{i}", u.UserId );
+								cmd.AddParameter( $"userName{i}", u.UserName );
+								cmd.AddParameter( $"json{i}", u.Data );
+
+								// ReSharper restore AccessToDisposedClosure
+
+								return $"( @userId{i}, @userName{i}, @json{i}, @expires )";
+							} ) );
+
+							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( UserExpiration ) ) );
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
@@ -216,7 +276,7 @@ namespace Twice.Models.Cache
 			using( var cmd = Connection.CreateCommand() )
 			{
 				cmd.CommandText =
-					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id "+
+					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id " +
 					" WHERE c.ColumnId = @columnId ORDER BY s.Id";
 				cmd.AddParameter( "columnId", columnId );
 
@@ -235,37 +295,44 @@ namespace Twice.Models.Cache
 
 		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
 		{
-			using( var tx = Connection.BeginTransaction() )
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
 			{
-				int count = statuses.Count;
-				const int batchSize = 100;
-				int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
-				List<Task> tasks = new List<Task>( runsNeeded );
-				for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+				using( var tx = new Transaction( Connection ) )
 				{
-					var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
+					int count = statuses.Count;
+					const int batchSize = 100;
+					int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
 
-					using( var cmd = Connection.CreateCommand() )
+					for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
 					{
-						cmd.CommandText = "INSERT OR REPLACE INTO ColumnStatuses (ColumnId, StatusId) VALUES ";
-						cmd.AddParameter( "columnId", columnId );
+						var items = statuses.Skip( batchIdx * batchSize ).Take( batchSize );
 
-						cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+						using( var cmd = Connection.CreateCommand() )
 						{
-							// ReSharper disable AccessToDisposedClosure
-							cmd.AddParameter( $"statusId{i}", s.GetStatusId() );
+							cmd.CommandText = "INSERT OR REPLACE INTO ColumnStatuses (ColumnId, StatusId) VALUES ";
+							cmd.AddParameter( "columnId", columnId );
 
-							// ReSharper restore AccessToDisposedClosure
+							cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								cmd.AddParameter( $"statusId{i}", s.GetStatusId() );
 
-							return $"( @columnId, @statusId{i} )";
-						} ) );
+								// ReSharper restore AccessToDisposedClosure
 
-						tasks.Add( cmd.ExecuteNonQueryAsync() );
+								return $"( @columnId, @statusId{i} )";
+							} ) );
+
+							await cmd.ExecuteNonQueryAsync();
+						}
 					}
-				}
 
-				await Task.WhenAll( tasks );
-				tx.Commit();
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
@@ -289,23 +356,33 @@ namespace Twice.Models.Cache
 
 		public async Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
 		{
-			using( var cmd = Connection.CreateCommand() )
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
 			{
-				cmd.CommandText = "DELETE FROM TwitterConfig;";
-				await cmd.ExecuteNonQueryAsync();
-			}
-			using( var cmd = Connection.CreateCommand() )
-			{
-				cmd.CommandText = "INSERT INTO TwitterConfig (Data, Expires) VALUES(@json, @expires);";
-				cmd.AddParameter( "json", JsonConvert.SerializeObject( cfg ) );
-				cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( TwitterConfigExpiration ) ) );
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = "DELETE FROM TwitterConfig;";
+					await cmd.ExecuteNonQueryAsync();
+				}
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO TwitterConfig (Data, Expires) VALUES(@json, @expires);";
+					cmd.AddParameter( "json", JsonConvert.SerializeObject( cfg ) );
+					cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( TwitterConfigExpiration ) ) );
 
-				await cmd.ExecuteNonQueryAsync();
+					await cmd.ExecuteNonQueryAsync();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
 			}
 		}
 
 		private readonly SQLiteConnection Connection;
 		private readonly TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
+		private readonly SemaphoreSlim Semaphore = new SemaphoreSlim( 1, 1 );
+		private readonly TimeSpan SemaphoreWait = TimeSpan.FromSeconds( 5 );
 		private readonly TimeSpan StatusExpiration = TimeSpan.FromDays( 20 );
 		private readonly TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
 		private readonly TimeSpan UserExpiration = TimeSpan.FromDays( 14 );

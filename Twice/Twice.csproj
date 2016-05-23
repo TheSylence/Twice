@@ -196,10 +196,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Undisposed.Fody, Version=1.2.5911.18183, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Undisposed.Fody.1.2.5911.18183\lib\net45\Undisposed.Fody.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Windows" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -256,9 +252,11 @@
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
+    <Compile Include="Models\Cache\NullCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.Ddl.cs" />
     <Compile Include="Models\Cache\SqliteHelper.cs" />
+    <Compile Include="Models\Cache\Transaction.cs" />
     <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />

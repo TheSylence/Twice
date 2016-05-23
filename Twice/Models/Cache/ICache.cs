@@ -7,13 +7,11 @@ namespace Twice.Models.Cache
 {
 	internal interface ICache : IDisposable
 	{
-		Task AddHashtag( string hashTag );
-
-		Task AddStatus( Status status );
+		Task AddHashtags( IList<string> hashTags );
 
 		Task AddStatuses( IList<Status> statuses );
 
-		Task AddUser( UserCacheEntry user );
+		Task AddUsers( IList<UserCacheEntry> users );
 
 		Task<IEnumerable<string>> GetKnownHashtags();
 

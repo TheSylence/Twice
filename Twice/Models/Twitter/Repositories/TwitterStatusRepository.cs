@@ -45,7 +45,7 @@ namespace Twice.Models.Twitter.Repositories
 				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.StatusID == statusId
 														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
-				await Cache.AddStatus( status );
+				await Cache.AddStatuses( new[] { status} );
 				return status;
 			}
 			catch( TwitterQueryException ex )

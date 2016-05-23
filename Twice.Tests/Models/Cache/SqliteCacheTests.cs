@@ -25,11 +25,11 @@ namespace Twice.Tests.Models.Cache
 				user.UserID = 123;
 				user.ScreenName = "test";
 
-				await cache.AddUser( new UserCacheEntry( user ) );
+				await cache.AddUsers( new[] { new UserCacheEntry( user )} );
 
 				// Act
 				user.ScreenName = "testi";
-				await cache.AddUser( new UserCacheEntry( user ) );
+				await cache.AddUsers( new[] { new UserCacheEntry( user )} );
 
 				// Assert
 				var fromDb = ( await cache.GetKnownUsers() ).First();
@@ -238,7 +238,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
-				await cache.AddHashtag( "test" );
+				await cache.AddHashtags(new[] { "test" });
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -280,7 +280,7 @@ namespace Twice.Tests.Models.Cache
 				status.ID = 111;
 
 				// Act
-				await cache.AddStatus( status );
+				await cache.AddStatuses( new[] { status} );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -399,7 +399,7 @@ namespace Twice.Tests.Models.Cache
 				var entry = new UserCacheEntry( user );
 
 				// Act
-				await cache.AddUser( entry );
+				await cache.AddUsers( new[] { entry } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )

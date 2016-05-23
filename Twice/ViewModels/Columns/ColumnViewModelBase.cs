@@ -212,10 +212,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			Debug.Assert( usersToAdd.Count == e.Friends.Length );
-			foreach( var user in usersToAdd )
-			{
-				await Cache.AddUser( new UserCacheEntry( user ) );
-			}
+			await Cache.AddUsers( usersToAdd.Select( u => new UserCacheEntry( u ) ).ToList() );
 		}
 
 		private void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
@@ -241,19 +238,8 @@ namespace Twice.ViewModels.Columns
 
 		private async Task UpdateCache( Status status )
 		{
-			List<Task> tasks = new List<Task>( status.Entities.UserMentionEntities.Count +
-				status.Entities.HashTagEntities.Count );
-
-			foreach( var mention in status.Entities.UserMentionEntities )
-			{
-				tasks.Add( Cache.AddUser( new UserCacheEntry( mention ) ) );
-			}
-			foreach( var hashtag in status.Entities.HashTagEntities )
-			{
-				tasks.Add( Cache.AddHashtag( hashtag.Tag ) );
-			}
-
-			await Task.WhenAll( tasks );
+			await Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() );
+			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
 		public event EventHandler Changed;

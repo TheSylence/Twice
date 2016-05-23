@@ -137,6 +137,7 @@ namespace Twice.Tests.ViewModels.Columns
 			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
+			vm.Cache = new NullCache();
 
 			// Act
 			await vm.Load();
@@ -178,6 +179,7 @@ namespace Twice.Tests.ViewModels.Columns
 			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
+			vm.Cache = new NullCache();
 
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -392,9 +394,10 @@ namespace Twice.Tests.ViewModels.Columns
 			vm.Dispatcher = new SyncDispatcher();
 
 			var cache = new Mock<ICache>();
-			cache.Setup( c => c.AddUser( It.Is<UserCacheEntry>( ca => ca.UserId == 123 ) ) ).Returns( Task.CompletedTask )
+			cache.Setup( c => c.AddUsers( It.Is<IList<UserCacheEntry>>( ca => ca[0].UserId == 123 ) ) ).Returns(
+				Task.CompletedTask )
 				.Verifiable();
-			cache.Setup( c => c.AddHashtag( "tag" ) ).Returns( Task.CompletedTask ).Verifiable();
+			cache.Setup( c => c.AddHashtags( new[] {"hashtag"} ) ).Returns( Task.CompletedTask ).Verifiable();
 
 			vm.Cache = cache.Object;
 
@@ -402,8 +405,8 @@ namespace Twice.Tests.ViewModels.Columns
 			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( status ) );
 
 			// Assert
-			cache.Verify( c => c.AddUser( It.Is<UserCacheEntry>( ca => ca.UserId == 123 ) ), Times.Once() );
-			cache.Verify( c => c.AddHashtag( "hashtag" ), Times.Once() );
+			cache.Verify( c => c.AddUsers( It.Is<IList<UserCacheEntry>>( ca => ca[0].UserId == 123 ) ), Times.Once() );
+			cache.Verify( c => c.AddHashtags( new[] {"hashtag"} ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -456,14 +459,14 @@ namespace Twice.Tests.ViewModels.Columns
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 
 			var cache = new Mock<ICache>();
-			cache.Setup( c => c.AddUser( It.IsAny<UserCacheEntry>() ) ).Returns( Task.CompletedTask );
+			cache.Setup( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ) ).Returns( Task.CompletedTask );
 			vm.Cache = cache.Object;
 
 			// Act
 			parser.Raise( p => p.FriendsReceived += null, new FriendsStreamEventArgs( "{\"friends\":[123,456,789]}" ) );
 
 			// Assert
-			cache.Verify( c => c.AddUser( It.IsAny<UserCacheEntry>() ), Times.Exactly( 3 ) );
+			cache.Verify( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -499,6 +502,7 @@ namespace Twice.Tests.ViewModels.Columns
 			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false ).Verifiable();
 			vm.Muter = muter.Object;
 			vm.Dispatcher = new SyncDispatcher();
+			vm.Cache = new NullCache();
 
 			vm.PropertyChanged += ( s, e ) =>
 			{
