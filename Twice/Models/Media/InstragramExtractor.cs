@@ -19,14 +19,15 @@ namespace Twice.Models.Media
 			using( var web = new WebClient() )
 			{
 				var json = web.DownloadString( url );
-				var def = new
-				{
-					thumbnail_url = ""
-				};
 
-				var info = JsonConvert.DeserializeAnonymousType( json, def );
+				var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
 				return new Uri( info.thumbnail_url );
 			}
+		}
+
+		private class InstagramResponse
+		{
+			public string thumbnail_url { get; set; }
 		}
 
 		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?instagram.com\\/p\\/[\\w-]+\\/",

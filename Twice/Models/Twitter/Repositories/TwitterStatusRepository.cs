@@ -57,6 +57,12 @@ namespace Twice.Models.Twitter.Repositories
 
 		public async Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 )
 		{
+			var cached = await Cache.GetStatusesForUser( userId );
+			if( cached.Any() )
+			{
+				since = cached.Max( c => c.GetStatusId() );
+			}
+
 			var query = Queryable.Where( s => s.Type == StatusType.User && s.UserID == userId );
 			if( since != 0 )
 			{
@@ -69,7 +75,9 @@ namespace Twice.Models.Twitter.Repositories
 
 			var statusList = await query.ToListAsync();
 			await Cache.AddStatuses( statusList );
-			return statusList;
+
+			cached.AddRange( statusList );
+			return cached;
 		}
 
 		public TwitterQueryable<Status> Queryable => Context.Status;

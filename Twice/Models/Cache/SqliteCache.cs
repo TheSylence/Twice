@@ -293,6 +293,30 @@ namespace Twice.Models.Cache
 			return result;
 		}
 
+		public async Task<List<Status>> GetStatusesForUser( ulong userId )
+		{
+			await Cleanup();
+
+			List<Status> result = new List<Status>();
+
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT StatusData FROM Statuses WHERE UserId = @userId;";
+				cmd.AddParameter( "userId", userId );
+
+				using( var reader = await cmd.ExecuteReaderAsync() )
+				{
+					while( await reader.ReadAsync() )
+					{
+						var json = await reader.GetFieldValueAsync<string>( 0 );
+						result.Add( JsonConvert.DeserializeObject<Status>( json ) );
+					}
+				}
+			}
+
+			return result;
+		}
+
 		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
 		{
 			await Semaphore.WaitAsync( SemaphoreWait );
