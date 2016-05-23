@@ -1,9 +1,9 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
 
 namespace Twice.Models.Cache
 {
@@ -52,6 +52,11 @@ namespace Twice.Models.Cache
 		public Task<List<Status>> GetStatusesForUser( ulong userId )
 		{
 			return Task.FromResult( new List<Status>() );
+		}
+
+		public Task<User> GetUser( ulong userId )
+		{
+			return Task.FromResult<User>( null );
 		}
 
 		public Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )

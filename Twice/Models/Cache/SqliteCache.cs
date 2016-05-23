@@ -317,6 +317,25 @@ namespace Twice.Models.Cache
 			return result;
 		}
 
+		public async Task<User> GetUser( ulong userId )
+		{
+			await Cleanup();
+
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT UserData FROM Users WHERE Id = @userId;";
+				cmd.AddParameter( "userId", userId );
+
+				var json = await cmd.ExecuteScalarAsync() as string;
+				if( !string.IsNullOrEmpty( json ) )
+				{
+					return JsonConvert.DeserializeObject<User>( json );
+				}
+			}
+
+			return null;
+		}
+
 		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
 		{
 			await Semaphore.WaitAsync( SemaphoreWait );
@@ -407,8 +426,8 @@ namespace Twice.Models.Cache
 		private readonly TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
 		private readonly SemaphoreSlim Semaphore = new SemaphoreSlim( 1, 1 );
 		private readonly TimeSpan SemaphoreWait = TimeSpan.FromSeconds( 5 );
-		private readonly TimeSpan StatusExpiration = TimeSpan.FromDays( 20 );
+		private readonly TimeSpan StatusExpiration = TimeSpan.FromDays( 3 );
 		private readonly TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
-		private readonly TimeSpan UserExpiration = TimeSpan.FromDays( 14 );
+		private readonly TimeSpan UserExpiration = TimeSpan.FromDays( 2 );
 	}
 }

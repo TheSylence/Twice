@@ -23,6 +23,8 @@ namespace Twice.Models.Cache
 
 		Task<List<Status>> GetStatusesForUser( ulong userId );
 
+		Task<User> GetUser( ulong userId );
+
 		Task MapStatusesToColumn( IList<Status> statuses, Guid columnId );
 
 		Task<LinqToTwitter.Configuration> ReadTwitterConfig();

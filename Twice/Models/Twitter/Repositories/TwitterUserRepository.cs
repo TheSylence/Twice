@@ -27,11 +27,21 @@ namespace Twice.Models.Twitter.Repositories
 			return Queryable.Where( s => s.Type == UserType.Search && s.Query == query ).ToListAsync();
 		}
 
-		public Task<User> ShowUser( ulong userId, bool includeEntities )
+		public async Task<User> ShowUser( ulong userId, bool includeEntities )
 		{
-			return
+			var cached = await Cache.GetUser( userId );
+			if( cached != null )
+			{
+				return cached;
+			}
+
+			var user = await
 				Queryable.Where( s => s.UserID == userId && s.IncludeEntities == includeEntities && s.Type == UserType.Show )
 					.SingleOrDefaultAsync();
+
+			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
+
+			return user;
 		}
 
 		public TwitterQueryable<User> Queryable => Context.User;
