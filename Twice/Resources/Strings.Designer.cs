@@ -304,6 +304,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this column?.
+        /// </summary>
+        public static string ConfirmDeleteColumn {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete the selected filter?.
         /// </summary>
         public static string ConfirmDeleteFilter {

@@ -552,4 +552,7 @@
   <data name="InReplyTo" xml:space="preserve">
     <value>Als Antwort auf</value>
   </data>
+  <data name="ConfirmDeleteColumn" xml:space="preserve">
+    <value>Soll diese Spalte wirklich entfernt werden?</value>
+  </data>
 </root>
