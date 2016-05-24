@@ -174,7 +174,6 @@ namespace Twice.ViewModels.Columns
 			var quoteId = vm.ExtractQuotedTweetUrl();
 			if( quoteId != 0 )
 			{
-				// TODO: Caching
 				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
 				if( quoted != null )
 				{
