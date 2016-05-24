@@ -23,12 +23,11 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, new[] {"Dummy"} ) ).Verifiable();
 			wizard.Setup( w => w.GotoPage( 3 ) ).Verifiable();
 
-			var contextList = new Mock<ITwitterContextList>();
 			var timerFactory = new Mock<ITimerFactory>();
 			var timer = new Mock<ITimer>();
 			timerFactory.Setup( f => f.Create( It.IsAny<int>() ) ).Returns( timer.Object );
 
-			var vm = new UserSelectorPage( wizard.Object, contextList.Object, timerFactory.Object );
+			var vm = new UserSelectorPage( wizard.Object, timerFactory.Object );
 			var dummyUser = DummyGenerator.CreateDummyUser();
 			dummyUser.ScreenName = "Dummy";
 			dummyUser.UserID = 123;
@@ -48,14 +47,13 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 		{
 			// Arrange
 			var wizard = new Mock<IWizardViewModel>();
-			var contextList = new Mock<ITwitterContextList>();
 			var timerFactory = new Mock<ITimerFactory>();
 			var timer = new Mock<ITimer>();
 			timer.Setup( t => t.Start() ).Verifiable();
 			timer.Setup( t => t.Stop() ).Verifiable();
 			timerFactory.Setup( f => f.Create( 1000 ) ).Returns( timer.Object );
 
-			var vm = new UserSelectorPage( wizard.Object, contextList.Object, timerFactory.Object )
+			var vm = new UserSelectorPage( wizard.Object, timerFactory.Object )
 			{
 				SearchText = null
 			};
