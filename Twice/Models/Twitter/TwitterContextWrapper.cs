@@ -1,14 +1,16 @@
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
 {
 	[ExcludeFromCodeCoverage]
+	[ConfigureAwait( false )]
 	internal class TwitterContextWrapper : ITwitterContext
 	{
 		public TwitterContextWrapper( TwitterContext context, ICache cache )
@@ -41,16 +43,16 @@ namespace Twice.Models.Twitter
 			return Context.DestroyFavoriteAsync( statusId );
 		}
 
+		public void Dispose()
+		{
+			Context.Dispose();
+		}
+
 		public async Task<LinqToTwitter.Configuration> GetConfig()
 		{
 			var help = await Context.Help.Where( h => h.Type == HelpType.Configuration ).SingleOrDefaultAsync();
 
 			return help.Configuration;
-		}
-
-		public void Dispose()
-		{
-			Context.Dispose();
 		}
 
 		public Task<Status> RetweetAsync( ulong statusId )

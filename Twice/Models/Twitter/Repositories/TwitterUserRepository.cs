@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
 using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
+	[ConfigureAwait( false )]
 	internal class TwitterUserRepository : TwitterRepositoryBase, ITwitterUserRepository
 	{
 		public TwitterUserRepository( TwitterContext context, ICache cache )

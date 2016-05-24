@@ -1,6 +1,7 @@
-﻿using Anotar.NLog;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter
@@ -13,6 +14,7 @@ namespace Twice.Models.Twitter
 			Cache = cache;
 		}
 
+		[ConfigureAwait( false )]
 		public async Task QueryConfig()
 		{
 			LogTo.Info( "Reading current configuration from twitter" );

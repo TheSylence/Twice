@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Fody;
 using Squirrel;
 
 namespace Twice.Utilities
 {
+	[ConfigureAwait( false )]
 	internal class AppUpdater : IAppUpdater
 	{
 		public AppUpdater( UpdateManager mgr )

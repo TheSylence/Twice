@@ -6,11 +6,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Fody;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
+	[ConfigureAwait( false )]
 	internal class TwitterStatusRepository : TwitterRepositoryBase, ITwitterStatusRepository
 	{
 		public TwitterStatusRepository( TwitterContext context, ICache cache )

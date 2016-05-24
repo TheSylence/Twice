@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Fody;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
@@ -10,6 +11,7 @@ using Twice.Services.Views;
 
 namespace Twice.ViewModels.Twitter
 {
+	[ConfigureAwait( false )]
 	internal class TweetDetailsViewModel : DialogViewModel, ITweetDetailsViewModel
 	{
 		public TweetDetailsViewModel()

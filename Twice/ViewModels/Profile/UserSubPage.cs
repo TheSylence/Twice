@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Fody;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
 using Twice.Utilities.Ui;
@@ -10,6 +11,7 @@ using Twice.ViewModels.Columns;
 
 namespace Twice.ViewModels.Profile
 {
+	[ConfigureAwait(false)]
 	internal class UserSubPage : ObservableObject
 	{
 		public IDispatcher Dispatcher { get; set; }

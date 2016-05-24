@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
@@ -20,15 +21,13 @@ using Twice.Views;
 namespace Twice.ViewModels.Twitter
 {
 	// ReSharper disable once ClassNeverInstantiated.Global
+	[ConfigureAwait( false )]
 	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
 	{
 		public ComposeTweetViewModel()
 		{
 			Accounts = new List<AccountEntry>();
 		}
-
-		[Inject]
-		public ICache Cache { get; set; }
 
 		public async Task OnLoad( object data )
 		{
@@ -121,7 +120,7 @@ namespace Twice.ViewModels.Twitter
 			{
 				return;
 			}
-			
+
 			IsSending = true;
 
 			byte[] mediaData = File.ReadAllBytes( selectedFile );
@@ -209,6 +208,9 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand AttachImageCommand
 			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
+
+		[Inject]
+		public ICache Cache { get; set; }
 
 		public bool ConfirmationRequired
 		{
@@ -365,7 +367,7 @@ namespace Twice.ViewModels.Twitter
 				MediumCharsLeft = value >= MediumWarnThreshold;
 			}
 		}
-		
+
 		private readonly int LowWarnThreshold = 135;
 
 		private readonly List<Media> Medias = new List<Media>();
