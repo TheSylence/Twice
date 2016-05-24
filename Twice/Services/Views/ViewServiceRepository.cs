@@ -12,6 +12,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using Twice.Models.Columns;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
@@ -133,7 +134,7 @@ namespace Twice.Services.Views
 				: Task.FromResult<string>( null );
 		}
 
-		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
+		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId )
 		{
 			ulong[] sourceAccounts = {accountId};
 			ulong[] targetAccounts = {accountId};
@@ -181,7 +182,7 @@ namespace Twice.Services.Views
 			return Task.CompletedTask;
 		}
 
-		public string TextInput( string label, string input = null, string hostIdentifier = null )
+		public string TextInput( string label, string input = null )
 		{
 			Func<ITextInputDialogViewModel, string> resultSetup = vm => vm.Input;
 			Action<ITextInputDialogViewModel> vmSetup = vm =>
@@ -212,10 +213,15 @@ namespace Twice.Services.Views
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
-		public Task ViewStatus( StatusViewModel vm )
+		public async Task ViewStatus( StatusViewModel status, IContextEntry context )
 		{
-			// TODO: Implement
-			return Task.CompletedTask;
+			Action<ITweetDetailsViewModel> vmSetup = vm =>
+			{
+				vm.Context = context;
+				vm.DisplayTweet = status;
+			};
+
+			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
 
 		public Dialog CurrentDialog { get; }

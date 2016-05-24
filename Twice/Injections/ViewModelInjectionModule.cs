@@ -46,6 +46,7 @@ namespace Twice.Injections
 
 			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();
 			Bind<IImageDialogViewModel>().To<ImageDialogViewModel>();
+			Bind<ITweetDetailsViewModel>().To<TweetDetailsViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

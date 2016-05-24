@@ -700,6 +700,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In reply to.
+        /// </summary>
+        public static string InReplyTo {
+            get {
+                return ResourceManager.GetString("InReplyTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default account.
         /// </summary>
         public static string IsDefaultAccount {

@@ -549,4 +549,7 @@
   <data name="Options" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="InReplyTo" xml:space="preserve">
+    <value>In reply to</value>
+  </data>
 </root>

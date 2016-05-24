@@ -36,9 +36,7 @@ namespace Twice.Behaviors
 				ActionDispatcher?.OnBottomReached();
 			}
 		}
-
-		// Using a DependencyProperty as the backing store for ActionDispatcher. This enables
-		// animation, styling, binding, etc...
+		
 		public static readonly DependencyProperty ActionDispatcherProperty =
 			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnScrollHandler),
 				new PropertyMetadata( null ) );

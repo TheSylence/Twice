@@ -240,6 +240,7 @@
     <Compile Include="Controls\FileSelectMode.cs" />
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Converters\Compare.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
@@ -398,8 +399,10 @@
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
@@ -410,6 +413,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TweetDetailsDialog.xaml.cs">
+      <DependentUpon>TweetDetailsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
     <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
@@ -495,6 +501,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TextInputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TweetDetailsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,7 +26,7 @@ namespace Twice.ViewModels
 
 		private static async void ExecuteOpenStatusCommand( StatusViewModel vm )
 		{
-			await ViewServices.ViewStatus( vm );
+			await ViewServices.ViewStatus( vm, vm.Context );
 		}
 
 		private static bool CanExecuteOpenUrlCommand( Uri args )

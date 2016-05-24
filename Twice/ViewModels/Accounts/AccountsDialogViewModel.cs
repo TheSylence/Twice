@@ -63,7 +63,7 @@ namespace Twice.ViewModels.Accounts
 
 					ContextList.AddContext( accountData );
 
-					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId, DialogHostIdentifier );
+					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId );
 					if( newColumns.Any() )
 					{
 						ColumnList.AddColumns( newColumns );
@@ -86,7 +86,7 @@ namespace Twice.ViewModels.Accounts
 
 		private string GetPinFromUser()
 		{
-			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null, DialogHostIdentifier );
+			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null );
 			if( string.IsNullOrWhiteSpace( input ) )
 			{
 				PinEntryCancelled.Cancel();

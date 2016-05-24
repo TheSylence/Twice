@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Columns;
+using Twice.Models.Twitter;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Services.Views
@@ -16,7 +17,7 @@ namespace Twice.Services.Views
 
 		Task QuoteTweet( StatusViewModel status );
 
-		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier );
+		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId );
 
 		Task ShowAccounts( bool directlyAddNewAccount = false );
 
@@ -26,12 +27,12 @@ namespace Twice.Services.Views
 
 		Task ShowSettings();
 
-		string TextInput( string label, string input = null, string hostIdentifier = null );
+		string TextInput( string label, string input = null );
 
 		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );
 
-		Task ViewStatus( StatusViewModel vm );
+		Task ViewStatus( StatusViewModel vm, IContextEntry context );
 	}
 }

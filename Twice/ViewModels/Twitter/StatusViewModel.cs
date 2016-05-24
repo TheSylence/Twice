@@ -303,7 +303,7 @@ namespace Twice.ViewModels.Twitter
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 		private readonly IConfig Config;
 
-		private readonly IContextEntry Context;
+		public IContextEntry Context { get; }
 
 		private readonly Status OriginalStatus;
 
