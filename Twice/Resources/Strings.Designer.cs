@@ -322,6 +322,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove this media from your tweet?.
+        /// </summary>
+        public static string ConfirmMediaRemoval {
+            get {
+                return ResourceManager.GetString("ConfirmMediaRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready to tweet?.
         /// </summary>
         public static string ConfirmTweet {

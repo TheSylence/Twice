@@ -16,6 +16,7 @@ using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
+using Twice.Utilities.Ui;
 using Twice.Views;
 
 namespace Twice.ViewModels.Twitter
@@ -143,19 +144,30 @@ namespace Twice.ViewModels.Twitter
 				return t.Result;
 			} );
 
-			Medias.Add( media );
-			AttachedMedias.Add( new MediaItem( media.MediaID, mediaData ) );
+			await Dispatcher.RunAsync( () =>
+			{
+				Medias.Add( media );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData ) );
+			} );
 		}
 
-		private void ExecuteDeleteMediaCommand( ulong id )
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
+		private async void ExecuteDeleteMediaCommand( ulong id )
 		{
-			// TODO: Confirm removal
+			var csa = new ConfirmServiceArgs( Strings.ConfirmMediaRemoval );
+			if( !await ViewServiceRepository.Confirm(csa))
+			{
+				return;
+			}
+
 			Medias.RemoveAll( m => m.MediaID == id );
 			for( int i = 0; i < AttachedMedias.Count; ++i )
 			{
 				if( AttachedMedias[i].MediaId == id )
 				{
-					AttachedMedias.RemoveAt( i );
+					await Dispatcher.RunAsync( () => AttachedMedias.RemoveAt( i ) );
 					break;
 				}
 			}
@@ -190,7 +202,7 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( async t =>
 			{
 				IsSending = false;
-				await DispatcherHelper.RunAsync( async () =>
+				await Dispatcher.RunAsync( async () =>
 				{
 					if( !StayOpen )
 					{

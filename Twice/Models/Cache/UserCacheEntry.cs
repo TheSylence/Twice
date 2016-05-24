@@ -34,7 +34,12 @@ namespace Twice.Models.Cache
 		{
 			var id = reader.GetInt64( 0 );
 			var name = await reader.GetFieldValueAsync<string>( 1 );
-			var data = await reader.GetFieldValueAsync<string>( 2 );
+
+			string data = string.Empty;
+			if( !await reader.IsDBNullAsync( 2 ) )
+			{
+				data = await reader.GetFieldValueAsync<string>( 2 );
+			}
 
 			return new UserCacheEntry( (ulong)id, name, data );
 		}

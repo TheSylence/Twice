@@ -555,4 +555,7 @@
   <data name="ConfirmDeleteColumn" xml:space="preserve">
     <value>Do you really want to delete this column?</value>
   </data>
+  <data name="ConfirmMediaRemoval" xml:space="preserve">
+    <value>Do you really want to remove this media from your tweet?</value>
+  </data>
 </root>

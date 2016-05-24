@@ -149,7 +149,7 @@
 									<i:Interaction.Triggers>
 										<i:EventTrigger EventName="MouseDown">
 											<command:EventToCommand Command="{Binding Data.DeleteMediaCommand, Source={StaticResource DataProxy}}"
-																	CommandParameter="{Binding}" PassEventArgsToCommand="False" />
+																	CommandParameter="{Binding MediaId}" PassEventArgsToCommand="False" />
 										</i:EventTrigger>
 									</i:Interaction.Triggers>
 									<Image.Style>

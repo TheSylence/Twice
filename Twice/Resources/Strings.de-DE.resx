@@ -555,4 +555,7 @@
   <data name="ConfirmDeleteColumn" xml:space="preserve">
     <value>Soll diese Spalte wirklich entfernt werden?</value>
   </data>
+  <data name="ConfirmMediaRemoval" xml:space="preserve">
+    <value>Soll dieses Mediaum wirklich aus dem Status entfernt werden?</value>
+  </data>
 </root>
