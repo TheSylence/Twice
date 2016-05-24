@@ -37,6 +37,7 @@ namespace Twice
 			Settings.StoragePath = StoragePath.CurrentDirectory;
 			Settings.UIProvider = UIProvider.WPF;
 			Settings.AdditionalReportFiles.Add( "log*.txt" );
+			Settings.AdditionalReportFiles.Add( Constants.IO.ConfigFileName );
 			Settings.SleepBeforeSend = 20;
 			Settings.StopReportingAfter = 100;
 			Settings.AddDestinationFromConnectionString( "Type=Http;Url=http://software.btbsoft.org/twice/crash/report.php;" );
