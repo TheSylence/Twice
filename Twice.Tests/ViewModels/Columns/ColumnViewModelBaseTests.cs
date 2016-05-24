@@ -13,6 +13,7 @@ using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
+using Twice.Services.Views;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Twitter;
@@ -97,9 +98,13 @@ namespace Twice.Tests.ViewModels.Columns
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			var parser = new Mock<IStreamParser>();
 
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
+
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 			bool raised = false;
 			vm.Deleted += ( s, e ) => raised = true;
+			vm.ViewServiceRepository = viewServices.Object;
 
 			// Act
 			vm.DeleteCommand.Execute( null );

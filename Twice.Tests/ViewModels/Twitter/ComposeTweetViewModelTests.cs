@@ -49,7 +49,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Task.FromResult( media ) ).Verifiable();
 
 			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
-
+			vm.Dispatcher = new SyncDispatcher();
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -171,8 +171,13 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void MediaCanBeRemoved()
 		{
 			// Arrange
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
+
 			var vm = new ComposeTweetViewModel();
 			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {} ) );
+			vm.ViewServiceRepository = viewServices.Object;
+			vm.Dispatcher = new SyncDispatcher();
 
 			// Act
 			vm.DeleteMediaCommand.Execute( 111ul );
@@ -217,7 +222,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
+			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null,
 				null ) );
 
 			var obj = new ComposeTweetViewModel
@@ -227,7 +232,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
-			tester.Test( nameof( ComposeTweetViewModel.Notifier ), nameof( ComposeTweetViewModel.Cache ) );
+			tester.Test( nameof( ComposeTweetViewModel.Notifier ), nameof( ComposeTweetViewModel.Cache ), nameof( ComposeTweetViewModel.Dispatcher ) );
 
 			// Assert
 			tester.Verify();
