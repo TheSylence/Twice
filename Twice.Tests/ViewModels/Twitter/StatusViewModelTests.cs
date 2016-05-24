@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Services.Views;
 using Twice.Utilities.Os;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
@@ -327,6 +328,22 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsFalse( canExecute );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void QuotingTweetOpensDialog()
+		{
+			// Arrange
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.QuoteTweet( It.IsAny<StatusViewModel>() ) ).Returns( Task.CompletedTask ).Verifiable();
+
+			var vm = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, viewServices.Object );
+
+			// Act
+			vm.QuoteStatusCommand.Execute( null );
+
+			// Assert
+			viewServices.Verify( v => v.QuoteTweet( It.IsAny<StatusViewModel>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

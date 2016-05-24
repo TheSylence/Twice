@@ -4,10 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
-using Ninject;
-using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -59,15 +56,12 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			var vm = new StatusViewModel( inReplyTo, Context, Config, ViewServices );
+			var vm = new StatusViewModel( inReplyTo, Context, Configuration, ViewServiceRepository );
 
 			await Dispatcher.RunAsync( () => PreviousConversationTweets.Insert( 0, vm ) );
 
 			await LoadPreviousTweets( inReplyTo );
 		}
-
-		[Inject]
-		public IConfig Config { get; set; }
 
 		public IContextEntry Context { get; set; }
 
@@ -119,9 +113,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public IList<StatusViewModel> PreviousConversationTweets { get; }
-
-		[Inject]
-		public IViewServiceRepository ViewServices { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _DisplayTweet;
 

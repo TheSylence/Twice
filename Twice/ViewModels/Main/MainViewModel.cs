@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -40,6 +41,12 @@ namespace Twice.ViewModels.Main
 			ConstructColumns();
 
 			DragDropHandler = new DragDropHandler( columnList, MessengerInstance );
+			RateLimitTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromMinutes( 15 )
+			};
+			RateLimitTimer.Tick += RateLimitTimer_Tick;
+			RateLimitTimer.Start();
 		}
 
 		public async Task OnLoad( object data )
@@ -109,6 +116,8 @@ namespace Twice.ViewModels.Main
 					LogTo.WarnException( "Error during update check", ex );
 				}
 			}
+
+			await QueryRateLimit();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -214,6 +223,19 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
+		private async Task QueryRateLimit()
+		{
+			foreach( var context in ContextList.Contexts )
+			{
+				await context.Twitter.LogCurrentRateLimits();
+			}
+		}
+
+		private async void RateLimitTimer_Tick( object sender, EventArgs e )
+		{
+			await QueryRateLimit();
+		}
+
 		public ICommand AccountsCommand
 			=> _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
 
@@ -223,11 +245,8 @@ namespace Twice.ViewModels.Main
 				?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
 
 		public ICollection<IColumnViewModel> Columns { get; }
-
 		public IDragDropHandler DragDropHandler { get; }
-
 		public bool HasContexts => ContextList.Contexts.Any();
-
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 
 		public ICommand NewTweetCommand
@@ -242,6 +261,7 @@ namespace Twice.ViewModels.Main
 		private readonly IColumnDefinitionList ColumnList;
 		private readonly IColumnFactory Factory;
 		private readonly INotifier Notifier;
+		private readonly DispatcherTimer RateLimitTimer;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
 

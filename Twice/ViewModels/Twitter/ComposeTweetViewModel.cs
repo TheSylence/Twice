@@ -8,22 +8,18 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
 using LinqToTwitter;
 using Ninject;
-using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Services.Views;
-using Twice.Utilities.Ui;
-using Twice.Views;
 
 namespace Twice.ViewModels.Twitter
 {
 	// ReSharper disable once ClassNeverInstantiated.Global
 	[ConfigureAwait( false )]
-	internal class ComposeTweetViewModel : ViewModelBaseEx, IComposeTweetViewModel
+	internal class ComposeTweetViewModel : DialogViewModel, IComposeTweetViewModel
 	{
 		public ComposeTweetViewModel()
 		{
@@ -151,13 +147,10 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
-
 		private async void ExecuteDeleteMediaCommand( ulong id )
 		{
 			var csa = new ConfirmServiceArgs( Strings.ConfirmMediaRemoval );
-			if( !await ViewServiceRepository.Confirm(csa))
+			if( !await ViewServiceRepository.Confirm( csa ) )
 			{
 				return;
 			}
@@ -206,7 +199,7 @@ namespace Twice.ViewModels.Twitter
 				{
 					if( !StayOpen )
 					{
-						MessengerInstance.Send( new FlyoutMessage( FlyoutNames.TweetComposer, FlyoutAction.Close ) );
+						Close( true );
 					}
 
 					await OnLoad( null );
@@ -250,7 +243,7 @@ namespace Twice.ViewModels.Twitter
 		public bool IsSending
 		{
 			[DebuggerStepThrough] get { return _IsSending; }
-			set
+			private set
 			{
 				if( _IsSending == value )
 				{

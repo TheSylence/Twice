@@ -91,7 +91,7 @@
 				</TextBox>
 
 				<controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
-									   IsActive="{Binding IsSending}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+									   IsActive="{Binding IsSending, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
 				<CheckBox Grid.Column="0" Grid.Row="1" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}" Margin="2"
 						  Content="{lex:Loc ConfirmTweet}" IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

@@ -8,6 +8,8 @@ namespace Twice.Models.Twitter
 {
 	internal interface ITwitterContext : IDisposable
 	{
+		Task LogCurrentRateLimits();
+
 		Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus );
 
 		Task<Status> CreateFavoriteAsync( ulong statusId );

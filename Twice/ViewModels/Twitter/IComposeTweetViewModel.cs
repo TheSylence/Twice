@@ -5,7 +5,7 @@ using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IComposeTweetViewModel : ILoadCallback
+	internal interface IComposeTweetViewModel : ILoadCallback, IDialogViewModel
 	{
 		ICollection<AccountEntry> Accounts { get; }
 		IList<MediaItem> AttachedMedias { get; }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Fody;
 using LinqToTwitter;
 using Twice.Models.Cache;
@@ -53,6 +55,36 @@ namespace Twice.Models.Twitter
 			var help = await Context.Help.Where( h => h.Type == HelpType.Configuration ).SingleOrDefaultAsync();
 
 			return help.Configuration;
+		}
+
+		public async Task LogCurrentRateLimits()
+		{
+			var limits = await Context.Help.Where( h => h.Type == HelpType.RateLimits ).SingleOrDefaultAsync();
+
+			if( limits?.RateLimits != null )
+			{
+				var sb = new StringBuilder();
+
+				sb.AppendLine( "--- RATE LIMITS START ---" );
+				foreach( var category in limits?.RateLimits )
+				{
+					sb.AppendLine( $"Category: {category.Key}" );
+
+					foreach( var limit in category.Value )
+					{
+						sb.AppendLine( $"\tResource: {limit.Resource}" );
+						sb.AppendLine( $"\tRemaining: {limit.Remaining}" );
+						sb.AppendLine( $"\tReset: {limit.Reset}" );
+						sb.AppendLine( $"\tLimit: {limit.Limit}" );
+						sb.AppendLine();
+					}
+
+					sb.AppendLine();
+				}
+				sb.AppendLine( "--- RATE LIMITS END ---" );
+
+				LogTo.Debug( sb.ToString() );
+			}
 		}
 
 		public Task<Status> RetweetAsync( ulong statusId )

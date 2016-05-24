@@ -244,6 +244,7 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\MediaItemTests.cs" />
     <Compile Include="ViewModels\Twitter\StatusViewModelTests.cs" />
+    <Compile Include="ViewModels\Twitter\TweetDetailsViewModelTests.cs" />
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
     <Compile Include="ViewModels\ValueDescriptionTests.cs" />

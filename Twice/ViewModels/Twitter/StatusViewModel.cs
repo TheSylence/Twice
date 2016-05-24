@@ -43,6 +43,17 @@ namespace Twice.ViewModels.Twitter
 			Dispatcher = new DispatcherHelperWrapper();
 		}
 
+		public ulong ExtractQuotedTweetUrl()
+		{
+			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
+			if( quoteUrl == null )
+			{
+				return 0;
+			}
+
+			return TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
+		}
+
 		private bool CanExecuteBlockUserCommand()
 		{
 			return OriginalStatus.User.GetUserId() != Context.UserId;
@@ -183,6 +194,8 @@ namespace Twice.ViewModels.Twitter
 			set { _Clipboard = value; }
 		}
 
+		public IContextEntry Context { get; }
+
 		public ICommand CopyTweetCommand
 			=> _CopyTweetCommand ?? ( _CopyTweetCommand = new RelayCommand( ExecuteCopyTweetCommand ) );
 
@@ -201,19 +214,6 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand FavoriteStatusCommand
 			=> _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
-
-		public ulong ExtractQuotedTweetUrl()
-		{
-			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
-			if( quoteUrl == null )
-			{
-				return 0;
-			}
-
-			return TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
-		}
-
-		public StatusViewModel QuotedTweet { get; set; }
 
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
 		public ulong Id => Model.StatusID;
@@ -275,6 +275,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsRetweeted => Model.Retweeted;
 		public Status Model { get; }
+		public StatusViewModel QuotedTweet { get; set; }
 
 		public ICommand QuoteStatusCommand
 			=>
@@ -302,9 +303,6 @@ namespace Twice.ViewModels.Twitter
 		public UserViewModel User { get; }
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 		private readonly IConfig Config;
-
-		public IContextEntry Context { get; }
-
 		private readonly Status OriginalStatus;
 
 		private readonly IViewServiceRepository ViewServiceRepository;

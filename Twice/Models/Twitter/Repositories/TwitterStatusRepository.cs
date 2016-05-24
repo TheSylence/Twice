@@ -28,6 +28,7 @@ namespace Twice.Models.Twitter.Repositories
 			{
 				query = query.Where( filter );
 			}
+			
 
 			var statusList = await query.ToListAsync();
 			await Cache.AddStatuses( statusList );
