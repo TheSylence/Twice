@@ -546,4 +546,7 @@
   <data name="NewFeature" xml:space="preserve">
     <value>New feature</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
 </root>

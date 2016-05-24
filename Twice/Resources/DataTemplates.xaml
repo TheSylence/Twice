@@ -8,7 +8,8 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:views="clr-namespace:Twice.Views">
+                    xmlns:views="clr-namespace:Twice.Views"
+                    xmlns:behaviors="clr-namespace:Twice.Behaviors">
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<i:Interaction.Triggers>
@@ -64,9 +65,14 @@
 								<ColumnDefinition />
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
 
 							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
-									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}">
+									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
+									Grid.Column="0" Grid.Row="0">
 								<Button.Style>
 									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 										<Style.Triggers>
@@ -87,7 +93,7 @@
 								</Grid>
 							</Button>
 
-							<materialDesign:PopupBox  Grid.Column="1" StaysOpen="True">
+							<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True">
 								<materialDesign:PopupBox.Style>
 									<Style TargetType="materialDesign:PopupBox">
 										<Style.Triggers>
@@ -113,6 +119,39 @@
 									<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
 								</StackPanel>
 							</materialDesign:PopupBox>
+
+							<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" Grid.Column="0" Grid.Row="1">
+								<Button.Style>
+									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+								
+								<materialDesign:PackIcon Kind="ReplyAll" />
+							</Button>
+
+							<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1">
+								<Button.Style>
+									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+								<i:Interaction.Behaviors>
+									<behaviors:ContextMenuOpener Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+								</i:Interaction.Behaviors>
+								
+								<materialDesign:PackIcon Kind="DotsHorizontal" />
+							</Button>
 						</Grid>
 					</StackPanel>
 
@@ -172,26 +211,27 @@
 						</StackPanel>
 					</StackPanel>
 
-					<Grid.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
-							<MenuItem Header="{lex:Loc CopyTweetUrl}" Command="{Binding CopyTweetUrlCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Reply}" Command="{Binding ReplyCommand}" />
-							<MenuItem Header="{lex:Loc ReplyAll}" Command="{Binding ReplyToAllCommand}" />
-							<MenuItem Header="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
-							<MenuItem Header="{lex:Loc FavoriteTweet}" Command="{Binding FavoriteStatusCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteStatusCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Block}" Command="{Binding BlockUserCommand}" />
-							<MenuItem Header="{lex:Loc ReportSpam}" Command="{Binding ReportSpamCommand}" />
-						</ContextMenu>
-					</Grid.ContextMenu>
 				</Grid>
 
 				<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 			</Grid>
+
+			<materialDesign:Card.ContextMenu>
+				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
+					<MenuItem Header="{lex:Loc CopyTweetUrl}" Command="{Binding CopyTweetUrlCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Reply}" Command="{Binding ReplyCommand}" />
+					<MenuItem Header="{lex:Loc ReplyAll}" Command="{Binding ReplyToAllCommand}" />
+					<MenuItem Header="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
+					<MenuItem Header="{lex:Loc FavoriteTweet}" Command="{Binding FavoriteStatusCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteStatusCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Block}" Command="{Binding BlockUserCommand}" />
+					<MenuItem Header="{lex:Loc ReportSpam}" Command="{Binding ReportSpamCommand}" />
+				</ContextMenu>
+			</materialDesign:Card.ContextMenu>
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">

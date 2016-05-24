@@ -546,4 +546,7 @@
   <data name="KnownIssue" xml:space="preserve">
     <value>Bekanntes Problem</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
 </root>

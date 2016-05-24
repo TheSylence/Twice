@@ -125,7 +125,6 @@
 									</i:Interaction.Behaviors>
 								</controls1:ColumnHeader>
 
-								<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
 								<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
 											  HorizontalContentAlignment="Stretch">
 									<i:Interaction.Behaviors>
@@ -142,7 +141,6 @@
 										</ControlTemplate>
 									</ItemsControl.Template>
 								</ItemsControl>
-								<!--</ScrollViewer>-->
 							</DockPanel>
 
 							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
