@@ -122,6 +122,7 @@ namespace Twice.Tests.ViewModels.Main
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
@@ -168,6 +169,7 @@ namespace Twice.Tests.ViewModels.Main
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
@@ -269,6 +271,7 @@ namespace Twice.Tests.ViewModels.Main
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
@@ -335,6 +338,7 @@ namespace Twice.Tests.ViewModels.Main
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();

@@ -267,6 +267,7 @@
     <Compile Include="Models\Media\InstragramExtractor.cs" />
     <Compile Include="Models\Media\MediaExtractorRepository.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />
+    <Compile Include="Models\Twitter\Comparers\StatusComparer.cs" />
     <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />
     <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />

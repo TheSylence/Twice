@@ -8,8 +8,19 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:views="clr-namespace:Twice.Views"
                     xmlns:behaviors="clr-namespace:Twice.Behaviors">
+	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
+		<materialDesign:Card Margin="3" Padding="3">
+			<StackPanel Orientation="Vertical">
+				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
+					<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+				</StackPanel>
+				<TextBlock Text="{Binding Model.Text}" TextWrapping="Wrap" Margin="5" />
+			</StackPanel>
+		</materialDesign:Card>
+	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<i:Interaction.Triggers>
@@ -66,8 +77,8 @@
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
 
 							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
@@ -82,7 +93,7 @@
 											</DataTrigger>
 											<DataTrigger Binding="{Binding IsFavorited}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
-												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}"/>
+												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
@@ -98,13 +109,13 @@
 									<Style TargetType="materialDesign:PopupBox">
 										<Style.Triggers>
 											<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False" >
+														 Value="False">
 												<Setter Property="Visibility" Value="Hidden" />
 											</DataTrigger>
 											<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
 												<Setter Property="Visibility" Value="Visible" />
-												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}"/>
-												<Setter Property="IsEnabled" Value="False"/>
+												<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
+												<Setter Property="IsEnabled" Value="False" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
@@ -131,7 +142,7 @@
 										</Style.Triggers>
 									</Style>
 								</Button.Style>
-								
+
 								<materialDesign:PackIcon Kind="ReplyAll" />
 							</Button>
 
@@ -149,7 +160,7 @@
 								<i:Interaction.Behaviors>
 									<behaviors:ContextMenuOpener Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
 								</i:Interaction.Behaviors>
-								
+
 								<materialDesign:PackIcon Kind="DotsHorizontal" />
 							</Button>
 						</Grid>
@@ -194,6 +205,9 @@
 							<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
 
+							<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
+											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
+
 							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
 												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 								<controls1:FlipView.ItemTemplate>
@@ -201,7 +215,7 @@
 										<Image Source="{Binding Url}" Stretch="Uniform">
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="MouseDown">
-													<command:EventToCommand Command="{Binding OpenImageCommand}" />
+													<command:EventToCommand PassEventArgsToCommand="True" Command="{Binding OpenImageCommand}" />
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
 										</Image>
@@ -210,7 +224,6 @@
 							</controls1:FlipView>
 						</StackPanel>
 					</StackPanel>
-
 				</Grid>
 
 				<controls1:ProgressRing IsActive="{Binding IsLoading}" />
