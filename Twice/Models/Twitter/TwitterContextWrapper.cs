@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -59,24 +60,29 @@ namespace Twice.Models.Twitter
 
 		public async Task LogCurrentRateLimits()
 		{
-			var limits = await Context.Help.Where( h => h.Type == HelpType.RateLimits ).SingleOrDefaultAsync();
+			var response = await Context.Help.Where( h => h.Type == HelpType.RateLimits ).SingleOrDefaultAsync();
 
-			if( limits?.RateLimits != null )
+			if( response?.RateLimits != null )
 			{
 				var sb = new StringBuilder();
-
+				sb.AppendLine();
+				
 				sb.AppendLine( "--- RATE LIMITS START ---" );
-				foreach( var category in limits?.RateLimits )
+				foreach( var category in response?.RateLimits )
 				{
+					var limits = category.Value.Where( l => l.Limit != l.Remaining ).ToArray();
+					if( !limits.Any() )
+					{
+						continue;
+					}
+
 					sb.AppendLine( $"Category: {category.Key}" );
 
-					foreach( var limit in category.Value )
+					foreach( var limit in limits )
 					{
-						sb.AppendLine( $"\tResource: {limit.Resource}" );
-						sb.AppendLine( $"\tRemaining: {limit.Remaining}" );
-						sb.AppendLine( $"\tReset: {limit.Reset}" );
-						sb.AppendLine( $"\tLimit: {limit.Limit}" );
-						sb.AppendLine();
+						var nextReset = limit.Reset.AsUnixTimestamp() - DateTime.Now;
+
+						sb.AppendLine( $"\t{limit.Resource} => ({limit.Remaining}/{limit.Limit}) => Reset in {nextReset:mm\\:ss} minutes" );
 					}
 
 					sb.AppendLine();
