@@ -564,4 +564,7 @@
   <data name="TweetFetchCountDescription" xml:space="preserve">
     <value>Anzahl der zu Tweets die vom Server geladen werden sollen. Dies geschieht beim Programmstart und wenn Daten nachgeladen werden. Je höher dieser Wert, desto länger dauert das Laden.</value>
   </data>
+  <data name="TweetReportedAsSpam" xml:space="preserve">
+    <value>Tweet wurde als Spam gemeldet</value>
+  </data>
 </root>

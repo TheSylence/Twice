@@ -13,7 +13,7 @@ namespace Twice.Injections
 		public Kernel()
 			: base( InjectionModules.ToArray() )
 		{
-			MediaExtractorRepository.AddExtractor( new InstragramExtractor() );
+			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 		}
 
 		private static IEnumerable<INinjectModule> InjectionModules

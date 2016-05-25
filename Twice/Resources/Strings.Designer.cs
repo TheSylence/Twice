@@ -1276,6 +1276,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweet was reported as spam.
+        /// </summary>
+        public static string TweetReportedAsSpam {
+            get {
+                return ResourceManager.GetString("TweetReportedAsSpam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tweets.
         /// </summary>
         public static string Tweets {

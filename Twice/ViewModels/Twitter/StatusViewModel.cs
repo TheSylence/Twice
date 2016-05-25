@@ -159,13 +159,14 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteReportSpamCommand()
 		{
+			ExecAsync( async () => { await Context.Twitter.ReportAsSpam( Model.User.GetUserId() ); }, Strings.TweetReportedAsSpam );
 		}
 
 		private void ExecuteRetweetStatusCommand()
 		{
 			ExecAsync( async () =>
 			{
-				await Context.Twitter.RetweetAsync( Model.StatusID );
+				await Context.Twitter.RetweetAsync( Model.GetStatusId() );
 
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
@@ -192,6 +193,13 @@ namespace Twice.ViewModels.Twitter
 		{
 			get { return _Clipboard ?? DefaultClipboard; }
 			set { _Clipboard = value; }
+		}
+
+		private IMediaExtractorRepository _MediaExtractor;
+		public IMediaExtractorRepository MediaExtractor
+		{
+			get { return _MediaExtractor ?? DefaultMediaExtractor; }
+			set { _MediaExtractor = value; }
 		}
 
 		public IContextEntry Context { get; }
@@ -241,7 +249,7 @@ namespace Twice.ViewModels.Twitter
 
 						var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
 							.Distinct( TwitterComparers.UrlEntityComparer )
-							.Select( e => MediaExtractorRepository.ExtractMedia( e.ExpandedUrl ) );
+							.Select( e => MediaExtractor.ExtractMedia( e.ExpandedUrl ) );
 
 						foreach( var url in urls.Where( u => u != null ) )
 						{
@@ -302,6 +310,7 @@ namespace Twice.ViewModels.Twitter
 		public UserViewModel SourceUser { get; }
 		public UserViewModel User { get; }
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
 		private readonly IConfig Config;
 		private readonly Status OriginalStatus;
 

@@ -12,6 +12,7 @@
 // ****************************************************************************
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -38,6 +39,7 @@ namespace Twice.Behaviors
 	////  Description = "A Trigger used to bind any event to an ICommand.",
 	////  UrlContacts = "http://www.galasoft.ch/contact_en.html",
 	////  Email = "laurent@galasoft.ch")]
+	[ExcludeFromCodeCoverage]
 	public class EventToCommand : TriggerAction<DependencyObject>
 	{
 		/// <summary>

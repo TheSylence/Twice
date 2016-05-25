@@ -265,6 +265,7 @@
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
     <Compile Include="Models\Media\IMediaExtractor.cs" />
+    <Compile Include="Models\Media\IMediaExtractorRepository.cs" />
     <Compile Include="Models\Media\InstragramExtractor.cs" />
     <Compile Include="Models\Media\MediaExtractorRepository.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />

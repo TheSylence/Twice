@@ -194,6 +194,7 @@
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="Models\Cache\SqliteCacheTests.cs" />
+    <Compile Include="Models\Cache\TransactionTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionFactoryTests.cs" />
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />

@@ -10,6 +10,7 @@ using LitJson;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Configuration;
+using Twice.Models.Media;
 using Twice.Models.Twitter;
 using Twice.Services.Views;
 using Twice.Utilities.Os;
@@ -241,6 +242,86 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void CreationDateIsCorrectlyExtracted()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.CreatedAt = new DateTime( 1, 2, 3, 4, 5, 6 );
+
+			var vm = new StatusViewModel( status, null, null, null );
+
+			// Act
+			var created = vm.CreatedAt;
+
+			// Assert
+			Assert.AreEqual( status.CreatedAt, created );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void InlineMediasContainExtractedMedias()
+		{
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 222;
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/1"} );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/2"} );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/3"} );
+
+			var config = new Mock<IConfig>();
+			var visualConfig = new VisualConfig {InlineMedia = true};
+			config.SetupGet( c => c.Visual ).Returns( visualConfig );
+			
+			var extractorRepo = new Mock<IMediaExtractorRepository>();
+			extractorRepo.Setup( r => r.ExtractMedia( It.IsAny<string>() ) ).Returns<string>( url => new Uri( url ) );
+
+			var vm = new StatusViewModel( status, context.Object, config.Object, null )
+			{
+				MediaExtractor = extractorRepo.Object
+			};
+
+			// Act
+			var medias = vm.InlineMedias.ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, medias.Length );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/1" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/2" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/3" ) );
+			
+			extractorRepo.Verify( e => e.ExtractMedia( It.IsAny<string>() ), Times.Exactly( 3 ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void InlineMediaUseExtendedEntities()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 222;
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
+			status.ExtendedEntities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
+
+			var config = new Mock<IConfig>();
+			var visualConfig = new VisualConfig {InlineMedia = true};
+			config.SetupGet( c => c.Visual ).Returns( visualConfig );
+
+			// Act
+			var vm = new StatusViewModel( status, context.Object, config.Object, null );
+			var medias = vm.InlineMedias.ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, medias.Length );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/1" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/2" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/3" ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeDeleted()
 		{
 			// Arrange
@@ -328,6 +409,42 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsFalse( canExecute );
+		}
+
+		[TestMethod, TestCategory( "ViewModels" )]
+		public void QuoteIsExtractedFromStatus()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://twitter.com/user/status/123456"} );
+
+			var vm = new StatusViewModel( status, null, null, null );
+
+			// Act
+			ulong quotedId = vm.ExtractQuotedTweetUrl();
+			bool hasQuote = vm.HasQuotedTweet;
+
+			// Assert
+			Assert.AreEqual( 123456ul, quotedId );
+			Assert.IsTrue( hasQuote );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void QuoteIsNotExtractedForDifferentUrls()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/123456"} );
+
+			var vm = new StatusViewModel( status, null, null, null );
+
+			// Act
+			ulong quotedId = vm.ExtractQuotedTweetUrl();
+			bool hasQuote = vm.HasQuotedTweet;
+
+			// Assert
+			Assert.AreEqual( 0ul, quotedId );
+			Assert.IsFalse( hasQuote );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

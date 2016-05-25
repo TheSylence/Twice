@@ -564,4 +564,7 @@
   <data name="TweetFetchCountDescription" xml:space="preserve">
     <value>The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take.</value>
   </data>
+  <data name="TweetReportedAsSpam" xml:space="preserve">
+    <value>Tweet was reported as spam</value>
+  </data>
 </root>

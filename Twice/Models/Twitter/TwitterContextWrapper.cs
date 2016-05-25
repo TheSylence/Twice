@@ -93,6 +93,11 @@ namespace Twice.Models.Twitter
 			}
 		}
 
+		public async Task ReportAsSpam( ulong userId )
+		{
+			await Context.ReportSpamAsync( userId );
+		}
+
 		public Task<Status> RetweetAsync( ulong statusId )
 		{
 			return Context.RetweetAsync( statusId );

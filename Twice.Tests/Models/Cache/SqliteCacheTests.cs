@@ -25,11 +25,11 @@ namespace Twice.Tests.Models.Cache
 				user.UserID = 123;
 				user.ScreenName = "test";
 
-				await cache.AddUsers( new[] { new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
 
 				// Act
 				user.ScreenName = "testi";
-				await cache.AddUsers( new[] { new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
 
 				// Assert
 				var fromDb = ( await cache.GetKnownUsers() ).First();
@@ -69,7 +69,7 @@ namespace Twice.Tests.Models.Cache
 				using( var cmd = con.CreateCommand() )
 				{
 					cmd.CommandText = "INSERT INTO Users (Id, UserName, UserData) VALUES (@id1, @name1, @data1), "
-									+ "(@id2, @name2, @data2);";
+					                  + "(@id2, @name2, @data2);";
 
 					cmd.AddParameter( "id1", 111 );
 					cmd.AddParameter( "id2", 222 );
@@ -238,7 +238,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
-				await cache.AddHashtags(new[] { "test" });
+				await cache.AddHashtags( new[] {"test"} );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -280,7 +280,7 @@ namespace Twice.Tests.Models.Cache
 				status.ID = 111;
 
 				// Act
-				await cache.AddStatuses( new[] { status} );
+				await cache.AddStatuses( new[] {status} );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -297,6 +297,33 @@ namespace Twice.Tests.Models.Cache
 
 						Assert.AreEqual( status.Text, from.Text );
 					}
+				}
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusCanBeRemoved()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO Statuses (Id, UserId, StatusData) VALUES (123, 111, 'test');";
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				await cache.RemoveStatus( 123 );
+
+				// Assert
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT Id FROM Statuses WHERE Id = 123;";
+					var fromDb = cmd.ExecuteScalar();
+
+					Assert.IsNull( fromDb );
 				}
 			}
 		}
@@ -325,6 +352,79 @@ namespace Twice.Tests.Models.Cache
 				// Assert
 				Assert.AreEqual( status.UserID, fromDb.UserID );
 				Assert.AreEqual( status.Text, fromDb.Text );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusesForColumnCanBeLoaded()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var user = DummyGenerator.CreateDummyUser();
+				user.UserID = 123;
+
+				var s1 = DummyGenerator.CreateDummyStatus( user );
+				s1.ID = 1;
+				var s2 = DummyGenerator.CreateDummyStatus( user );
+				s2.ID = 2;
+				var s3 = DummyGenerator.CreateDummyStatus( user );
+				s3.ID = 3;
+
+				await cache.AddStatuses( new[] {s1, s2, s3} );
+
+				var c1 = Guid.NewGuid();
+				var c2 = Guid.NewGuid();
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO ColumnStatuses (ColumnId, StatusId) VALUES (@c1, 1), (@c1, 2), (@c2, 3);";
+					cmd.AddParameter( "c1", c1 );
+					cmd.AddParameter( "c2", c2 );
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				var statusesC1 = ( await cache.GetStatusesForColumn( c1 ) ).ToArray();
+				var statusesC2 = ( await cache.GetStatusesForColumn( c2 ) ).ToArray();
+
+				// Assert
+				Assert.AreEqual( 2, statusesC1.Length );
+				Assert.IsNotNull( statusesC1.SingleOrDefault( s => s.ID == 1 ) );
+				Assert.IsNotNull( statusesC1.SingleOrDefault( s => s.ID == 2 ) );
+
+				Assert.AreEqual( 1, statusesC2.Length );
+				Assert.IsNotNull( statusesC2.SingleOrDefault( s => s.ID == 3 ) );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusesForUserCanBeLoaded()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var user = DummyGenerator.CreateDummyUser();
+				user.UserID = 123;
+
+				var s1 = DummyGenerator.CreateDummyStatus( user );
+				s1.ID = 1;
+				var s2 = DummyGenerator.CreateDummyStatus( user );
+				s2.ID = 2;
+				var s3 = DummyGenerator.CreateDummyStatus( user );
+				s3.ID = 3;
+
+				await cache.AddStatuses( new[] {s1, s2, s3} );
+
+				// Act
+				var statuses = ( await cache.GetStatusesForUser( 123 ) ).ToArray();
+
+				// Assert
+				Assert.AreEqual( 3, statuses.Length );
+				Assert.IsNotNull( statuses.SingleOrDefault( s => s.ID == 1 ) );
+				Assert.IsNotNull( statuses.SingleOrDefault( s => s.ID == 2 ) );
+				Assert.IsNotNull( statuses.SingleOrDefault( s => s.ID == 3 ) );
 			}
 		}
 
@@ -399,7 +499,7 @@ namespace Twice.Tests.Models.Cache
 				var entry = new UserCacheEntry( user );
 
 				// Act
-				await cache.AddUsers( new[] { entry } );
+				await cache.AddUsers( new[] {entry} );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )

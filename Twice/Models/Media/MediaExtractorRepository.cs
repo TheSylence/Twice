@@ -4,20 +4,21 @@ using System.Linq;
 
 namespace Twice.Models.Media
 {
-	static class MediaExtractorRepository
+	internal class MediaExtractorRepository : IMediaExtractorRepository
 	{
-		public static Uri ExtractMedia( string originalUrl )
+		public void AddExtractor( IMediaExtractor extractor )
+		{
+			Extractors.Add( extractor );
+		}
+
+		public Uri ExtractMedia( string originalUrl )
 		{
 			var extractor = Extractors.FirstOrDefault( e => e.CanExtract( originalUrl ) );
 
 			return extractor?.GetMediaUrl( originalUrl );
 		}
 
-		public static void AddExtractor( IMediaExtractor extractor )
-		{
-			Extractors.Add( extractor );
-		}
-
-		private static readonly List<IMediaExtractor> Extractors = new List<IMediaExtractor>();
+		internal static IMediaExtractorRepository Default { get; } = new MediaExtractorRepository();
+		private readonly List<IMediaExtractor> Extractors = new List<IMediaExtractor>();
 	}
 }
