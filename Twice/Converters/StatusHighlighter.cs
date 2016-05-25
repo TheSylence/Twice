@@ -217,23 +217,14 @@ namespace Twice.Converters
 								MediaEntity mediaEnttiy = entity as MediaEntity;
 								yield return GenerateMedia( mediaEnttiy );
 							}
-
-							//IMediaService service = PluginManager.Instance.MediaServices.FirstOrDefault( s => s.CanExpand( mediaEnttiy.MediaUrlHttps ) );
-							//if( service != null )
-							//{
-							//	mediaPreviews.Add( service.ExpandMedia( mediaEnttiy.MediaUrlHttps ) );
-							//}
 						}
 						else
 						{
 							UrlEntity urlEntity = entity as UrlEntity;
-							yield return GenerateLink( urlEntity );
-
-							//IMediaService service = PluginManager.Instance.MediaServices.FirstOrDefault( s => s.CanExpand( urlEntity.ExpandedUrl ) );
-							//if( service != null )
-							//{
-							//	mediaPreviews.Add( service.ExpandMedia( urlEntity.ExpandedUrl ) );
-							//}
+							if( !TwitterHelper.IsTweetUrl( urlEntity.ExpandedUrl ) )
+							{
+								yield return GenerateLink( urlEntity );
+							}
 						}
 					}
 					else if( entity is UserMentionEntity )
