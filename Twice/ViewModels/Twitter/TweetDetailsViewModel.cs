@@ -17,6 +17,36 @@ namespace Twice.ViewModels.Twitter
 			FollowingConversationTweets = new ObservableCollection<StatusViewModel>();
 		}
 
+		private Task LoadFollowingTweets( Status status )
+		{
+			// TODO: Implement
+			return Task.CompletedTask;
+		}
+
+		private async Task LoadPreviousTweets( Status status )
+		{
+			while( true )
+			{
+				if( status.InReplyToStatusID == 0 )
+				{
+					return;
+				}
+
+				var inReplyTo = await Context.Twitter.Statuses.GetTweet( status.InReplyToStatusID, true );
+				if( inReplyTo == null )
+				{
+					return;
+				}
+
+				var vm = new StatusViewModel( inReplyTo, Context, Configuration, ViewServiceRepository );
+
+				await Dispatcher.RunAsync( () => PreviousConversationTweets.Insert( 0, vm ) );
+				RaisePropertyChanged( nameof( PreviousConversationTweets ) );
+
+				status = inReplyTo;
+			}
+		}
+
 		public async Task OnLoad( object data )
 		{
 			if( DisplayTweet == null )
@@ -35,32 +65,6 @@ namespace Twice.ViewModels.Twitter
 			IsLoadingFollowing = true;
 			await LoadFollowingTweets( DisplayTweet.Model );
 			IsLoadingFollowing = false;
-		}
-
-		private Task LoadFollowingTweets( Status status )
-		{
-			// TODO: Implement
-			return Task.CompletedTask;
-		}
-
-		private async Task LoadPreviousTweets( Status status )
-		{
-			if( status.InReplyToStatusID == 0 )
-			{
-				return;
-			}
-
-			var inReplyTo = await Context.Twitter.Statuses.GetTweet( status.InReplyToStatusID, true );
-			if( inReplyTo == null )
-			{
-				return;
-			}
-
-			var vm = new StatusViewModel( inReplyTo, Context, Configuration, ViewServiceRepository );
-
-			await Dispatcher.RunAsync( () => PreviousConversationTweets.Insert( 0, vm ) );
-
-			await LoadPreviousTweets( inReplyTo );
 		}
 
 		public IContextEntry Context { get; set; }
@@ -114,10 +118,13 @@ namespace Twice.ViewModels.Twitter
 
 		public IList<StatusViewModel> PreviousConversationTweets { get; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _DisplayTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _DisplayTweet;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoadingFollowing;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoadingFollowing;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoadingPrevious;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoadingPrevious;
 	}
 }

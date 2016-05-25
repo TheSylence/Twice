@@ -49,6 +49,7 @@ namespace Twice.ViewModels
 
 		private static async void ExecuteOpenStatusCommand( StatusViewModel vm )
 		{
+			// TODO: If status is a retweet, display the retweeted status instead of the retweet
 			await ViewServices.ViewStatus( vm, vm.Context );
 		}
 

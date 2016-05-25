@@ -7,9 +7,11 @@
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    xmlns:behaviors="clr-namespace:Twice.Behaviors">
+                    xmlns:behaviors="clr-namespace:Twice.Behaviors"
+                    xmlns:views="clr-namespace:Twice.Views">
 	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3" Padding="3">
+		<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 			<StackPanel Orientation="Vertical">
 				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
@@ -28,6 +30,8 @@
 											 CommandParameter="{Binding}" />
 				</i:EventTrigger>
 			</i:Interaction.Triggers>
+
+			<StackPanel Orientation="Vertical">
 			<Grid>
 				<Grid Background="Transparent">
 					<Grid.ColumnDefinitions>
@@ -227,6 +231,12 @@
 
 				<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 			</Grid>
+
+				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
+						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+					<TextBlock Text="Retweets"/>
+				</Grid>
+			</StackPanel>
 
 			<materialDesign:Card.ContextMenu>
 				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">

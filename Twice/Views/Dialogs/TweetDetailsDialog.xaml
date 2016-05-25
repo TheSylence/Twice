@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors" Style="{StaticResource DialogStyle}"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:views="clr-namespace:Twice.Views"
         mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource DialogLocator}}"
         Title="{lex:Loc Tweet}" Height="600" Width="450">
 	<i:Interaction.Behaviors>
@@ -18,7 +19,7 @@
 	</i:Interaction.Behaviors>
 	<StackPanel Orientation="Vertical">
 
-		<Grid MaxHeight="275">
+		<Grid MaxHeight="275" Visibility="{Binding PreviousConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
 			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 				<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
 			</ScrollViewer>
@@ -26,10 +27,13 @@
 			<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
 		</Grid>
 
-		<TextBlock HorizontalAlignment="Center" FontWeight="Bold" Margin="5" Text="{lex:Loc InReplyTo}" Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}"/>
+		<TextBlock HorizontalAlignment="Center" FontWeight="Bold" Margin="5" Text="{lex:Loc InReplyTo}" Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}" />
 
-		<ContentControl Content="{Binding DisplayTweet}" ContentTemplate="{StaticResource StatusViewTemplate}" />
+		<views:StatusContainer ShowRetweets="True">
+			<ContentControl Content="{Binding DisplayTweet}" ContentTemplate="{StaticResource StatusViewTemplate}" />
+		</views:StatusContainer>
 
-		<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+		<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}"
+					   Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}"/>
 	</StackPanel>
 </controls:MetroWindow>
