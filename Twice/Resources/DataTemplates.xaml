@@ -68,7 +68,7 @@
 					</StackPanel>
 
 					<StackPanel Grid.Row="1" Grid.Column="0">
-						<Image Source="{Binding User.ProfileImageUrlHttps}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+						<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
 
 						<Grid>
 							<Grid.ColumnDefinitions>
@@ -211,7 +211,7 @@
 												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 								<controls1:FlipView.ItemTemplate>
 									<DataTemplate>
-										<Image Source="{Binding Url}" Stretch="Uniform">
+										<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="MouseDown">
 													<behaviors:EventToCommand Command="{Binding OpenImageCommand}" />

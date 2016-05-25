@@ -126,18 +126,33 @@
 								</controls1:ColumnHeader>
 
 								<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
-											  HorizontalContentAlignment="Stretch">
+											  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"
+											  VirtualizingStackPanel.IsVirtualizing="True"
+											  VirtualizingStackPanel.ScrollUnit="Pixel"
+											  VirtualizingStackPanel.VirtualizationMode="Recycling">
 									<i:Interaction.Behaviors>
 										<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
 									</i:Interaction.Behaviors>
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<VirtualizingStackPanel />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
 									<ItemsControl.Template>
 										<ControlTemplate>
-											<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-												<i:Interaction.Behaviors>
-													<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
-												</i:Interaction.Behaviors>
-												<ItemsPresenter />
-											</ScrollViewer>
+											<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+												Padding="{TemplateBinding Control.Padding}"
+												BorderBrush="{TemplateBinding Border.BorderBrush}"
+												Background="{TemplateBinding Panel.Background}"
+												SnapsToDevicePixels="True">
+												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
+														  VerticalScrollBarVisibility="Auto" Focusable="False">
+													<i:Interaction.Behaviors>
+														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+													</i:Interaction.Behaviors>
+													<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+												</ScrollViewer>
+											</Border>
 										</ControlTemplate>
 									</ItemsControl.Template>
 								</ItemsControl>
@@ -150,4 +165,4 @@
 			</ItemsControl>
 		</ScrollViewer>
 	</Grid>
-</controls:MetroWindow>
+</controls:MetroWindow> 

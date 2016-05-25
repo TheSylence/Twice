@@ -20,8 +20,7 @@ namespace Twice.Behaviors
 		private void Dispatcher_HeaderClicked( object sender, EventArgs e )
 		{
 			ContentPresenter itemcontainer = AssociatedObject.ItemContainerGenerator.ContainerFromIndex( 0 ) as ContentPresenter;
-			Debug.Assert( itemcontainer != null, "itemcontainer != null" );
-			itemcontainer.BringIntoView();
+			itemcontainer?.BringIntoView();
 		}
 
 		private void OnDispatcherChanged( IColumnActionDispatcher newDispatcher, IColumnActionDispatcher oldDispatcher )
