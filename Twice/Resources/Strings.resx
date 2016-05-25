@@ -558,4 +558,10 @@
   <data name="ConfirmMediaRemoval" xml:space="preserve">
     <value>Do you really want to remove this media from your tweet?</value>
   </data>
+  <data name="TweetFetchCount" xml:space="preserve">
+    <value>Tweets to fetch at once</value>
+  </data>
+  <data name="TweetFetchCountDescription" xml:space="preserve">
+    <value>The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take.</value>
+  </data>
 </root>

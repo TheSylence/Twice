@@ -11,7 +11,8 @@
             "More tweets can be loaded when viewing a user profile",
             "Mutings can be case(in)sensitive",
             "Legend in changelog for the differnet symbols",
-            "Instagram images are now directly displayed"
+            "Instagram images are now directly displayed",
+            "You can now define how many tweets the app should load at once"
         ],
         "Changes": [
             "When inline media are displayed, media url is no longer shown in status text",

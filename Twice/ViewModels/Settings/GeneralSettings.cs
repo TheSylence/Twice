@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -28,12 +29,24 @@ namespace Twice.ViewModels.Settings
 
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
+			AvailableFetchCounts = new[] {20, 50, 100, 200};
+
 			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
 
 			RealtimeStreaming = currentConfig.General.RealtimeStreaming;
 			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? english;
 			CheckForUpdates = currentConfig.General.CheckForUpdates;
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
+			TweetFetchCount = currentConfig.General.TweetFetchCount;
+		}
+
+		public void SaveTo( IConfig config )
+		{
+			config.General.Language = SelectedLanguage.Name;
+			config.General.RealtimeStreaming = RealtimeStreaming;
+			config.General.CheckForUpdates = CheckForUpdates;
+			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
+			config.General.TweetFetchCount = Math.Min( 200, Math.Max( 20, TweetFetchCount ) );
 		}
 
 		private static bool IsEnglish( CultureInfo lang )
@@ -43,14 +56,7 @@ namespace Twice.ViewModels.Settings
 			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
 		}
 
-		public void SaveTo( IConfig config )
-		{
-			config.General.Language = SelectedLanguage.Name;
-			config.General.RealtimeStreaming = RealtimeStreaming;
-			config.General.CheckForUpdates = CheckForUpdates;
-			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
-		}
-
+		public ICollection<int> AvailableFetchCounts { get; }
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		public bool CheckForUpdates
@@ -113,16 +119,29 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _CheckForUpdates;
+		public int TweetFetchCount
+		{
+			[DebuggerStepThrough] get { return _TweetFetchCount; }
+			set
+			{
+				if( _TweetFetchCount == value )
+				{
+					return;
+				}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IncludePrereleaseUpdates;
+				_TweetFetchCount = value;
+				RaisePropertyChanged();
+			}
+		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _RealtimeStreaming;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CheckForUpdates;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private CultureInfo _SelectedLanguage;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IncludePrereleaseUpdates;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RealtimeStreaming;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CultureInfo _SelectedLanguage;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TweetFetchCount;
 	}
 }

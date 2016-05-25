@@ -558,4 +558,10 @@
   <data name="ConfirmMediaRemoval" xml:space="preserve">
     <value>Soll dieses Mediaum wirklich aus dem Status entfernt werden?</value>
   </data>
+  <data name="TweetFetchCount" xml:space="preserve">
+    <value>Auf einmal zu ladene Tweets</value>
+  </data>
+  <data name="TweetFetchCountDescription" xml:space="preserve">
+    <value>Anzahl der zu Tweets die vom Server geladen werden sollen. Dies geschieht beim Programmstart und wenn Daten nachgeladen werden. Je höher dieser Wert, desto länger dauert das Laden.</value>
+  </data>
 </root>

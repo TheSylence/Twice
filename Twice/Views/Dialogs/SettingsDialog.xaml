@@ -66,6 +66,12 @@
 							<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"
 								  IsChecked="{Binding IncludePrereleaseUpdates,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{lex:Loc TweetFetchCount}"/>
+								<materialDesign:PackIcon Kind="HelpCircle" ToolTip="{lex:Loc TweetFetchCountDescription}"/>
+							</StackPanel>
+							<ComboBox ItemsSource="{Binding AvailableFetchCounts}" SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 						</StackPanel>
 					</Grid>
 				</TabItem>

@@ -53,6 +53,7 @@ namespace Twice.ViewModels.Columns
 
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
+			CountExpression = s => s.Count == config.General.TweetFetchCount;
 			SubTitle = "@" + context.AccountName;
 		}
 
@@ -124,7 +125,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task LoadMoreData()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, MaxIdFilterExpression );
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
@@ -136,7 +137,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task LoadTopData()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression, SinceIdFilterExpression );
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
 			{
@@ -148,7 +149,7 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task OnLoad()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( StatusFilterExpression );
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
@@ -349,6 +350,7 @@ namespace Twice.ViewModels.Columns
 
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 
+		private readonly Expression<Func<Status, bool>> CountExpression;
 		protected virtual Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
 
 		protected ulong SinceId { get; private set; } = ulong.MinValue;

@@ -189,7 +189,6 @@ namespace Twice.Converters
 		private static IEnumerable<Inline> GenerateInlines( Status tweet )
 		{
 			var allEntities = ExtractEntities( tweet ).ToArray();
-			List<Inline> mediaPreviews = new List<Inline>();
 
 			if( allEntities.Any() )
 			{
@@ -238,11 +237,6 @@ namespace Twice.Converters
 				if( lastEnd < tweet.Text.Length )
 				{
 					yield return new Run( PrepareText( tweet.Text.Substring( lastEnd ) ) );
-				}
-
-				foreach( Inline preview in mediaPreviews )
-				{
-					yield return preview;
 				}
 			}
 			else
