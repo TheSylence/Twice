@@ -6,7 +6,6 @@
                     xmlns:vm="clr-namespace:Twice.ViewModels"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:command="http://www.galasoft.ch/mvvmlight"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:behaviors="clr-namespace:Twice.Behaviors">
 	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
@@ -25,7 +24,7 @@
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="MouseDown">
-					<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+					<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
 											 CommandParameter="{Binding}" />
 				</i:EventTrigger>
 			</i:Interaction.Triggers>
@@ -55,7 +54,7 @@
 							</StackPanel.Resources>
 							<i:Interaction.Triggers>
 								<i:EventTrigger EventName="MouseDown">
-									<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+									<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
 								</i:EventTrigger>
 							</i:Interaction.Triggers>
@@ -191,7 +190,7 @@
 								</StackPanel.Resources>
 								<i:Interaction.Triggers>
 									<i:EventTrigger EventName="MouseDown">
-										<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+										<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
 									</i:EventTrigger>
 								</i:Interaction.Triggers>
@@ -215,7 +214,7 @@
 										<Image Source="{Binding Url}" Stretch="Uniform">
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="MouseDown">
-													<command:EventToCommand PassEventArgsToCommand="True" Command="{Binding OpenImageCommand}" />
+													<behaviors:EventToCommand Command="{Binding OpenImageCommand}" />
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
 										</Image>
@@ -275,7 +274,7 @@
 					</StackPanel.Resources>
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseDown">
-							<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+							<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
 						</i:EventTrigger>
 					</i:Interaction.Triggers>

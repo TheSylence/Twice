@@ -228,6 +228,7 @@
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
+    <Compile Include="Behaviors\EventToCommand.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
