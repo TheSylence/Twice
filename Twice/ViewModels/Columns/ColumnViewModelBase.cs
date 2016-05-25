@@ -74,78 +74,7 @@ namespace Twice.ViewModels.Columns
 			} );
 		}
 
-		protected async Task AddStatus( StatusViewModel status, bool append = true )
-		{
-			SinceId = Math.Min( SinceId, status.Id );
-			MaxId = Math.Min( MaxId, status.Id );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				if( append )
-				{
-					StatusCollection.Add( status );
-				}
-				else
-				{
-					StatusCollection.Insert( 0, status );
-				}
-			} );
-			RaiseNewStatus( status );
-
-			await UpdateCache( status.Model );
-		}
-
-		protected async Task AddStatuses( IEnumerable<StatusViewModel> statuses, bool append = true )
-		{
-			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
-			if( statusViewModels.Any() )
-			{
-				SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
-				MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
-
-				foreach( var s in statusViewModels )
-				{
-					await UpdateCache( s.Model );
-
-					if( append )
-					{
-						await Dispatcher.RunAsync( () => StatusCollection.Add( s ) );
-					}
-					else
-					{
-						await Dispatcher.RunAsync( () => StatusCollection.Insert( 0, s ) );
-					}
-				}
-
-				RaiseNewStatus( statusViewModels.Last() );
-			}
-		}
-
 		protected abstract bool IsSuitableForColumn( Status status );
-
-		protected virtual async Task LoadMoreData()
-		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
-			var list = new List<StatusViewModel>();
-			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
-			{
-				list.Add( await CreateViewModel( s ) );
-			}
-
-			await AddStatuses( list );
-		}
-
-		protected virtual async Task LoadTopData()
-		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
-			var list = new List<StatusViewModel>();
-			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
-			{
-				list.Add( await CreateViewModel( s ) );
-			}
-
-			await AddStatuses( list, false );
-		}
 
 		protected virtual async Task OnLoad()
 		{
@@ -179,6 +108,53 @@ namespace Twice.ViewModels.Columns
 			{
 				IsLoading = true;
 				await Task.Run( async () => { await LoadTopData().ContinueWith( t => { IsLoading = false; } ); } );
+			}
+		}
+
+		private async Task AddStatus( StatusViewModel status, bool append = true )
+		{
+			SinceId = Math.Min( SinceId, status.Id );
+			MaxId = Math.Min( MaxId, status.Id );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				if( append )
+				{
+					StatusCollection.Add( status );
+				}
+				else
+				{
+					StatusCollection.Insert( 0, status );
+				}
+			} );
+			RaiseNewStatus( status );
+
+			await UpdateCache( status.Model );
+		}
+
+		private async Task AddStatuses( IEnumerable<StatusViewModel> statuses, bool append = true )
+		{
+			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
+			if( statusViewModels.Any() )
+			{
+				SinceId = Math.Max( SinceId, statusViewModels.Max( s => s.Id ) );
+				MaxId = Math.Min( MaxId, statusViewModels.Min( s => s.Id ) );
+
+				foreach( var s in statusViewModels )
+				{
+					await UpdateCache( s.Model );
+
+					if( append )
+					{
+						await Dispatcher.RunAsync( () => StatusCollection.Add( s ) );
+					}
+					else
+					{
+						await Dispatcher.RunAsync( () => StatusCollection.Insert( 0, s ) );
+					}
+				}
+
+				RaiseNewStatus( statusViewModels.Last() );
 			}
 		}
 
@@ -220,6 +196,30 @@ namespace Twice.ViewModels.Columns
 			Deleted?.Invoke( this, EventArgs.Empty );
 		}
 
+		private async Task LoadMoreData()
+		{
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+
+			await AddStatuses( list );
+		}
+
+		private async Task LoadTopData()
+		{
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+
+			await AddStatuses( list, false );
+		}
+
 		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
 		{
 			var completeList = e.Friends.ToList();
@@ -239,9 +239,14 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddUsers( usersToAdd.Select( u => new UserCacheEntry( u ) ).ToList() );
 		}
 
-		private void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
+		private async void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
 		{
-			// TODO: Handle deletion
+			var status = StatusCollection.SingleOrDefault( s => s.Id == e.Id );
+			if( status != null )
+			{
+				await Dispatcher.RunAsync( () => StatusCollection.Remove( status ) );
+				await Cache.RemoveStatus( e.Id );
+			}
 		}
 
 		private async void Parser_StatusReceived( object sender, StatusStreamEventArgs e )
@@ -348,19 +353,14 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		protected ulong MaxId { get; private set; } = ulong.MaxValue;
-
-		private readonly Expression<Func<Status, bool>> CountExpression;
-		protected virtual Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
-
-		protected ulong SinceId { get; private set; } = ulong.MinValue;
-
-		protected virtual Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
-
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
+		private ulong MaxId { get; set; } = ulong.MaxValue;
 
+		private Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
+		private ulong SinceId { get; set; } = ulong.MinValue;
+		private Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
 		protected readonly IContextEntry Context;
-
+		private readonly Expression<Func<Status, bool>> CountExpression;
 		private readonly IStreamParser Parser;
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;

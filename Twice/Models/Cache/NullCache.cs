@@ -69,6 +69,11 @@ namespace Twice.Models.Cache
 			return Task.FromResult<LinqToTwitter.Configuration>( null );
 		}
 
+		public Task RemoveStatus( ulong id )
+		{
+			return Task.CompletedTask;
+		}
+
 		public Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
 		{
 			return Task.CompletedTask;

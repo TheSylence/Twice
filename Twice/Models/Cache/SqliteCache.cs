@@ -29,51 +29,6 @@ namespace Twice.Models.Cache
 			Init();
 		}
 
-		private async Task Cleanup()
-		{
-			string[] tables =
-			{
-				"Users", "TwitterConfig", "Hashtags", "Statuses"
-			};
-
-			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
-
-			await Semaphore.WaitAsync( SemaphoreWait );
-			try
-			{
-				using( var tx = new Transaction( Connection ) )
-				{
-					foreach( var table in tables )
-					{
-						using( var cmd = Connection.CreateCommand() )
-						{
-							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
-							cmd.AddParameter( "now", now );
-							await cmd.ExecuteNonQueryAsync();
-						}
-					}
-
-					tx.Commit();
-				}
-			}
-			finally
-			{
-				Semaphore.Release();
-			}
-		}
-
-		private void Init()
-		{
-			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
-			{
-				using( var cmd = Connection.CreateCommand() )
-				{
-					cmd.CommandText = qry;
-					cmd.ExecuteNonQuery();
-				}
-			}
-		}
-
 		public async Task AddHashtags( IList<string> hashTags )
 		{
 			if( !hashTags.Any() )
@@ -397,6 +352,24 @@ namespace Twice.Models.Cache
 			}
 		}
 
+		public async Task RemoveStatus( ulong id )
+		{
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = "DELETE FROM Statuses WHERE Id = @id;";
+					cmd.AddParameter( "id", id );
+					await cmd.ExecuteNonQueryAsync();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
 		public async Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
 		{
 			await Semaphore.WaitAsync( SemaphoreWait );
@@ -419,6 +392,51 @@ namespace Twice.Models.Cache
 			finally
 			{
 				Semaphore.Release();
+			}
+		}
+
+		private async Task Cleanup()
+		{
+			string[] tables =
+			{
+				"Users", "TwitterConfig", "Hashtags", "Statuses"
+			};
+
+			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
+
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
+							cmd.AddParameter( "now", now );
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		private void Init()
+		{
+			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
+			{
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = qry;
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 
