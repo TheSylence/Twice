@@ -78,17 +78,20 @@
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 
-				<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" Grid.ColumnSpan="2"
-						 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}">
-					<TextBox.InputBindings>
-						<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
-					</TextBox.InputBindings>
-					<i:Interaction.Behaviors>
-						<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
-						<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
-					</i:Interaction.Behaviors>
-				</TextBox>
+				<Grid Grid.ColumnSpan="2" Height="80">
+					<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" VerticalScrollBarVisibility="Auto"
+							 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}" MaxHeight="80"
+							 VerticalAlignment="Top">
+						<TextBox.InputBindings>
+							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
+						</TextBox.InputBindings>
+						<i:Interaction.Behaviors>
+							<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
+							<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
+						</i:Interaction.Behaviors>
+					</TextBox>
+				</Grid>
 
 				<controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
 									   IsActive="{Binding IsSending, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" />
