@@ -14,6 +14,8 @@ namespace Twice.ViewModels.Twitter
 			ProfileImageUrlHttpsOrig = user.ProfileImageUrlHttps.Replace( "_normal", "" );
 			ProfileImageUrlHttpsMini = user.ProfileImageUrlHttps.Replace( "_normal", "_mini" );
 			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps.Replace( "_normal", "_bigger" );
+
+			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
 		}
 
 		public User Model { get; }
@@ -21,6 +23,7 @@ namespace Twice.ViewModels.Twitter
 		public string ProfileImageUrlHttpsBig { get; }
 		public string ProfileImageUrlHttpsMini { get; }
 		public string ProfileImageUrlHttpsOrig { get; }
+		public string ScreenName { get; }
 		public ulong UserId => Model.GetUserId();
 	}
 }

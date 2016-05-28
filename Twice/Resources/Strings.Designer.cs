@@ -1051,6 +1051,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Responses.
+        /// </summary>
+        public static string Responses {
+            get {
+                return ResourceManager.GetString("Responses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retweet.
         /// </summary>
         public static string Retweet {
@@ -1074,6 +1083,15 @@ namespace Twice.Resources {
         public static string RetweetedXTimes {
             get {
                 return ResourceManager.GetString("RetweetedXTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retweets.
+        /// </summary>
+        public static string Retweets {
+            get {
+                return ResourceManager.GetString("Retweets", resourceCulture);
             }
         }
         

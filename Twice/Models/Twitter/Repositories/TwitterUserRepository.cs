@@ -17,11 +17,26 @@ namespace Twice.Models.Twitter.Repositories
 		{
 		}
 
-		public Task<List<User>> LookupUsers( string userList )
+		public Task<List<User>> LookupUsers( IEnumerable<ulong> userIds )
 		{
-			return
+			var userList = string.Join( ",", userIds );
+
+			return LookupUsers( userList );
+		}
+
+		public async Task<List<User>> LookupUsers( string userList )
+		{
+			if( string.IsNullOrEmpty( userList ) )
+			{
+				return new List<User>();
+			}
+
+			var users = await
 				Queryable.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false )
 					.ToListAsync();
+
+			await Cache.AddUsers( users.Select( u => new UserCacheEntry( u ) ).ToList() );
+			return users;
 		}
 
 		public Task<List<User>> Search( string query )

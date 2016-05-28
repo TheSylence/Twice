@@ -36,6 +36,24 @@ namespace Twice.Models.Twitter.Repositories
 			return statusList;
 		}
 
+		public async Task<List<ulong>> FindRetweeters( ulong statusId, int count )
+		{
+			var response = await Queryable.Where( s => s.Type == StatusType.Retweeters && s.ID == statusId )
+				.SingleOrDefaultAsync();
+
+			List<ulong> result;
+			if( response?.Users != null )
+			{
+				result = response.Users;
+			}
+			else
+			{
+				result = new List<ulong>();
+			}
+
+			return result.Take( count ).ToList();
+		}
+
 		public async Task<Status> GetTweet( ulong statusId, bool includeEntities )
 		{
 			var cached = await Cache.GetStatus( statusId );

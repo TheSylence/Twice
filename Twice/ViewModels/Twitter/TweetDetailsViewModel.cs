@@ -47,6 +47,25 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		private async Task StartLoadingPrevTweets()
+		{
+			IsLoadingPrevious = true;
+			await LoadPreviousTweets( DisplayTweet.Model );
+			IsLoadingPrevious = false;
+		}
+
+		private async Task StartLoadingResponses()
+		{
+			IsLoadingFollowing = true;
+			await LoadFollowingTweets( DisplayTweet.Model );
+			IsLoadingFollowing = false;
+		}
+
+		private async Task StartLoadingRetweets()
+		{
+			await DisplayTweet.LoadRetweets();
+		}
+
 		public async Task OnLoad( object data )
 		{
 			if( DisplayTweet == null )
@@ -58,13 +77,14 @@ namespace Twice.ViewModels.Twitter
 			PreviousConversationTweets.Clear();
 			FollowingConversationTweets.Clear();
 
-			IsLoadingPrevious = true;
-			await LoadPreviousTweets( DisplayTweet.Model );
-			IsLoadingPrevious = false;
+			var tasks = new[]
+			{
+				StartLoadingPrevTweets(),
+				StartLoadingResponses(),
+				StartLoadingRetweets()
+			};
 
-			IsLoadingFollowing = true;
-			await LoadFollowingTweets( DisplayTweet.Model );
-			IsLoadingFollowing = false;
+			await Task.WhenAll( tasks );
 		}
 
 		public IContextEntry Context { get; set; }

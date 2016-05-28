@@ -18,6 +18,14 @@ namespace Twice
 				Obscurity.Deobscure( "=g3c1RGboNTRXFTe1IEUiBzTCdjWY1ERxgGNHJFN24UYwJ0YvNDc6N2crNVVkR0U380V" );
 		}
 
+		public static class Gui
+		{
+			/// <summary>
+			///     Number of user pictures for retweets to display in the detail dialog
+			/// </summary>
+			internal const int MaxRetweets = 10;
+		}
+
 		public static class Cache
 		{
 			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 100 );

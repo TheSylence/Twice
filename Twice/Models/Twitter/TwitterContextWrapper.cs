@@ -16,6 +16,13 @@ namespace Twice.Models.Twitter
 	[ConfigureAwait( false )]
 	internal class TwitterContextWrapper : ITwitterContext
 	{
+		public async Task<bool> VerifyCredentials()
+		{
+			var verifyResponse =
+					await Context.Account.Where( a => a.Type == AccountType.VerifyCredentials ).SingleOrDefaultAsync();
+
+			return verifyResponse?.User != null;
+		}
 		public TwitterContextWrapper( TwitterContext context, ICache cache )
 		{
 			Context = context;

@@ -567,4 +567,10 @@
   <data name="TweetReportedAsSpam" xml:space="preserve">
     <value>Tweet was reported as spam</value>
   </data>
+  <data name="Responses" xml:space="preserve">
+    <value>Responses</value>
+  </data>
+  <data name="Retweets" xml:space="preserve">
+    <value>Retweets</value>
+  </data>
 </root>

@@ -49,6 +49,7 @@ namespace Twice.ViewModels.Main
 			RateLimitTimer.Start();
 		}
 
+
 		public async Task OnLoad( object data )
 		{
 			if( !HasContexts )
@@ -60,6 +61,8 @@ namespace Twice.ViewModels.Main
 					await ViewServiceRepository.ShowAccounts( true );
 				}
 			}
+
+			await CheckCredentials();
 
 			var loadTasks = Columns.Select( c => c.Load() );
 			await Task.WhenAll( loadTasks );
@@ -223,6 +226,14 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
+		private async Task CheckCredentials()
+		{
+			foreach( var context in ContextList.Contexts )
+			{
+				bool valid = await context.Twitter.VerifyCredentials();
+				LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+			}
+		}
 		private async Task QueryRateLimit()
 		{
 			foreach( var context in ContextList.Contexts )

@@ -28,6 +28,8 @@ namespace Twice.Models.Twitter
 
 		Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
 
+		Task<bool> VerifyCredentials();
+
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }
 		ITwitterStatusRepository Statuses { get; }
