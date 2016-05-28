@@ -237,34 +237,35 @@ namespace Twice.ViewModels.Twitter
 		{
 			get
 			{
-				if( _InlineMedias == null )
+				if( _InlineMedias != null )
 				{
-					_InlineMedias = new List<StatusMediaViewModel>();
+					return _InlineMedias;
+				}
 
-					if( Config.Visual.InlineMedia )
-					{
-						var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
-							.Distinct( TwitterComparers.MediaEntityComparer )
-							.Select( m => new Uri( m.MediaUrlHttps ) );
+				_InlineMedias = new List<StatusMediaViewModel>();
+				if( !Config.Visual.InlineMedia )
+				{
+					return _InlineMedias;
+				}
 
-						foreach( var entity in entities )
-						{
-							var vm = new StatusMediaViewModel( entity );
-							vm.OpenRequested += Image_OpenRequested;
-							_InlineMedias.Add( vm );
-						}
+				var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
+					.Distinct( TwitterComparers.MediaEntityComparer )
+					.Select( m => new Uri( m.MediaUrlHttps ) );
 
-						var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
-							.Distinct( TwitterComparers.UrlEntityComparer )
-							.Select( e => MediaExtractor.ExtractMedia( e.ExpandedUrl ) );
+				foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+				{
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
+				}
 
-						foreach( var url in urls.Where( u => u != null ) )
-						{
-							var vm = new StatusMediaViewModel( url );
-							vm.OpenRequested += Image_OpenRequested;
-							_InlineMedias.Add( vm );
-						}
-					}
+				var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
+					.Distinct( TwitterComparers.UrlEntityComparer )
+					.Select( e => MediaExtractor.ExtractMedia( e.ExpandedUrl ) );
+
+				foreach( var vm in urls.Where( u => u != null ).Select( url => new StatusMediaViewModel( url ) ) )
+				{
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
 				}
 
 				return _InlineMedias;
@@ -288,6 +289,7 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public bool IsReply => Model.InReplyToStatusID != 0;
 		public bool IsRetweeted => Model.Retweeted;
 
 		public IMediaExtractorRepository MediaExtractor

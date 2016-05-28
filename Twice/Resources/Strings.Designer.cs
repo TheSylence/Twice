@@ -1402,6 +1402,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View conversation.
+        /// </summary>
+        public static string ViewConversation {
+            get {
+                return ResourceManager.GetString("ViewConversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visual.
         /// </summary>
         public static string Visual {

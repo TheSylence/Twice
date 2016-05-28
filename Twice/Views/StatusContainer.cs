@@ -5,6 +5,9 @@ namespace Twice.Views
 {
 	public class StatusContainer : ContentControl
 	{
+		public static readonly DependencyProperty DisplayIndicatorsProperty =
+			DependencyProperty.Register( "DisplayIndicators", typeof(bool), typeof(StatusContainer), new PropertyMetadata( true ) );
+
 		public static readonly DependencyProperty DisplaySourceProperty =
 			DependencyProperty.Register( "DisplaySource", typeof(bool), typeof(StatusContainer), new PropertyMetadata( false ) );
 
@@ -16,6 +19,12 @@ namespace Twice.Views
 
 		public static readonly DependencyProperty ShowRetweetsProperty =
 			DependencyProperty.Register( "ShowRetweets", typeof(bool), typeof(StatusContainer), new PropertyMetadata( false ) );
+
+		public bool DisplayIndicators
+		{
+			get { return (bool)GetValue( DisplayIndicatorsProperty ); }
+			set { SetValue( DisplayIndicatorsProperty, value ); }
+		}
 
 		public bool DisplaySource
 		{

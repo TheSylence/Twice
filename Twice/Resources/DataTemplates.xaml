@@ -32,6 +32,51 @@
 			</i:Interaction.Triggers>
 
 			<StackPanel Orientation="Vertical">
+				<Grid Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
+						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+					<StackPanel Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}"
+									Orientation="Horizontal" Background="Transparent" Margin="5">
+						<StackPanel.Resources>
+							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}" Value="True">
+										<Setter Property="TextDecorations" Value="Underline" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</StackPanel.Resources>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="MouseDown">
+								<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+
+						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+
+						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
+
+						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Visibility="{Binding IsReply, Converter={StaticResource BoolToVisibleConv}}">
+						<StackPanel.Resources>
+							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}" Value="True">
+										<Setter Property="TextDecorations" Value="Underline" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</StackPanel.Resources>
+
+						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" />
+					</StackPanel>
+				</Grid>
+
 				<Grid>
 					<Grid Background="Transparent">
 						<Grid.ColumnDefinitions>
@@ -39,39 +84,11 @@
 							<ColumnDefinition />
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
 							<RowDefinition />
 							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
 
-						<StackPanel Grid.ColumnSpan="2" Grid.Row="0" Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}">
-							<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
-								<StackPanel.Resources>
-									<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
-												<Setter Property="TextDecorations" Value="Underline" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</StackPanel.Resources>
-								<i:Interaction.Triggers>
-									<i:EventTrigger EventName="MouseDown">
-										<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
-									</i:EventTrigger>
-								</i:Interaction.Triggers>
-
-								<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
-
-								<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
-
-								<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-							</StackPanel>
-						</StackPanel>
-
-						<StackPanel Grid.Row="1" Grid.Column="0">
+						<StackPanel Grid.Row="0" Grid.Column="0">
 							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
 
 							<Grid Visibility="{Binding EnableHoverIcons, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource BoolToVisibleConv}}">
@@ -169,7 +186,7 @@
 							</Grid>
 						</StackPanel>
 
-						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="1">
+						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
 							<DockPanel>
 								<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
 									<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
@@ -258,7 +275,7 @@
 									<i:Interaction.Triggers>
 										<i:EventTrigger EventName="MouseDown">
 											<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-																	  CommandParameter="{Binding UserId}"/>
+																	  CommandParameter="{Binding UserId}" />
 										</i:EventTrigger>
 									</i:Interaction.Triggers>
 								</Image>
