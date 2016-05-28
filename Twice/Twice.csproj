@@ -274,6 +274,7 @@
     <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />
     <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />

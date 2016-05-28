@@ -46,11 +46,14 @@
 			<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
 		</StackPanel>
 
-		<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False">
-			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}"
-					   Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}" />
-			</ScrollViewer>
-		</views:StatusContainer>
+		<Grid MaxHeight="275" Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
+			<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False">
+				<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+					<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+				</ScrollViewer>
+			</views:StatusContainer>
+
+			<controls:ProgressRing IsActive="{Binding IsLoadingFollowing, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+		</Grid>
 	</StackPanel>
 </controls:MetroWindow>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
@@ -17,25 +18,22 @@ namespace Twice.ViewModels.Twitter
 			FollowingConversationTweets = new ObservableCollection<StatusViewModel>();
 		}
 
-		private Task LoadFollowingTweets( Status status )
+		private async Task StartLoadingPrevTweets()
 		{
-			// TODO: Implement
-			return Task.CompletedTask;
-		}
+			Status status = DisplayTweet.Model;
 
-		private async Task LoadPreviousTweets( Status status )
-		{
+			IsLoadingPrevious = true;
 			while( true )
 			{
 				if( status.InReplyToStatusID == 0 )
 				{
-					return;
+					break;
 				}
 
 				var inReplyTo = await Context.Twitter.Statuses.GetTweet( status.InReplyToStatusID, true );
 				if( inReplyTo == null )
 				{
-					return;
+					break;
 				}
 
 				var vm = new StatusViewModel( inReplyTo, Context, Configuration, ViewServiceRepository );
@@ -45,19 +43,20 @@ namespace Twice.ViewModels.Twitter
 
 				status = inReplyTo;
 			}
-		}
 
-		private async Task StartLoadingPrevTweets()
-		{
-			IsLoadingPrevious = true;
-			await LoadPreviousTweets( DisplayTweet.Model );
 			IsLoadingPrevious = false;
 		}
 
 		private async Task StartLoadingResponses()
 		{
 			IsLoadingFollowing = true;
-			await LoadFollowingTweets( DisplayTweet.Model );
+
+			var replies = await Context.Twitter.Search.SearchReplies( DisplayTweet.Model );
+			await Dispatcher.RunAsync( () =>
+				FollowingConversationTweets.AddRange(
+					replies.Select( r => new StatusViewModel( r, Context, Configuration, ViewServiceRepository ) ) ) );
+
+			RaisePropertyChanged( nameof( FollowingConversationTweets ) );
 			IsLoadingFollowing = false;
 		}
 

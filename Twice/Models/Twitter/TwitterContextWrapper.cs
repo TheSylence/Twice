@@ -16,13 +16,6 @@ namespace Twice.Models.Twitter
 	[ConfigureAwait( false )]
 	internal class TwitterContextWrapper : ITwitterContext
 	{
-		public async Task<bool> VerifyCredentials()
-		{
-			var verifyResponse =
-					await Context.Account.Where( a => a.Type == AccountType.VerifyCredentials ).SingleOrDefaultAsync();
-
-			return verifyResponse?.User != null;
-		}
 		public TwitterContextWrapper( TwitterContext context, ICache cache )
 		{
 			Context = context;
@@ -31,6 +24,7 @@ namespace Twice.Models.Twitter
 			Statuses = new TwitterStatusRepository( context, cache );
 			Friendships = new TwitterFriendshipRepository( context, cache );
 			Streaming = new TwitterStreamingRepository( context, cache );
+			Search = new TwitterSearchRepository( context, cache );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
@@ -73,7 +67,7 @@ namespace Twice.Models.Twitter
 			{
 				var sb = new StringBuilder();
 				sb.AppendLine();
-				
+
 				sb.AppendLine( "--- RATE LIMITS START ---" );
 				foreach( var category in response?.RateLimits )
 				{
@@ -94,6 +88,7 @@ namespace Twice.Models.Twitter
 
 					sb.AppendLine();
 				}
+
 				sb.AppendLine( "--- RATE LIMITS END ---" );
 
 				LogTo.Debug( sb.ToString() );
@@ -115,13 +110,23 @@ namespace Twice.Models.Twitter
 			return Context.TweetAsync( text, medias );
 		}
 
-		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners )
+		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType,
+			IEnumerable<ulong> additionalOwners )
 		{
 			return Context.UploadMediaAsync( mediaData, mediaType, additionalOwners );
 		}
 
+		public async Task<bool> VerifyCredentials()
+		{
+			var verifyResponse =
+				await Context.Account.Where( a => a.Type == AccountType.VerifyCredentials ).SingleOrDefaultAsync();
+
+			return verifyResponse?.User != null;
+		}
+
 		public IAuthorizer Authorizer => Context.Authorizer;
 		public ITwitterFriendshipRepository Friendships { get; }
+		public ITwitterSearchRepository Search { get; }
 		public ITwitterStatusRepository Statuses { get; }
 		public ITwitterStreamingRepository Streaming { get; }
 		public ITwitterUserRepository Users { get; }

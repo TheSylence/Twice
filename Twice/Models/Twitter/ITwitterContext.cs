@@ -35,5 +35,7 @@ namespace Twice.Models.Twitter
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }
+		ITwitterSearchRepository Search { get; }
 	}
+
 }
