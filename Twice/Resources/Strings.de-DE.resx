@@ -579,4 +579,13 @@
   <data name="RequiresRestart" xml:space="preserve">
     <value>Neustart erforderlich</value>
   </data>
+  <data name="DevelopedBy" xml:space="preserve">
+    <value>Entwickelt von</value>
+  </data>
+  <data name="SpecialThanksTo" xml:space="preserve">
+    <value>Besonderer Dank an</value>
+  </data>
+  <data name="FollowTwiceAppOnTwitter" xml:space="preserve">
+    <value>Folge @TwiceApp auf twitter</value>
+  </data>
 </root>

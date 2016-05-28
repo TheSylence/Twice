@@ -10,6 +10,8 @@
         xmlns:info="clr-namespace:Twice.ViewModels.Info"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:vm="clr-namespace:Twice.ViewModels"
+        xmlns:sys="clr-namespace:System;assembly=System"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}"
         Title="{lex:Loc Info}" Height="600" Width="600">
 	<controls:MetroWindow.Resources>
@@ -28,13 +30,42 @@
 		<TabItem Header="{lex:Loc About}">
 			<StackPanel Orientation="Vertical" Margin="5">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="{lex:Loc Version}" />
-					<TextBlock Text="{Binding Version}" Margin="5,0" FontWeight="SemiBold" />
+					<TextBlock Text="{lex:Loc Version}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
+					<TextBlock Text="{Binding Version}" Margin="5,0" Style="{StaticResource MaterialDesignBody2TextBlock}" />
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="{lex:Loc BuildDate}" />
-					<TextBlock Text="{Binding BuildDate}" Margin="5,0" FontWeight="SemiBold" />
+					<TextBlock Text="{lex:Loc BuildDate}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
+					<TextBlock Text="{Binding BuildDate}" Margin="5,0" Style="{StaticResource MaterialDesignBody2TextBlock}" />
 				</StackPanel>
+				<ContentControl>
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+						<Hyperlink.CommandParameter>
+							<sys:Uri>https://twitter.com/TwiceApp</sys:Uri>
+						</Hyperlink.CommandParameter>
+						<TextBlock Text="{lex:Loc FollowTwiceAppOnTwitter}" />
+					</Hyperlink>
+				</ContentControl>
+				<Label Margin="0,10" />
+				<TextBlock Text="{lex:Loc DevelopedBy}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
+				<ContentControl Margin="5,0">
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+						<Hyperlink.CommandParameter>
+							<sys:Uri>https://twitter.com/TheSylence</sys:Uri>
+						</Hyperlink.CommandParameter>
+						<TextBlock Text="Mattias Specht (@TheSylence)" />
+					</Hyperlink>
+				</ContentControl>
+				<Label Margin="0,10" />
+				<TextBlock Text="{lex:Loc SpecialThanksTo}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
+				<ContentControl Margin="5,0">
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
+							   NavigateUri="{Binding CommandParameter, RelativeSource={RelativeSource Self}}">
+						<Hyperlink.CommandParameter>
+							<sys:Uri>https://twitter.com/FemmeNoireOnYT</sys:Uri>
+						</Hyperlink.CommandParameter>
+						<TextBlock Text="@FemmeNoireOnYT" />
+					</Hyperlink>
+				</ContentControl>
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="{lex:Loc Changelog}">
@@ -132,8 +163,10 @@
 		</TabItem>
 		<TabItem Header="{lex:Loc Licenses}">
 			<DockPanel>
-				<ComboBox DockPanel.Dock="Top" ItemsSource="{Binding Licenses}" DisplayMemberPath="Name" x:Name="LicenseSelection" SelectedIndex="0" />
-				<FlowDocumentScrollViewer Document="{Binding ElementName=LicenseSelection, Path=SelectedItem.(info:LicenseItem.Content), Converter={StaticResource FlowDocConv}}" Padding="5" />
+				<ComboBox DockPanel.Dock="Top" ItemsSource="{Binding Licenses}" DisplayMemberPath="Name"
+						  x:Name="LicenseSelection" SelectedIndex="0" Margin="5" />
+				<FlowDocumentScrollViewer Document="{Binding ElementName=LicenseSelection, Path=SelectedItem.(info:LicenseItem.Content), Converter={StaticResource FlowDocConv}}"
+										  Padding="5" />
 			</DockPanel>
 		</TabItem>
 	</TabControl>

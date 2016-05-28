@@ -439,6 +439,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Developed by.
+        /// </summary>
+        public static string DevelopedBy {
+            get {
+                return ResourceManager.GetString("DevelopedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display to show popups at.
         /// </summary>
         public static string DisplayToShowPopupsAt {
@@ -570,6 +579,15 @@ namespace Twice.Resources {
         public static string FollowsYou {
             get {
                 return ResourceManager.GetString("FollowsYou", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow @TwiceApp on twitter.
+        /// </summary>
+        public static string FollowTwiceAppOnTwitter {
+            get {
+                return ResourceManager.GetString("FollowTwiceAppOnTwitter", resourceCulture);
             }
         }
         
@@ -1191,6 +1209,15 @@ namespace Twice.Resources {
         public static string SoundNotification {
             get {
                 return ResourceManager.GetString("SoundNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special thanks to.
+        /// </summary>
+        public static string SpecialThanksTo {
+            get {
+                return ResourceManager.GetString("SpecialThanksTo", resourceCulture);
             }
         }
         
