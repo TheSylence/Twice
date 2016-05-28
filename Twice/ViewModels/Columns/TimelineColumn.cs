@@ -1,6 +1,6 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Linq.Expressions;
-using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;

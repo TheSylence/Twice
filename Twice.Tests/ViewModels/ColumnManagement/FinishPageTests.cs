@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Wizards;
 
@@ -43,7 +43,8 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 		{
 			// Arrange
 			var wizard = new Mock<IWizardViewModel>();
-			wizard.Setup( w => w.GetProperty<string[]>( AddColumnDialogViewModel.SourceAccountNamesKey ) ).Returns( new[] {"Acc1", "Acc2"} );
+			wizard.Setup( w => w.GetProperty<string[]>( AddColumnDialogViewModel.SourceAccountNamesKey ) ).Returns( new[]
+			{"Acc1", "Acc2"} );
 
 			var page = new FinishPage( wizard.Object );
 

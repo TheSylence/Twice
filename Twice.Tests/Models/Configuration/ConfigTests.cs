@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Configuration;
 using Twice.Utilities;
 
@@ -62,11 +62,11 @@ namespace Twice.Tests.Models.Configuration
 				}
 			};
 
-			config.Mute.Entries.Add( new MuteEntry {Filter = "test"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "@one"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "#two"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = ":three"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "abc", EndDate = DateTime.MaxValue} );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "test" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "@one" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "#two" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = ":three" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "abc", EndDate = DateTime.MaxValue } );
 
 			// Act
 			config.Save();

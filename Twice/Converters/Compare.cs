@@ -42,6 +42,7 @@ namespace Twice.Converters
 				{
 					return DependencyProperty.UnsetValue;
 				}
+
 				compareTo = tmp;
 			}
 
@@ -74,8 +75,9 @@ namespace Twice.Converters
 			throw new NotSupportedException();
 		}
 
+		private const double RoundingTolerance = 0.0001;
+
 		public double CompareValue { get; set; }
 		public CompareOperation Operation { get; set; }
-		private const double RoundingTolerance = 0.0001;
 	}
 }

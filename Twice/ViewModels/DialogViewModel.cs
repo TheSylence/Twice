@@ -1,9 +1,8 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using MaterialDesignThemes.Wpf;
-using Ninject;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Validation;
 

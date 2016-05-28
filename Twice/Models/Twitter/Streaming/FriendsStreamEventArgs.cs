@@ -1,5 +1,5 @@
-using System.Linq;
 using LitJson;
+using System.Linq;
 
 namespace Twice.Models.Twitter.Streaming
 {

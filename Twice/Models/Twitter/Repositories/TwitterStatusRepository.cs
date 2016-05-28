@@ -1,3 +1,6 @@
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,9 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Comparers;
 

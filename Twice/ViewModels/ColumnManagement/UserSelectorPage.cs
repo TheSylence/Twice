@@ -41,7 +41,7 @@ namespace Twice.ViewModels.ColumnManagement
 			Timer.Stop();
 
 			var contexts = Wizard.GetProperty<IContextEntry[]>( AddColumnDialogViewModel.ContextsKey );
-			
+
 			var results = await contexts.First().Twitter.Users.Search( SearchText );
 			UserCollection.Clear();
 			UserCollection.AddRange( results.Select( u => new UserViewModel( u ) ) );

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Converters;
 using Twice.Resources;
 using Twice.Utilities;
@@ -32,7 +32,7 @@ namespace Twice.Tests.Converters
 			var date = new Mock<IDateProvider>();
 			date.SetupGet( d => d.Now ).Returns( new DateTime( 1234, 5, 6, 7, 8, 9 ).ToLocalTime() );
 
-			var conv = new RelativeDate {DateProvider = date.Object};
+			var conv = new RelativeDate { DateProvider = date.Object };
 
 			// Act
 			var result = conv.Convert( new DateTime( 1234, 5, 5, 7, 7, 0 ), null, null, null );
@@ -48,7 +48,7 @@ namespace Twice.Tests.Converters
 			var date = new Mock<IDateProvider>();
 			date.SetupGet( d => d.Now ).Returns( new DateTime( 1234, 5, 6, 7, 8, 9 ).ToLocalTime() );
 
-			var conv = new RelativeDate {DateProvider = date.Object};
+			var conv = new RelativeDate { DateProvider = date.Object };
 
 			// Act
 			var result = conv.Convert( new DateTime( 1234, 5, 6, 6, 7, 0 ), null, null, null );
@@ -64,7 +64,7 @@ namespace Twice.Tests.Converters
 			var date = new Mock<IDateProvider>();
 			date.SetupGet( d => d.Now ).Returns( new DateTime( 1234, 5, 6, 7, 8, 9 ).ToLocalTime() );
 
-			var conv = new RelativeDate {DateProvider = date.Object};
+			var conv = new RelativeDate { DateProvider = date.Object };
 
 			// Act
 			var result = conv.Convert( new DateTime( 1234, 5, 6, 7, 7, 0 ), null, null, null );
@@ -80,7 +80,7 @@ namespace Twice.Tests.Converters
 			var date = new Mock<IDateProvider>();
 			date.SetupGet( d => d.Now ).Returns( new DateTime( 1234, 5, 6, 7, 8, 9 ).ToLocalTime() );
 
-			var conv = new RelativeDate {DateProvider = date.Object};
+			var conv = new RelativeDate { DateProvider = date.Object };
 
 			// Act
 			var result = conv.Convert( new DateTime( 1234, 5, 6, 7, 8, 0 ), null, null, null );

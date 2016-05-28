@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
-using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -34,34 +34,6 @@ namespace Twice.ViewModels
 			}
 		}
 
-		private void NotifyPopup( StatusViewModel status )
-		{
-		}
-
-		private void NotifySound( StatusViewModel status )
-		{
-			Player?.Play();
-		}
-
-		private void NotifyToast( StatusViewModel status )
-		{
-			var context = new NotificationViewModel( status );
-			NotifyToast( context );
-		}
-
-		private void NotifyToast( NotificationViewModel vm )
-		{
-			Dispatcher.CheckBeginInvokeOnUI(
-				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
-
-			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( t =>
-			{
-				// TODO: This should be moved into the ViewModel of the Toast
-				Dispatcher.CheckBeginInvokeOnUI( () =>
-					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
-			} );
-		}
-
 		public void DisplayMessage( string message, NotificationType type )
 		{
 			if( !Config.Notifications.ToastsEnabled )
@@ -89,6 +61,34 @@ namespace Twice.ViewModels
 			{
 				NotifyPopup( status );
 			}
+		}
+
+		private void NotifyPopup( StatusViewModel status )
+		{
+		}
+
+		private void NotifySound( StatusViewModel status )
+		{
+			Player?.Play();
+		}
+
+		private void NotifyToast( StatusViewModel status )
+		{
+			var context = new NotificationViewModel( status );
+			NotifyToast( context );
+		}
+
+		private void NotifyToast( NotificationViewModel vm )
+		{
+			Dispatcher.CheckBeginInvokeOnUI(
+				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
+
+			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( t =>
+			{
+				// TODO: This should be moved into the ViewModel of the Toast
+				Dispatcher.CheckBeginInvokeOnUI( () =>
+					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
+			} );
 		}
 
 		private readonly IConfig Config;

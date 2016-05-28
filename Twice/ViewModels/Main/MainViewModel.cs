@@ -49,80 +49,6 @@ namespace Twice.ViewModels.Main
 			RateLimitTimer.Start();
 		}
 
-
-		public async Task OnLoad( object data )
-		{
-			if( !HasContexts )
-			{
-				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
-
-				if( await ViewServiceRepository.Confirm( csa ) )
-				{
-					await ViewServiceRepository.ShowAccounts( true );
-				}
-			}
-
-			await CheckCredentials();
-
-			var loadTasks = Columns.Select( c => c.Load() );
-			await Task.WhenAll( loadTasks );
-
-			try
-			{
-				await TwitterConfig.QueryConfig();
-			}
-			catch( Exception ex )
-			{
-				LogTo.WarnException( "Failed to read current config from twitter", ex );
-			}
-
-			if( Configuration?.General?.CheckForUpdates == true )
-			{
-				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
-
-				var channelUrl = useBetaChannel
-					? Constants.Updates.BetaChannelUrl
-					: Constants.Updates.ReleaseChannelUrl;
-
-				LogTo.Info( "Searching for app updates..." );
-				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
-
-				try
-				{
-					using( var mgr = UpdateFactory.Construct( channelUrl ) )
-					{
-						var release = await mgr.UpdateApp();
-
-						Version newVersion = release?.Version?.Version;
-
-						if( newVersion == null )
-						{
-							LogTo.Warn( "UpdateApp returned null" );
-						}
-						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
-						{
-							LogTo.Info( $"Updated app to {release.Version}" );
-							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
-						}
-						else
-						{
-							LogTo.Info( "App is up to date" );
-						}
-					}
-				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
-				catch( Exception ex )
-				{
-					LogTo.WarnException( "Error during update check", ex );
-				}
-			}
-
-			await QueryRateLimit();
-		}
-
 		private bool CanExecuteAddColumnCommand()
 		{
 			return HasContexts;
@@ -131,6 +57,15 @@ namespace Twice.ViewModels.Main
 		private bool CanExecuteNewTweetCommand()
 		{
 			return HasContexts;
+		}
+
+		private async Task CheckCredentials()
+		{
+			foreach( var context in ContextList.Contexts )
+			{
+				bool valid = await context.Twitter.VerifyCredentials();
+				LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+			}
 		}
 
 		private void Col_Changed( object sender, EventArgs e )
@@ -226,14 +161,6 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
-		private async Task CheckCredentials()
-		{
-			foreach( var context in ContextList.Contexts )
-			{
-				bool valid = await context.Twitter.VerifyCredentials();
-				LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
-			}
-		}
 		private async Task QueryRateLimit()
 		{
 			foreach( var context in ContextList.Contexts )
@@ -244,6 +171,79 @@ namespace Twice.ViewModels.Main
 
 		private async void RateLimitTimer_Tick( object sender, EventArgs e )
 		{
+			await QueryRateLimit();
+		}
+
+		public async Task OnLoad( object data )
+		{
+			if( !HasContexts )
+			{
+				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
+
+				if( await ViewServiceRepository.Confirm( csa ) )
+				{
+					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+
+			await CheckCredentials();
+
+			var loadTasks = Columns.Select( c => c.Load() );
+			await Task.WhenAll( loadTasks );
+
+			try
+			{
+				await TwitterConfig.QueryConfig();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to read current config from twitter", ex );
+			}
+
+			if( Configuration?.General?.CheckForUpdates == true )
+			{
+				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
+
+				var channelUrl = useBetaChannel
+					? Constants.Updates.BetaChannelUrl
+					: Constants.Updates.ReleaseChannelUrl;
+
+				LogTo.Info( "Searching for app updates..." );
+				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
+
+				try
+				{
+					using( var mgr = UpdateFactory.Construct( channelUrl ) )
+					{
+						var release = await mgr.UpdateApp();
+
+						Version newVersion = release?.Version?.Version;
+
+						if( newVersion == null )
+						{
+							LogTo.Warn( "UpdateApp returned null" );
+						}
+						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							LogTo.Info( $"Updated app to {release.Version}" );
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
+						}
+						else
+						{
+							LogTo.Info( "App is up to date" );
+						}
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( "Error during update check", ex );
+				}
+			}
+
 			await QueryRateLimit();
 		}
 
@@ -274,14 +274,19 @@ namespace Twice.ViewModels.Main
 		private readonly INotifier Notifier;
 		private readonly DispatcherTimer RateLimitTimer;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SettingsCommand;
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Twice.Models.Twitter.Repositories
 {
-	interface ITwitterStreamingRepository
+	internal interface ITwitterStreamingRepository
 	{
 		IQueryable<LinqToTwitter.Streaming> GetUserStream();
 	}

@@ -17,7 +17,7 @@ namespace Twice.Injections
 		public override void Load()
 		{
 			Bind<ICache>().ToProvider<CacheProvider>().InSingletonScope();
-			
+
 			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();

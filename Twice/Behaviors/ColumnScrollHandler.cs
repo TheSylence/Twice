@@ -36,7 +36,7 @@ namespace Twice.Behaviors
 				ActionDispatcher?.OnBottomReached();
 			}
 		}
-		
+
 		public static readonly DependencyProperty ActionDispatcherProperty =
 			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnScrollHandler),
 				new PropertyMetadata( null ) );

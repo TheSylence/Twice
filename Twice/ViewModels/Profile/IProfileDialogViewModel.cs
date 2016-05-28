@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using LinqToTwitter;
+using System.Collections.Generic;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Twitter;
 

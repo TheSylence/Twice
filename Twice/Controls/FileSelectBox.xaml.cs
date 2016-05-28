@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.Win32;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Microsoft.Win32;
 
 namespace Twice.Controls
 {

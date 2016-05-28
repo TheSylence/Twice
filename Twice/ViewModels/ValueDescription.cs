@@ -25,7 +25,7 @@ namespace Twice.ViewModels
 
 		public static IEnumerable<ValueDescription<TValue>> GetValues( bool includeNone = false, params TValue[] toSkip )
 		{
-			if( !typeof(TValue).IsEnum )
+			if( !typeof( TValue ).IsEnum )
 			{
 				yield break;
 			}
@@ -33,7 +33,7 @@ namespace Twice.ViewModels
 			var skip = toSkip ?? Enumerable.Empty<TValue>();
 
 			// ReSharper disable once LoopCanBePartlyConvertedToQuery
-			foreach( TValue value in Enum.GetValues( typeof(TValue) ).Cast<TValue>().Except( skip ) )
+			foreach( TValue value in Enum.GetValues( typeof( TValue ) ).Cast<TValue>().Except( skip ) )
 			{
 				var intValue = ( (IConvertible)value ).ToInt32( CultureInfo.InvariantCulture );
 				if( !includeNone && intValue == 0 )
@@ -65,7 +65,7 @@ namespace Twice.ViewModels
 			// ReSharper disable RedundantCast.0
 			if( ( (object)a == null ) || ( (object)b == null ) )
 
-				// ReSharper restore RedundantCast.0
+			// ReSharper restore RedundantCast.0
 			{
 				return false;
 			}
@@ -86,7 +86,7 @@ namespace Twice.ViewModels
 
 		private string GetName()
 		{
-			if( !typeof(TValue).IsEnum )
+			if( !typeof( TValue ).IsEnum )
 			{
 				return null;
 			}

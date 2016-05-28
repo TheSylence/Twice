@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using MaterialDesignThemes.Wpf;
 
 namespace Twice.Attributes
 {

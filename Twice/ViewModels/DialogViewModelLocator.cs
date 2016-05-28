@@ -1,5 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using Ninject;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
@@ -18,7 +18,6 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
-		public ITweetDetailsViewModel TweetDetails => Kernel.Get<ITweetDetailsViewModel>();
 		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();
@@ -27,6 +26,7 @@ namespace Twice.ViewModels
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
 		public ITextInputDialogViewModel TextInput => Kernel.Get<ITextInputDialogViewModel>();
+		public ITweetDetailsViewModel TweetDetails => Kernel.Get<ITweetDetailsViewModel>();
 		private readonly IKernel Kernel;
 	}
 }

@@ -10,7 +10,7 @@ namespace Twice.Injections
 	internal class UtilitiyInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

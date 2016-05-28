@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -39,7 +39,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				TwitterConfig = twitterConfig.Object
 			};
 
-			var media = new Media {MediaID = 123456, Type = MediaType.Image};
+			var media = new Media { MediaID = 123456, Type = MediaType.Image };
 
 			const string mimeType = "image/png";
 
@@ -48,7 +48,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns(
 				Task.FromResult( media ) ).Verifiable();
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
 			vm.Dispatcher = new SyncDispatcher();
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -94,7 +94,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
 
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -145,7 +145,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			otherAcc.SetupGet( a => a.ProfileImageUrl ).Returns( new Uri( "http://example.com" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {otherAcc.Object, defAcc.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { otherAcc.Object, defAcc.Object } );
 
 			var cache = new Mock<ICache>();
 
@@ -175,7 +175,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var vm = new ComposeTweetViewModel();
-			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {} ) );
+			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] { } ) );
 			vm.ViewServiceRepository = viewServices.Object;
 			vm.Dispatcher = new SyncDispatcher();
 
@@ -278,7 +278,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -328,7 +328,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object ) { Use = true } );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )

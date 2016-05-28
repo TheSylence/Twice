@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using LinqToTwitter;
+﻿using LinqToTwitter;
+using System.Collections.Generic;
 
 namespace Twice.Models.Twitter.Comparers
 {
@@ -12,8 +12,8 @@ namespace Twice.Models.Twitter.Comparers
 			StatusComparer = new StatusComparer();
 		}
 
-		public static IEqualityComparer<Status> StatusComparer { get; }
 		public static IEqualityComparer<MediaEntity> MediaEntityComparer { get; }
+		public static IEqualityComparer<Status> StatusComparer { get; }
 		public static IEqualityComparer<UrlEntity> UrlEntityComparer { get; }
 	}
 }

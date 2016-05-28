@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
@@ -30,7 +30,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ) ).Returns( Task.FromResult( new List<User> {user} ) );
+			context.Setup( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ) ).Returns( Task.FromResult( new List<User> { user } ) );
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -40,7 +40,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -75,6 +75,63 @@ namespace Twice.Tests.ViewModels.Profile
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
+		public async Task FriendsAreLoaded()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEventSlim( false );
+
+			var user = DummyGenerator.CreateDummyUser();
+			user.UserID = 123;
+
+			var contextList = new Mock<ITwitterContextList>();
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 444 );
+			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
+			context.Setup( c => c.Twitter.Friendships.ListFriends( 123, 200, true ) ).Returns( Task.FromResult( new List<User> { user } ) );
+			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
+			{
+				TargetRelationship = new Relationship
+				{
+					FollowedBy = true,
+					Following = true
+				}
+			} ) );
+
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			var vm = new ProfileDialogViewModel
+			{
+				ContextList = contextList.Object,
+				Dispatcher = new SyncDispatcher()
+			};
+
+			vm.Setup( 123 );
+			await vm.OnLoad( null );
+
+			var page = vm.UserPages.Single( p => p.Title == Strings.Following );
+
+			page.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( UserSubPage.IsLoading ) && page.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			var nullItems = page.Items;
+
+			waitHandle.Wait( 1000 );
+
+			var items = page.Items;
+
+			// Assert
+			Assert.IsNull( nullItems );
+			Assert.IsNotNull( items.SingleOrDefault() );
+
+			context.Verify( c => c.Twitter.Friendships.ListFriends( 123, 200, true ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Profile" )]
 		public async Task MoreStatusesCanBeLoaded()
 		{
 			// Arrange
@@ -94,7 +151,7 @@ namespace Twice.Tests.ViewModels.Profile
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
 			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns( Task.FromResult( new List<Status> { firstStatus } ) ).Verifiable();
-			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456) ).Returns( Task.FromResult( new List<Status> { secondStatus } ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456 ) ).Returns( Task.FromResult( new List<Status> { secondStatus } ) ).Verifiable();
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -140,63 +197,6 @@ namespace Twice.Tests.ViewModels.Profile
 			Assert.AreEqual( 2, items.Count );
 
 			context.Verify( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456 ), Times.Once() );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Profile" )]
-		public async Task FriendsAreLoaded()
-		{
-			// Arrange
-			var waitHandle = new ManualResetEventSlim( false );
-
-			var user = DummyGenerator.CreateDummyUser();
-			user.UserID = 123;
-
-			var contextList = new Mock<ITwitterContextList>();
-			var context = new Mock<IContextEntry>();
-			context.SetupGet( c => c.UserId ).Returns( 444 );
-			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Friendships.ListFriends( 123, 200, true ) ).Returns( Task.FromResult( new List<User> {user} ) );
-			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
-			{
-				TargetRelationship = new Relationship
-				{
-					FollowedBy = true,
-					Following = true
-				}
-			} ) );
-
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
-			var vm = new ProfileDialogViewModel
-			{
-				ContextList = contextList.Object,
-				Dispatcher = new SyncDispatcher()
-			};
-
-			vm.Setup( 123 );
-			await vm.OnLoad( null );
-
-			var page = vm.UserPages.Single( p => p.Title == Strings.Following );
-
-			page.PropertyChanged += ( s, e ) =>
-			{
-				if( e.PropertyName == nameof( UserSubPage.IsLoading ) && page.IsLoading == false )
-				{
-					waitHandle.Set();
-				}
-			};
-
-			// Act
-			var nullItems = page.Items;
-
-			waitHandle.Wait( 1000 );
-
-			var items = page.Items;
-
-			// Assert
-			Assert.IsNull( nullItems );
-			Assert.IsNotNull( items.SingleOrDefault() );
-
-			context.Verify( c => c.Twitter.Friendships.ListFriends( 123, 200, true ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
@@ -246,7 +246,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult<User>( null ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -286,7 +286,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -321,7 +321,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns( Task.FromResult( new List<Status> {status} ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns( Task.FromResult( new List<Status> { status } ) ).Verifiable();
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -331,7 +331,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,

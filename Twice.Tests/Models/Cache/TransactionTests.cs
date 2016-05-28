@@ -1,6 +1,6 @@
-﻿using System.Data.SQLite;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Cache;
 
 namespace Twice.Tests.Models.Cache

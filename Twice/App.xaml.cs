@@ -1,13 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -17,6 +8,15 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
 using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Utilities.Os;
@@ -109,9 +109,9 @@ namespace Twice
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
 				new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private static void LogEnvironmentInfo()

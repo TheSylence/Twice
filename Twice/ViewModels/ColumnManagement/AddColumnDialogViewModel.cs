@@ -39,8 +39,8 @@ namespace Twice.ViewModels.ColumnManagement
 			base.ExecuteFinishCommand();
 		}
 
-		internal const string ContextsKey = "Context";
 		internal const string ColumnTypeKey = "ColumnType";
+		internal const string ContextsKey = "Context";
 		internal const string SourceAccountNamesKey = "SourceAccountNames";
 		internal const string SourceAccountsKey = "SourceAccounts";
 		internal const string TargetAccountNamesKey = "TargetAccountNames";

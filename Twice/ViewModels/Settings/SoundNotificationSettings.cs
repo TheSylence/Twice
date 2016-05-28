@@ -20,7 +20,8 @@ namespace Twice.ViewModels.Settings
 
 		public string SoundFile
 		{
-			[DebuggerStepThrough] get { return _SoundFile; }
+			[DebuggerStepThrough]
+			get { return _SoundFile; }
 			set
 			{
 				if( _SoundFile == value )

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters

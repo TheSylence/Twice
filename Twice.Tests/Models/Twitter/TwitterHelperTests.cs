@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Twitter;
 
 namespace Twice.Tests.Models.Twitter
@@ -9,34 +9,6 @@ namespace Twice.Tests.Models.Twitter
 	[TestClass, ExcludeFromCodeCoverage]
 	public class TwitterHelperTests
 	{
-		[TestMethod, TestCategory( "Models.Twitter" )]
-		public void TweetUrlIsCorrectlyRecognized()
-		{
-			// Arrange
-			var testCases = new Dictionary<string, bool>
-			{
-				{"https://twitter.com/TweetAngi/status/733279889596514304", true},
-				{"https://twitter.com/dqmhose/status/733279824299630592", true},
-				{"https://twitter.com/anne_nymus/status/733274507339763712", true},
-				{"https://twitter.com/LaDolceVegas/status/725649743364370433", true},
-				{"https://twitter.com/ID_AA_Carmack/status/733275349048381440", true},
-				{"https://twitter.com/SPORT1/status/733273819994071040", true},
-				{"https://twitter.com/NetflixDE/status/733279091869286400", true},
-				{"https://pbs.twimg.com/media/Ci0gimSWEAASP-L.jpg", false},
-				{"https://twitter.com", false},
-				{"https://twitter.com/twitterapi", false}
-			};
-
-			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.IsTweetUrl( new System.Uri( kvp.Key ) ) );
-
-			// Assert
-			foreach( var kvp in testCases )
-			{
-				Assert.AreEqual( kvp.Value, results[kvp.Key], kvp.Key );
-			}
-		}
-
 		[TestMethod, TestCategory( "Models.Twitter" )]
 		public void TweetIdCanBeExtractedFromUrl()
 		{
@@ -57,6 +29,34 @@ namespace Twice.Tests.Models.Twitter
 
 			// Act
 			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.ExtractTweetId( kvp.Key ) );
+
+			// Assert
+			foreach( var kvp in testCases )
+			{
+				Assert.AreEqual( kvp.Value, results[kvp.Key], kvp.Key );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void TweetUrlIsCorrectlyRecognized()
+		{
+			// Arrange
+			var testCases = new Dictionary<string, bool>
+			{
+				{"https://twitter.com/TweetAngi/status/733279889596514304", true},
+				{"https://twitter.com/dqmhose/status/733279824299630592", true},
+				{"https://twitter.com/anne_nymus/status/733274507339763712", true},
+				{"https://twitter.com/LaDolceVegas/status/725649743364370433", true},
+				{"https://twitter.com/ID_AA_Carmack/status/733275349048381440", true},
+				{"https://twitter.com/SPORT1/status/733273819994071040", true},
+				{"https://twitter.com/NetflixDE/status/733279091869286400", true},
+				{"https://pbs.twimg.com/media/Ci0gimSWEAASP-L.jpg", false},
+				{"https://twitter.com", false},
+				{"https://twitter.com/twitterapi", false}
+			};
+
+			// Act
+			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.IsTweetUrl( new System.Uri( kvp.Key ) ) );
 
 			// Assert
 			foreach( var kvp in testCases )

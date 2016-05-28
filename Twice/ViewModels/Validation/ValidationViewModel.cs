@@ -44,6 +44,15 @@ namespace Twice.ViewModels.Validation
 			return new ValidationSetup<TProperty>( this, propertyName, true );
 		}
 
+		public override void RaisePropertyChanged( [CallerMemberName] string propertyName = null )
+		{
+			ClearValidationErrors( propertyName );
+			ValidateProperty( propertyName );
+
+			// ReSharper disable once ExplicitCallerInfoArgument
+			base.RaisePropertyChanged( propertyName );
+		}
+
 		public IValidationSetup<TProperty> Validate<TProperty>( Expression<Func<TProperty>> propertyExpression )
 		{
 			if( propertyExpression == null )
@@ -61,15 +70,6 @@ namespace Twice.ViewModels.Validation
 		protected void RaiseErrorsChanged( string propertyName )
 		{
 			ErrorsChanged?.Invoke( this, new DataErrorsChangedEventArgs( propertyName ) );
-		}
-
-		public override void RaisePropertyChanged( [CallerMemberName] string propertyName = null )
-		{
-			ClearValidationErrors( propertyName );
-			ValidateProperty( propertyName );
-
-			// ReSharper disable once ExplicitCallerInfoArgument
-			base.RaisePropertyChanged( propertyName );
 		}
 
 		protected void ValidateAll()

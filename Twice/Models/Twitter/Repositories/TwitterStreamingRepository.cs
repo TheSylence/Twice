@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using LinqToTwitter;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories

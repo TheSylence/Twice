@@ -12,8 +12,8 @@ namespace Twice.Tests.Models.Columns
 		public void ConstructedColumnHasUniqueId()
 		{
 			// Act
-			var c1 = ColumnDefinitionFactory.Construct( ColumnType.Activity, new ulong[] {1}, new ulong[] {2} );
-			var c2 = ColumnDefinitionFactory.Construct( ColumnType.Activity, new ulong[] {1}, new ulong[] {2} );
+			var c1 = ColumnDefinitionFactory.Construct( ColumnType.Activity, new ulong[] { 1 }, new ulong[] { 2 } );
+			var c2 = ColumnDefinitionFactory.Construct( ColumnType.Activity, new ulong[] { 1 }, new ulong[] { 2 } );
 
 			// Assert
 			Assert.AreNotEqual( Guid.Empty, c1.Id );

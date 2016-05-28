@@ -23,6 +23,7 @@ namespace Twice.Injections
 			};
 
 			return new SqliteCache( sb.ToString() );
+
 			//return new NullCache();
 		}
 	}

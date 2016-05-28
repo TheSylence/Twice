@@ -1,10 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using GongSolutions.Wpf.DragDrop;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GalaSoft.MvvmLight.Messaging;
-using GongSolutions.Wpf.DragDrop;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.ViewModels.Columns;

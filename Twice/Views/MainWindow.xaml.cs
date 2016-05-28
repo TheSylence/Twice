@@ -22,7 +22,7 @@ namespace Twice.Views
 
 		private IntPtr WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
 		{
-			if( msg == SingleInstance.WM_SHOWFIRSTINSTANCE)
+			if( msg == SingleInstance.WM_SHOWFIRSTINSTANCE )
 			{
 				Activate();
 				handled = true;

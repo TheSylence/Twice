@@ -1,5 +1,5 @@
-﻿using System;
-using LinqToTwitter;
+﻿using LinqToTwitter;
+using System;
 using Twice.Models.Cache;
 using Twice.ViewModels;
 

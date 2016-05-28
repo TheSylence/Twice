@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToTwitter;
 using Twice.Models.Columns;
 
 namespace Twice.Models.Twitter.Streaming
@@ -51,7 +51,6 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		private readonly ITwitterContextList ContextList;
-
 		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 
 		protected class ParserKey

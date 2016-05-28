@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using Ninject;
 using Ninject.Activation;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.Utilities;
 

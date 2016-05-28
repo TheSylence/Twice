@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Columns;
 using Twice.Utilities;
 
@@ -24,15 +24,15 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			var mentionDef = new ColumnDefinition( ColumnType.Mentions )
 			{
 				Width = 123,
-				TargetAccounts = new ulong[] {1234u, 45678u},
-				SourceAccounts = new ulong[] {456u}
+				TargetAccounts = new ulong[] { 1234u, 45678u },
+				SourceAccounts = new ulong[] { 456u }
 			};
 
 			var timelineDef = new ColumnDefinition( ColumnType.Timeline )
 			{
 				Width = 223,
-				TargetAccounts = new ulong[] {111u, 222u},
-				SourceAccounts = new ulong[] {2344u}
+				TargetAccounts = new ulong[] { 111u, 222u },
+				SourceAccounts = new ulong[] { 2344u }
 			};
 
 			var definitions = new[]
@@ -43,7 +43,7 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			list.Save( definitions );
 
 			// Act
-			list.AddColumns( new[] {mentionDef} );
+			list.AddColumns( new[] { mentionDef } );
 			var loaded = list.Load().ToArray();
 
 			// Assert
@@ -62,7 +62,7 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 				Serializer = new Serializer()
 			};
 
-			list.AddColumns( new[] {new ColumnDefinition( ColumnType.User )} );
+			list.AddColumns( new[] { new ColumnDefinition( ColumnType.User ) } );
 
 			// Act
 			var saved = list.Load().ToArray();
@@ -98,15 +98,15 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 			var mentionDef = new ColumnDefinition( ColumnType.Mentions )
 			{
 				Width = 123,
-				TargetAccounts = new ulong[] {1234u, 45678u},
-				SourceAccounts = new ulong[] {456u}
+				TargetAccounts = new ulong[] { 1234u, 45678u },
+				SourceAccounts = new ulong[] { 456u }
 			};
 
 			var timelineDef = new ColumnDefinition( ColumnType.Timeline )
 			{
 				Width = 223,
-				TargetAccounts = new ulong[] {111u, 222u},
-				SourceAccounts = new ulong[] {2344u}
+				TargetAccounts = new ulong[] { 111u, 222u },
+				SourceAccounts = new ulong[] { 2344u }
 			};
 
 			var definitions = new[]

@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -19,7 +19,7 @@ namespace Twice.Tests.ViewModels
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
@@ -37,7 +37,7 @@ namespace Twice.Tests.ViewModels
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = false} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = false } );
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
@@ -56,7 +56,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
@@ -64,7 +64,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications {Toast = false} );
+			notifier.OnStatus( status, new ColumnNotifications { Toast = false } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Never() );
@@ -76,7 +76,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = false} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = false } );
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
@@ -84,7 +84,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications {Toast = true} );
+			notifier.OnStatus( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Never() );
@@ -96,7 +96,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var messenger = new Mock<IMessenger>();
 			messenger.Setup( m => m.Send( It.IsAny<FlyoutMessage>() ) ).Verifiable();
 
@@ -104,7 +104,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications {Toast = true} );
+			notifier.OnStatus( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Once() );

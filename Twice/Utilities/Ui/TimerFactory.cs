@@ -3,7 +3,7 @@ using System.Windows.Threading;
 
 namespace Twice.Utilities.Ui
 {
-	class TimerFactory : ITimerFactory
+	internal class TimerFactory : ITimerFactory
 	{
 		public ITimer Create( int timeout )
 		{

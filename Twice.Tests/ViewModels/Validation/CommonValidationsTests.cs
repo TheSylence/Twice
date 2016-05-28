@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
@@ -72,7 +72,7 @@ namespace Twice.Tests.ViewModels.Validation
 		{
 			// Arrange
 			var setup = new ValidationSetup<string>();
-			var list = new[] {"test", "abc"};
+			var list = new[] { "test", "abc" };
 
 			// Act
 			setup.Unique( list );
@@ -89,7 +89,7 @@ namespace Twice.Tests.ViewModels.Validation
 			var setup = new ValidationSetup<string>();
 
 			// Act
-			setup.Unique( new[] {"a"} );
+			setup.Unique( new[] { "a" } );
 
 			// Assert
 			Assert.AreEqual( Strings.NameAlreadyExists, setup.MessageString );

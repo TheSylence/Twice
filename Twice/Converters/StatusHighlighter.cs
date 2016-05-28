@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,8 +9,6 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using LinqToTwitter;
-using Ninject;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -81,9 +81,6 @@ namespace Twice.Converters
 
 			return menu;
 		}
-
-		const string AlternativeAtSign = "\uFF20";
-		const string AlternativeHashtagSign = "\uFF03";
 
 		private static IEnumerable<EntityBase> ExtractEntities( Status tweet )
 		{
@@ -342,6 +339,8 @@ namespace Twice.Converters
 			throw new NotSupportedException();
 		}
 
+		private const string AlternativeAtSign = "\uFF20";
+		private const string AlternativeHashtagSign = "\uFF03";
 		private static IConfig OverrideConfig;
 
 		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();

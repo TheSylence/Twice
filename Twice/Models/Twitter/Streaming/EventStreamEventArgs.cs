@@ -1,7 +1,7 @@
-using System;
-using System.Globalization;
 using LinqToTwitter;
 using LitJson;
+using System;
+using System.Globalization;
 
 namespace Twice.Models.Twitter.Streaming
 {

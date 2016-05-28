@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -7,7 +8,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using MaterialDesignThemes.Wpf;
 using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
@@ -82,6 +82,7 @@ namespace Twice.Behaviors
 			case Key.Escape:
 				close = true;
 				break;
+
 			case Key.Return:
 				var insertText = $"{TriggerChar}{AutoCompleteBox.Text}";
 				var currentCaret = AssociatedObject.CaretIndex;

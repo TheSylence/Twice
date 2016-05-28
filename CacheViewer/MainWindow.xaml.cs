@@ -5,6 +5,13 @@ using System.Windows;
 
 namespace CacheViewer
 {
+	public class HashtagEntry
+	{
+		public DateTime Expires { get; set; }
+		public string Hashtag { get; set; }
+		public ulong Id { get; set; }
+	}
+
 	public partial class MainWindow
 	{
 		public MainWindow()
@@ -94,18 +101,10 @@ namespace CacheViewer
 			}
 		}
 
-		private static readonly DateTime EpochStart = new DateTime( 1970, 1, 1, 0, 0, 0 );
-
 		public ObservableCollection<HashtagEntry> Hashtags { get; }
 		public ObservableCollection<StatusEntry> Statuses { get; }
 		public ObservableCollection<UserEntry> Users { get; }
-	}
-
-	public class HashtagEntry
-	{
-		public DateTime Expires { get; set; }
-		public string Hashtag { get; set; }
-		public ulong Id { get; set; }
+		private static readonly DateTime EpochStart = new DateTime( 1970, 1, 1, 0, 0, 0 );
 	}
 
 	public class StatusEntry

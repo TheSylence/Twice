@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Diagnostics;
-using GalaSoft.MvvmLight;
 
 namespace Twice.Models.Configuration
 {
@@ -57,10 +57,13 @@ namespace Twice.Models.Configuration
 			[DebuggerStepThrough] get { return _EndDate.HasValue; }
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CaseSensitive;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _CaseSensitive;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime? _EndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime? _EndDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Filter;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Filter;
 	}
 }

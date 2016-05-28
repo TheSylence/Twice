@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Input;
-using Fody;
+﻿using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
+using System;
+using System.Diagnostics;
+using System.Windows.Input;
 using Twice.Models.Configuration;
 using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
@@ -58,6 +58,20 @@ namespace Twice.ViewModels
 			Process.Start( args.AbsoluteUri );
 		}
 
+		private static readonly IKernel Kernel;
+		private static RelayCommand<string> _CreateMuteCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<Uri> _OpenImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<ulong> _OpenProfileCommand;
+
+		private static RelayCommand<StatusViewModel> _OpenStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<Uri> _OpenUrlCommand;
+
 		public static ICommand CreateMuteCommand
 			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
 
@@ -67,25 +81,16 @@ namespace Twice.ViewModels
 		public static ICommand OpenProfileCommand
 			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );
 
-		public static ICommand OpenStatusCommand => _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
-			ExecuteOpenStatusCommand ) );
+		public static ICommand OpenStatusCommand
+			=> _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
+				ExecuteOpenStatusCommand ) );
 
 		/// <summary>
 		///     Command to open an URL in the default webbrowser.
 		/// </summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
-		                                         ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+												( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
 
 		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
-		private static readonly IKernel Kernel;
-		private static RelayCommand<string> _CreateMuteCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenImageCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<ulong> _OpenProfileCommand;
-
-		private static RelayCommand<StatusViewModel> _OpenStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
 	}
 }

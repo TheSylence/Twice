@@ -1,10 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 using Twice.ViewModels.Columns;
 using Twice.Views;

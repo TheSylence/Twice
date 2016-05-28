@@ -3,7 +3,7 @@ using System.Windows.Threading;
 
 namespace Twice.Utilities.Ui
 {
-	class Timer : ITimer
+	internal class Timer : ITimer
 	{
 		public Timer( DispatcherTimer timer )
 		{
@@ -16,8 +16,6 @@ namespace Twice.Utilities.Ui
 			remove { Wrapped.Tick -= value; }
 		}
 
-		public bool IsEnabled => Wrapped.IsEnabled;
-
 		public void Start()
 		{
 			Wrapped.Start();
@@ -28,6 +26,7 @@ namespace Twice.Utilities.Ui
 			Wrapped.Stop();
 		}
 
+		public bool IsEnabled => Wrapped.IsEnabled;
 		private readonly DispatcherTimer Wrapped;
 	}
 }

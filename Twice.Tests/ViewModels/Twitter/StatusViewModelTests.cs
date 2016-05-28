@@ -1,14 +1,14 @@
-﻿using System;
+﻿using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using LitJson;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
@@ -69,6 +69,22 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void CreationDateIsCorrectlyExtracted()
+		{
+			// Arrange
+			var status = DummyGenerator.CreateDummyStatus();
+			status.CreatedAt = new DateTime( 1, 2, 3, 4, 5, 6 );
+
+			var vm = new StatusViewModel( status, null, null, null );
+
+			// Act
+			var created = vm.CreatedAt;
+
+			// Assert
+			Assert.AreEqual( status.CreatedAt, created );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void DeletingStatusCallsTwitterApi()
 		{
 			// Arrange
@@ -112,7 +128,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig {InlineMedia = true};
+			var visualConfig = new VisualConfig { InlineMedia = true };
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 			var vm = new StatusViewModel( status, context.Object, config.Object, null );
 
@@ -222,12 +238,12 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1", ID = 1 } );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2", ID = 2 } );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3", ID = 3 } );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig {InlineMedia = true};
+			var visualConfig = new VisualConfig { InlineMedia = true };
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			// Act
@@ -242,22 +258,6 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void CreationDateIsCorrectlyExtracted()
-		{
-			// Arrange
-			var status = DummyGenerator.CreateDummyStatus();
-			status.CreatedAt = new DateTime( 1, 2, 3, 4, 5, 6 );
-
-			var vm = new StatusViewModel( status, null, null, null );
-
-			// Act
-			var created = vm.CreatedAt;
-
-			// Assert
-			Assert.AreEqual( status.CreatedAt, created );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void InlineMediasContainExtractedMedias()
 		{
 			var context = new Mock<IContextEntry>();
@@ -265,14 +265,14 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/1"} );
-			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/2"} );
-			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/3"} );
+			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/1" } );
+			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/2" } );
+			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/3" } );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig {InlineMedia = true};
+			var visualConfig = new VisualConfig { InlineMedia = true };
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
-			
+
 			var extractorRepo = new Mock<IMediaExtractorRepository>();
 			extractorRepo.Setup( r => r.ExtractMedia( It.IsAny<string>() ) ).Returns<string>( url => new Uri( url ) );
 
@@ -289,7 +289,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/1" ) );
 			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/2" ) );
 			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/3" ) );
-			
+
 			extractorRepo.Verify( e => e.ExtractMedia( It.IsAny<string>() ), Times.Exactly( 3 ) );
 		}
 
@@ -302,12 +302,12 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
-			status.ExtendedEntities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1", ID = 1 } );
+			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2", ID = 2 } );
+			status.ExtendedEntities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3", ID = 3 } );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig {InlineMedia = true};
+			var visualConfig = new VisualConfig { InlineMedia = true };
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			// Act
@@ -416,7 +416,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://twitter.com/user/status/123456"} );
+			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://twitter.com/user/status/123456" } );
 
 			var vm = new StatusViewModel( status, null, null, null );
 
@@ -434,7 +434,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/123456"} );
+			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/123456" } );
 
 			var vm = new StatusViewModel( status, null, null, null );
 

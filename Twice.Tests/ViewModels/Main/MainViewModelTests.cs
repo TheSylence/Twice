@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NuGet;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NuGet;
-using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -15,7 +13,6 @@ using Twice.Utilities;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Main;
-using Twice.Views;
 
 namespace Twice.Tests.ViewModels.Main
 {
@@ -97,7 +94,7 @@ namespace Twice.Tests.ViewModels.Main
 		public void AddColumnCommandOpensDialog()
 		{
 			// Arrange
-			var contexts = new[] {new Mock<IContextEntry>().Object};
+			var contexts = new[] { new Mock<IContextEntry>().Object };
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
@@ -124,7 +121,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -171,7 +168,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -182,7 +179,7 @@ namespace Twice.Tests.ViewModels.Main
 
 			vm.UpdateFactory = updaterFactory.Object;
 
-			var generalCfg = new GeneralConfig {CheckForUpdates = true};
+			var generalCfg = new GeneralConfig { CheckForUpdates = true };
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			vm.Configuration = config.Object;
@@ -219,18 +216,18 @@ namespace Twice.Tests.ViewModels.Main
 			Assert.IsFalse( withoutAccount );
 			Assert.IsTrue( withAccount );
 		}
-		
+
 		[TestMethod, TestCategory( "ViewModels.Main" )]
 		public void NewTweetCommandOpensWindow()
 		{
 			// Arrange
-			var contexts = new[] {new Mock<IContextEntry>().Object};
+			var contexts = new[] { new Mock<IContextEntry>().Object };
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			
+
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 
 			var viewServices = new Mock<IViewServiceRepository>();
@@ -273,7 +270,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -340,7 +337,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 			var notifier = new Mock<INotifier>();
 			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
@@ -355,7 +352,7 @@ namespace Twice.Tests.ViewModels.Main
 			updaterFactory.Setup( f => f.Construct( It.IsAny<string>() ) ).Returns( updater.Object );
 			vm.UpdateFactory = updaterFactory.Object;
 
-			var generalCfg = new GeneralConfig {CheckForUpdates = true};
+			var generalCfg = new GeneralConfig { CheckForUpdates = true };
 
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );

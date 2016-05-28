@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Fody;
+using GalaSoft.MvvmLight.Threading;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -6,11 +11,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Fody;
-using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -87,16 +87,6 @@ namespace Twice.Services.Views
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
 		}
 
-		public async Task QuoteTweet( StatusViewModel status )
-		{
-			Action<IComposeTweetViewModel> vmSetup = vm =>
-			{
-				vm.QuotedTweet = status;
-			};
-
-			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
-		}
-
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
 			Debug.Assert( args != null );
@@ -132,6 +122,13 @@ namespace Twice.Services.Views
 			return dlg.ShowDialog( Application.Current.MainWindow ) == true
 				? Task.FromResult( dlg.FileName )
 				: Task.FromResult<string>( null );
+		}
+
+		public async Task QuoteTweet( StatusViewModel status )
+		{
+			Action<IComposeTweetViewModel> vmSetup = vm => { vm.QuotedTweet = status; };
+
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
 		}
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId )

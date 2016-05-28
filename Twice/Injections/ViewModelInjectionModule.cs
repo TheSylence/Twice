@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Messaging;
 using Ninject.Modules;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;

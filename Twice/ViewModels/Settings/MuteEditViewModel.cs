@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
@@ -59,7 +59,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool CaseSensitive
 		{
-			[DebuggerStepThrough] get { return _CaseSensitive; }
+			[DebuggerStepThrough]
+			get { return _CaseSensitive; }
 			set
 			{
 				if( _CaseSensitive == value )
@@ -74,7 +75,8 @@ namespace Twice.ViewModels.Settings
 
 		public DateTime EndDate
 		{
-			[DebuggerStepThrough] get { return _EndDate; }
+			[DebuggerStepThrough]
+			get { return _EndDate; }
 			set
 			{
 				if( _EndDate == value )
@@ -89,7 +91,8 @@ namespace Twice.ViewModels.Settings
 
 		public string Filter
 		{
-			[DebuggerStepThrough] get { return _Filter; }
+			[DebuggerStepThrough]
+			get { return _Filter; }
 			set
 			{
 				if( _Filter == value )
@@ -104,7 +107,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool HasEndDate
 		{
-			[DebuggerStepThrough] get { return _HasEndDate; }
+			[DebuggerStepThrough]
+			get { return _HasEndDate; }
 			set
 			{
 				if( _HasEndDate == value )
@@ -124,16 +128,22 @@ namespace Twice.ViewModels.Settings
 
 		private readonly MuteEditAction Action;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CaseSensitive;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _CaseSensitive;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _EndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime _EndDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Filter;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Filter;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasEndDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _HasEndDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SaveCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SaveCommand;
 	}
 }

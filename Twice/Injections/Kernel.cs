@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Ninject;
+using Ninject.Modules;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Ninject;
-using Ninject.Modules;
 using Twice.Models.Media;
 
 namespace Twice.Injections

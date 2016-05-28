@@ -16,10 +16,10 @@ namespace Twice.ViewModels
 		}
 
 		[Inject]
-		public ITwitterContextList ContextList { get; set; }
+		public IConfig Configuration { get; set; }
 
 		[Inject]
-		public IConfig Configuration { get; set; }
+		public ITwitterContextList ContextList { get; set; }
 
 		[Inject]
 		public IProcessStarter ProcessStarter { get; set; }

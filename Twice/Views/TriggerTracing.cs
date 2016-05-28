@@ -22,12 +22,6 @@ namespace Twice.Views
 			PresentationTraceSources.AnimationSource.Switch.Level = SourceLevels.All;
 		}
 
-		private enum TriggerTraceStoryboardType
-		{
-			Enter,
-			Exit
-		}
-
 		/// <summary>
 		///     Gets a value indication whether trace is enabled for the specified trigger.
 		/// </summary>
@@ -114,23 +108,30 @@ namespace Twice.Views
 		public static readonly DependencyProperty TraceEnabledProperty =
 			DependencyProperty.RegisterAttached(
 				"TraceEnabled",
-				typeof( bool ),
-				typeof( TriggerTracing ),
+				typeof(bool),
+				typeof(TriggerTracing),
 				new UIPropertyMetadata( false, OnTraceEnabledChanged ) );
 
 		public static readonly DependencyProperty TriggerNameProperty =
 			DependencyProperty.RegisterAttached(
 				"TriggerName",
-				typeof( string ),
-				typeof( TriggerTracing ),
+				typeof(string),
+				typeof(TriggerTracing),
 				new UIPropertyMetadata( string.Empty ) );
+
+		private enum TriggerTraceStoryboardType
+		{
+			Enter,
+			Exit
+		}
 
 		/// <summary>
 		///     A custom tracelistener.
 		/// </summary>
 		private class TriggerTraceListener : TraceListener
 		{
-			public override void TraceEvent( TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args )
+			public override void TraceEvent( TraceEventCache eventCache, string source, TraceEventType eventType, int id,
+				string format, params object[] args )
 			{
 				base.TraceEvent( eventCache, source, eventType, id, format, args );
 
@@ -150,7 +151,8 @@ namespace Twice.Views
 						TriggerBase triggerBase = storyboard.TriggerBase;
 						string triggerName = GetTriggerName( storyboard.TriggerBase );
 
-						Debug.WriteLine( $"Element: {targetElement}, {triggerBase.GetType().Name}: {triggerName}: {storyboard.StoryboardType}" );
+						Debug.WriteLine(
+							$"Element: {targetElement}, {triggerBase.GetType().Name}: {triggerName}: {storyboard.StoryboardType}" );
 					}
 				}
 			}

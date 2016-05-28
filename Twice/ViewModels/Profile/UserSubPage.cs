@@ -1,21 +1,18 @@
+using Fody;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Fody;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Threading;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 
 namespace Twice.ViewModels.Profile
 {
-	[ConfigureAwait(false)]
+	[ConfigureAwait( false )]
 	internal class UserSubPage : ObservableObject
 	{
-		public IDispatcher Dispatcher { get; set; }
-
 		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, Func<Task<IEnumerable<object>>> loadMoreAction, int count )
 			: this( title, loadAction, count )
 		{
@@ -56,10 +53,12 @@ namespace Twice.ViewModels.Profile
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
 		public int Count { get; }
+		public IDispatcher Dispatcher { get; set; }
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 
 			set
 			{
@@ -96,7 +95,8 @@ namespace Twice.ViewModels.Profile
 		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 		private readonly Func<Task<IEnumerable<object>>> LoadMoreAction;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
 		private ObservableCollection<object> _Items;
 	}

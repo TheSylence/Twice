@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using LinqToTwitter;
+using System;
+using System.Linq;
 using Twice.Models.Configuration;
 
 namespace Twice.Models.Twitter
@@ -11,22 +11,6 @@ namespace Twice.Models.Twitter
 		public StatusMuter( IConfig config )
 		{
 			Muting = config.Mute;
-		}
-
-		public bool IsMuted( Status status )
-		{
-			if( status == null )
-			{
-				return true;
-			}
-
-			bool result = Muting.Entries.Any( mute => CheckMute( mute, status ) );
-			if( result )
-			{
-				LogTo.Debug( $"Muted status {status.GetStatusId()}" );
-			}
-
-			return result;
 		}
 
 		private static bool CheckMute( MuteEntry entry, Status status )
@@ -40,7 +24,9 @@ namespace Twice.Models.Twitter
 				value = value.Substring( 1 );
 			}
 
-			StringComparer comp = entry.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
+			StringComparer comp = entry.CaseSensitive
+				? StringComparer.Ordinal
+				: StringComparer.OrdinalIgnoreCase;
 
 			switch( typeIndicator )
 			{
@@ -61,6 +47,22 @@ namespace Twice.Models.Twitter
 
 				return status.Text.Contains( value );
 			}
+		}
+
+		public bool IsMuted( Status status )
+		{
+			if( status == null )
+			{
+				return true;
+			}
+
+			bool result = Muting.Entries.Any( mute => CheckMute( mute, status ) );
+			if( result )
+			{
+				LogTo.Debug( $"Muted status {status.GetStatusId()}" );
+			}
+
+			return result;
 		}
 
 		private readonly MuteConfig Muting;

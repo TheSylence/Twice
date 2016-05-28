@@ -1,7 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Twice.Models.Twitter;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Utilities;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Twitter;

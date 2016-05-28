@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Fody;
+using LinqToTwitter;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
-using Ninject;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
@@ -15,9 +15,6 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -105,7 +102,8 @@ namespace Twice.ViewModels.Profile
 
 		public Friendship Friendship
 		{
-			[DebuggerStepThrough] get { return _Friendship; }
+			[DebuggerStepThrough]
+			get { return _Friendship; }
 			set
 			{
 				if( _Friendship == value )
@@ -120,7 +118,8 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsBusy
 		{
-			[DebuggerStepThrough] get { return _IsBusy; }
+			[DebuggerStepThrough]
+			get { return _IsBusy; }
 			set
 			{
 				if( _IsBusy == value )
@@ -133,9 +132,13 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		public UserViewModel User
 		{
-			[DebuggerStepThrough] get { return _User; }
+			[DebuggerStepThrough]
+			get { return _User; }
 			set
 			{
 				if( _User == value )
@@ -150,11 +153,14 @@ namespace Twice.ViewModels.Profile
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private Friendship _Friendship;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsBusy;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private UserViewModel _User;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong MaxId = ulong.MaxValue;

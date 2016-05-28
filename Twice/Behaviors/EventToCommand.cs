@@ -1,22 +1,9 @@
-﻿// ****************************************************************************
-// <copyright file="EventToCommand.cs" company="GalaSoft Laurent Bugnion">
-//     Copyright © GalaSoft Laurent Bugnion 2009-2016
-// </copyright>
-// ****************************************************************************
-// <author>Laurent Bugnion</author>
-// <email>laurent@galasoft.ch</email>
-// <date>3.11.2009</date>
-// <project>GalaSoft.MvvmLight.Extras</project>
-// <web>http://www.mvvmlight.net</web>
-// <license>See license.txt in this solution or http://www.galasoft.ch/license_MIT.txt</license>
-// ****************************************************************************
-
+﻿using GalaSoft.MvvmLight.Command;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using GalaSoft.MvvmLight.Command;
 
 ////using GalaSoft.Utilities.Attributes;
 
@@ -61,7 +48,7 @@ namespace Twice.Behaviors
 		protected override void Invoke( object parameter )
 		{
 			if( AssociatedElementIsDisabled()
-			    && !AlwaysInvokeCommand )
+				&& !AlwaysInvokeCommand )
 			{
 				return;
 			}
@@ -70,7 +57,7 @@ namespace Twice.Behaviors
 			var commandParameter = CommandParameterValue;
 
 			if( commandParameter == null
-			    && PassEventArgsToCommand )
+				&& PassEventArgsToCommand )
 			{
 				commandParameter = EventArgsConverter == null
 					? parameter
@@ -78,7 +65,7 @@ namespace Twice.Behaviors
 			}
 
 			if( command != null
-			    && command.CanExecute( commandParameter ) )
+				&& command.CanExecute( commandParameter ) )
 			{
 				command.Execute( commandParameter );
 			}
@@ -92,17 +79,6 @@ namespace Twice.Behaviors
 				}
 			}
 		}
-
-		public bool SetHandled
-		{
-			get { return (bool)GetValue( SetHandledProperty ); }
-			set { SetValue( SetHandledProperty, value ); }
-		}
-		
-		public static readonly DependencyProperty SetHandledProperty =
-			DependencyProperty.Register( "SetHandled", typeof( bool ), typeof( EventToCommand ), new PropertyMetadata( true ) );
-
-
 
 		/// <summary>
 		///     Called when this trigger is attached to a FrameworkElement.
@@ -142,8 +118,8 @@ namespace Twice.Behaviors
 			var element = GetAssociatedObject();
 
 			return AssociatedObject == null
-			       || ( element != null
-			            && !element.IsEnabled );
+					|| ( element != null
+						&& !element.IsEnabled );
 		}
 
 		private void EnableDisableElement()
@@ -158,7 +134,7 @@ namespace Twice.Behaviors
 			var command = GetCommand();
 
 			if( MustToggleIsEnabledValue
-			    && command != null )
+				&& command != null )
 			{
 				element.IsEnabled = command.CanExecute( CommandParameterValue );
 			}
@@ -186,6 +162,90 @@ namespace Twice.Behaviors
 		{
 			EnableDisableElement();
 		}
+
+		/// <summary>
+		///     The <see cref="AlwaysInvokeCommand" /> dependency property's name.
+		/// </summary>
+		public const string AlwaysInvokeCommandPropertyName = "AlwaysInvokeCommand";
+
+		/// <summary>
+		///     The <see cref="EventArgsConverterParameter" /> dependency property's name.
+		/// </summary>
+		public const string EventArgsConverterParameterPropertyName = "EventArgsConverterParameter";
+
+		/// <summary>
+		///     Identifies the <see cref="AlwaysInvokeCommand" /> dependency property.
+		/// </summary>
+		public static readonly DependencyProperty AlwaysInvokeCommandProperty = DependencyProperty.Register(
+			AlwaysInvokeCommandPropertyName,
+			typeof(bool),
+			typeof(EventToCommand),
+			new PropertyMetadata( false ) );
+
+		/// <summary>
+		///     Identifies the <see cref="CommandParameter" /> dependency property
+		/// </summary>
+		public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
+			"CommandParameter",
+			typeof(object),
+			typeof(EventToCommand),
+			new PropertyMetadata(
+				null,
+				( s, e ) =>
+				{
+					var sender = s as EventToCommand;
+
+					if( sender?.AssociatedObject == null )
+					{
+						return;
+					}
+
+					sender.EnableDisableElement();
+				} ) );
+
+		/// <summary>
+		///     Identifies the <see cref="Command" /> dependency property
+		/// </summary>
+		public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+			"Command",
+			typeof(ICommand),
+			typeof(EventToCommand),
+			new PropertyMetadata(
+				null,
+				( s, e ) => OnCommandChanged( s as EventToCommand, e ) ) );
+
+		/// <summary>
+		///     Identifies the <see cref="EventArgsConverterParameter" /> dependency property.
+		/// </summary>
+		public static readonly DependencyProperty EventArgsConverterParameterProperty = DependencyProperty.Register(
+			EventArgsConverterParameterPropertyName,
+			typeof(object),
+			typeof(EventToCommand),
+			new PropertyMetadata( null ) );
+
+		/// <summary>
+		///     Identifies the <see cref="MustToggleIsEnabled" /> dependency property
+		/// </summary>
+		public static readonly DependencyProperty MustToggleIsEnabledProperty = DependencyProperty.Register(
+			"MustToggleIsEnabled",
+			typeof(bool),
+			typeof(EventToCommand),
+			new PropertyMetadata(
+				false,
+				( s, e ) =>
+				{
+					var sender = s as EventToCommand;
+
+					if( sender?.AssociatedObject == null )
+					{
+						return;
+					}
+
+					sender.EnableDisableElement();
+				} ) );
+
+		public static readonly DependencyProperty SetHandledProperty =
+			DependencyProperty.Register( "SetHandled", typeof(bool), typeof(EventToCommand), new PropertyMetadata( true ) );
 
 		/// <summary>
 		///     Gets or sets a value indicating if the command should be invoked even if the attached
@@ -295,86 +355,11 @@ namespace Twice.Behaviors
 		/// </summary>
 		public bool PassEventArgsToCommand { get; set; }
 
-		/// <summary>
-		///     The <see cref="AlwaysInvokeCommand" /> dependency property's name.
-		/// </summary>
-		public const string AlwaysInvokeCommandPropertyName = "AlwaysInvokeCommand";
-
-		/// <summary>
-		///     The <see cref="EventArgsConverterParameter" /> dependency property's name.
-		/// </summary>
-		public const string EventArgsConverterParameterPropertyName = "EventArgsConverterParameter";
-
-		/// <summary>
-		///     Identifies the <see cref="AlwaysInvokeCommand" /> dependency property.
-		/// </summary>
-		public static readonly DependencyProperty AlwaysInvokeCommandProperty = DependencyProperty.Register(
-			AlwaysInvokeCommandPropertyName,
-			typeof( bool ),
-			typeof( EventToCommand ),
-			new PropertyMetadata( false ) );
-
-		/// <summary>
-		///     Identifies the <see cref="CommandParameter" /> dependency property
-		/// </summary>
-		public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
-			"CommandParameter",
-			typeof( object ),
-			typeof( EventToCommand ),
-			new PropertyMetadata(
-				null,
-				( s, e ) =>
-				{
-					var sender = s as EventToCommand;
-
-					if( sender?.AssociatedObject == null )
-					{
-						return;
-					}
-
-					sender.EnableDisableElement();
-				} ) );
-
-		/// <summary>
-		///     Identifies the <see cref="Command" /> dependency property
-		/// </summary>
-		public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-			"Command",
-			typeof( ICommand ),
-			typeof( EventToCommand ),
-			new PropertyMetadata(
-				null,
-				( s, e ) => OnCommandChanged( s as EventToCommand, e ) ) );
-
-		/// <summary>
-		///     Identifies the <see cref="EventArgsConverterParameter" /> dependency property.
-		/// </summary>
-		public static readonly DependencyProperty EventArgsConverterParameterProperty = DependencyProperty.Register(
-			EventArgsConverterParameterPropertyName,
-			typeof( object ),
-			typeof( EventToCommand ),
-			new PropertyMetadata( null ) );
-
-		/// <summary>
-		///     Identifies the <see cref="MustToggleIsEnabled" /> dependency property
-		/// </summary>
-		public static readonly DependencyProperty MustToggleIsEnabledProperty = DependencyProperty.Register(
-			"MustToggleIsEnabled",
-			typeof( bool ),
-			typeof( EventToCommand ),
-			new PropertyMetadata(
-				false,
-				( s, e ) =>
-				{
-					var sender = s as EventToCommand;
-
-					if( sender?.AssociatedObject == null )
-					{
-						return;
-					}
-
-					sender.EnableDisableElement();
-				} ) );
+		public bool SetHandled
+		{
+			get { return (bool)GetValue( SetHandledProperty ); }
+			set { SetValue( SetHandledProperty, value ); }
+		}
 
 		private object _CommandParameterValue;
 

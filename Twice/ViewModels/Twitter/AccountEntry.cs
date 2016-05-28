@@ -1,8 +1,8 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter
@@ -24,7 +24,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool Use
 		{
-			[DebuggerStepThrough] get { return _Use; }
+			[DebuggerStepThrough]
+			get { return _Use; }
 			set
 			{
 				if( _Use == value )

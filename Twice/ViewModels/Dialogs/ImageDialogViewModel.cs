@@ -33,7 +33,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public ImageEntry SelectedImage
 		{
-			[DebuggerStepThrough] get { return _SelectedImage; }
+			[DebuggerStepThrough]
+			get { return _SelectedImage; }
 			set
 			{
 				if( _SelectedImage == value )
@@ -46,7 +47,8 @@ namespace Twice.ViewModels.Dialogs
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private ImageEntry _SelectedImage;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private ImageEntry _SelectedImage;
 	}
 
 	internal class ImageEntry

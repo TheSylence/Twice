@@ -1,7 +1,7 @@
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MaterialDesignThemes.Wpf;
 using Twice.Models.Columns;
 using Twice.Resources;
 

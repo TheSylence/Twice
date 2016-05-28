@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
@@ -26,7 +26,7 @@ namespace Twice.Tests.Converters
 		public void InvalidParameterReturnsUnsetValue()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Add};
+			var conv = new MathConverter { Operation = MathOperation.Add };
 
 			// Act
 			var result = conv.Convert( null, null, new object(), null );
@@ -39,7 +39,7 @@ namespace Twice.Tests.Converters
 		public void InvalidValueReturnsUnsetValue()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Add};
+			var conv = new MathConverter { Operation = MathOperation.Add };
 
 			// Act
 			var result = conv.Convert( new object(), null, null, null );
@@ -52,7 +52,7 @@ namespace Twice.Tests.Converters
 		public void NumbersCanBeAdded()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Add};
+			var conv = new MathConverter { Operation = MathOperation.Add };
 
 			// Act
 			var result = conv.Convert( 12.0, null, 3, null );
@@ -65,7 +65,7 @@ namespace Twice.Tests.Converters
 		public void NumbersCanBeDevided()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Divide};
+			var conv = new MathConverter { Operation = MathOperation.Divide };
 
 			// Act
 			var result = conv.Convert( "10.0", null, "5", null );
@@ -78,7 +78,7 @@ namespace Twice.Tests.Converters
 		public void NumbersCanBeMultiplied()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Multiply};
+			var conv = new MathConverter { Operation = MathOperation.Multiply };
 
 			// Act
 			var result = conv.Convert( 3, null, "2.0", null );
@@ -91,7 +91,7 @@ namespace Twice.Tests.Converters
 		public void NumbersCanBeSubstracted()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Substract};
+			var conv = new MathConverter { Operation = MathOperation.Substract };
 
 			// Act
 			var result = conv.Convert( "10", null, 3.0, null );
@@ -104,7 +104,7 @@ namespace Twice.Tests.Converters
 		public void UnknownOperationReturnsUnsetValue()
 		{
 			// Arrange
-			var conv = new MathConverter {Operation = MathOperation.Add + 10};
+			var conv = new MathConverter { Operation = MathOperation.Add + 10 };
 
 			// Act
 			var result = conv.Convert( 1, null, 2, null );

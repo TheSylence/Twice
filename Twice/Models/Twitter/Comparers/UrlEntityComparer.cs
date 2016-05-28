@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using LinqToTwitter;
+﻿using LinqToTwitter;
+using System.Collections.Generic;
 
 namespace Twice.Models.Twitter.Comparers
 {

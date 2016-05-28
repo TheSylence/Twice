@@ -1,6 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Twice.Models.Twitter;
 using Twice.ViewModels.ColumnManagement;
@@ -21,8 +22,8 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			c1.SetupGet( c => c.UserId ).Returns( 123 );
 			c2.SetupGet( c => c.UserId ).Returns( 456 );
 
-			c1.SetupGet( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
-			c2.SetupGet( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
+			c1.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
+			c2.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
 			var contexts = new[]
 			{

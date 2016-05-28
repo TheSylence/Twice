@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
+using System.Diagnostics;
 
 namespace Twice.ViewModels
 {

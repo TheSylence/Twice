@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Globalization;
 using System.Windows.Data;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 
 namespace Twice.Converters

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LinqToTwitter;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using LinqToTwitter;
 
 namespace Twice.Tests
 {

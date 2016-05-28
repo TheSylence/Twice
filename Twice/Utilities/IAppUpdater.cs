@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Twice.Utilities
 {
-	interface IAppUpdater : IDisposable
+	internal interface IAppUpdater : IDisposable
 	{
 		Task<AppRelease> UpdateApp();
 	}

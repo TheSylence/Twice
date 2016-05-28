@@ -1,6 +1,6 @@
 ﻿namespace Twice.Utilities
 {
-	interface ITimerFactory
+	internal interface ITimerFactory
 	{
 		ITimer Create( int timeout );
 	}

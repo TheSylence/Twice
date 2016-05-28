@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using Fody;
+using System.Linq;
+using System.Threading.Tasks;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter

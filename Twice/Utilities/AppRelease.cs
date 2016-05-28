@@ -3,7 +3,7 @@ using Squirrel;
 
 namespace Twice.Utilities
 {
-	class AppRelease
+	internal class AppRelease
 	{
 		public AppRelease( ReleaseEntry entry )
 		{

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LinqToTwitter;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
@@ -32,10 +32,9 @@ namespace Twice.Models.Twitter
 
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }
+		ITwitterSearchRepository Search { get; }
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }
-		ITwitterSearchRepository Search { get; }
 	}
-
 }

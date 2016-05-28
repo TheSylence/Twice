@@ -3,7 +3,7 @@ using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Accounts
 {
-	class AuthorizeResult
+	internal class AuthorizeResult
 	{
 		public AuthorizeResult( TwitterAccountData data, IAuthorizer auth )
 		{
@@ -11,7 +11,7 @@ namespace Twice.ViewModels.Accounts
 			Auth = auth;
 		}
 
-		public TwitterAccountData Data { get; }
 		public IAuthorizer Auth { get; }
+		public TwitterAccountData Data { get; }
 	}
 }

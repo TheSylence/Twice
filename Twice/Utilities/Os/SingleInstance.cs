@@ -40,13 +40,16 @@ namespace Twice.Utilities.Os
 			}
 		}
 
+		internal static readonly int WM_SHOWFIRSTINSTANCE;
+		private static Mutex AppMutex;
 		private static bool ReleaseMutex;
 
 		private static string AssemblyGuid
 		{
 			get
 			{
-				IEnumerable<GuidAttribute> attributes = Assembly.GetExecutingAssembly().GetCustomAttributes<GuidAttribute>().ToArray();
+				IEnumerable<GuidAttribute> attributes =
+					Assembly.GetExecutingAssembly().GetCustomAttributes<GuidAttribute>().ToArray();
 				if( !attributes.Any() )
 				{
 					return string.Empty;
@@ -55,8 +58,5 @@ namespace Twice.Utilities.Os
 				return attributes.First().Value;
 			}
 		}
-
-		internal static readonly int WM_SHOWFIRSTINSTANCE;
-		private static Mutex AppMutex;
 	}
 }

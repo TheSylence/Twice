@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Windows.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
@@ -37,7 +37,7 @@ namespace Twice.Tests.Converters
 			c3.Setup( c => c.Convert( 125, typeof( string ), 444, CultureInfo.InvariantCulture ) ).Returns( 126 ).Verifiable();
 
 			// Act
-			var chain = new ConverterChain {c1.Object, c2.Object, c3.Object};
+			var chain = new ConverterChain { c1.Object, c2.Object, c3.Object };
 
 			var result = chain.Convert( 123, typeof( string ), 444, CultureInfo.InvariantCulture );
 

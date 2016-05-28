@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Fody;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
-using Newtonsoft.Json;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Cache
@@ -27,6 +27,51 @@ namespace Twice.Models.Cache
 			Connection = connection;
 
 			Init();
+		}
+
+		private async Task Cleanup()
+		{
+			string[] tables =
+			{
+				"Users", "TwitterConfig", "Hashtags", "Statuses"
+			};
+
+			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
+
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
+							cmd.AddParameter( "now", now );
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		private void Init()
+		{
+			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
+			{
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = qry;
+					cmd.ExecuteNonQuery();
+				}
+			}
 		}
 
 		public async Task AddHashtags( IList<string> hashTags )
@@ -392,51 +437,6 @@ namespace Twice.Models.Cache
 			finally
 			{
 				Semaphore.Release();
-			}
-		}
-
-		private async Task Cleanup()
-		{
-			string[] tables =
-			{
-				"Users", "TwitterConfig", "Hashtags", "Statuses"
-			};
-
-			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
-
-			await Semaphore.WaitAsync( SemaphoreWait );
-			try
-			{
-				using( var tx = new Transaction( Connection ) )
-				{
-					foreach( var table in tables )
-					{
-						using( var cmd = Connection.CreateCommand() )
-						{
-							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
-							cmd.AddParameter( "now", now );
-							await cmd.ExecuteNonQueryAsync();
-						}
-					}
-
-					tx.Commit();
-				}
-			}
-			finally
-			{
-				Semaphore.Release();
-			}
-		}
-
-		private void Init()
-		{
-			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
-			{
-				using( var cmd = Connection.CreateCommand() )
-				{
-					cmd.CommandText = qry;
-					cmd.ExecuteNonQuery();
-				}
 			}
 		}
 

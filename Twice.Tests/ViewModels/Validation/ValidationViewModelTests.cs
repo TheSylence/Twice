@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.ViewModels.Validation;
 
 namespace Twice.Tests.ViewModels.Validation
@@ -300,7 +300,8 @@ namespace Twice.Tests.ViewModels.Validation
 
 			public string Name
 			{
-				[DebuggerStepThrough] get { return _Name; }
+				[DebuggerStepThrough]
+				get { return _Name; }
 				set
 				{
 					if( _Name == value )
@@ -313,7 +314,8 @@ namespace Twice.Tests.ViewModels.Validation
 				}
 			}
 
-			[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Name;
+			[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+			private string _Name;
 		}
 	}
 }

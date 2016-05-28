@@ -1,6 +1,6 @@
+using GalaSoft.MvvmLight;
 using System;
 using System.Diagnostics;
-using GalaSoft.MvvmLight;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Accounts

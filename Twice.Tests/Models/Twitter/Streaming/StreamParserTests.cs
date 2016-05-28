@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 
@@ -128,7 +128,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-			CollectionAssert.AreEqual( new ulong[] {123, 456, 789}, receivedData.Friends );
+			CollectionAssert.AreEqual( new ulong[] { 123, 456, 789 }, receivedData.Friends );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

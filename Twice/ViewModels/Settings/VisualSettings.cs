@@ -89,7 +89,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool InlineMedias
 		{
-			[DebuggerStepThrough] get { return _InlineMedias; }
+			[DebuggerStepThrough]
+			get { return _InlineMedias; }
 			set
 			{
 				if( _InlineMedias == value )
@@ -104,7 +105,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedAccentColor
 		{
-			[DebuggerStepThrough] get { return _SelectedAccentColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedAccentColor; }
 			set
 			{
 				if( _SelectedAccentColor == value )
@@ -119,7 +121,8 @@ namespace Twice.ViewModels.Settings
 
 		public FontSizeItem SelectedFontSize
 		{
-			[DebuggerStepThrough] get { return _SelectedFontSize; }
+			[DebuggerStepThrough]
+			get { return _SelectedFontSize; }
 			set
 			{
 				if( _SelectedFontSize == value )
@@ -134,7 +137,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedHashtagColor
 		{
-			[DebuggerStepThrough] get { return _SelectedHashtagColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedHashtagColor; }
 			set
 			{
 				if( _SelectedHashtagColor == value )
@@ -149,7 +153,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedLinkColor
 		{
-			[DebuggerStepThrough] get { return _SelectedLinkColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedLinkColor; }
 			set
 			{
 				if( _SelectedLinkColor == value )
@@ -164,7 +169,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedMentionColor
 		{
-			[DebuggerStepThrough] get { return _SelectedMentionColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedMentionColor; }
 			set
 			{
 				if( _SelectedMentionColor == value )
@@ -179,7 +185,8 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedPrimaryColor
 		{
-			[DebuggerStepThrough] get { return _SelectedPrimaryColor; }
+			[DebuggerStepThrough]
+			get { return _SelectedPrimaryColor; }
 			set
 			{
 				if( _SelectedPrimaryColor == value )
@@ -194,7 +201,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool UseDarkTheme
 		{
-			[DebuggerStepThrough] get { return _UseDarkTheme; }
+			[DebuggerStepThrough]
+			get { return _UseDarkTheme; }
 			set
 			{
 				if( _UseDarkTheme == value )

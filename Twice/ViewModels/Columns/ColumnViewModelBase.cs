@@ -57,23 +57,6 @@ namespace Twice.ViewModels.Columns
 			SubTitle = "@" + context.AccountName;
 		}
 
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<StatusEventArgs> NewStatus;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await OnLoad().ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
 		protected abstract bool IsSuitableForColumn( Status status );
 
 		protected virtual async Task OnLoad()
@@ -198,7 +181,8 @@ namespace Twice.ViewModels.Columns
 
 		private async Task LoadMoreData()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
+			var statuses =
+				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
@@ -210,7 +194,8 @@ namespace Twice.ViewModels.Columns
 
 		private async Task LoadTopData()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			var statuses =
+				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
 			{
@@ -271,9 +256,24 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
-		public IColumnActionDispatcher ActionDispatcher { get; }
+		public event EventHandler Changed;
 
-		public ICache Cache { get; set; }
+		public event EventHandler Deleted;
+
+		public event EventHandler<StatusEventArgs> NewStatus;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await OnLoad().ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
+			} );
+		}
+
+		public IColumnActionDispatcher ActionDispatcher { get; }
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -281,9 +281,6 @@ namespace Twice.ViewModels.Columns
 		public ColumnDefinition Definition { get; }
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
 
 		public abstract Icon Icon { get; }
 
@@ -302,7 +299,6 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public IStatusMuter Muter { get; set; }
 		public ICollection<StatusViewModel> Statuses { get; }
 
 		public string SubTitle
@@ -353,6 +349,13 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		public ICache Cache { get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
+		public IStatusMuter Muter { get; set; }
+
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		private ulong MaxId { get; set; } = ulong.MaxValue;
 
@@ -365,16 +368,22 @@ namespace Twice.ViewModels.Columns
 
 		private readonly SmartCollection<StatusViewModel> StatusCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ClearCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _DeleteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _SubTitle;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private double _Width;
 	}
 }

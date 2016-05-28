@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Twice.Tests
 {
 	[ExcludeFromCodeCoverage]
 	internal class PropertyChangedTester
 	{
-		public PropertyChangedTester( INotifyPropertyChanged obj, bool includeInherited = false, ITypeResolver typeResolver = null )
+		public PropertyChangedTester( INotifyPropertyChanged obj, bool includeInherited = false,
+			ITypeResolver typeResolver = null )
 		{
 			Object = obj;
 			IncludeInherited = includeInherited;
@@ -88,29 +89,29 @@ namespace Twice.Tests
 		{
 			var typeMap = new Dictionary<Type, object>
 			{
-				{typeof( short ), 1},
-				{typeof( ushort ), 1},
-				{typeof( int ), 1},
-				{typeof( uint ), 1},
-				{typeof( long ), 1},
-				{typeof( ulong ), 1},
-				{typeof( double ), 1},
-				{typeof( float ), 1},
-				{typeof( decimal ), 1},
-				{typeof( short? ), (short?)1},
-				{typeof( ushort? ), (ushort?)1},
-				{typeof( int? ), (int?)1},
-				{typeof( uint? ), (uint?)1},
-				{typeof( long? ), (long?)1},
-				{typeof( ulong? ), (ulong?)1},
-				{typeof( double? ), (double?)1},
-				{typeof( float? ), (float?)1},
-				{typeof( decimal? ), (decimal?)1},
-				{typeof( string ), string.Empty},
-				{typeof( DateTime ), DateTime.Now},
-				{typeof( bool ), true},
-				{typeof( CultureInfo ), CultureInfo.CurrentUICulture},
-				{typeof( DateTime? ), DateTime.Now}
+				{typeof(short), 1},
+				{typeof(ushort), 1},
+				{typeof(int), 1},
+				{typeof(uint), 1},
+				{typeof(long), 1},
+				{typeof(ulong), 1},
+				{typeof(double), 1},
+				{typeof(float), 1},
+				{typeof(decimal), 1},
+				{typeof(short?), (short?)1},
+				{typeof(ushort?), (ushort?)1},
+				{typeof(int?), (int?)1},
+				{typeof(uint?), (uint?)1},
+				{typeof(long?), (long?)1},
+				{typeof(ulong?), (ulong?)1},
+				{typeof(double?), (double?)1},
+				{typeof(float?), (float?)1},
+				{typeof(decimal?), (decimal?)1},
+				{typeof(string), string.Empty},
+				{typeof(DateTime), DateTime.Now},
+				{typeof(bool), true},
+				{typeof(CultureInfo), CultureInfo.CurrentUICulture},
+				{typeof(DateTime?), DateTime.Now}
 			};
 
 			object v;

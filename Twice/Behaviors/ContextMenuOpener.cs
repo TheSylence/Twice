@@ -23,13 +23,14 @@ namespace Twice.Behaviors
 			Element.ContextMenu.IsOpen = true;
 		}
 
+		public static readonly DependencyProperty ElementProperty =
+			DependencyProperty.Register( "Element", typeof(FrameworkElement), typeof(ContextMenuOpener),
+				new PropertyMetadata( null ) );
+
 		public FrameworkElement Element
 		{
 			get { return (FrameworkElement)GetValue( ElementProperty ); }
 			set { SetValue( ElementProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ElementProperty =
-			DependencyProperty.Register( "Element", typeof( FrameworkElement ), typeof( ContextMenuOpener ), new PropertyMetadata( null ) );
 	}
 }

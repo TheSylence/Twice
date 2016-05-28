@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Twice.Models.Cache;
 
 namespace Twice.Tests.Models.Cache
@@ -25,11 +25,11 @@ namespace Twice.Tests.Models.Cache
 				user.UserID = 123;
 				user.ScreenName = "test";
 
-				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] { new UserCacheEntry( user ) } );
 
 				// Act
 				user.ScreenName = "testi";
-				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] { new UserCacheEntry( user ) } );
 
 				// Assert
 				var fromDb = ( await cache.GetKnownUsers() ).First();
@@ -55,7 +55,7 @@ namespace Twice.Tests.Models.Cache
 				var tags = ( await cache.GetKnownHashtags() ).ToArray();
 
 				// Assert
-				CollectionAssert.AreEquivalent( new[] {"test", "abc"}, tags );
+				CollectionAssert.AreEquivalent( new[] { "test", "abc" }, tags );
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace Twice.Tests.Models.Cache
 				using( var cmd = con.CreateCommand() )
 				{
 					cmd.CommandText = "INSERT INTO Users (Id, UserName, UserData) VALUES (@id1, @name1, @data1), "
-					                  + "(@id2, @name2, @data2);";
+									  + "(@id2, @name2, @data2);";
 
 					cmd.AddParameter( "id1", 111 );
 					cmd.AddParameter( "id2", 222 );
@@ -147,7 +147,7 @@ namespace Twice.Tests.Models.Cache
 				}
 
 				// Assert
-				CollectionAssert.AreEquivalent( new[] {"Hashtags", "Users", "TwitterConfig", "Statuses", "ColumnStatuses"}, tableNames );
+				CollectionAssert.AreEquivalent( new[] { "Hashtags", "Users", "TwitterConfig", "Statuses", "ColumnStatuses" }, tableNames );
 			}
 		}
 
@@ -238,7 +238,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
-				await cache.AddHashtags( new[] {"test"} );
+				await cache.AddHashtags( new[] { "test" } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -280,7 +280,7 @@ namespace Twice.Tests.Models.Cache
 				status.ID = 111;
 
 				// Act
-				await cache.AddStatuses( new[] {status} );
+				await cache.AddStatuses( new[] { status } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -372,7 +372,7 @@ namespace Twice.Tests.Models.Cache
 				var s3 = DummyGenerator.CreateDummyStatus( user );
 				s3.ID = 3;
 
-				await cache.AddStatuses( new[] {s1, s2, s3} );
+				await cache.AddStatuses( new[] { s1, s2, s3 } );
 
 				var c1 = Guid.NewGuid();
 				var c2 = Guid.NewGuid();
@@ -415,7 +415,7 @@ namespace Twice.Tests.Models.Cache
 				var s3 = DummyGenerator.CreateDummyStatus( user );
 				s3.ID = 3;
 
-				await cache.AddStatuses( new[] {s1, s2, s3} );
+				await cache.AddStatuses( new[] { s1, s2, s3 } );
 
 				// Act
 				var statuses = ( await cache.GetStatusesForUser( 123 ) ).ToArray();
@@ -499,7 +499,7 @@ namespace Twice.Tests.Models.Cache
 				var entry = new UserCacheEntry( user );
 
 				// Act
-				await cache.AddUsers( new[] {entry} );
+				await cache.AddUsers( new[] { entry } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )

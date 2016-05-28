@@ -70,7 +70,6 @@
 				<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}" />
 				<Setter Property="BorderThickness" Value="1" />
 			</Style>
-			
 
 			<Style TargetType="controls:MetroWindow" BasedOn="{StaticResource WindowStyle}" x:Key="DialogStyle">
 				<Setter Property="WindowStyle" Value="ToolWindow" />

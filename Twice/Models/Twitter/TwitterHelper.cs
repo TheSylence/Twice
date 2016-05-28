@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
@@ -50,7 +50,9 @@ namespace Twice.Models.Twitter
 
 		public static ulong GetStatusId( this Status status )
 		{
-			return status.ID != 0 ? status.ID : status.StatusID;
+			return status.ID != 0
+				? status.ID
+				: status.StatusID;
 		}
 
 		public static Uri GetUrl( this Status status )
@@ -128,6 +130,7 @@ namespace Twice.Models.Twitter
 			return text;
 		}
 
-		private static readonly Regex TweetUrlPattern = new Regex( "(https:\\/\\/)?twitter.com\\/\\w+\\/status\\/(\\d+)", RegexOptions.Compiled );
+		private static readonly Regex TweetUrlPattern = new Regex( "(https:\\/\\/)?twitter.com\\/\\w+\\/status\\/(\\d+)",
+			RegexOptions.Compiled );
 	}
 }

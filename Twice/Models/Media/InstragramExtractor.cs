@@ -1,7 +1,7 @@
+using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 
 namespace Twice.Models.Media
 {
@@ -25,12 +25,12 @@ namespace Twice.Models.Media
 			}
 		}
 
+		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?instagram.com\\/p\\/[\\w-]+\\/",
+			RegexOptions.Compiled );
+
 		private class InstagramResponse
 		{
 			public string thumbnail_url { get; set; }
 		}
-
-		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?instagram.com\\/p\\/[\\w-]+\\/",
-			RegexOptions.Compiled );
 	}
 }

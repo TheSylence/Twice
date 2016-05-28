@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Fody;
+﻿using Fody;
 using Squirrel;
+using System.Threading.Tasks;
 
 namespace Twice.Utilities
 {

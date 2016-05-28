@@ -25,6 +25,14 @@ namespace Twice.ViewModels.Settings
 				new ObservableCollection<NotificationModuleSettings>( AvailableNotifications.Where( c => c.Enabled ) );
 		}
 
+		public void SaveTo( IConfig config )
+		{
+			foreach( var notifyModule in AvailableNotifications )
+			{
+				notifyModule.SaveTo( config );
+			}
+		}
+
 		private void NotifyModule_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
 			var notifyModule = sender as NotificationModuleSettings;
@@ -43,14 +51,6 @@ namespace Twice.ViewModels.Settings
 				{
 					EnabledNotifications.Remove( notifyModule );
 				}
-			}
-		}
-
-		public void SaveTo( IConfig config )
-		{
-			foreach( var notifyModule in AvailableNotifications )
-			{
-				notifyModule.SaveTo( config );
 			}
 		}
 
