@@ -18,7 +18,25 @@
 					<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
 										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 				</StackPanel>
-				<TextBlock Text="{Binding Model.Text}" TextWrapping="Wrap" Margin="5" />
+				<StackPanel>
+					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
+
+					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+						<controls1:FlipView.ItemTemplate>
+							<DataTemplate>
+								<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
+									<i:Interaction.Triggers>
+										<i:EventTrigger EventName="MouseDown">
+											<behaviors:EventToCommand Command="{Binding OpenImageCommand}" />
+										</i:EventTrigger>
+									</i:Interaction.Triggers>
+								</Image>
+							</DataTemplate>
+						</controls1:FlipView.ItemTemplate>
+					</controls1:FlipView>
+				</StackPanel>
 			</StackPanel>
 		</materialDesign:Card>
 	</DataTemplate>

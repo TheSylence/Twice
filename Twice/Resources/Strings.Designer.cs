@@ -1051,6 +1051,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requires restart.
+        /// </summary>
+        public static string RequiresRestart {
+            get {
+                return ResourceManager.GetString("RequiresRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Responses.
         /// </summary>
         public static string Responses {
