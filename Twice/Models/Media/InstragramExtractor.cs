@@ -25,7 +25,7 @@ namespace Twice.Models.Media
 			}
 		}
 
-		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?instagram.com\\/p\\/[\\w-]+\\/",
+		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?(www\\.)?instagram\\.com\\/p\\/[\\w-]+(\\/)?",
 			RegexOptions.Compiled );
 
 		private class InstagramResponse
