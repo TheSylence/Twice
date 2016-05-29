@@ -18,45 +18,54 @@
 		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
-	<StackPanel Orientation="Vertical">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
 
-		<Grid MaxHeight="275" Visibility="{Binding PreviousConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
-			<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
-								   DisplayIndicators="False">
-				<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-					<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
-				</ScrollViewer>
-			</views:StatusContainer>
+		<StackPanel Orientation="Vertical">
+			<Grid MaxHeight="250" Visibility="{Binding PreviousConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
+				<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
+									   DisplayIndicators="False">
+					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+						<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+					</ScrollViewer>
+				</views:StatusContainer>
 
-			<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
-		</Grid>
+				<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+			</Grid>
 
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
-			<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
-			<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc InReplyTo}" />
-			<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
+				<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
+				<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc InReplyTo}" />
+				<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
+			</StackPanel>
 		</StackPanel>
 
 		<views:StatusContainer ShowRetweets="True" ShowFavorites="True" DisplaySource="True" EnableHoverIcons="False"
-							   DisplayIndicators="False">
+							   DisplayIndicators="False" Grid.Row="1">
 			<ContentControl Content="{Binding DisplayTweet}" ContentTemplate="{StaticResource StatusViewTemplate}" />
 		</views:StatusContainer>
 
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding FollowingConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
-			<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
-			<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc Responses}" />
-			<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
+		<StackPanel Orientation="Vertical" Grid.Row="2">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding FollowingConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
+				<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
+				<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc Responses}" />
+				<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
+			</StackPanel>
+
+			<Grid MaxHeight="250" Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
+				<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
+									   DisplayIndicators="False">
+					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+						<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+					</ScrollViewer>
+				</views:StatusContainer>
+
+				<controls:ProgressRing IsActive="{Binding IsLoadingFollowing, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+			</Grid>
 		</StackPanel>
-
-		<Grid MaxHeight="275" Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
-			<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
-								   DisplayIndicators="False">
-				<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-					<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
-				</ScrollViewer>
-			</views:StatusContainer>
-
-			<controls:ProgressRing IsActive="{Binding IsLoadingFollowing, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
-		</Grid>
-	</StackPanel>
+	</Grid>
 </controls:MetroWindow>

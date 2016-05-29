@@ -87,10 +87,12 @@ namespace Twice.ViewModels.Profile
 
 			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
 				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
-
+			
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
+
+				await Task.WhenAll( statuses.Select( s => s.LoadQuotedTweet() ) );
 			}
 			return statuses;
 		}

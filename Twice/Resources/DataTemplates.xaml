@@ -14,7 +14,8 @@
                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 			<StackPanel Orientation="Vertical">
 				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
+					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center"
+							   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" />
 					<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
 										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 				</StackPanel>

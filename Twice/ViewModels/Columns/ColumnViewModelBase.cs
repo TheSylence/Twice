@@ -150,16 +150,7 @@ namespace Twice.ViewModels.Columns
 		{
 			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 
-			var quoteId = vm.ExtractQuotedTweetUrl();
-			if( quoteId != 0 )
-			{
-				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
-				if( quoted != null )
-				{
-					vm.QuotedTweet = await CreateViewModel( quoted );
-				}
-			}
-
+			await vm.LoadQuotedTweet();
 			return vm;
 		}
 

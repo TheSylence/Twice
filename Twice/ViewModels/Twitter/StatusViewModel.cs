@@ -45,6 +45,19 @@ namespace Twice.ViewModels.Twitter
 			RetweetedBy = new SmartCollection<UserViewModel>();
 		}
 
+		public async Task LoadQuotedTweet()
+		{
+			var quoteId = ExtractQuotedTweetUrl();
+			if( quoteId != 0 )
+			{
+				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
+				if( quoted != null )
+				{
+					QuotedTweet = new StatusViewModel( quoted, Context, Config, ViewServiceRepository );
+				}
+			}
+		}
+
 		public ulong ExtractQuotedTweetUrl()
 		{
 			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );

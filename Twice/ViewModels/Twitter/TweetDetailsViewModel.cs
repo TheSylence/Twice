@@ -33,7 +33,8 @@ namespace Twice.ViewModels.Twitter
 			{
 				StartLoadingPrevTweets(),
 				StartLoadingResponses(),
-				StartLoadingRetweets()
+				StartLoadingRetweets(),
+				DisplayTweet.LoadQuotedTweet()
 			};
 
 			await Task.WhenAll( tasks );
@@ -65,6 +66,7 @@ namespace Twice.ViewModels.Twitter
 				status = inReplyTo;
 			}
 
+			await Task.WhenAll( PreviousConversationTweets.Select( s => s.LoadQuotedTweet() ) );
 			IsLoadingPrevious = false;
 		}
 
@@ -76,6 +78,8 @@ namespace Twice.ViewModels.Twitter
 			await Dispatcher.RunAsync( () =>
 				FollowingConversationTweets.AddRange(
 					replies.Select( r => new StatusViewModel( r, Context, Configuration, ViewServiceRepository ) ) ) );
+
+			await Task.WhenAll( FollowingConversationTweets.Select( s => s.LoadQuotedTweet() ) );
 
 			RaisePropertyChanged( nameof( FollowingConversationTweets ) );
 			IsLoadingFollowing = false;

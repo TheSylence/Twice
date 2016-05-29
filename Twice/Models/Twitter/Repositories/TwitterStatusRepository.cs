@@ -38,8 +38,17 @@ namespace Twice.Models.Twitter.Repositories
 
 		public async Task<List<ulong>> FindRetweeters( ulong statusId, int count )
 		{
-			var response = await Queryable.Where( s => s.Type == StatusType.Retweeters && s.ID == statusId )
-				.SingleOrDefaultAsync();
+			Status response;
+			try
+			{
+				response = await Queryable.Where( s => s.Type == StatusType.Retweeters && s.ID == statusId )
+					.SingleOrDefaultAsync();
+			}
+			catch( TwitterQueryException ex )
+			{
+				LogTo.WarnException( "Exception while searching retweeters:", ex );
+				return new List<ulong>();
+			}
 
 			List<ulong> result;
 			if( response?.Users != null )
