@@ -76,7 +76,16 @@
 									<i:Interaction.Behaviors>
 										<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
 									</i:Interaction.Behaviors>
-									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}" HorizontalContentAlignment="Stretch">
+									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}" HorizontalContentAlignment="Stretch"
+												  ScrollViewer.CanContentScroll="True"
+												  VirtualizingStackPanel.IsVirtualizing="True"
+												  VirtualizingStackPanel.ScrollUnit="Pixel"
+												  VirtualizingStackPanel.VirtualizationMode="Recycling">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<VirtualizingStackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
 										<ItemsControl.ItemTemplateSelector>
 											<views:GenericTemplateSelector>
 												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
