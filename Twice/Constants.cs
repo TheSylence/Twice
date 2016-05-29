@@ -89,6 +89,22 @@ namespace Twice
 			///     Prefix for a user mention.
 			/// </summary>
 			internal const string Mention = "@";
+
+			public static class ErrorCodes
+			{
+				public const int CouldNotAuthenticateYou = 32;
+				public const int PageDoesNotExist = 34;
+				public const int AccountSuspended = 64;
+				public const int RateLimitExceeded = 88;
+				public const int InvalidOrExpiredToken = 89;
+				public const int OverCapacity = 130;
+				public const int InternalError = 131;
+				public const int CouldNotAuthenticateYouTimestamp = 135;
+				public const int UnableToFollowMorePeople = 161;
+				public const int NotAuthorizedToSeePost = 179;
+				public const int OverDailyStatusUpdateLimit = 185;
+				public const int StatusDuplicate = 187;
+			}
 		}
 	}
 }
