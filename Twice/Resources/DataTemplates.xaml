@@ -27,11 +27,9 @@
 						<controls1:FlipView.ItemTemplate>
 							<DataTemplate>
 								<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
-									<i:Interaction.Triggers>
-										<i:EventTrigger EventName="MouseDown">
-											<behaviors:EventToCommand Command="{Binding OpenImageCommand}" />
-										</i:EventTrigger>
-									</i:Interaction.Triggers>
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+									</i:Interaction.Behaviors>
 								</Image>
 							</DataTemplate>
 						</controls1:FlipView.ItemTemplate>
@@ -42,12 +40,10 @@
 	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="MouseDown">
-					<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
-											 CommandParameter="{Binding}" />
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
+			<i:Interaction.Behaviors>
+				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+										CommandParameter="{Binding}" />
+			</i:Interaction.Behaviors>
 
 			<StackPanel Orientation="Vertical">
 				<Grid Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
@@ -64,12 +60,10 @@
 								</Style.Triggers>
 							</Style>
 						</StackPanel.Resources>
-						<i:Interaction.Triggers>
-							<i:EventTrigger EventName="MouseDown">
-								<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+						<i:Interaction.Behaviors>
+							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
-							</i:EventTrigger>
-						</i:Interaction.Triggers>
+						</i:Interaction.Behaviors>
 
 						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
 
@@ -227,12 +221,10 @@
 											</Style.Triggers>
 										</Style>
 									</StackPanel.Resources>
-									<i:Interaction.Triggers>
-										<i:EventTrigger EventName="MouseDown">
-											<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
-										</i:EventTrigger>
-									</i:Interaction.Triggers>
+									</i:Interaction.Behaviors>
 									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 								VerticalAlignment="Center" />
@@ -251,11 +243,9 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
-												<i:Interaction.Triggers>
-													<i:EventTrigger EventName="MouseDown">
-														<behaviors:EventToCommand Command="{Binding OpenImageCommand}" />
-													</i:EventTrigger>
-												</i:Interaction.Triggers>
+												<i:Interaction.Behaviors>
+													<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+												</i:Interaction.Behaviors>
 											</Image>
 										</DataTemplate>
 									</controls1:FlipView.ItemTemplate>
@@ -290,12 +280,10 @@
 							<DataTemplate DataType="twitter:UserViewModel">
 								<Image Source="{Binding ProfileImageUrlHttpsMini, IsAsync=True}"
 									   ToolTip="{Binding ScreenName}" Width="24" Height="24" Margin="3">
-									<i:Interaction.Triggers>
-										<i:EventTrigger EventName="MouseDown">
-											<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-																	  CommandParameter="{Binding UserId}" />
-										</i:EventTrigger>
-									</i:Interaction.Triggers>
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+																CommandParameter="{Binding UserId}" />
+									</i:Interaction.Behaviors>
 								</Image>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
@@ -352,12 +340,10 @@
 							</Style.Triggers>
 						</Style>
 					</StackPanel.Resources>
-					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="MouseDown">
-							<behaviors:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+					<i:Interaction.Behaviors>
+						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
-						</i:EventTrigger>
-					</i:Interaction.Triggers>
+					</i:Interaction.Behaviors>
 					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 							VerticalAlignment="Center" />

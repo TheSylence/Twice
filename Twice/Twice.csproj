@@ -152,6 +152,9 @@
       <HintPath>..\packages\Resourcer.Fody.1.4.1\lib\portable-net45+netcore45+wpa81+wp8\Resourcer.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Seal.Fody">
+      <HintPath>..\packages\Seal.Fody.1.0.3\Seal.Fody.dll</HintPath>
+    </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
@@ -224,12 +227,12 @@
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\AutoComplete.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
+    <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
     <Compile Include="Behaviors\ColumnHandler.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
-    <Compile Include="Behaviors\EventToCommand.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
@@ -663,7 +666,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Licenses\GongSolutions.WPF.DragDrop.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

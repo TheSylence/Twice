@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using Seal.Fody;
 
 namespace Twice.Views.Proxies
 {
 	[ExcludeFromCodeCoverage]
+	[LeaveUnsealed]
 	internal class GenericBindingProxy<TData> : Freezable
 		where TData : class
 	{
