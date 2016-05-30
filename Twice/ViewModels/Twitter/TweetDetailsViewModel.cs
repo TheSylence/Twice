@@ -28,16 +28,8 @@ namespace Twice.ViewModels.Twitter
 
 			PreviousConversationTweets.Clear();
 			FollowingConversationTweets.Clear();
-
-			var tasks = new[]
-			{
-				StartLoadingPrevTweets(),
-				StartLoadingResponses(),
-				StartLoadingRetweets(),
-				DisplayTweet.LoadQuotedTweet()
-			};
-
-			await Task.WhenAll( tasks );
+			
+			await Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(), DisplayTweet.LoadQuotedTweet() );
 		}
 
 		private async Task StartLoadingPrevTweets()
@@ -114,7 +106,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			[DebuggerStepThrough]
 			get { return _IsLoadingFollowing; }
-			set
+			private set
 			{
 				if( _IsLoadingFollowing == value )
 				{
@@ -130,7 +122,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			[DebuggerStepThrough]
 			get { return _IsLoadingPrevious; }
-			set
+			private set
 			{
 				if( _IsLoadingPrevious == value )
 				{

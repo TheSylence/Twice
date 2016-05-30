@@ -71,7 +71,7 @@ namespace Twice.ViewModels.Twitter
 
 		public async Task LoadRetweets()
 		{
-			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.StatusID, Constants.Gui.MaxRetweets );
+			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.GetStatusId(), Constants.Gui.MaxRetweets );
 			var retweeters = await Context.Twitter.Users.LookupUsers( ids );
 			var users = retweeters.Select( rt => new UserViewModel( rt ) );
 

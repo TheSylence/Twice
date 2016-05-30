@@ -373,6 +373,7 @@
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IRetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />

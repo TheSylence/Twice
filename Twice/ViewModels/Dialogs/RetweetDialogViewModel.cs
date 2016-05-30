@@ -5,21 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
-using Twice.ViewModels.Main;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Dialogs
 {
-	internal interface IRetweetDialogViewModel : IDialogViewModel, ILoadCallback
-	{
-		ICollection<AccountEntry> Accounts { get; }
-		bool ConfirmationRequired { get; }
-		bool ConfirmationSet { get; set; }
-		ICommand QuoteCommand { get; }
-		ICommand RetweetCommand { get; }
-		StatusViewModel Status { get; set; }
-	}
-
 	internal class RetweetDialogViewModel : DialogViewModel, IRetweetDialogViewModel
 	{
 		public RetweetDialogViewModel()

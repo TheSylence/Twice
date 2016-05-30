@@ -231,6 +231,7 @@
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
+    <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
