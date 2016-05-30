@@ -8,16 +8,8 @@ namespace Twice
 	///     Class containing constants that are used throughout the application.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
-	internal static class Constants
+	internal static partial class Constants
 	{
-		public static class Auth
-		{
-			internal static readonly string ConsumerKey = Obscurity.Deobscure( "==gV1Mlc2V2b5MTNhZHbzdEM4pFdVVke0J3T" );
-
-			internal static readonly string ConsumerSecret =
-				Obscurity.Deobscure( "=g3c1RGboNTRXFTe1IEUiBzTCdjWY1ERxgGNHJFN24UYwJ0YvNDc6N2crNVVkR0U380V" );
-		}
-
 		public static class Gui
 		{
 			/// <summary>

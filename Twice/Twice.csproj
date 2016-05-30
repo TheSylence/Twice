@@ -236,6 +236,7 @@
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
+    <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>
@@ -310,7 +311,6 @@
     <Compile Include="Models\Twitter\Repositories\TwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterUserRepository.cs" />
-    <Compile Include="Obscurity.cs" />
     <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
