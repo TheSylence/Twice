@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Seal.Fody;
 using Twice.Models.Columns;
 
 namespace Twice.Models.Twitter.Streaming
 {
+	[LeaveUnsealed]
 	internal class StreamingRepository : IStreamingRepository
 	{
 		public StreamingRepository( ITwitterContextList contextList )
