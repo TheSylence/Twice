@@ -1,9 +1,9 @@
-using Fody;
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
@@ -15,6 +15,11 @@ namespace Twice.Models.Twitter.Repositories
 		public TwitterUserRepository( TwitterContext context, ICache cache )
 			: base( context, cache )
 		{
+		}
+
+		public async Task FollowUser( ulong userId )
+		{
+			await Context.CreateFriendshipAsync( userId, true );
 		}
 
 		public Task<List<User>> LookupUsers( IEnumerable<ulong> userIds )
@@ -59,6 +64,11 @@ namespace Twice.Models.Twitter.Repositories
 			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
 
 			return user;
+		}
+
+		public async Task UnfollowUser( ulong userId )
+		{
+			await Context.DestroyFriendshipAsync( userId );
 		}
 
 		public TwitterQueryable<User> Queryable => Context.User;

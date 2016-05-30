@@ -1,11 +1,13 @@
-﻿using Fody;
-using LinqToTwitter;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Ninject;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
@@ -62,6 +64,16 @@ namespace Twice.ViewModels.Profile
 			ProfileId = profileId;
 		}
 
+		private async void ExecuteFollowUserCommand()
+		{
+			await Context.Twitter.Users.FollowUser( User.UserId );
+		}
+
+		private async void ExecuteUnfollowUserCommand()
+		{
+			await Context.Twitter.Users.UnfollowUser( User.UserId );
+		}
+
 		private async Task<IEnumerable<object>> LoadFollowers()
 		{
 			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
@@ -87,7 +99,7 @@ namespace Twice.ViewModels.Profile
 
 			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
 				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
-			
+
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
@@ -102,10 +114,12 @@ namespace Twice.ViewModels.Profile
 			return await LoadStatuses( null );
 		}
 
+		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
+			ExecuteFollowUserCommand ) );
+
 		public Friendship Friendship
 		{
-			[DebuggerStepThrough]
-			get { return _Friendship; }
+			[DebuggerStepThrough] get { return _Friendship; }
 			set
 			{
 				if( _Friendship == value )
@@ -120,8 +134,7 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsBusy
 		{
-			[DebuggerStepThrough]
-			get { return _IsBusy; }
+			[DebuggerStepThrough] get { return _IsBusy; }
 			set
 			{
 				if( _IsBusy == value )
@@ -137,10 +150,12 @@ namespace Twice.ViewModels.Profile
 		[Inject]
 		public INotifier Notifier { get; set; }
 
+		public ICommand UnfollowUserCommand => _UnfollowUserCommand ?? ( _UnfollowUserCommand = new RelayCommand(
+			ExecuteUnfollowUserCommand ) );
+
 		public UserViewModel User
 		{
-			[DebuggerStepThrough]
-			get { return _User; }
+			[DebuggerStepThrough] get { return _User; }
 			set
 			{
 				if( _User == value )
@@ -154,15 +169,15 @@ namespace Twice.ViewModels.Profile
 		}
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
+		private RelayCommand _FollowUserCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private Friendship _Friendship;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsBusy;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private UserViewModel _User;
+		private RelayCommand _UnfollowUserCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong MaxId = ulong.MaxValue;

@@ -36,8 +36,8 @@
 
 				<StackPanel Margin="5">
 					<Image Source="{Binding User.ProfileImageUrlHttpsOrig}" Width="96" Height="96" VerticalAlignment="Top" Margin="5" />
-					<Button Content="{lex:Loc Follow}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
-					<Button Content="{lex:Loc Unfollow}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />
+					<Button Content="{lex:Loc Follow}" Command="{Binding FollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
+					<Button Content="{lex:Loc Unfollow}" Command="{Binding UnfollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />
 					<StackPanel Orientation="Horizontal" Visibility="{Binding Friendship.TargetRelationship.Following, Converter={StaticResource BoolToVisibleConv}}">
 						<TextBlock Text="{lex:Loc FollowsYou}" />
 					</StackPanel>
