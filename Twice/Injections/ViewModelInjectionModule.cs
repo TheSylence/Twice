@@ -18,7 +18,7 @@ namespace Twice.Injections
 	internal class ViewModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		///     Loads the module into the kernel.
+		/// Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
@@ -48,6 +48,7 @@ namespace Twice.Injections
 			Bind<IImageDialogViewModel>().To<ImageDialogViewModel>();
 			Bind<ITweetDetailsViewModel>().To<TweetDetailsViewModel>();
 			Bind<IRetweetDialogViewModel>().To<RetweetDialogViewModel>();
+			Bind<IConfirmDialogViewModel>().To<ConfirmDialogViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

@@ -372,7 +372,11 @@
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
+    <Compile Include="ViewModels\Dialogs\ConfirmDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IConfirmDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\ImageEntry.cs" />
     <Compile Include="ViewModels\Dialogs\IRetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
@@ -418,6 +422,9 @@
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardPageViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
+    <Compile Include="Views\Dialogs\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
     </Compile>
@@ -507,6 +514,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FileSelectBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\ConfirmDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -21,6 +21,7 @@ namespace Twice.ViewModels
 		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();
+		public IConfirmDialogViewModel Confirm => Kernel.Get<IConfirmDialogViewModel>();
 		public IImageDialogViewModel Image => Kernel.Get<IImageDialogViewModel>();
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();

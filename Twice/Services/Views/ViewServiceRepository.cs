@@ -9,11 +9,9 @@ using System.Windows;
 using Fody;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
-using Twice.Resources;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
@@ -37,26 +35,16 @@ namespace Twice.Services.Views
 
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
-			Debug.Assert( args != null );
-
-			var dictionary = new ResourceDictionary
+			Action<IConfirmDialogViewModel> vmSetup = vm =>
 			{
-				Source =
-					new Uri(
-						"pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
+				vm.Title = args.Title;
+				vm.Label = args.Message;
 			};
+			Func<IConfirmDialogViewModel, object> resultSetup = vm => true;
 
-			var settings = new MetroDialogSettings
-			{
-				AffirmativeButtonText = Strings.Yes,
-				NegativeButtonText = Strings.No,
-				SuppressDefaultResources = true,
-				CustomResourceDictionary = dictionary
-			};
-			var result =
-				await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
+			var result = await ShowWindow<ConfirmDialog, IConfirmDialogViewModel, object>( resultSetup, vmSetup );
 
-			return result == MessageDialogResult.Affirmative;
+			return result != null;
 		}
 
 		public Task<string> OpenFile( FileServiceArgs fsa = null )
@@ -85,10 +73,7 @@ namespace Twice.Services.Views
 
 		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
 		{
-			Action<IComposeTweetViewModel> vmSetup = vm =>
-			{
-				vm.SetReply( status, toAll );
-			};
+			Action<IComposeTweetViewModel> vmSetup = vm => { vm.SetReply( status, toAll ); };
 
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
 		}

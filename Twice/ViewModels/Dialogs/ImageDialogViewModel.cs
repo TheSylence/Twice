@@ -5,14 +5,6 @@ using System.Diagnostics;
 
 namespace Twice.ViewModels.Dialogs
 {
-	internal interface IImageDialogViewModel : IDialogViewModel
-	{
-		void SetImages( IEnumerable<Uri> urls );
-
-		ICollection<ImageEntry> Images { get; }
-		ImageEntry SelectedImage { get; set; }
-	}
-
 	internal class ImageDialogViewModel : DialogViewModel, IImageDialogViewModel
 	{
 		public ImageDialogViewModel()
@@ -49,17 +41,5 @@ namespace Twice.ViewModels.Dialogs
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private ImageEntry _SelectedImage;
-	}
-
-	internal class ImageEntry
-	{
-		public ImageEntry( Uri url, string title = null )
-		{
-			ImageUrl = url;
-			Title = title ?? url.AbsoluteUri;
-		}
-
-		public Uri ImageUrl { get; set; }
-		public string Title { get; set; }
 	}
 }
