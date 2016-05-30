@@ -1312,6 +1312,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweet.
+        /// </summary>
+        public static string Tweet {
+            get {
+                return ResourceManager.GetString("Tweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tweets to fetch at once.
         /// </summary>
         public static string TweetFetchCount {

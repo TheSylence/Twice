@@ -588,4 +588,7 @@
   <data name="FollowTwiceAppOnTwitter" xml:space="preserve">
     <value>Follow @TwiceApp on twitter</value>
   </data>
+  <data name="Tweet" xml:space="preserve">
+    <value>Tweet</value>
+  </data>
 </root>
