@@ -266,7 +266,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ) ).Returns(
+			context.Setup( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
@@ -292,7 +292,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
+			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -324,7 +324,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ) ).Returns(
+			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
@@ -342,7 +342,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>() ), Times.Once() );
+			context.Verify( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

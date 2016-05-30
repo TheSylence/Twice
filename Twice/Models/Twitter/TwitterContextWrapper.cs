@@ -105,8 +105,13 @@ namespace Twice.Models.Twitter
 			return Context.RetweetAsync( statusId );
 		}
 
-		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias )
+		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
 		{
+			if( inReplyTo != 0 )
+			{
+				return Context.ReplyAsync( inReplyTo, text, medias );
+			}
+			
 			return Context.TweetAsync( text, medias );
 		}
 

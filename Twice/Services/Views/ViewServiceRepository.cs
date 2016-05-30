@@ -83,6 +83,16 @@ namespace Twice.Services.Views
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
 		}
 
+		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
+		{
+			Action<IComposeTweetViewModel> vmSetup = vm =>
+			{
+				vm.SetReply( status, toAll );
+			};
+
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+		}
+
 		public async Task RetweetStatus( StatusViewModel status )
 		{
 			Action<IRetweetDialogViewModel> vmSetup = vm => { vm.Status = status; };

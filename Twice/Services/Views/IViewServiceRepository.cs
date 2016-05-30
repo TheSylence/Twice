@@ -17,6 +17,8 @@ namespace Twice.Services.Views
 
 		Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null );
 
+		Task ReplyToTweet( StatusViewModel status, bool toAll );
+
 		Task RetweetStatus( StatusViewModel status );
 
 		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId );

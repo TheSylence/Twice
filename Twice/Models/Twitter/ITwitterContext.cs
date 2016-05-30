@@ -24,7 +24,7 @@ namespace Twice.Models.Twitter
 
 		Task<Status> RetweetAsync( ulong statusId );
 
-		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
+		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo = 0 );
 
 		Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
 

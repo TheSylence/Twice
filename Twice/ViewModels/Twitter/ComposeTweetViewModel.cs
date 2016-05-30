@@ -52,7 +52,7 @@ namespace Twice.ViewModels.Twitter
 
 			RaisePropertyChanged( nameof( Accounts ) );
 
-			Text = string.Empty;
+			InitializeText();
 			ConfirmationSet = false;
 
 			Medias.Clear();
@@ -67,6 +67,12 @@ namespace Twice.ViewModels.Twitter
 		public void PreSelectAccounts( IEnumerable<ulong> accounts )
 		{
 			PreSelectedAccounts = accounts.ToArray();
+		}
+
+		public void SetReply( StatusViewModel status, bool toAll )
+		{
+			InReplyTo = status;
+			ReplyToAll = toAll;
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -185,9 +191,38 @@ namespace Twice.ViewModels.Twitter
 			QuotedTweet = null;
 		}
 
+		private void ExecuteRemoveReplyCommand()
+		{
+			InReplyTo = null;
+			InitializeText();
+		}
+
 		private async void ExecuteSendTweetCommand()
 		{
 			await SendTweet();
+		}
+
+		private void InitializeText()
+		{
+			if( InReplyTo == null )
+			{
+				Text = string.Empty;
+				return;
+			}
+
+			List<string> mentions = new List<string> {InReplyTo.User.ScreenName};
+
+			if( ReplyToAll )
+			{
+				foreach( var m in InReplyTo.Model.Entities.UserMentionEntities )
+				{
+					mentions.Add( Constants.Twitter.Mention + m.ScreenName );
+				}
+
+				mentions.Add( InReplyTo.SourceUser?.ScreenName );
+			}
+
+			Text = string.Join( " ", mentions.Distinct().Where( m => !string.IsNullOrEmpty( m ) ) );
 		}
 
 		private async Task SendTweet()
@@ -202,9 +237,11 @@ namespace Twice.ViewModels.Twitter
 
 			await Task.Run( async () =>
 			{
+				ulong inReplyToId = InReplyTo?.Id ?? 0;
+
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await acc.Context.Twitter.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ) ).ConfigureAwait( false );
+					await acc.Context.Twitter.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId ).ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{
@@ -252,6 +289,21 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
 			ExecuteDeleteMediaCommand ) );
+
+		public StatusViewModel InReplyTo
+		{
+			[DebuggerStepThrough] get { return _InReplyTo; }
+			set
+			{
+				if( _InReplyTo == value )
+				{
+					return;
+				}
+
+				_InReplyTo = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public bool IsSending
 		{
@@ -324,6 +376,9 @@ namespace Twice.ViewModels.Twitter
 				_RemoveQuoteCommand
 				?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
 
+		public ICommand RemoveReplyCommand => _RemoveReplyCommand ?? ( _RemoveReplyCommand = new RelayCommand(
+			ExecuteRemoveReplyCommand ) );
+
 		public ICommand SendTweetCommand
 			=>
 				_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
@@ -395,6 +450,8 @@ namespace Twice.ViewModels.Twitter
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _InReplyTo;
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
@@ -405,6 +462,8 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
 
+		private RelayCommand _RemoveReplyCommand;
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
@@ -414,5 +473,6 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
+		private bool ReplyToAll;
 	}
 }

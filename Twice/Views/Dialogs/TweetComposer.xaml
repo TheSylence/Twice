@@ -178,23 +178,8 @@
 				<GroupBox.HeaderTemplate>
 					<DataTemplate>
 						<DockPanel LastChildFill="True">
-							<Button Command="{Binding RemoveQuoteCommand}" Margin="5" VerticalAlignment="Center"
-									DockPanel.Dock="Right" Width="16" Height="16" ToolTip="{lex:Loc RemoveQuote}">
-								<Button.Template>
-									<ControlTemplate>
-										<Grid>
-											<Ellipse x:Name="Bg" Fill="#FFA6A6A6" Stroke="#FF009587" StrokeThickness="0" />
-											<materialDesign:PackIcon Kind="Close" Width="12" Height="12"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center" />
-										</Grid>
-										<ControlTemplate.Triggers>
-											<Trigger Property="IsMouseOver" Value="True">
-												<Setter TargetName="Bg" Property="StrokeThickness" Value="1" />
-											</Trigger>
-										</ControlTemplate.Triggers>
-									</ControlTemplate>
-								</Button.Template>
+							<Button Command="{Binding Data.RemoveQuoteCommand, Source={StaticResource DataProxy}}" Margin="5" VerticalAlignment="Center"
+									DockPanel.Dock="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" ToolTip="{lex:Loc RemoveQuote}">
 								<materialDesign:PackIcon Kind="CloseCircleOutline" />
 							</Button>
 
@@ -212,20 +197,35 @@
 					<TextBlock Text="{Binding QuotedTweet.Model.Text}" TextWrapping="Wrap" Margin="5" />
 				</StackPanel>
 			</GroupBox>
-
-			<!--<Grid Visibility="{Binding QuotedTweet, Converter={StaticResource VisibleNotNullConv}}">
-				<materialDesign:Card Margin="5">
-					<StackPanel Orientation="Vertical">
-						<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
-							<TextBlock Text="{Binding QuotedTweet.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
-							<TextBlock Text="{Binding QuotedTweet.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
-										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
-						</StackPanel>
-						<TextBlock Text="{Binding QuotedTweet.Model.Text}" TextWrapping="Wrap" Margin="5" />
-					</StackPanel>
-				</materialDesign:Card>
-			</Grid>-->
 			<!-- Quoted Tweet End -->
+
+			<!-- Reply to Tweet Start -->
+			<GroupBox Visibility="{Binding InReplyTo, Converter={StaticResource VisibleNotNullConv}}"
+					  Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+				<GroupBox.HeaderTemplate>
+					<DataTemplate>
+						<DockPanel LastChildFill="True">
+							<Button Style="{StaticResource MaterialDesignToolForegroundButton}" DockPanel.Dock="Right" 
+									Command="{Binding Data.RemoveReplyCommand, Source={StaticResource DataProxy}}" 
+									ToolTip="{lex:Loc RemoveReply}" VerticalAlignment="Center">
+								<materialDesign:PackIcon Kind="CloseCircleOutline" />
+							</Button>
+
+							<TextBlock Text="{lex:Loc InReplyTo}" VerticalAlignment="Center" FontWeight="Bold" />
+						</DockPanel>
+					</DataTemplate>
+				</GroupBox.HeaderTemplate>
+
+				<StackPanel Orientation="Vertical">
+					<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+						<TextBlock Text="{Binding InReplyTo.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding InReplyTo.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+					</StackPanel>
+					<TextBlock Text="{Binding InReplyTo.Model.Text}" TextWrapping="Wrap" Margin="5" />
+				</StackPanel>
+			</GroupBox>
+			<!-- Reply to Tweet End -->
 		</StackPanel>
 	</DockPanel>
 </controls:MetroWindow>

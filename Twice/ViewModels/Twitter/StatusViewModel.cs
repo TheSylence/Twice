@@ -173,12 +173,14 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.QuoteTweet( this );
 		}
 
-		private void ExecuteReplyCommand()
+		private async void ExecuteReplyCommand()
 		{
+			await ViewServiceRepository.ReplyToTweet( this, false );
 		}
 
-		private void ExecuteReplyToAllCommand()
+		private async void ExecuteReplyToAllCommand()
 		{
+			await ViewServiceRepository.ReplyToTweet( this, true );
 		}
 
 		private void ExecuteReportSpamCommand()
