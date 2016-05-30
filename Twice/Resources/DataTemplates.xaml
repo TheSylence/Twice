@@ -41,6 +41,16 @@
 	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
+			<materialDesign:Card.Style>
+				<Style TargetType="materialDesign:Card">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding HightlightStatus ,RelativeSource={RelativeSource AncestorType=views:StatusContainer}}" Value="True">
+							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightForegroundBrush}" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</materialDesign:Card.Style>
 			<i:Interaction.Behaviors>
 				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
 										CommandParameter="{Binding}" />
@@ -206,7 +216,8 @@
 						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
 										<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
 							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-											<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}" />
+											<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
+													   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"/>
 										</Hyperlink>
 									</ContentControl>
 								</StackPanel>
