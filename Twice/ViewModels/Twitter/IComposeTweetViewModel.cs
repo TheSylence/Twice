@@ -7,6 +7,8 @@ namespace Twice.ViewModels.Twitter
 {
 	internal interface IComposeTweetViewModel : ILoadCallback, IDialogViewModel
 	{
+		void PreSelectAccounts( IEnumerable<ulong> accounts );
+
 		ICollection<AccountEntry> Accounts { get; }
 		IList<MediaItem> AttachedMedias { get; }
 		ICommand AttachImageCommand { get; }

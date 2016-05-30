@@ -374,6 +374,7 @@
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModelLocator.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
@@ -418,6 +419,9 @@
     <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\RetweetDialog.xaml.cs">
+      <DependentUpon>RetweetDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
@@ -506,6 +510,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\RetweetDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

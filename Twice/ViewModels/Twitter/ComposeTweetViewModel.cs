@@ -1,8 +1,4 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -41,6 +41,15 @@ namespace Twice.ViewModels.Twitter
 
 			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
 			defAccount.Use = true;
+
+			if( PreSelectedAccounts.Any() )
+			{
+				foreach( var acc in Accounts )
+				{
+					acc.Use = PreSelectedAccounts.Contains( acc.Context.UserId );
+				}
+			}
+
 			RaisePropertyChanged( nameof( Accounts ) );
 
 			Text = string.Empty;
@@ -53,6 +62,11 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
+		}
+
+		public void PreSelectAccounts( IEnumerable<ulong> accounts )
+		{
+			PreSelectedAccounts = accounts.ToArray();
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -208,7 +222,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
-
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -224,8 +237,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool ConfirmationSet
 		{
-			[DebuggerStepThrough]
-			get { return _ConfirmationSet; }
+			[DebuggerStepThrough] get { return _ConfirmationSet; }
 			set
 			{
 				if( _ConfirmationSet == value )
@@ -243,8 +255,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsSending
 		{
-			[DebuggerStepThrough]
-			get { return _IsSending; }
+			[DebuggerStepThrough] get { return _IsSending; }
 			private set
 			{
 				if( _IsSending == value )
@@ -258,13 +269,11 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
-
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
 		{
-			[DebuggerStepThrough]
-			get { return _LowCharsLeft; }
+			[DebuggerStepThrough] get { return _LowCharsLeft; }
 			set
 			{
 				if( _LowCharsLeft == value )
@@ -279,8 +288,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool MediumCharsLeft
 		{
-			[DebuggerStepThrough]
-			get { return _MediumCharsLeft; }
+			[DebuggerStepThrough] get { return _MediumCharsLeft; }
 			set
 			{
 				if( _MediumCharsLeft == value )
@@ -298,8 +306,7 @@ namespace Twice.ViewModels.Twitter
 
 		public StatusViewModel QuotedTweet
 		{
-			[DebuggerStepThrough]
-			get { return _QuotedTweet; }
+			[DebuggerStepThrough] get { return _QuotedTweet; }
 			set
 			{
 				if( _QuotedTweet == value )
@@ -324,8 +331,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool StayOpen
 		{
-			[DebuggerStepThrough]
-			get { return _StayOpen; }
+			[DebuggerStepThrough] get { return _StayOpen; }
 			set
 			{
 				if( _StayOpen == value )
@@ -340,8 +346,7 @@ namespace Twice.ViewModels.Twitter
 
 		public string Text
 		{
-			[DebuggerStepThrough]
-			get { return _Text; }
+			[DebuggerStepThrough] get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -364,8 +369,7 @@ namespace Twice.ViewModels.Twitter
 
 		public int TextLength
 		{
-			[DebuggerStepThrough]
-			get { return _TextLength; }
+			[DebuggerStepThrough] get { return _TextLength; }
 			set
 			{
 				if( _TextLength == value )
@@ -382,44 +386,33 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private readonly int LowWarnThreshold = 135;
-
 		private readonly List<Media> Medias = new List<Media>();
-
 		private readonly int MediumWarnThreshold = 125;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AttachImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private StatusViewModel _QuotedTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _QuotedTweet;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RemoveQuoteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
+
+		private ulong[] PreSelectedAccounts = new ulong[0];
 	}
 }

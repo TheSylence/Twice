@@ -1,0 +1,67 @@
+﻿<controls:MetroWindow x:Class="Twice.Views.Dialogs.RetweetDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors"
+        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
+		DataContext="{Binding Retweet, Source={StaticResource DialogLocator}}"
+        Title="{lex:Loc Retweet}" Height="300" Width="300">
+	<i:Interaction.Behaviors>
+		<behaviors:CloseableView />
+		<behaviors:StaticWindow />
+		<behaviours:BorderlessWindowBehavior />
+		<behaviors:CallbackOnLoad Callback="{Binding}" />
+	</i:Interaction.Behaviors>
+	<DockPanel LastChildFill="False">
+		<DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+				<StackPanel.Resources>
+					<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+						<Setter Property="Margin" Value="5" />
+						<Setter Property="MinWidth" Value="75" />
+					</Style>
+				</StackPanel.Resources>
+
+				<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetCommand}" />
+				<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteCommand}" />
+			</StackPanel>
+
+			<CheckBox VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}" Margin="2"
+						  Content="{lex:Loc ConfirmTweet}" IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+		</DockPanel>
+
+		<Grid Margin="5" DockPanel.Dock="Top">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<TextBlock Text="{lex:Loc FromAccounts}" VerticalAlignment="Top" Grid.Row="0" />
+
+			<ItemsControl ItemsSource="{Binding Accounts}" VerticalAlignment="Center" Grid.Row="1">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Vertical" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="twitter:AccountEntry">
+						<DockPanel VerticalAlignment="Center" Margin="3">
+							<ToggleButton IsChecked="{Binding Use, Mode=TwoWay}" Style="{StaticResource MaterialDesignActionToggleButton}"
+											  DockPanel.Dock="Left">
+								<Image Source="{Binding Image, IsAsync=True}" />
+							</ToggleButton>
+
+							<TextBlock Text="{Binding ScreenName, StringFormat=@{0}}" VerticalAlignment="Center" Margin="5,0" />
+						</DockPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</Grid>
+	</DockPanel>
+</controls:MetroWindow>

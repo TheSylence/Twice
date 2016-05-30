@@ -186,7 +186,7 @@ namespace Twice.ViewModels.Twitter
 			ExecAsync( async () => { await Context.Twitter.ReportAsSpam( Model.User.GetUserId() ); }, Strings.TweetReportedAsSpam );
 		}
 
-		private void ExecuteRetweetStatusCommand()
+		public void RetweetStatus( ITwitterContext context )
 		{
 			ExecAsync( async () =>
 			{
@@ -195,6 +195,11 @@ namespace Twice.ViewModels.Twitter
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus );
+		}
+
+		private async void ExecuteRetweetStatusCommand()
+		{
+			await ViewServiceRepository.RetweetStatus( this );
 		}
 
 		private async void Image_OpenRequested( object sender, EventArgs args )

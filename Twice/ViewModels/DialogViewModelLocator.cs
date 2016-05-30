@@ -1,5 +1,5 @@
-using Ninject;
 using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
@@ -24,6 +24,7 @@ namespace Twice.ViewModels
 		public IImageDialogViewModel Image => Kernel.Get<IImageDialogViewModel>();
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
+		public IRetweetDialogViewModel Retweet => Kernel.Get<IRetweetDialogViewModel>();
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
 		public ITextInputDialogViewModel TextInput => Kernel.Get<ITextInputDialogViewModel>();
 		public ITweetDetailsViewModel TweetDetails => Kernel.Get<ITweetDetailsViewModel>();

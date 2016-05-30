@@ -452,7 +452,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var viewServices = new Mock<IViewServiceRepository>();
-			viewServices.Setup( v => v.QuoteTweet( It.IsAny<StatusViewModel>() ) ).Returns( Task.CompletedTask ).Verifiable();
+			viewServices.Setup( v => v.QuoteTweet( It.IsAny<StatusViewModel>(), null ) ).Returns( Task.CompletedTask ).Verifiable();
 
 			var vm = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, viewServices.Object );
 
@@ -460,7 +460,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			vm.QuoteStatusCommand.Execute( null );
 
 			// Assert
-			viewServices.Verify( v => v.QuoteTweet( It.IsAny<StatusViewModel>() ), Times.Once() );
+			viewServices.Verify( v => v.QuoteTweet( It.IsAny<StatusViewModel>(), null ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -566,41 +566,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			twitter.Verify( t => t.CreateFavoriteAsync( 12345 ), Times.Once() );
 			Assert.IsTrue( status.Favorited );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void StatusCanBeRetweeted()
-		{
-			// Arrange
-			var status = DummyGenerator.CreateDummyStatus();
-			status.User.UserID = 111;
-			status.StatusID = 12345;
-
-			var twitter = new Mock<ITwitterContext>();
-			twitter.Setup( t => t.RetweetAsync( 12345 ) ).Returns( Task.FromResult( status ) ).Verifiable();
-
-			var context = new Mock<IContextEntry>();
-			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
-			context.SetupGet( c => c.UserId ).Returns( 123 );
-			var waitHandle = new ManualResetEventSlim( false );
-			var vm = new StatusViewModel( status, context.Object, null, null )
-			{
-				Dispatcher = new SyncDispatcher()
-			};
-			vm.PropertyChanged += ( s, e ) =>
-			{
-				if( e.PropertyName == nameof( vm.IsLoading ) && vm.IsLoading == false )
-				{
-					waitHandle.Set();
-				}
-			};
-
-			// Act
-			vm.RetweetStatusCommand.Execute( null );
-			waitHandle.Wait( 1000 );
-
-			// Assert
-			twitter.Verify( t => t.RetweetAsync( 12345 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

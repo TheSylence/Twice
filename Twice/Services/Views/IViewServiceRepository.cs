@@ -15,7 +15,9 @@ namespace Twice.Services.Views
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
-		Task QuoteTweet( StatusViewModel status );
+		Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null );
+
+		Task RetweetStatus( StatusViewModel status );
 
 		Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId );
 
