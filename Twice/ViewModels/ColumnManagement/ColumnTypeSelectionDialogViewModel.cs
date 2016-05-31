@@ -13,6 +13,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 			AvailableColumnTypes =
 				ColumnTypeListFactory.GetItems( types ).Select( t => new ItemSelection<ColumnTypeItem>( t, true ) ).ToList();
+
+			SelectAll = true;
 		}
 
 		public ICollection<ItemSelection<ColumnTypeItem>> AvailableColumnTypes { get; }
