@@ -2,6 +2,7 @@
 using LinqToTwitter;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -21,7 +22,7 @@ namespace Twice.ViewModels.Accounts
 			ColumnList = columnList;
 			Authorizer = authorizer;
 
-			AddedAccounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			AddedAccounts = new ObservableCollection<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
 			foreach( var acc in AddedAccounts )
 			{
 				acc.ConfirmationChanged += Acc_ConfirmationChanged;
