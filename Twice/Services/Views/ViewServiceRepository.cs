@@ -221,7 +221,11 @@ namespace Twice.Services.Views
 			TResult result = null;
 
 			DispatcherHelper.CheckBeginInvokeOnUI(
-				async () => { result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup ); } );
+				async () =>
+				{
+					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
+					waitHandle.Set();
+				} );
 
 			waitHandle.Wait();
 			return result;

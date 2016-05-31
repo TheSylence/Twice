@@ -63,7 +63,8 @@ namespace Twice.ViewModels.Accounts
 
 					ContextList.AddContext( accountData );
 
-					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId );
+					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId )
+									?? new ColumnDefinition[0];
 					if( newColumns.Any() )
 					{
 						ColumnList.AddColumns( newColumns );
