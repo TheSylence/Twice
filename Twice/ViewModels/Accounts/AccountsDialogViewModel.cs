@@ -61,6 +61,10 @@ namespace Twice.ViewModels.Accounts
 						accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
 					}
 
+					if( ContextList.Contexts.Count == 0 )
+					{
+						accountData.IsDefault = true;
+					}
 					ContextList.AddContext( accountData );
 
 					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId )
