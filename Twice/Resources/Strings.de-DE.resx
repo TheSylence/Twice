@@ -594,4 +594,7 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Alle auswählen</value>
   </data>
+  <data name="VisitTwiceOnGithub" xml:space="preserve">
+    <value>Twice auf GitHub besuchen</value>
+  </data>
 </root>

@@ -37,17 +37,36 @@
 					<TextBlock Text="{lex:Loc BuildDate}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
 					<TextBlock Text="{Binding BuildDate}" Margin="5,0" Style="{StaticResource MaterialDesignBody2TextBlock}" />
 				</StackPanel>
-				<ContentControl>
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-						<Hyperlink.CommandParameter>
-							<sys:Uri>https://twitter.com/TwiceApp</sys:Uri>
-						</Hyperlink.CommandParameter>
-						<TextBlock Text="{lex:Loc FollowTwiceAppOnTwitter}" />
-					</Hyperlink>
-				</ContentControl>
+				<Label Margin="0,5" />
+				<StackPanel Orientation="Horizontal">
+					<materialDesign:PackIcon Kind="TwitterCircle" Width="24" Height="24" Margin="5" />
+					<ContentControl VerticalAlignment="Center">
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+							<Hyperlink.CommandParameter>
+								<sys:Uri>https://twitter.com/TwiceApp</sys:Uri>
+							</Hyperlink.CommandParameter>
+							<TextBlock Text="{lex:Loc FollowTwiceAppOnTwitter}" />
+						</Hyperlink>
+					</ContentControl>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<materialDesign:PackIcon Kind="GithubCircle" Width="24" Height="24" Margin="5" />
+					<ContentControl VerticalAlignment="Center">
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+							<Hyperlink.CommandParameter>
+								<sys:Uri>https://github.com/TheSylence/Twice</sys:Uri>
+							</Hyperlink.CommandParameter>
+							<TextBlock Text="{lex:Loc VisitTwiceOnGithub}" />
+						</Hyperlink>
+					</ContentControl>
+				</StackPanel>
 				<Label Margin="0,10" />
-				<TextBlock Text="{lex:Loc DevelopedBy}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
-				<ContentControl Margin="5,0">
+				<StackPanel Orientation="Horizontal">
+					<materialDesign:PackIcon Kind="CodeTags" Width="24" Height="24" Margin="5" />
+					<TextBlock Text="{lex:Loc DevelopedBy}" Style="{StaticResource MaterialDesignBody1TextBlock}"
+							   VerticalAlignment="Center" />
+				</StackPanel>
+				<ContentControl Margin="15,0">
 					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
 						<Hyperlink.CommandParameter>
 							<sys:Uri>https://twitter.com/TheSylence</sys:Uri>
@@ -56,8 +75,12 @@
 					</Hyperlink>
 				</ContentControl>
 				<Label Margin="0,10" />
-				<TextBlock Text="{lex:Loc SpecialThanksTo}" Style="{StaticResource MaterialDesignBody1TextBlock}" />
-				<ContentControl Margin="5,0">
+				<StackPanel Orientation="Horizontal">
+					<materialDesign:PackIcon Kind="Gift" Width="24" Height="24" Margin="5" />
+					<TextBlock Text="{lex:Loc SpecialThanksTo}" Style="{StaticResource MaterialDesignBody1TextBlock}"
+							   VerticalAlignment="Center" />
+				</StackPanel>
+				<ContentControl Margin="15,0">
 					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
 							   NavigateUri="{Binding CommandParameter, RelativeSource={RelativeSource Self}}">
 						<Hyperlink.CommandParameter>

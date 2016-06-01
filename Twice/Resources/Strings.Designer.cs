@@ -1465,6 +1465,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visit Twice on GitHub.
+        /// </summary>
+        public static string VisitTwiceOnGithub {
+            get {
+                return ResourceManager.GetString("VisitTwiceOnGithub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visual.
         /// </summary>
         public static string Visual {
