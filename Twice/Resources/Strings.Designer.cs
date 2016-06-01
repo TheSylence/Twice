@@ -232,6 +232,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Case sensitive.
+        /// </summary>
+        public static string CaseSensitive {
+            get {
+                return ResourceManager.GetString("CaseSensitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string Change {

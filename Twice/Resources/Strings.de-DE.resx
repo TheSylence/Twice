@@ -597,4 +597,7 @@
   <data name="VisitTwiceOnGithub" xml:space="preserve">
     <value>Twice auf GitHub besuchen</value>
   </data>
+  <data name="CaseSensitive" xml:space="preserve">
+    <value>Groß-/Kleinschreibung beachten</value>
+  </data>
 </root>
