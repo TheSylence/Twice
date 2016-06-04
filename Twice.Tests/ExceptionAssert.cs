@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace Twice.Tests
 {
@@ -12,6 +13,19 @@ namespace Twice.Tests
 			try
 			{
 				action();
+				return null;
+			}
+			catch( TException ex )
+			{
+				return ex;
+			}
+		}
+
+		public static async Task<TException> CatchAsync<TException>( Func<Task> action ) where TException : Exception
+		{
+			try
+			{
+				await action();
 				return null;
 			}
 			catch( TException ex )

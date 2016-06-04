@@ -6,153 +6,324 @@
                     xmlns:vm="clr-namespace:Twice.ViewModels"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:command="http://www.galasoft.ch/mvvmlight"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:behaviors="clr-namespace:Twice.Behaviors"
+                    xmlns:views="clr-namespace:Twice.Views">
+	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
+		<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+			<StackPanel Orientation="Vertical">
+				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
+					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center"
+							   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" />
+					<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+				</StackPanel>
+				<StackPanel>
+					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
+
+					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+						<controls1:FlipView.ItemTemplate>
+							<DataTemplate>
+								<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+									</i:Interaction.Behaviors>
+								</Image>
+							</DataTemplate>
+						</controls1:FlipView.ItemTemplate>
+					</controls1:FlipView>
+				</StackPanel>
+			</StackPanel>
+		</materialDesign:Card>
+	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3">
-			<Grid>
-				<Grid Background="Transparent">
+		<materialDesign:Card Margin="3" Padding="0,0,0,5">
+			<materialDesign:Card.Style>
+				<Style TargetType="materialDesign:Card">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding HightlightStatus ,RelativeSource={RelativeSource AncestorType=views:StatusContainer}}" Value="True">
+							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightForegroundBrush}" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</materialDesign:Card.Style>
+			<i:Interaction.Behaviors>
+				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+										CommandParameter="{Binding}" />
+			</i:Interaction.Behaviors>
+
+			<StackPanel Orientation="Vertical">
+				<Grid Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
+						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+					<StackPanel Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}"
+									Orientation="Horizontal" Background="Transparent" Margin="5">
+						<StackPanel.Resources>
+							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}" Value="True">
+										<Setter Property="TextDecorations" Value="Underline" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</StackPanel.Resources>
+						<i:Interaction.Behaviors>
+							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
+						</i:Interaction.Behaviors>
+
+						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+
+						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
+
+						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Visibility="{Binding IsReply, Converter={StaticResource BoolToVisibleConv}}">
+						<StackPanel.Resources>
+							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}" Value="True">
+										<Setter Property="TextDecorations" Value="Underline" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</StackPanel.Resources>
+
+						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" />
+					</StackPanel>
+				</Grid>
+
+				<Grid>
+					<Grid Background="Transparent">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+
+						<StackPanel Grid.Row="0" Grid.Column="0">
+							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+
+							<Grid Visibility="{Binding EnableHoverIcons, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource BoolToVisibleConv}}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
+									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
+									Grid.Column="0" Grid.Row="0">
+									<Button.Style>
+										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+													<Setter Property="Visibility" Value="Hidden" />
+												</DataTrigger>
+												<DataTrigger Binding="{Binding IsFavorited}" Value="True">
+													<Setter Property="Visibility" Value="Visible" />
+													<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Button.Style>
+									<Grid>
+										<materialDesign:PackIcon Kind="StarOutline" Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
+										<materialDesign:PackIcon Kind="Star" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
+									</Grid>
+								</Button>
+
+								<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True">
+									<materialDesign:PopupBox.Style>
+										<Style TargetType="materialDesign:PopupBox">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+													<Setter Property="Visibility" Value="Hidden" />
+												</DataTrigger>
+												<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+													<Setter Property="Visibility" Value="Visible" />
+													<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
+													<Setter Property="IsEnabled" Value="False" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</materialDesign:PopupBox.Style>
+									<materialDesign:PopupBox.ToggleContent>
+										<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
+															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}" />
+									</materialDesign:PopupBox.ToggleContent>
+
+									<StackPanel Orientation="Vertical">
+										<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
+										<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
+									</StackPanel>
+								</materialDesign:PopupBox>
+
+								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" Grid.Column="0" Grid.Row="1">
+									<Button.Style>
+										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+													<Setter Property="Visibility" Value="Hidden" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Button.Style>
+
+									<materialDesign:PackIcon Kind="ReplyAll" />
+								</Button>
+
+								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1">
+									<Button.Style>
+										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+														 Value="False">
+													<Setter Property="Visibility" Value="Hidden" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Button.Style>
+									<i:Interaction.Behaviors>
+										<behaviors:ContextMenuOpener Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+									</i:Interaction.Behaviors>
+
+									<materialDesign:PackIcon Kind="DotsHorizontal" />
+								</Button>
+							</Grid>
+						</StackPanel>
+
+						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
+							<DockPanel>
+								<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+									<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
+						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
+										<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+											<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
+													   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"/>
+										</Hyperlink>
+									</ContentControl>
+								</StackPanel>
+
+								<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
+									<StackPanel.Resources>
+										<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+												   Path=IsMouseOver}" Value="True">
+													<Setter Property="TextDecorations" Value="Underline" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</StackPanel.Resources>
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
+									</i:Interaction.Behaviors>
+									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+								VerticalAlignment="Center" />
+								</StackPanel>
+							</DockPanel>
+
+							<StackPanel>
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
+
+								<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
+											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
+
+								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+									<controls1:FlipView.ItemTemplate>
+										<DataTemplate>
+											<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
+												<i:Interaction.Behaviors>
+													<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+												</i:Interaction.Behaviors>
+											</Image>
+										</DataTemplate>
+									</controls1:FlipView.ItemTemplate>
+								</controls1:FlipView>
+							</StackPanel>
+						</StackPanel>
+					</Grid>
+
+					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
+				</Grid>
+
+				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
+						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />
-						<RowDefinition />
 						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
 
-					<StackPanel Grid.ColumnSpan="2" Grid.Row="0" Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}">
-						<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
-							<StackPanel.Resources>
-								<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
-											<Setter Property="TextDecorations" Value="Underline" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</StackPanel.Resources>
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="MouseDown">
-									<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
+					<Separator Grid.Row="0" Grid.ColumnSpan="2" />
 
-							<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
-
-							<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
-
-							<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-						</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5">
+						<TextBlock Text="{lex:Loc Retweets}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+						<TextBlock Text="{Binding Model.RetweetCount, StringFormat=({0})}" Margin="5,0"
+								   Style="{StaticResource MaterialDesignSubheadingTextBlock}" VerticalAlignment="Center" />
 					</StackPanel>
-
-					<StackPanel Grid.Row="1" Grid.Column="0">
-						<Image Source="{Binding User.ProfileImageUrlHttps}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
-
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition />
-							</Grid.ColumnDefinitions>
-
-							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
-									Style="{StaticResource MaterialDesignToolForegroundButton}"
-									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}">
-								<Grid>
-									<materialDesign:PackIcon Kind="StarOutline" Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
-									<materialDesign:PackIcon Kind="Star" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
-								</Grid>
-							</Button>
-
-							<Button Width="28" Height="28" Grid.Column="1" ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}"
-						Command="{Binding RetweetStatusCommand}" ToolTipService.ShowOnDisabled="True">
-								<materialDesign:PackIcon Kind="TwitterRetweet" />
-
-								<Button.Style>
-									<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
-												<Setter Property="Foreground" Value="{DynamicResource HighlightBrush}" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</Button.Style>
-							</Button>
-						</Grid>
-					</StackPanel>
-
-					<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="1">
-						<DockPanel>
-							<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
-								<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
-						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
-									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
-							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-										<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}" />
-									</Hyperlink>
-								</ContentControl>
-							</StackPanel>
-
-							<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
-								<StackPanel.Resources>
-									<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-												   Path=IsMouseOver}" Value="True">
-												<Setter Property="TextDecorations" Value="Underline" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</StackPanel.Resources>
-								<i:Interaction.Triggers>
-									<i:EventTrigger EventName="MouseDown">
-										<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
-									</i:EventTrigger>
-								</i:Interaction.Triggers>
-								<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-								<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-								VerticalAlignment="Center" />
-							</StackPanel>
-						</DockPanel>
-
-						<StackPanel>
-							<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
-					Elements="{Binding Model, Converter={StaticResource StatusHighlighterConv}}" />
-
-							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}" ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False">
-								<controls1:FlipView.ItemTemplate>
-									<DataTemplate>
-										<Image Source="{Binding}" Stretch="Uniform" />
-									</DataTemplate>
-								</controls1:FlipView.ItemTemplate>
-							</controls1:FlipView>
-						</StackPanel>
-					</StackPanel>
-
-					<Grid.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
-							<MenuItem Header="{lex:Loc CopyTweetUrl}" Command="{Binding CopyTweetUrlCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Reply}" Command="{Binding ReplyCommand}" />
-							<MenuItem Header="{lex:Loc ReplyAll}" Command="{Binding ReplyToAllCommand}" />
-							<MenuItem Header="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
-							<MenuItem Header="{lex:Loc FavoriteTweet}" Command="{Binding FavoriteStatusCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteStatusCommand}" />
-							<Separator />
-							<MenuItem Header="{lex:Loc Block}" Command="{Binding BlockUserCommand}" />
-							<MenuItem Header="{lex:Loc ReportSpam}" Command="{Binding ReportSpamCommand}" />
-						</ContextMenu>
-					</Grid.ContextMenu>
+					<ItemsControl Grid.Column="1" ItemsSource="{Binding RetweetedBy}" Grid.Row="1">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="twitter:UserViewModel">
+								<Image Source="{Binding ProfileImageUrlHttpsMini, IsAsync=True}"
+									   ToolTip="{Binding ScreenName}" Width="24" Height="24" Margin="3">
+									<i:Interaction.Behaviors>
+										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+																CommandParameter="{Binding UserId}" />
+									</i:Interaction.Behaviors>
+								</Image>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+					</ItemsControl>
 				</Grid>
+			</StackPanel>
 
-				<controls1:ProgressRing IsActive="{Binding IsLoading}" />
-			</Grid>
+			<materialDesign:Card.ContextMenu>
+				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
+					<MenuItem Header="{lex:Loc CopyTweetUrl}" Command="{Binding CopyTweetUrlCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Reply}" Command="{Binding ReplyCommand}" />
+					<MenuItem Header="{lex:Loc ReplyAll}" Command="{Binding ReplyToAllCommand}" />
+					<MenuItem Header="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
+					<MenuItem Header="{lex:Loc FavoriteTweet}" Command="{Binding FavoriteStatusCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteStatusCommand}" />
+					<Separator />
+					<MenuItem Header="{lex:Loc Block}" Command="{Binding BlockUserCommand}" />
+					<MenuItem Header="{lex:Loc ReportSpam}" Command="{Binding ReportSpamCommand}" />
+				</ContextMenu>
+			</materialDesign:Card.ContextMenu>
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">
@@ -181,12 +352,10 @@
 							</Style.Triggers>
 						</Style>
 					</StackPanel.Resources>
-					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="MouseDown">
-							<command:EventToCommand Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+					<i:Interaction.Behaviors>
+						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
-						</i:EventTrigger>
-					</i:Interaction.Triggers>
+					</i:Interaction.Behaviors>
 					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 							VerticalAlignment="Center" />

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {

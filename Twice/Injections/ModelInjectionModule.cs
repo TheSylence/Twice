@@ -1,5 +1,4 @@
-﻿using Akavache;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -13,19 +12,18 @@ namespace Twice.Injections
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
-			Bind<IDataCache>().To<DataCache>().InSingletonScope();
-			Bind<IBlobCache>().ToProvider<BlobCacheProvider>().InSingletonScope();
-			Bind<ISecureBlobCache>().ToProvider<SecureBlobCacheProvider>().InSingletonScope();
+			Bind<ICache>().ToProvider<CacheProvider>().InSingletonScope();
 
 			Bind<ITwitterContextList>().ToProvider<TwitterContextListProvider>().InSingletonScope();
 			Bind<IConfig>().ToProvider<ConfigurationProvider>().InSingletonScope();
 			Bind<IStatusMuter>().To<StatusMuter>();
 			Bind<IStreamingRepository>().To<StreamingRepository>().InSingletonScope();
 			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
+			Bind<ITwitterConfiguration>().To<TwitterConfiguration>().InSingletonScope();
 		}
 	}
 }

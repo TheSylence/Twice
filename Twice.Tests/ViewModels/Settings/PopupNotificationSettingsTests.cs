@@ -1,14 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class PopupNotificationSettingsTests
 	{
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void SavedValuesAreAppliedDuringConstruction()
 		{
 			// Arrange
@@ -30,7 +31,7 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( notify.PopupDisplay, vm.SelectedDisplay );
 		}
 
-		[TestMethod, TestCategory( "ViewModel.Settings" )]
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void ValuesAreCorrectlySaved()
 		{
 			// Arrange
@@ -43,12 +44,14 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
-			var vm = new PopupNotificationSettings( cfg.Object );
-
 			// Act
-			vm.SelectedCorner = Corner.BottomRight;
-			vm.SelectedDisplay = "test";
-			vm.Enabled = false;
+			var vm = new PopupNotificationSettings( cfg.Object )
+			{
+				SelectedCorner = Corner.BottomRight,
+				SelectedDisplay = "test",
+				Enabled = false
+			};
+
 			vm.SaveTo( cfg.Object );
 
 			// Assert

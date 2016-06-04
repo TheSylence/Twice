@@ -1,10 +1,11 @@
-﻿using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class InvertBoolTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

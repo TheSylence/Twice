@@ -1,16 +1,19 @@
+using Fody;
+using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
+using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
 {
 	[ExcludeFromCodeCoverage]
+	[ConfigureAwait( false )]
 	internal class TwitterFriendshipRepository : TwitterRepositoryBase, ITwitterFriendshipRepository
 	{
-		public TwitterFriendshipRepository( TwitterContext context )
-			: base( context )
+		public TwitterFriendshipRepository( TwitterContext context, ICache cache )
+			: base( context, cache )
 		{
 		}
 

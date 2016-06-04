@@ -7,43 +7,66 @@ using System.Runtime.InteropServices;
 namespace Twice.Utilities.Os
 {
 	/// <summary>
-	/// Class holding native interop methods.
+	///     Class holding native interop methods.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static class NativeMethods
 	{
+		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
+		[return: MarshalAs( UnmanagedType.Bool )]
+		internal static extern bool CryptProtectData( ref DATA_BLOB pPlainText, string szDescription, ref DATA_BLOB pEntropy,
+			IntPtr pReserved,
+			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pCipherText );
+
+		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
+		[return: MarshalAs( UnmanagedType.Bool )]
+		internal static extern bool CryptUnprotectData( ref DATA_BLOB pCipherText, ref string pszDescription,
+			ref DATA_BLOB pEntropy, IntPtr pReserved,
+			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pPlainText );
+
+		[DllImport( "user32.dll" )]
+		internal static extern bool EnumDisplayDevices( string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice,
+			uint dwFlags );
+
+		[return: MarshalAs( UnmanagedType.Bool )]
+		[DllImport( "user32.dll", SetLastError = true )]
+		internal static extern bool PostMessage( IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam );
+
+		[DllImport( "user32" )]
+		internal static extern int RegisterWindowMessage( [MarshalAs( UnmanagedType.LPWStr )] string message );
+
 		[Flags]
 		public enum DisplayDeviceStateFlags
 		{
 			/// <summary>
-			/// The device is part of the desktop.
+			///     The device is part of the desktop.
 			/// </summary>
 			AttachedToDesktop = 0x1,
 
 			MultiDriver = 0x2,
 
 			/// <summary>
-			/// The device is part of the desktop.
+			///     The device is part of the desktop.
 			/// </summary>
 			PrimaryDevice = 0x4,
 
 			/// <summary>
-			/// Represents a pseudo device used to mirror application drawing for remoting or other purposes.
+			///     Represents a pseudo device used to mirror application drawing for remoting or other purposes.
 			/// </summary>
 			MirroringDriver = 0x8,
 
 			/// <summary>
-			/// The device is VGA compatible.
+			///     The device is VGA compatible.
 			/// </summary>
 			VGACompatible = 0x10,
 
 			/// <summary>
-			/// The device is removable; it cannot be the primary display.
+			///     The device is removable; it cannot be the primary display.
 			/// </summary>
 			Removable = 0x20,
 
 			/// <summary>
-			/// The device has more display modes than its output devices support.
+			///     The device has more display modes than its output devices support.
 			/// </summary>
 			ModesPruned = 0x8000000,
 
@@ -51,20 +74,7 @@ namespace Twice.Utilities.Os
 			Disconnect = 0x2000000
 		}
 
-		// Wrapper for DPAPI CryptProtectData function.
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptProtectData( ref DATA_BLOB pPlainText, string szDescription, ref DATA_BLOB pEntropy, IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pCipherText );
-
-		// Wrapper for DPAPI CryptUnprotectData function.
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptUnprotectData( ref DATA_BLOB pCipherText, ref string pszDescription, ref DATA_BLOB pEntropy, IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pPlainText );
-
-		[DllImport( "user32.dll" )]
-		internal static extern bool EnumDisplayDevices( string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags );
+		public const int HWND_BROADCAST = 0xffff;
 
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Ansi )]
 		public struct DISPLAY_DEVICE
@@ -89,7 +99,7 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Prompt structure to be used for required parameters.
+		///     Prompt structure to be used for required parameters.
 		/// </summary>
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Unicode )]
 		internal struct CRYPTPROTECT_PROMPTSTRUCT
@@ -101,7 +111,7 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// BLOB structure used to pass data to DPAPI functions.
+		///     BLOB structure used to pass data to DPAPI functions.
 		/// </summary>
 		internal struct DATA_BLOB
 		{

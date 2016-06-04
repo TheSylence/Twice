@@ -27,7 +27,8 @@ namespace Twice.Behaviors
 				AssociatedObject.DialogResult = e.Result;
 			}
 			catch( InvalidOperationException )
-			{ }
+			{
+			}
 
 			AssociatedObject.Close();
 		}

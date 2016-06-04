@@ -67,7 +67,7 @@ namespace Twice.Behaviors
 			{
 				AutoCompletePopup.IsOpen = true;
 				AutoCompleteBox.Focus();
-				TextFieldAssist.SetHint( AutoCompleteBox, TriggerChar );
+				HintAssist.SetHint( AutoCompleteBox, TriggerChar );
 				AutoCompleteBox.Text = string.Empty;
 				e.Handled = true;
 			}
@@ -77,12 +77,13 @@ namespace Twice.Behaviors
 		{
 			bool close = false;
 
-			if( e.Key == Key.Escape )
+			switch( e.Key )
 			{
+			case Key.Escape:
 				close = true;
-			}
-			else if( e.Key == Key.Return )
-			{
+				break;
+
+			case Key.Return:
 				var insertText = $"{TriggerChar}{AutoCompleteBox.Text}";
 				var currentCaret = AssociatedObject.CaretIndex;
 
@@ -91,6 +92,7 @@ namespace Twice.Behaviors
 				close = true;
 
 				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
+				break;
 			}
 
 			if( close )
@@ -114,6 +116,14 @@ namespace Twice.Behaviors
 			AutoCompleteBehavior.SetAutoCompleteItemsSource( AutoCompleteBox, items );
 		}
 
+		public static readonly DependencyProperty ItemsSourceProperty =
+			DependencyProperty.Register( "ItemsSource", typeof(IEnumerable<string>), typeof(AutoComplete),
+				new PropertyMetadata( new string[] {}, OnItemsSourceChanged ) );
+
+		public static readonly DependencyProperty TriggerCharProperty =
+			DependencyProperty.Register( "TriggerChar", typeof(string), typeof(AutoComplete),
+				new PropertyMetadata( string.Empty ) );
+
 		public IEnumerable<string> ItemsSource
 		{
 			get { return (IEnumerable<string>)GetValue( ItemsSourceProperty ); }
@@ -125,13 +135,6 @@ namespace Twice.Behaviors
 			get { return (string)GetValue( TriggerCharProperty ); }
 			set { SetValue( TriggerCharProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ItemsSourceProperty =
-			DependencyProperty.Register( "ItemsSource", typeof( IEnumerable<string> ), typeof( AutoComplete ),
-				new PropertyMetadata( new string[] { }, OnItemsSourceChanged ) );
-
-		public static readonly DependencyProperty TriggerCharProperty =
-			DependencyProperty.Register( "TriggerChar", typeof( string ), typeof( AutoComplete ), new PropertyMetadata( string.Empty ) );
 
 		private readonly TextBox AutoCompleteBox;
 		private readonly Popup AutoCompletePopup;

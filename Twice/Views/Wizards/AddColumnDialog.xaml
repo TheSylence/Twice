@@ -93,7 +93,7 @@
 					<views:GenericDataTemplateSelectorItem TemplatedType="columnManagement:UserSelectorPage">
 						<DataTemplate DataType="columnManagement:UserSelectorPage">
 							<DockPanel>
-								<TextBox materialDesign:TextFieldAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
+								<TextBox materialDesign:HintAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
 										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 										 Margin="5" />
 
@@ -120,7 +120,7 @@
 
 															<StackPanel Orientation="Vertical"  Grid.RowSpan="2">
 																<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="52" Height="52" VerticalAlignment="Top" Margin="5" />
-																<Button CommandParameter="{Binding UserID}"
+																<Button CommandParameter="{Binding UserId}"
 																		Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}"
 																	HorizontalAlignment="Center" Margin="3">
 																	<DockPanel>
@@ -174,16 +174,16 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition />
 								</Grid.ColumnDefinitions>
 								<TextBlock Text="{lex:Loc Account}" FontWeight="Bold" />
-								<TextBlock Text="{Binding SourceAccount}" Grid.Column="1"/>
+								<TextBlock Text="{Binding SourceAccount}" Grid.Column="1" />
 
-								<TextBlock Text="{lex:Loc Column}" FontWeight="Bold" Grid.Row="1"/>
-								<TextBlock Text="{Binding ColumnTypeDescription}" Grid.Column="1" Grid.Row="1"/>
-								
-								<TextBlock Text="{lex:Loc ClickFinishToAddColumn}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+								<TextBlock Text="{lex:Loc Column}" FontWeight="Bold" Grid.Row="1" />
+								<TextBlock Text="{Binding ColumnTypeDescription}" Grid.Column="1" Grid.Row="1" />
+
+								<TextBlock Text="{lex:Loc ClickFinishToAddColumn}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
 							</Grid>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>

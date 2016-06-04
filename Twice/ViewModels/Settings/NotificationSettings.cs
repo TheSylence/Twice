@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Twice.Models.Configuration;
 
@@ -20,7 +21,8 @@ namespace Twice.ViewModels.Settings
 				notifyModule.PropertyChanged += NotifyModule_PropertyChanged;
 			}
 
-			EnabledNotifications = new ObservableCollection<NotificationModuleSettings>( AvailableNotifications.Where( c => c.Enabled ) );
+			EnabledNotifications =
+				new ObservableCollection<NotificationModuleSettings>( AvailableNotifications.Where( c => c.Enabled ) );
 		}
 
 		public void SaveTo( IConfig config )
@@ -31,7 +33,7 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		private void NotifyModule_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+		private void NotifyModule_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
 			var notifyModule = sender as NotificationModuleSettings;
 			if( notifyModule == null )

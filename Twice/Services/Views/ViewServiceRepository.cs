@@ -1,23 +1,23 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Fody;
+using GalaSoft.MvvmLight.Threading;
+using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using Twice.Models.Columns;
-using Twice.Resources;
+using Twice.Models.Twitter;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
+using Twice.ViewModels.Twitter;
 using Twice.Views;
 using Twice.Views.Dialogs;
 using Twice.Views.Wizards;
@@ -28,25 +28,23 @@ namespace Twice.Services.Views
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
+		public async Task ComposeTweet()
+		{
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
+		}
+
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
 		{
-			Debug.Assert( args != null );
-
-			var dictionary = new ResourceDictionary
+			Action<IConfirmDialogViewModel> vmSetup = vm =>
 			{
-				Source = new Uri( "pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" )
+				vm.Title = args.Title;
+				vm.Label = args.Message;
 			};
+			Func<IConfirmDialogViewModel, object> resultSetup = vm => true;
 
-			var settings = new MetroDialogSettings
-			{
-				AffirmativeButtonText = Strings.Yes,
-				NegativeButtonText = Strings.No,
-				SuppressDefaultResources = true,
-				CustomResourceDictionary = dictionary
-			};
-			var result = await Window.ShowMessageAsync( args.Title, args.Message, MessageDialogStyle.AffirmativeAndNegative, settings );
+			var result = await ShowWindow<ConfirmDialog, IConfirmDialogViewModel, object>( resultSetup, vmSetup );
 
-			return result == MessageDialogResult.Affirmative;
+			return result != null;
 		}
 
 		public Task<string> OpenFile( FileServiceArgs fsa = null )
@@ -62,10 +60,35 @@ namespace Twice.Services.Views
 				: Task.FromResult<string>( null );
 		}
 
-		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId, string hostIdentifier )
+		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
 		{
-			ulong[] sourceAccounts = { accountId };
-			ulong[] targetAccounts = { accountId };
+			Action<IComposeTweetViewModel> vmSetup = vm =>
+			{
+				vm.QuotedTweet = status;
+				vm.PreSelectAccounts( preSelectedAccounts ?? new ulong[0] );
+			};
+
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+		}
+
+		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
+		{
+			Action<IComposeTweetViewModel> vmSetup = vm => { vm.SetReply( status, toAll ); };
+
+			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+		}
+
+		public async Task RetweetStatus( StatusViewModel status )
+		{
+			Action<IRetweetDialogViewModel> vmSetup = vm => { vm.Status = status; };
+
+			await ShowWindow<RetweetDialog, IRetweetDialogViewModel>( vmSetup );
+		}
+
+		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId )
+		{
+			ulong[] sourceAccounts = {accountId};
+			ulong[] targetAccounts = {accountId};
 
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
@@ -73,7 +96,7 @@ namespace Twice.Services.Views
 					.Select( type => ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts ) ).ToArray();
 			};
 
-			return await ShowDialog<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup, null, hostIdentifier );
+			return await ShowWindow<AccountColumnsDialog, IColumnTypeSelectionDialogViewModel, ColumnDefinition[]>( resultSetup );
 		}
 
 		public async Task ShowAccounts( bool directlyAddAccount = false )
@@ -110,16 +133,29 @@ namespace Twice.Services.Views
 			return Task.CompletedTask;
 		}
 
-		public string TextInput( string label, string input = null, string hostIdentifier = null )
+		public string TextInput( string label, string input = null )
 		{
 			Func<ITextInputDialogViewModel, string> resultSetup = vm => vm.Input;
 			Action<ITextInputDialogViewModel> vmSetup = vm =>
 			{
 				vm.Label = label;
 				vm.Input = input ?? string.Empty;
+				vm.ClearValidationErrors();
 			};
 
-			return ShowDialogSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup, hostIdentifier );
+			return ShowWindowSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup );
+		}
+
+		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
+		{
+			Action<IImageDialogViewModel> setup = vm =>
+			{
+				vm.SetImages( imageSet );
+				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
+				                   ?? vm.Images.FirstOrDefault();
+			};
+
+			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
 		}
 
 		public async Task ViewProfile( ulong userId )
@@ -129,56 +165,15 @@ namespace Twice.Services.Views
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
-		private void CloseHandler( object sender, DialogClosingEventArgs eventargs )
+		public async Task ViewStatus( StatusViewModel status, IContextEntry context )
 		{
-			CurrentDialog = null;
-		}
-
-		private void OpenHandler( object sender, DialogOpenedEventArgs eventargs )
-		{
-			CurrentDialog = sender as Dialog;
-		}
-
-		private async Task<TResult> ShowDialog<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null, Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			var dlg = new TDialog();
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			var result = await DialogHost.Show( dlg, hostIdentifier, OpenHandler, CloseHandler ) as bool?;
-			if( result != true )
+			Action<ITweetDetailsViewModel> vmSetup = vm =>
 			{
-				return null;
-			}
+				vm.Context = context;
+				vm.DisplayTweet = status;
+			};
 
-			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
-			var resSetup = resultSetup ?? defaultResultSetup;
-			return resSetup( vm );
-		}
-
-		private TResult ShowDialogSync<TDialog, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null, Action<TViewModel> vmSetup = null,
-			string hostIdentifier = null )
-			where TDialog : Dialog, new()
-			where TViewModel : class
-			where TResult : class
-		{
-			ManualResetEvent waitHandle = new ManualResetEvent( false );
-
-			TResult result = null;
-			DispatcherHelper.CheckBeginInvokeOnUI( async () =>
-			{
-				result = await ShowDialog<TDialog, TViewModel, TResult>( resultSetup, vmSetup, hostIdentifier );
-				waitHandle.Set();
-			} );
-
-			waitHandle.WaitOne();
-			return result;
+			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
 
 		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
@@ -208,7 +203,7 @@ namespace Twice.Services.Views
 
 			if( dlg.ShowDialog() == true )
 			{
-				Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
+				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
 				var resSetup = resultSetup ?? defaultResultSetup;
 				result = resSetup( vm );
 			}
@@ -216,7 +211,30 @@ namespace Twice.Services.Views
 			return Task.FromResult( result );
 		}
 
-		public Dialog CurrentDialog { get; private set; }
-		private static MetroWindow Window => Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
+		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+
+			TResult result = null;
+
+			DispatcherHelper.CheckBeginInvokeOnUI(
+				async () =>
+				{
+					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
+					waitHandle.Set();
+				} );
+
+			waitHandle.Wait();
+			return result;
+		}
+
+		public Dialog CurrentDialog { get; }
+
+		private static MetroWindow Window
+			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MuteEditViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
@@ -39,10 +40,12 @@ namespace Twice.Tests.ViewModels.Settings
 		public void InputValidationIsApplied()
 		{
 			// Arrange
-			var vm = new MuteEditViewModel( MuteEditAction.Add );
+			var vm = new MuteEditViewModel( MuteEditAction.Add )
+			{
+				Filter = string.Empty
+			};
 
 			// Act
-			vm.Filter = string.Empty;
 			bool allEmpty = vm.SaveCommand.CanExecute( null );
 
 			vm.Filter = "test";

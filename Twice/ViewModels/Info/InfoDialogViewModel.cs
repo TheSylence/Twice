@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Resourcer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,11 +23,11 @@ namespace Twice.ViewModels.Info
 
 			Licenses = ReadLicenses( assembly ).OrderBy( l => l.Name ).ToList();
 
-			var changelogJson = Resourcer.Resource.AsString( "Twice.Resources.Texts.Changelog.json" );
+			var changelogJson = Resource.AsString( "Twice.Resources.Texts.Changelog.json" );
 			Changelogs = JsonConvert.DeserializeObject<List<ChangelogItem>>( changelogJson );
 		}
 
-		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		[ExcludeFromCodeCoverage]
 		private static DateTime ExtractBuildDate( string filePath )
 		{
 			if( DateTime.Now.Year < 2038 )

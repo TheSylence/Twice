@@ -9,7 +9,7 @@ namespace Twice.Controls
 	internal class ResizeAdorner : Adorner
 	{
 		public ResizeAdorner( UIElement adornedElement )
-			   : base( adornedElement )
+			: base( adornedElement )
 		{
 			Visuals = new VisualCollection( this );
 		}

@@ -44,44 +44,36 @@
     <ApplicationIcon>Resources\TwitterIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Akavache, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\akavache.core.4.1.2\lib\net45\Akavache.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Akavache.Sqlite3, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\akavache.sqlite3.4.1.2\lib\Portable-Net45+Win8+WP8+Wpa81\Akavache.Sqlite3.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Anotar.NLog, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9d5b24f0733c26f7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Anotar.NLog.Fody.3.0.0\lib\Anotar.NLog.dll</HintPath>
+      <HintPath>..\packages\Anotar.NLog.Fody.3.0.1\lib\Anotar.NLog.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ConfigureAwait, Version=0.3.1.0, Culture=neutral, PublicKeyToken=233850a516558a98, processorArchitecture=MSIL">
-      <HintPath>..\packages\ConfigureAwait.Fody.0.3.1\lib\portable-net45+wp8+win+wpa81\ConfigureAwait.dll</HintPath>
+    <Reference Include="ConfigureAwait, Version=1.0.0.0, Culture=neutral, PublicKeyToken=233850a516558a98, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConfigureAwait.Fody.1.0.0\lib\portable-net45+wp8+win+wpa81\ConfigureAwait.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DeltaCompressionDotNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
-      <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.dll</HintPath>
+    <Reference Include="DeltaCompressionDotNet, Version=1.1.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DeltaCompressionDotNet.MsDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=46b2138a390abf55, processorArchitecture=MSIL">
-      <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.MsDelta.dll</HintPath>
+    <Reference Include="DeltaCompressionDotNet.MsDelta, Version=1.1.0.0, Culture=neutral, PublicKeyToken=46b2138a390abf55, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.MsDelta.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
-      <HintPath>..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.PatchApi.dll</HintPath>
+    <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.PatchApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight, Version=5.2.0.37222, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.2.0.37222, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.2.0.37226, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -89,7 +81,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\squirrel.windows.1.2.5\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\packages\squirrel.windows.1.4.0\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="LinqToTwitter.AspNet, Version=3.2.0.30483, Culture=neutral, processorArchitecture=MSIL">
@@ -112,8 +104,8 @@
       <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.4\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=1.4.1.485, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.1.4.1.485\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.609, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.0.0-ci609\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -136,6 +128,10 @@
       <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Rocks.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NBug, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBug.1.2.2\lib\net40-client\NBug.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -145,31 +141,35 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NuGet.Squirrel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\squirrel.windows.1.2.5\lib\Net45\NuGet.Squirrel.dll</HintPath>
+      <HintPath>..\packages\squirrel.windows.1.4.0\lib\Net45\NuGet.Squirrel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Resourcer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Resourcer.Fody.1.4.1\lib\portable-net45+netcore45+wpa81+wp8\Resourcer.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Seal.Fody">
+      <HintPath>..\packages\Seal.Fody.1.0.3\Seal.Fody.dll</HintPath>
+    </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SQLitePCL.raw, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLitePCL.raw_basic.0.8.6\lib\net45\SQLitePCL.raw.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Squirrel, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\squirrel.windows.1.2.5\lib\Net45\Squirrel.dll</HintPath>
+    <Reference Include="Squirrel, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\squirrel.windows.1.4.0\lib\Net45\Squirrel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.101.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.101.0\lib\net46\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -192,21 +192,13 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="Undisposed.Fody, Version=1.2.5911.18183, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Undisposed.Fody.1.2.5911.18183\lib\net45\Undisposed.Fody.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Windows" />
     <Reference Include="WindowsBase" />
@@ -220,8 +212,8 @@
       <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.2\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="XAMLMarkupExtensions, Version=1.2.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XAMLMarkupExtensions.1.2.1.4\lib\net40\XAMLMarkupExtensions.dll</HintPath>
+    <Reference Include="XAMLMarkupExtensions, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XAMLMarkupExtensions.1.2.2\lib\net40\XAMLMarkupExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -235,13 +227,16 @@
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\AutoComplete.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
+    <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
     <Compile Include="Behaviors\ColumnHandler.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
+    <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
+    <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
     </Compile>
@@ -251,23 +246,39 @@
     <Compile Include="Controls\FileSelectMode.cs" />
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Converters\Compare.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
     <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Injections\CacheProvider.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
-    <Compile Include="Models\Cache\HashtagCacheEntry.cs" />
-    <Compile Include="Models\Cache\ICacheEntry.cs" />
+    <Compile Include="Models\Cache\ICache.cs" />
+    <Compile Include="Models\Cache\NullCache.cs" />
+    <Compile Include="Models\Cache\SqliteCache.cs" />
+    <Compile Include="Models\Cache\SqliteCache.Ddl.cs" />
+    <Compile Include="Models\Cache\SqliteHelper.cs" />
+    <Compile Include="Models\Cache\Transaction.cs" />
+    <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Media\IMediaExtractor.cs" />
+    <Compile Include="Models\Media\IMediaExtractorRepository.cs" />
+    <Compile Include="Models\Media\InstragramExtractor.cs" />
+    <Compile Include="Models\Media\MediaExtractorRepository.cs" />
+    <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />
+    <Compile Include="Models\Twitter\Comparers\StatusComparer.cs" />
+    <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />
+    <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
@@ -281,7 +292,6 @@
     <Compile Include="Models\Twitter\Streaming\IStreamingConnection.cs" />
     <Compile Include="Models\Twitter\Streaming\IStreamingRepository.cs" />
     <Compile Include="Models\Twitter\ITwitterContext.cs" />
-    <Compile Include="Models\Twitter\ITwitterQueryable.cs" />
     <Compile Include="Models\Twitter\StatusMuter.cs" />
     <Compile Include="Models\Twitter\Streaming\IStreamParser.cs" />
     <Compile Include="Models\Twitter\Streaming\StatusStreamEventArgs.cs" />
@@ -293,17 +303,28 @@
     <Compile Include="Models\Twitter\Text\TldLib.cs" />
     <Compile Include="Models\Twitter\TwitterAccountData.cs" />
     <Compile Include="Injections\TwitterContextListProvider.cs" />
+    <Compile Include="Models\Twitter\Comparers\TwitterComparers.cs" />
+    <Compile Include="Models\Twitter\TwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\TwitterContextWrapper.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterFriendshipRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterRepositoryBase.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterUserRepository.cs" />
-    <Compile Include="Obscurity.cs" />
     <Compile Include="PreserveAttribute.cs" />
     <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
     <Compile Include="Services\Views\FileServiceArgs.cs" />
+    <Compile Include="Utilities\AppRelease.cs" />
+    <Compile Include="Utilities\AppUpdater.cs" />
+    <Compile Include="Utilities\AppUpdaterFactory.cs" />
+    <Compile Include="Utilities\IAppUpdater.cs" />
+    <Compile Include="Utilities\IAppUpdaterFactory.cs" />
     <Compile Include="Utilities\Os\ClipboardWrapper.cs" />
+    <Compile Include="Utilities\Os\IProcessStarter.cs" />
+    <Compile Include="Utilities\Os\OsVersionInfo.cs" />
+    <Compile Include="Utilities\Os\ProessStarter.cs" />
+    <Compile Include="Utilities\Os\SingleInstance.cs" />
+    <Compile Include="Utilities\Serializer.cs" />
     <Compile Include="Utilities\Ui\ColorProvider.cs" />
     <Compile Include="Utilities\DateProvider.cs" />
     <Compile Include="Utilities\Ui\DispatcherHelperWrapper.cs" />
@@ -327,7 +348,10 @@
     <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\AuthorizeResult.cs" />
     <Compile Include="ViewModels\Accounts\IAccountsDialogViewModel.cs" />
+    <Compile Include="ViewModels\Accounts\ITwitterAuthorizer.cs" />
+    <Compile Include="ViewModels\Accounts\TwitterAuthorizer.cs" />
     <Compile Include="ViewModels\CloseEventArgs.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeItem.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactory.cs" />
@@ -348,7 +372,14 @@
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
+    <Compile Include="ViewModels\Dialogs\ConfirmDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IConfirmDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IImageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\ImageEntry.cs" />
+    <Compile Include="ViewModels\Dialogs\IRetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModelLocator.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
@@ -382,18 +413,36 @@
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
+    <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
+    <Compile Include="ViewModels\Validation\IValidationViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardPageViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardViewModel.cs" />
+    <Compile Include="Views\Dialogs\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
+      <DependentUpon>ImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\RetweetDialog.xaml.cs">
+      <DependentUpon>RetweetDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TweetDetailsDialog.xaml.cs">
+      <DependentUpon>TweetDetailsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
     <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
     <Compile Include="Views\Proxies\ComposeTweetDataProxy.cs" />
+    <Compile Include="Views\StatusContainer.cs" />
+    <Compile Include="Views\TriggerTracing.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>
     </Compile>
@@ -409,12 +458,11 @@
     <Compile Include="Views\Flyouts\NotificationBar.xaml.cs">
       <DependentUpon>NotificationBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Flyouts\TweetComposer.xaml.cs">
+    <Compile Include="Views\Dialogs\TweetComposer.xaml.cs">
       <DependentUpon>TweetComposer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\ColumnLockMessage.cs" />
     <Compile Include="Messages\DragMessage.cs" />
-    <Compile Include="Models\Cache\UserCacheEntry.cs" />
     <Compile Include="Models\Configuration\MuteConfig.cs" />
     <Compile Include="Models\Configuration\MuteEntry.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamEventArgs.cs" />
@@ -470,11 +518,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\Dialogs\ConfirmDialog.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\ImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\RetweetDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TextInputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TweetDetailsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -494,7 +554,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Flyouts\TweetComposer.xaml">
+    <Page Include="Views\Dialogs\TweetComposer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -517,7 +577,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="LinkerPreserve.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -538,10 +597,6 @@
     <Compile Include="Injections\ModelInjectionModule.cs" />
     <Compile Include="Injections\ServiceInjectionModule.cs" />
     <Compile Include="Injections\ViewModelInjectionModule.cs" />
-    <Compile Include="Injections\BlobCacheProvider.cs" />
-    <Compile Include="Models\Cache\DataCache.cs" />
-    <Compile Include="Models\Cache\IDataCache.cs" />
-    <Compile Include="Injections\SecureBlobCacheProvider.cs" />
     <Compile Include="Models\Configuration\Config.cs" />
     <Compile Include="Injections\ConfigurationProvider.cs" />
     <Compile Include="Models\Configuration\GeneralConfig.cs" />
@@ -632,7 +687,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Licenses\GongSolutions.WPF.DragDrop.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -640,13 +694,13 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.101.0\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
-  <Import Project="..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets" Condition="Exists('..\packages\SQLitePCL.raw_basic.0.8.6\build\net45\SQLitePCL.raw_basic.targets')" />
-  <Import Project="..\packages\OctoPack.3.0.60\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.0.60\tools\OctoPack.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.101.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\OctoPack.3.0.66\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.0.66\tools\OctoPack.targets')" />
   <Target Name="EnsureOctoPackImported" BeforeTargets="BeforeBuild" Condition="'$(OctoPackImported)' == ''">
-    <Error Condition="!Exists('..\packages\OctoPack.3.0.60\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="You are trying to build with OctoPack, but the NuGet targets file that OctoPack depends on is not available on this computer. This is probably because the OctoPack package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\OctoPack.3.0.60\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="OctoPack cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+    <Error Condition="!Exists('..\packages\OctoPack.3.0.66\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="You are trying to build with OctoPack, but the NuGet targets file that OctoPack depends on is not available on this computer. This is probably because the OctoPack package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\OctoPack.3.0.66\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="OctoPack cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

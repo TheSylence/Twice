@@ -9,7 +9,7 @@ namespace Twice.Injections
 
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

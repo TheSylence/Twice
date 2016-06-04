@@ -16,10 +16,17 @@ namespace Twice.Behaviors
 			{
 				if( Callback != null )
 				{
-					await Callback.OnLoad( Data );
+					await Callback.OnLoad( Data ).ConfigureAwait( false );
 				}
 			};
 		}
+
+		public static readonly DependencyProperty CallbackProperty = DependencyProperty.Register( "Callback",
+			typeof(ILoadCallback), typeof(CallbackOnLoad),
+			new PropertyMetadata( null ) );
+
+		public static readonly DependencyProperty DataProperty =
+			DependencyProperty.Register( "Data", typeof(object), typeof(CallbackOnLoad), new PropertyMetadata( null ) );
 
 		public ILoadCallback Callback
 		{
@@ -32,11 +39,5 @@ namespace Twice.Behaviors
 			get { return GetValue( DataProperty ); }
 			set { SetValue( DataProperty, value ); }
 		}
-
-		public static readonly DependencyProperty CallbackProperty = DependencyProperty.Register( "Callback", typeof( ILoadCallback ), typeof( CallbackOnLoad ),
-			new PropertyMetadata( null ) );
-
-		public static readonly DependencyProperty DataProperty =
-					DependencyProperty.Register( "Data", typeof( object ), typeof( CallbackOnLoad ), new PropertyMetadata( null ) );
 	}
 }

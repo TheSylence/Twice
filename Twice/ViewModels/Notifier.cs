@@ -7,7 +7,6 @@ using System.Windows.Media;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;

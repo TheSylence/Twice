@@ -48,7 +48,12 @@ namespace Twice.ViewModels.Settings
 		{
 			Entries.Remove( SelectedEntry );
 
-			var entry = new MuteEntry { Filter = EditData.Filter, EndDate = null };
+			var entry = new MuteEntry
+			{
+				Filter = EditData.Filter,
+				EndDate = null,
+				CaseSensitive = EditData.CaseSensitive
+			};
 
 			if( EditData.HasEndDate )
 			{
@@ -74,9 +79,10 @@ namespace Twice.ViewModels.Settings
 			EditData = new MuteEditViewModel( MuteEditAction.Edit )
 			{
 				Filter = SelectedEntry.Filter,
-				HasEndDate = SelectedEntry.EndDate.HasValue
+				HasEndDate = SelectedEntry.EndDate.HasValue,
+				CaseSensitive = SelectedEntry.CaseSensitive
 			};
-			if( EditData.HasEndDate )
+			if( EditData.HasEndDate && SelectedEntry.EndDate.HasValue )
 			{
 				EditData.EndDate = SelectedEntry.EndDate.Value;
 			}
@@ -99,15 +105,13 @@ namespace Twice.ViewModels.Settings
 
 		public ICommand AddCommand => _AddCommand ?? ( _AddCommand = new RelayCommand( ExecuteAddCommand ) );
 
-		public ICommand EditCommand => _EditCommand ?? ( _EditCommand = new RelayCommand( ExecuteEditCommand, CanExecuteEditCommand ) );
+		public ICommand EditCommand
+			=> _EditCommand ?? ( _EditCommand = new RelayCommand( ExecuteEditCommand, CanExecuteEditCommand ) );
 
 		public IMuteEditViewModel EditData
 		{
 			[DebuggerStepThrough]
-			get
-			{
-				return _EditData;
-			}
+			get { return _EditData; }
 			set
 			{
 				if( _EditData == value )
@@ -124,15 +128,13 @@ namespace Twice.ViewModels.Settings
 
 		public string HelpDocument { get; }
 
-		public ICommand RemoveCommand => _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
+		public ICommand RemoveCommand
+			=> _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
 
 		public MuteEntry SelectedEntry
 		{
 			[DebuggerStepThrough]
-			get
-			{
-				return _SelectedEntry;
-			}
+			get { return _SelectedEntry; }
 			set
 			{
 				if( _SelectedEntry == value )

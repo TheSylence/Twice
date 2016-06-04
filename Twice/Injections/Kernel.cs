@@ -3,6 +3,7 @@ using Ninject.Modules;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Twice.Models.Media;
 
 namespace Twice.Injections
 {
@@ -12,6 +13,7 @@ namespace Twice.Injections
 		public Kernel()
 			: base( InjectionModules.ToArray() )
 		{
+			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 		}
 
 		private static IEnumerable<INinjectModule> InjectionModules

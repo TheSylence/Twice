@@ -25,11 +25,7 @@ namespace Twice.ViewModels.Flyouts
 
 		public string Text
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Text;
-			}
+			[DebuggerStepThrough] get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -44,11 +40,7 @@ namespace Twice.ViewModels.Flyouts
 
 		public NotificationType Type
 		{
-			[DebuggerStepThrough]
-			get
-			{
-				return _Type;
-			}
+			[DebuggerStepThrough] get { return _Type; }
 			set
 			{
 				if( _Type == value )

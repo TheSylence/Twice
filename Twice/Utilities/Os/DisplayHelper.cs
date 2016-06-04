@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Anotar.NLog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Anotar.NLog;
 
 namespace Twice.Utilities.Os
 {

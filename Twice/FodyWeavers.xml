@@ -4,5 +4,5 @@
   <Resourcer />
   <AsyncErrorHandler />
   <ConfigureAwait />
-  <Undisposed />
+  <Seal />
 </Weavers>

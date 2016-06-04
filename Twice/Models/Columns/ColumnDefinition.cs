@@ -11,6 +11,9 @@ namespace Twice.Models.Columns
 			Type = type;
 			Width = 300;
 			Notifications = new ColumnNotifications();
+
+			SourceAccounts = new ulong[0];
+			TargetAccounts = new ulong[0];
 		}
 
 		public override bool Equals( object obj )
@@ -22,7 +25,7 @@ namespace Twice.Models.Columns
 			}
 
 			return SourceAccounts.Compare( other.SourceAccounts ) &&
-				   TargetAccounts.Compare( other.TargetAccounts );
+					TargetAccounts.Compare( other.TargetAccounts );
 		}
 
 		[SuppressMessage( "ReSharper", "NonReadonlyMemberInGetHashCode" )]

@@ -1,20 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Attributes;
 using Twice.Resources;
 using Twice.ViewModels;
 
 namespace Twice.Tests.ViewModels
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ValueDescriptionTests
 	{
-		private enum TestEnum
-		{
-			[LocalizeKey( "Cancel" )] Test
-		}
-
 		[TestMethod, TestCategory( "ViewModels" )]
 		public void CorrectNameIsConstructedForEnum()
 		{
@@ -169,6 +164,12 @@ namespace Twice.Tests.ViewModels
 			// Assert
 			Assert.AreEqual( value, vd.Value );
 			Assert.AreEqual( desc, vd.Name );
+		}
+
+		private enum TestEnum
+		{
+			[LocalizeKey( "Cancel" )]
+			Test
 		}
 	}
 }

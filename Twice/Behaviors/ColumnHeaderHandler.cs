@@ -22,13 +22,14 @@ namespace Twice.Behaviors
 			ActionDispatcher?.OnHeaderClicked();
 		}
 
+		public static readonly DependencyProperty ActionDispatcherProperty =
+			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnHeaderHandler),
+				new PropertyMetadata( null ) );
+
 		public IColumnActionDispatcher ActionDispatcher
 		{
 			get { return (IColumnActionDispatcher)GetValue( ActionDispatcherProperty ); }
 			set { SetValue( ActionDispatcherProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ActionDispatcherProperty =
-			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnHeaderHandler ), new PropertyMetadata( null ) );
 	}
 }

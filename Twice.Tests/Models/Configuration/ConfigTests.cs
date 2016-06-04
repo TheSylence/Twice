@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Configuration;
+using Twice.Utilities;
 
 namespace Twice.Tests.Models.Configuration
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ConfigTests
 	{
 		[TestMethod, TestCategory( "Models.Configuration" )]
@@ -17,7 +19,8 @@ namespace Twice.Tests.Models.Configuration
 			File.WriteAllText( fileName, @"Hello world this is a test" );
 
 			// Act ReSharper disable once ObjectCreationAsStatement
-			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName ) );
+			// ReSharper disable once ObjectCreationAsStatement
+			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName, new Serializer() ) );
 
 			// Assert
 			Assert.IsNull( ex, ex?.ToString() );
@@ -28,7 +31,7 @@ namespace Twice.Tests.Models.Configuration
 		{
 			// Arrange
 			var fileName = Path.GetTempFileName();
-			var config = new Config( fileName )
+			var config = new Config( fileName, new Serializer() )
 			{
 				General =
 				{
@@ -59,15 +62,15 @@ namespace Twice.Tests.Models.Configuration
 				}
 			};
 
-			config.Mute.Entries.Add( new MuteEntry {Filter = "test"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "@one"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "#two"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = ":three"} );
-			config.Mute.Entries.Add( new MuteEntry {Filter = "abc", EndDate = DateTime.MaxValue} );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "test" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "@one" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "#two" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = ":three" } );
+			config.Mute.Entries.Add( new MuteEntry { Filter = "abc", EndDate = DateTime.MaxValue } );
 
 			// Act
 			config.Save();
-			var cfg = new Config( fileName );
+			var cfg = new Config( fileName, new Serializer() );
 
 			// Assert
 			Assert.AreEqual( config.General.CheckForUpdates, cfg.General.CheckForUpdates );

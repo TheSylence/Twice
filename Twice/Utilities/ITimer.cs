@@ -2,11 +2,14 @@
 
 namespace Twice.Utilities
 {
-	interface ITimer
+	internal interface ITimer
 	{
-		void Start();
-		void Stop();
 		event EventHandler Tick;
+
+		void Start();
+
+		void Stop();
+
 		bool IsEnabled { get; }
 	}
 }

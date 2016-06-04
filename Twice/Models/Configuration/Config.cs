@@ -1,23 +1,28 @@
-﻿using Newtonsoft.Json;
+﻿using Anotar.NLog;
+using Newtonsoft.Json;
 using System.IO;
+using Twice.Utilities;
 
 namespace Twice.Models.Configuration
 {
 	internal class Config : IConfig
 	{
-		public Config( string fileName )
+		public Config( string fileName, ISerializer serializer )
 		{
+			Serializer = serializer;
 			bool defaultNeeded = true;
 			FileName = fileName;
 
 			if( File.Exists( FileName ) )
 			{
+				LogTo.Info( $"Trying to load config from {fileName}" );
+
 				string json = File.ReadAllText( FileName );
 				if( !string.IsNullOrEmpty( json ) )
 				{
 					try
 					{
-						Config tmp = JsonConvert.DeserializeObject<Config>( json );
+						Config tmp = Serializer.Deserialize<Config>( json );
 						Visual = tmp.Visual;
 						General = tmp.General;
 						Mute = tmp.Mute;
@@ -36,18 +41,19 @@ namespace Twice.Models.Configuration
 			}
 		}
 
-		public void Save()
-		{
-			string json = JsonConvert.SerializeObject( this, Formatting.Indented );
-			File.WriteAllText( FileName, json );
-		}
-
 		private void DefaultConfig()
 		{
+			LogTo.Info( "No configuration saved. Loading default values" );
 			General = new GeneralConfig();
 			Visual = new VisualConfig();
 			Mute = new MuteConfig();
 			Notifications = new NotificationConfig();
+		}
+
+		public void Save()
+		{
+			string json = Serializer.Serialize( this );
+			File.WriteAllText( FileName, json );
 		}
 
 		public GeneralConfig General { get; set; }
@@ -55,5 +61,6 @@ namespace Twice.Models.Configuration
 		public NotificationConfig Notifications { get; set; }
 		public VisualConfig Visual { get; set; }
 		private readonly string FileName;
+		private readonly ISerializer Serializer;
 	}
 }

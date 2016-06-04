@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight;
+using System.Diagnostics;
 using Twice.Models.Configuration;
 
 namespace Twice.ViewModels.Settings
@@ -9,7 +10,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool Enabled
 		{
-			[System.Diagnostics.DebuggerStepThrough]
+			[DebuggerStepThrough]
 			get { return _Enabled; }
 			set
 			{
@@ -25,7 +26,7 @@ namespace Twice.ViewModels.Settings
 
 		public abstract string Title { get; }
 
-		[System.Diagnostics.DebuggerBrowsable( System.Diagnostics.DebuggerBrowsableState.Never )]
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _Enabled;
 	}
 }

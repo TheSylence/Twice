@@ -31,7 +31,8 @@ namespace Twice.ViewModels.Validation
 				throw new InvalidOperationException( "No check constraint set" );
 			}
 
-			PropertyValidatorContainer.AddValidator( PropertyName, new PropertyValidator<TProperty>( CheckFunc, Condition, message, IsManual ) );
+			PropertyValidatorContainer.AddValidator( PropertyName,
+				new PropertyValidator<TProperty>( CheckFunc, Condition, message, IsManual ) );
 		}
 
 		private readonly bool IsManual;

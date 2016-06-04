@@ -1,17 +1,17 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Windows.Media;
-using MaterialDesignColors;
+﻿using MaterialDesignColors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Media;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class VisualSettingsTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
@@ -54,7 +54,8 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Visual ).Returns( visual );
 
 			var colors = new Mock<IColorProvider>();
-			var colorList = new[] {CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
+			var colorList = new[]
+			{CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
 			colors.SetupGet( c => c.AvailableAccentColors ).Returns( colorList );
 			colors.SetupGet( c => c.AvailablePrimaryColors ).Returns( colorList );
 
@@ -79,7 +80,8 @@ namespace Twice.Tests.ViewModels.Settings
 		public void SettingsAreCorrectlySaved()
 		{
 			// Arrange
-			var colorList = new[] {CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
+			var colorList = new[]
+			{CreateSwatch( "blue" ), CreateSwatch( "red" ), CreateSwatch( "green" ), CreateSwatch( "yellow" )};
 
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Visual ).Returns( new VisualConfig() );
@@ -136,8 +138,8 @@ namespace Twice.Tests.ViewModels.Settings
 
 		private static Swatch CreateSwatch( string name )
 		{
-			var primaryHues = new[] {new Hue( "p", Colors.Red, Colors.Blue )};
-			var accentHues = new[] {new Hue( "a", Colors.Green, Colors.Yellow )};
+			var primaryHues = new[] { new Hue( "p", Colors.Red, Colors.Blue ) };
+			var accentHues = new[] { new Hue( "a", Colors.Green, Colors.Yellow ) };
 
 			return new Swatch( name, primaryHues, accentHues );
 		}

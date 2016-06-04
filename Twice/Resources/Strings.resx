@@ -513,4 +513,91 @@
   <data name="FavouritesDescription" xml:space="preserve">
     <value>Tweets favorited from an account</value>
   </data>
+  <data name="ImageViewer" xml:space="preserve">
+    <value>Image viewer</value>
+  </data>
+  <data name="QuoteTweet" xml:space="preserve">
+    <value>Quote</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="ComposeTweet" xml:space="preserve">
+    <value>Compose tweet</value>
+  </data>
+  <data name="RemoveQuote" xml:space="preserve">
+    <value>Remove quote</value>
+  </data>
+  <data name="QuotedTweet" xml:space="preserve">
+    <value>Quoted tweet</value>
+  </data>
+  <data name="ImageSizeTooBig" xml:space="preserve">
+    <value>One of the images is too big to be uploaded</value>
+  </data>
+  <data name="Bugfix" xml:space="preserve">
+    <value>Bugfix</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="KnownIssue" xml:space="preserve">
+    <value>Known issue</value>
+  </data>
+  <data name="NewFeature" xml:space="preserve">
+    <value>New feature</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="InReplyTo" xml:space="preserve">
+    <value>In reply to</value>
+  </data>
+  <data name="ConfirmDeleteColumn" xml:space="preserve">
+    <value>Do you really want to delete this column?</value>
+  </data>
+  <data name="ConfirmMediaRemoval" xml:space="preserve">
+    <value>Do you really want to remove this media from your tweet?</value>
+  </data>
+  <data name="TweetFetchCount" xml:space="preserve">
+    <value>Tweets to fetch at once</value>
+  </data>
+  <data name="TweetFetchCountDescription" xml:space="preserve">
+    <value>The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take.</value>
+  </data>
+  <data name="TweetReportedAsSpam" xml:space="preserve">
+    <value>Tweet was reported as spam</value>
+  </data>
+  <data name="Responses" xml:space="preserve">
+    <value>Responses</value>
+  </data>
+  <data name="Retweets" xml:space="preserve">
+    <value>Retweets</value>
+  </data>
+  <data name="ViewConversation" xml:space="preserve">
+    <value>View conversation</value>
+  </data>
+  <data name="RequiresRestart" xml:space="preserve">
+    <value>Requires restart</value>
+  </data>
+  <data name="DevelopedBy" xml:space="preserve">
+    <value>Developed by</value>
+  </data>
+  <data name="SpecialThanksTo" xml:space="preserve">
+    <value>Special thanks to</value>
+  </data>
+  <data name="FollowTwiceAppOnTwitter" xml:space="preserve">
+    <value>Follow @TwiceApp on twitter</value>
+  </data>
+  <data name="Tweet" xml:space="preserve">
+    <value>Tweet</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="VisitTwiceOnGithub" xml:space="preserve">
+    <value>Visit Twice on GitHub</value>
+  </data>
+  <data name="CaseSensitive" xml:space="preserve">
+    <value>Case sensitive</value>
+  </data>
 </root>

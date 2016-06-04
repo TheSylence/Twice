@@ -1,5 +1,6 @@
 using Ninject;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Injections;
 
 namespace Twice.Tests
@@ -9,6 +10,7 @@ namespace Twice.Tests
 		object Resolve( Type type );
 	}
 
+	[ExcludeFromCodeCoverage]
 	internal class NinjectTypeResolver : ITypeResolver
 	{
 		public NinjectTypeResolver()

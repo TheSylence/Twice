@@ -6,42 +6,20 @@ using System.Text;
 namespace Twice.Utilities.Os
 {
 	/// <summary>
-	/// Encrypts and decrypts data using DPAPI functions.
+	///     Encrypts and decrypts data using DPAPI functions.
 	/// </summary>
 	public static class DpApi
 	{
 		/// <summary>
-		/// Flag indicating the type of key. DPAPI terminology refers to key types as user store or
-		/// machine store.
-		/// </summary>
-		public enum KeyType
-		{
-			/// <summary>
-			/// Invalid. Do not use.
-			/// </summary>
-			None = 0,
-
-			/// <summary>
-			/// User store
-			/// </summary>
-			UserKey = 1,
-
-			/// <summary>
-			/// Machine store
-			/// </summary>
-			MachineKey
-		}
-
-		/// <summary>
-		/// Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes. This function does not use
-		/// additional entropy and does not return data description.
+		///     Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes. This function does not use
+		///     additional entropy and does not return data description.
 		/// </summary>
 		/// <param name="cipherText">Encrypted data formatted as a base64-encoded string.</param>
 		/// <returns>Decrypted data returned as a UTF-8 string.</returns>
 		/// <remarks>
-		/// When decrypting data, it is not necessary to specify which type of encryption key to
-		/// use: user-specific or machine-specific; DPAPI will figure it out by looking at the
-		///      signature of encrypted data.
+		///     When decrypting data, it is not necessary to specify which type of encryption key to
+		///     use: user-specific or machine-specific; DPAPI will figure it out by looking at the
+		///     signature of encrypted data.
 		/// </remarks>
 		public static string Decrypt( string cipherText )
 		{
@@ -51,16 +29,16 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes. This function does not use
-		/// additional entropy.
+		///     Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes. This function does not use
+		///     additional entropy.
 		/// </summary>
 		/// <param name="cipherText">Encrypted data formatted as a base64-encoded string.</param>
 		/// <param name="description">Returned description of data specified during encryption.</param>
 		/// <returns>Decrypted data returned as a UTF-8 string.</returns>
 		/// <remarks>
-		/// When decrypting data, it is not necessary to specify which type of encryption key to
-		/// use: user-specific or machine-specific; DPAPI will figure it out by looking at the
-		///      signature of encrypted data.
+		///     When decrypting data, it is not necessary to specify which type of encryption key to
+		///     use: user-specific or machine-specific; DPAPI will figure it out by looking at the
+		///     signature of encrypted data.
 		/// </remarks>
 		public static string Decrypt( string cipherText, out string description )
 		{
@@ -68,18 +46,18 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes.
+		///     Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes.
 		/// </summary>
 		/// <param name="cipherText">Encrypted data formatted as a base64-encoded string.</param>
 		/// <param name="entropy">
-		/// Optional entropy, which is required if it was specified during encryption.
+		///     Optional entropy, which is required if it was specified during encryption.
 		/// </param>
 		/// <param name="description">Returned description of data specified during encryption.</param>
 		/// <returns>Decrypted data returned as a UTF-8 string.</returns>
 		/// <remarks>
-		/// When decrypting data, it is not necessary to specify which type of encryption key to
-		/// use: user-specific or machine-specific; DPAPI will figure it out by looking at the
-		///      signature of encrypted data.
+		///     When decrypting data, it is not necessary to specify which type of encryption key to
+		///     use: user-specific or machine-specific; DPAPI will figure it out by looking at the
+		///     signature of encrypted data.
 		/// </remarks>
 		public static string Decrypt( string cipherText, string entropy, out string description )
 		{
@@ -89,22 +67,24 @@ namespace Twice.Utilities.Os
 				entropy = string.Empty;
 			}
 
-			return Encoding.UTF8.GetString( Decrypt( Convert.FromBase64String( cipherText ), Encoding.UTF8.GetBytes( entropy ), out description ) );
+			return
+				Encoding.UTF8.GetString( Decrypt( Convert.FromBase64String( cipherText ), Encoding.UTF8.GetBytes( entropy ),
+					out description ) );
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes.
+		///     Calls DPAPI CryptUnprotectData to decrypt ciphertext bytes.
 		/// </summary>
 		/// <param name="cipherTextBytes">Encrypted data.</param>
 		/// <param name="entropyBytes">
-		/// Optional entropy, which is required if it was specified during encryption.
+		///     Optional entropy, which is required if it was specified during encryption.
 		/// </param>
 		/// <param name="description">Returned description of data specified during encryption.</param>
 		/// <returns>Decrypted data bytes.</returns>
 		/// <remarks>
-		/// When decrypting data, it is not necessary to specify which type of encryption key to
-		/// use: user-specific or machine-specific; DPAPI will figure it out by looking at the
-		///      signature of encrypted data.
+		///     When decrypting data, it is not necessary to specify which type of encryption key to
+		///     use: user-specific or machine-specific; DPAPI will figure it out by looking at the
+		///     signature of encrypted data.
 		/// </remarks>
 		public static byte[] Decrypt( byte[] cipherTextBytes, byte[] entropyBytes, out string description )
 		{
@@ -180,7 +160,7 @@ namespace Twice.Utilities.Os
 				throw new Exception( "DPAPI was unable to decrypt data.", ex );
 			}
 
-			// Free all memory allocated for BLOBs.
+				// Free all memory allocated for BLOBs.
 			finally
 			{
 				if( plainTextBlob.pbData != IntPtr.Zero )
@@ -201,8 +181,8 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptProtectData function to encrypt a plaintext string value with a
-		/// user-specific key. This function does not specify data description and additional entropy.
+		///     Calls DPAPI CryptProtectData function to encrypt a plaintext string value with a
+		///     user-specific key. This function does not specify data description and additional entropy.
 		/// </summary>
 		/// <param name="plainText">Plaintext data to be encrypted.</param>
 		/// <returns>Encrypted value in a base64-encoded format.</returns>
@@ -212,15 +192,15 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptProtectData function to encrypt a plaintext string value. This function
-		/// does not specify data description and additional entropy.
+		///     Calls DPAPI CryptProtectData function to encrypt a plaintext string value. This function
+		///     does not specify data description and additional entropy.
 		/// </summary>
 		/// <param name="keyType">
-		/// Defines type of encryption key to use. When user key is specified, any application
-		/// running under the same user account as the one making this call, will be able to decrypt
-		/// data. Machine key will allow any application running on the same computer where data were
-		/// encrypted to perform decryption.
-		/// Note: If optional entropy is specifed, it will be required for decryption.
+		///     Defines type of encryption key to use. When user key is specified, any application
+		///     running under the same user account as the one making this call, will be able to decrypt
+		///     data. Machine key will allow any application running on the same computer where data were
+		///     encrypted to perform decryption.
+		///     Note: If optional entropy is specifed, it will be required for decryption.
 		/// </param>
 		/// <param name="plainText">Plaintext data to be encrypted.</param>
 		/// <returns>Encrypted value in a base64-encoded format.</returns>
@@ -230,19 +210,19 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptProtectData function to encrypt a plaintext string value. This function
-		/// does not specify data description.
+		///     Calls DPAPI CryptProtectData function to encrypt a plaintext string value. This function
+		///     does not specify data description.
 		/// </summary>
 		/// <param name="keyType">
-		/// Defines type of encryption key to use. When user key is specified, any application
-		/// running under the same user account as the one making this call, will be able to decrypt
-		/// data. Machine key will allow any application running on the same computer where data were
-		/// encrypted to perform decryption.
-		/// Note: If optional entropy is specifed, it will be required for decryption.
+		///     Defines type of encryption key to use. When user key is specified, any application
+		///     running under the same user account as the one making this call, will be able to decrypt
+		///     data. Machine key will allow any application running on the same computer where data were
+		///     encrypted to perform decryption.
+		///     Note: If optional entropy is specifed, it will be required for decryption.
 		/// </param>
 		/// <param name="plainText">Plaintext data to be encrypted.</param>
 		/// <param name="entropy">
-		/// Optional entropy which - if specified - will be required to perform decryption.
+		///     Optional entropy which - if specified - will be required to perform decryption.
 		/// </param>
 		/// <returns>Encrypted value in a base64-encoded format.</returns>
 		public static string Encrypt( KeyType keyType, string plainText, string entropy )
@@ -251,22 +231,22 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptProtectData function to encrypt a plaintext string value.
+		///     Calls DPAPI CryptProtectData function to encrypt a plaintext string value.
 		/// </summary>
 		/// <param name="keyType">
-		/// Defines type of encryption key to use. When user key is specified, any application
-		/// running under the same user account as the one making this call, will be able to decrypt
-		/// data. Machine key will allow any application running on the same computer where data were
-		/// encrypted to perform decryption.
-		/// Note: If optional entropy is specifed, it will be required for decryption.
+		///     Defines type of encryption key to use. When user key is specified, any application
+		///     running under the same user account as the one making this call, will be able to decrypt
+		///     data. Machine key will allow any application running on the same computer where data were
+		///     encrypted to perform decryption.
+		///     Note: If optional entropy is specifed, it will be required for decryption.
 		/// </param>
 		/// <param name="plainText">Plaintext data to be encrypted.</param>
 		/// <param name="entropy">
-		/// Optional entropy which - if specified - will be required to perform decryption.
+		///     Optional entropy which - if specified - will be required to perform decryption.
 		/// </param>
 		/// <param name="description">
-		/// Optional description of data to be encrypted. If this value is specified, it will be
-		/// stored along with encrypted data and returned as a separate value during decryption.
+		///     Optional description of data to be encrypted. If this value is specified, it will be
+		///     stored along with encrypted data and returned as a separate value during decryption.
 		/// </param>
 		/// <returns>Encrypted value in a base64-encoded format.</returns>
 		public static string Encrypt( KeyType keyType, string plainText, string entropy, string description )
@@ -287,22 +267,22 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Calls DPAPI CryptProtectData function to encrypt an array of plaintext bytes.
+		///     Calls DPAPI CryptProtectData function to encrypt an array of plaintext bytes.
 		/// </summary>
 		/// <param name="keyType">
-		/// Defines type of encryption key to use. When user key is specified, any application
-		/// running under the same user account as the one making this call, will be able to decrypt
-		/// data. Machine key will allow any application running on the same computer where data were
-		/// encrypted to perform decryption.
-		/// Note: If optional entropy is specifed, it will be required for decryption.
+		///     Defines type of encryption key to use. When user key is specified, any application
+		///     running under the same user account as the one making this call, will be able to decrypt
+		///     data. Machine key will allow any application running on the same computer where data were
+		///     encrypted to perform decryption.
+		///     Note: If optional entropy is specifed, it will be required for decryption.
 		/// </param>
 		/// <param name="plainTextBytes">Plaintext data to be encrypted.</param>
 		/// <param name="entropyBytes">
-		/// Optional entropy which - if specified - will be required to perform decryption.
+		///     Optional entropy which - if specified - will be required to perform decryption.
 		/// </param>
 		/// <param name="description">
-		/// Optional description of data to be encrypted. If this value is specified, it will be
-		/// stored along with encrypted data and returned as a separate value during decryption.
+		///     Optional description of data to be encrypted. If this value is specified, it will be
+		///     stored along with encrypted data and returned as a separate value during decryption.
 		/// </param>
 		/// <returns>Encrypted value.</returns>
 		public static byte[] Encrypt( KeyType keyType, byte[] plainTextBytes, byte[] entropyBytes, string description )
@@ -395,7 +375,7 @@ namespace Twice.Utilities.Os
 				throw new Exception( "DPAPI was unable to encrypt data.", ex );
 			}
 
-			// Free all memory allocated for BLOBs.
+				// Free all memory allocated for BLOBs.
 			finally
 			{
 				if( plainTextBlob.pbData != IntPtr.Zero )
@@ -416,7 +396,7 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Initializes a BLOB structure from a byte array.
+		///     Initializes a BLOB structure from a byte array.
 		/// </summary>
 		/// <param name="data">Original data in a byte array format.</param>
 		/// <param name="blob">Returned blob structure.</param>
@@ -445,15 +425,37 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		/// Initializes empty prompt structure.
+		///     Initializes empty prompt structure.
 		/// </summary>
 		/// <param name="ps">Prompt parameter (which we do not actually need).</param>
 		private static void InitPrompt( ref NativeMethods.CRYPTPROTECT_PROMPTSTRUCT ps )
 		{
-			ps.cbSize = Marshal.SizeOf( typeof( NativeMethods.CRYPTPROTECT_PROMPTSTRUCT ) );
+			ps.cbSize = Marshal.SizeOf( typeof(NativeMethods.CRYPTPROTECT_PROMPTSTRUCT) );
 			ps.dwPromptFlags = 0;
 			ps.hwndApp = NullPtr;
 			ps.szPrompt = null;
+		}
+
+		/// <summary>
+		///     Flag indicating the type of key. DPAPI terminology refers to key types as user store or
+		///     machine store.
+		/// </summary>
+		public enum KeyType
+		{
+			/// <summary>
+			///     Invalid. Do not use.
+			/// </summary>
+			None = 0,
+
+			/// <summary>
+			///     User store
+			/// </summary>
+			UserKey = 1,
+
+			/// <summary>
+			///     Machine store
+			/// </summary>
+			MachineKey
 		}
 
 		private const int CryptprotectLocalMachine = 0x4;

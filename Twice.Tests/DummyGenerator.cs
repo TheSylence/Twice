@@ -1,8 +1,10 @@
 ﻿using LinqToTwitter;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Twice.Tests
 {
+	[ExcludeFromCodeCoverage]
 	internal static class DummyGenerator
 	{
 		internal static Status CreateDummyStatus( User user = null )
@@ -13,6 +15,14 @@ namespace Twice.Tests
 			{
 				User = user,
 				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>(),
+					MediaEntities = new List<MediaEntity>(),
+					SymbolEntities = new List<SymbolEntity>(),
+					UrlEntities = new List<UrlEntity>(),
+					UserMentionEntities = new List<UserMentionEntity>()
+				},
+				ExtendedEntities = new Entities
 				{
 					HashTagEntities = new List<HashTagEntity>(),
 					MediaEntities = new List<MediaEntity>(),

@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 
 namespace Twice.Tests.Models.Columns
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ColumnDefinitionTests
 	{
 		[TestMethod, TestCategory( "Models.Columns" )]
@@ -12,32 +13,32 @@ namespace Twice.Tests.Models.Columns
 			// Arrange
 			var a = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var b = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var c = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {4, 5, 6},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 4, 5, 6 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var d = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {1, 2, 3}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 1, 2, 3 }
 			};
 
 			var e = new ColumnDefinition( ColumnType.Activity )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			// Act
@@ -70,32 +71,32 @@ namespace Twice.Tests.Models.Columns
 			// Arrange
 			var a = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var b = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var c = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {3, 2, 1},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 3, 2, 1 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			var d = new ColumnDefinition( ColumnType.Timeline )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {6, 5, 4}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 6, 5, 4 }
 			};
 
 			var e = new ColumnDefinition( ColumnType.Activity )
 			{
-				SourceAccounts = new ulong[] {1, 2, 3},
-				TargetAccounts = new ulong[] {4, 5, 6}
+				SourceAccounts = new ulong[] { 1, 2, 3 },
+				TargetAccounts = new ulong[] { 4, 5, 6 }
 			};
 
 			// Act

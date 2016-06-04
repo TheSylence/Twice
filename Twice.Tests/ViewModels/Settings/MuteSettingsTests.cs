@@ -1,15 +1,32 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Settings;
 
 namespace Twice.Tests.ViewModels.Settings
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class MuteSettingsTests
 	{
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public void AddCanBeCancelled()
+		{
+			// Arrange
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Mute ).Returns( new MuteConfig() );
+			var vm = new MuteSettings( config.Object );
+			vm.AddCommand.Execute( null );
+
+			// Act
+			vm.EditData.CancelCommand.Execute( null );
+
+			// Assert
+			Assert.IsNull( vm.EditData );
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void CorrectDataIsLoaded()
 		{

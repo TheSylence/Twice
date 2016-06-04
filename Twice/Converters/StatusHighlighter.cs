@@ -1,57 +1,33 @@
 ﻿using LinqToTwitter;
+using Ninject;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using Twice.Models.Configuration;
+using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
 
 namespace Twice.Converters
 {
 	/// <summary>
-	/// Converts a Status to an InlineCollection.
+	///     Converts a Status to an InlineCollection.
 	/// </summary>
 	internal class StatusHighlighter : IValueConverter
 	{
-		/// <summary>
-		/// Converts a value.
-		/// </summary>
-		/// <param name="value">The value produced by the binding source.</param>
-		/// <param name="targetType">The type of the binding target property.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		public StatusHighlighter( IConfig config )
 		{
-			Status tweet = value as Status;
-			if( tweet == null )
-			{
-				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
-			}
-			
-			return GenerateInlines( tweet ).ToArray();
+			OverrideConfig = config;
 		}
 
-		/// <summary>
-		/// Converts a value.
-		/// </summary>
-		/// <param name="value">The value that is produced by the binding target.</param>
-		/// <param name="targetType">The type to convert to.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		/// A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+		public StatusHighlighter()
 		{
-			throw new NotSupportedException();
 		}
 
 		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
@@ -106,8 +82,88 @@ namespace Twice.Converters
 			return menu;
 		}
 
+		private static IEnumerable<EntityBase> ExtractEntities( Status tweet )
+		{
+			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
+			entities = entities.Concat( tweet.Entities.MediaEntities );
+			entities = entities.Concat( tweet.Entities.UrlEntities );
+			entities = entities.Concat( tweet.Entities.UserMentionEntities );
+
+			var tweetText = TwitterHelper.NormalizeText( tweet.Text );
+
+			var allEntities = entities.ToArray();
+			foreach( var entity in allEntities )
+			{
+				int length = entity.End - entity.Start - 1;
+				List<string> extractedTextVersions = new List<string>
+				{
+					ExtractEntityText( entity )
+				};
+
+				if( entity is UserMentionEntity )
+				{
+					extractedTextVersions.Add( AlternativeAtSign + extractedTextVersions[0].Substring( 1 ) );
+				}
+				else if( entity is HashTagEntity )
+				{
+					extractedTextVersions.Add( AlternativeHashtagSign + extractedTextVersions[0].Substring( 1 ) );
+				}
+
+				var actualText = tweetText.Substring( entity.Start, length );
+
+				bool found = false;
+				foreach( var extractedText in extractedTextVersions )
+				{
+					// When the tweet contains emojis, the twitter API returns wrong indices for entities
+					if( extractedText != actualText )
+					{
+						var newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
+						if( newIndex == -1 )
+						{
+							newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
+						}
+						if( newIndex == -1 )
+						{
+							continue;
+						}
+
+						found = true;
+						entity.Start = newIndex;
+						entity.End = entity.Start + length + 1;
+					}
+				}
+
+				Debug.Assert( found );
+			}
+
+			return allEntities.OrderBy( e => e.Start );
+		}
+
+		private static string ExtractEntityText( EntityBase entity )
+		{
+			var mentionEntity = entity as UserMentionEntity;
+			if( mentionEntity != null )
+			{
+				return "@" + mentionEntity.ScreenName;
+			}
+
+			var tagEntity = entity as HashTagEntity;
+			if( tagEntity != null )
+			{
+				return "#" + tagEntity.Tag;
+			}
+
+			var urlEntity = entity as UrlEntity;
+			if( urlEntity != null )
+			{
+				return urlEntity.Url;
+			}
+
+			return string.Empty;
+		}
+
 		/// <summary>
-		/// Generates an inline from a hashtag entity.
+		///     Generates an inline from a hashtag entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -123,19 +179,13 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates a collection of inlines from a tweet.
+		///     Generates a collection of inlines from a tweet.
 		/// </summary>
 		/// <param name="tweet">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
 		private static IEnumerable<Inline> GenerateInlines( Status tweet )
 		{
-			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
-			entities = entities.Concat( tweet.Entities.MediaEntities );
-			entities = entities.Concat( tweet.Entities.UrlEntities );
-			entities = entities.Concat( tweet.Entities.UserMentionEntities );
-
-			var allEntities = entities.OrderBy( e => e.Start ).ToArray();
-			List<Inline> mediaPreviews = new List<Inline>();
+			var allEntities = ExtractEntities( tweet ).ToArray();
 
 			if( allEntities.Any() )
 			{
@@ -149,33 +199,28 @@ namespace Twice.Converters
 						yield return new Run( PrepareText( text ) );
 					}
 
-					if( entity is HashTagEntity )
+					var tagEntity = entity as HashTagEntity;
+					if( tagEntity != null )
 					{
-						yield return GenerateHashTag( (HashTagEntity)entity );
+						yield return GenerateHashTag( tagEntity );
 					}
 					else if( entity is UrlEntity )
 					{
 						if( entity is MediaEntity )
 						{
-							MediaEntity mediaEnttiy = entity as MediaEntity;
-							yield return GenerateMedia( mediaEnttiy );
-
-							//IMediaService service = PluginManager.Instance.MediaServices.FirstOrDefault( s => s.CanExpand( mediaEnttiy.MediaUrlHttps ) );
-							//if( service != null )
-							//{
-							//	mediaPreviews.Add( service.ExpandMedia( mediaEnttiy.MediaUrlHttps ) );
-							//}
+							if( !Config.Visual.InlineMedia )
+							{
+								MediaEntity mediaEnttiy = entity as MediaEntity;
+								yield return GenerateMedia( mediaEnttiy );
+							}
 						}
 						else
 						{
 							UrlEntity urlEntity = entity as UrlEntity;
-							yield return GenerateLink( urlEntity );
-
-							//IMediaService service = PluginManager.Instance.MediaServices.FirstOrDefault( s => s.CanExpand( urlEntity.ExpandedUrl ) );
-							//if( service != null )
-							//{
-							//	mediaPreviews.Add( service.ExpandMedia( urlEntity.ExpandedUrl ) );
-							//}
+							if( !TwitterHelper.IsTweetUrl( urlEntity.ExpandedUrl ) )
+							{
+								yield return GenerateLink( urlEntity );
+							}
 						}
 					}
 					else if( entity is UserMentionEntity )
@@ -190,11 +235,6 @@ namespace Twice.Converters
 				{
 					yield return new Run( PrepareText( tweet.Text.Substring( lastEnd ) ) );
 				}
-
-				foreach( Inline preview in mediaPreviews )
-				{
-					yield return preview;
-				}
 			}
 			else
 			{
@@ -203,7 +243,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a link entity.
+		///     Generates an inline from a link entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -221,14 +261,14 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a media entity.
+		///     Generates an inline from a media entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
 		private static Inline GenerateMedia( MediaEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( entity.MediaUrlHttps );
+			link.Inlines.Add( entity.DisplayUrl );
 			link.NavigateUri = new Uri( entity.MediaUrlHttps );
 			link.CommandParameter = entity.MediaUrlHttps;
 			link.Command = GlobalCommands.OpenUrlCommand;
@@ -239,7 +279,7 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		/// Generates an inline from a mention entity.
+		///     Generates an inline from a mention entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
 		/// <returns>The generated inline.</returns>
@@ -262,5 +302,47 @@ namespace Twice.Converters
 
 			return text;
 		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value produced by the binding source.</param>
+		/// <param name="targetType">The type of the binding target property.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			Status tweet = value as Status;
+			if( tweet == null )
+			{
+				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
+			}
+
+			return GenerateInlines( tweet ).ToArray();
+		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value that is produced by the binding target.</param>
+		/// <param name="targetType">The type to convert to.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			throw new NotSupportedException();
+		}
+
+		private const string AlternativeAtSign = "\uFF20";
+		private const string AlternativeHashtagSign = "\uFF03";
+		private static IConfig OverrideConfig;
+
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
 	}
 }

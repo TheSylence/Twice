@@ -2,15 +2,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Seal.Fody;
 using Twice.Models.Columns;
 
 namespace Twice.Models.Twitter.Streaming
 {
+	[LeaveUnsealed]
 	internal class StreamingRepository : IStreamingRepository
 	{
 		public StreamingRepository( ITwitterContextList contextList )
 		{
 			ContextList = contextList;
+		}
+
+		private void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				foreach( var kvp in LoadedParsers )
+				{
+					kvp.Value.Dispose();
+				}
+
+				LoadedParsers.Clear();
+			}
 		}
 
 		public void Dispose()
@@ -29,28 +44,16 @@ namespace Twice.Models.Twitter.Streaming
 			if( !LoadedParsers.TryGetValue( key, out parser ) )
 			{
 				parser =
-				StreamParser.Create( new StreamingConnection( ContextList.Contexts.First( c => c.UserId == userId )
-					.Twitter.Streaming.GetUserStream() ) );
+					StreamParser.Create( new StreamingConnection( ContextList.Contexts.First( c => c.UserId == userId )
+						.Twitter.Streaming.GetUserStream() ) );
 
 				LoadedParsers.Add( key, parser );
 			}
 			return parser;
 		}
 
-		private void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				foreach( var kvp in LoadedParsers )
-				{
-					kvp.Value.Dispose();
-				}
-				LoadedParsers.Clear();
-			}
-		}
-
-		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 		private readonly ITwitterContextList ContextList;
+		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 
 		protected class ParserKey
 		{

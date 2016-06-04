@@ -32,6 +32,7 @@ namespace Twice.ViewModels
 
 			var skip = toSkip ?? Enumerable.Empty<TValue>();
 
+			// ReSharper disable once LoopCanBePartlyConvertedToQuery
 			foreach( TValue value in Enum.GetValues( typeof( TValue ) ).Cast<TValue>().Except( skip ) )
 			{
 				var intValue = ( (IConvertible)value ).ToInt32( CultureInfo.InvariantCulture );
@@ -63,6 +64,7 @@ namespace Twice.ViewModels
 
 			// ReSharper disable RedundantCast.0
 			if( ( (object)a == null ) || ( (object)b == null ) )
+
 			// ReSharper restore RedundantCast.0
 			{
 				return false;

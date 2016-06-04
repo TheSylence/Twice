@@ -15,8 +15,7 @@ namespace Twice.ViewModels
 
 		public bool IsSelected
 		{
-			[DebuggerStepThrough]
-			get { return _IsSelected; }
+			[DebuggerStepThrough] get { return _IsSelected; }
 			set
 			{
 				if( _IsSelected == value )

@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Twitter;
 
 namespace Twice.Tests.Models.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class CharacterCountingTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter" )]
@@ -17,7 +19,7 @@ namespace Twice.Tests.Models.Twitter
 			var str = string.Empty;
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 0, count );
@@ -27,10 +29,11 @@ namespace Twice.Tests.Models.Twitter
 		public void InvalidTweet141Chars()
 		{
 			// Arrange
-			var str = "A lie gets halfway around the world before the truth has a chance to get its pants on. -- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
+			var str =
+				"A lie gets halfway around the world before the truth has a chance to get its pants on. -- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.IsTrue( count > 140 );
@@ -40,10 +43,11 @@ namespace Twice.Tests.Models.Twitter
 		public void InvalidTweet141CharsNewLine()
 		{
 			// Arrange
-			var str = "A lie gets halfway around the world before the truth has a chance to get its pants on. \n- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
+			var str =
+				"A lie gets halfway around the world before the truth has a chance to get its pants on. \n- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.IsTrue( count > 140 );
@@ -61,14 +65,16 @@ namespace Twice.Tests.Models.Twitter
 				for( int n = 0; n < i; ++n )
 				{
 					bool upper = rand.Next( 0, 1 ) == 1;
-					sb.Append( (char)( ( upper ? 'A' : 'a' ) + rand.Next( 0, 27 ) ) );
+					sb.Append( (char)( ( upper
+						? 'A'
+						: 'a' ) + rand.Next( 0, 27 ) ) );
 				}
 
 				testCases.Add( i, sb.ToString() );
 			}
 
 			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.CountCharacters( kvp.Value ) );
+			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.CountCharacters( kvp.Value, MockConfig() ) );
 
 			// Assert
 			foreach( int l in testCases.Keys )
@@ -88,6 +94,7 @@ namespace Twice.Tests.Models.Twitter
 				{"https://test.com", 23},
 				{"test.com", 23},
 				{"Test https://test.com test https://test.com test.com test", 86},
+
 				// FIXME: This results in 4 :(
 				//{"\U00010000\U0010ffff", 2},
 				{"저찀쯿쿿", 4},
@@ -95,7 +102,7 @@ namespace Twice.Tests.Models.Twitter
 			};
 
 			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.CountCharacters( kvp.Key ) );
+			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => TwitterHelper.CountCharacters( kvp.Key, MockConfig() ) );
 
 			// Assert
 			foreach( var str in testCases.Keys )
@@ -111,7 +118,7 @@ namespace Twice.Tests.Models.Twitter
 			var str = "café";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 4, count );
@@ -121,10 +128,11 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140Chars()
 		{
 			// Arrange
-			var str = "A lie gets halfway around the world before the truth has a chance to get its pants on. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
+			var str =
+				"A lie gets halfway around the world before the truth has a chance to get its pants on. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 140, count );
@@ -134,10 +142,11 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140CharsDoubleByte()
 		{
 			// Arrange
-			var str = "のののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののの";
+			var str =
+				"のののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののの";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 140, count );
@@ -151,7 +160,7 @@ namespace Twice.Tests.Models.Twitter
 				"\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 140, count );
@@ -161,10 +170,11 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140CharsWithAccent()
 		{
 			// Arrange
-			var str = "A lié géts halfway arøünd thé wørld béføré thé truth has a chance tø get its pants øn. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
+			var str =
+				"A lié géts halfway arøünd thé wørld béføré thé truth has a chance tø get its pants øn. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 140, count );
@@ -177,10 +187,19 @@ namespace Twice.Tests.Models.Twitter
 			var str = "I am a Tweet";
 
 			// Act
-			int count = TwitterHelper.CountCharacters( str );
+			int count = TwitterHelper.CountCharacters( str, MockConfig() );
 
 			// Assert
 			Assert.AreEqual( 12, count );
+		}
+
+		private static ITwitterConfiguration MockConfig()
+		{
+			var cfg = new Mock<ITwitterConfiguration>();
+			cfg.SetupGet( c => c.UrlLength ).Returns( 23 );
+			cfg.SetupGet( c => c.UrlLengthHttps ).Returns( 23 );
+
+			return cfg.Object;
 		}
 	}
 }

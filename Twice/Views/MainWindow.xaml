@@ -16,6 +16,7 @@
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts" WindowButtonCommandsOverlayBehavior="Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+        xmlns:views="clr-namespace:Twice.Views"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -30,7 +31,6 @@
 	</controls:MetroWindow.InputBindings>
 	<controls:MetroWindow.Flyouts>
 		<controls:FlyoutsControl>
-			<flyouts:TweetComposer />
 			<flyouts:NotificationBar />
 		</controls:FlyoutsControl>
 	</controls:MetroWindow.Flyouts>
@@ -46,113 +46,127 @@
 			<materialDesign:PackIcon Kind="TwitterCircle" VerticalAlignment="Center" HorizontalAlignment="Center" />
 		</DataTemplate>
 	</controls:MetroWindow.IconTemplate>
-	<materialDesign:DialogHost Identifier="MainDialogHost">
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
 
-			<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
-				<StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
-					<Button Width="36" Height="36"
+		<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
+			<StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc NewTweet}" Command="{Binding NewTweetCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-						<materialDesign:PackIcon Kind="Pencil" />
-					</Button>
+					<materialDesign:PackIcon Kind="Pencil" />
+				</Button>
 
-					<Button Width="36" Height="36"
+				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc Search}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-						<materialDesign:PackIcon Kind="Magnify" />
-					</Button>
+					<materialDesign:PackIcon Kind="Magnify" />
+				</Button>
 
-					<Button Width="36" Height="36"
+				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc Accounts}" Command="{Binding AccountsCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-						<materialDesign:PackIcon Kind="AccountMultiple" />
-					</Button>
+					<materialDesign:PackIcon Kind="AccountMultiple" />
+				</Button>
 
-					<Button Width="36" Height="36"
+				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc Settings}" Command="{Binding SettingsCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-						<materialDesign:PackIcon Kind="Settings" />
-					</Button>
-				</StackPanel>
+					<materialDesign:PackIcon Kind="Settings" />
+				</Button>
+			</StackPanel>
 
-				<StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-					<Button Width="36" Height="36" Command="{Binding AddColumnCommand}"
+			<StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+				<Button Width="36" Height="36" Command="{Binding AddColumnCommand}"
 					ToolTip="{lex:Loc AddColumn}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-						<materialDesign:PackIcon Kind="Plus" />
-					</Button>
+					<materialDesign:PackIcon Kind="Plus" />
+				</Button>
 
-					<ItemsControl ItemsSource="{Binding Columns}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Vertical" />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate DataType="columns:IColumnViewModel">
-								<Button Width="36" Height="36" ToolTip="{Binding Title}"
+				<ItemsControl ItemsSource="{Binding Columns}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="columns:IColumnViewModel">
+							<Button Width="36" Height="36" ToolTip="{Binding Title}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
-									<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
-								</Button>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</StackPanel>
-			</DockPanel>
+								<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
+							</Button>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StackPanel>
+		</DockPanel>
 
-			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
-				<ItemsControl ItemsSource="{Binding Columns}"
+		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
+			<ItemsControl ItemsSource="{Binding Columns}"
 							  dragDrop:DragDrop.IsDragSource="True"
 							  dragDrop:DragDrop.IsDropTarget="True"
 							  dragDrop:DragDrop.DragSourceIgnore="False"
 							  dragDrop:DragDrop.DragHandler="{Binding DragDropHandler}"
 							  dragDrop:DragDrop.DropHandler="{Binding DragDropHandler}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="columns:IColumnViewModel">
-							<Grid Margin="0,0,5,0">
-								<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
-									<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
-										<i:Interaction.Behaviors>
-											<behaviors:ColumnHeaderHandler ActionDispatcher="{Binding ActionDispatcher}" />
-										</i:Interaction.Behaviors>
-									</controls1:ColumnHeader>
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="columns:IColumnViewModel">
+						<Grid Margin="0,0,5,0">
+							<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
+								<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
+									<i:Interaction.Behaviors>
+										<behaviors:ColumnHeaderHandler ActionDispatcher="{Binding ActionDispatcher}" />
+									</i:Interaction.Behaviors>
+								</controls1:ColumnHeader>
 
-									<!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
+								<views:StatusContainer>
 									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
-											  HorizontalContentAlignment="Stretch">
+											  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"
+											  VirtualizingStackPanel.IsVirtualizing="True"
+											  VirtualizingStackPanel.ScrollUnit="Pixel"
+											  VirtualizingStackPanel.VirtualizationMode="Recycling">
 										<i:Interaction.Behaviors>
 											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
 										</i:Interaction.Behaviors>
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<VirtualizingStackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
 										<ItemsControl.Template>
 											<ControlTemplate>
-												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-													<i:Interaction.Behaviors>
-														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
-													</i:Interaction.Behaviors>
-													<ItemsPresenter />
-												</ScrollViewer>
+												<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+												Padding="{TemplateBinding Control.Padding}"
+												BorderBrush="{TemplateBinding Border.BorderBrush}"
+												Background="{TemplateBinding Panel.Background}"
+												SnapsToDevicePixels="True">
+													<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
+														  VerticalScrollBarVisibility="Auto" Focusable="False">
+														<i:Interaction.Behaviors>
+															<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+														</i:Interaction.Behaviors>
+
+														<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+													</ScrollViewer>
+												</Border>
 											</ControlTemplate>
 										</ItemsControl.Template>
 									</ItemsControl>
-									<!--</ScrollViewer>-->
-								</DockPanel>
+								</views:StatusContainer>
+							</DockPanel>
 
-								<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
-							</Grid>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
-		</Grid>
-	</materialDesign:DialogHost>
-</controls:MetroWindow>
+							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</controls:MetroWindow> 

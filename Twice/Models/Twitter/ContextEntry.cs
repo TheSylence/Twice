@@ -1,12 +1,13 @@
 ﻿using LinqToTwitter;
 using System;
+using Twice.Models.Cache;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class ContextEntry : IContextEntry
 	{
-		public ContextEntry( INotifier notifier, TwitterAccountData data )
+		public ContextEntry( INotifier notifier, TwitterAccountData data, ICache cache )
 		{
 			Data = data;
 			Notifier = notifier;
@@ -28,13 +29,7 @@ namespace Twice.Models.Twitter
 					OAuthToken = data.OAuthToken,
 					OAuthTokenSecret = data.OAuthTokenSecret
 				}
-			} ) );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
+			} ), cache );
 		}
 
 		public override bool Equals( object obj )
@@ -54,6 +49,12 @@ namespace Twice.Models.Twitter
 			{
 				Twitter?.Dispose();
 			}
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
 		}
 
 		public string AccountName { get; }

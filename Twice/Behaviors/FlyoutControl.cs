@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Fody;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -18,6 +19,7 @@ namespace Twice.Behaviors
 			Messenger.Default.Register<FlyoutMessage>( this, OnFlyoutMessage );
 		}
 
+		[ConfigureAwait( false )]
 		private async void OnFlyoutMessage( FlyoutMessage message )
 		{
 			if( !message.Name.Equals( Name ) )
@@ -55,12 +57,13 @@ namespace Twice.Behaviors
 			}
 		}
 
+		public static readonly DependencyProperty NameProperty = DependencyProperty.Register( "Name", typeof(string),
+			typeof(FlyoutControl), new PropertyMetadata( null ) );
+
 		public string Name
 		{
 			get { return (string)GetValue( NameProperty ); }
 			set { SetValue( NameProperty, value ); }
 		}
-
-		public static readonly DependencyProperty NameProperty = DependencyProperty.Register( "Name", typeof( string ), typeof( FlyoutControl ), new PropertyMetadata( null ) );
 	}
 }

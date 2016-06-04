@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Markup;
 
 namespace Twice.Views
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+	[ExcludeFromCodeCoverage]
 	[ContentProperty( "Template" )]
 	public class GenericDataTemplateSelectorItem
 	{

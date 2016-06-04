@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Twice.Utilities;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Utilities.Os;
 
 namespace Twice.Tests.Utilities
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class DpApiTests
 	{
 		[TestMethod, TestCategory( "Utilities" )]

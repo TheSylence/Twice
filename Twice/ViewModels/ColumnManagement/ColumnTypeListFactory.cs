@@ -11,7 +11,7 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		internal static IEnumerable<ColumnTypeItem> GetItems()
 		{
-			return GetItems( Enum.GetValues( typeof( ColumnType ) ).Cast<ColumnType>() );
+			return GetItems( Enum.GetValues( typeof(ColumnType) ).Cast<ColumnType>() );
 		}
 
 		internal static IEnumerable<ColumnTypeItem> GetItems( IEnumerable<ColumnType> types )
@@ -20,12 +20,14 @@ namespace Twice.ViewModels.ColumnManagement
 
 			if( typeList.Contains( ColumnType.Timeline ) )
 			{
-				yield return new ColumnTypeItem( ColumnType.Timeline, Strings.Timeline, Strings.TimelineDescription, PackIconKind.Home );
+				yield return
+					new ColumnTypeItem( ColumnType.Timeline, Strings.Timeline, Strings.TimelineDescription, PackIconKind.Home );
 			}
 
 			if( typeList.Contains( ColumnType.Mentions ) )
 			{
-				yield return new ColumnTypeItem( ColumnType.Mentions, Strings.Mentions, Strings.MentionsDescription, PackIconKind.At );
+				yield return
+					new ColumnTypeItem( ColumnType.Mentions, Strings.Mentions, Strings.MentionsDescription, PackIconKind.At );
 			}
 
 			if( typeList.Contains( ColumnType.User ) )
@@ -35,12 +37,14 @@ namespace Twice.ViewModels.ColumnManagement
 
 			if( typeList.Contains( ColumnType.Messages ) )
 			{
-				yield return new ColumnTypeItem( ColumnType.Messages, Strings.Messages, Strings.MessagesDescription, PackIconKind.Message );
+				yield return
+					new ColumnTypeItem( ColumnType.Messages, Strings.Messages, Strings.MessagesDescription, PackIconKind.Message );
 			}
 
 			if( typeList.Contains( ColumnType.Favorites ) )
 			{
-				yield return new ColumnTypeItem( ColumnType.Favorites, Strings.Favourites, Strings.FavouritesDescription, PackIconKind.Star );
+				yield return
+					new ColumnTypeItem( ColumnType.Favorites, Strings.Favourites, Strings.FavouritesDescription, PackIconKind.Star );
 			}
 		}
 	}

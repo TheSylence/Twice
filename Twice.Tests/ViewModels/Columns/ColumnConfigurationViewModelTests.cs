@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.ViewModels.Columns;
 
 namespace Twice.Tests.ViewModels.Columns
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class ColumnConfigurationViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

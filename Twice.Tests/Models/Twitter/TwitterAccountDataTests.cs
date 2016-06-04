@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Twitter;
-using Twice.Utilities;
 using Twice.Utilities.Os;
 
 namespace Twice.Tests.Models.Twitter
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class TwitterAccountDataTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter" )]

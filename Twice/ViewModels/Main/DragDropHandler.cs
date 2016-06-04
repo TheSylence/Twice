@@ -21,6 +21,11 @@ namespace Twice.ViewModels.Main
 			messenger.Register<DragMessage>( this, OnDragMessage );
 		}
 
+		private void OnDragMessage( DragMessage msg )
+		{
+			ResizeInProgress = msg.Start;
+		}
+
 		bool IDragSource.CanStartDrag( IDragInfo dragInfo )
 		{
 			return !ResizeInProgress && DragDrop.DefaultDragHandler.CanStartDrag( dragInfo );
@@ -63,11 +68,6 @@ namespace Twice.ViewModels.Main
 			var columns = dropInfo.TargetCollection as IEnumerable<IColumnViewModel>;
 			Debug.Assert( columns != null );
 			ColumnList.Save( columns.Select( c => c.Definition ) );
-		}
-
-		private void OnDragMessage( DragMessage msg )
-		{
-			ResizeInProgress = msg.Start;
 		}
 
 		private readonly IColumnDefinitionList ColumnList;

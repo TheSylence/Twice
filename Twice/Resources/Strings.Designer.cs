@@ -205,6 +205,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bugfix.
+        /// </summary>
+        public static string Bugfix {
+            get {
+                return ResourceManager.GetString("Bugfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Built on.
         /// </summary>
         public static string BuildDate {
@@ -219,6 +228,24 @@ namespace Twice.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Case sensitive.
+        /// </summary>
+        public static string CaseSensitive {
+            get {
+                return ResourceManager.GetString("CaseSensitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change.
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
             }
         }
         
@@ -268,6 +295,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compose tweet.
+        /// </summary>
+        public static string ComposeTweet {
+            get {
+                return ResourceManager.GetString("ComposeTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -277,11 +313,29 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this column?.
+        /// </summary>
+        public static string ConfirmDeleteColumn {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete the selected filter?.
         /// </summary>
         public static string ConfirmDeleteFilter {
             get {
                 return ResourceManager.GetString("ConfirmDeleteFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove this media from your tweet?.
+        /// </summary>
+        public static string ConfirmMediaRemoval {
+            get {
+                return ResourceManager.GetString("ConfirmMediaRemoval", resourceCulture);
             }
         }
         
@@ -390,6 +444,15 @@ namespace Twice.Resources {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Developed by.
+        /// </summary>
+        public static string DevelopedBy {
+            get {
+                return ResourceManager.GetString("DevelopedBy", resourceCulture);
             }
         }
         
@@ -529,6 +592,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Follow @TwiceApp on twitter.
+        /// </summary>
+        public static string FollowTwiceAppOnTwitter {
+            get {
+                return ResourceManager.GetString("FollowTwiceAppOnTwitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Font size.
         /// </summary>
         public static string FontSize {
@@ -628,6 +700,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One of the images is too big to be uploaded.
+        /// </summary>
+        public static string ImageSizeTooBig {
+            get {
+                return ResourceManager.GetString("ImageSizeTooBig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image viewer.
+        /// </summary>
+        public static string ImageViewer {
+            get {
+                return ResourceManager.GetString("ImageViewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include pre-releases.
         /// </summary>
         public static string IncludePrereleases {
@@ -655,11 +745,29 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In reply to.
+        /// </summary>
+        public static string InReplyTo {
+            get {
+                return ResourceManager.GetString("InReplyTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default account.
         /// </summary>
         public static string IsDefaultAccount {
             get {
                 return ResourceManager.GetString("IsDefaultAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Known issue.
+        /// </summary>
+        public static string KnownIssue {
+            get {
+                return ResourceManager.GetString("KnownIssue", resourceCulture);
             }
         }
         
@@ -799,6 +907,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New feature.
+        /// </summary>
+        public static string NewFeature {
+            get {
+                return ResourceManager.GetString("NewFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compose tweet.
         /// </summary>
         public static string NewTweet {
@@ -862,6 +979,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification popups.
         /// </summary>
         public static string PopupNotification {
@@ -880,11 +1006,38 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quoted tweet.
+        /// </summary>
+        public static string QuotedTweet {
+            get {
+                return ResourceManager.GetString("QuotedTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quote.
+        /// </summary>
+        public static string QuoteTweet {
+            get {
+                return ResourceManager.GetString("QuoteTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removed favorite.
         /// </summary>
         public static string RemovedFavorite {
             get {
                 return ResourceManager.GetString("RemovedFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove quote.
+        /// </summary>
+        public static string RemoveQuote {
+            get {
+                return ResourceManager.GetString("RemoveQuote", resourceCulture);
             }
         }
         
@@ -925,6 +1078,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requires restart.
+        /// </summary>
+        public static string RequiresRestart {
+            get {
+                return ResourceManager.GetString("RequiresRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Responses.
+        /// </summary>
+        public static string Responses {
+            get {
+                return ResourceManager.GetString("Responses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retweet.
         /// </summary>
         public static string Retweet {
@@ -952,6 +1123,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retweets.
+        /// </summary>
+        public static string Retweets {
+            get {
+                return ResourceManager.GetString("Retweets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -975,6 +1155,15 @@ namespace Twice.Resources {
         public static string SelectAccountYouWantToAddColumnFor {
             get {
                 return ResourceManager.GetString("SelectAccountYouWantToAddColumnFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
             }
         }
         
@@ -1038,6 +1227,15 @@ namespace Twice.Resources {
         public static string SoundNotification {
             get {
                 return ResourceManager.GetString("SoundNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special thanks to.
+        /// </summary>
+        public static string SpecialThanksTo {
+            get {
+                return ResourceManager.GetString("SpecialThanksTo", resourceCulture);
             }
         }
         
@@ -1132,6 +1330,42 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tweet.
+        /// </summary>
+        public static string Tweet {
+            get {
+                return ResourceManager.GetString("Tweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tweets to fetch at once.
+        /// </summary>
+        public static string TweetFetchCount {
+            get {
+                return ResourceManager.GetString("TweetFetchCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take..
+        /// </summary>
+        public static string TweetFetchCountDescription {
+            get {
+                return ResourceManager.GetString("TweetFetchCountDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tweet was reported as spam.
+        /// </summary>
+        public static string TweetReportedAsSpam {
+            get {
+                return ResourceManager.GetString("TweetReportedAsSpam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tweets.
         /// </summary>
         public static string Tweets {
@@ -1186,6 +1420,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} retweeted.
         /// </summary>
         public static string UserRetweeted {
@@ -1218,6 +1461,24 @@ namespace Twice.Resources {
         public static string Via {
             get {
                 return ResourceManager.GetString("Via", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View conversation.
+        /// </summary>
+        public static string ViewConversation {
+            get {
+                return ResourceManager.GetString("ViewConversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit Twice on GitHub.
+        /// </summary>
+        public static string VisitTwiceOnGithub {
+            get {
+                return ResourceManager.GetString("VisitTwiceOnGithub", resourceCulture);
             }
         }
         

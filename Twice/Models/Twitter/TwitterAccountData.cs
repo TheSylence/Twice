@@ -1,5 +1,4 @@
 using System;
-using Twice.Utilities;
 using Twice.Utilities.Os;
 
 namespace Twice.Models.Twitter

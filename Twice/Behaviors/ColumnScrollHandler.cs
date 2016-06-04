@@ -37,16 +37,15 @@ namespace Twice.Behaviors
 			}
 		}
 
+		public static readonly DependencyProperty ActionDispatcherProperty =
+			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnScrollHandler),
+				new PropertyMetadata( null ) );
+
 		public IColumnActionDispatcher ActionDispatcher
 		{
 			get { return (IColumnActionDispatcher)GetValue( ActionDispatcherProperty ); }
 			set { SetValue( ActionDispatcherProperty, value ); }
 		}
-
-		// Using a DependencyProperty as the backing store for ActionDispatcher. This enables
-		// animation, styling, binding, etc...
-		public static readonly DependencyProperty ActionDispatcherProperty =
-			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnScrollHandler ), new PropertyMetadata( null ) );
 
 		private readonly Range HandledRange = new Range();
 

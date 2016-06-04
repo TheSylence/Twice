@@ -1,80 +1,53 @@
-﻿using Newtonsoft.Json;
+﻿using Anotar.NLog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Twice.Models.Cache;
+using Twice.Utilities;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter
 {
 	internal class TwitterContextList : ITwitterContextList
 	{
-		public TwitterContextList( INotifier notifier, string fileName )
+		public TwitterContextList( INotifier notifier, string fileName, ISerializer serializer, ICache cache )
 		{
+			Cache = cache;
+			Serializer = serializer;
 			FileName = fileName;
 			Notifier = notifier;
 			Contexts = new List<IContextEntry>();
 
-			if( File.Exists( FileName ) )
+			if( !File.Exists( FileName ) )
 			{
-				var json = File.ReadAllText( FileName );
-				List<TwitterAccountData> accountData;
-
-				try
-				{
-					accountData = JsonConvert.DeserializeObject<List<TwitterAccountData>>( json ) ??
-						new List<TwitterAccountData>();
-				}
-				catch( JsonReaderException )
-				{
-					accountData = new List<TwitterAccountData>();
-				}
-
-				Contexts = accountData.Select( acc =>
-				{
-					return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
-					{
-						var ctx = new ContextEntry( Notifier, accDecrypted );
-
-						return ctx;
-					} );
-				} ).ToList();
+				return;
 			}
-		}
 
-		public event EventHandler ContextsChanged;
+			var json = File.ReadAllText( FileName );
+			List<TwitterAccountData> accountData;
 
-		public void AddContext( TwitterAccountData data )
-		{
-			Contexts.Add( new ContextEntry( Notifier, data ) );
+			try
+			{
+				accountData = Serializer.Deserialize<List<TwitterAccountData>>( json ) ??
+							new List<TwitterAccountData>();
+			}
+			catch( JsonReaderException )
+			{
+				accountData = new List<TwitterAccountData>();
+			}
 
-			SaveToFile();
+			Contexts = accountData.Select( acc =>
+			{
+				return acc.ExecuteDecryptedAction<IContextEntry>( accDecrypted =>
+				{
+					var ctx = new ContextEntry( Notifier, accDecrypted, cache );
+					LogTo.Info( $"Loaded context for {accDecrypted.AccountName} ({accDecrypted.UserId})" );
 
-			ContextsChanged?.Invoke( this, EventArgs.Empty );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		/// <summary>
-		/// Only pass decrypted data to this method.
-		/// </summary>
-		/// <param name="data"></param>
-		public void UpdateAccount( TwitterAccountData data )
-		{
-			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
-			Contexts.Remove( context );
-
-			Contexts.Add( new ContextEntry( Notifier, data ) );
-			SaveToFile();
-		}
-
-		public void UpdateAllAccounts()
-		{
-			SaveToFile();
+					return ctx;
+				} );
+			} ).ToList();
 		}
 
 		private void Dispose( bool disposing )
@@ -90,7 +63,7 @@ namespace Twice.Models.Twitter
 
 		private void SaveToFile()
 		{
-			var json = JsonConvert.SerializeObject( Contexts.Select( ctx =>
+			var json = Serializer.Serialize( Contexts.Select( ctx =>
 			{
 				var result = new TwitterAccountData
 				{
@@ -105,13 +78,52 @@ namespace Twice.Models.Twitter
 
 				result.Encrypt();
 				return result;
-			} ).ToList(), Formatting.Indented );
+			} ).ToList() );
 
 			File.WriteAllText( FileName, json );
 		}
 
+		public event EventHandler ContextsChanged;
+
+		public void AddContext( TwitterAccountData data )
+		{
+			LogTo.Info( $"Adding account data for {data.AccountName} ({data.UserId})" );
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
+
+			SaveToFile();
+
+			ContextsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/// <summary>
+		///     Only pass decrypted data to this method.
+		/// </summary>
+		/// <param name="data"></param>
+		public void UpdateAccount( TwitterAccountData data )
+		{
+			LogTo.Info( $"Updating account data for {data.AccountName} ({data.UserId})" );
+			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
+			Contexts.Remove( context );
+
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
+			SaveToFile();
+		}
+
+		public void UpdateAllAccounts()
+		{
+			SaveToFile();
+		}
+
 		public ICollection<IContextEntry> Contexts { get; }
+		private readonly ICache Cache;
 		private readonly string FileName;
 		private readonly INotifier Notifier;
+		private readonly ISerializer Serializer;
 	}
 }

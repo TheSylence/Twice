@@ -18,15 +18,7 @@ namespace Twice.Converters
 
 			DateTime date = (DateTime)value;
 			date = date.ToLocalTime();
-
-			TimeSpan maxRelative = TimeSpan.MaxValue;
-
 			TimeSpan diff = TimeSpan.FromTicks( Math.Abs( DateProvider.Now.Ticks - date.Ticks ) );
-
-			if( diff > maxRelative )
-			{
-				return date.ToString( culture );
-			}
 
 			int amount;
 			string suffix;

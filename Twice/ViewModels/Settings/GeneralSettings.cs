@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Twice.Models.Configuration;
-using Twice.Utilities;
 using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
@@ -26,7 +26,10 @@ namespace Twice.ViewModels.Settings
 			{
 				langs.Remove( neutral );
 			}
+
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
+
+			AvailableFetchCounts = new[] { 20, 50, 100, 200 };
 
 			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
 
@@ -34,6 +37,7 @@ namespace Twice.ViewModels.Settings
 			SelectedLanguage = AvailableLanguages.SingleOrDefault( l => l.Name == currentConfig.General.Language ) ?? english;
 			CheckForUpdates = currentConfig.General.CheckForUpdates;
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
+			TweetFetchCount = currentConfig.General.TweetFetchCount;
 		}
 
 		public void SaveTo( IConfig config )
@@ -42,6 +46,7 @@ namespace Twice.ViewModels.Settings
 			config.General.RealtimeStreaming = RealtimeStreaming;
 			config.General.CheckForUpdates = CheckForUpdates;
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
+			config.General.TweetFetchCount = Math.Min( 200, Math.Max( 20, TweetFetchCount ) );
 		}
 
 		private static bool IsEnglish( CultureInfo lang )
@@ -51,6 +56,7 @@ namespace Twice.ViewModels.Settings
 			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
 		}
 
+		public ICollection<int> AvailableFetchCounts { get; }
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		public bool CheckForUpdates
@@ -117,6 +123,22 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public int TweetFetchCount
+		{
+			[DebuggerStepThrough]
+			get { return _TweetFetchCount; }
+			set
+			{
+				if( _TweetFetchCount == value )
+				{
+					return;
+				}
+
+				_TweetFetchCount = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _CheckForUpdates;
 
@@ -128,5 +150,8 @@ namespace Twice.ViewModels.Settings
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private CultureInfo _SelectedLanguage;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private int _TweetFetchCount;
 	}
 }

@@ -8,7 +8,7 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class SourceAccountSelectorPage : WizardPageViewModel
 	{
-		public SourceAccountSelectorPage( WizardViewModel wizard, ITwitterContextList contextList )
+		public SourceAccountSelectorPage( IWizardViewModel wizard, ITwitterContextList contextList )
 			: base( wizard )
 		{
 			Accounts = contextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
@@ -22,10 +22,14 @@ namespace Twice.ViewModels.ColumnManagement
 				accountId
 			};
 
+			var accounts = sourceAccounts.Select( id => Accounts.Single( acc => acc.Context.UserId == id ) ).ToArray();
+
 			int pageKey = 1;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[0] );
 			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountsKey, sourceAccounts.ToArray() );
-			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountNamesKey, sourceAccounts.Select( id => Accounts.Single( acc => acc.Context.UserId == id ).ScreenName ).ToArray() );
+			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountNamesKey,
+				accounts.Select( acc => acc.ScreenName ).ToArray() );
+			Wizard.SetProperty( AddColumnDialogViewModel.ContextsKey, accounts.Select( acc => acc.Context ).ToArray() );
 			Wizard.GotoPage( pageKey );
 		}
 

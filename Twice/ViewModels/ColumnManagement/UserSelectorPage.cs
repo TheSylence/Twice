@@ -11,10 +11,9 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class UserSelectorPage : WizardPageViewModel
 	{
-		public UserSelectorPage( WizardViewModel wizard, ITwitterContextList contextList, ITimerFactory timerFactory )
+		public UserSelectorPage( IWizardViewModel wizard, ITimerFactory timerFactory )
 			: base( wizard )
 		{
-			ContextList = contextList;
 			Timer = timerFactory.Create( 1000 );
 			Timer.Tick += Timer_Tick;
 
@@ -28,8 +27,11 @@ namespace Twice.ViewModels.ColumnManagement
 			targetAccounts.Add( userId );
 			int pageKey = 3;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
-			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey,
-				Users.Single( usr => usr.UserID == userId ).Model.GetScreenName() );
+
+			var screenNames = Wizard.GetProperty<string[]>( AddColumnDialogViewModel.TargetAccountNamesKey ).ToList();
+			var screenName = Users.Single( usr => usr.UserId == userId ).Model.GetScreenName();
+			screenNames.Add( screenName );
+			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, screenNames.ToArray() );
 			Wizard.GotoPage( pageKey );
 		}
 
@@ -38,8 +40,9 @@ namespace Twice.ViewModels.ColumnManagement
 			IsLoading = true;
 			Timer.Stop();
 
-			// FIXME: Select the correct context
-			var results = await ContextList.Contexts.First().Twitter.Users.Search( SearchText );
+			var contexts = Wizard.GetProperty<IContextEntry[]>( AddColumnDialogViewModel.ContextsKey );
+
+			var results = await contexts.First().Twitter.Users.Search( SearchText );
 			UserCollection.Clear();
 			UserCollection.AddRange( results.Select( u => new UserViewModel( u ) ) );
 
@@ -80,7 +83,6 @@ namespace Twice.ViewModels.ColumnManagement
 		}
 
 		public ICollection<UserViewModel> Users => UserCollection;
-		private readonly ITwitterContextList ContextList;
 		private readonly ITimer Timer;
 		private readonly SmartCollection<UserViewModel> UserCollection;
 

@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.ViewModels.Profile;
 
 namespace Twice.Tests.ViewModels.Profile
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class UserSubPageTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
@@ -22,7 +23,7 @@ namespace Twice.Tests.ViewModels.Profile
 				return Task.FromResult( Enumerable.Range( 1, 2 ).Cast<object>() );
 			};
 
-			var waitHandle = new ManualResetEvent( false );
+			var waitHandle = new ManualResetEventSlim( false );
 			int loadChanges = 0;
 			var page = new UserSubPage( "", loadAction, 2 );
 			page.PropertyChanged += ( s, e ) =>
@@ -40,10 +41,11 @@ namespace Twice.Tests.ViewModels.Profile
 
 			// Act
 			var temp = page.Items;
-			waitHandle.WaitOne( 1000 );
+			waitHandle.Wait( 1000 );
 			var items = page.Items.ToArray();
 
 			// Assert
+			Assert.IsNull( temp );
 			Assert.IsTrue( called );
 			Assert.AreEqual( 2, loadChanges );
 			Assert.AreEqual( 2, items.Length );
@@ -72,7 +74,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var tester = new PropertyChangedTester( page );
 
 			// Act
-			tester.Test();
+			tester.Test( nameof( UserSubPage.Dispatcher ) );
 
 			// Assert
 			tester.Verify();

@@ -16,14 +16,23 @@ namespace Twice.Models.Twitter
 
 		Task<Status> DestroyFavoriteAsync( ulong statusId );
 
+		Task<LinqToTwitter.Configuration> GetConfig();
+
+		Task LogCurrentRateLimits();
+
+		Task ReportAsSpam( ulong userId );
+
 		Task<Status> RetweetAsync( ulong statusId );
 
-		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias );
+		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo = 0 );
 
-		Task<Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
+		Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
+
+		Task<bool> VerifyCredentials();
 
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }
+		ITwitterSearchRepository Search { get; }
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }

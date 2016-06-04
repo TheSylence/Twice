@@ -25,6 +25,7 @@ namespace Twice.ViewModels.Columns
 			{
 				return true;
 			}
+
 			ulong id;
 			if( ulong.TryParse( status.User.UserIDResponse, out id ) )
 			{
@@ -44,8 +45,7 @@ namespace Twice.ViewModels.Columns
 
 		public override Icon Icon => Icon.User;
 
-		protected override Expression<Func<Status, bool>> StatusFilterExpression
-									=> s => s.Type == StatusType.User && s.UserID == UserId;
+		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Type == StatusType.User && s.UserID == UserId;
 
 		private readonly ulong UserId;
 	}

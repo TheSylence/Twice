@@ -44,4 +44,9 @@
 		<converters:InvertBool />
 		<BooleanToVisibilityConverter />
 	</converters:ConverterChain>
+
+	<converters:ConverterChain x:Key="VisibleIfGreaterZeroConv">
+		<converters:Compare Operation="Greater" CompareValue="0" />
+		<BooleanToVisibilityConverter />
+	</converters:ConverterChain>
 </ResourceDictionary>

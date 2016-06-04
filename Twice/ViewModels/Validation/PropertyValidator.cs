@@ -4,7 +4,8 @@ namespace Twice.ViewModels.Validation
 {
 	internal class PropertyValidator<TProperty> : PropertyValidatorBase
 	{
-		public PropertyValidator( Func<TProperty, bool> check, Func<bool> condition, string erorrMessage, bool isManual = false )
+		public PropertyValidator( Func<TProperty, bool> check, Func<bool> condition, string erorrMessage,
+			bool isManual = false )
 			: base( isManual )
 		{
 			Check = check;

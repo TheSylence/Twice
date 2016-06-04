@@ -12,7 +12,9 @@ namespace Twice.Converters
 		{
 			string str = value as string;
 
-			return str == null ? DependencyProperty.UnsetValue : new TweetSource( str ).Name;
+			return str == null
+				? DependencyProperty.UnsetValue
+				: new TweetSource( str ).Name;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

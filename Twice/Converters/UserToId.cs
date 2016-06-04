@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Twice.Models.Twitter;
 
 namespace Twice.Converters
 {
@@ -16,7 +17,7 @@ namespace Twice.Converters
 				return DependencyProperty.UnsetValue;
 			}
 
-			return user.UserID != 0 ? user.UserID : ulong.Parse( user.UserIDResponse );
+			return user.GetUserId();
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

@@ -1,13 +1,27 @@
+using Fody;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Twice.Utilities.Ui;
+using Twice.ViewModels.Columns;
 
 namespace Twice.ViewModels.Profile
 {
+	[ConfigureAwait( false )]
 	internal class UserSubPage : ObservableObject
 	{
+		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, Func<Task<IEnumerable<object>>> loadMoreAction, int count )
+			: this( title, loadAction, count )
+		{
+			LoadMoreAction = loadMoreAction;
+
+			ActionDispatcher = new ColumnActionDispatcher();
+			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
+		}
+
 		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, int count )
 		{
 			Title = title;
@@ -15,15 +29,36 @@ namespace Twice.ViewModels.Profile
 			LoadAction = loadAction;
 		}
 
+		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
+		{
+			IsLoading = true;
+			await Task.Run( async () => { await LoadMoreData().ContinueWith( t => { IsLoading = false; } ); } );
+		}
+
+		private async Task LoadMoreData()
+		{
+			if( LoadMoreAction != null && _Items != null )
+			{
+				var newData = await LoadMoreAction();
+
+				await Dispatcher.RunAsync( () =>
+				{
+					foreach( var item in newData )
+					{
+						_Items.Add( item );
+					}
+				} );
+			}
+		}
+
+		public IColumnActionDispatcher ActionDispatcher { get; }
 		public int Count { get; }
+		public IDispatcher Dispatcher { get; set; }
 
 		public bool IsLoading
 		{
 			[DebuggerStepThrough]
-			get
-			{
-				return _IsLoading;
-			}
+			get { return _IsLoading; }
 
 			set
 			{
@@ -37,7 +72,7 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		public List<object> Items
+		public ICollection<object> Items
 		{
 			get
 			{
@@ -46,12 +81,9 @@ namespace Twice.ViewModels.Profile
 					IsLoading = true;
 					Task.Run( async () =>
 					{
-						_Items = new List<object>( await LoadAction() );
+						_Items = new ObservableCollection<object>( await LoadAction() );
 						RaisePropertyChanged( nameof( Items ) );
-					} ).ContinueWith( t =>
-					{
-						IsLoading = false;
-					} );
+					} ).ContinueWith( t => { IsLoading = false; } );
 				}
 
 				return _Items;
@@ -61,10 +93,11 @@ namespace Twice.ViewModels.Profile
 		public string Title { get; }
 
 		private readonly Func<Task<IEnumerable<object>>> LoadAction;
+		private readonly Func<Task<IEnumerable<object>>> LoadMoreAction;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
 
-		private List<object> _Items;
+		private ObservableCollection<object> _Items;
 	}
 }

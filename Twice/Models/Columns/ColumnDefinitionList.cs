@@ -1,8 +1,9 @@
-using Newtonsoft.Json;
+using Anotar.NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Twice.Utilities;
 
 namespace Twice.Models.Columns
 {
@@ -27,11 +28,14 @@ namespace Twice.Models.Columns
 		{
 			if( !File.Exists( FileName ) )
 			{
+				LogTo.Info( "Column configuration file does not exist. Not loading any columns" );
 				return Enumerable.Empty<ColumnDefinition>();
 			}
 
 			var json = File.ReadAllText( FileName );
-			return JsonConvert.DeserializeObject<List<ColumnDefinition>>( json );
+			var loaded = Serializer.Deserialize<List<ColumnDefinition>>( json ) ?? new List<ColumnDefinition>();
+			LogTo.Info( $"Loaded {loaded.Count} columns from config" );
+			return loaded;
 		}
 
 		public void RaiseChanged()
@@ -55,10 +59,11 @@ namespace Twice.Models.Columns
 
 		public void Update( IEnumerable<ColumnDefinition> definitions )
 		{
-			var json = JsonConvert.SerializeObject( definitions.ToList(), Formatting.Indented );
+			var json = Serializer.Serialize( definitions.ToList() );
 			File.WriteAllText( FileName, json );
 		}
 
+		public ISerializer Serializer { get; set; }
 		private readonly string FileName;
 	}
 }

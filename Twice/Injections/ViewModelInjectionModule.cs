@@ -34,6 +34,7 @@ namespace Twice.Injections
 			Bind<INotificationSettings>().To<NotificationSettings>();
 
 			Bind<IComposeTweetViewModel>().To<ComposeTweetViewModel>();
+			Bind<ITwitterAuthorizer>().To<TwitterAuthorizer>();
 
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
 
@@ -44,6 +45,10 @@ namespace Twice.Injections
 			Bind<IColumnTypeSelectionDialogViewModel>().To<ColumnTypeSelectionDialogViewModel>();
 
 			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();
+			Bind<IImageDialogViewModel>().To<ImageDialogViewModel>();
+			Bind<ITweetDetailsViewModel>().To<TweetDetailsViewModel>();
+			Bind<IRetweetDialogViewModel>().To<RetweetDialogViewModel>();
+			Bind<IConfirmDialogViewModel>().To<ConfirmDialogViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

@@ -27,6 +27,6 @@ namespace Twice.ViewModels.Columns
 		public override Icon Icon { get; }
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression
-					=> s => s.Type == StatusType.Mentions && s.UserID == Context.UserId;
+			=> s => s.Type == StatusType.Mentions && s.UserID == Context.UserId;
 	}
 }

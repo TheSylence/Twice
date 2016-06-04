@@ -9,17 +9,19 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		public ColumnTypeSelectionDialogViewModel()
 		{
-			var types = new[] { ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages };
+			var types = new[] {ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages};
 
-			AvailableColumnTypes = ColumnTypeListFactory.GetItems( types ).Select( t => new ItemSelection<ColumnTypeItem>( t, true ) ).ToList();
+			AvailableColumnTypes =
+				ColumnTypeListFactory.GetItems( types ).Select( t => new ItemSelection<ColumnTypeItem>( t, true ) ).ToList();
+
+			SelectAll = true;
 		}
 
 		public ICollection<ItemSelection<ColumnTypeItem>> AvailableColumnTypes { get; }
 
 		public bool SelectAll
 		{
-			[DebuggerStepThrough]
-			get { return _SelectAll; }
+			[DebuggerStepThrough] get { return _SelectAll; }
 			set
 			{
 				if( _SelectAll == value )
@@ -32,6 +34,7 @@ namespace Twice.ViewModels.ColumnManagement
 				{
 					type.IsSelected = _SelectAll;
 				}
+
 				RaisePropertyChanged();
 			}
 		}

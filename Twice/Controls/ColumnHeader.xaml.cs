@@ -3,7 +3,7 @@
 namespace Twice.Controls
 {
 	/// <summary>
-	/// Interaction logic for ColumnHeader.xaml
+	///     Interaction logic for ColumnHeader.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class ColumnHeader

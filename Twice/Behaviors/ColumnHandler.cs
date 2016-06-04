@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,8 +19,7 @@ namespace Twice.Behaviors
 		private void Dispatcher_HeaderClicked( object sender, EventArgs e )
 		{
 			ContentPresenter itemcontainer = AssociatedObject.ItemContainerGenerator.ContainerFromIndex( 0 ) as ContentPresenter;
-			Debug.Assert( itemcontainer != null, "itemcontainer != null" );
-			itemcontainer.BringIntoView();
+			itemcontainer?.BringIntoView();
 		}
 
 		private void OnDispatcherChanged( IColumnActionDispatcher newDispatcher, IColumnActionDispatcher oldDispatcher )
@@ -37,13 +35,14 @@ namespace Twice.Behaviors
 			}
 		}
 
+		public static readonly DependencyProperty ActionDispatcherProperty =
+			DependencyProperty.Register( "ActionDispatcher", typeof(IColumnActionDispatcher), typeof(ColumnHandler),
+				new PropertyMetadata( null, OnDispatcherChanged ) );
+
 		public IColumnActionDispatcher ActionDispatcher
 		{
 			get { return (IColumnActionDispatcher)GetValue( ActionDispatcherProperty ); }
 			set { SetValue( ActionDispatcherProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ActionDispatcherProperty =
-			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnHandler ), new PropertyMetadata( null, OnDispatcherChanged ) );
 	}
 }

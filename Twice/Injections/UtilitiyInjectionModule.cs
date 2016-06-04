@@ -10,7 +10,7 @@ namespace Twice.Injections
 	internal class UtilitiyInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
@@ -19,6 +19,9 @@ namespace Twice.Injections
 			Bind<IDispatcher>().To<DispatcherHelperWrapper>().InSingletonScope();
 			Bind<IFileSystem>().To<FileSystem>();
 			Bind<ITimerFactory>().To<TimerFactory>();
+			Bind<IAppUpdaterFactory>().To<AppUpdaterFactory>();
+			Bind<IProcessStarter>().To<ProcessStarter>();
+			Bind<ISerializer>().To<Serializer>();
 		}
 	}
 }

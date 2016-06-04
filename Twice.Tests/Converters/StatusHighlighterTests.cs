@@ -1,13 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Documents;
 using Twice.Converters;
+using Twice.Models.Configuration;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class StatusHighlighterTests
 	{
 		[TestMethod, TestCategory( "Converters" )]
@@ -24,12 +30,91 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
+		public void DifferentCasingInEntitiesIsHandledCorrectly()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 5, links.Length );
+
+			Assert.AreEqual( "@spurs", ( (Run)links[0].Inlines.First() ).Text );
+			Assert.AreEqual( "@okcthunder", ( (Run)links[1].Inlines.First() ).Text );
+			Assert.AreEqual( "#PhantomCam", ( (Run)links[2].Inlines.First() ).Text );
+			Assert.AreEqual( "#SPURSvTHUNDER", ( (Run)links[3].Inlines.First() ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void EmojiDoesNotBreakEntities()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_emoji.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( status, null, null, null );
+
+			// Assert
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
+			Assert.AreEqual( "Jetzt seid Ihr gefragt: Stimmt für Euren Pokalhelden ab! 🏆⚽ ", ( (Run)inlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[1], typeof( Hyperlink ) ); // #FCB
+			var linkInlines = ( (Hyperlink)inlines[1] ).Inlines.ToArray();
+			Assert.AreEqual( "#FCB", ( (Run)linkInlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[2], typeof( Run ) );
+			Assert.AreEqual( " ", ( (Run)inlines[2] ).Text );
+
+			Assert.IsInstanceOfType( inlines[3], typeof( Hyperlink ) ); // #BVB
+			linkInlines = ( (Hyperlink)inlines[3] ).Inlines.ToArray();
+			Assert.AreEqual( "#BVB", ( (Run)linkInlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[4], typeof( Run ) );
+			Assert.AreEqual( " ", ( (Run)inlines[4] ).Text );
+
+			Assert.IsInstanceOfType( inlines[5], typeof( Hyperlink ) ); // #WalkofFame
+			linkInlines = ( (Hyperlink)inlines[5] ).Inlines.ToArray();
+			Assert.AreEqual( "#WalkofFame", ( (Run)linkInlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[6], typeof( Run ) );
+			Assert.AreEqual( " ", ( (Run)inlines[6] ).Text );
+
+			Assert.IsInstanceOfType( inlines[7], typeof( Hyperlink ) ); // Link
+			linkInlines = ( (Hyperlink)inlines[7] ).Inlines.ToArray();
+			Assert.AreEqual( "on.sport1.de/20ZXKa8", ( (Run)linkInlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[8], typeof( Run ) );
+			Assert.AreEqual( " ", ( (Run)inlines[8] ).Text );
+
+			Assert.IsInstanceOfType( inlines[9], typeof( Hyperlink ) ); // Image
+			linkInlines = ( (Hyperlink)inlines[9] ).Inlines.ToArray();
+			Assert.AreEqual( "pic.twitter.com/JPRZdM31ha", ( (Run)linkInlines[0] ).Text );
+
+			Assert.AreEqual( 10, inlines.Length );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
 		public void EntitiesAtEndAreCorrectlyEmbedded()
 		{
 			// Arrange
 			var conv = new StatusHighlighter();
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UserMentionEntities.Add( new LinqToTwitter.UserMentionEntity
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity
 			{
 				ScreenName = "Testi",
 				Name = "Test name",
@@ -58,7 +143,7 @@ namespace Twice.Tests.Converters
 			// Arrange
 			var conv = new StatusHighlighter();
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UserMentionEntities.Add( new LinqToTwitter.UserMentionEntity
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity
 			{
 				ScreenName = "Testi",
 				Name = "Test name",
@@ -97,6 +182,29 @@ namespace Twice.Tests.Converters
 			Assert.AreEqual( 1, inlines.Length );
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( content, ( (Run)inlines[0] ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void NonStandardMentionSignIsHandledCorrectly()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_unicodemention.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = true } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 3, inlines.Length );
+
+			Assert.AreEqual( 1, links.Length );
+			Assert.AreEqual( "@BVB", ( (Run)links[0].Inlines.First() ).Text );
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
