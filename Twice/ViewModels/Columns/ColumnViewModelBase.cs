@@ -217,12 +217,15 @@ namespace Twice.ViewModels.Columns
 
 		private async void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
 		{
-			var status = StatusCollection.SingleOrDefault( s => s.Id == e.Id );
-			if( status != null )
+			// Yes the same id shouldn't be there more than once, but this happens sometimes.
+			// so delete all statuses that match the id.
+			var toDelete = StatusCollection.Where( s => s.Id == e.Id ).ToArray();
+			foreach( var status in toDelete )
 			{
 				await Dispatcher.RunAsync( () => StatusCollection.Remove( status ) );
-				await Cache.RemoveStatus( e.Id );
 			}
+
+			await Cache.RemoveStatus( e.Id );
 		}
 
 		private async void Parser_StatusReceived( object sender, StatusStreamEventArgs e )
