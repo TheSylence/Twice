@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace Twice.ViewModels.Validation
 {
-	internal abstract class ValidationViewModel : ViewModelBaseEx, INotifyDataErrorInfo, IPropertyValidatorContainer
+	internal abstract class ValidationViewModel : ViewModelBaseEx, INotifyDataErrorInfo, IPropertyValidatorContainer, IValidationViewModel
 	{
 		public void ClearValidationErrors()
 		{

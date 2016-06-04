@@ -79,26 +79,6 @@
 				<Setter Property="ResizeMode" Value="NoResize" />
 			</Style>
 
-			<Style TargetType="controls:MetroWindow" x:Key="DefaultDialogStyle" BasedOn="{StaticResource DialogStyle}">
-				<Setter Property="ContentTemplate">
-					<Setter.Value>
-						<DataTemplate DataType="viewModels:IDialogViewModel">
-							<DockPanel Margin="10">
-								<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
-									<Button Content="{lex:Loc Ok}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
-										Style="{DynamicResource MaterialDesignFlatButton}" />
-									<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
-										Margin="5"  Style="{DynamicResource MaterialDesignFlatButton}" />
-								</StackPanel>
-								<TextBlock Text="{Binding Title}" DockPanel.Dock="Top" Margin="10" />
-
-								<ContentPresenter Content="{TemplateBinding Content}" Margin="5" />
-							</DockPanel>
-						</DataTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-
 			<Style TargetType="Hyperlink">
 				<Setter Property="TextDecorations" Value="{x:Null}" />
 				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />

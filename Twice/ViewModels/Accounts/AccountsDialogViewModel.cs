@@ -2,6 +2,7 @@
 using LinqToTwitter;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -21,7 +22,7 @@ namespace Twice.ViewModels.Accounts
 			ColumnList = columnList;
 			Authorizer = authorizer;
 
-			AddedAccounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			AddedAccounts = new ObservableCollection<AccountEntry>( ContextList.Contexts.Select( c => new AccountEntry( c ) ) );
 			foreach( var acc in AddedAccounts )
 			{
 				acc.ConfirmationChanged += Acc_ConfirmationChanged;
@@ -47,7 +48,7 @@ namespace Twice.ViewModels.Accounts
 			PinEntryCancelled = new CancellationTokenSource();
 
 			var result = await Authorizer.Authorize( DisplayPinPage, GetPinFromUser, PinEntryCancelled.Token );
-			var accountData = result.Data;
+			var accountData = result?.Data;
 			if( accountData != null )
 			{
 				if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )
@@ -61,9 +62,14 @@ namespace Twice.ViewModels.Accounts
 						accountData.ImageUrl = twitterUser.ProfileImageUrlHttps.Replace( "_normal", "" );
 					}
 
+					if( ContextList.Contexts.Count == 0 )
+					{
+						accountData.IsDefault = true;
+					}
 					ContextList.AddContext( accountData );
 
-					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId );
+					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId )
+									?? new ColumnDefinition[0];
 					if( newColumns.Any() )
 					{
 						ColumnList.AddColumns( newColumns );

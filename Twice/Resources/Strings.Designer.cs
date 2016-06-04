@@ -232,6 +232,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Case sensitive.
+        /// </summary>
+        public static string CaseSensitive {
+            get {
+                return ResourceManager.GetString("CaseSensitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string Change {
@@ -1150,6 +1159,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a value.
         /// </summary>
         public static string SelectAValue {
@@ -1452,6 +1470,15 @@ namespace Twice.Resources {
         public static string ViewConversation {
             get {
                 return ResourceManager.GetString("ViewConversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit Twice on GitHub.
+        /// </summary>
+        public static string VisitTwiceOnGithub {
+            get {
+                return ResourceManager.GetString("VisitTwiceOnGithub", resourceCulture);
             }
         }
         

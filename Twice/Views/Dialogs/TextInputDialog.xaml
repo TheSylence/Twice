@@ -7,21 +7,32 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             mc:Ignorable="d" Style="{StaticResource DefaultDialogStyle}" WindowStartupLocation="CenterOwner"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com" SizeToContent="Height"
+             mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
 			  DataContext="{Binding TextInput, Source={StaticResource DialogLocator}}"
-			Width="400" Height="250" d:DesignHeight="300" d:DesignWidth="300">
+			Width="350" Height="250" d:DesignHeight="300" d:DesignWidth="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
 
-		<TextBlock Text="{Binding Label}" Grid.Row="0" />
-		<TextBox Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" />
-	</Grid>
+	<DockPanel Margin="10">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
+			<Button Content="{lex:Loc Ok}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
+										Style="{DynamicResource MaterialDesignFlatButton}" />
+			<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
+										Margin="5" Style="{DynamicResource MaterialDesignFlatButton}" />
+		</StackPanel>
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<TextBlock Text="{Binding Label}" Grid.Row="0" TextWrapping="Wrap" Margin="5" />
+			<TextBox Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="5" />
+		</Grid>
+	</DockPanel>
 </controls:MetroWindow>
