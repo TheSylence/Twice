@@ -48,7 +48,7 @@ namespace Twice.ViewModels.Accounts
 			PinEntryCancelled = new CancellationTokenSource();
 
 			var result = await Authorizer.Authorize( DisplayPinPage, GetPinFromUser, PinEntryCancelled.Token );
-			var accountData = result.Data;
+			var accountData = result?.Data;
 			if( accountData != null )
 			{
 				if( ContextList.Contexts.All( c => c.UserId != accountData.UserId ) )

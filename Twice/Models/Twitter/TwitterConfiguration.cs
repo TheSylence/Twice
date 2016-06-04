@@ -23,10 +23,13 @@ namespace Twice.Models.Twitter
 			if( currentConfig == null )
 			{
 				LogTo.Info( "No current config cached. Fetching from server" );
-				var ctx = ContextList.Contexts.First();
-				currentConfig = await ctx.Twitter.GetConfig();
+				var ctx = ContextList.Contexts.FirstOrDefault();
 
-				await Cache.SaveTwitterConfig( currentConfig );
+				if( ctx != null )
+				{
+					currentConfig = await ctx.Twitter.GetConfig();
+					await Cache.SaveTwitterConfig( currentConfig );
+				}
 			}
 			else
 			{
