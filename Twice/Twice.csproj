@@ -418,6 +418,7 @@
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
+    <Compile Include="ViewModels\Validation\IValidationViewModel.cs" />
     <Compile Include="ViewModels\ValueDescription.cs" />
     <Compile Include="ViewModels\Wizards\IWizardViewModel.cs" />
     <Compile Include="ViewModels\Wizards\WizardPageViewModel.cs" />

@@ -140,6 +140,7 @@ namespace Twice.Services.Views
 			{
 				vm.Label = label;
 				vm.Input = input ?? string.Empty;
+				vm.ClearValidationErrors();
 			};
 
 			return ShowWindowSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup );
