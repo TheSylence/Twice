@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.4.1",
+        "Date": "2016-06-04",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed crash when Twitter reported a status deletion in realtime streaming"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.4.0",
         "Date": "2016-06-04",
         "Description": "",

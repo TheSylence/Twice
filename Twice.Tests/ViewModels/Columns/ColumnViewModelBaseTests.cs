@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +43,39 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.IsTrue( raised );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ParserDeletionDoesNotCrashIfStatusIsContainedMultipleTimes()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.StatusID = status.ID = 1234;
+			var s1 = new StatusViewModel( status, context.Object, config.Object, null );
+			vm.Statuses.Add( s1 );
+
+			status = DummyGenerator.CreateDummyStatus();
+			status.StatusID = status.ID = 1234;
+			var s2 = new StatusViewModel( status, context.Object, config.Object, null );
+			vm.Statuses.Add( s2 );
+
+			var deleteArgs = new DeleteStreamEventArgs( "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}" );
+
+			// Act
+			parser.Raise( e => e.StatusDeleted += null, deleteArgs );
+
+			// Assert
+			Assert.IsFalse( vm.Statuses.Any( s => s.Id == 1234 ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
