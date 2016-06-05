@@ -79,6 +79,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accounts.
         /// </summary>
         public static string Accounts {
@@ -277,11 +286,29 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click finish to add this column.
+        /// </summary>
+        public static string ClickFinishToAddColumn {
+            get {
+                return ResourceManager.GetString("ClickFinishToAddColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click to remove.
         /// </summary>
         public static string ClickToRemove {
             get {
                 return ResourceManager.GetString("ClickToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column.
+        /// </summary>
+        public static string Column {
+            get {
+                return ResourceManager.GetString("Column", resourceCulture);
             }
         }
         
@@ -345,6 +372,15 @@ namespace Twice.Resources {
         public static string ConfirmTweet {
             get {
                 return ResourceManager.GetString("ConfirmTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to clipboard.
+        /// </summary>
+        public static string CopyToClipboard {
+            get {
+                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
             }
         }
         
@@ -979,6 +1015,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open in web.
+        /// </summary>
+        public static string OpenInWeb {
+            get {
+                return ResourceManager.GetString("OpenInWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Options.
         /// </summary>
         public static string Options {
@@ -1146,6 +1191,15 @@ namespace Twice.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search user.
+        /// </summary>
+        public static string SearchUser {
+            get {
+                return ResourceManager.GetString("SearchUser", resourceCulture);
             }
         }
         

@@ -40,9 +40,9 @@
 		<DockPanel Dock="Bottom">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="5">
 				<Button Content="{lex:Loc Save}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
-										Style="{DynamicResource MaterialDesignFlatButton}" />
+										Style="{DynamicResource MaterialDesignRaisedButton}" />
 				<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
-										Margin="5"  Style="{DynamicResource MaterialDesignFlatButton}" />
+										Margin="5"  Style="{DynamicResource MaterialDesignRaisedButton}" />
 			</StackPanel>
 		</DockPanel>
 

@@ -79,7 +79,7 @@
 												<StackPanel Orientation="Vertical">
 													<Image Source="{Binding Image}" Width="72" Height="72" Margin="5" />
 
-													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignFlatButton}"
+													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignRaisedButton}"
 															Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}"
 															CommandParameter="{Binding Context.UserId}" />
 												</StackPanel>
@@ -177,13 +177,13 @@
 									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition />
 								</Grid.ColumnDefinitions>
-								<TextBlock Text="{lex:Loc Account}" FontWeight="Bold" />
-								<TextBlock Text="{Binding SourceAccount}" Grid.Column="1" />
+								<TextBlock Text="{lex:Loc Account}" FontWeight="Bold" Margin="5" />
+								<TextBlock Text="{Binding SourceAccount}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
 
-								<TextBlock Text="{lex:Loc Column}" FontWeight="Bold" Grid.Row="1" />
-								<TextBlock Text="{Binding ColumnTypeDescription}" Grid.Column="1" Grid.Row="1" />
+								<TextBlock Text="{lex:Loc Column}" FontWeight="Bold" Margin="5" Grid.Row="1" Grid.Column="0" />
+								<TextBlock Text="{Binding ColumnTypeDescription}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
 
-								<TextBlock Text="{lex:Loc ClickFinishToAddColumn}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+								<TextBlock Text="{lex:Loc ClickFinishToAddColumn}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" />
 							</Grid>
 						</DataTemplate>
 					</views:GenericDataTemplateSelectorItem>

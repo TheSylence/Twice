@@ -19,8 +19,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 			SetProperty( SourceAccountsKey, new ulong[0] );
 			SetProperty( TargetAccountsKey, new ulong[0] );
-			SetProperty( SourceAccountNamesKey, string.Empty );
-			SetProperty( TargetAccountNamesKey, string.Empty );
+			SetProperty( SourceAccountNamesKey, new string[0] );
+			SetProperty( TargetAccountNamesKey, new string[0] );
 			SetProperty( ContextsKey, new IContextEntry[0] );
 
 			CurrentPage = Pages[0];
