@@ -9,6 +9,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Title="{lex:Loc ImageViewer}" Style="{StaticResource DialogStyle}"
 		Padding="30" WindowStartupLocation="CenterOwner"
 		DataContext="{Binding Image, Source={StaticResource DialogLocator}}"
@@ -18,15 +19,29 @@
 		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
-	<Grid>
-		<controls:FlipView ItemsSource="{Binding Images}" BannerText="{Binding SelectedImage.Title}"
-						   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						   MouseOverGlowEnabled="False">
+	<DockPanel>
+		<StackPanel Orientation="Horizontal" Margin="5" DockPanel.Dock="Bottom">
+			<Button ToolTip="{lex:Loc CopyToClipboard}" Style="{StaticResource MaterialDesignToolForegroundButton}"
+					Command="{Binding CopyToClipboardCommand}">
+				<materialDesign:PackIcon Kind="ClipboardText" />
+			</Button>
+			<Button ToolTip="{lex:Loc OpenInWeb}" Style="{StaticResource MaterialDesignToolForegroundButton}"
+					Command="{Binding OpenImageCommand}">
+				<materialDesign:PackIcon Kind="Web"/>
+			</Button>
+			
+			<TextBox IsReadOnly="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                BorderThickness="0" FontFamily="Courier New" FontWeight="Bold"
+				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap" />
+		</StackPanel>
+
+		<controls:FlipView ItemsSource="{Binding Images}" MouseOverGlowEnabled="False" IsBannerEnabled="False"
+						   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 			<controls:FlipView.ItemTemplate>
 				<DataTemplate DataType="dialogs:ImageEntry">
 					<Image Source="{Binding ImageUrl}" />
 				</DataTemplate>
 			</controls:FlipView.ItemTemplate>
 		</controls:FlipView>
-	</Grid>
+	</DockPanel>
 </controls:MetroWindow>

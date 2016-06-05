@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -7,7 +8,9 @@ namespace Twice.ViewModels.Dialogs
 	{
 		void SetImages( IEnumerable<Uri> urls );
 
+		ICommand CopyToClipboardCommand { get; }
 		ICollection<ImageEntry> Images { get; }
+		ICommand OpenImageCommand { get; }
 		ImageEntry SelectedImage { get; set; }
 	}
 }

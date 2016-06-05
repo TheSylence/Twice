@@ -17,6 +17,68 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		private async void ExecuteFollowUserCommand()
+		{
+			await Context.Twitter.Users.FollowUser( User.UserId );
+
+			if( Friendship?.TargetRelationship?.FollowedBy != null )
+			{
+				Friendship.TargetRelationship.FollowedBy = true;
+				RaisePropertyChanged( nameof( Friendship ) );
+			}
+		}
+
+		private async void ExecuteUnfollowUserCommand()
+		{
+			await Context.Twitter.Users.UnfollowUser( User.UserId );
+
+			if( Friendship?.TargetRelationship?.FollowedBy != null )
+			{
+				Friendship.TargetRelationship.FollowedBy = false;
+				RaisePropertyChanged( nameof( Friendship ) );
+			}
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowers()
+		{
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowings()
+		{
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadMoreStatuses()
+		{
+			return await LoadStatuses( MaxId );
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses( ulong? maxId )
+		{
+			var newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, 0, maxId ?? 0 );
+
+			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
+				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
+
+			if( statuses.Any() )
+			{
+				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
+
+				await Task.WhenAll( statuses.Select( s => s.LoadQuotedTweet() ) );
+			}
+			return statuses;
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses()
+		{
+			return await LoadStatuses( null );
+		}
+
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 )
@@ -64,56 +126,6 @@ namespace Twice.ViewModels.Profile
 			ProfileId = profileId;
 		}
 
-		private async void ExecuteFollowUserCommand()
-		{
-			await Context.Twitter.Users.FollowUser( User.UserId );
-		}
-
-		private async void ExecuteUnfollowUserCommand()
-		{
-			await Context.Twitter.Users.UnfollowUser( User.UserId );
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowers()
-		{
-			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowings()
-		{
-			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadMoreStatuses()
-		{
-			return await LoadStatuses( MaxId );
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses( ulong? maxId )
-		{
-			var newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, 0, maxId ?? 0 );
-
-			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
-				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
-
-			if( statuses.Any() )
-			{
-				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
-
-				await Task.WhenAll( statuses.Select( s => s.LoadQuotedTweet() ) );
-			}
-			return statuses;
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses()
-		{
-			return await LoadStatuses( null );
-		}
-
 		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
 			ExecuteFollowUserCommand ) );
 
@@ -147,9 +159,6 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		public ICommand UnfollowUserCommand => _UnfollowUserCommand ?? ( _UnfollowUserCommand = new RelayCommand(
 			ExecuteUnfollowUserCommand ) );
 
@@ -169,15 +178,22 @@ namespace Twice.ViewModels.Profile
 		}
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
+
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		private RelayCommand _FollowUserCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private Friendship _Friendship;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsBusy;
 
 		private RelayCommand _UnfollowUserCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private UserViewModel _User;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong MaxId = ulong.MaxValue;

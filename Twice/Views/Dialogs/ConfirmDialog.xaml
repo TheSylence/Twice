@@ -19,9 +19,9 @@
     <DockPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
 			<Button Content="{lex:Loc Yes}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
-										Style="{DynamicResource MaterialDesignFlatButton}" />
+										Style="{DynamicResource MaterialDesignRaisedButton}" />
 			<Button Content="{lex:Loc No}" IsCancel="True" Command="{Binding CancelCommand}"
-										Margin="5"  Style="{DynamicResource MaterialDesignFlatButton}" />
+										Margin="5"  Style="{DynamicResource MaterialDesignRaisedButton}" />
 		</StackPanel>
 
 		<TextBlock Text="{Binding Label}" Margin="5" TextWrapping="Wrap" />

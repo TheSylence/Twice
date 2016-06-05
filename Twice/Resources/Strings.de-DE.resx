@@ -600,4 +600,22 @@
   <data name="CaseSensitive" xml:space="preserve">
     <value>Groß-/Kleinschreibung beachten</value>
   </data>
+  <data name="OpenInWeb" xml:space="preserve">
+    <value>Im Web öffnen</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
+  </data>
+  <data name="SearchUser" xml:space="preserve">
+    <value>Nach Benutzer suchen</value>
+  </data>
+  <data name="ClickFinishToAddColumn" xml:space="preserve">
+    <value>Auf Fertig klicken um diese Spalte hinzuzufügen</value>
+  </data>
+  <data name="Column" xml:space="preserve">
+    <value>Spalte</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
 </root>

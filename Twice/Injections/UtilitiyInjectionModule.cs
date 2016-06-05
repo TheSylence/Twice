@@ -22,6 +22,7 @@ namespace Twice.Injections
 			Bind<IAppUpdaterFactory>().To<AppUpdaterFactory>();
 			Bind<IProcessStarter>().To<ProcessStarter>();
 			Bind<ISerializer>().To<Serializer>();
+			Bind<IClipboard>().To<ClipboardWrapper>();
 		}
 	}
 }

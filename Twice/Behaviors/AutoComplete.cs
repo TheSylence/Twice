@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -8,6 +7,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
@@ -38,6 +39,9 @@ namespace Twice.Behaviors
 		protected override void OnAttached()
 		{
 			base.OnAttached();
+
+			AutoCompleteBox.Background = (Brush)Application.Current.FindResource( "MaterialDesignPaper" );
+			AutoCompleteBox.Foreground = (Brush)Application.Current.FindResource( "MaterialDesignBody" );
 
 			AssociatedObject.PreviewTextInput += AssociatedObject_TextInput;
 			AutoCompletePopup.PlacementTarget = AssociatedObject;
