@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using Twice.Utilities.Os;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -10,6 +14,16 @@ namespace Twice.ViewModels.Dialogs
 		public ImageDialogViewModel()
 		{
 			Images = new ObservableCollection<ImageEntry>();
+		}
+
+		private void ExecuteCopyToClipboardCommand()
+		{
+			Clipboard.SetText( SelectedImage.ImageUrl.AbsoluteUri );
+		}
+
+		private void ExecuteOpenImageCommand()
+		{
+			ProcessStarter.Start( SelectedImage.ImageUrl.AbsoluteUri );
 		}
 
 		public void SetImages( IEnumerable<Uri> urls )
@@ -21,12 +35,17 @@ namespace Twice.ViewModels.Dialogs
 			}
 		}
 
+		public ICommand CopyToClipboardCommand
+			=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand( ExecuteCopyToClipboardCommand ) );
+
 		public ICollection<ImageEntry> Images { get; }
+
+		public ICommand OpenImageCommand
+			=> _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand( ExecuteOpenImageCommand ) );
 
 		public ImageEntry SelectedImage
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedImage; }
+			[DebuggerStepThrough] get { return _SelectedImage; }
 			set
 			{
 				if( _SelectedImage == value )
@@ -38,6 +57,15 @@ namespace Twice.ViewModels.Dialogs
 				RaisePropertyChanged();
 			}
 		}
+
+		[Inject]
+		public IClipboard Clipboard { get; set; }
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CopyToClipboardCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _OpenImageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private ImageEntry _SelectedImage;

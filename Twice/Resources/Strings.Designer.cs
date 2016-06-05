@@ -349,6 +349,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy to clipboard.
+        /// </summary>
+        public static string CopyToClipboard {
+            get {
+                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy tweet.
         /// </summary>
         public static string CopyTweet {
@@ -975,6 +984,15 @@ namespace Twice.Resources {
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open in web.
+        /// </summary>
+        public static string OpenInWeb {
+            get {
+                return ResourceManager.GetString("OpenInWeb", resourceCulture);
             }
         }
         

@@ -6,7 +6,8 @@
         "NewFeatures": [ ],
         "Changes": [
             "'Reply to all' is now enabled for every tweet",
-            "Own username is not used in reply when using 'Reply to all'"
+            "Own username is not used in reply when using 'Reply to all'",
+            "Image URL can now be copied from image viewer dialog"
         ],
         "Fixes": [
             "Fixed crash when trying to retweet a protected user's tweet",

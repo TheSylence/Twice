@@ -600,4 +600,10 @@
   <data name="CaseSensitive" xml:space="preserve">
     <value>Groß-/Kleinschreibung beachten</value>
   </data>
+  <data name="OpenInWeb" xml:space="preserve">
+    <value>Im Web öffnen</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
+  </data>
 </root>

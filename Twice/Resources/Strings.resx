@@ -600,4 +600,10 @@
   <data name="CaseSensitive" xml:space="preserve">
     <value>Case sensitive</value>
   </data>
+  <data name="OpenInWeb" xml:space="preserve">
+    <value>Open in web</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
 </root>
