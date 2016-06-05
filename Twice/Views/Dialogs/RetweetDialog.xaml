@@ -22,7 +22,7 @@
 		<DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
 				<StackPanel.Resources>
-					<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+					<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
 						<Setter Property="Margin" Value="5" />
 						<Setter Property="MinWidth" Value="75" />
 					</Style>
