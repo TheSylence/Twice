@@ -606,4 +606,16 @@
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copy to clipboard</value>
   </data>
+  <data name="SearchUser" xml:space="preserve">
+    <value>Search user</value>
+  </data>
+  <data name="ClickFinishToAddColumn" xml:space="preserve">
+    <value>Click finish to add this column</value>
+  </data>
+  <data name="Column" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
 </root>
