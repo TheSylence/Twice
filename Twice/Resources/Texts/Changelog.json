@@ -11,7 +11,8 @@
         ],
         "Fixes": [
             "Fixed crash when trying to retweet a protected user's tweet",
-            "Fixed crash when trying to add a user column"
+            "Fixed crash when trying to add a user column",
+            "(un)following a user now updates the (un)follow button immediately"
         ],
         "Issues": [ ]
     },
