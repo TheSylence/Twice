@@ -480,7 +480,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void ReplyToAllNeedsAtLeastTwoUsers()
+		public void ReplyToAllIsAlwaysEnabled()
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
@@ -502,7 +502,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			bool multiple = vm.ReplyToAllCommand.CanExecute( null );
 
 			// Assert
-			Assert.IsFalse( single );
+			Assert.IsTrue( single );
 			Assert.IsTrue( multiple );
 		}
 

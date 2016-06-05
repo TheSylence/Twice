@@ -109,7 +109,7 @@ namespace Twice.ViewModels.Twitter
 			};
 			userIds.AddRange( Model.Entities.UserMentionEntities.Select( m => m.Id ) );
 
-			return userIds.Distinct().Count() > 1;
+			return userIds.Any();
 		}
 
 		private bool CanExecuteReportSpamCommand()

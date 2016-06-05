@@ -4,7 +4,10 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [ ],
-        "Changes": [ ],
+        "Changes": [
+            "'Reply to all' is now enabled for every tweet",
+            "Own username is not used in reply when using 'Reply to all'"
+        ],
         "Fixes": [
             "Fixed crash when trying to retweet a protected user's tweet",
             "Fixed crash when trying to add a user column"
