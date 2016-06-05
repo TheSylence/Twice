@@ -6,7 +6,8 @@
         "NewFeatures": [ ],
         "Changes": [ ],
         "Fixes": [
-            "Fixed crash when trying to retweet a protected user's tweet"
+            "Fixed crash when trying to retweet a protected user's tweet",
+            "Fixed crash when trying to add a user column"
         ],
         "Issues": [ ]
     },
