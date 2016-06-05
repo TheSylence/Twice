@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -45,6 +46,17 @@ namespace Twice.ViewModels.Twitter
 			RetweetedBy = new SmartCollection<UserViewModel>();
 		}
 
+		public ulong ExtractQuotedTweetUrl()
+		{
+			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
+			if( quoteUrl == null )
+			{
+				return 0;
+			}
+
+			return TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
+		}
+
 		public async Task LoadQuotedTweet()
 		{
 			var quoteId = ExtractQuotedTweetUrl();
@@ -58,17 +70,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public ulong ExtractQuotedTweetUrl()
-		{
-			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
-			if( quoteUrl == null )
-			{
-				return 0;
-			}
-
-			return TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
-		}
-
 		public async Task LoadRetweets()
 		{
 			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.GetStatusId(), Constants.Gui.MaxRetweets );
@@ -76,6 +77,17 @@ namespace Twice.ViewModels.Twitter
 			var users = retweeters.Select( rt => new UserViewModel( rt ) );
 
 			RetweetedBy.AddRange( users );
+		}
+
+		public void RetweetStatus( ITwitterContext context )
+		{
+			ExecAsync( async () =>
+			{
+				await context.RetweetAsync( Model.GetStatusId() );
+
+				Model.Retweeted = true;
+				RaisePropertyChanged( nameof( IsRetweeted ) );
+			}, Strings.RetweetedStatus );
 		}
 
 		private bool CanExecuteBlockUserCommand()
@@ -113,14 +125,34 @@ namespace Twice.ViewModels.Twitter
 		private void ExecAsync( Action action, string message = null, NotificationType type = NotificationType.Information )
 		{
 			IsLoading = true;
-			Task.Run( action ).ContinueWith( t => { Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false ); } ).ContinueWith(
-				t =>
+			Task.Run( () =>
+			{
+				try
 				{
-					if( !string.IsNullOrWhiteSpace( message ) )
-					{
-						Context.Notifier.DisplayMessage( message, type );
-					}
-				} );
+					action();
+					return null;
+				}
+				catch( TwitterQueryException ex )
+				{
+					LogTo.WarnException( "Failed to retweet status", ex );
+					return ex.Message;
+				}
+			} ).ContinueWith( t =>
+			{
+				Dispatcher.CheckBeginInvokeOnUI( () => IsLoading = false );
+				return t.Result;
+			} ).ContinueWith( t =>
+			{
+				var err = t.Result;
+				if( !string.IsNullOrWhiteSpace( err ) )
+				{
+					Context.Notifier.DisplayMessage( err, NotificationType.Error );
+				}
+				else if( !string.IsNullOrWhiteSpace( message ) )
+				{
+					Context.Notifier.DisplayMessage( message, type );
+				}
+			} );
 		}
 
 		private void ExecuteBlockUserCommand()
@@ -186,17 +218,6 @@ namespace Twice.ViewModels.Twitter
 		private void ExecuteReportSpamCommand()
 		{
 			ExecAsync( async () => { await Context.Twitter.ReportAsSpam( Model.User.GetUserId() ); }, Strings.TweetReportedAsSpam );
-		}
-
-		public void RetweetStatus( ITwitterContext context )
-		{
-			ExecAsync( async () =>
-			{
-				await Context.Twitter.RetweetAsync( Model.GetStatusId() );
-
-				Model.Retweeted = true;
-				RaisePropertyChanged( nameof( IsRetweeted ) );
-			}, Strings.RetweetedStatus );
 		}
 
 		private async void ExecuteRetweetStatusCommand()
