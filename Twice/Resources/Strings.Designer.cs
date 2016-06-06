@@ -628,7 +628,7 @@ namespace Twice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Follow @TwiceApp on twitter.
+        ///   Looks up a localized string similar to Follow @TwiceApp on Twitter.
         /// </summary>
         public static string FollowTwiceAppOnTwitter {
             get {

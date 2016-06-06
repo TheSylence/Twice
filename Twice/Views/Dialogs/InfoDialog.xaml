@@ -41,10 +41,8 @@
 				<StackPanel Orientation="Horizontal">
 					<materialDesign:PackIcon Kind="TwitterCircle" Width="24" Height="24" Margin="5" />
 					<ContentControl VerticalAlignment="Center">
-						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-							<Hyperlink.CommandParameter>
-								<sys:Uri>https://twitter.com/TwiceApp</sys:Uri>
-							</Hyperlink.CommandParameter>
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+							<Hyperlink.CommandParameter>719870676216233984</Hyperlink.CommandParameter>
 							<TextBlock Text="{lex:Loc FollowTwiceAppOnTwitter}" />
 						</Hyperlink>
 					</ContentControl>
@@ -67,10 +65,8 @@
 							   VerticalAlignment="Center" />
 				</StackPanel>
 				<ContentControl Margin="15,0">
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-						<Hyperlink.CommandParameter>
-							<sys:Uri>https://twitter.com/TheSylence</sys:Uri>
-						</Hyperlink.CommandParameter>
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+						<Hyperlink.CommandParameter>333290820</Hyperlink.CommandParameter>
 						<TextBlock Text="Matthias Specht (@TheSylence)" />
 					</Hyperlink>
 				</ContentControl>
@@ -81,11 +77,8 @@
 							   VerticalAlignment="Center" />
 				</StackPanel>
 				<ContentControl Margin="15,0">
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
-							   NavigateUri="{Binding CommandParameter, RelativeSource={RelativeSource Self}}">
-						<Hyperlink.CommandParameter>
-							<sys:Uri>https://twitter.com/FemmeNoireOnYT</sys:Uri>
-						</Hyperlink.CommandParameter>
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+						<Hyperlink.CommandParameter>548023302</Hyperlink.CommandParameter>
 						<TextBlock Text="@FemmeNoireOnYT" />
 					</Hyperlink>
 				</ContentControl>

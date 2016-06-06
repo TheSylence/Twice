@@ -7,7 +7,8 @@
             "Window position and size is now saved between application launches"
         ],
         "Changes": [
-            "Dialog windows can now be dragged using the mouse"
+            "Dialog windows can now be dragged using the mouse",
+            "Links to Twitter users in Info-Dialog now open inside the app"
         ],
         "Fixes": [],
         "Issues": []
