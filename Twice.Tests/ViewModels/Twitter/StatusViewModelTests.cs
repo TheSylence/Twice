@@ -1,14 +1,14 @@
-﻿using LinqToTwitter;
-using LitJson;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
@@ -119,6 +119,40 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ExecAsyncDisplaysErrorMessage()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEventSlim( false );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.RetweetAsync( It.IsAny<ulong>() ) ).Throws( new TwitterQueryException( "Error Message" ) );
+			context.Setup( c => c.Notifier.DisplayMessage( "Error Message", NotificationType.Error ) ).Verifiable();
+
+			var vm = new StatusViewModel( status, context.Object, null, null );
+
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( StatusViewModel.IsLoading ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			vm.Dispatcher = new SyncDispatcher();
+
+			// Act
+			vm.RetweetStatus( context.Object.Twitter );
+
+			bool wasSet = waitHandle.Wait( 1000 );
+			Thread.Sleep( 50 );
+
+			// Assert
+			Assert.IsTrue( wasSet );
+			context.Verify( c => c.Notifier.DisplayMessage( "Error Message", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ExtendedMediasAreIncludedInInlineMedias()
 		{
 			// Arrange
@@ -128,7 +162,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig { InlineMedia = true };
+			var visualConfig = new VisualConfig {InlineMedia = true};
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 			var vm = new StatusViewModel( status, context.Object, config.Object, null );
 
@@ -238,12 +272,12 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1", ID = 1 } );
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2", ID = 2 } );
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3", ID = 3 } );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig { InlineMedia = true };
+			var visualConfig = new VisualConfig {InlineMedia = true};
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			// Act
@@ -265,12 +299,12 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/1" } );
-			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/2" } );
-			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/3" } );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/1"} );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/2"} );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/3"} );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig { InlineMedia = true };
+			var visualConfig = new VisualConfig {InlineMedia = true};
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			var extractorRepo = new Mock<IMediaExtractorRepository>();
@@ -302,12 +336,12 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/1", ID = 1 } );
-			status.Entities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/2", ID = 2 } );
-			status.ExtendedEntities.MediaEntities.Add( new MediaEntity { MediaUrlHttps = "https://example.com/3", ID = 3 } );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/1", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/2", ID = 2} );
+			status.ExtendedEntities.MediaEntities.Add( new MediaEntity {MediaUrlHttps = "https://example.com/3", ID = 3} );
 
 			var config = new Mock<IConfig>();
-			var visualConfig = new VisualConfig { InlineMedia = true };
+			var visualConfig = new VisualConfig {InlineMedia = true};
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			// Act
@@ -416,7 +450,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://twitter.com/user/status/123456" } );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://twitter.com/user/status/123456"} );
 
 			var vm = new StatusViewModel( status, null, null, null );
 
@@ -434,7 +468,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UrlEntities.Add( new UrlEntity { ExpandedUrl = "https://example.com/123456" } );
+			status.Entities.UrlEntities.Add( new UrlEntity {ExpandedUrl = "https://example.com/123456"} );
 
 			var vm = new StatusViewModel( status, null, null, null );
 
@@ -452,7 +486,8 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var viewServices = new Mock<IViewServiceRepository>();
-			viewServices.Setup( v => v.QuoteTweet( It.IsAny<StatusViewModel>(), null ) ).Returns( Task.CompletedTask ).Verifiable();
+			viewServices.Setup( v => v.QuoteTweet( It.IsAny<StatusViewModel>(), null ) ).Returns( Task.CompletedTask ).Verifiable
+				();
 
 			var vm = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, viewServices.Object );
 
@@ -504,6 +539,40 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			Assert.IsTrue( single );
 			Assert.IsTrue( multiple );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ReportingSpamCallsTwitterApi()
+		{
+			// Arrange
+			var waitHandle = new ManualResetEventSlim( false );
+
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.ReportAsSpam( 123 ) ).Returns( Task.CompletedTask ).Verifiable();
+
+			var user = DummyGenerator.CreateDummyUser();
+			user.UserID = 123;
+			var status = DummyGenerator.CreateDummyStatus( user );
+
+			var vm = new StatusViewModel( status, context.Object, null, null )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( StatusViewModel.IsLoading ) && !vm.IsLoading )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.ReportSpamCommand.Execute( null );
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			context.Verify( c => c.Twitter.ReportAsSpam( 123 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

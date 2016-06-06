@@ -122,14 +122,14 @@ namespace Twice.ViewModels.Twitter
 			return OriginalStatus.User.GetUserId() != Context.UserId;
 		}
 
-		private void ExecAsync( Action action, string message = null, NotificationType type = NotificationType.Information )
+		private void ExecAsync( Func<Task> action, string message = null, NotificationType type = NotificationType.Information )
 		{
 			IsLoading = true;
-			Task.Run( () =>
+			Task.Run( async () =>
 			{
 				try
 				{
-					action();
+					await action();
 					return null;
 				}
 				catch( TwitterQueryException ex )
