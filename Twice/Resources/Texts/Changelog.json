@@ -6,7 +6,9 @@
         "NewFeatures": [
             "Window position and size is now saved between application launches"
         ],
-        "Changes": [],
+        "Changes": [
+            "Dialog windows can now be dragged using the mouse"
+        ],
         "Fixes": [],
         "Issues": []
     },
