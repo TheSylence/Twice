@@ -250,6 +250,7 @@
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
+    <Compile Include="Converters\EnumToBool.cs" />
     <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
@@ -380,8 +381,11 @@
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ImageEntry.cs" />
     <Compile Include="ViewModels\Dialogs\IRetweetDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\ISearchDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\SearchDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\SearchMode.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModelLocator.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
@@ -433,6 +437,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\RetweetDialog.xaml.cs">
       <DependentUpon>RetweetDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\SearchDialog.xaml.cs">
+      <DependentUpon>SearchDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
@@ -532,6 +539,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\RetweetDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\SearchDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

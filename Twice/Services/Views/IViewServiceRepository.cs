@@ -15,6 +15,8 @@ namespace Twice.Services.Views
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
+		Task OpenSearch();
+
 		Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null );
 
 		Task ReplyToTweet( StatusViewModel status, bool toAll );

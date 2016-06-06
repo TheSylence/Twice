@@ -13,6 +13,7 @@ namespace Twice.ViewModels.Main
 		bool HasContexts { get; }
 		ICommand InfoCommand { get; }
 		ICommand NewTweetCommand { get; }
+		ICommand SearchCommand { get; }
 		ICommand SettingsCommand { get; }
 	}
 }

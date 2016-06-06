@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Window position and size is now saved between application launches"
+            "Window position and size is now saved between application launches",
+            "Tweets and users can be searched"
         ],
         "Changes": [
             "Dialog windows can now be dragged using the mouse",

@@ -618,4 +618,7 @@
   <data name="Account" xml:space="preserve">
     <value>Konto</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Benutzer</value>
+  </data>
 </root>

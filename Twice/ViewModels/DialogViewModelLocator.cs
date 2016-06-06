@@ -26,6 +26,7 @@ namespace Twice.ViewModels
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IProfileDialogViewModel Profile => Kernel.Get<IProfileDialogViewModel>();
 		public IRetweetDialogViewModel Retweet => Kernel.Get<IRetweetDialogViewModel>();
+		public ISearchDialogViewModel Search => Kernel.Get<SearchDialogViewModel>();
 		public ISettingsDialogViewModel Settings => Kernel.Get<ISettingsDialogViewModel>();
 		public ITextInputDialogViewModel TextInput => Kernel.Get<ITextInputDialogViewModel>();
 		public ITweetDetailsViewModel TweetDetails => Kernel.Get<ITweetDetailsViewModel>();

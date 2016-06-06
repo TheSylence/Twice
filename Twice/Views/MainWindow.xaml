@@ -58,7 +58,7 @@
 					<materialDesign:PackIcon Kind="Pencil" />
 				</Button>
 
-				<Button Width="36" Height="36"
+				<Button Width="36" Height="36" Command="{Binding SearchCommand}"
 					ToolTip="{lex:Loc Search}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 					<materialDesign:PackIcon Kind="Magnify" />

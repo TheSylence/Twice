@@ -60,6 +60,11 @@ namespace Twice.Services.Views
 				: Task.FromResult<string>( null );
 		}
 
+		public async Task OpenSearch()
+		{
+			await ShowWindow<SearchDialog, ISearchDialogViewModel>();
+		}
+
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
 		{
 			Action<IComposeTweetViewModel> vmSetup = vm =>

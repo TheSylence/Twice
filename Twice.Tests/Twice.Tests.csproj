@@ -182,6 +182,7 @@
     <Compile Include="Converters\ConverterChainTests.cs" />
     <Compile Include="Converters\EmptyListTests.cs" />
     <Compile Include="Converters\EmptyStringTests.cs" />
+    <Compile Include="Converters\EnumToBoolTests.cs" />
     <Compile Include="Converters\IconToVisualTests.cs" />
     <Compile Include="Converters\InvertBoolTests.cs" />
     <Compile Include="Converters\LocalizeTests.cs" />

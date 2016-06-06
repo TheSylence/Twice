@@ -44,10 +44,6 @@ namespace Twice.Models.Twitter.Repositories
 			return users;
 		}
 
-		public Task<List<User>> Search( string query )
-		{
-			return Queryable.Where( s => s.Type == UserType.Search && s.Query == query ).ToListAsync();
-		}
 
 		public async Task<User> ShowUser( ulong userId, bool includeEntities )
 		{
