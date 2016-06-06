@@ -19,7 +19,6 @@
 	</controls:MetroWindow.Resources>
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<Grid>

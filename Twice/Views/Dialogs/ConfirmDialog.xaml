@@ -13,7 +13,6 @@
         Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300" >
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
     <DockPanel>

@@ -16,7 +16,6 @@
         Width="1000" Height="700">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<DockPanel>

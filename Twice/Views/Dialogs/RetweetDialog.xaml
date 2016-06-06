@@ -14,7 +14,6 @@
         Title="{lex:Loc Retweet}" Height="300" Width="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 	</i:Interaction.Behaviors>

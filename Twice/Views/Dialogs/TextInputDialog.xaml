@@ -13,7 +13,6 @@
 			Width="350" Height="250" d:DesignHeight="300" d:DesignWidth="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 

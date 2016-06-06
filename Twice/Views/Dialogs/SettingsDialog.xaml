@@ -18,7 +18,6 @@
              d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.Resources>
