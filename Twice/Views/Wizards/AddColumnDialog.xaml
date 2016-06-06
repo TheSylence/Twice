@@ -95,7 +95,11 @@
 							<DockPanel>
 								<TextBox materialDesign:HintAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
 										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-										 Margin="5" />
+										 Margin="5">
+									<i:Interaction.Behaviors>
+										<behaviors:CommandOnReturn Command="{Binding SearchCommand}" />
+									</i:Interaction.Behaviors>
+								</TextBox>
 
 								<Grid Margin="5">
 									<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
