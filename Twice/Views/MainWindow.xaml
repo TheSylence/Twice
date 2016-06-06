@@ -26,6 +26,10 @@
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.InputBindings>
 		<KeyBinding Modifiers="Control" Key="N" Command="{Binding NewTweetCommand}" />
+		<KeyBinding Modifiers="Control" Key="F" Command="{Binding SearchCommand}" />
+		<KeyBinding Modifiers="Control" Key="E" Command="{Binding SettingsCommand}" />
+		<KeyBinding Modifiers="Control" Key="Insert" Command="{Binding AddColumnCommand}" />
+		<KeyBinding Modifiers="Control+Shift" Key="A" Command="{Binding AccountsCommand}" />
 	</controls:MetroWindow.InputBindings>
 	<controls:MetroWindow.Flyouts>
 		<controls:FlyoutsControl>
