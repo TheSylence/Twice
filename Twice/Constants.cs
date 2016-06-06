@@ -39,6 +39,7 @@ namespace Twice
 			internal static readonly string AccountsFileName = P( "accounts.json" );
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );
+			internal static readonly string WindowSettingsFileName = P( "window.json" );
 
 			internal static string AppDataFolder
 			{

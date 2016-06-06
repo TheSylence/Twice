@@ -339,11 +339,13 @@
     <Compile Include="Utilities\Ui\ILanguageProvider.cs" />
     <Compile Include="Utilities\ITimer.cs" />
     <Compile Include="Utilities\ITimerFactory.cs" />
+    <Compile Include="Utilities\Ui\IVirtualScreen.cs" />
     <Compile Include="Utilities\Ui\LanguageProvider.cs" />
     <Compile Include="Utilities\Os\NativeMethods.cs" />
     <Compile Include="Utilities\Ui\Timer.cs" />
     <Compile Include="Utilities\Ui\TimerFactory.cs" />
     <Compile Include="Messages\WaitMessage.cs" />
+    <Compile Include="Utilities\Ui\VirtualScreenWrapper.cs" />
     <Compile Include="Utilities\Ui\WaitMessageHandler.cs" />
     <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />
@@ -438,11 +440,14 @@
     <Compile Include="Views\Dialogs\TweetDetailsDialog.xaml.cs">
       <DependentUpon>TweetDetailsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IWindowAdapter.cs" />
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
     <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
     <Compile Include="Views\Proxies\ComposeTweetDataProxy.cs" />
     <Compile Include="Views\StatusContainer.cs" />
     <Compile Include="Views\TriggerTracing.cs" />
+    <Compile Include="Utilities\Ui\WindowSettings.cs" />
+    <Compile Include="Views\WindowWrapper.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>
     </Compile>

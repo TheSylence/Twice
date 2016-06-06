@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        WindowStartupLocation="CenterScreen"
 		lex:ResxLocalizationProvider.DefaultAssembly="Twice"
 		lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -18,8 +17,7 @@
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:views="clr-namespace:Twice.Views"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
-        mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
-		DataContext="{Binding Main, Source={StaticResource Locator}}">
+        mc:Ignorable="d" Title="Twice" DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 		<behaviours:BorderlessWindowBehavior />

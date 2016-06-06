@@ -1,9 +1,20 @@
 ﻿[
     {
+        "Version": "0.5.0",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [
+            "Window position and size is now saved between application launches"
+        ],
+        "Changes": [],
+        "Fixes": [],
+        "Issues": []
+    },
+    {
         "Version": "0.4.2",
         "Date": "2016-06-05",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [ ],
         "Changes": [
             "'Reply to all' is now enabled for every tweet",
             "Own username is not used in reply when using 'Reply to all'",
@@ -15,18 +26,18 @@
             "(un)following a user now updates the (un)follow button immediately",
             "Autocompletebox in light theme now uses correct colors"
         ],
-        "Issues": []
+        "Issues": [ ]
     },
     {
         "Version": "0.4.1",
         "Date": "2016-06-04",
         "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
+        "NewFeatures": [ ],
+        "Changes": [ ],
         "Fixes": [
             "Fixed crash when Twitter reported a status deletion in realtime streaming"
         ],
-        "Issues": []
+        "Issues": [ ]
     },
     {
         "Version": "0.4.0",

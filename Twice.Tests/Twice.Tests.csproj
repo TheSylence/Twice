@@ -218,6 +218,7 @@
     <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="Utilities\SerializerTests.cs" />
+    <Compile Include="Utilities\Ui\WindowSettingsTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ColumnManagement\ColumnTypeListFactoryTests.cs" />
