@@ -232,6 +232,7 @@
     <Compile Include="Behaviors\ColumnHandler.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
+    <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />

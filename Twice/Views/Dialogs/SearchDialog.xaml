@@ -9,7 +9,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:views="clr-namespace:Twice.Views"
+        xmlns:views="clr-namespace:Twice.Views" FocusManager.FocusedElement="{Binding ElementName=InputBox}"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         Style="{StaticResource DialogStyle}" DataContext="{Binding Search, Source={StaticResource DialogLocator}}"
         mc:Ignorable="d" Title="{lex:Loc Search}" Height="600" Width="650">
@@ -24,7 +24,13 @@
 		</Grid.ColumnDefinitions>
 
 		<StackPanel Orientation="Vertical">
-			<TextBox Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5" materialDesign:HintAssist.Hint="{lex:Loc Search}" />
+			<TextBox Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"
+					 materialDesign:HintAssist.Hint="{lex:Loc Search}" x:Name="InputBox">
+				<i:Interaction.Behaviors>
+					<behaviors:CommandOnReturn Command="{Binding SearchCommand}" />
+				</i:Interaction.Behaviors>
+			</TextBox>
+
 			<StackPanel Orientation="Horizontal">
 				<RadioButton Content="{lex:Loc Tweets}" IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConv}, ConverterParameter=Statuses}" Margin="5" />
 				<RadioButton Content="{lex:Loc Users}" IsChecked="{Binding Mode, Converter={StaticResource EnumToBoolConv}, ConverterParameter=Users}" Margin="5" />
