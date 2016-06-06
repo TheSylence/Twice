@@ -79,16 +79,12 @@ namespace Twice.ViewModels.Main
 			{
 				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
 
-				var channelUrl = useBetaChannel
-					? Constants.Updates.BetaChannelUrl
-					: Constants.Updates.ReleaseChannelUrl;
-
 				LogTo.Info( "Searching for app updates..." );
 				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
 
 				try
 				{
-					using( var mgr = UpdateFactory.Construct( channelUrl ) )
+					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
 					{
 						var release = await mgr.UpdateApp();
 

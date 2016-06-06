@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NuGet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NuGet;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -94,7 +94,7 @@ namespace Twice.Tests.ViewModels.Main
 		public void AddColumnCommandOpensDialog()
 		{
 			// Arrange
-			var contexts = new[] { new Mock<IContextEntry>().Object };
+			var contexts = new[] {new Mock<IContextEntry>().Object};
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
@@ -121,7 +121,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -168,18 +168,18 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 
 			var updaterFactory = new Mock<IAppUpdaterFactory>();
-			updaterFactory.Setup( f => f.Construct( It.IsAny<string>() ) ).Throws( new Exception( "Update.exe not found" ) );
+			updaterFactory.Setup( f => f.Construct( It.IsAny<bool>() ) ).Throws( new Exception( "Update.exe not found" ) );
 
 			vm.UpdateFactory = updaterFactory.Object;
 
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			vm.Configuration = config.Object;
@@ -190,7 +190,7 @@ namespace Twice.Tests.ViewModels.Main
 			// Assert
 			Assert.IsNull( ex );
 
-			updaterFactory.Verify( f => f.Construct( It.IsAny<string>() ), Times.Once() );
+			updaterFactory.Verify( f => f.Construct( It.IsAny<bool>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]
@@ -221,7 +221,7 @@ namespace Twice.Tests.ViewModels.Main
 		public void NewTweetCommandOpensWindow()
 		{
 			// Arrange
-			var contexts = new[] { new Mock<IContextEntry>().Object };
+			var contexts = new[] {new Mock<IContextEntry>().Object};
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
@@ -270,7 +270,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -278,8 +278,8 @@ namespace Twice.Tests.ViewModels.Main
 
 			var updater = new Mock<IAppUpdater>();
 			var updaterFactory = new Mock<IAppUpdaterFactory>( MockBehavior.Strict );
-			updaterFactory.Setup( f => f.Construct( Constants.Updates.BetaChannelUrl ) ).Returns( updater.Object );
-			updaterFactory.Setup( f => f.Construct( Constants.Updates.ReleaseChannelUrl ) ).Returns( updater.Object );
+			updaterFactory.Setup( f => f.Construct( true ) ).Returns( Task.FromResult( updater.Object ) );
+			updaterFactory.Setup( f => f.Construct( false ) ).Returns( Task.FromResult( updater.Object ) );
 
 			vm.UpdateFactory = updaterFactory.Object;
 
@@ -302,8 +302,8 @@ namespace Twice.Tests.ViewModels.Main
 			await vm.OnLoad( null );
 
 			// Assert
-			updaterFactory.Verify( f => f.Construct( Constants.Updates.BetaChannelUrl ), Times.Once() );
-			updaterFactory.Verify( f => f.Construct( Constants.Updates.ReleaseChannelUrl ), Times.Once() );
+			updaterFactory.Verify( f => f.Construct( true ), Times.Once() );
+			updaterFactory.Verify( f => f.Construct( false ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]
@@ -337,7 +337,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
@@ -349,10 +349,10 @@ namespace Twice.Tests.ViewModels.Main
 			updater.Setup( u => u.UpdateApp() ).Returns( Task.FromResult( new AppRelease( version ) ) );
 
 			var updaterFactory = new Mock<IAppUpdaterFactory>();
-			updaterFactory.Setup( f => f.Construct( It.IsAny<string>() ) ).Returns( updater.Object );
+			updaterFactory.Setup( f => f.Construct( It.IsAny<bool>() ) ).Returns( Task.FromResult( updater.Object ) );
 			vm.UpdateFactory = updaterFactory.Object;
 
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );

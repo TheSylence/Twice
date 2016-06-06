@@ -60,12 +60,6 @@ namespace Twice
 			}
 		}
 
-		public static class Updates
-		{
-			internal const string ReleaseChannelUrl = "http://software.btbsoft.org/twice";
-			internal const string BetaChannelUrl = "http://software.btbsoft.org/twice/beta";
-		}
-
 		/// <summary>
 		///     Constants associated with twitter.
 		/// </summary>
