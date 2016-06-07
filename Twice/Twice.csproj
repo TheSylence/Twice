@@ -235,6 +235,7 @@
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
+    <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">

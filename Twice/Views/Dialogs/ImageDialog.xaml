@@ -26,12 +26,16 @@
 			</Button>
 			<Button ToolTip="{lex:Loc OpenInWeb}" Style="{StaticResource MaterialDesignToolForegroundButton}"
 					Command="{Binding OpenImageCommand}">
-				<materialDesign:PackIcon Kind="Web"/>
+				<materialDesign:PackIcon Kind="Web" />
 			</Button>
-			
+
 			<TextBox IsReadOnly="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                 BorderThickness="0" FontFamily="Courier New" FontWeight="Bold"
-				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap" />
+				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap">
+				<i:Interaction.Behaviors>
+					<behaviors:SelectOnDoubleClick />
+				</i:Interaction.Behaviors>
+			</TextBox>
 		</StackPanel>
 
 		<controls:FlipView ItemsSource="{Binding Images}" MouseOverGlowEnabled="False" IsBannerEnabled="False"
