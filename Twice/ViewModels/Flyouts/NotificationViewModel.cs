@@ -1,15 +1,26 @@
-﻿using GalaSoft.MvvmLight;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using GalaSoft.MvvmLight;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Flyouts
 {
 	internal class NotificationViewModel : ObservableObject
 	{
-		public NotificationViewModel( StatusViewModel status )
+		public NotificationViewModel( ColumnItem item )
 		{
 			Type = NotificationType.Information;
-			SetText( status.Model.Text );
+
+			var status = item as StatusViewModel;
+			if( status != null )
+			{
+				SetText( status.Model.Text );
+			}
+
+			var message = item as MessageViewModel;
+			if( message != null )
+			{
+				SetText( message.Model.Text );
+			}
 		}
 
 		public NotificationViewModel( string message, NotificationType type )
@@ -53,10 +64,8 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private NotificationType _Type;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private NotificationType _Type;
 	}
 }

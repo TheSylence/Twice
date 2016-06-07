@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Anotar.NLog;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Configuration;
@@ -20,7 +19,7 @@ using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal class StatusViewModel : ObservableObject
+	internal class StatusViewModel : ColumnItem
 	{
 		public StatusViewModel( Status model, IContextEntry context, IConfig config, IViewServiceRepository viewServiceRepo )
 		{
@@ -236,9 +235,6 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
 
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
-
 		public ICommand BlockUserCommand
 			=>
 				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
@@ -258,7 +254,8 @@ namespace Twice.ViewModels.Twitter
 		public ICommand CopyTweetUrlCommand
 			=> _CopyTweetUrlCommand ?? ( _CopyTweetUrlCommand = new RelayCommand( ExecuteCopyTweetUrlCommand ) );
 
-		public DateTime CreatedAt => Model.CreatedAt;
+		public override DateTime CreatedAt => Model.CreatedAt;
+		public override Entities Entities => Model.Entities;
 
 		public ICommand DeleteStatusCommand
 			=>
@@ -272,7 +269,7 @@ namespace Twice.ViewModels.Twitter
 			=> _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
 
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
-		public ulong Id => Model.StatusID;
+		public override ulong Id => Model.StatusID;
 
 		public IEnumerable<StatusMediaViewModel> InlineMedias
 		{
@@ -315,21 +312,6 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsFavorited => Model.Favorited;
 
-		public bool IsLoading
-		{
-			[DebuggerStepThrough] get { return _IsLoading; }
-			set
-			{
-				if( _IsLoading == value )
-				{
-					return;
-				}
-
-				_IsLoading = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public bool IsReply => Model.InReplyToStatusID != 0;
 		public bool IsRetweeted => Model.Retweeted;
 
@@ -367,48 +349,38 @@ namespace Twice.ViewModels.Twitter
 				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
-		public UserViewModel User { get; }
+		public override string Text => Model.Text;
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
 		private readonly IConfig Config;
 		private readonly Status OriginalStatus;
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _BlockUserCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
 
 		private IClipboard _Clipboard;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CopyTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CopyTweetUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _FavoriteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
 
 		private List<StatusMediaViewModel> _InlineMedias;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
 
 		private IMediaExtractorRepository _MediaExtractor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _QuoteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyToAllCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReportSpamCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReportSpamCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RetweetStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
 	}
 }

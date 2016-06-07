@@ -45,36 +45,36 @@ namespace Twice.ViewModels
 			NotifyToast( context );
 		}
 
-		public void OnStatus( StatusViewModel status, ColumnNotifications columnSettings )
+		public void OnItem( ColumnItem item, ColumnNotifications columnSettings )
 		{
 			if( Config.Notifications.SoundEnabled && columnSettings.Sound )
 			{
-				NotifySound( status );
+				NotifySound( item );
 			}
 
 			if( Config.Notifications.ToastsEnabled && columnSettings.Toast )
 			{
-				NotifyToast( status );
+				NotifyToast( item );
 			}
 
 			if( Config.Notifications.PopupEnabled && columnSettings.Popup )
 			{
-				NotifyPopup( status );
+				NotifyPopup( item );
 			}
 		}
 
-		private void NotifyPopup( StatusViewModel status )
+		private void NotifyPopup( ColumnItem item )
 		{
 		}
 
-		private void NotifySound( StatusViewModel status )
+		private void NotifySound( ColumnItem item )
 		{
 			Player?.Play();
 		}
 
-		private void NotifyToast( StatusViewModel status )
+		private void NotifyToast( ColumnItem item )
 		{
-			var context = new NotificationViewModel( status );
+			var context = new NotificationViewModel( item );
 			NotifyToast( context );
 		}
 

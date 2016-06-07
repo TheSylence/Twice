@@ -35,6 +35,11 @@ namespace Twice.ViewModels.Columns
 			return status.User.UserID == UserId;
 		}
 
+		protected override bool IsSuitableForColumn( DirectMessage message )
+		{
+			return false;
+		}
+
 		protected override async Task OnLoad()
 		{
 			var userInfo = await Context.Twitter.Users.ShowUser( UserId, false );

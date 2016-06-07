@@ -16,6 +16,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:views="clr-namespace:Twice.Views"
+        xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
@@ -129,14 +130,17 @@
 								</controls1:ColumnHeader>
 
 								<views:StatusContainer>
-									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
+									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
 											  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"
 											  VirtualizingStackPanel.IsVirtualizing="True"
 											  VirtualizingStackPanel.ScrollUnit="Pixel"
 											  VirtualizingStackPanel.VirtualizationMode="Recycling">
-										<!--<i:Interaction.Behaviors>
-											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
-										</i:Interaction.Behaviors>-->
+										<ItemsControl.ItemTemplateSelector>
+											<views:GenericTemplateSelector>
+												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}"/>
+												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
+											</views:GenericTemplateSelector>
+										</ItemsControl.ItemTemplateSelector>
 										<ItemsControl.ItemsPanel>
 											<ItemsPanelTemplate>
 												<VirtualizingStackPanel />

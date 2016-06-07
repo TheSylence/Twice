@@ -46,39 +46,6 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void ParserDeletionDoesNotCrashIfStatusIsContainedMultipleTimes()
-		{
-			// Arrange
-			var context = new Mock<IContextEntry>();
-			var definition = new ColumnDefinition( ColumnType.User );
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
-			var parser = new Mock<IStreamParser>();
-			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object )
-			{
-				Dispatcher = new SyncDispatcher()
-			};
-
-			var status = DummyGenerator.CreateDummyStatus();
-			status.StatusID = status.ID = 1234;
-			var s1 = new StatusViewModel( status, context.Object, config.Object, null );
-			vm.Statuses.Add( s1 );
-
-			status = DummyGenerator.CreateDummyStatus();
-			status.StatusID = status.ID = 1234;
-			var s2 = new StatusViewModel( status, context.Object, config.Object, null );
-			vm.Statuses.Add( s2 );
-
-			var deleteArgs = new DeleteStreamEventArgs( "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}" );
-
-			// Act
-			parser.Raise( e => e.StatusDeleted += null, deleteArgs );
-
-			// Assert
-			Assert.IsFalse( vm.Statuses.Any( s => s.Id == 1234 ) );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void ClearCommandClearsAllStatuses()
 		{
 			// Arrange
@@ -89,14 +56,14 @@ namespace Twice.Tests.ViewModels.Columns
 			var parser = new Mock<IStreamParser>();
 
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
-			vm.Statuses.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
+			vm.Items.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
+			vm.Items.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
+			vm.Items.Add( new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null ) );
 
 			// Act
-			int countBefore = vm.Statuses.Count;
+			int countBefore = vm.Items.Count;
 			vm.ClearCommand.Execute( null );
-			int countAfter = vm.Statuses.Count;
+			int countAfter = vm.Items.Count;
 
 			// Assert
 			Assert.AreNotEqual( 0, countBefore );
@@ -184,7 +151,7 @@ namespace Twice.Tests.ViewModels.Columns
 			await vm.Load();
 
 			// Assert
-			Assert.AreEqual( 3, vm.Statuses.Count );
+			Assert.AreEqual( 3, vm.Items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -238,7 +205,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.IsTrue( wasSet );
-			Assert.AreEqual( 3, vm.Statuses.Count );
+			Assert.AreEqual( 3, vm.Items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -272,7 +239,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.IsTrue( checkCalled );
-			Assert.AreEqual( 0, vm.Statuses.Count );
+			Assert.AreEqual( 0, vm.Items.Count );
 			muter.Verify( m => m.IsMuted( It.IsAny<Status>() ), Times.Once() );
 		}
 
@@ -299,7 +266,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			muter.Verify( m => m.IsMuted( It.IsAny<Status>() ), Times.Once() );
-			Assert.AreEqual( 0, vm.Statuses.Count );
+			Assert.AreEqual( 0, vm.Items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -344,7 +311,7 @@ namespace Twice.Tests.ViewModels.Columns
 			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( status ) );
 
 			// Assert
-			Assert.AreEqual( 1, vm.Statuses.Count );
+			Assert.AreEqual( 1, vm.Items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -359,7 +326,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
 			bool raised = false;
-			vm.NewStatus += ( s, e ) => raised = true;
+			vm.NewItem += ( s, e ) => raised = true;
 
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
@@ -396,7 +363,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			vm.Dispatcher = new SyncDispatcher();
 			bool raised = false;
-			vm.NewStatus += ( s, e ) => raised = true;
+			vm.NewItem += ( s, e ) => raised = true;
 			vm.SetLoading( false );
 
 			// Act
@@ -474,6 +441,39 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			tester.Verify();
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ParserDeletionDoesNotCrashIfStatusIsContainedMultipleTimes()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.StatusID = status.ID = 1234;
+			var s1 = new StatusViewModel( status, context.Object, config.Object, null );
+			vm.Items.Add( s1 );
+
+			status = DummyGenerator.CreateDummyStatus();
+			status.StatusID = status.ID = 1234;
+			var s2 = new StatusViewModel( status, context.Object, config.Object, null );
+			vm.Items.Add( s2 );
+
+			var deleteArgs = new DeleteStreamEventArgs( "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}" );
+
+			// Act
+			parser.Raise( e => e.StatusDeleted += null, deleteArgs );
+
+			// Assert
+			Assert.IsFalse( vm.Items.Any( s => s.Id == 1234 ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -563,7 +563,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.IsTrue( wasSet );
-			Assert.AreEqual( 3, vm.Statuses.Count );
+			Assert.AreEqual( 3, vm.Items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -599,7 +599,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			public void RaiseStatusWrapper( StatusViewModel status )
 			{
-				RaiseNewStatus( status );
+				RaiseNewItem( status );
 			}
 
 			public void SetLoading( bool isLoading )
@@ -610,6 +610,11 @@ namespace Twice.Tests.ViewModels.Columns
 			protected override bool IsSuitableForColumn( Status status )
 			{
 				return SuitableCheck( status );
+			}
+
+			protected override bool IsSuitableForColumn( DirectMessage message )
+			{
+				return false;
 			}
 
 			public override Icon Icon { get; }

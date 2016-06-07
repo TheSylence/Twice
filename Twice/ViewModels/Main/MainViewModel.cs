@@ -165,13 +165,13 @@ namespace Twice.ViewModels.Main
 			ColumnList.Remove( new[] {col.Definition} );
 		}
 
-		private void Col_NewStatus( object sender, StatusEventArgs e )
+		private void Col_NewItem( object sender, ColumnItemEventArgs e )
 		{
 			var vm = sender as IColumnViewModel;
 			Debug.Assert( vm != null );
 
 			ColumnNotifications columnSettings = vm.Definition.Notifications;
-			Notifier.OnStatus( e.Status, columnSettings );
+			Notifier.OnItem( e.Item, columnSettings );
 		}
 
 		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
@@ -184,7 +184,7 @@ namespace Twice.ViewModels.Main
 		{
 			foreach( var c in Columns )
 			{
-				c.NewStatus -= Col_NewStatus;
+				c.NewItem -= Col_NewItem;
 				c.Changed -= Col_Changed;
 				c.Deleted -= Col_Deleted;
 			}
@@ -197,7 +197,7 @@ namespace Twice.ViewModels.Main
 
 			foreach( var c in constructed )
 			{
-				c.NewStatus += Col_NewStatus;
+				c.NewItem += Col_NewItem;
 				c.Changed += Col_Changed;
 				c.Deleted += Col_Deleted;
 				Columns.Add( c );

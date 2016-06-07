@@ -13,6 +13,7 @@ using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.Converters
 {
@@ -82,14 +83,14 @@ namespace Twice.Converters
 			return menu;
 		}
 
-		private static IEnumerable<EntityBase> ExtractEntities( Status tweet )
+		private static IEnumerable<EntityBase> ExtractEntities( ColumnItem item )
 		{
-			IEnumerable<EntityBase> entities = tweet.Entities.HashTagEntities;
-			entities = entities.Concat( tweet.Entities.MediaEntities );
-			entities = entities.Concat( tweet.Entities.UrlEntities );
-			entities = entities.Concat( tweet.Entities.UserMentionEntities );
+			IEnumerable<EntityBase> entities = item.Entities.HashTagEntities;
+			entities = entities.Concat( item.Entities.MediaEntities );
+			entities = entities.Concat( item.Entities.UrlEntities );
+			entities = entities.Concat( item.Entities.UserMentionEntities );
 
-			var tweetText = TwitterHelper.NormalizeText( tweet.Text );
+			var tweetText = TwitterHelper.NormalizeText( item.Text );
 
 			var allEntities = entities.ToArray();
 			foreach( var entity in allEntities )
@@ -181,11 +182,11 @@ namespace Twice.Converters
 		/// <summary>
 		///     Generates a collection of inlines from a tweet.
 		/// </summary>
-		/// <param name="tweet">The tweet to generate inlines from.</param>
+		/// <param name="item">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
-		private static IEnumerable<Inline> GenerateInlines( Status tweet )
+		private static IEnumerable<Inline> GenerateInlines( ColumnItem item )
 		{
-			var allEntities = ExtractEntities( tweet ).ToArray();
+			var allEntities = ExtractEntities( item ).ToArray();
 
 			if( allEntities.Any() )
 			{
@@ -195,7 +196,7 @@ namespace Twice.Converters
 				{
 					if( entity.Start > lastEnd )
 					{
-						string text = tweet.Text.Substring( lastEnd, entity.Start - lastEnd );
+						string text = item.Text.Substring( lastEnd, entity.Start - lastEnd );
 						yield return new Run( PrepareText( text ) );
 					}
 
@@ -231,14 +232,14 @@ namespace Twice.Converters
 					lastEnd = entity.End;
 				}
 
-				if( lastEnd < tweet.Text.Length )
+				if( lastEnd < item.Text.Length )
 				{
-					yield return new Run( PrepareText( tweet.Text.Substring( lastEnd ) ) );
+					yield return new Run( PrepareText( item.Text.Substring( lastEnd ) ) );
 				}
 			}
 			else
 			{
-				yield return new Run( PrepareText( tweet.Text ) );
+				yield return new Run( PrepareText( item.Text ) );
 			}
 		}
 
@@ -315,7 +316,7 @@ namespace Twice.Converters
 		/// </returns>
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
-			Status tweet = value as Status;
+			var tweet = value as ColumnItem;
 			if( tweet == null )
 			{
 				throw new ArgumentException( @"Value is not a status object", nameof( value ) );

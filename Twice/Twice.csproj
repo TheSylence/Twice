@@ -279,10 +279,13 @@
     <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />
     <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterMessageRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterMessageRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
@@ -374,7 +377,9 @@
     <Compile Include="ViewModels\Columns\IColumnActionDispatcher.cs" />
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
-    <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
+    <Compile Include="ViewModels\Columns\MessageColumn.cs" />
+    <Compile Include="ViewModels\Columns\MessageEventArgs.cs" />
+    <Compile Include="ViewModels\Columns\ColumnItemEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IImageDialogViewModel.cs" />
@@ -417,10 +422,12 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettings.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettings.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
+    <Compile Include="ViewModels\Twitter\ColumnItem.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
+    <Compile Include="ViewModels\Twitter\MessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />

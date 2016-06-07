@@ -7,6 +7,6 @@ namespace Twice.ViewModels
 	{
 		void DisplayMessage( string message, NotificationType type );
 
-		void OnStatus( StatusViewModel status, ColumnNotifications columnSettings );
+		void OnItem( ColumnItem item, ColumnNotifications columnSettings );
 	}
 }
