@@ -13,7 +13,8 @@
             "Links to Twitter users in Info-Dialog now open inside the app"
         ],
         "Fixes": [
-            "Clicking the header of a column scrolls to top is working again"
+            "Clicking the header of a column scrolls to top is working again",
+            "View conversation and retweet indicators no longer overlap"
         ],
         "Issues": []
     },

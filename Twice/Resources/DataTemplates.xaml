@@ -57,7 +57,7 @@
 			</i:Interaction.Behaviors>
 
 			<StackPanel Orientation="Vertical">
-				<Grid Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
+				<StackPanel Orientation="Vertical" Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
 						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<StackPanel Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}"
 									Orientation="Horizontal" Background="Transparent" Margin="5">
@@ -98,7 +98,7 @@
 						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
 						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" />
 					</StackPanel>
-				</Grid>
+				</StackPanel>
 
 				<Grid>
 					<Grid Background="Transparent">
