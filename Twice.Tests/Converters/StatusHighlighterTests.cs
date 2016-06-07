@@ -10,6 +10,7 @@ using System.Net;
 using System.Windows.Documents;
 using Twice.Converters;
 using Twice.Models.Configuration;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.Converters
 {
@@ -36,13 +37,15 @@ namespace Twice.Tests.Converters
 			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
 			var data = JsonMapper.ToObject( json );
 			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
 
 			var conv = new StatusHighlighter( config.Object );
 
+
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 			var links = inlines.OfType<Hyperlink>().ToArray();
 
 			// Assert
@@ -61,13 +64,14 @@ namespace Twice.Tests.Converters
 			var json = File.ReadAllText( "Data/tweet_emoji.json" );
 			var data = JsonMapper.ToObject( json );
 			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
@@ -122,9 +126,10 @@ namespace Twice.Tests.Converters
 				End = "This is a test @Testi".Length
 			} );
 			status.Text = "This is a test @Testi";
+			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
 			Assert.AreEqual( 2, inlines.Length );
@@ -151,9 +156,10 @@ namespace Twice.Tests.Converters
 				End = "Testi".Length + 1
 			} );
 			status.Text = "@Testi This is a test";
+			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
 			Assert.AreEqual( 2, inlines.Length );
@@ -174,9 +180,10 @@ namespace Twice.Tests.Converters
 			var conv = new StatusHighlighter();
 			var status = DummyGenerator.CreateDummyStatus();
 			status.Text = WebUtility.HtmlEncode( content );
+			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
 			Assert.AreEqual( 1, inlines.Length );
@@ -191,13 +198,14 @@ namespace Twice.Tests.Converters
 			var json = File.ReadAllText( "Data/tweet_unicodemention.json" );
 			var data = JsonMapper.ToObject( json );
 			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = true } );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 			var links = inlines.OfType<Hyperlink>().ToArray();
 
 			// Assert
@@ -227,9 +235,10 @@ namespace Twice.Tests.Converters
 			var conv = new StatusHighlighter();
 			var status = DummyGenerator.CreateDummyStatus();
 			status.Text = "Hello World";
+			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( status, null, null, null );
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
 			Assert.AreEqual( 1, inlines.Length );
