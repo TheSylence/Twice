@@ -12,7 +12,9 @@
             "Dialog windows can now be dragged using the mouse",
             "Links to Twitter users in Info-Dialog now open inside the app"
         ],
-        "Fixes": [],
+        "Fixes": [
+            "Clicking the header of a column scrolls to top is working again"
+        ],
         "Issues": []
     },
     {

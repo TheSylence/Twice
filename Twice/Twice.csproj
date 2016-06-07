@@ -229,7 +229,6 @@
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
-    <Compile Include="Behaviors\ColumnHandler.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\CommandOnReturn.cs" />

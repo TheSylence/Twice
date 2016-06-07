@@ -134,9 +134,9 @@
 											  VirtualizingStackPanel.IsVirtualizing="True"
 											  VirtualizingStackPanel.ScrollUnit="Pixel"
 											  VirtualizingStackPanel.VirtualizationMode="Recycling">
-										<i:Interaction.Behaviors>
+										<!--<i:Interaction.Behaviors>
 											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
-										</i:Interaction.Behaviors>
+										</i:Interaction.Behaviors>-->
 										<ItemsControl.ItemsPanel>
 											<ItemsPanelTemplate>
 												<VirtualizingStackPanel />
@@ -145,10 +145,10 @@
 										<ItemsControl.Template>
 											<ControlTemplate>
 												<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
-												Padding="{TemplateBinding Control.Padding}"
-												BorderBrush="{TemplateBinding Border.BorderBrush}"
-												Background="{TemplateBinding Panel.Background}"
-												SnapsToDevicePixels="True">
+													Padding="{TemplateBinding Control.Padding}"
+													BorderBrush="{TemplateBinding Border.BorderBrush}"
+													Background="{TemplateBinding Panel.Background}"
+													SnapsToDevicePixels="True">
 													<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
 														  VerticalScrollBarVisibility="Auto" Focusable="False">
 														<i:Interaction.Behaviors>
