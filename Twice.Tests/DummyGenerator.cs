@@ -7,6 +7,26 @@ namespace Twice.Tests
 	[ExcludeFromCodeCoverage]
 	internal static class DummyGenerator
 	{
+		internal static DirectMessage CreateDummyMessage( User sender = null, User recipient = null )
+		{
+			sender = sender ?? CreateDummyUser();
+			recipient = recipient ?? CreateDummyUser();
+
+			return new DirectMessage
+			{
+				Sender = sender,
+				Recipient = recipient,
+				Entities = new Entities
+				{
+					HashTagEntities = new List<HashTagEntity>(),
+					MediaEntities = new List<MediaEntity>(),
+					SymbolEntities = new List<SymbolEntity>(),
+					UrlEntities = new List<UrlEntity>(),
+					UserMentionEntities = new List<UserMentionEntity>()
+				}
+			};
+		}
+
 		internal static Status CreateDummyStatus( User user = null )
 		{
 			user = user ?? CreateDummyUser();

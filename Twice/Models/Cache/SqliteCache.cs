@@ -1,12 +1,12 @@
-﻿using Fody;
-using LinqToTwitter;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
+using Newtonsoft.Json;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Cache
@@ -33,7 +33,7 @@ namespace Twice.Models.Cache
 		{
 			string[] tables =
 			{
-				"Users", "TwitterConfig", "Hashtags", "Statuses"
+				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
 			};
 
 			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
@@ -99,9 +99,55 @@ namespace Twice.Models.Cache
 							return $"( @tag{i}, @expires )";
 						} ) );
 
-						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( HashtagExpiration ) ) );
+						cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( Constants.Cache.HashtagExpiration ) ) );
 
 						await cmd.ExecuteNonQueryAsync();
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		public async Task AddMessages( IList<MessageCacheEntry> messages )
+		{
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					int count = messages.Count;
+					const int batchSize = 100;
+					int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+
+					for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+					{
+						var items = messages.Skip( batchIdx * batchSize ).Take( batchSize );
+
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = "INSERT OR REPLACE INTO Messages (Id, Sender, Recipient, Data, Expires) VALUES ";
+
+							cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								cmd.AddParameter( $"id{i}", s.Id );
+								cmd.AddParameter( $"sender{i}", s.Sender );
+								cmd.AddParameter( $"recipient{i}", s.Recipient );
+								cmd.AddParameter( $"json{i}", s.Data );
+
+								// ReSharper restore AccessToDisposedClosure
+
+								return $"( @id{i}, @sender{i}, @recipient{i}, @json{i}, @expires )";
+							} ) );
+
+							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( Constants.Cache.MessageExpiration ) ) );
+							await cmd.ExecuteNonQueryAsync();
+						}
 					}
 
 					tx.Commit();
@@ -144,7 +190,7 @@ namespace Twice.Models.Cache
 								return $"( @id{i}, @userid{i}, @json{i}, @expires )";
 							} ) );
 
-							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( StatusExpiration ) ) );
+							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( Constants.Cache.StatusExpiration ) ) );
 							await cmd.ExecuteNonQueryAsync();
 						}
 					}
@@ -189,7 +235,7 @@ namespace Twice.Models.Cache
 								return $"( @userId{i}, @userName{i}, @json{i}, @expires )";
 							} ) );
 
-							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( UserExpiration ) ) );
+							cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( Constants.Cache.UserInfoExpiration ) ) );
 							await cmd.ExecuteNonQueryAsync();
 						}
 					}
@@ -243,6 +289,28 @@ namespace Twice.Models.Cache
 					while( await reader.ReadAsync() )
 					{
 						result.Add( await UserCacheEntry.Read( reader ) );
+					}
+				}
+			}
+
+			return result;
+		}
+
+		public async Task<List<MessageCacheEntry>> GetMessages()
+		{
+			await Cleanup();
+
+			List<MessageCacheEntry> result = new List<MessageCacheEntry>();
+
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT Id, Sender, Recipient, Data FROM Messages;";
+
+				using( var reader = await cmd.ExecuteReaderAsync() )
+				{
+					while( await reader.ReadAsync() )
+					{
+						result.Add( await MessageCacheEntry.Read( reader ) );
 					}
 				}
 			}
@@ -429,7 +497,8 @@ namespace Twice.Models.Cache
 				{
 					cmd.CommandText = "INSERT INTO TwitterConfig (Data, Expires) VALUES(@json, @expires);";
 					cmd.AddParameter( "json", JsonConvert.SerializeObject( cfg ) );
-					cmd.AddParameter( "expires", SqliteHelper.GetDateValue( DateTime.Now.Add( TwitterConfigExpiration ) ) );
+					cmd.AddParameter( "expires",
+						SqliteHelper.GetDateValue( DateTime.Now.Add( Constants.Cache.TwitterConfigExpiration ) ) );
 
 					await cmd.ExecuteNonQueryAsync();
 				}
@@ -441,11 +510,7 @@ namespace Twice.Models.Cache
 		}
 
 		private readonly SQLiteConnection Connection;
-		private readonly TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
 		private readonly SemaphoreSlim Semaphore = new SemaphoreSlim( 1, 1 );
 		private readonly TimeSpan SemaphoreWait = TimeSpan.FromSeconds( 5 );
-		private readonly TimeSpan StatusExpiration = TimeSpan.FromDays( 3 );
-		private readonly TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
-		private readonly TimeSpan UserExpiration = TimeSpan.FromDays( 2 );
 	}
 }

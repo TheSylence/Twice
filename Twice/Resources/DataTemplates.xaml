@@ -42,10 +42,10 @@
 						</StackPanel.Resources>
 						<i:Interaction.Behaviors>
 							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-												 CommandParameter="{Binding User.Model, Converter={StaticResource UserToIdConv}}" />
+												 CommandParameter="{Binding Partner.Model, Converter={StaticResource UserToIdConv}}" />
 						</i:Interaction.Behaviors>
-						<TextBlock Text="{Binding User.Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-						<TextBlock Text="{Binding User.ScreenName}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+						<TextBlock Text="{Binding Partner.Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding Partner.ScreenName}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 								VerticalAlignment="Center" />
 					</StackPanel>
 				</DockPanel>

@@ -316,9 +316,15 @@ namespace Twice.Converters
 		/// </returns>
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
+			if( value == null )
+			{
+				return null;
+			}
+
 			var tweet = value as ColumnItem;
 			if( tweet == null )
 			{
+				Debugger.Break();
 				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
 			}
 

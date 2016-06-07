@@ -16,9 +16,15 @@ namespace Twice.Models.Twitter.Repositories
 		{
 		}
 
-		public async Task<List<DirectMessage>> IncomingMessages()
+		public async Task<List<DirectMessage>> IncomingMessages( int count = 50, ulong? maxId = null )
 		{
-			var list = await Queryable.Where( dm => dm.Type == DirectMessageType.SentTo ).ToListAsync();
+			var query = Queryable.Where( dm => dm.Type == DirectMessageType.SentTo && dm.Count == count );
+			if( maxId.HasValue && maxId.Value != ulong.MaxValue )
+			{
+				query = query.Where( dm => dm.MaxID == maxId.Value );
+			}
+
+			var list = await query.ToListAsync();
 			var result = new List<DirectMessage>( list.Count );
 			foreach( var dm in list )
 			{
@@ -30,9 +36,15 @@ namespace Twice.Models.Twitter.Repositories
 			return result;
 		}
 
-		public async Task<List<DirectMessage>> OutgoingMessages()
+		public async Task<List<DirectMessage>> OutgoingMessages( int count = 50, ulong? maxId = null )
 		{
-			var list = await Queryable.Where( dm => dm.Type == DirectMessageType.SentBy ).ToListAsync();
+			var query = Queryable.Where( dm => dm.Type == DirectMessageType.SentBy && dm.Count == count );
+			if( maxId.HasValue && maxId.Value != ulong.MaxValue )
+			{
+				query = query.Where( dm => dm.MaxID == maxId.Value );
+			}
+
+			var list = await query.ToListAsync();
 			var result = new List<DirectMessage>( list.Count );
 			foreach( var dm in list )
 			{

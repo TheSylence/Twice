@@ -1,5 +1,5 @@
-﻿using System;
-using LinqToTwitter;
+﻿using LinqToTwitter;
+using System;
 using Twice.Models.Twitter;
 using Twice.Services.Views;
 
@@ -14,6 +14,9 @@ namespace Twice.ViewModels.Twitter
 			ViewServiceRepository = viewServices;
 
 			User = new UserViewModel( model.Sender );
+			Partner = new UserViewModel( model.SenderID == context.UserId
+				? model.Recipient
+				: model.Sender );
 
 			IsIncoming = Model.SenderID != context.UserId;
 		}
@@ -23,6 +26,7 @@ namespace Twice.ViewModels.Twitter
 		public override ulong Id => Model.GetMessageId();
 		public bool IsIncoming { get; }
 		public DirectMessage Model { get; }
+		public UserViewModel Partner { get; }
 		public override string Text => Model.Text;
 		private readonly IContextEntry Context;
 		private readonly IViewServiceRepository ViewServiceRepository;

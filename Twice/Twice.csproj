@@ -262,6 +262,7 @@
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
+    <Compile Include="Models\Cache\MessageCacheEntry.cs" />
     <Compile Include="Models\Cache\NullCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.Ddl.cs" />

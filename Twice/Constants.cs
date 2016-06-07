@@ -20,8 +20,11 @@ namespace Twice
 
 		public static class Cache
 		{
-			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 100 );
+			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 2 );
 			internal static TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
+			internal static TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
+			internal static TimeSpan StatusExpiration = TimeSpan.FromDays( 3 );
+			internal static TimeSpan MessageExpiration = TimeSpan.FromDays( 7 );
 		}
 
 		public static class IO
