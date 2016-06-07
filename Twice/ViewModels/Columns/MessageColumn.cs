@@ -21,8 +21,9 @@ namespace Twice.ViewModels.Columns
 		protected override async Task OnLoad()
 		{
 			var messages = await Context.Twitter.Messages.IncomingMessages();
+			messages.AddRange( await Context.Twitter.Messages.OutgoingMessages() );
 			var list = new List<MessageViewModel>();
-			foreach( var s in messages )
+			foreach( var s in messages.OrderByDescending( m => m.CreatedAt ) )
 			{
 				list.Add( await CreateViewModel( s ) );
 			}

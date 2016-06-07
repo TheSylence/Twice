@@ -1,9 +1,9 @@
+using Fody;
+using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
@@ -30,9 +30,18 @@ namespace Twice.Models.Twitter.Repositories
 			return result;
 		}
 
-		public Task<List<DirectMessage>> OutgoingMessages()
+		public async Task<List<DirectMessage>> OutgoingMessages()
 		{
-			throw new System.NotImplementedException();
+			var list = await Queryable.Where( dm => dm.Type == DirectMessageType.SentBy ).ToListAsync();
+			var result = new List<DirectMessage>( list.Count );
+			foreach( var dm in list )
+			{
+				if( dm?.Recipient != null )
+				{
+					result.Add( dm );
+				}
+			}
+			return result;
 		}
 
 		private TwitterQueryable<DirectMessage> Queryable => Context.DirectMessage;
