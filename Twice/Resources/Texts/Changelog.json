@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [
             "Window position and size is now saved between application launches",
-            "Tweets and users can be searched"
+            "Tweets and users can be searched",
+            "Source application is now displayed in tweet details"
         ],
         "Changes": [
             "Dialog windows can now be dragged using the mouse",

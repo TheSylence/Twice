@@ -211,7 +211,8 @@
 
 						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
 							<DockPanel>
-								<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+								<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0" 
+											Visibility="{Binding DisplaySource, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource InvertBoolToVisibleConv}}">
 									<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
 						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
 										<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
@@ -262,6 +263,25 @@
 										</DataTemplate>
 									</controls1:FlipView.ItemTemplate>
 								</controls1:FlipView>
+							</StackPanel>
+
+							<StackPanel Margin="5" Orientation="Horizontal" Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+								<ContentControl>
+									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+												Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
+										<TextBlock Text="{Binding CreatedAt}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"/>
+									</Hyperlink>
+								</ContentControl>
+
+								<TextBlock Margin="10,0" Text="&#x2022;" />
+
+								<ContentControl>
+									<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}" 
+											   CommandParameter="{Binding Model.Source, Converter={StaticResource SourceUrlConv}}">
+										<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}" 
+												   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"/>
+									</Hyperlink>
+								</ContentControl>
 							</StackPanel>
 						</StackPanel>
 					</Grid>
