@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Configuration;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Settings;
@@ -55,6 +55,50 @@ namespace Twice.Tests.ViewModels.Settings
 			// Assert
 			Assert.AreEqual( 1, vm.AvailableLanguages.Count );
 			Assert.AreEqual( "en-US", vm.AvailableLanguages.First().Name );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public void NeutralCulturesAreCorrectlyIdentified()
+		{
+			// Arrange
+			var allLanguages = new[]
+			{
+				CultureInfo.CreateSpecificCulture( "de-DE" ),
+				CultureInfo.CreateSpecificCulture( "en-US" ),
+				CultureInfo.CreateSpecificCulture( "en-US" ).Parent,
+				CultureInfo.CreateSpecificCulture( "de-AU" ),
+				CultureInfo.CreateSpecificCulture( "de-DE" ).Parent
+			};
+
+			// Act
+			var langs = allLanguages.ToList();
+			var neutrals = langs.Where( l => l.IsNeutralCulture ).ToArray();
+			foreach( var neutral in neutrals.Where( n => langs.Any( l => n.Equals( l.Parent ) ) ) )
+			{
+				langs.Remove( neutral );
+			}
+
+			// Assert
+			Assert.AreEqual( "de-DE", allLanguages[0].Name );
+			Assert.AreEqual( "en-US", allLanguages[1].Name );
+			Assert.AreEqual( "en", allLanguages[2].Name );
+			Assert.AreEqual( "de-AU", allLanguages[3].Name );
+			Assert.AreEqual( "de", allLanguages[4].Name );
+
+			Assert.IsFalse( allLanguages[0].Equals( CultureInfo.InvariantCulture ), "de-DE is InvariantCulture" );
+			Assert.IsFalse( allLanguages[1].Equals( CultureInfo.InvariantCulture ), "en-US is InvariantCulture" );
+			Assert.IsFalse( allLanguages[2].Equals( CultureInfo.InvariantCulture ), "en is InvariantCulture" );
+			Assert.IsFalse( allLanguages[3].Equals( CultureInfo.InvariantCulture ), "de-AU is InvariantCulture" );
+			Assert.IsFalse( allLanguages[4].Equals( CultureInfo.InvariantCulture ), "de is InvariantCulture" );
+
+			Assert.IsFalse( allLanguages[0].IsNeutralCulture, "de-DE is NeutralCulture" );
+			Assert.IsFalse( allLanguages[1].IsNeutralCulture, "en-US is NeutralCulture" );
+			Assert.IsTrue( allLanguages[2].IsNeutralCulture, "en is not NeutralCulture" );
+			Assert.IsFalse( allLanguages[3].IsNeutralCulture, "de-AU is NeutralCulture" );
+			Assert.IsTrue( allLanguages[4].IsNeutralCulture, "de is not NeutralCulture" );
+
+			Assert.IsTrue( langs.Any( l => allLanguages[2].Equals( l.Parent ) ), "Found no neutral for en" );
+			Assert.IsTrue( langs.Any( l => allLanguages[4].Equals( l.Parent ) ), "Found no neutral for en" );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
