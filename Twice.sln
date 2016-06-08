@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twice.Tests", "Twice.Tests\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4FEA595-9C58-475F-8981-F97A16CFEFAC}"
 	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 		releasify.ps1 = releasify.ps1
 		smcmd.xml = smcmd.xml
 	EndProjectSection

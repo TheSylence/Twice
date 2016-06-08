@@ -1,0 +1,12 @@
+namespace Twice
+{
+    internal static partial class Constants
+    {
+        public static class Auth
+        {
+            internal static readonly string ConsumerKey = "YOUR-CONSUMER-KEY";
+
+            internal static readonly string ConsumerSecret = "YOUR-CONSUMER-SECRET";
+        }
+    }
+}
