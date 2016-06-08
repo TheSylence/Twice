@@ -16,7 +16,7 @@ namespace Twice.Tests.ViewModels.Settings
 		public void EnglishIsUsedAsFallbackLanguageWhenOtherLanguageWasNotFound()
 		{
 			// Arrange
-			var cfg = new GeneralConfig { Language = "es-ES" };
+			var cfg = new GeneralConfig {Language = "es-ES"};
 			var cfgMock = new Mock<IConfig>();
 			cfgMock.SetupGet( c => c.General ).Returns( cfg );
 
@@ -38,7 +38,7 @@ namespace Twice.Tests.ViewModels.Settings
 		public void InvariantCultureIsNotDisplayed()
 		{
 			// Arrange
-			var cfg = new GeneralConfig { Language = "es-ES" };
+			var cfg = new GeneralConfig {Language = "es-ES"};
 			var cfgMock = new Mock<IConfig>();
 			cfgMock.SetupGet( c => c.General ).Returns( cfg );
 
@@ -61,7 +61,7 @@ namespace Twice.Tests.ViewModels.Settings
 		public void NeutralLanguagesAreRemovedIfSpecificVersionExists()
 		{
 			// Arrange
-			var cfg = new GeneralConfig { Language = "es-ES" };
+			var cfg = new GeneralConfig {Language = "es-ES"};
 			var cfgMock = new Mock<IConfig>();
 			cfgMock.SetupGet( c => c.General ).Returns( cfg );
 
@@ -80,7 +80,7 @@ namespace Twice.Tests.ViewModels.Settings
 
 			// Assert
 			var names = vm.AvailableLanguages.Select( l => l.Name ).ToArray();
-			CollectionAssert.AreEquivalent( new[] { "de-DE", "en-US", "de-AU" }, names );
+			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "de-AU"}, names, string.Join( "; ", names ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
@@ -116,7 +116,7 @@ namespace Twice.Tests.ViewModels.Settings
 			cfgMock.SetupGet( c => c.General ).Returns( cfg );
 
 			var languageProvider = new Mock<ILanguageProvider>();
-			languageProvider.SetupGet( l => l.AvailableLanguages ).Returns( new[] { CultureInfo.CreateSpecificCulture( "de-DE" ) } );
+			languageProvider.SetupGet( l => l.AvailableLanguages ).Returns( new[] {CultureInfo.CreateSpecificCulture( "de-DE" )} );
 
 			// Act
 			var vm = new GeneralSettings( cfgMock.Object, languageProvider.Object );
