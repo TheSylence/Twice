@@ -1,7 +1,7 @@
 # Twice
-[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)]("Build status")
-[![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=2592000)]("Downloads")
-[![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=2592000)]("Issues")
+[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)]()
+[![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=2592000)]()
+[![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=2592000)]()
 
 Twitter Windows Client - Follow [@TwiceApp](https://twitter.com/TwiceApp)
 
