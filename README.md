@@ -1,4 +1,6 @@
 # Twice
+![Build status](https://ci.appveyor.com/api/projects/status/github/TheSylence/Twice "Build status")
+
 Twitter Windows Client - Follow [@TwiceApp](https://twitter.com/TwiceApp)
 
 # Mentions
