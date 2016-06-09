@@ -14,7 +14,7 @@
 			xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
 			xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
-             DataContext="{Binding Settings, Source={StaticResource DialogLocator}}"
+             DataContext="{Binding Settings, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />

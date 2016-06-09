@@ -10,7 +10,7 @@
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
-		DataContext="{Binding Retweet, Source={StaticResource DialogLocator}}"
+		DataContext="{Binding Retweet, Source={StaticResource Locator}}"
         Title="{lex:Loc Retweet}" Height="300" Width="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />

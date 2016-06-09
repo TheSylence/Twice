@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LinqToTwitter;
 using Newtonsoft.Json;
+using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -19,6 +20,7 @@ namespace Twice.ViewModels.Columns
 		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
 			: base( context, definition, config, parser )
 		{
+			MessengerInstance.Register<DmMessage>( this, OnDirectMessage );
 		}
 
 		protected override bool IsSuitableForColumn( Status status )
@@ -100,10 +102,22 @@ namespace Twice.ViewModels.Columns
 			var list = new List<MessageViewModel>();
 			foreach( var s in userMap.Values.OrderByDescending( m => m.CreatedAt ) )
 			{
-				list.Add( await CreateViewModel( s ) );
+				var vm = await CreateViewModel( s );
+				vm.WasRead = true;
+
+				list.Add( vm );
 			}
 
 			await AddItems( list );
+		}
+
+		private async void OnDirectMessage( DmMessage msg )
+		{
+			if( msg.Action == EntityAction.Create )
+			{
+				var vm = await CreateViewModel( msg.DirectMessage );
+				await AddItem( vm, false );
+			}
 		}
 
 		public override Icon Icon => Icon.Messages;

@@ -23,6 +23,12 @@ namespace Twice.Models.Twitter.Repositories
 										f.SourceUserID == thisUserId ).SingleOrDefaultAsync();
 		}
 
+		public Task<Friendship> GetFriendshipWith( ulong thisUserId, string otherUser )
+		{
+			return Queryable.Where( f => f.Type == FriendshipType.Show && f.TargetScreenName == otherUser &&
+										f.SourceUserID == thisUserId ).SingleOrDefaultAsync();
+		}
+
 		public Task<List<User>> ListFollowers( ulong userId, int maxCount, bool skipStatus )
 		{
 			return Queryable.Where( f => f.Type == FriendshipType.FollowersList && f.UserID == userId.ToString()

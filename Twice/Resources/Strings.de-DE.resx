@@ -621,4 +621,16 @@
   <data name="Users" xml:space="preserve">
     <value>Benutzer</value>
   </data>
+  <data name="ComposeMessage" xml:space="preserve">
+    <value>Nachricht verfassen</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="Recipient" xml:space="preserve">
+    <value>Empfänger</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Nachricht</value>
+  </data>
 </root>

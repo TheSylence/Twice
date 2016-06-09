@@ -10,7 +10,7 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:views="clr-namespace:Twice.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource DialogLocator}}"
+        mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource Locator}}"
         Title="{lex:Loc Tweet}" Height="600" Width="450">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />

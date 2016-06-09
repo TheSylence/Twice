@@ -15,7 +15,16 @@ namespace Twice.Models.Twitter.Streaming
 		public DirectMessageStreamEventArgs( string json )
 			: base( json )
 		{
-			Message = new DirectMessage( JsonMapper.ToObject( json ) );
+			var obj = JsonMapper.ToObject( json );
+			JsonData messageData;
+			if( obj.TryGetValue( "direct_message", out messageData ) )
+			{
+				Message = new DirectMessage( messageData );
+			}
+			else
+			{
+				Message = new DirectMessage();
+			}
 		}
 
 		/// <summary>

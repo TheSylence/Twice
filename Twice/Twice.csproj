@@ -259,6 +259,7 @@
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
+    <Compile Include="Messages\DmMessage.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
@@ -394,7 +395,6 @@
     <Compile Include="ViewModels\Dialogs\SearchDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SearchMode.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
-    <Compile Include="ViewModels\DialogViewModelLocator.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
     <Compile Include="ViewModels\Info\ChangelogItem.cs" />
@@ -425,7 +425,9 @@
     <Compile Include="ViewModels\Settings\ToastNotificationSettings.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
     <Compile Include="ViewModels\Twitter\ColumnItem.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeMessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\IComposeMessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
@@ -443,6 +445,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\RetweetDialog.xaml.cs">
       <DependentUpon>RetweetDialog.xaml</DependentUpon>
@@ -544,6 +549,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

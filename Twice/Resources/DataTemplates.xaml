@@ -11,6 +11,21 @@
                     xmlns:views="clr-namespace:Twice.Views">
 	<DataTemplate x:Key="MessageViewTemplate" DataType="twitter:MessageViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
+			<materialDesign:Card.Style>
+				<Style TargetType="materialDesign:Card">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding WasRead}" Value="False">
+							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightForegroundBrush}" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</materialDesign:Card.Style>
+			<i:Interaction.Behaviors>
+				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenMessageCommand}}"
+										CommandParameter="{Binding}" />
+			</i:Interaction.Behaviors>
+			
 			<StackPanel Orientation="Vertical">
 				<DockPanel>
 					<Grid Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">
@@ -70,7 +85,7 @@
 									<ColumnDefinition />
 								</Grid.ColumnDefinitions>
 
-								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" Grid.Column="0">
+								<Button Width="28" Height="28" Command="{Binding ReplyCommand}" ToolTip="{lex:Loc Reply}" Grid.Column="0">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -85,7 +100,7 @@
 									<materialDesign:PackIcon Kind="ReplyAll" />
 								</Button>
 
-								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1">
+								<!--<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -101,7 +116,7 @@
 									</i:Interaction.Behaviors>
 
 									<materialDesign:PackIcon Kind="DotsHorizontal" />
-								</Button>
+								</Button>-->
 							</Grid>
 						</StackPanel>
 

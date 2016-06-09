@@ -11,7 +11,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:Twice.Views" FocusManager.FocusedElement="{Binding ElementName=InputBox}"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
-        Style="{StaticResource DialogStyle}" DataContext="{Binding Search, Source={StaticResource DialogLocator}}"
+        Style="{StaticResource DialogStyle}" DataContext="{Binding Search, Source={StaticResource Locator}}"
         mc:Ignorable="d" Title="{lex:Loc Search}" Height="600" Width="650">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />

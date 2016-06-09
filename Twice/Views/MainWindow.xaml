@@ -27,6 +27,7 @@
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.InputBindings>
 		<KeyBinding Modifiers="Control" Key="N" Command="{Binding NewTweetCommand}" />
+		<KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding NewMessageCommand}" />
 		<KeyBinding Modifiers="Control" Key="F" Command="{Binding SearchCommand}" />
 		<KeyBinding Modifiers="Control" Key="E" Command="{Binding SettingsCommand}" />
 		<KeyBinding Modifiers="Control" Key="Insert" Command="{Binding AddColumnCommand}" />
@@ -61,6 +62,12 @@
 					ToolTip="{lex:Loc NewTweet}" Command="{Binding NewTweetCommand}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 					<materialDesign:PackIcon Kind="Pencil" />
+				</Button>
+
+				<Button Width="36" Height="36"
+					ToolTip="{lex:Loc ComposeMessage}" Command="{Binding NewMessageCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+					<materialDesign:PackIcon Kind="MessageText" />
 				</Button>
 
 				<Button Width="36" Height="36" Command="{Binding SearchCommand}"

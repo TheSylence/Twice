@@ -18,7 +18,6 @@ using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Twitter;
-using Twice.Views;
 using Twice.Views.Dialogs;
 using Twice.Views.Wizards;
 
@@ -28,6 +27,67 @@ namespace Twice.Services.Views
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
+		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : Window, new()
+		{
+			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
+		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var dlg = new TWindow
+			{
+				Owner = Window
+			};
+
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			if( dlg.ShowDialog() != true )
+			{
+				return Task.FromResult<TResult>( null );
+			}
+
+			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			var resSetup = resultSetup ?? defaultResultSetup;
+			var result = resSetup( vm );
+
+			return Task.FromResult( result );
+		}
+
+		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+
+			TResult result = null;
+
+			DispatcherHelper.CheckBeginInvokeOnUI(
+				async () =>
+				{
+					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
+					waitHandle.Set();
+				} );
+
+			waitHandle.Wait();
+			return result;
+		}
+
+		public async Task ComposeMessage()
+		{
+			await ShowWindow<MessageDialog, IComposeMessageViewModel>();
+		}
+
 		public async Task ComposeTweet()
 		{
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
@@ -74,6 +134,11 @@ namespace Twice.Services.Views
 			};
 
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+		}
+
+		public Task ReplyToMessage( MessageViewModel vm )
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
@@ -151,13 +216,18 @@ namespace Twice.Services.Views
 			return ShowWindowSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup );
 		}
 
+		public Task ViewDirectMessage( MessageViewModel vm )
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
 		{
 			Action<IImageDialogViewModel> setup = vm =>
 			{
 				vm.SetImages( imageSet );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
-				                   ?? vm.Images.FirstOrDefault();
+									?? vm.Images.FirstOrDefault();
 			};
 
 			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
@@ -170,74 +240,16 @@ namespace Twice.Services.Views
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
-		public async Task ViewStatus( StatusViewModel status, IContextEntry context )
+		public async Task ViewStatus( StatusViewModel status )
 		{
 			Action<ITweetDetailsViewModel> vmSetup = vm =>
 			{
-				vm.Context = context;
+				vm.Context = status.Context;
 				vm.DisplayTweet = status;
 			};
 
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
-
-		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TWindow : Window, new()
-		{
-			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
-		}
-
-		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			var dlg = new TWindow
-			{
-				Owner = Window
-			};
-
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			TResult result = null;
-
-			if( dlg.ShowDialog() == true )
-			{
-				Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
-				var resSetup = resultSetup ?? defaultResultSetup;
-				result = resSetup( vm );
-			}
-
-			return Task.FromResult( result );
-		}
-
-		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
-
-			TResult result = null;
-
-			DispatcherHelper.CheckBeginInvokeOnUI(
-				async () =>
-				{
-					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
-					waitHandle.Set();
-				} );
-
-			waitHandle.Wait();
-			return result;
-		}
-
-		public Dialog CurrentDialog { get; }
 
 		private static MetroWindow Window
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );

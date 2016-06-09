@@ -322,6 +322,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compose message.
+        /// </summary>
+        public static string ComposeMessage {
+            get {
+                return ResourceManager.GetString("ComposeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compose tweet.
         /// </summary>
         public static string ComposeTweet {
@@ -880,6 +889,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Messages.
         /// </summary>
         public static string Messages {
@@ -1069,6 +1087,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recipient.
+        /// </summary>
+        public static string Recipient {
+            get {
+                return ResourceManager.GetString("Recipient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removed favorite.
         /// </summary>
         public static string RemovedFavorite {
@@ -1236,6 +1263,15 @@ namespace Twice.Resources {
         public static string SelectColumnsYouWantToAddForNewAccount {
             get {
                 return ResourceManager.GetString("SelectColumnsYouWantToAddForNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
             }
         }
         

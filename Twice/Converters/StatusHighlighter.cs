@@ -324,7 +324,10 @@ namespace Twice.Converters
 			var tweet = value as ColumnItem;
 			if( tweet == null )
 			{
-				Debugger.Break();
+				if( Debugger.IsAttached )
+				{
+					Debugger.Break();
+				}
 				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
 			}
 

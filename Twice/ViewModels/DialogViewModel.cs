@@ -2,6 +2,7 @@
 using Ninject;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Validation;
@@ -25,9 +26,9 @@ namespace Twice.ViewModels
 			} );
 		}
 
-		protected virtual bool OnOk()
+		protected virtual Task<bool> OnOk()
 		{
-			return !HasErrors;
+			return Task.FromResult( !HasErrors );
 		}
 
 		private void ExecuteCancelCommand()
@@ -35,10 +36,10 @@ namespace Twice.ViewModels
 			Close( false );
 		}
 
-		private void ExecuteOkCommand()
+		private async void ExecuteOkCommand()
 		{
 			ValidateAll();
-			if( OnOk() )
+			if( await OnOk() )
 			{
 				Close( true );
 			}

@@ -1,4 +1,5 @@
-﻿using Twice.Models.Configuration;
+﻿using System.Threading.Tasks;
+using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities.Ui;
 
@@ -18,7 +19,7 @@ namespace Twice.ViewModels.Settings
 			Title = Strings.Settings;
 		}
 
-		protected override bool OnOk()
+		protected override Task<bool> OnOk()
 		{
 			using( new WaitOperation() )
 			{

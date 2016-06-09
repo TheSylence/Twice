@@ -1,9 +1,9 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
 using Twice.Models.Configuration;
 using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
@@ -42,6 +42,11 @@ namespace Twice.ViewModels
 			await ViewServices.ViewImage( new[] {imageUrl}, imageUrl );
 		}
 
+		private static async void ExecuteOpenMessageCommand( MessageViewModel message )
+		{
+			await ViewServices.ViewDirectMessage( message );
+		}
+
 		private static async void ExecuteOpenProfileCommand( ulong args )
 		{
 			await ViewServices.ViewProfile( args );
@@ -50,7 +55,7 @@ namespace Twice.ViewModels
 		private static async void ExecuteOpenStatusCommand( StatusViewModel vm )
 		{
 			// TODO: If status is a retweet, display the retweeted status instead of the retweet
-			await ViewServices.ViewStatus( vm, vm.Context );
+			await ViewServices.ViewStatus( vm );
 		}
 
 		private static void ExecuteOpenUrlCommand( Uri args )
@@ -59,10 +64,14 @@ namespace Twice.ViewModels
 		}
 
 		private static readonly IKernel Kernel;
+
 		private static RelayCommand<string> _CreateMuteCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private static RelayCommand<Uri> _OpenImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<MessageViewModel> _OpenMessageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private static RelayCommand<ulong> _OpenProfileCommand;
@@ -77,6 +86,9 @@ namespace Twice.ViewModels
 
 		public static ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand<Uri>(
 			ExecuteOpenImageCommand ) );
+
+		public static ICommand OpenMessageCommand
+			=> _OpenMessageCommand ?? ( _OpenMessageCommand = new RelayCommand<MessageViewModel>( ExecuteOpenMessageCommand ) );
 
 		public static ICommand OpenProfileCommand
 			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );

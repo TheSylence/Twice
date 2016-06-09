@@ -86,6 +86,7 @@ namespace Twice.Models.Twitter.Streaming
 
 			default:
 				LogTo.Debug( "Unknown event received" );
+				LogTo.Debug( json );
 				var handler = UnknownEventReceived;
 				handler?.Invoke( this, new EventStreamEventArgs( json ) );
 				break;
@@ -108,7 +109,7 @@ namespace Twice.Models.Twitter.Streaming
 			JsonData temp;
 
 			// Was this a direct message?
-			if( parsed.TryGetValue( "recipient", out temp ) && parsed.TryGetValue( "sender", out temp ) )
+			if( parsed.TryGetValue( "direct_message", out temp ) )
 			{
 				LogTo.Debug( "DirectMessage received" );
 				var handler = DirectMessageReceived;
@@ -157,6 +158,7 @@ namespace Twice.Models.Twitter.Streaming
 			else
 			{
 				LogTo.Debug( "Unknown data received" );
+				LogTo.Debug( content.Content );
 				var handler = UnknownDataReceived;
 				handler?.Invoke( this, new StreamEventArgs( content.Content ) );
 			}

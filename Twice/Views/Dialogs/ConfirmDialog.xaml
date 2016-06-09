@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        WindowStartupLocation="CenterOwner" DataContext="{Binding Confirm, Source={StaticResource DialogLocator}}"
+        WindowStartupLocation="CenterOwner" DataContext="{Binding Confirm, Source={StaticResource Locator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" SizeToContent="Height"
         Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300" >
 	<i:Interaction.Behaviors>

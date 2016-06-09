@@ -12,6 +12,7 @@ namespace Twice.ViewModels.Main
 		IDragDropHandler DragDropHandler { get; }
 		bool HasContexts { get; }
 		ICommand InfoCommand { get; }
+		ICommand NewMessageCommand { get; }
 		ICommand NewTweetCommand { get; }
 		ICommand SearchCommand { get; }
 		ICommand SettingsCommand { get; }

@@ -15,7 +15,7 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:vm="clr-namespace:Twice.ViewModels"
-        DataContext="{Binding AddColumn, Source={StaticResource DialogLocator}}"
+        DataContext="{Binding AddColumn, Source={StaticResource Locator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         Title="{lex:Loc AddColumn}" Height="400" Width="600">
 	<i:Interaction.Behaviors>
