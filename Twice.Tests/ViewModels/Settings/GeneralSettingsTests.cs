@@ -80,11 +80,8 @@ namespace Twice.Tests.ViewModels.Settings
 			var vm = new GeneralSettings( cfgMock.Object, languageProvider.Object );
 
 			// Assert
-			var allCultures = string.Join( Environment.NewLine, CultureInfo.GetCultures( CultureTypes.AllCultures ).Select( c => c.Name ) );
 			var names = vm.AvailableLanguages.Select( l => l.Name ).ToArray();
-			var debugInfo = "In collection: " + string.Join( "; ", names ) + Environment.NewLine + allCultures;
-
-			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-GB"}, names, debugInfo );
+			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-GB"}, names, string.Join( "; ", names ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
