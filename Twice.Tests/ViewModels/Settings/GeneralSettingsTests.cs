@@ -72,7 +72,7 @@ namespace Twice.Tests.ViewModels.Settings
 				CultureInfo.CreateSpecificCulture( "en-US" ),
 				CultureInfo.CreateSpecificCulture( "de-DE" ),
 				CultureInfo.CreateSpecificCulture( "en-US" ).Parent,
-				CultureInfo.CreateSpecificCulture( "en-UK" ),
+				CultureInfo.CreateSpecificCulture( "en-GB" ),
 				CultureInfo.CreateSpecificCulture( "de-DE" ).Parent
 			} );
 
@@ -84,7 +84,7 @@ namespace Twice.Tests.ViewModels.Settings
 			var names = vm.AvailableLanguages.Select( l => l.Name ).ToArray();
 			var debugInfo = "In collection: " + string.Join( "; ", names ) + Environment.NewLine + allCultures;
 
-			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-UK"}, names, debugInfo );
+			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-GB"}, names, debugInfo );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
