@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -79,8 +80,11 @@ namespace Twice.Tests.ViewModels.Settings
 			var vm = new GeneralSettings( cfgMock.Object, languageProvider.Object );
 
 			// Assert
+			var allCultures = string.Join( Environment.NewLine, CultureInfo.GetCultures( CultureTypes.AllCultures ).Select( c => c.Name ) );
 			var names = vm.AvailableLanguages.Select( l => l.Name ).ToArray();
-			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-UK"}, names, string.Join( "; ", names ) );
+			var debugInfo = "In collection: " + string.Join( "; ", names ) + Environment.NewLine + allCultures;
+
+			CollectionAssert.AreEquivalent( new[] {"de-DE", "en-US", "en-UK"}, names, debugInfo );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
