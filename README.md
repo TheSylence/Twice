@@ -1,5 +1,5 @@
 # Twice
-[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)]()
+[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)](https://ci.appveyor.com/project/TheSylence/Twice)
 [![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=2592000)]()
 [![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=2592000)]()
 
