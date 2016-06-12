@@ -203,6 +203,13 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( async t =>
 			{
 				IsSending = false;
+
+				if( t.IsFaulted )
+				{
+					Notifier.DisplayMessage( t.Exception?.GetReason(), NotificationType.Error );
+					return;
+				}
+
 				await Dispatcher.RunAsync( async () =>
 				{
 					if( !StayOpen )

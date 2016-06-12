@@ -68,8 +68,15 @@ namespace Twice.ViewModels.Main
 		{
 			foreach( var context in ContextList.Contexts )
 			{
-				bool valid = await context.Twitter.VerifyCredentials();
-				LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+				try
+				{
+					bool valid = await context.Twitter.VerifyCredentials();
+					LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( $"Credentials for {context.AccountName} could not be checked", ex );
+				}
 			}
 		}
 
@@ -180,7 +187,14 @@ namespace Twice.ViewModels.Main
 		{
 			foreach( var context in ContextList.Contexts )
 			{
-				await context.Twitter.LogCurrentRateLimits();
+				try
+				{
+					await context.Twitter.LogCurrentRateLimits();
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( $"Could not query rate limit for {context.AccountName}", ex );
+				}
 			}
 		}
 
