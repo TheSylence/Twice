@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Cache;
@@ -27,14 +28,15 @@ namespace Twice.ViewModels.Columns
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
 		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
-			IStreamParser parser )
+			IStreamParser parser, IMessenger messenger = null )
+			: base( messenger )
 		{
 			Configuration = config;
 			Definition = definition;
 			Context = context;
 			Width = definition.Width;
 			IsLoading = true;
-			Statuses = StatusCollection = new SmartCollection<StatusViewModel>();
+			Items = ItemCollection = new SmartCollection<ColumnItem>();
 			Parser = parser;
 
 			ColumnConfiguration = new ColumnConfigurationViewModel( definition );
@@ -44,7 +46,9 @@ namespace Twice.ViewModels.Columns
 			{
 				Parser.FriendsReceived += Parser_FriendsReceived;
 				Parser.StatusReceived += Parser_StatusReceived;
-				Parser.StatusDeleted += Parser_StatusDeleted;
+				Parser.StatusDeleted += Parser_ItemDeleted;
+				Parser.DirectMessageDeleted += Parser_ItemDeleted;
+				Parser.DirectMessageReceived += Parser_DirectMessageReceived;
 			}
 
 			ActionDispatcher = new ColumnActionDispatcher();
@@ -57,7 +61,81 @@ namespace Twice.ViewModels.Columns
 			SubTitle = "@" + context.AccountName;
 		}
 
+		public event EventHandler Changed;
+
+		public event EventHandler Deleted;
+
+		public event EventHandler<ColumnItemEventArgs> NewItem;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await OnLoad().ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
+			} );
+		}
+
+		protected async Task AddItem( MessageViewModel message, bool append = true )
+		{
+			await Dispatcher.RunAsync( () =>
+			{
+				var toDelete = ItemCollection.OfType<MessageViewModel>()
+					.Where( i => i.Partner.UserId == message.Partner.UserId )
+					.ToArray();
+				foreach( var item in toDelete )
+				{
+					ItemCollection.Remove( item );
+				}
+
+				if( append )
+				{
+					ItemCollection.Add( message );
+				}
+				else
+				{
+					ItemCollection.Insert( 0, message );
+				}
+			} );
+
+			RaiseNewItem( message );
+		}
+
+		protected async Task AddItems( IEnumerable<MessageViewModel> messages, bool append = true )
+		{
+			var messageViewModels = messages as MessageViewModel[] ?? messages.ToArray();
+			if( messageViewModels.Any() )
+			{
+				foreach( var s in messageViewModels )
+				{
+					//await UpdateCache( s.Model );
+
+					if( append )
+					{
+						await Dispatcher.RunAsync( () => ItemCollection.Add( s ) );
+					}
+					else
+					{
+						await Dispatcher.RunAsync( () => ItemCollection.Insert( 0, s ) );
+					}
+				}
+
+				RaiseNewItem( messageViewModels.Last() );
+			}
+		}
+
+		protected Task<MessageViewModel> CreateViewModel( DirectMessage m )
+		{
+			var vm = new MessageViewModel( m, Context, ViewServiceRepository );
+
+			return Task.FromResult( vm );
+		}
+
 		protected abstract bool IsSuitableForColumn( Status status );
+
+		protected abstract bool IsSuitableForColumn( DirectMessage message );
 
 		protected virtual async Task OnLoad()
 		{
@@ -68,14 +146,14 @@ namespace Twice.ViewModels.Columns
 				list.Add( await CreateViewModel( s ) );
 			}
 
-			await AddStatuses( list );
+			await AddItems( list );
 		}
 
-		protected void RaiseNewStatus( StatusViewModel status )
+		protected void RaiseNewItem( ColumnItem item )
 		{
 			if( !IsLoading )
 			{
-				NewStatus?.Invoke( this, new StatusEventArgs( status ) );
+				NewItem?.Invoke( this, new ColumnItemEventArgs( item ) );
 			}
 		}
 
@@ -94,7 +172,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		private async Task AddStatus( StatusViewModel status, bool append = true )
+		private async Task AddItem( StatusViewModel status, bool append = true )
 		{
 			SinceId = Math.Min( SinceId, status.Id );
 			MaxId = Math.Min( MaxId, status.Id );
@@ -103,19 +181,19 @@ namespace Twice.ViewModels.Columns
 			{
 				if( append )
 				{
-					StatusCollection.Add( status );
+					ItemCollection.Add( status );
 				}
 				else
 				{
-					StatusCollection.Insert( 0, status );
+					ItemCollection.Insert( 0, status );
 				}
 			} );
-			RaiseNewStatus( status );
+			RaiseNewItem( status );
 
 			await UpdateCache( status.Model );
 		}
 
-		private async Task AddStatuses( IEnumerable<StatusViewModel> statuses, bool append = true )
+		private async Task AddItems( IEnumerable<StatusViewModel> statuses, bool append = true )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
 			if( statusViewModels.Any() )
@@ -129,15 +207,15 @@ namespace Twice.ViewModels.Columns
 
 					if( append )
 					{
-						await Dispatcher.RunAsync( () => StatusCollection.Add( s ) );
+						await Dispatcher.RunAsync( () => ItemCollection.Add( s ) );
 					}
 					else
 					{
-						await Dispatcher.RunAsync( () => StatusCollection.Insert( 0, s ) );
+						await Dispatcher.RunAsync( () => ItemCollection.Insert( 0, s ) );
 					}
 				}
 
-				RaiseNewStatus( statusViewModels.Last() );
+				RaiseNewItem( statusViewModels.Last() );
 			}
 		}
 
@@ -156,7 +234,7 @@ namespace Twice.ViewModels.Columns
 
 		private void ExecuteClearCommand()
 		{
-			Statuses.Clear();
+			Items.Clear();
 		}
 
 		private async void ExecuteDeleteCommand()
@@ -180,7 +258,7 @@ namespace Twice.ViewModels.Columns
 				list.Add( await CreateViewModel( s ) );
 			}
 
-			await AddStatuses( list );
+			await AddItems( list );
 		}
 
 		private async Task LoadTopData()
@@ -193,7 +271,18 @@ namespace Twice.ViewModels.Columns
 				list.Add( await CreateViewModel( s ) );
 			}
 
-			await AddStatuses( list, false );
+			await AddItems( list, false );
+		}
+
+		private async void Parser_DirectMessageReceived( object sender, DirectMessageStreamEventArgs e )
+		{
+			if( !IsSuitableForColumn( e.Message ) )
+			{
+				return;
+			}
+
+			var it = await CreateViewModel( e.Message );
+			await AddItem( it, false );
 		}
 
 		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
@@ -215,14 +304,14 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddUsers( usersToAdd.Select( u => new UserCacheEntry( u ) ).ToList() );
 		}
 
-		private async void Parser_StatusDeleted( object sender, DeleteStreamEventArgs e )
+		private async void Parser_ItemDeleted( object sender, DeleteStreamEventArgs e )
 		{
-			// Yes the same id shouldn't be there more than once, but this happens sometimes.
-			// so delete all statuses that match the id.
-			var toDelete = StatusCollection.Where( s => s.Id == e.Id ).ToArray();
+			// Yes the same id shouldn't be there more than once, but this happens sometimes. so
+			// delete all statuses that match the id.
+			var toDelete = ItemCollection.Where( s => s.Id == e.Id ).ToArray();
 			foreach( var status in toDelete )
 			{
-				await Dispatcher.RunAsync( () => StatusCollection.Remove( status ) );
+				await Dispatcher.RunAsync( () => ItemCollection.Remove( status ) );
 			}
 
 			await Cache.RemoveStatus( e.Id );
@@ -241,7 +330,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			var s = await CreateViewModel( e.Status );
-			await AddStatus( s, false );
+			await AddItem( s, false );
 		}
 
 		private async Task UpdateCache( Status status )
@@ -250,24 +339,8 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<StatusEventArgs> NewStatus;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await OnLoad().ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
 		public IColumnActionDispatcher ActionDispatcher { get; }
+		public ICache Cache { get; set; }
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -275,6 +348,9 @@ namespace Twice.ViewModels.Columns
 		public ColumnDefinition Definition { get; }
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		public abstract Icon Icon { get; }
 
@@ -293,7 +369,9 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public ICollection<StatusViewModel> Statuses { get; }
+		public ICollection<ColumnItem> Items { get; }
+
+		public IStatusMuter Muter { get; set; }
 
 		public string SubTitle
 		{
@@ -343,13 +421,6 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public ICache Cache { get; set; }
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
-
-		public IStatusMuter Muter { get; set; }
-
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		private ulong MaxId { get; set; } = ulong.MaxValue;
 
@@ -357,27 +428,20 @@ namespace Twice.ViewModels.Columns
 		private ulong SinceId { get; set; } = ulong.MinValue;
 		private Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
 		protected readonly IContextEntry Context;
-		private readonly Expression<Func<Status, bool>> CountExpression;
+		protected readonly Expression<Func<Status, bool>> CountExpression;
+		private readonly SmartCollection<ColumnItem> ItemCollection;
 		private readonly IStreamParser Parser;
 
-		private readonly SmartCollection<StatusViewModel> StatusCollection;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ClearCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SubTitle;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}
 }

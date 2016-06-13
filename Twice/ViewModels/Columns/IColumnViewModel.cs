@@ -13,7 +13,7 @@ namespace Twice.ViewModels.Columns
 
 		event EventHandler Deleted;
 
-		event EventHandler<StatusEventArgs> NewStatus;
+		event EventHandler<ColumnItemEventArgs> NewItem;
 
 		Task Load();
 
@@ -24,7 +24,7 @@ namespace Twice.ViewModels.Columns
 		ICommand DeleteCommand { get; }
 		Icon Icon { get; }
 		bool IsLoading { get; }
-		ICollection<StatusViewModel> Statuses { get; }
+		ICollection<ColumnItem> Items { get; }
 		string SubTitle { get; set; }
 		string Title { get; set; }
 		double Width { get; set; }

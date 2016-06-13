@@ -41,12 +41,12 @@ namespace Twice.ViewModels.Main
 			ConstructColumns();
 
 			DragDropHandler = new DragDropHandler( columnList, MessengerInstance );
-			RateLimitTimer = new DispatcherTimer
+			var rateLimitTimer = new DispatcherTimer
 			{
 				Interval = TimeSpan.FromMinutes( 15 )
 			};
-			RateLimitTimer.Tick += RateLimitTimer_Tick;
-			RateLimitTimer.Start();
+			rateLimitTimer.Tick += RateLimitTimer_Tick;
+			rateLimitTimer.Start();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -59,12 +59,24 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
+		private bool CanExecuteNewMessageCommand()
+		{
+			return HasContexts;
+		}
+
 		private async Task CheckCredentials()
 		{
 			foreach( var context in ContextList.Contexts )
 			{
-				bool valid = await context.Twitter.VerifyCredentials();
-				LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+				try
+				{
+					bool valid = await context.Twitter.VerifyCredentials();
+					LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( $"Credentials for {context.AccountName} could not be checked", ex );
+				}
 			}
 		}
 
@@ -92,13 +104,13 @@ namespace Twice.ViewModels.Main
 			ColumnList.Remove( new[] {col.Definition} );
 		}
 
-		private void Col_NewStatus( object sender, StatusEventArgs e )
+		private void Col_NewItem( object sender, ColumnItemEventArgs e )
 		{
 			var vm = sender as IColumnViewModel;
 			Debug.Assert( vm != null );
 
 			ColumnNotifications columnSettings = vm.Definition.Notifications;
-			Notifier.OnStatus( e.Status, columnSettings );
+			Notifier.OnItem( e.Item, columnSettings );
 		}
 
 		private async void ColumnList_ColumnsChanged( object sender, EventArgs e )
@@ -111,7 +123,7 @@ namespace Twice.ViewModels.Main
 		{
 			foreach( var c in Columns )
 			{
-				c.NewStatus -= Col_NewStatus;
+				c.NewItem -= Col_NewItem;
 				c.Changed -= Col_Changed;
 				c.Deleted -= Col_Deleted;
 			}
@@ -124,7 +136,7 @@ namespace Twice.ViewModels.Main
 
 			foreach( var c in constructed )
 			{
-				c.NewStatus += Col_NewStatus;
+				c.NewItem += Col_NewItem;
 				c.Changed += Col_Changed;
 				c.Deleted += Col_Deleted;
 				Columns.Add( c );
@@ -151,9 +163,19 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowInfo();
 		}
 
+		private async void ExecuteNewMessageCommand()
+		{
+			await ViewServiceRepository.ComposeMessage();
+		}
+
 		private async void ExecuteNewTweetCommand()
 		{
 			await ViewServiceRepository.ComposeTweet();
+		}
+
+		private async void ExecuteSearchCommand()
+		{
+			await ViewServiceRepository.OpenSearch();
 		}
 
 		private async void ExecuteSettingsCommand()
@@ -165,7 +187,14 @@ namespace Twice.ViewModels.Main
 		{
 			foreach( var context in ContextList.Contexts )
 			{
-				await context.Twitter.LogCurrentRateLimits();
+				try
+				{
+					await context.Twitter.LogCurrentRateLimits();
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( $"Could not query rate limit for {context.AccountName}", ex );
+				}
 			}
 		}
 
@@ -204,16 +233,12 @@ namespace Twice.ViewModels.Main
 			{
 				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
 
-				var channelUrl = useBetaChannel
-					? Constants.Updates.BetaChannelUrl
-					: Constants.Updates.ReleaseChannelUrl;
-
 				LogTo.Info( "Searching for app updates..." );
 				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
 
 				try
 				{
-					using( var mgr = UpdateFactory.Construct( channelUrl ) )
+					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
 					{
 						var release = await mgr.UpdateApp();
 
@@ -256,23 +281,33 @@ namespace Twice.ViewModels.Main
 				?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
 
 		public ICollection<IColumnViewModel> Columns { get; }
+
 		public IDragDropHandler DragDropHandler { get; }
+
 		public bool HasContexts => ContextList.Contexts.Any();
+
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
+
+		public ICommand NewMessageCommand
+			=> _NewMessageCommand ?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
 
 		public ICommand NewTweetCommand
 			=> _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
+
+		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand(
+			ExecuteSearchCommand ) );
 
 		public ICommand SettingsCommand
 			=> _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 
 		[Inject]
-		public IAppUpdaterFactory UpdateFactory { get; set; }
+		public IAppUpdaterFactory UpdateFactory { private get; set; }
 
 		private readonly IColumnDefinitionList ColumnList;
+
 		private readonly IColumnFactory Factory;
+
 		private readonly INotifier Notifier;
-		private readonly DispatcherTimer RateLimitTimer;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _AccountsCommand;
@@ -284,7 +319,12 @@ namespace Twice.ViewModels.Main
 		private RelayCommand _ManageColumnsCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewMessageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _NewTweetCommand;
+
+		private RelayCommand _SearchCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _SettingsCommand;

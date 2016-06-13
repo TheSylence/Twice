@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Interop;
 using Twice.Utilities.Os;
@@ -18,6 +19,15 @@ namespace Twice.Views
 			var handle = new WindowInteropHelper( this ).EnsureHandle();
 			var source = HwndSource.FromHwnd( handle );
 			source?.AddHook( WndProc );
+
+			App.ApplyWindowSettings( this );
+		}
+
+		protected override void OnClosing( CancelEventArgs e )
+		{
+			base.OnClosing( e );
+
+			App.SaveWindowSettings( this );
 		}
 
 		private IntPtr WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )

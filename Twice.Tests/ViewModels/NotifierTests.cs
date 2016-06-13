@@ -64,7 +64,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications { Toast = false } );
+			notifier.OnItem( status, new ColumnNotifications { Toast = false } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Never() );
@@ -84,7 +84,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications { Toast = true } );
+			notifier.OnItem( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Never() );
@@ -104,7 +104,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.OnStatus( status, new ColumnNotifications { Toast = true } );
+			notifier.OnItem( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Once() );

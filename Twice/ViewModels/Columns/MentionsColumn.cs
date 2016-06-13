@@ -24,6 +24,11 @@ namespace Twice.ViewModels.Columns
 			return status.Entities.UserMentionEntities.Any( m => m.ScreenName == Context.AccountName );
 		}
 
+		protected override bool IsSuitableForColumn( DirectMessage message )
+		{
+			return false;
+		}
+
 		public override Icon Icon { get; }
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -90,7 +91,16 @@ namespace Twice.ViewModels.Profile
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
 
-			var user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+			User user = null;
+			try
+			{
+				user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+			}
+			catch( TwitterQueryException ex )
+			{
+				LogTo.WarnException( "Failed to load user profile", ex );
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+			}
 			if( user == null )
 			{
 				Notifier.DisplayMessage( Strings.UserNotFound, NotificationType.Error );

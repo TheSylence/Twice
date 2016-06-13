@@ -12,13 +12,12 @@
              xmlns:profile="clr-namespace:Twice.ViewModels.Profile"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource DialogLocator}}"
+             mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Padding="30" Width="1000" Height="700"
 			WindowStartupLocation="CenterOwner" Title="{Binding User.Model.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<Grid>

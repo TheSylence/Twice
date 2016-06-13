@@ -20,8 +20,11 @@ namespace Twice
 
 		public static class Cache
 		{
-			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 100 );
+			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 2 );
 			internal static TimeSpan HashtagExpiration = TimeSpan.FromDays( 30 );
+			internal static TimeSpan TwitterConfigExpiration = TimeSpan.FromDays( 1 );
+			internal static TimeSpan StatusExpiration = TimeSpan.FromDays( 3 );
+			internal static TimeSpan MessageExpiration = TimeSpan.FromDays( 7 );
 		}
 
 		public static class IO
@@ -39,6 +42,7 @@ namespace Twice
 			internal static readonly string AccountsFileName = P( "accounts.json" );
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );
+			internal static readonly string WindowSettingsFileName = P( "window.json" );
 
 			internal static string AppDataFolder
 			{
@@ -54,12 +58,6 @@ namespace Twice
 					return path;
 				}
 			}
-		}
-
-		public static class Updates
-		{
-			internal const string ReleaseChannelUrl = "http://software.btbsoft.org/twice";
-			internal const string BetaChannelUrl = "http://software.btbsoft.org/twice/beta";
 		}
 
 		/// <summary>

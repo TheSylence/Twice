@@ -1,7 +1,7 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter
@@ -24,6 +24,8 @@ namespace Twice.Models.Twitter
 
 		Task<Status> RetweetAsync( ulong statusId );
 
+		Task<DirectMessage> SendMessage( string recipient, string message );
+
 		Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo = 0 );
 
 		Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType, IEnumerable<ulong> additionalOwners );
@@ -32,6 +34,7 @@ namespace Twice.Models.Twitter
 
 		IAuthorizer Authorizer { get; }
 		ITwitterFriendshipRepository Friendships { get; }
+		ITwitterMessageRepository Messages { get; }
 		ITwitterSearchRepository Search { get; }
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }

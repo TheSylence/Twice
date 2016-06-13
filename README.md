@@ -1,7 +1,9 @@
 # Twice
-[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)]()
+[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)](https://ci.appveyor.com/project/TheSylence/Twice)
 [![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=2592000)]()
 [![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=2592000)]()
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/TheSylence/Twice/master/LICENSE)
+[![Twitter](https://img.shields.io/badge/twitter-TwiceApp-blue.svg)](https://twitter.com/TwiceApp)
 
 Twitter Windows Client - Follow [@TwiceApp](https://twitter.com/TwiceApp)
 
@@ -19,21 +21,7 @@ Twitter Windows Client - Follow [@TwiceApp](https://twitter.com/TwiceApp)
 
 # Building
 - **Visual Studio 2015 required (I guess)**
-- Create a new file *[REPO]/Twice/Constants.Auth.cs* with the following content
-```csharp
-namespace Twice
-{
-	internal static partial class Constants
-	{
-		public static class Auth
-		{
-			internal static readonly string ConsumerKey = "YOUR-CONSUMER-KEY";
-
-			internal static readonly string ConsumerSecret = "YOUR-CONSUMER-SECRET";
-		}
-	}
-}
-```
-where you replace *YOUR-CONSUMER-KEY* and *YOUR-CONSUMER-SECRET* with your access tokens.
+- Rename *[REPO]/Twice/Constants.Auth.txt* to *Constants.Auth.cs*
+- Replace *YOUR-CONSUMER-KEY* and *YOUR-CONSUMER-SECRET* with your access tokens in the txt file
 - Open solution
 - Build

@@ -19,6 +19,8 @@ namespace Twice.Models.Cache
 
 			yield return
 				"CREATE TABLE IF NOT EXISTS ColumnStatuses ( StatusId INT, ColumnId GUID, PRIMARY KEY( StatusId, ColumnId ) );";
+
+			yield return "CREATE TABLE IF NOT EXISTS Messages ( Id INT PRIMARY KEY, Sender INT, Recipient INT, Data TEXT, Expires BIG INT );";
 		}
 
 		private IEnumerable<string> GetInitQueries()

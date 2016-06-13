@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -104,8 +105,8 @@
       <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.4\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.609, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.0.0-ci609\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.617, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.0.0-ci617\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -229,12 +230,13 @@
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
-    <Compile Include="Behaviors\ColumnHandler.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
+    <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
+    <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
     <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
@@ -247,19 +249,25 @@
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\Compare.cs" />
+    <Compile Include="Converters\CompareOperation.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
+    <Compile Include="Converters\EnumToBool.cs" />
     <Compile Include="Converters\MathConverter.cs" />
+    <Compile Include="Converters\MathOperation.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Injections\CacheProvider.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
+    <Compile Include="Messages\DmMessage.cs" />
+    <Compile Include="Messages\EntityAction.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
+    <Compile Include="Models\Cache\MessageCacheEntry.cs" />
     <Compile Include="Models\Cache\NullCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.cs" />
     <Compile Include="Models\Cache\SqliteCache.Ddl.cs" />
@@ -278,10 +286,13 @@
     <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />
     <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\ITwitterMessageRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStatusRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterUserRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterMessageRepository.cs" />
+    <Compile Include="Models\Twitter\Repositories\TwitterSearchRepository.cs" />
     <Compile Include="Models\Twitter\Streaming\DeleteStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\DirectMessageStreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\EventStreamEventArgs.cs" />
@@ -319,10 +330,11 @@
     <Compile Include="Utilities\AppUpdaterFactory.cs" />
     <Compile Include="Utilities\IAppUpdater.cs" />
     <Compile Include="Utilities\IAppUpdaterFactory.cs" />
+    <Compile Include="Utilities\ISerializer.cs" />
     <Compile Include="Utilities\Os\ClipboardWrapper.cs" />
     <Compile Include="Utilities\Os\IProcessStarter.cs" />
     <Compile Include="Utilities\Os\OsVersionInfo.cs" />
-    <Compile Include="Utilities\Os\ProessStarter.cs" />
+    <Compile Include="Utilities\Os\ProcessStarter.cs" />
     <Compile Include="Utilities\Os\SingleInstance.cs" />
     <Compile Include="Utilities\Serializer.cs" />
     <Compile Include="Utilities\Ui\ColorProvider.cs" />
@@ -339,11 +351,13 @@
     <Compile Include="Utilities\Ui\ILanguageProvider.cs" />
     <Compile Include="Utilities\ITimer.cs" />
     <Compile Include="Utilities\ITimerFactory.cs" />
+    <Compile Include="Utilities\Ui\IVirtualScreen.cs" />
     <Compile Include="Utilities\Ui\LanguageProvider.cs" />
     <Compile Include="Utilities\Os\NativeMethods.cs" />
     <Compile Include="Utilities\Ui\Timer.cs" />
     <Compile Include="Utilities\Ui\TimerFactory.cs" />
     <Compile Include="Messages\WaitMessage.cs" />
+    <Compile Include="Utilities\Ui\VirtualScreenWrapper.cs" />
     <Compile Include="Utilities\Ui\WaitMessageHandler.cs" />
     <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />
@@ -371,17 +385,21 @@
     <Compile Include="ViewModels\Columns\IColumnActionDispatcher.cs" />
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
-    <Compile Include="ViewModels\Columns\StatusEventArgs.cs" />
+    <Compile Include="ViewModels\Columns\MessageColumn.cs" />
+    <Compile Include="ViewModels\Columns\MessageEventArgs.cs" />
+    <Compile Include="ViewModels\Columns\ColumnItemEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ImageEntry.cs" />
     <Compile Include="ViewModels\Dialogs\IRetweetDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\ISearchDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ITextInputDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\SearchDialogViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\SearchMode.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModel.cs" />
-    <Compile Include="ViewModels\DialogViewModelLocator.cs" />
     <Compile Include="ViewModels\Flyouts\NotificationViewModel.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
     <Compile Include="ViewModels\Info\ChangelogItem.cs" />
@@ -411,10 +429,16 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettings.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettings.cs" />
     <Compile Include="ViewModels\Twitter\AccountEntry.cs" />
+    <Compile Include="ViewModels\Twitter\ColumnItem.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeMessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\IComposeMessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\IMessageDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
+    <Compile Include="ViewModels\Twitter\MessageDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\MessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\UserViewModel.cs" />
@@ -429,8 +453,17 @@
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\MessageDetailsDialog.xaml.cs">
+      <DependentUpon>MessageDetailsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\RetweetDialog.xaml.cs">
       <DependentUpon>RetweetDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\SearchDialog.xaml.cs">
+      <DependentUpon>SearchDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\TextInputDialog.xaml.cs">
       <DependentUpon>TextInputDialog.xaml</DependentUpon>
@@ -438,11 +471,14 @@
     <Compile Include="Views\Dialogs\TweetDetailsDialog.xaml.cs">
       <DependentUpon>TweetDetailsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IWindowAdapter.cs" />
     <Compile Include="Views\Proxies\AccountsDialogDataProxy.cs" />
     <Compile Include="Views\Proxies\ColumnDataProxy.cs" />
     <Compile Include="Views\Proxies\ComposeTweetDataProxy.cs" />
     <Compile Include="Views\StatusContainer.cs" />
     <Compile Include="Views\TriggerTracing.cs" />
+    <Compile Include="Utilities\Ui\WindowSettings.cs" />
+    <Compile Include="Views\WindowWrapper.cs" />
     <Compile Include="Views\Wizards\AccountColumnsDialog.xaml.cs">
       <DependentUpon>AccountColumnsDialog.xaml</DependentUpon>
     </Compile>
@@ -526,7 +562,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Dialogs\MessageDetailsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\RetweetDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\SearchDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

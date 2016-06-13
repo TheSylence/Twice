@@ -12,11 +12,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Title="{lex:Loc ImageViewer}" Style="{StaticResource DialogStyle}"
 		Padding="30" WindowStartupLocation="CenterOwner"
-		DataContext="{Binding Image, Source={StaticResource DialogLocator}}"
+		DataContext="{Binding Image, Source={StaticResource Locator}}"
         Width="1000" Height="700">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<DockPanel>
@@ -27,12 +26,16 @@
 			</Button>
 			<Button ToolTip="{lex:Loc OpenInWeb}" Style="{StaticResource MaterialDesignToolForegroundButton}"
 					Command="{Binding OpenImageCommand}">
-				<materialDesign:PackIcon Kind="Web"/>
+				<materialDesign:PackIcon Kind="Web" />
 			</Button>
-			
+
 			<TextBox IsReadOnly="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
                 BorderThickness="0" FontFamily="Courier New" FontWeight="Bold"
-				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap" />
+				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap">
+				<i:Interaction.Behaviors>
+					<behaviors:SelectOnDoubleClick />
+				</i:Interaction.Behaviors>
+			</TextBox>
 		</StackPanel>
 
 		<controls:FlipView ItemsSource="{Binding Images}" MouseOverGlowEnabled="False" IsBannerEnabled="False"

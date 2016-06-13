@@ -4,7 +4,9 @@
 
 namespace Twice.Models.Twitter.Text
 {
-#pragma disable CodeMaid cleanup
+	// Pragma directives to prevent CodeMaid Cleanup
+#pragma warning disable 1
+#pragma warning restore 1
 
 	/// <summary>
 	///     Patterns and regular expressions used by the twitter text methods.

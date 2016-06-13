@@ -6,14 +6,6 @@ using System.Windows.Data;
 
 namespace Twice.Converters
 {
-	internal enum MathOperation
-	{
-		Add,
-		Substract,
-		Divide,
-		Multiply
-	}
-
 	internal class MathConverter : IValueConverter
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )

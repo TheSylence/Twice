@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 using Twice.ViewModels.Twitter;
@@ -35,18 +37,23 @@ namespace Twice.ViewModels.ColumnManagement
 			Wizard.GotoPage( pageKey );
 		}
 
-		private async void Timer_Tick( object sender, EventArgs e )
+		private async void ExecuteSearchCommand()
 		{
 			IsLoading = true;
 			Timer.Stop();
 
 			var contexts = Wizard.GetProperty<IContextEntry[]>( AddColumnDialogViewModel.ContextsKey );
 
-			var results = await contexts.First().Twitter.Users.Search( SearchText );
+			var results = await contexts.First().Twitter.Search.SearchUsers( SearchText );
 			UserCollection.Clear();
 			UserCollection.AddRange( results.Select( u => new UserViewModel( u ) ) );
 
 			IsLoading = false;
+		}
+
+		private void Timer_Tick( object sender, EventArgs e )
+		{
+			ExecuteSearchCommand();
 		}
 
 		public bool IsLoading
@@ -63,6 +70,8 @@ namespace Twice.ViewModels.ColumnManagement
 				RaisePropertyChanged();
 			}
 		}
+
+		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand( ExecuteSearchCommand ) );
 
 		public string SearchText
 		{
@@ -83,11 +92,16 @@ namespace Twice.ViewModels.ColumnManagement
 		}
 
 		public ICollection<UserViewModel> Users => UserCollection;
+
 		private readonly ITimer Timer;
+
 		private readonly SmartCollection<UserViewModel> UserCollection;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoading;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SearchCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _SearchText;

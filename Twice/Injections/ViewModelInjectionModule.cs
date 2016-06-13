@@ -1,6 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
@@ -18,7 +18,7 @@ namespace Twice.Injections
 	internal class ViewModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
@@ -47,8 +47,11 @@ namespace Twice.Injections
 			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();
 			Bind<IImageDialogViewModel>().To<ImageDialogViewModel>();
 			Bind<ITweetDetailsViewModel>().To<TweetDetailsViewModel>();
+			Bind<IMessageDetailsViewModel>().To<MessageDetailsViewModel>();
 			Bind<IRetweetDialogViewModel>().To<RetweetDialogViewModel>();
 			Bind<IConfirmDialogViewModel>().To<ConfirmDialogViewModel>();
+			Bind<ISearchDialogViewModel>().To<SearchDialogViewModel>();
+			Bind<IComposeMessageViewModel>().To<ComposeMessageViewModel>();
 
 			Bind<INotifier>().To<Notifier>();
 		}

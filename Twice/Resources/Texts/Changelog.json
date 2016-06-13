@@ -1,9 +1,33 @@
 ﻿[
     {
+        "Version": "0.5.0",
+        "Date": "2016-06-13",
+        "Description": "",
+        "NewFeatures": [
+            "Window position and size is now saved between application launches",
+            "Tweets and users can be searched",
+            "Source application is now displayed in tweet details",
+            "Double clicking selects the whole URL of an image",
+            "Added support for direct messages"
+        ],
+        "Changes": [
+            "Dialog windows can now be dragged using the mouse",
+            "Links to Twitter users in Info-Dialog now open inside the app",
+            "Update check now uses GitHub releases"
+        ],
+        "Fixes": [
+            "Clicking the header of a column scrolls to top is working again",
+            "View conversation and retweet indicators no longer overlap",
+            "Fixed many crashes when no internet connection is available",
+            "Fixed crash when openeing profile of a non existing user"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.4.2",
         "Date": "2016-06-05",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [ ],
         "Changes": [
             "'Reply to all' is now enabled for every tweet",
             "Own username is not used in reply when using 'Reply to all'",
@@ -15,18 +39,18 @@
             "(un)following a user now updates the (un)follow button immediately",
             "Autocompletebox in light theme now uses correct colors"
         ],
-        "Issues": []
+        "Issues": [ ]
     },
     {
         "Version": "0.4.1",
         "Date": "2016-06-04",
         "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
+        "NewFeatures": [ ],
+        "Changes": [ ],
         "Fixes": [
             "Fixed crash when Twitter reported a status deletion in realtime streaming"
         ],
-        "Issues": []
+        "Issues": [ ]
     },
     {
         "Version": "0.4.0",

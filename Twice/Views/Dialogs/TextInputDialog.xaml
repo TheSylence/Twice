@@ -9,11 +9,10 @@
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              xmlns:lex="http://wpflocalizeextension.codeplex.com" SizeToContent="Height"
              mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
-			  DataContext="{Binding TextInput, Source={StaticResource DialogLocator}}"
+			  DataContext="{Binding TextInput, Source={StaticResource Locator}}"
 			Width="350" Height="250" d:DesignHeight="300" d:DesignWidth="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 

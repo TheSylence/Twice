@@ -12,14 +12,13 @@
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              mc:Ignorable="d" Title="{lex:Loc Accounts}" Style="{StaticResource DialogStyle}"
-             DataContext="{Binding Accounts, Source={StaticResource DialogLocator}}"
+             DataContext="{Binding Accounts, Source={StaticResource Locator}}"
 			Width="600" Height="500" d:DesignHeight="300" d:DesignWidth="300">
 	<controls:MetroWindow.Resources>
 		<proxies:AccountsDialogDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
-		<behaviors:StaticWindow />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<Grid>

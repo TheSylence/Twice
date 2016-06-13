@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        WindowStartupLocation="CenterScreen"
 		lex:ResxLocalizationProvider.DefaultAssembly="Twice"
 		lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -17,9 +16,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:views="clr-namespace:Twice.Views"
+        xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
-        mc:Ignorable="d" Title="Twice" Height="768" Width="1024"
-		DataContext="{Binding Main, Source={StaticResource Locator}}">
+        mc:Ignorable="d" Title="Twice" DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 		<behaviours:BorderlessWindowBehavior />
@@ -28,6 +27,11 @@
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.InputBindings>
 		<KeyBinding Modifiers="Control" Key="N" Command="{Binding NewTweetCommand}" />
+		<KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding NewMessageCommand}" />
+		<KeyBinding Modifiers="Control" Key="F" Command="{Binding SearchCommand}" />
+		<KeyBinding Modifiers="Control" Key="E" Command="{Binding SettingsCommand}" />
+		<KeyBinding Modifiers="Control" Key="Insert" Command="{Binding AddColumnCommand}" />
+		<KeyBinding Modifiers="Control+Shift" Key="A" Command="{Binding AccountsCommand}" />
 	</controls:MetroWindow.InputBindings>
 	<controls:MetroWindow.Flyouts>
 		<controls:FlyoutsControl>
@@ -61,6 +65,12 @@
 				</Button>
 
 				<Button Width="36" Height="36"
+					ToolTip="{lex:Loc ComposeMessage}" Command="{Binding NewMessageCommand}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+					<materialDesign:PackIcon Kind="MessageText" />
+				</Button>
+
+				<Button Width="36" Height="36" Command="{Binding SearchCommand}"
 					ToolTip="{lex:Loc Search}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 					<materialDesign:PackIcon Kind="Magnify" />
@@ -127,14 +137,17 @@
 								</controls1:ColumnHeader>
 
 								<views:StatusContainer>
-									<ItemsControl ItemsSource="{Binding Statuses, IsAsync=True}" ItemTemplate="{StaticResource StatusViewTemplate}"
+									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
 											  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"
 											  VirtualizingStackPanel.IsVirtualizing="True"
 											  VirtualizingStackPanel.ScrollUnit="Pixel"
 											  VirtualizingStackPanel.VirtualizationMode="Recycling">
-										<i:Interaction.Behaviors>
-											<behaviors:ColumnHandler ActionDispatcher="{Binding ActionDispatcher}" />
-										</i:Interaction.Behaviors>
+										<ItemsControl.ItemTemplateSelector>
+											<views:GenericTemplateSelector>
+												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}"/>
+												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
+											</views:GenericTemplateSelector>
+										</ItemsControl.ItemTemplateSelector>
 										<ItemsControl.ItemsPanel>
 											<ItemsPanelTemplate>
 												<VirtualizingStackPanel />
@@ -143,10 +156,10 @@
 										<ItemsControl.Template>
 											<ControlTemplate>
 												<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
-												Padding="{TemplateBinding Control.Padding}"
-												BorderBrush="{TemplateBinding Border.BorderBrush}"
-												Background="{TemplateBinding Panel.Background}"
-												SnapsToDevicePixels="True">
+													Padding="{TemplateBinding Control.Padding}"
+													BorderBrush="{TemplateBinding Border.BorderBrush}"
+													Background="{TemplateBinding Panel.Background}"
+													SnapsToDevicePixels="True">
 													<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
 														  VerticalScrollBarVisibility="Auto" Focusable="False">
 														<i:Interaction.Behaviors>

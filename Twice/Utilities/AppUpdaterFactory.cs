@@ -1,12 +1,13 @@
 using Squirrel;
+using System.Threading.Tasks;
 
 namespace Twice.Utilities
 {
 	internal class AppUpdaterFactory : IAppUpdaterFactory
 	{
-		public IAppUpdater Construct( string url )
+		public async Task<IAppUpdater> Construct( bool includePreReleases )
 		{
-			var mgr = new UpdateManager( url );
+			var mgr = await UpdateManager.GitHubUpdateManager( "https://github.com/TheSylence/Twice", null, null, null, includePreReleases );
 			return new AppUpdater( mgr );
 		}
 	}

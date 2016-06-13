@@ -23,6 +23,11 @@ namespace Twice.ViewModels.Columns
 			return true;
 		}
 
+		protected override bool IsSuitableForColumn( DirectMessage message )
+		{
+			return false;
+		}
+
 		public override Icon Icon => Icon.Home;
 
 		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Type == StatusType.Home;

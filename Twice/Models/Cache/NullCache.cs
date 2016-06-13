@@ -15,6 +15,11 @@ namespace Twice.Models.Cache
 			return Task.CompletedTask;
 		}
 
+		public Task AddMessages( IList<MessageCacheEntry> messages )
+		{
+			return Task.CompletedTask;
+		}
+
 		public Task AddStatuses( IList<Status> statuses )
 		{
 			return Task.CompletedTask;
@@ -37,6 +42,11 @@ namespace Twice.Models.Cache
 		public Task<IEnumerable<UserCacheEntry>> GetKnownUsers()
 		{
 			return Task.FromResult( Enumerable.Empty<UserCacheEntry>() );
+		}
+
+		public Task<List<MessageCacheEntry>> GetMessages()
+		{
+			return Task.FromResult( new List<MessageCacheEntry>() );
 		}
 
 		public Task<Status> GetStatus( ulong id )

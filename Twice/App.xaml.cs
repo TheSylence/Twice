@@ -1,4 +1,13 @@
-﻿using Anotar.NLog;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
+using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -8,18 +17,11 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
 using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Utilities.Os;
+using Twice.Utilities.Ui;
+using Twice.Views;
 using WPFLocalizeExtension.Engine;
 
 namespace Twice
@@ -46,6 +48,22 @@ namespace Twice
 
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
 			Current.DispatcherUnhandledException += Handler.DispatcherUnhandledException;
+		}
+
+		internal static void ApplyWindowSettings( Window window )
+		{
+			WindowSettings = WindowSettings.Load( Constants.IO.WindowSettingsFileName );
+			WindowSettings?.Apply( new WindowWrapper( window ) );
+
+			if( WindowSettings == null )
+			{
+				WindowSettings = new WindowSettings();
+			}
+		}
+
+		internal static void SaveWindowSettings( Window window )
+		{
+			WindowSettings.Save( new WindowWrapper( window ) );
 		}
 
 		protected override void OnExit( ExitEventArgs e )
@@ -109,9 +127,9 @@ namespace Twice
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private static void LogEnvironmentInfo()
@@ -173,5 +191,6 @@ namespace Twice
 		}
 
 		public static IKernel Kernel { get; private set; }
+		private static WindowSettings WindowSettings;
 	}
 }

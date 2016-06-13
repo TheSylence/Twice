@@ -1,12 +1,12 @@
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Repositories;
 
@@ -25,6 +25,7 @@ namespace Twice.Models.Twitter
 			Friendships = new TwitterFriendshipRepository( context, cache );
 			Streaming = new TwitterStreamingRepository( context, cache );
 			Search = new TwitterSearchRepository( context, cache );
+			Messages = new TwitterMessageRepository( context, cache );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
@@ -105,13 +106,18 @@ namespace Twice.Models.Twitter
 			return Context.RetweetAsync( statusId );
 		}
 
+		public Task<DirectMessage> SendMessage( string recipient, string message )
+		{
+			return Context.NewDirectMessageAsync( recipient, message );
+		}
+
 		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
 		{
 			if( inReplyTo != 0 )
 			{
 				return Context.ReplyAsync( inReplyTo, text, medias );
 			}
-			
+
 			return Context.TweetAsync( text, medias );
 		}
 
@@ -131,6 +137,7 @@ namespace Twice.Models.Twitter
 
 		public IAuthorizer Authorizer => Context.Authorizer;
 		public ITwitterFriendshipRepository Friendships { get; }
+		public ITwitterMessageRepository Messages { get; }
 		public ITwitterSearchRepository Search { get; }
 		public ITwitterStatusRepository Statuses { get; }
 		public ITwitterStreamingRepository Streaming { get; }

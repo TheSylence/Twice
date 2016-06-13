@@ -1,13 +1,15 @@
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LinqToTwitter;
 
 namespace Twice.Models.Cache
 {
 	internal interface ICache : IDisposable
 	{
 		Task AddHashtags( IList<string> hashTags );
+
+		Task AddMessages( IList<MessageCacheEntry> messages );
 
 		Task AddStatuses( IList<Status> statuses );
 
@@ -16,6 +18,8 @@ namespace Twice.Models.Cache
 		Task<IEnumerable<string>> GetKnownHashtags();
 
 		Task<IEnumerable<UserCacheEntry>> GetKnownUsers();
+
+		Task<List<MessageCacheEntry>> GetMessages();
 
 		Task<Status> GetStatus( ulong id );
 

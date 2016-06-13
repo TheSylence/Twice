@@ -15,7 +15,7 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:vm="clr-namespace:Twice.ViewModels"
-        DataContext="{Binding AddColumn, Source={StaticResource DialogLocator}}"
+        DataContext="{Binding AddColumn, Source={StaticResource Locator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         Title="{lex:Loc AddColumn}" Height="400" Width="600">
 	<i:Interaction.Behaviors>
@@ -95,7 +95,11 @@
 							<DockPanel>
 								<TextBox materialDesign:HintAssist.Hint="{lex:Loc SearchUser}" DockPanel.Dock="Top"
 										 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-										 Margin="5" />
+										 Margin="5">
+									<i:Interaction.Behaviors>
+										<behaviors:CommandOnReturn Command="{Binding SearchCommand}" />
+									</i:Interaction.Behaviors>
+								</TextBox>
 
 								<Grid Margin="5">
 									<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

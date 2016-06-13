@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        WindowStartupLocation="CenterOwner" DataContext="{Binding Info, Source={StaticResource DialogLocator}}"
+        WindowStartupLocation="CenterOwner" DataContext="{Binding Info, Source={StaticResource Locator}}"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:xaml="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
@@ -41,10 +41,8 @@
 				<StackPanel Orientation="Horizontal">
 					<materialDesign:PackIcon Kind="TwitterCircle" Width="24" Height="24" Margin="5" />
 					<ContentControl VerticalAlignment="Center">
-						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-							<Hyperlink.CommandParameter>
-								<sys:Uri>https://twitter.com/TwiceApp</sys:Uri>
-							</Hyperlink.CommandParameter>
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+							<Hyperlink.CommandParameter>719870676216233984</Hyperlink.CommandParameter>
 							<TextBlock Text="{lex:Loc FollowTwiceAppOnTwitter}" />
 						</Hyperlink>
 					</ContentControl>
@@ -67,11 +65,9 @@
 							   VerticalAlignment="Center" />
 				</StackPanel>
 				<ContentControl Margin="15,0">
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-						<Hyperlink.CommandParameter>
-							<sys:Uri>https://twitter.com/TheSylence</sys:Uri>
-						</Hyperlink.CommandParameter>
-						<TextBlock Text="Mattias Specht (@TheSylence)" />
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+						<Hyperlink.CommandParameter>333290820</Hyperlink.CommandParameter>
+						<TextBlock Text="Matthias Specht (@TheSylence)" />
 					</Hyperlink>
 				</ContentControl>
 				<Label Margin="0,10" />
@@ -81,11 +77,8 @@
 							   VerticalAlignment="Center" />
 				</StackPanel>
 				<ContentControl Margin="15,0">
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
-							   NavigateUri="{Binding CommandParameter, RelativeSource={RelativeSource Self}}">
-						<Hyperlink.CommandParameter>
-							<sys:Uri>https://twitter.com/FemmeNoireOnYT</sys:Uri>
-						</Hyperlink.CommandParameter>
+					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+						<Hyperlink.CommandParameter>548023302</Hyperlink.CommandParameter>
 						<TextBlock Text="@FemmeNoireOnYT" />
 					</Hyperlink>
 				</ContentControl>

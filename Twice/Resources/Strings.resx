@@ -586,7 +586,7 @@
     <value>Special thanks to</value>
   </data>
   <data name="FollowTwiceAppOnTwitter" xml:space="preserve">
-    <value>Follow @TwiceApp on twitter</value>
+    <value>Follow @TwiceApp on Twitter</value>
   </data>
   <data name="Tweet" xml:space="preserve">
     <value>Tweet</value>
@@ -617,5 +617,20 @@
   </data>
   <data name="Account" xml:space="preserve">
     <value>Account</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="ComposeMessage" xml:space="preserve">
+    <value>Compose message</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Recipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
   </data>
 </root>
