@@ -249,11 +249,13 @@
     <Compile Include="Controls\ResizeAdorner.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Converters\Compare.cs" />
+    <Compile Include="Converters\CompareOperation.cs" />
     <Compile Include="Converters\DebugConverter.cs" />
     <Compile Include="Converters\EmptyList.cs" />
     <Compile Include="Converters\EmptyString.cs" />
     <Compile Include="Converters\EnumToBool.cs" />
     <Compile Include="Converters\MathConverter.cs" />
+    <Compile Include="Converters\MathOperation.cs" />
     <Compile Include="Converters\SourceUrl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Injections\CacheProvider.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Injections\Kernel.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\DmMessage.cs" />
+    <Compile Include="Messages\EntityAction.cs" />
     <Compile Include="Messages\FlyoutAction.cs" />
     <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
@@ -327,10 +330,11 @@
     <Compile Include="Utilities\AppUpdaterFactory.cs" />
     <Compile Include="Utilities\IAppUpdater.cs" />
     <Compile Include="Utilities\IAppUpdaterFactory.cs" />
+    <Compile Include="Utilities\ISerializer.cs" />
     <Compile Include="Utilities\Os\ClipboardWrapper.cs" />
     <Compile Include="Utilities\Os\IProcessStarter.cs" />
     <Compile Include="Utilities\Os\OsVersionInfo.cs" />
-    <Compile Include="Utilities\Os\ProessStarter.cs" />
+    <Compile Include="Utilities\Os\ProcessStarter.cs" />
     <Compile Include="Utilities\Os\SingleInstance.cs" />
     <Compile Include="Utilities\Serializer.cs" />
     <Compile Include="Utilities\Ui\ColorProvider.cs" />
@@ -430,6 +434,7 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeMessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\IMessageDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
     <Compile Include="ViewModels\Twitter\MessageDetailsViewModel.cs" />

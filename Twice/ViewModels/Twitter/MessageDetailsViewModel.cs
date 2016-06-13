@@ -1,16 +1,17 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IMessageDetailsViewModel : IDialogViewModel, ILoadCallback
-	{
-		MessageViewModel Message { get; set; }
-	}
-
 	internal class MessageDetailsViewModel : DialogViewModel, IMessageDetailsViewModel
 	{
+		public MessageDetailsViewModel()
+		{
+			PreviousMessages = new ObservableCollection<MessageViewModel>();
+		}
+
 		public Task OnLoad( object data )
 		{
 			return Task.CompletedTask;
@@ -31,6 +32,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private MessageViewModel _Message;
+		public ICollection<MessageViewModel> PreviousMessages { get; }
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private MessageViewModel _Message;
 	}
 }

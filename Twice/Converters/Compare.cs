@@ -5,16 +5,6 @@ using System.Windows.Data;
 
 namespace Twice.Converters
 {
-	internal enum CompareOperation
-	{
-		Greater,
-		GreaterOrEqual,
-		Less,
-		LessOrEqual,
-		Equal,
-		NotEqual
-	}
-
 	internal class Compare : IValueConverter
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )

@@ -3,13 +3,6 @@ using LinqToTwitter;
 
 namespace Twice.Messages
 {
-	internal enum EntityAction
-	{
-		Create,
-		Delete,
-		Edit
-	}
-
 	internal class DmMessage : MessageBase
 	{
 		public DmMessage( DirectMessage directMessage, EntityAction action )
