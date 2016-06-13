@@ -1,7 +1,7 @@
 ﻿[
     {
         "Version": "0.5.0",
-        "Date": "9999-12-31",
+        "Date": "2016-06-13",
         "Description": "",
         "NewFeatures": [
             "Window position and size is now saved between application launches",
