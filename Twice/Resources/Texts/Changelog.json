@@ -18,7 +18,8 @@
         "Fixes": [
             "Clicking the header of a column scrolls to top is working again",
             "View conversation and retweet indicators no longer overlap",
-            "Fixed many crashes when no internet connection is available"
+            "Fixed many crashes when no internet connection is available",
+            "Fixed crash when openeing profile of a non existing user"
         ],
         "Issues": []
     },
