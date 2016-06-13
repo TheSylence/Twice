@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -137,6 +138,30 @@ namespace Twice.Tests.ViewModels.Main
 
 			// Assert
 			column.Verify( c => c.Load(), Times.Exactly( 2 ) );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Main" )]
+		public async Task ExceptionOnCredentialValidationDoesNotCrash()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.VerifyCredentials() ).Throws(
+				new WebException( "The remote name could not be resolved: 'api.twitter.com'" ) )
+				.Verifiable();
+
+			var columnList = new Mock<IColumnDefinitionList>();
+			var columnFactory = new Mock<IColumnFactory>();
+
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+
+			var vm = new MainViewModel( contextList.Object, null, columnList.Object, columnFactory.Object );
+
+			// Act
+			await vm.OnLoad( null );
+
+			// Assert
+			context.Verify( c => c.Twitter.VerifyCredentials(), Times.AtLeastOnce() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]
