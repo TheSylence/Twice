@@ -233,6 +233,7 @@
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
+    <Compile Include="ViewModels\Columns\MessageColumnTests.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
@@ -249,8 +250,11 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
+    <Compile Include="ViewModels\Twitter\ComposeMessageViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
+    <Compile Include="ViewModels\Dialogs\ImageDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\MediaItemTests.cs" />
+    <Compile Include="ViewModels\Twitter\MessageViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\StatusViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModelTests.cs" />
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Cache;
@@ -27,7 +28,8 @@ namespace Twice.ViewModels.Columns
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
 		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
-			IStreamParser parser )
+			IStreamParser parser, IMessenger messenger = null )
+			: base( messenger )
 		{
 			Configuration = config;
 			Definition = definition;
@@ -57,6 +59,48 @@ namespace Twice.ViewModels.Columns
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 			CountExpression = s => s.Count == config.General.TweetFetchCount;
 			SubTitle = "@" + context.AccountName;
+		}
+
+		public event EventHandler Changed;
+
+		public event EventHandler Deleted;
+
+		public event EventHandler<ColumnItemEventArgs> NewItem;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await OnLoad().ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
+			} );
+		}
+
+		protected async Task AddItem( MessageViewModel message, bool append = true )
+		{
+			await Dispatcher.RunAsync( () =>
+			{
+				var toDelete = ItemCollection.OfType<MessageViewModel>()
+					.Where( i => i.Partner.UserId == message.Partner.UserId )
+					.ToArray();
+				foreach( var item in toDelete )
+				{
+					ItemCollection.Remove( item );
+				}
+
+				if( append )
+				{
+					ItemCollection.Add( message );
+				}
+				else
+				{
+					ItemCollection.Insert( 0, message );
+				}
+			} );
+
+			RaiseNewItem( message );
 		}
 
 		protected async Task AddItems( IEnumerable<MessageViewModel> messages, bool append = true )
@@ -147,31 +191,6 @@ namespace Twice.ViewModels.Columns
 			RaiseNewItem( status );
 
 			await UpdateCache( status.Model );
-		}
-
-		protected async Task AddItem( MessageViewModel message, bool append = true )
-		{
-			await Dispatcher.RunAsync( () =>
-			{
-				var toDelete = ItemCollection.OfType<MessageViewModel>()
-					.Where( i => i.Partner.UserId == message.Partner.UserId )
-					.ToArray();
-				foreach( var item in toDelete )
-				{
-					ItemCollection.Remove( item );
-				}
-
-				if( append )
-				{
-					ItemCollection.Add( message );
-				}
-				else
-				{
-					ItemCollection.Insert( 0, message );
-				}
-			} );
-
-			RaiseNewItem( message );
 		}
 
 		private async Task AddItems( IEnumerable<StatusViewModel> statuses, bool append = true )
@@ -320,24 +339,8 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<ColumnItemEventArgs> NewItem;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await OnLoad().ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
 		public IColumnActionDispatcher ActionDispatcher { get; }
+		public ICache Cache { get; set; }
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -345,6 +348,9 @@ namespace Twice.ViewModels.Columns
 		public ColumnDefinition Definition { get; }
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		public abstract Icon Icon { get; }
 
@@ -364,6 +370,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public ICollection<ColumnItem> Items { get; }
+
+		public IStatusMuter Muter { get; set; }
 
 		public string SubTitle
 		{
@@ -413,13 +421,6 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public ICache Cache { get; set; }
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
-
-		public IStatusMuter Muter { get; set; }
-
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		private ulong MaxId { get; set; } = ulong.MaxValue;
 
@@ -431,22 +432,16 @@ namespace Twice.ViewModels.Columns
 		private readonly SmartCollection<ColumnItem> ItemCollection;
 		private readonly IStreamParser Parser;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ClearCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SubTitle;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}
 }

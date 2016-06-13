@@ -168,6 +168,48 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ExceptionOnSendIsDisplayedInNotifier()
+		{
+			// Arrange
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
+
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+
+			var vm = new ComposeTweetViewModel
+			{
+				Notifier = notifier.Object,
+				ContextList = contextList.Object,
+				TwitterConfig = new Mock<ITwitterConfiguration>().Object,
+				Text = "the_text"
+			};
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.SendTweetCommand.Execute( null );
+			bool set = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( set );
+			notifier.Verify( n => n.DisplayMessage( "exception_message", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void MediaCanBeRemoved()
 		{
 			// Arrange
@@ -259,7 +301,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
+			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null,
 				null ) );
 
 			var obj = new ComposeTweetViewModel
@@ -269,8 +311,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var tester = new PropertyChangedTester( obj, false, typeResolver.Object );
 
 			// Act
-			tester.Test( nameof( ComposeTweetViewModel.Notifier ), nameof( ComposeTweetViewModel.Cache ),
-				nameof( ComposeTweetViewModel.Dispatcher ) );
+			tester.Test();
 
 			// Assert
 			tester.Verify();
@@ -347,6 +388,23 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsNull( vm.QuotedTweet );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void RemoveReplyCommandRemoves()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel
+			{
+				TwitterConfig = new Mock<ITwitterConfiguration>().Object,
+				InReplyTo = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null )
+			};
+
+			// Act
+			vm.RemoveReplyCommand.Execute( null );
+
+			// Assert
+			Assert.IsNull( vm.InReplyTo );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

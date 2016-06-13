@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Newtonsoft.Json;
 using Twice.Messages;
@@ -17,8 +18,8 @@ namespace Twice.ViewModels.Columns
 {
 	internal class MessageColumn : ColumnViewModelBase
 	{
-		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
-			: base( context, definition, config, parser )
+		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser, IMessenger messenger = null )
+			: base( context, definition, config, parser, messenger )
 		{
 			MessengerInstance.Register<DmMessage>( this, OnDirectMessage );
 		}
@@ -77,7 +78,8 @@ namespace Twice.ViewModels.Columns
 				}
 			}
 
-			await Cache.AddMessages( messages.Select( m => new MessageCacheEntry( m ) ).ToList() );
+			var toCache = new List<MessageCacheEntry>();
+			toCache.AddRange( messages.Select( m => new MessageCacheEntry( m ) ) );
 
 			messages = await Context.Twitter.Messages.OutgoingMessages( 200, MaxId );
 			foreach( var msg in messages )
@@ -97,7 +99,8 @@ namespace Twice.ViewModels.Columns
 				}
 			}
 
-			await Cache.AddMessages( messages.Select( m => new MessageCacheEntry( m ) ).ToList() );
+			toCache.AddRange( messages.Select( m => new MessageCacheEntry( m ) ) );
+			await Cache.AddMessages( toCache );
 
 			var list = new List<MessageViewModel>();
 			foreach( var s in userMap.Values.OrderByDescending( m => m.CreatedAt ) )

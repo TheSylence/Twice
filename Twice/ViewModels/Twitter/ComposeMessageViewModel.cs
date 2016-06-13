@@ -15,6 +15,12 @@ namespace Twice.ViewModels.Twitter
 		{
 			Validate( () => Recipient ).NotEmpty();
 			Validate( () => Text ).NotEmpty();
+
+			// Don't validate based on CanSend property because twitter states: "Besides determining
+			// >   the follow status between two users via friendships/ lookup, you are unable to
+			// >   determine if you can Direct Message a user via the public API" So we simply use this
+			// (https://dev.twitter.com/rest/reference/post/direct_messages/new)
+			// value as an indicator for the user and handle any errors that twitter will report
 		}
 
 		public Task OnLoad( object data )

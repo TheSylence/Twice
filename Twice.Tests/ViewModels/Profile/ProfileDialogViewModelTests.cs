@@ -210,7 +210,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var tester = new PropertyChangedTester( vm, false, typeResolver.Object );
 
 			// Act
-			tester.Test( nameof( ProfileDialogViewModel.Notifier ) );
+			tester.Test();
 
 			// Assert
 			tester.Verify();

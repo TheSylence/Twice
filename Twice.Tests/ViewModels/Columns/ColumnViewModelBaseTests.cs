@@ -433,11 +433,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var tester = new PropertyChangedTester( vm, true, new NinjectTypeResolver() );
 
 			// Act
-			tester.Test( nameof( ColumnViewModelBase.Muter ), nameof( ColumnViewModelBase.ContextList ),
-				nameof( ColumnViewModelBase.ViewServiceRepository ),
-				nameof( ColumnViewModelBase.Cache ), nameof( ColumnViewModelBase.Configuration ),
-				nameof( ColumnViewModelBase.Dispatcher ),
-				nameof( ColumnViewModelBase.ProcessStarter ), nameof( ColumnViewModelBase.TwitterConfig ) );
+			tester.Test( nameof( ColumnViewModelBase.Muter ), nameof( ColumnViewModelBase.Cache ) );
 
 			// Assert
 			tester.Verify();

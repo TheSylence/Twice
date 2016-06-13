@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
 
 namespace Twice.Tests
 {
@@ -52,6 +53,11 @@ namespace Twice.Tests
 			var toSkip = propsToSkip ?? Enumerable.Empty<string>();
 			foreach( var prop in properties.Where( p => !toSkip.Contains( p.Name ) ) )
 			{
+				if( SkipInjectedProperties && prop.GetCustomAttribute<InjectAttribute>() != null )
+				{
+					continue;
+				}
+
 				receivedChangeNames.Clear();
 
 				prop.SetValue( Object, GetDefaultValue( prop.PropertyType ) );
@@ -89,29 +95,30 @@ namespace Twice.Tests
 		{
 			var typeMap = new Dictionary<Type, object>
 			{
-				{typeof(short), 1},
-				{typeof(ushort), 1},
-				{typeof(int), 1},
-				{typeof(uint), 1},
-				{typeof(long), 1},
-				{typeof(ulong), 1},
-				{typeof(double), 1},
-				{typeof(float), 1},
-				{typeof(decimal), 1},
-				{typeof(short?), (short?)1},
-				{typeof(ushort?), (ushort?)1},
-				{typeof(int?), (int?)1},
-				{typeof(uint?), (uint?)1},
-				{typeof(long?), (long?)1},
-				{typeof(ulong?), (ulong?)1},
-				{typeof(double?), (double?)1},
-				{typeof(float?), (float?)1},
-				{typeof(decimal?), (decimal?)1},
-				{typeof(string), string.Empty},
-				{typeof(DateTime), DateTime.Now},
-				{typeof(bool), true},
-				{typeof(CultureInfo), CultureInfo.CurrentUICulture},
-				{typeof(DateTime?), DateTime.Now}
+				{typeof( short ), 1},
+				{typeof( ushort ), 1},
+				{typeof( int ), 1},
+				{typeof( uint ), 1},
+				{typeof( long ), 1},
+				{typeof( ulong ), 1},
+				{typeof( double ), 1},
+				{typeof( float ), 1},
+				{typeof( decimal ), 1},
+				{typeof( bool? ), (bool?)true},
+				{typeof( short? ), (short?)1},
+				{typeof( ushort? ), (ushort?)1},
+				{typeof( int? ), (int?)1},
+				{typeof( uint? ), (uint?)1},
+				{typeof( long? ), (long?)1},
+				{typeof( ulong? ), (ulong?)1},
+				{typeof( double? ), (double?)1},
+				{typeof( float? ), (float?)1},
+				{typeof( decimal? ), (decimal?)1},
+				{typeof( string ), string.Empty},
+				{typeof( DateTime ), DateTime.Now},
+				{typeof( bool ), true},
+				{typeof( CultureInfo ), CultureInfo.CurrentUICulture},
+				{typeof( DateTime? ), DateTime.Now}
 			};
 
 			object v;
@@ -139,6 +146,7 @@ namespace Twice.Tests
 			throw new InvalidOperationException( $"{type.Name} - Don't known how to create non default value" );
 		}
 
+		public bool SkipInjectedProperties { get; set; } = true;
 		private readonly List<string> Errors = new List<string>();
 		private readonly bool IncludeInherited;
 		private readonly INotifyPropertyChanged Object;
