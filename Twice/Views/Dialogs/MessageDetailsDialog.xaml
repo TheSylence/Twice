@@ -5,9 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors"
+        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" DataContext="{Binding MessageDetails, Source={StaticResource Locator}}"
         Title="{lex:Loc Message}" Height="300" Width="300">
+	<i:Interaction.Behaviors>
+		<behaviors:CallbackOnLoad Callback="{Binding}" />
+		<behaviors:CloseableView />
+		<behaviours:BorderlessWindowBehavior />
+	</i:Interaction.Behaviors>
 	<Grid>
 		<ContentControl Content="{Binding Message}" ContentTemplate="{StaticResource MessageViewTemplate}" />
 	</Grid>

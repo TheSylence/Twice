@@ -1,6 +1,6 @@
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LinqToTwitter;
 
 namespace Twice.Models.Twitter.Repositories
 {

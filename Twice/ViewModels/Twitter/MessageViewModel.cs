@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -29,6 +30,7 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ReplyToMessage( this );
 		}
 
+		public IContextEntry Context { get; private set; }
 		public override DateTime CreatedAt => Model.CreatedAt;
 
 		public override Entities Entities => Model.Entities;
@@ -60,14 +62,10 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private readonly IContextEntry Context;
-
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _WasRead;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
 	}
 }

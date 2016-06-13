@@ -1,14 +1,21 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IMessageDetailsViewModel : IDialogViewModel
+	internal interface IMessageDetailsViewModel : IDialogViewModel, ILoadCallback
 	{
 		MessageViewModel Message { get; set; }
 	}
 
 	internal class MessageDetailsViewModel : DialogViewModel, IMessageDetailsViewModel
 	{
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
+		}
+
 		public MessageViewModel Message
 		{
 			[DebuggerStepThrough] get { return _Message; }
