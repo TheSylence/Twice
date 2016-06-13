@@ -1,7 +1,7 @@
 # Twice
-[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=2592000)](https://ci.appveyor.com/project/TheSylence/Twice)
-[![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=2592000)]()
-[![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=2592000)]()
+[![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=3600)](https://ci.appveyor.com/project/TheSylence/Twice)
+[![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=3600)]()
+[![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=3600)]()
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/TheSylence/Twice/master/LICENSE)
 [![Twitter](https://img.shields.io/badge/twitter-TwiceApp-blue.svg)](https://twitter.com/TwiceApp)
 
