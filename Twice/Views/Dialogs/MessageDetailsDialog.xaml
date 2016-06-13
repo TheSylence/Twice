@@ -10,13 +10,28 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" DataContext="{Binding MessageDetails, Source={StaticResource Locator}}"
-        Title="{lex:Loc Message}" Height="300" Width="300">
+        Title="{lex:Loc Message}" Height="600" Width="450">
 	<i:Interaction.Behaviors>
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
 	<Grid>
-		<ContentControl Content="{Binding Message}" ContentTemplate="{StaticResource MessageViewTemplate}" />
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<Grid MaxHeight="250" Visibility="{Binding PreviousMessages, Converter={StaticResource VisibleIfItemsConv}}">
+			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+				<ItemsControl ItemsSource="{Binding PreviousMessages}" ItemTemplate="{StaticResource MessageViewTemplate}" />
+			</ScrollViewer>
+
+			<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+		</Grid>
+
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+			<ContentControl Content="{Binding Message}" ContentTemplate="{StaticResource MessageViewTemplate}" />
+		</ScrollViewer>
 	</Grid>
 </controls:MetroWindow>
