@@ -136,9 +136,15 @@ namespace Twice.Services.Views
 			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
 		}
 
-		public Task ReplyToMessage( MessageViewModel vm )
+		public async Task ReplyToMessage( MessageViewModel message )
 		{
-			throw new NotImplementedException();
+			Action<IComposeMessageViewModel> vmSetup = vm =>
+			{
+				vm.Recipient = message.Partner.ScreenName;
+				vm.InReplyTo = message;
+			};
+
+			await ShowWindow<MessageDialog, IComposeMessageViewModel>( vmSetup );
 		}
 
 		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
@@ -216,9 +222,14 @@ namespace Twice.Services.Views
 			return ShowWindowSync<TextInputDialog, ITextInputDialogViewModel, string>( resultSetup, vmSetup );
 		}
 
-		public Task ViewDirectMessage( MessageViewModel vm )
+		public async Task ViewDirectMessage( MessageViewModel msg )
 		{
-			throw new NotImplementedException();
+			Action<IMessageDetailsViewModel> vmSetup = vm =>
+			{
+				vm.Message = msg;
+			};
+
+			await ShowWindow<MessageDetailsDialog, IMessageDetailsViewModel>( vmSetup );
 		}
 
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )

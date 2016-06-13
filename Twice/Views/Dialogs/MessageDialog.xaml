@@ -42,6 +42,10 @@
 						 Margin="5,0" Grid.ColumnSpan="2" Grid.Column="0" IsIndeterminate="True" />
 		</Grid>
 
+		<Grid DockPanel.Dock="Bottom" Visibility="{Binding InReplyTo, Converter={StaticResource VisibleNotNullConv}}">
+			<ContentControl Content="{Binding InReplyTo}" ContentTemplate="{StaticResource MessageViewTemplate}" />
+		</Grid>
+
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 			<TextBox materialDesign:HintAssist.Hint="{lex:Loc Message}" AcceptsReturn="True"
 					 VerticalAlignment="Top" Margin="5"

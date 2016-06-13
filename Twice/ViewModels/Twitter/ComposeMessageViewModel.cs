@@ -17,10 +17,10 @@ namespace Twice.ViewModels.Twitter
 			Validate( () => Text ).NotEmpty();
 
 			// Don't validate based on CanSend property because twitter states: "Besides determining
-			// >   the follow status between two users via friendships/ lookup, you are unable to
-			// >   determine if you can Direct Message a user via the public API" So we simply use this
-			// (https://dev.twitter.com/rest/reference/post/direct_messages/new)
-			// value as an indicator for the user and handle any errors that twitter will report
+			// > the follow status between two users via friendships/ lookup, you are unable to >
+			// determine if you can Direct Message a user via the public API" So we simply use this
+			// (https://dev.twitter.com/rest/reference/post/direct_messages/new) value as an
+			// indicator for the user and handle any errors that twitter will report
 		}
 
 		public Task OnLoad( object data )
@@ -85,6 +85,21 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private IContextEntry Context => ContextList.Contexts.First();
+
+		public MessageViewModel InReplyTo
+		{
+			[DebuggerStepThrough] get { return _InReplyTo; }
+			set
+			{
+				if( _InReplyTo == value )
+				{
+					return;
+				}
+
+				_InReplyTo = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public bool IsCheckingRelationship
 		{
@@ -151,6 +166,8 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool? _CanSend;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private MessageViewModel _InReplyTo;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsCheckingRelationship;
 

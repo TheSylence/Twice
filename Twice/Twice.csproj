@@ -431,6 +431,7 @@
     <Compile Include="ViewModels\Twitter\IComposeTweetViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ITweetDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MediaItem.cs" />
+    <Compile Include="ViewModels\Twitter\MessageDetailsViewModel.cs" />
     <Compile Include="ViewModels\Twitter\MessageViewModel.cs" />
     <Compile Include="ViewModels\Twitter\StatusMediaViewModel.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModel.cs" />
@@ -445,6 +446,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\MessageDetailsDialog.xaml.cs">
+      <DependentUpon>MessageDetailsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
@@ -549,6 +553,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\MessageDetailsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
