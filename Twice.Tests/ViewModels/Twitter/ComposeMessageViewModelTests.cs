@@ -80,8 +80,13 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void NotifyPropertyChangedIsImplementedCorrectly()
 		{
 			// Arrange
+			var resolver = new Mock<ITypeResolver>();
+			var context = new Mock<IContextEntry>();
+			resolver.Setup( r => r.Resolve( typeof( MessageViewModel ) ) )
+				.Returns( new MessageViewModel( DummyGenerator.CreateDummyMessage(), context.Object, null ) );
+
 			var vm = new ComposeMessageViewModel();
-			var tester = new PropertyChangedTester( vm );
+			var tester = new PropertyChangedTester( vm, false, resolver.Object );
 
 			// Act
 			tester.Test();
