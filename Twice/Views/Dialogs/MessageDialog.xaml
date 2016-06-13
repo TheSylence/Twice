@@ -17,6 +17,9 @@
 		<behaviours:BorderlessWindowBehavior />
 		<behaviors:CallbackOnLoad Callback="{Binding}" />
 	</i:Interaction.Behaviors>
+	<controls:MetroWindow.InputBindings>
+		<KeyBinding Modifiers="Control" Key="Return" Command="{Binding OkCommand}" />
+	</controls:MetroWindow.InputBindings>
 	<DockPanel>
 		<Grid HorizontalAlignment="Right" DockPanel.Dock="Bottom">
 			<Button Command="{Binding OkCommand}" Margin="5" Content="{lex:Loc Send}"
