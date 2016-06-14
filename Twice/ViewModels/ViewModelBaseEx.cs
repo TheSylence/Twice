@@ -3,8 +3,8 @@ using GalaSoft.MvvmLight.Messaging;
 using Ninject;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 using Twice.Utilities.Os;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels
 {

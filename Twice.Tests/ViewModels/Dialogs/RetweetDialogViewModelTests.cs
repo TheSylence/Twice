@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Dialogs
 {

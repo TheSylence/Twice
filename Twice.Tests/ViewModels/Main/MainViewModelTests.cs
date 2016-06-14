@@ -9,11 +9,11 @@ using NuGet;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 using Twice.Utilities;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Main;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Main
 {

@@ -6,12 +6,20 @@ using Twice.Behaviors;
 
 namespace Twice.Views.Dialogs
 {
+	/// <summary>
+	/// Base class for all modal dialogs.
+	/// </summary>
+	/// <remarks>
+	/// Dialogs are modal because they work like a user would expect them to. Using non-modal
+	/// requires toplevel and this could cause some strange behaviors when switching applications, etc.
+	/// </remarks>
 	public class DialogWindow : MetroWindow
 	{
 		protected override void OnActivated( EventArgs e )
 		{
 			base.OnActivated( e );
 
+			// We want to capture mouse event from outside the window
 			Mouse.Capture( this, CaptureMode.SubTree );
 		}
 
@@ -32,6 +40,9 @@ namespace Twice.Views.Dialogs
 			}
 		}
 
+		/// <summary>
+		/// Flag indicating whether clicking outside the window will close it.
+		/// </summary>
 		public bool CloseOnClick
 		{
 			get { return (bool)GetValue( CloseOnClickProperty ); }

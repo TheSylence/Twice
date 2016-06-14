@@ -12,10 +12,10 @@ using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 using Twice.Utilities.Os;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Twitter
 {

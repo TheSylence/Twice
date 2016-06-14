@@ -3,8 +3,8 @@ using Moq;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Twitter
 {

@@ -13,7 +13,7 @@ using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.Services.Views;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Twitter
 {

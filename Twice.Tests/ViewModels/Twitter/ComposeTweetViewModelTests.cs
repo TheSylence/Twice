@@ -11,9 +11,9 @@ using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.Services.Views;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Twitter
 {

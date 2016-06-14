@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Twice.Models.Columns;
 using Twice.ViewModels.Twitter;
 
-namespace Twice.Services.Views
+namespace Twice.Views.Services
 {
 	internal interface IViewServiceRepository
 	{

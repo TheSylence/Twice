@@ -17,10 +17,10 @@ using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
-using Twice.Services.Views;
 using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Columns
 {

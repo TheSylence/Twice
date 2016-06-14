@@ -3,6 +3,9 @@ using Squirrel;
 
 namespace Twice.Utilities
 {
+	/// <summary>
+	/// Wrapper for ReleaseEntry
+	/// </summary>
 	internal class AppRelease
 	{
 		public AppRelease( ReleaseEntry entry )
