@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="Twice.Views.Dialogs.MessageDetailsDialog"
+﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.MessageDetailsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
         Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" DataContext="{Binding MessageDetails, Source={StaticResource Locator}}"
         Title="{lex:Loc Message}" Height="600" Width="450">
@@ -34,4 +35,4 @@
 			<ContentControl Content="{Binding Message}" ContentTemplate="{StaticResource MessageViewTemplate}" />
 		</ScrollViewer>
 	</Grid>
-</controls:MetroWindow>
+</dialogs:DialogWindow>

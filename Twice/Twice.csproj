@@ -238,6 +238,7 @@
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\StaticWindow.cs" />
+    <Compile Include="Behaviors\WindowHelper.cs" />
     <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
@@ -450,6 +451,7 @@
     <Compile Include="Views\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\DialogWindow.cs" />
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
     </Compile>

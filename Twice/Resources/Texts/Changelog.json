@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [
+            "Dialogs can be closed using the escape key or clicking outside the window"
+        ],
+        "Changes": [],
+        "Fixes": [],
+        "Issues": []
+    },
+    {
         "Version": "0.5.0",
         "Date": "2016-06-13",
         "Description": "",
@@ -21,7 +32,7 @@
             "Fixed many crashes when no internet connection is available",
             "Fixed crash when openeing profile of a non existing user"
         ],
-        "Issues": []
+        "Issues": [ ]
     },
     {
         "Version": "0.4.2",
