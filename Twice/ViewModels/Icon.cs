@@ -11,6 +11,8 @@ namespace Twice.ViewModels
 
 		[Icon( PackIconKind.At )] Mentions,
 
-		[Icon( PackIconKind.Message )] Messages
+		[Icon( PackIconKind.Message )] Messages,
+
+		[Icon( PackIconKind.Star )] Favorites
 	}
 }

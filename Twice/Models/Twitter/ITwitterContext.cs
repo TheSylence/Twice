@@ -33,6 +33,7 @@ namespace Twice.Models.Twitter
 		Task<bool> VerifyCredentials();
 
 		IAuthorizer Authorizer { get; }
+		ITwitterFavoritesRepository Favorites { get; }
 		ITwitterFriendshipRepository Friendships { get; }
 		ITwitterMessageRepository Messages { get; }
 		ITwitterSearchRepository Search { get; }

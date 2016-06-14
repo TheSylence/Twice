@@ -4,6 +4,7 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
+            "Added colum that displays favorited tweets",
             "Dialogs can be closed using the escape key or clicking outside the window"
         ],
         "Changes": [],

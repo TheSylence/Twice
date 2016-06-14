@@ -26,6 +26,7 @@ namespace Twice.Models.Twitter
 			Streaming = new TwitterStreamingRepository( context, cache );
 			Search = new TwitterSearchRepository( context, cache );
 			Messages = new TwitterMessageRepository( context, cache );
+			Favorites = new TwitterFavoritesRepository( context, cache );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
@@ -136,6 +137,7 @@ namespace Twice.Models.Twitter
 		}
 
 		public IAuthorizer Authorizer => Context.Authorizer;
+		public ITwitterFavoritesRepository Favorites { get; }
 		public ITwitterFriendshipRepository Friendships { get; }
 		public ITwitterMessageRepository Messages { get; }
 		public ITwitterSearchRepository Search { get; }
