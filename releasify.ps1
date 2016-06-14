@@ -4,7 +4,7 @@ $nupkg = $nupkg.FullName
 Invoke-Expression "squirrel --releasify=$nupkg --no-msi --icon=Twice\Resources\TwitterIcon.ico"
 
 Remove-Item $nupkg
-Move-Item Releases\Setup.exe Releases\twice-setup.exe
+Remove-Item Releases\Setup.exe
 
 $version = ($nupkg -split "(\d+\.\d+\.\d+(\.\d+)?)")[1]
 $baseDir = Split-Path $MyInvocation.MyCommand.Path
