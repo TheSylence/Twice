@@ -410,7 +410,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void OwnStatusCannotBeRetweeted()
+		public void OwnStatusCanBeRetweeted()
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
@@ -424,7 +424,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			bool canExecute = vm.RetweetStatusCommand.CanExecute( null );
 
 			// Assert
-			Assert.IsFalse( canExecute );
+			Assert.IsTrue( canExecute );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

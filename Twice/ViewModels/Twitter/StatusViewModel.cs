@@ -116,11 +116,6 @@ namespace Twice.ViewModels.Twitter
 			return OriginalStatus.User.GetUserId() != Context.UserId;
 		}
 
-		private bool CanExecuteRetweetStatusCommand()
-		{
-			return OriginalStatus.User.GetUserId() != Context.UserId;
-		}
-
 		private void ExecAsync( Func<Task> action, string message = null, NotificationType type = NotificationType.Information )
 		{
 			IsLoading = true;
@@ -346,7 +341,7 @@ namespace Twice.ViewModels.Twitter
 		public ICommand RetweetStatusCommand
 			=>
 				_RetweetStatusCommand
-				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand, CanExecuteRetweetStatusCommand ) );
+				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
 		public override string Text => Model.Text;
