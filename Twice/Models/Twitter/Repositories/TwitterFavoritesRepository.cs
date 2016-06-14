@@ -18,6 +18,16 @@ namespace Twice.Models.Twitter.Repositories
 		{
 		}
 
+		public Task<Status> CreateFavoriteAsync( ulong statusId )
+		{
+			return Context.CreateFavoriteAsync( statusId );
+		}
+
+		public Task<Status> DestroyFavoriteAsync( ulong statusId )
+		{
+			return Context.DestroyFavoriteAsync( statusId );
+		}
+
 		public async Task<List<Favorites>> List( ulong userId, int count, params Expression<Func<Favorites, bool>>[] filterExpressions )
 		{
 			IQueryable<Favorites> query = Queryable.Where( f => f.UserID == userId && f.Type == FavoritesType.Favorites && f.Count == count );

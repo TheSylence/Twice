@@ -22,6 +22,11 @@ namespace Twice.Models.Twitter.Repositories
 		{
 		}
 
+		public Task<Status> DeleteTweetAsync( ulong statusId )
+		{
+			return Context.DeleteTweetAsync( statusId );
+		}
+
 		public async Task<List<Status>> Filter( params Expression<Func<Status, bool>>[] filterExpressions )
 		{
 			IQueryable<Status> query = Queryable;
@@ -128,6 +133,21 @@ namespace Twice.Models.Twitter.Repositories
 
 			cachedList.AddRange( newStatuses );
 			return cachedList;
+		}
+
+		public Task<Status> RetweetAsync( ulong statusId )
+		{
+			return Context.RetweetAsync( statusId );
+		}
+
+		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
+		{
+			if( inReplyTo != 0 )
+			{
+				return Context.ReplyAsync( inReplyTo, text, medias );
+			}
+
+			return Context.TweetAsync( text, medias );
 		}
 
 		private TwitterQueryable<Status> Queryable => Context.Status;

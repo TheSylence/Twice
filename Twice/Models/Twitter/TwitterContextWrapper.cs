@@ -34,21 +34,6 @@ namespace Twice.Models.Twitter
 			return Context.CreateBlockAsync( userId, screenName, skipStatus );
 		}
 
-		public Task<Status> CreateFavoriteAsync( ulong statusId )
-		{
-			return Context.CreateFavoriteAsync( statusId );
-		}
-
-		public Task<Status> DeleteTweetAsync( ulong statusId )
-		{
-			return Context.DeleteTweetAsync( statusId );
-		}
-
-		public Task<Status> DestroyFavoriteAsync( ulong statusId )
-		{
-			return Context.DestroyFavoriteAsync( statusId );
-		}
-
 		public void Dispose()
 		{
 			Context.Dispose();
@@ -100,26 +85,6 @@ namespace Twice.Models.Twitter
 		public async Task ReportAsSpam( ulong userId )
 		{
 			await Context.ReportSpamAsync( userId );
-		}
-
-		public Task<Status> RetweetAsync( ulong statusId )
-		{
-			return Context.RetweetAsync( statusId );
-		}
-
-		public Task<DirectMessage> SendMessage( string recipient, string message )
-		{
-			return Context.NewDirectMessageAsync( recipient, message );
-		}
-
-		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
-		{
-			if( inReplyTo != 0 )
-			{
-				return Context.ReplyAsync( inReplyTo, text, medias );
-			}
-
-			return Context.TweetAsync( text, medias );
 		}
 
 		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType,

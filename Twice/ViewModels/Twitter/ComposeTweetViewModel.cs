@@ -247,7 +247,7 @@ namespace Twice.ViewModels.Twitter
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
 					await
-						acc.Context.Twitter.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId ).ConfigureAwait( false );
+						acc.Context.Twitter.Statuses.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId ).ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{

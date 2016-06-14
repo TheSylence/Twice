@@ -33,7 +33,7 @@ namespace Twice.ViewModels.Twitter
 			IsSending = true;
 			try
 			{
-				var msg = await Context.Twitter.SendMessage( Recipient, Text );
+				var msg = await Context.Twitter.Messages.SendMessage( Recipient, Text );
 				MessengerInstance.Send( new DmMessage( msg, EntityAction.Create ) );
 			}
 			catch( Exception ex )

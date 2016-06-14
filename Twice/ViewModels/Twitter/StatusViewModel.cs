@@ -82,7 +82,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			ExecAsync( async () =>
 			{
-				await context.RetweetAsync( Model.GetStatusId() );
+				await context.Statuses.RetweetAsync( Model.GetStatusId() );
 
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
@@ -172,7 +172,7 @@ namespace Twice.ViewModels.Twitter
 		private void ExecuteDeleteStatusCommand()
 		{
 			// TODO: Confirm deletion
-			ExecAsync( async () => await Context.Twitter.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
+			ExecAsync( async () => await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
 				NotificationType.Success );
 		}
 
@@ -182,11 +182,11 @@ namespace Twice.ViewModels.Twitter
 			{
 				if( !Model.Favorited )
 				{
-					await Context.Twitter.CreateFavoriteAsync( Model.StatusID );
+					await Context.Twitter.Favorites.CreateFavoriteAsync( Model.StatusID );
 				}
 				else
 				{
-					await Context.Twitter.DestroyFavoriteAsync( Model.StatusID );
+					await Context.Twitter.Favorites.DestroyFavoriteAsync( Model.StatusID );
 				}
 
 				Model.Favorited = !Model.Favorited;
