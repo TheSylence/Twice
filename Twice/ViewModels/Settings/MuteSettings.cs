@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Twice.Models.Configuration;
 using Twice.Resources;
-using Twice.Services.Views;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Settings
 {

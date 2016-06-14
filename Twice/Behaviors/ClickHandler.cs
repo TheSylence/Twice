@@ -5,6 +5,10 @@ using System.Windows.Interactivity;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Executes a command when a FrameworkElement has been clicked.
+	/// </summary>
+	/// <remarks>Essentially this is a nicer way than using EventToCommand for the click command</remarks>
 	[ExcludeFromCodeCoverage]
 	internal class ClickHandler : Behavior<FrameworkElement>
 	{
@@ -31,12 +35,18 @@ namespace Twice.Behaviors
 		public static readonly DependencyProperty CommandProperty =
 			DependencyProperty.Register( "Command", typeof(ICommand), typeof(ClickHandler), new PropertyMetadata( null ) );
 
+		/// <summary>
+		/// The command to execute
+		/// </summary>
 		public ICommand Command
 		{
 			get { return (ICommand)GetValue( CommandProperty ); }
 			set { SetValue( CommandProperty, value ); }
 		}
 
+		/// <summary>
+		/// Parameter that will be passed to the command
+		/// </summary>
 		public object CommandParameter
 		{
 			get { return (object)GetValue( CommandParameterProperty ); }

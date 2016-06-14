@@ -237,7 +237,7 @@
     <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
-    <Compile Include="Behaviors\StaticWindow.cs" />
+    <Compile Include="Behaviors\WindowHelper.cs" />
     <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>
@@ -323,8 +323,8 @@
     <Compile Include="Models\Twitter\Repositories\TwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterUserRepository.cs" />
     <Compile Include="PreserveAttribute.cs" />
-    <Compile Include="Services\Views\ConfirmServiceArgs.cs" />
-    <Compile Include="Services\Views\FileServiceArgs.cs" />
+    <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
+    <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />
     <Compile Include="Utilities\AppUpdater.cs" />
     <Compile Include="Utilities\AppUpdaterFactory.cs" />
@@ -450,6 +450,7 @@
     <Compile Include="Views\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\DialogWindow.cs" />
     <Compile Include="Views\Dialogs\ImageDialog.xaml.cs">
       <DependentUpon>ImageDialog.xaml</DependentUpon>
     </Compile>
@@ -503,8 +504,8 @@
     <Compile Include="Models\Configuration\MuteEntry.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamEventArgs.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamParser.cs" />
-    <Compile Include="Services\Views\IViewServiceRepository.cs" />
-    <Compile Include="Services\Views\ViewServiceRepository.cs" />
+    <Compile Include="Views\Services\IViewServiceRepository.cs" />
+    <Compile Include="Views\Services\ViewServiceRepository.cs" />
     <Compile Include="Utilities\SmartCollection.cs" />
     <Compile Include="ViewModels\Columns\ColumnFactory.cs" />
     <Compile Include="Models\Columns\ColumnDefinition.cs" />

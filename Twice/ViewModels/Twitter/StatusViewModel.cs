@@ -12,10 +12,10 @@ using Twice.Models.Media;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
 using Twice.Resources;
-using Twice.Services.Views;
 using Twice.Utilities;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Twitter
 {

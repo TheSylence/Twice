@@ -14,10 +14,10 @@ using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
-using Twice.Services.Views;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Columns
 {

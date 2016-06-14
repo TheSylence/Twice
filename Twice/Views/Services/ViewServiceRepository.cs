@@ -11,7 +11,6 @@ using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Twice.Models.Columns;
-using Twice.Models.Twitter;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
@@ -21,7 +20,7 @@ using Twice.ViewModels.Twitter;
 using Twice.Views.Dialogs;
 using Twice.Views.Wizards;
 
-namespace Twice.Services.Views
+namespace Twice.Views.Services
 {
 	[ExcludeFromCodeCoverage]
 	[ConfigureAwait( false )]

@@ -5,7 +5,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Twitter;
-using Twice.Services.Views;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Twitter
 {

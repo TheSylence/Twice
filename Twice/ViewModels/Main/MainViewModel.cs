@@ -15,9 +15,9 @@ using Ninject;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
-using Twice.Services.Views;
 using Twice.Utilities;
 using Twice.ViewModels.Columns;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Main
 {

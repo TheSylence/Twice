@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="Twice.Views.Dialogs.MessageDialog"
+﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.MessageDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,6 +9,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
         Style="{StaticResource DialogStyle}"
 		DataContext="{Binding ComposeMessage, Source={StaticResource Locator}}"
         mc:Ignorable="d" Title="{lex:Loc ComposeMessage}" Height="500" Width="400">
@@ -55,4 +56,4 @@
 				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 		</ScrollViewer>
 	</DockPanel>
-</controls:MetroWindow>
+</dialogs:DialogWindow>

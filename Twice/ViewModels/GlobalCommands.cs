@@ -5,8 +5,8 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
 using Twice.Models.Configuration;
-using Twice.Services.Views;
 using Twice.ViewModels.Twitter;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels
 {

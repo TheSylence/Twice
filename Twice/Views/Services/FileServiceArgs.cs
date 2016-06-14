@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Twice.Services.Views
+namespace Twice.Views.Services
 {
 	[ExcludeFromCodeCoverage]
 	internal class FileServiceArgs

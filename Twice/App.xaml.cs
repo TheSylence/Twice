@@ -55,6 +55,9 @@ namespace Twice
 			WindowSettings = WindowSettings.Load( Constants.IO.WindowSettingsFileName );
 			WindowSettings?.Apply( new WindowWrapper( window ) );
 
+			// Default settings contain no width or height
+			// so instanciate them only AFTER setting the position
+			// otherwise the window would disappear
 			if( WindowSettings == null )
 			{
 				WindowSettings = new WindowSettings();
@@ -78,6 +81,7 @@ namespace Twice
 
 		protected override void OnStartup( StartupEventArgs e )
 		{
+			// Ensure that only one instance of the application can run at any time
 			if( !SingleInstance.Start() )
 			{
 				SingleInstance.ShowFirstInstance();
@@ -115,7 +119,6 @@ namespace Twice
 			resDict.EndInit();
 
 			Resources.MergedDictionaries.Add( resDict );
-
 			ChangeLanguage( conf.General.Language );
 		}
 
@@ -126,6 +129,8 @@ namespace Twice
 			dict.SetCurrentThreadCulture = true;
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
+			// This is done so DateTime's in XAML are parsed based on the user
+			// language instead of en-US which is the default language for XAML.
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );

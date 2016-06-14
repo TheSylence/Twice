@@ -1,6 +1,6 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 using Twice.ViewModels;
 
@@ -13,6 +13,8 @@ namespace Twice.Behaviors
 		{
 			base.OnAttached();
 
+			AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
+
 			var controller = AssociatedObject.DataContext as IViewController;
 			if( controller != null )
 			{
@@ -20,17 +22,24 @@ namespace Twice.Behaviors
 			}
 		}
 
+		private void AssociatedObject_PreviewKeyDown( object sender, KeyEventArgs e )
+		{
+			if( e.Key == Key.Escape )
+			{
+				WindowHelper.SetResult( AssociatedObject, false );
+				CloseWindow();
+			}
+		}
+
+		private void CloseWindow()
+		{
+			AssociatedObject.Close();
+		}
+
 		private void Controller_CloseRequested( object sender, CloseEventArgs e )
 		{
-			try
-			{
-				AssociatedObject.DialogResult = e.Result;
-			}
-			catch( InvalidOperationException )
-			{
-			}
-
-			AssociatedObject.Close();
+			WindowHelper.SetResult( AssociatedObject, e.Result );
+			CloseWindow();
 		}
 	}
 }

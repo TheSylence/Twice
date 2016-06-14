@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Twice.Resources;
 
-namespace Twice.Services.Views
+namespace Twice.Views.Services
 {
 	[ExcludeFromCodeCoverage]
 	internal class ConfirmServiceArgs

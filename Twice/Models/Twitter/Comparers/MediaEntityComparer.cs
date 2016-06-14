@@ -8,8 +8,8 @@ namespace Twice.Models.Twitter.Comparers
 	{
 		/// <summary>Determines whether the specified objects are equal.</summary>
 		/// <returns>true if the specified objects are equal; otherwise, false.</returns>
-		/// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
-		/// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
+		/// <param name="x">The first object of type <see cref="MediaEntity"/> to compare.</param>
+		/// <param name="y">The second object of type <see cref="MediaEntity"/> to compare.</param>
 		public bool Equals( MediaEntity x, MediaEntity y )
 		{
 			return x.ID.Equals( y.ID );
