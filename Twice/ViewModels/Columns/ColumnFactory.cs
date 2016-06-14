@@ -21,7 +21,8 @@ namespace Twice.ViewModels.Columns
 				{ColumnType.User, UserColumn},
 				{ColumnType.Timeline, TimelineColumn},
 				{ColumnType.Mentions, MentionsColumn},
-				{ColumnType.Messages, MessageColumn}
+				{ColumnType.Messages, MessageColumn},
+				{ColumnType.Favorites, FavoritesColumn}
 			};
 		}
 
@@ -58,6 +59,11 @@ namespace Twice.ViewModels.Columns
 			}
 
 			return null;
+		}
+
+		private ColumnViewModelBase FavoritesColumn( ColumnArgumentsData args )
+		{
+			return new FavoritesColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )

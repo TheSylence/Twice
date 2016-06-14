@@ -26,26 +26,12 @@ namespace Twice.Models.Twitter
 			Streaming = new TwitterStreamingRepository( context, cache );
 			Search = new TwitterSearchRepository( context, cache );
 			Messages = new TwitterMessageRepository( context, cache );
+			Favorites = new TwitterFavoritesRepository( context, cache );
 		}
 
 		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
 		{
 			return Context.CreateBlockAsync( userId, screenName, skipStatus );
-		}
-
-		public Task<Status> CreateFavoriteAsync( ulong statusId )
-		{
-			return Context.CreateFavoriteAsync( statusId );
-		}
-
-		public Task<Status> DeleteTweetAsync( ulong statusId )
-		{
-			return Context.DeleteTweetAsync( statusId );
-		}
-
-		public Task<Status> DestroyFavoriteAsync( ulong statusId )
-		{
-			return Context.DestroyFavoriteAsync( statusId );
 		}
 
 		public void Dispose()
@@ -101,26 +87,6 @@ namespace Twice.Models.Twitter
 			await Context.ReportSpamAsync( userId );
 		}
 
-		public Task<Status> RetweetAsync( ulong statusId )
-		{
-			return Context.RetweetAsync( statusId );
-		}
-
-		public Task<DirectMessage> SendMessage( string recipient, string message )
-		{
-			return Context.NewDirectMessageAsync( recipient, message );
-		}
-
-		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
-		{
-			if( inReplyTo != 0 )
-			{
-				return Context.ReplyAsync( inReplyTo, text, medias );
-			}
-
-			return Context.TweetAsync( text, medias );
-		}
-
 		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType,
 			IEnumerable<ulong> additionalOwners )
 		{
@@ -136,6 +102,7 @@ namespace Twice.Models.Twitter
 		}
 
 		public IAuthorizer Authorizer => Context.Authorizer;
+		public ITwitterFavoritesRepository Favorites { get; }
 		public ITwitterFriendshipRepository Friendships { get; }
 		public ITwitterMessageRepository Messages { get; }
 		public ITwitterSearchRepository Search { get; }

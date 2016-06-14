@@ -100,7 +100,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.SendMessage( "the_user", "the_message" ) ).Returns( Task.FromResult( new LinqToTwitter.DirectMessage() ) );
+			context.Setup( c => c.Twitter.Messages.SendMessage( "the_user", "the_message" ) ).Returns( Task.FromResult( new LinqToTwitter.DirectMessage() ) );
 
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
@@ -127,7 +127,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsTrue( set );
-			context.Verify( c => c.Twitter.SendMessage( "the_user", "the_message" ), Times.Once() );
+			context.Verify( c => c.Twitter.Messages.SendMessage( "the_user", "the_message" ), Times.Once() );
 		}
 	}
 }

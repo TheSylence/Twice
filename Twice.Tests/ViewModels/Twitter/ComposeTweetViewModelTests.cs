@@ -175,7 +175,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error ) ).Verifiable();
 
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -345,7 +345,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
@@ -371,7 +371,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
+			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -420,7 +420,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
@@ -438,7 +438,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
+			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world", It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

@@ -49,6 +49,7 @@ namespace Twice.ViewModels.Columns
 				Parser.StatusDeleted += Parser_ItemDeleted;
 				Parser.DirectMessageDeleted += Parser_ItemDeleted;
 				Parser.DirectMessageReceived += Parser_DirectMessageReceived;
+				Parser.FavoriteEventReceived += Parser_FavoriteEventReceived;
 			}
 
 			ActionDispatcher = new ColumnActionDispatcher();
@@ -103,6 +104,27 @@ namespace Twice.ViewModels.Columns
 			RaiseNewItem( message );
 		}
 
+		protected async Task AddItem( StatusViewModel status, bool append = true )
+		{
+			SinceId = Math.Min( SinceId, status.Id );
+			MaxId = Math.Min( MaxId, status.Id );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				if( append )
+				{
+					ItemCollection.Add( status );
+				}
+				else
+				{
+					ItemCollection.Insert( 0, status );
+				}
+			} );
+			RaiseNewItem( status );
+
+			await UpdateCache( status.Model );
+		}
+
 		protected async Task AddItems( IEnumerable<MessageViewModel> messages, bool append = true )
 		{
 			var messageViewModels = messages as MessageViewModel[] ?? messages.ToArray();
@@ -126,74 +148,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		protected Task<MessageViewModel> CreateViewModel( DirectMessage m )
-		{
-			var vm = new MessageViewModel( m, Context, ViewServiceRepository );
-
-			return Task.FromResult( vm );
-		}
-
-		protected abstract bool IsSuitableForColumn( Status status );
-
-		protected abstract bool IsSuitableForColumn( DirectMessage message );
-
-		protected virtual async Task OnLoad()
-		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression );
-			var list = new List<StatusViewModel>();
-			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
-			{
-				list.Add( await CreateViewModel( s ) );
-			}
-
-			await AddItems( list );
-		}
-
-		protected void RaiseNewItem( ColumnItem item )
-		{
-			if( !IsLoading )
-			{
-				NewItem?.Invoke( this, new ColumnItemEventArgs( item ) );
-			}
-		}
-
-		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
-		{
-			IsLoading = true;
-			await Task.Run( async () => { await LoadMoreData().ContinueWith( t => { IsLoading = false; } ); } );
-		}
-
-		private async void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
-		{
-			if( !Configuration.General.RealtimeStreaming )
-			{
-				IsLoading = true;
-				await Task.Run( async () => { await LoadTopData().ContinueWith( t => { IsLoading = false; } ); } );
-			}
-		}
-
-		private async Task AddItem( StatusViewModel status, bool append = true )
-		{
-			SinceId = Math.Min( SinceId, status.Id );
-			MaxId = Math.Min( MaxId, status.Id );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				if( append )
-				{
-					ItemCollection.Add( status );
-				}
-				else
-				{
-					ItemCollection.Insert( 0, status );
-				}
-			} );
-			RaiseNewItem( status );
-
-			await UpdateCache( status.Model );
-		}
-
-		private async Task AddItems( IEnumerable<StatusViewModel> statuses, bool append = true )
+		protected async Task AddItems( IEnumerable<StatusViewModel> statuses, bool append = true )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
 			if( statusViewModels.Any() )
@@ -219,17 +174,112 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		private void ColumnConfiguration_Saved( object sender, EventArgs e )
+		protected Task<MessageViewModel> CreateViewModel( DirectMessage m )
 		{
-			Changed?.Invoke( this, EventArgs.Empty );
+			var vm = new MessageViewModel( m, Context, ViewServiceRepository );
+
+			return Task.FromResult( vm );
 		}
 
-		private async Task<StatusViewModel> CreateViewModel( Status s )
+		protected async Task<StatusViewModel> CreateViewModel( Status s )
 		{
 			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 
 			await vm.LoadQuotedTweet();
 			return vm;
+		}
+
+		protected abstract bool IsSuitableForColumn( Status status );
+
+		protected abstract bool IsSuitableForColumn( DirectMessage message );
+
+		protected virtual async Task LoadMoreData()
+		{
+			var statuses =
+				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+
+			await AddItems( list );
+		}
+
+		protected virtual async Task LoadTopData()
+		{
+			var statuses =
+				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+
+			await AddItems( list, false );
+		}
+
+		protected virtual Task OnFavorite( Status status )
+		{
+			return Task.CompletedTask;
+		}
+
+		protected virtual async Task OnLoad()
+		{
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression );
+			var list = new List<StatusViewModel>();
+			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+
+			await AddItems( list );
+		}
+
+		protected virtual Task OnUnfavorite( Status status )
+		{
+			return Task.CompletedTask;
+		}
+
+		protected void RaiseNewItem( ColumnItem item )
+		{
+			if( !IsLoading )
+			{
+				NewItem?.Invoke( this, new ColumnItemEventArgs( item ) );
+			}
+		}
+
+		protected async Task RemoveItem( ulong itemId )
+		{
+			// Yes the same id shouldn't be there more than once, but this happens sometimes. so
+			// delete all statuses that match the id.
+			var toDelete = ItemCollection.Where( s => s.Id == itemId ).ToArray();
+			foreach( var status in toDelete )
+			{
+				await Dispatcher.RunAsync( () => ItemCollection.Remove( status ) );
+			}
+
+			await Cache.RemoveStatus( itemId );
+		}
+
+		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
+		{
+			IsLoading = true;
+			await Task.Run( async () => { await LoadMoreData().ContinueWith( t => { IsLoading = false; } ); } );
+		}
+
+		private async void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
+		{
+			if( !Configuration.General.RealtimeStreaming )
+			{
+				IsLoading = true;
+				await Task.Run( async () => { await LoadTopData().ContinueWith( t => { IsLoading = false; } ); } );
+			}
+		}
+
+		private void ColumnConfiguration_Saved( object sender, EventArgs e )
+		{
+			Changed?.Invoke( this, EventArgs.Empty );
 		}
 
 		private void ExecuteClearCommand()
@@ -248,32 +298,6 @@ namespace Twice.ViewModels.Columns
 			Deleted?.Invoke( this, EventArgs.Empty );
 		}
 
-		private async Task LoadMoreData()
-		{
-			var statuses =
-				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
-			var list = new List<StatusViewModel>();
-			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
-			{
-				list.Add( await CreateViewModel( s ) );
-			}
-
-			await AddItems( list );
-		}
-
-		private async Task LoadTopData()
-		{
-			var statuses =
-				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
-			var list = new List<StatusViewModel>();
-			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
-			{
-				list.Add( await CreateViewModel( s ) );
-			}
-
-			await AddItems( list, false );
-		}
-
 		private async void Parser_DirectMessageReceived( object sender, DirectMessageStreamEventArgs e )
 		{
 			if( !IsSuitableForColumn( e.Message ) )
@@ -283,6 +307,25 @@ namespace Twice.ViewModels.Columns
 
 			var it = await CreateViewModel( e.Message );
 			await AddItem( it, false );
+		}
+
+		private async void Parser_FavoriteEventReceived( object sender, FavoriteStreamEventArgs e )
+		{
+			if( e.Source.GetUserId() != Context.UserId )
+			{
+				return;
+			}
+
+			switch( e.Event )
+			{
+			case StreamEventType.Favorite:
+				await OnFavorite( e.TargetStatus );
+				break;
+
+			case StreamEventType.Unfavorite:
+				await OnUnfavorite( e.TargetStatus );
+				break;
+			}
 		}
 
 		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
@@ -306,15 +349,7 @@ namespace Twice.ViewModels.Columns
 
 		private async void Parser_ItemDeleted( object sender, DeleteStreamEventArgs e )
 		{
-			// Yes the same id shouldn't be there more than once, but this happens sometimes. so
-			// delete all statuses that match the id.
-			var toDelete = ItemCollection.Where( s => s.Id == e.Id ).ToArray();
-			foreach( var status in toDelete )
-			{
-				await Dispatcher.RunAsync( () => ItemCollection.Remove( status ) );
-			}
-
-			await Cache.RemoveStatus( e.Id );
+			await RemoveItem( e.Id );
 		}
 
 		private async void Parser_StatusReceived( object sender, StatusStreamEventArgs e )
@@ -421,11 +456,10 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		protected ulong MaxId { get; private set; } = ulong.MaxValue;
+		protected ulong SinceId { get; private set; } = ulong.MinValue;
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
-		private ulong MaxId { get; set; } = ulong.MaxValue;
-
 		private Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
-		private ulong SinceId { get; set; } = ulong.MinValue;
 		private Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
 		protected readonly IContextEntry Context;
 		protected readonly Expression<Func<Status, bool>> CountExpression;

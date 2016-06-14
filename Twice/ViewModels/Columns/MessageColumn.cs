@@ -125,6 +125,5 @@ namespace Twice.ViewModels.Columns
 
 		public override Icon Icon => Icon.Messages;
 		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => false;
-		private readonly ulong MaxId = ulong.MaxValue;
 	}
 }

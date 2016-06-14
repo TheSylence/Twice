@@ -1,6 +1,3 @@
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Comparers;
 
@@ -20,6 +20,11 @@ namespace Twice.Models.Twitter.Repositories
 		public TwitterStatusRepository( TwitterContext context, ICache cache )
 			: base( context, cache )
 		{
+		}
+
+		public Task<Status> DeleteTweetAsync( ulong statusId )
+		{
+			return Context.DeleteTweetAsync( statusId );
 		}
 
 		public async Task<List<Status>> Filter( params Expression<Func<Status, bool>>[] filterExpressions )
@@ -74,7 +79,7 @@ namespace Twice.Models.Twitter.Repositories
 			try
 			{
 				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.ID == statusId
-														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
+				                                         && s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
 				await Cache.AddStatuses( new[] {status} );
 				return status;
@@ -130,6 +135,21 @@ namespace Twice.Models.Twitter.Repositories
 			return cachedList;
 		}
 
-		public TwitterQueryable<Status> Queryable => Context.Status;
+		public Task<Status> RetweetAsync( ulong statusId )
+		{
+			return Context.RetweetAsync( statusId );
+		}
+
+		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
+		{
+			if( inReplyTo != 0 )
+			{
+				return Context.ReplyAsync( inReplyTo, text, medias );
+			}
+
+			return Context.TweetAsync( text, medias );
+		}
+
+		private TwitterQueryable<Status> Queryable => Context.Status;
 	}
 }
