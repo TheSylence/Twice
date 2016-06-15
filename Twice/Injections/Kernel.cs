@@ -14,6 +14,7 @@ namespace Twice.Injections
 			: base( InjectionModules.ToArray() )
 		{
 			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
+			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
 		}
 
 		private static IEnumerable<INinjectModule> InjectionModules

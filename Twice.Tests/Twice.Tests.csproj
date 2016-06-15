@@ -204,6 +204,7 @@
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />

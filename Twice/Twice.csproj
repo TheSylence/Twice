@@ -191,6 +191,7 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -281,6 +282,7 @@
     <Compile Include="Models\Media\IMediaExtractorRepository.cs" />
     <Compile Include="Models\Media\InstragramExtractor.cs" />
     <Compile Include="Models\Media\MediaExtractorRepository.cs" />
+    <Compile Include="Models\Media\YoutubeExtractor.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparer.cs" />
     <Compile Include="Models\Twitter\Comparers\StatusComparer.cs" />
     <Compile Include="Models\Twitter\Comparers\UrlEntityComparer.cs" />

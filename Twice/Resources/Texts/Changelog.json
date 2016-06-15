@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [
+            "Thumbnails for YouTube videos are now displayed in statuses"
+        ],
+        "Changes": [],
+        "Fixes": [ ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.5.1",
         "Date": "2016-06-14",
         "Description": "",
@@ -10,8 +21,8 @@
         "Changes": [
             "Own statuses can be retweeted"
         ],
-        "Fixes": [],
-        "Issues": []
+        "Fixes": [ ],
+        "Issues": [ ]
     },
     {
         "Version": "0.5.0",
@@ -43,8 +54,8 @@
         "Description": "",
         "NewFeatures": [ ],
         "Changes": [
-            "'Reply to all' is now enabled for every tweet",
-            "Own username is not used in reply when using 'Reply to all'",
+            "Reply to all' is now enabled for every tweet",
+            "Own username is not used in reply when using 'Reply to all",
             "Image URL can now be copied from image viewer dialog"
         ],
         "Fixes": [
