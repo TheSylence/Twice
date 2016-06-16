@@ -15,7 +15,8 @@
             "Hover icons are now enabled in detail view for status"
         ],
         "Fixes": [
-            "Relative time for statuses is now updated regularly"
+            "Relative time for statuses is now updated regularly",
+            "Options for a tweet now work when menu was opened by clicking the options button"
         ],
         "Issues": [ ]
     },

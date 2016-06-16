@@ -18,6 +18,7 @@ namespace Twice.Behaviors
 			if( Element?.ContextMenu != null )
 			{
 				Element.ContextMenu.IsOpen = true;
+				Element.ContextMenu.DataContext = Element.DataContext;
 			}
 		}
 
