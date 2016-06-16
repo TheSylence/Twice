@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Thumbnails for YouTube videos are now displayed in statuses"
+            "Thumbnails for YouTube videos are now displayed in statuses",
+            "Clicking column buttons now scroll to the associated column"
         ],
         "Changes": [],
         "Fixes": [
