@@ -7,7 +7,8 @@
             "Thumbnails for YouTube videos are now displayed in statuses",
             "Clicking column buttons now scroll to the associated column",
             "Sound notifications are now working",
-            "Notification popups can be action center notifications on Windows 10"
+            "Notification popups can be action center notifications on Windows 10",
+            "Added preview button for notifications in settings"
         ],
         "Changes": [],
         "Fixes": [
