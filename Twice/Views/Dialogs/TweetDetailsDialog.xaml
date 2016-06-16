@@ -44,7 +44,7 @@
 			</StackPanel>
 		</StackPanel>
 
-		<views:StatusContainer ShowRetweets="True" ShowFavorites="True" DisplaySource="True" EnableHoverIcons="False"
+		<views:StatusContainer ShowRetweets="True" ShowFavorites="True" DisplaySource="True" EnableHoverIcons="True"
 							   DisplayIndicators="False" Grid.Row="1" HightlightStatus="True">
 			<ContentControl Content="{Binding DisplayTweet}" ContentTemplate="{StaticResource StatusViewTemplate}" />
 		</views:StatusContainer>
