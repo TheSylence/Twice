@@ -258,7 +258,22 @@
 												</views:GenericDataTemplateSelectorItem>
 												<views:GenericDataTemplateSelectorItem TemplatedType="settings:ToastNotificationSettings">
 													<DataTemplate DataType="settings:ToastNotificationSettings">
-														<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" TextWrapping="Wrap" />
+														<Grid>
+															<Grid.RowDefinitions>
+																<RowDefinition Height="Auto" />
+																<RowDefinition Height="Auto" />
+															</Grid.RowDefinitions>
+															
+															<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" TextWrapping="Wrap" />
+
+															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
+																	Grid.Row="1" HorizontalAlignment="Right" Margin="5">
+																<DockPanel>
+																	<materialDesign:PackIcon Kind="Play" DockPanel.Dock="Left" />
+																	<TextBlock Text="{lex:Loc Preview}" Margin="5,0" VerticalAlignment="Center" />
+																</DockPanel>
+															</Button>
+														</Grid>
 													</DataTemplate>
 												</views:GenericDataTemplateSelectorItem>
 												<views:GenericDataTemplateSelectorItem TemplatedType="settings:PopupNotificationSettings">
