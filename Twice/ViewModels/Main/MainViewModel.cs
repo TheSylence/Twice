@@ -47,6 +47,82 @@ namespace Twice.ViewModels.Main
 			};
 			rateLimitTimer.Tick += RateLimitTimer_Tick;
 			rateLimitTimer.Start();
+
+			var statusUpdateTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromSeconds( 10 )
+			};
+			statusUpdateTimer.Tick += StatusUpdateTimer_Tick;
+			statusUpdateTimer.Start();
+		}
+
+		public async Task OnLoad( object data )
+		{
+			if( !HasContexts )
+			{
+				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
+
+				if( await ViewServiceRepository.Confirm( csa ) )
+				{
+					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+
+			await CheckCredentials();
+
+			var loadTasks = Columns.Select( c => c.Load() );
+			await Task.WhenAll( loadTasks );
+
+			try
+			{
+				await TwitterConfig.QueryConfig();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to read current config from twitter", ex );
+			}
+
+			if( Configuration?.General?.CheckForUpdates == true )
+			{
+				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
+
+				LogTo.Info( "Searching for app updates..." );
+				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
+
+				try
+				{
+					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
+					{
+						var release = await mgr.UpdateApp();
+
+						Version newVersion = release?.Version?.Version;
+
+						if( newVersion == null )
+						{
+							LogTo.Warn( "UpdateApp returned null" );
+						}
+						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							LogTo.Info( $"Updated app to {release.Version}" );
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
+						}
+						else
+						{
+							LogTo.Info( "App is up to date" );
+						}
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( "Error during update check", ex );
+				}
+			}
+
+			await QueryRateLimit();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -54,12 +130,12 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
-		private bool CanExecuteNewTweetCommand()
+		private bool CanExecuteNewMessageCommand()
 		{
 			return HasContexts;
 		}
 
-		private bool CanExecuteNewMessageCommand()
+		private bool CanExecuteNewTweetCommand()
 		{
 			return HasContexts;
 		}
@@ -203,73 +279,12 @@ namespace Twice.ViewModels.Main
 			await QueryRateLimit();
 		}
 
-		public async Task OnLoad( object data )
+		private void StatusUpdateTimer_Tick( object sender, EventArgs e )
 		{
-			if( !HasContexts )
+			foreach( var col in Columns )
 			{
-				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
-
-				if( await ViewServiceRepository.Confirm( csa ) )
-				{
-					await ViewServiceRepository.ShowAccounts( true );
-				}
+				col.UpdateRelativeTimes();
 			}
-
-			await CheckCredentials();
-
-			var loadTasks = Columns.Select( c => c.Load() );
-			await Task.WhenAll( loadTasks );
-
-			try
-			{
-				await TwitterConfig.QueryConfig();
-			}
-			catch( Exception ex )
-			{
-				LogTo.WarnException( "Failed to read current config from twitter", ex );
-			}
-
-			if( Configuration?.General?.CheckForUpdates == true )
-			{
-				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
-
-				LogTo.Info( "Searching for app updates..." );
-				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
-
-				try
-				{
-					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
-					{
-						var release = await mgr.UpdateApp();
-
-						Version newVersion = release?.Version?.Version;
-
-						if( newVersion == null )
-						{
-							LogTo.Warn( "UpdateApp returned null" );
-						}
-						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
-						{
-							LogTo.Info( $"Updated app to {release.Version}" );
-							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
-						}
-						else
-						{
-							LogTo.Info( "App is up to date" );
-						}
-					}
-				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
-				catch( Exception ex )
-				{
-					LogTo.WarnException( "Error during update check", ex );
-				}
-			}
-
-			await QueryRateLimit();
 		}
 
 		public ICommand AccountsCommand
@@ -309,24 +324,18 @@ namespace Twice.ViewModels.Main
 
 		private readonly INotifier Notifier;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _NewMessageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewMessageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
 
 		private RelayCommand _SearchCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
 	}
 }

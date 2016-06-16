@@ -392,24 +392,6 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void OwnStatusCannotBeReportedAsSpam()
-		{
-			// Arrange
-			var context = new Mock<IContextEntry>();
-			context.SetupGet( c => c.UserId ).Returns( 123 );
-
-			var status = DummyGenerator.CreateDummyStatus();
-			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object, null, null );
-
-			// Act
-			bool canExecute = vm.ReportSpamCommand.CanExecute( null );
-
-			// Assert
-			Assert.IsFalse( canExecute );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeRetweeted()
 		{
 			// Arrange
@@ -425,6 +407,24 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsTrue( canExecute );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void OwnStatusCannotBeReportedAsSpam()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.UserId ).Returns( 123 );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.User.UserID = 123;
+			var vm = new StatusViewModel( status, context.Object, null, null );
+
+			// Act
+			bool canExecute = vm.ReportSpamCommand.CanExecute( null );
+
+			// Assert
+			Assert.IsFalse( canExecute );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

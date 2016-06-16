@@ -28,5 +28,6 @@ namespace Twice.ViewModels.Columns
 		string SubTitle { get; set; }
 		string Title { get; set; }
 		double Width { get; set; }
+		void UpdateRelativeTimes();
 	}
 }

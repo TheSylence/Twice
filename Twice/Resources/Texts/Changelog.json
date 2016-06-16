@@ -7,7 +7,9 @@
             "Thumbnails for YouTube videos are now displayed in statuses"
         ],
         "Changes": [],
-        "Fixes": [ ],
+        "Fixes": [
+            "Relative time for statuses is now updated regularly"
+        ],
         "Issues": [ ]
     },
     {
