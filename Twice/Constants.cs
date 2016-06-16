@@ -98,6 +98,20 @@ namespace Twice
 			}
 		}
 
+		// Debug constant to keep #if out of other files because of CodeMaid problems
+		// with preprocessor directives
+		internal static bool Debug
+		{
+			get
+			{
+#if DEBUG
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
 		internal const string ApplicationId = "com.squirrel.twice.Twice";
 	}
 }

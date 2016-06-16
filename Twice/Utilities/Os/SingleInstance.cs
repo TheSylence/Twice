@@ -24,6 +24,10 @@ namespace Twice.Utilities.Os
 		public static bool Start()
 		{
 			string mutextName = $"Twice.{AssemblyGuid}".Replace( "-", "" );
+			if( Constants.Debug )
+			{
+				mutextName += ".DEBUG";
+			}
 
 			bool onlyInstance;
 			AppMutex = new Mutex( true, mutextName, out onlyInstance );
