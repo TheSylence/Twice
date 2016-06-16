@@ -642,4 +642,10 @@
   <data name="LeaveEmptyForDefaultSound" xml:space="preserve">
     <value>Leave empty for default sound</value>
   </data>
+  <data name="Windows10ActionCenterNotification" xml:space="preserve">
+    <value>Windows 10 Action Center notifications</value>
+  </data>
+  <data name="TestNotification" xml:space="preserve">
+    <value>This is a test notification</value>
+  </data>
 </root>

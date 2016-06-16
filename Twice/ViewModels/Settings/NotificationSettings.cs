@@ -13,7 +13,7 @@ namespace Twice.ViewModels.Settings
 			AvailableNotifications = new List<NotificationModuleSettings>
 			{
 				new SoundNotificationSettings( currentConfig ),
-				new PopupNotificationSettings( currentConfig ),
+				new PopupNotificationSettings( currentConfig, notifier ),
 				new ToastNotificationSettings( currentConfig, notifier )
 			};
 			foreach( var notifyModule in AvailableNotifications )

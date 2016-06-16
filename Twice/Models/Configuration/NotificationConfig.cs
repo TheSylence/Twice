@@ -17,5 +17,6 @@
 		public bool SoundEnabled { get; set; }
 		public string SoundFileName { get; set; }
 		public bool ToastsEnabled { get; set; }
+		public bool Win10Enabled { get; set; }
 	}
 }

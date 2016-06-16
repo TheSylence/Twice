@@ -642,4 +642,10 @@
   <data name="LeaveEmptyForDefaultSound" xml:space="preserve">
     <value>Leer lassen um den Standardton zu verwenden</value>
   </data>
+  <data name="Windows10ActionCenterNotification" xml:space="preserve">
+    <value>Windows 10 Info-Center-Benachrichtigungen</value>
+  </data>
+  <data name="TestNotification" xml:space="preserve">
+    <value>Das ist eine Testbenachrichtigung</value>
+  </data>
 </root>

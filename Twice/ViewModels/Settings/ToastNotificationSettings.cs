@@ -16,14 +16,9 @@ namespace Twice.ViewModels.Settings
 			config.Notifications.ToastsEnabled = Enabled;
 		}
 
-		protected override bool CanExecutePreviewCommand()
-		{
-			return true;
-		}
-
 		protected override void ExecutePreviewCommand()
 		{
-			Notifier.DisplayMessage( "This is a test notification", NotificationType.Information );
+			Notifier.DisplayMessage( Strings.TestNotification, NotificationType.Information );
 		}
 
 		public override string Title => Strings.InAppNotification;

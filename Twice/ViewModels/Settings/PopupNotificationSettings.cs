@@ -9,14 +9,16 @@ namespace Twice.ViewModels.Settings
 {
 	internal class PopupNotificationSettings : NotificationModuleSettings
 	{
-		public PopupNotificationSettings( IConfig config )
+		public PopupNotificationSettings( IConfig config, INotifier notifier )
 		{
+			Notifier = notifier;
 			AvailableCorners = ValueDescription<Corner>.GetValues( true ).ToList();
 			AvailableDisplays = ListDisplays().ToList();
 
 			Enabled = config.Notifications.PopupEnabled;
 			SelectedCorner = config.Notifications.PopupDisplayCorner;
 			SelectedDisplay = config.Notifications.PopupDisplay;
+			Win10Enabled = config.Notifications.Win10Enabled;
 		}
 
 		public override void SaveTo( IConfig config )
@@ -24,7 +26,17 @@ namespace Twice.ViewModels.Settings
 			config.Notifications.PopupEnabled = Enabled;
 			config.Notifications.PopupDisplayCorner = SelectedCorner;
 			config.Notifications.PopupDisplay = SelectedDisplay;
+			config.Notifications.Win10Enabled = Win10Enabled;
 		}
+
+		protected override void ExecutePreviewCommand()
+		{
+			if( Win10Enabled )
+			{
+				Notifier.DisplayWin10Message( Strings.TestNotification );
+			}
+		}
+		private readonly INotifier Notifier;
 
 		private static IEnumerable<ValueDescription<string>> ListDisplays()
 		{
@@ -46,6 +58,28 @@ namespace Twice.ViewModels.Settings
 				}
 
 				_SelectedCorner = value;
+				RaisePropertyChanged();
+			}
+		}
+
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _Win10Enabled;
+		public bool Win10Enabled
+		{
+			[System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return _Win10Enabled;
+			}
+			set
+			{
+				if( _Win10Enabled == value )
+				{
+					return;
+				}
+
+				_Win10Enabled = value;
 				RaisePropertyChanged();
 			}
 		}

@@ -7,6 +7,8 @@ namespace Twice.ViewModels
 	{
 		void DisplayMessage( string message, NotificationType type );
 
+		void DisplayWin10Message( string message );
+
 		void OnItem( ColumnItem item, ColumnNotifications columnSettings );
 	}
 }

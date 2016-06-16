@@ -24,11 +24,6 @@ namespace Twice.ViewModels.Settings
 			config.Notifications.SoundFileName = SoundFile;
 		}
 
-		protected override bool CanExecutePreviewCommand()
-		{
-			return true;
-		}
-
 		protected override void ExecutePreviewCommand()
 		{
 			var file = File.Exists( SoundFile ) ? SoundFile : ResourceHelper.GetDefaultNotificationSound();

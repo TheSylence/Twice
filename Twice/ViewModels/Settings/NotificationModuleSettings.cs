@@ -10,11 +10,6 @@ namespace Twice.ViewModels.Settings
 	{
 		public abstract void SaveTo( IConfig config );
 
-		protected virtual bool CanExecutePreviewCommand()
-		{
-			return false;
-		}
-
 		protected virtual void ExecutePreviewCommand()
 		{
 		}
@@ -34,7 +29,7 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		public ICommand PreviewCommand => _PreviewCommand ?? ( _PreviewCommand = new RelayCommand( ExecutePreviewCommand, CanExecutePreviewCommand ) );
+		public ICommand PreviewCommand => _PreviewCommand ?? ( _PreviewCommand = new RelayCommand( ExecutePreviewCommand ) );
 		public abstract string Title { get; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Enabled;

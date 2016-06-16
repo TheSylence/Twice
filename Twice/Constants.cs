@@ -97,5 +97,7 @@ namespace Twice
 				public const int StatusDuplicate = 187;
 			}
 		}
+
+		internal const string ApplicationId = "com.squirrel.twice.Twice";
 	}
 }

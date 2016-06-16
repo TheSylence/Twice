@@ -263,7 +263,7 @@
 																<RowDefinition Height="Auto" />
 																<RowDefinition Height="Auto" />
 															</Grid.RowDefinitions>
-															
+
 															<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" TextWrapping="Wrap" />
 
 															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
@@ -282,21 +282,33 @@
 															<Grid.RowDefinitions>
 																<RowDefinition />
 																<RowDefinition />
+																<RowDefinition />
+																<RowDefinition />
 															</Grid.RowDefinitions>
 															<Grid.ColumnDefinitions>
 																<ColumnDefinition Width="Auto" />
 																<ColumnDefinition />
 															</Grid.ColumnDefinitions>
 
-															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" />
-															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name"
-																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedDisplay, Mode=TwoWay}"
-																	  ItemsSource="{Binding AvailableDisplays}" />
+															<CheckBox Content="{lex:Loc Windows10ActionCenterNotification}" IsChecked="{Binding Win10Enabled, Mode=TwoWay}" Grid.ColumnSpan="2" Margin="5" />
 
-															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
+															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" Grid.Row="1" />
+															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name" Grid.Row="1"
+																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedDisplay, Mode=TwoWay}"
+																	  ItemsSource="{Binding AvailableDisplays}" IsEnabled="{Binding Win10Enabled, Converter={StaticResource InvertBoolConv}}" />
+
+															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="2" VerticalAlignment="Center" Margin="5" />
 															<ComboBox ItemsSource="{Binding AvailableCorners}" DisplayMemberPath="Name" Grid.Column="1"
 																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedCorner, Mode=TwoWay}"
-																	  Grid.Row="1" VerticalAlignment="Center" Margin="5,0" />
+																	  Grid.Row="2" VerticalAlignment="Center" Margin="5,0" IsEnabled="{Binding Win10Enabled, Converter={StaticResource InvertBoolConv}}" />
+
+															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
+																	Grid.Row="3" HorizontalAlignment="Right" Margin="5" Grid.ColumnSpan="2">
+																<DockPanel>
+																	<materialDesign:PackIcon Kind="Play" DockPanel.Dock="Left" />
+																	<TextBlock Text="{lex:Loc Preview}" Margin="5,0" VerticalAlignment="Center" />
+																</DockPanel>
+															</Button>
 														</Grid>
 													</DataTemplate>
 												</views:GenericDataTemplateSelectorItem>

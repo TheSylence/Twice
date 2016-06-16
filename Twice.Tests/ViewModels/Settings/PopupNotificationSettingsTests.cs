@@ -23,7 +23,7 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
 			// Act
-			var vm = new PopupNotificationSettings( cfg.Object );
+			var vm = new PopupNotificationSettings( cfg.Object, null );
 
 			// Assert
 			Assert.AreEqual( notify.PopupEnabled, vm.Enabled );
@@ -45,7 +45,7 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
 			// Act
-			var vm = new PopupNotificationSettings( cfg.Object )
+			var vm = new PopupNotificationSettings( cfg.Object, null )
 			{
 				SelectedCorner = Corner.BottomRight,
 				SelectedDisplay = "test",

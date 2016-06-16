@@ -1393,6 +1393,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is a test notification.
+        /// </summary>
+        public static string TestNotification {
+            get {
+                return ResourceManager.GetString("TestNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
         public static string Theme {
@@ -1623,6 +1632,15 @@ namespace Twice.Resources {
         public static string WhatsHappening {
             get {
                 return ResourceManager.GetString("WhatsHappening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows 10 Action Center notifications.
+        /// </summary>
+        public static string Windows10ActionCenterNotification {
+            get {
+                return ResourceManager.GetString("Windows10ActionCenterNotification", resourceCulture);
             }
         }
         

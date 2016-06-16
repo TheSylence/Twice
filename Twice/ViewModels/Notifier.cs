@@ -3,11 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Windows.Data.Xml.Dom;
 using GalaSoft.MvvmLight.Messaging;
+using NotificationsExtensions;
+using NotificationsExtensions.Toasts;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
-using Twice.Resources;
 using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
@@ -58,6 +60,28 @@ namespace Twice.ViewModels
 			NotifyToast( context );
 		}
 
+		public void DisplayWin10Message( string message )
+		{
+			var binding = new ToastBindingGeneric();
+			binding.Children.Add( new AdaptiveText {Text = message, HintWrap = true} );
+
+			ToastContent content = new ToastContent
+			{
+				Launch = "",
+				Visual = new ToastVisual
+				{
+					BindingGeneric = binding
+				}
+			};
+
+			var xml = content.GetContent();
+			var doc = new XmlDocument();
+			doc.LoadXml( xml );
+
+			var n = Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier( Constants.ApplicationId );
+			n.Show( new Windows.UI.Notifications.ToastNotification( doc ) );
+		}
+
 		public void OnItem( ColumnItem item, ColumnNotifications columnSettings )
 		{
 			if( Config.Notifications.SoundEnabled && columnSettings.Sound )
@@ -72,11 +96,11 @@ namespace Twice.ViewModels
 
 			if( Config.Notifications.PopupEnabled && columnSettings.Popup )
 			{
-				NotifyPopup( item );
+				NotifyPopup( item, Config.Notifications.Win10Enabled );
 			}
 		}
 
-		private void NotifyPopup( ColumnItem item )
+		private void NotifyPopup( ColumnItem item, bool win10 )
 		{
 		}
 
