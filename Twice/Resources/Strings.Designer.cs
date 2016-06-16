@@ -763,6 +763,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In-App notifications.
+        /// </summary>
+        public static string InAppNotification {
+            get {
+                return ResourceManager.GetString("InAppNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include pre-releases.
         /// </summary>
         public static string IncludePrereleases {
@@ -1398,15 +1407,6 @@ namespace Twice.Resources {
         public static string TimelineDescription {
             get {
                 return ResourceManager.GetString("TimelineDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notification toasts in app.
-        /// </summary>
-        public static string ToastNotification {
-            get {
-                return ResourceManager.GetString("ToastNotification", resourceCulture);
             }
         }
         

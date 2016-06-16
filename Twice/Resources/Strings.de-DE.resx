@@ -309,8 +309,8 @@
   <data name="PopupNotification" xml:space="preserve">
     <value>Benachrichtigungspopup</value>
   </data>
-  <data name="ToastNotification" xml:space="preserve">
-    <value>Toastbenachrichtigungen</value>
+  <data name="InAppNotification" xml:space="preserve">
+    <value>Benachrichtigungen in der App</value>
   </data>
   <data name="NoFurtherSettingsForThisNotificationType" xml:space="preserve">
     <value>Für diese Benachrichtigungen gibt es keine weiteren Einstellungen</value>

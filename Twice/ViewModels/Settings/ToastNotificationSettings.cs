@@ -15,6 +15,6 @@ namespace Twice.ViewModels.Settings
 			config.Notifications.ToastsEnabled = Enabled;
 		}
 
-		public override string Title => Strings.ToastNotification;
+		public override string Title => Strings.InAppNotification;
 	}
 }
