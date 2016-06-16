@@ -93,11 +93,14 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Notifier.DisplayMessage( It.IsAny<string>(), NotificationType.Success ) ).Verifiable();
 			context.Setup( c => c.Twitter.Statuses.DeleteTweetAsync( 456 ) ).Returns( Task.FromResult<Status>( null ) ).Verifiable();
 
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
+
 			var waitHandle = new ManualResetEventSlim( false );
 			var status = DummyGenerator.CreateDummyStatus();
 			status.StatusID = 456;
 			status.User.UserID = 123;
-			var vm = new StatusViewModel( status, context.Object, null, null )
+			var vm = new StatusViewModel( status, context.Object, null, viewServices.Object )
 			{
 				Dispatcher = new SyncDispatcher()
 			};
