@@ -648,4 +648,7 @@
   <data name="TestNotification" xml:space="preserve">
     <value>This is a test notification</value>
   </data>
+  <data name="ConfirmDeleteStatus" xml:space="preserve">
+    <value>Do you really want to delete this tweet?</value>
+  </data>
 </root>

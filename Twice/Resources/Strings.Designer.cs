@@ -376,6 +376,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this tweet?.
+        /// </summary>
+        public static string ConfirmDeleteStatus {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to remove this media from your tweet?.
         /// </summary>
         public static string ConfirmMediaRemoval {

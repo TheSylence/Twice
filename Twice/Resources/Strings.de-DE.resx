@@ -648,4 +648,7 @@
   <data name="TestNotification" xml:space="preserve">
     <value>Das ist eine Testbenachrichtigung</value>
   </data>
+  <data name="ConfirmDeleteStatus" xml:space="preserve">
+    <value>Soll dieser Tweet wirklich gelöscht werden?</value>
+  </data>
 </root>

@@ -164,9 +164,14 @@ namespace Twice.ViewModels.Twitter
 			Clipboard.SetText( Model.GetUrl().AbsoluteUri );
 		}
 
-		private void ExecuteDeleteStatusCommand()
+		private async void ExecuteDeleteStatusCommand()
 		{
-			// TODO: Confirm deletion
+			var csa = new ConfirmServiceArgs( Strings.ConfirmDeleteStatus );
+			if( !await ViewServiceRepository.Confirm( csa ) )
+			{
+				return;
+			}
+
 			ExecAsync( async () => await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
 				NotificationType.Success );
 		}
