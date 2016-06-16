@@ -633,4 +633,13 @@
   <data name="Message" xml:space="preserve">
     <value>Message</value>
   </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="LeaveEmptyForDefaultSound" xml:space="preserve">
+    <value>Leave empty for default sound</value>
+  </data>
 </root>

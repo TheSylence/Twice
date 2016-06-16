@@ -235,9 +235,24 @@
 																<ColumnDefinition Width="Auto" />
 																<ColumnDefinition />
 															</Grid.ColumnDefinitions>
+															<Grid.RowDefinitions>
+																<RowDefinition Height="Auto" />
+																<RowDefinition Height="Auto" />
+															</Grid.RowDefinitions>
 
-															<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
-															<controls1:FileSelectBox Grid.Column="1" />
+															<StackPanel Orientation="Horizontal">
+																<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
+																<materialDesign:PackIcon Kind="HelpCircle" ToolTip="{lex:Loc LeaveEmptyForDefaultSound}" VerticalAlignment="Center" />
+															</StackPanel>
+															<controls1:FileSelectBox Grid.Column="1" Value="{Binding SoundFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
+																	Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5">
+																<DockPanel>
+																	<materialDesign:PackIcon Kind="Play" DockPanel.Dock="Left" />
+																	<TextBlock Text="{lex:Loc Preview}" Margin="5,0" VerticalAlignment="Center" />
+																</DockPanel>
+															</Button>
 														</Grid>
 													</DataTemplate>
 												</views:GenericDataTemplateSelectorItem>

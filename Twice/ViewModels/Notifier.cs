@@ -1,12 +1,14 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
+using Twice.Resources;
+using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
@@ -22,10 +24,21 @@ namespace Twice.ViewModels
 			MessengerInstance = messenger;
 			Config = config;
 
-			if( config.Notifications.SoundEnabled && File.Exists( config.Notifications.SoundFileName ) )
+			if( config.Notifications.SoundEnabled )
 			{
 				Player = new MediaPlayer();
-				Player.Open( new Uri( config.Notifications.SoundFileName ) );
+				string soundFileName;
+
+				if( File.Exists( config.Notifications.SoundFileName ) )
+				{
+					soundFileName = config.Notifications.SoundFileName;
+				}
+				else
+				{
+					soundFileName = ResourceHelper.GetDefaultNotificationSound();
+				}
+
+				Player.Open( new Uri( soundFileName ) );
 			}
 
 			if( config.Notifications.PopupEnabled )
@@ -69,7 +82,7 @@ namespace Twice.ViewModels
 
 		private void NotifySound( ColumnItem item )
 		{
-			Player?.Play();
+			Dispatcher.CheckBeginInvokeOnUI( () => Player?.Play() );
 		}
 
 		private void NotifyToast( ColumnItem item )

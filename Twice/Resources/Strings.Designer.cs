@@ -214,6 +214,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bugfix.
         /// </summary>
         public static string Bugfix {
@@ -835,6 +844,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leave empty for default sound.
+        /// </summary>
+        public static string LeaveEmptyForDefaultSound {
+            get {
+                return ResourceManager.GetString("LeaveEmptyForDefaultSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Licenses.
         /// </summary>
         public static string Licenses {
@@ -1065,6 +1083,15 @@ namespace Twice.Resources {
         public static string PopupNotification {
             get {
                 return ResourceManager.GetString("PopupNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
             }
         }
         
