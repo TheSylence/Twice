@@ -25,12 +25,12 @@
 				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenMessageCommand}}"
 										CommandParameter="{Binding}" />
 			</i:Interaction.Behaviors>
-			
+
 			<StackPanel Orientation="Vertical">
 				<DockPanel>
 					<Grid Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">
-						<materialDesign:PackIcon Kind="MessageReply" Visibility="{Binding IsIncoming, Converter={StaticResource BoolToVisibleConv}}" />
-						<materialDesign:PackIcon Kind="Message" Visibility="{Binding IsIncoming, Converter={StaticResource InvertBoolToVisibleConv}}" />
+						<materialDesign:PackIcon Kind="MessageReply" Visibility="{Binding IsIncoming, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource SecondaryAccentBrush}" />
+						<materialDesign:PackIcon Kind="Message" Visibility="{Binding IsIncoming, Converter={StaticResource InvertBoolToVisibleConv}}" Foreground="{DynamicResource SecondaryAccentBrush}" />
 					</Grid>
 
 					<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
@@ -200,7 +200,8 @@
 											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
 						</i:Interaction.Behaviors>
 
-						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
+												 Foreground="{DynamicResource SecondaryAccentBrush}" />
 
 						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
 
@@ -219,7 +220,8 @@
 							</Style>
 						</StackPanel.Resources>
 
-						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center" />
+						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
+												 Foreground="{DynamicResource SecondaryAccentBrush}" />
 						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" />
 					</StackPanel>
 				</StackPanel>
@@ -260,7 +262,7 @@
 												</DataTrigger>
 												<DataTrigger Binding="{Binding IsFavorited}" Value="True">
 													<Setter Property="Visibility" Value="Visible" />
-													<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
+													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 												</DataTrigger>
 											</Style.Triggers>
 										</Style>
@@ -281,7 +283,7 @@
 												</DataTrigger>
 												<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
 													<Setter Property="Visibility" Value="Visible" />
-													<Setter Property="Foreground" Value="{StaticResource AccentColorBrush}" />
+													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 													<Setter Property="IsEnabled" Value="False" />
 												</DataTrigger>
 											</Style.Triggers>
@@ -289,7 +291,17 @@
 									</materialDesign:PopupBox.Style>
 									<materialDesign:PopupBox.ToggleContent>
 										<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
-															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}" />
+															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}">
+											<materialDesign:PackIcon.Style>
+												<Style TargetType="materialDesign:PackIcon">
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+															<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</materialDesign:PackIcon.Style>
+										</materialDesign:PackIcon>
 									</materialDesign:PopupBox.ToggleContent>
 
 									<StackPanel Orientation="Vertical">

@@ -10,7 +10,9 @@
             "Notification popups can be action center notifications on Windows 10",
             "Added preview button for notifications in settings"
         ],
-        "Changes": [],
+        "Changes": [
+            "Some visual elements in a status now use the accent color"
+        ],
         "Fixes": [
             "Relative time for statuses is now updated regularly"
         ],
