@@ -13,16 +13,26 @@ namespace Twice.Behaviors
 
 		private void AssociatedObject_Click( object sender, RoutedEventArgs e )
 		{
-			if( Item != null && Control != null )
+			if( Item == null || Control == null )
 			{
-				var element = Control.ItemContainerGenerator.ContainerFromItem( Item ) as FrameworkElement;
-				if( element != null )
-				{
-					element.BringIntoView();
-					e.Handled = true;
-				}
+				return;
 			}
+
+			var element = Control.ItemContainerGenerator.ContainerFromItem( Item ) as FrameworkElement;
+			if( element == null )
+			{
+				return;
+			}
+
+			element.BringIntoView();
+			e.Handled = true;
 		}
+
+		public static readonly DependencyProperty ControlProperty =
+			DependencyProperty.Register( "Control", typeof(ItemsControl), typeof(ScrollIntoView), new PropertyMetadata( null ) );
+
+		public static readonly DependencyProperty ItemProperty =
+			DependencyProperty.Register( "Item", typeof(object), typeof(ScrollIntoView), new PropertyMetadata( null ) );
 
 		public ItemsControl Control
 		{
@@ -35,11 +45,5 @@ namespace Twice.Behaviors
 			get { return GetValue( ItemProperty ); }
 			set { SetValue( ItemProperty, value ); }
 		}
-
-		public static readonly DependencyProperty ControlProperty =
-			DependencyProperty.Register( "Control", typeof( ItemsControl ), typeof( ScrollIntoView ), new PropertyMetadata( null ) );
-
-		public static readonly DependencyProperty ItemProperty =
-			DependencyProperty.Register( "Item", typeof( object ), typeof( ScrollIntoView ), new PropertyMetadata( null ) );
 	}
 }

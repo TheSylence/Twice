@@ -1,7 +1,7 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LinqToTwitter;
 using Seal.Fody;
 using Twice.Models.Columns;
 
@@ -17,15 +17,17 @@ namespace Twice.Models.Twitter.Streaming
 
 		private void Dispose( bool disposing )
 		{
-			if( disposing )
+			if( !disposing )
 			{
-				foreach( var kvp in LoadedParsers )
-				{
-					kvp.Value.Dispose();
-				}
-
-				LoadedParsers.Clear();
+				return;
 			}
+
+			foreach( var kvp in LoadedParsers )
+			{
+				kvp.Value.Dispose();
+			}
+
+			LoadedParsers.Clear();
 		}
 
 		public void Dispose()
@@ -53,6 +55,7 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		private readonly ITwitterContextList ContextList;
+
 		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 
 		protected class ParserKey

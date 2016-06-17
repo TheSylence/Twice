@@ -239,7 +239,7 @@ namespace Twice.ViewModels.Main
 			}
 
 			await CheckCredentials();
-			
+
 			await Task.WhenAll( Columns.Select( c => c.Load() ) );
 
 			// It's late and I didn't have enough coffee...

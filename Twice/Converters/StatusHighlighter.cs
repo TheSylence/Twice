@@ -155,12 +155,9 @@ namespace Twice.Converters
 			}
 
 			var urlEntity = entity as UrlEntity;
-			if( urlEntity != null )
-			{
-				return urlEntity.Url;
-			}
-
-			return string.Empty;
+			return urlEntity != null
+				? urlEntity.Url
+				: string.Empty;
 		}
 
 		/// <summary>

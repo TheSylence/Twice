@@ -15,7 +15,8 @@ namespace Twice.ViewModels.Columns
 {
 	internal class FavoritesColumn : ColumnViewModelBase
 	{
-		public FavoritesColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser, IMessenger messenger = null )
+		public FavoritesColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
+			IMessenger messenger = null )
 			: base( context, definition, config, parser, messenger )
 		{
 			MaxIdFilterExpressionFavorites = s => s.MaxID == MaxId - 1;
@@ -30,12 +31,6 @@ namespace Twice.ViewModels.Columns
 		protected override bool IsSuitableForColumn( DirectMessage message )
 		{
 			return false;
-		}
-
-		protected override async Task OnFavorite( Status status )
-		{
-			var vm = await CreateViewModel( status );
-			await AddItem( vm );
 		}
 
 		protected override async Task LoadMoreData()
@@ -62,8 +57,12 @@ namespace Twice.ViewModels.Columns
 
 			await AddItems( list, false );
 		}
-		private Expression<Func<Favorites, bool>> SinceIdFilterExpressionFavorites { get; }
-		private Expression<Func<Favorites, bool>> MaxIdFilterExpressionFavorites { get; }
+
+		protected override async Task OnFavorite( Status status )
+		{
+			var vm = await CreateViewModel( status );
+			await AddItem( vm );
+		}
 
 		protected override async Task OnLoad()
 		{
@@ -76,7 +75,7 @@ namespace Twice.ViewModels.Columns
 
 			await AddItems( list );
 		}
-		
+
 		protected override async Task OnUnfavorite( Status status )
 		{
 			await RemoveItem( status.GetStatusId() );
@@ -84,5 +83,7 @@ namespace Twice.ViewModels.Columns
 
 		public override Icon Icon => Icon.Favorites;
 		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Favorited;
+		private Expression<Func<Favorites, bool>> MaxIdFilterExpressionFavorites { get; }
+		private Expression<Func<Favorites, bool>> SinceIdFilterExpressionFavorites { get; }
 	}
 }

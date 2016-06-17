@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -64,8 +63,10 @@ namespace Twice.ViewModels.Twitter
 
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _WasRead;
 	}
 }

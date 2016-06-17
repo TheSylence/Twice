@@ -14,13 +14,14 @@ namespace Twice.Models.Media
 		public bool CanExtract( string originalUrl )
 		{
 			var uri = new Uri( originalUrl );
-			if( uri.Host == "youtu.be" || uri.Host == "www.youtu.be" )
+			switch( uri.Host )
 			{
+			case "youtu.be":
+			case "www.youtu.be":
 				return true;
-			}
 
-			if( uri.Host == "youtube.com" || uri.Host == "www.youtube.com" )
-			{
+			case "youtube.com":
+			case "www.youtube.com":
 				if( !originalUrl.Contains( "?" ) )
 				{
 					return false;
@@ -35,7 +36,7 @@ namespace Twice.Models.Media
 				}
 
 				var v = args.GetValues( "v" );
-				return v.Any( x => !string.IsNullOrWhiteSpace( x ) );
+				return v?.Any( x => !string.IsNullOrWhiteSpace( x ) ) == true;
 			}
 
 			return false;
@@ -57,7 +58,7 @@ namespace Twice.Models.Media
 				var args = HttpUtility.ParseQueryString( queryString );
 
 				var v = args.GetValues( "v" );
-				videoId = v.FirstOrDefault( x => !string.IsNullOrWhiteSpace( x ) );
+				videoId = v?.FirstOrDefault( x => !string.IsNullOrWhiteSpace( x ) );
 			}
 
 			return BuildThumbnailUri( videoId );

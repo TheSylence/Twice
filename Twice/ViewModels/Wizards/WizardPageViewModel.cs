@@ -39,7 +39,7 @@ namespace Twice.ViewModels.Wizards
 				_GotoNextPageCommand
 				?? ( _GotoNextPageCommand = new RelayCommand<object>( ExecuteGotoNextPageCommand, CanExecuteGotoNextPageCommand ) );
 
-		public bool IsLastPage { get; protected set; } = false;
+		public bool IsLastPage { get; protected set; }
 		protected readonly IWizardViewModel Wizard;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]

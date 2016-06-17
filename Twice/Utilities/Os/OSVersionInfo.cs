@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 // ReSharper disable InconsistentNaming
 
@@ -69,24 +69,14 @@ namespace Twice.Utilities.Os
 			bool isWow64;
 			bool retVal = fnDelegate.Invoke( Process.GetCurrentProcess().Handle, out isWow64 );
 
-			if( retVal == false )
-			{
-				return false;
-			}
-
-			return isWow64;
+			return retVal && isWow64;
 		}
 
 		private static bool IsWindows10()
 		{
 			string productName = RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName",
 				"" );
-			if( productName.StartsWith( "Windows 10", StringComparison.OrdinalIgnoreCase ) )
-			{
-				return true;
-			}
-
-			return false;
+			return productName.StartsWith( "Windows 10", StringComparison.OrdinalIgnoreCase );
 		}
 
 		[DllImport( "kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi )]
@@ -107,16 +97,28 @@ namespace Twice.Utilities.Os
 				{
 					splitResult[0] = splitResult[0].ToUpper(); // Make the first entry uppercase...
 
-					if( splitResult[0] == "HKEY_CLASSES_ROOT" )
+					switch( splitResult[0] )
+					{
+					case "HKEY_CLASSES_ROOT":
 						ourKey = Registry.ClassesRoot;
-					else if( splitResult[0] == "HKEY_CURRENT_USER" )
+						break;
+
+					case "HKEY_CURRENT_USER":
 						ourKey = Registry.CurrentUser;
-					else if( splitResult[0] == "HKEY_LOCAL_MACHINE" )
+						break;
+
+					case "HKEY_LOCAL_MACHINE":
 						ourKey = Registry.LocalMachine;
-					else if( splitResult[0] == "HKEY_USERS" )
+						break;
+
+					case "HKEY_USERS":
 						ourKey = Registry.Users;
-					else if( splitResult[0] == "HKEY_CURRENT_CONFIG" )
+						break;
+
+					case "HKEY_CURRENT_CONFIG":
 						ourKey = Registry.CurrentConfig;
+						break;
+					}
 
 					if( ourKey != null )
 					{
@@ -271,24 +273,30 @@ namespace Twice.Utilities.Os
 					byte productType = osVersionInfo.wProductType;
 					short suiteMask = osVersionInfo.wSuiteMask;
 
-					if( majorVersion == 4 )
+					switch( majorVersion )
 					{
-						if( productType == VER_NT_WORKSTATION )
+					case 4:
+						switch( productType )
 						{
+						case VER_NT_WORKSTATION:
+
 							// Windows NT 4.0 Workstation
 							edition = "Workstation";
-						}
-						else if( productType == VER_NT_SERVER )
-						{
+							break;
+
+						case VER_NT_SERVER:
 							edition = ( suiteMask & VER_SUITE_ENTERPRISE ) != 0
 								? "Enterprise Server"
 								: "Standard Server";
+							break;
 						}
-					}
-					else if( majorVersion == 5 )
-					{
-						if( productType == VER_NT_WORKSTATION )
+
+						break;
+
+					case 5:
+						switch( productType )
 						{
+						case VER_NT_WORKSTATION:
 							if( ( suiteMask & VER_SUITE_PERSONAL ) != 0 )
 							{
 								edition = "Home";
@@ -299,9 +307,9 @@ namespace Twice.Utilities.Os
 									? "Professional"
 									: "Tablet Edition";
 							}
-						}
-						else if( productType == VER_NT_SERVER )
-						{
+							break;
+
+						case VER_NT_SERVER:
 							if( minorVersion == 0 )
 							{
 								if( ( suiteMask & VER_SUITE_DATACENTER ) != 0 )
@@ -343,10 +351,12 @@ namespace Twice.Utilities.Os
 									edition = "Standard";
 								}
 							}
+							break;
 						}
-					}
-					else if( majorVersion == 6 )
-					{
+
+						break;
+
+					case 6:
 						int ed;
 						if( GetProductInfo( majorVersion, minorVersion,
 							osVersionInfo.wServicePackMajor, osVersionInfo.wServicePackMinor,
@@ -635,6 +645,8 @@ namespace Twice.Utilities.Os
 								break;
 							}
 						}
+
+						break;
 					}
 				}
 
@@ -1034,28 +1046,19 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		///     Gets the revision version number of the operating system running on this computer.
-		/// </summary>
-		private static int RevisionVersion
-		{
-			get
-			{
-				if( IsWindows10() )
-				{
-					return 0;
-				}
-
-				return Environment.OSVersion.Version.Revision;
-			}
-		}
-
-		/// <summary>
 		///     Gets the build version number of the operating system running on this computer.
 		/// </summary>
 		private static int BuildVersion
 			=>
 				int.Parse( RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuildNumber",
 					"0" ) );
+
+		/// <summary>
+		///     Gets the revision version number of the operating system running on this computer.
+		/// </summary>
+		private static int RevisionVersion => IsWindows10()
+			? 0
+			: Environment.OSVersion.Version.Revision;
 
 		private delegate bool IsWow64ProcessDelegate( [In] IntPtr handle, [Out] out bool isWow64Process );
 

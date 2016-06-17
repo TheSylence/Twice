@@ -29,11 +29,13 @@ namespace Twice.ViewModels.Validation
 
 			try
 			{
-				if( !Check( value ) )
+				if( Check( value ) )
 				{
-					Error = ErrorMessage;
-					HasError = true;
+					return;
 				}
+
+				Error = ErrorMessage;
+				HasError = true;
 			}
 			catch( Exception ex )
 			{

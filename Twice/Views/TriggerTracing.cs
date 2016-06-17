@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Markup;
@@ -135,7 +136,7 @@ namespace Twice.Views
 			{
 				base.TraceEvent( eventCache, source, eventType, id, format, args );
 
-				if( format.StartsWith( "Storyboard has begun;" ) )
+				if( format.StartsWith( "Storyboard has begun;", StringComparison.Ordinal ) )
 				{
 					TriggerTraceStoryboard storyboard = args[1] as TriggerTraceStoryboard;
 					if( storyboard != null )

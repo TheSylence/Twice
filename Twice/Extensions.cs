@@ -42,16 +42,15 @@ namespace Twice
 			var a = value as T[] ?? value.ToArray();
 
 			return a.Length == b.Length
-			       && !a.Except( b ).Any()
-			       && !b.Except( a ).Any();
+					&& !a.Except( b ).Any()
+					&& !b.Except( a ).Any();
 		}
 
 		public static string GetReason( this Exception ex )
 		{
-			var agg = ex as AggregateException;
-			if( agg != null )
+			while( ex is AggregateException )
 			{
-				return agg.InnerException.GetReason();
+				ex = ex.InnerException;
 			}
 
 			return ex.Message;

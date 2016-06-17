@@ -24,7 +24,7 @@ namespace Twice.Tests.Models.Media
 				{"http://youtube.com/", false},
 				{"https://google.com/watch?v=12345", false},
 				{"https://youtube.com/watch?v=", false},
-				{"http://youtube.com/watch/video/", false},
+				{"http://youtube.com/watch/video/", false}
 			};
 
 			// Act
@@ -48,7 +48,7 @@ namespace Twice.Tests.Models.Media
 				{"https://www.youtube.com/watch?v=JQVmkDUkZT4", "JQVmkDUkZT4"},
 				{"https://youtu.be/JQVmkDUkZT4", "JQVmkDUkZT4"},
 				{"https://youtu.be/JQVmkDUkZT4?t=22s", "JQVmkDUkZT4"},
-				{"https://www.youtube.com/watch?v=y0opgc1WoS4&list=PLFs4vir_WsTyXrrpFstD64Qj95vpy-yo1&index=3", "y0opgc1WoS4"},
+				{"https://www.youtube.com/watch?v=y0opgc1WoS4&list=PLFs4vir_WsTyXrrpFstD64Qj95vpy-yo1&index=3", "y0opgc1WoS4"}
 			};
 
 			// Act

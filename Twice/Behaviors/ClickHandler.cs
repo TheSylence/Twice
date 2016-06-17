@@ -6,7 +6,7 @@ using System.Windows.Interactivity;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Executes a command when a FrameworkElement has been clicked.
+	///     Executes a command when a FrameworkElement has been clicked.
 	/// </summary>
 	/// <remarks>Essentially this is a nicer way than using EventToCommand for the click command</remarks>
 	[ExcludeFromCodeCoverage]
@@ -19,13 +19,15 @@ namespace Twice.Behaviors
 
 		private void AssociatedObject_MouseDown( object sender, MouseButtonEventArgs e )
 		{
-			if( e.LeftButton == MouseButtonState.Pressed )
+			if( e.LeftButton != MouseButtonState.Pressed )
 			{
-				if( Command?.CanExecute( CommandParameter ) == true )
-				{
-					Command.Execute( CommandParameter );
-					e.Handled = true;
-				}
+				return;
+			}
+
+			if( Command?.CanExecute( CommandParameter ) == true )
+			{
+				Command.Execute( CommandParameter );
+				e.Handled = true;
 			}
 		}
 
@@ -36,7 +38,7 @@ namespace Twice.Behaviors
 			DependencyProperty.Register( "Command", typeof(ICommand), typeof(ClickHandler), new PropertyMetadata( null ) );
 
 		/// <summary>
-		/// The command to execute
+		///     The command to execute
 		/// </summary>
 		public ICommand Command
 		{
@@ -45,11 +47,11 @@ namespace Twice.Behaviors
 		}
 
 		/// <summary>
-		/// Parameter that will be passed to the command
+		///     Parameter that will be passed to the command
 		/// </summary>
 		public object CommandParameter
 		{
-			get { return (object)GetValue( CommandParameterProperty ); }
+			get { return GetValue( CommandParameterProperty ); }
 			set { SetValue( CommandParameterProperty, value ); }
 		}
 	}

@@ -30,6 +30,7 @@ namespace Twice.Models.Media
 
 		private class InstagramResponse
 		{
+			// ReSharper disable once InconsistentNaming
 			public string thumbnail_url { get; set; }
 		}
 	}

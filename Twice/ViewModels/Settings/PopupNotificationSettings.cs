@@ -36,7 +36,6 @@ namespace Twice.ViewModels.Settings
 				Notifier.DisplayWin10Message( Strings.TestNotification );
 			}
 		}
-		private readonly INotifier Notifier;
 
 		private static IEnumerable<ValueDescription<string>> ListDisplays()
 		{
@@ -48,8 +47,7 @@ namespace Twice.ViewModels.Settings
 
 		public Corner SelectedCorner
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedCorner; }
+			[DebuggerStepThrough] get { return _SelectedCorner; }
 			set
 			{
 				if( _SelectedCorner == value )
@@ -62,32 +60,9 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Win10Enabled;
-		public bool Win10Enabled
-		{
-			[System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return _Win10Enabled;
-			}
-			set
-			{
-				if( _Win10Enabled == value )
-				{
-					return;
-				}
-
-				_Win10Enabled = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public string SelectedDisplay
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedDisplay; }
+			[DebuggerStepThrough] get { return _SelectedDisplay; }
 			set
 			{
 				if( _SelectedDisplay == value )
@@ -102,10 +77,30 @@ namespace Twice.ViewModels.Settings
 
 		public override string Title => Strings.PopupNotification;
 
+		public bool Win10Enabled
+		{
+			[DebuggerStepThrough] get { return _Win10Enabled; }
+			set
+			{
+				if( _Win10Enabled == value )
+				{
+					return;
+				}
+
+				_Win10Enabled = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private readonly INotifier Notifier;
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private Corner _SelectedCorner;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private string _SelectedDisplay;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _Win10Enabled;
 	}
 }

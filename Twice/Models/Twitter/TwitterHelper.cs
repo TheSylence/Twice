@@ -28,12 +28,9 @@ namespace Twice.Models.Twitter
 		public static ulong ExtractTweetId( string url )
 		{
 			var match = TweetUrlPattern.Match( url );
-			if( match?.Success != true )
-			{
-				return 0;
-			}
-
-			return ulong.Parse( match.Groups[2].Value );
+			return match.Success != true
+				? 0
+				: ulong.Parse( match.Groups[2].Value );
 		}
 
 		public static ulong GetMessageId( this DirectMessage message )

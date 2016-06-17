@@ -17,14 +17,9 @@ namespace Twice.Models.Twitter.Streaming
 		{
 			var obj = JsonMapper.ToObject( json );
 			JsonData messageData;
-			if( obj.TryGetValue( "direct_message", out messageData ) )
-			{
-				Message = new DirectMessage( messageData );
-			}
-			else
-			{
-				Message = new DirectMessage();
-			}
+			Message = obj.TryGetValue( "direct_message", out messageData )
+				? new DirectMessage( messageData )
+				: new DirectMessage();
 		}
 
 		/// <summary>

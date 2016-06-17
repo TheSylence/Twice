@@ -92,7 +92,7 @@ namespace Twice.ViewModels.Accounts
 
 		private string GetPinFromUser()
 		{
-			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry, null );
+			string input = ViewServiceRepository.TextInput( Strings.TwitterPinEntry );
 			if( string.IsNullOrWhiteSpace( input ) )
 			{
 				PinEntryCancelled.Cancel();
@@ -109,7 +109,6 @@ namespace Twice.ViewModels.Accounts
 			=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
 				ExecuteMakeDefaultAccountCommand ) );
 
-		private const string DialogHostIdentifier = "AccountDialogHost";
 		private readonly ITwitterAuthorizer Authorizer;
 		private readonly IColumnDefinitionList ColumnList;
 		private RelayCommand _AddAccountCommand;

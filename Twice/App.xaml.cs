@@ -144,15 +144,9 @@ namespace Twice
 		{
 			LogTo.Info( $"App version: {Assembly.GetExecutingAssembly().GetName().Version}" );
 
-			string osVersionString;
-			if( OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
-			{
-				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit";
-			}
-			else
-			{
-				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
-			}
+			string osVersionString = OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64
+				? $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit"
+				: $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
 
 			LogTo.Info( osVersionString );
 			if( !string.IsNullOrEmpty( OsVersionInfo.ServicePack ) )

@@ -593,9 +593,9 @@ namespace Twice.Tests.ViewModels.Columns
 				Icon = Icon.User;
 			}
 
-			public void RaiseStatusWrapper( StatusViewModel status )
+			public void RaiseStatusWrapper( ColumnItem iteme )
 			{
-				RaiseNewItem( status );
+				RaiseNewItem( iteme );
 			}
 
 			public void SetLoading( bool isLoading )

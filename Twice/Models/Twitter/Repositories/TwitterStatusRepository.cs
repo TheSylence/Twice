@@ -55,16 +55,7 @@ namespace Twice.Models.Twitter.Repositories
 				return new List<ulong>();
 			}
 
-			List<ulong> result;
-			if( response?.Users != null )
-			{
-				result = response.Users;
-			}
-			else
-			{
-				result = new List<ulong>();
-			}
-
+			List<ulong> result = response?.Users ?? new List<ulong>();
 			return result.Take( count ).ToList();
 		}
 
@@ -79,7 +70,7 @@ namespace Twice.Models.Twitter.Repositories
 			try
 			{
 				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.ID == statusId
-				                                         && s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
+														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
 				await Cache.AddStatuses( new[] {status} );
 				return status;
@@ -142,12 +133,9 @@ namespace Twice.Models.Twitter.Repositories
 
 		public Task<Status> TweetAsync( string text, IEnumerable<ulong> medias, ulong inReplyTo )
 		{
-			if( inReplyTo != 0 )
-			{
-				return Context.ReplyAsync( inReplyTo, text, medias );
-			}
-
-			return Context.TweetAsync( text, medias );
+			return inReplyTo != 0
+				? Context.ReplyAsync( inReplyTo, text, medias )
+				: Context.TweetAsync( text, medias );
 		}
 
 		private TwitterQueryable<Status> Queryable => Context.Status;
