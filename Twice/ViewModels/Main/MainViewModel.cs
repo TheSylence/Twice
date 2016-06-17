@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -226,6 +227,7 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
+		[SuppressMessage( "ReSharper", "NotAccessedVariable" )]
 		public async Task OnLoad( object data )
 		{
 			if( !HasContexts )
@@ -238,7 +240,7 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			await CheckCredentials();
+			var dontWait = CheckCredentials();
 
 			await Task.WhenAll( Columns.Select( c => c.Load() ) );
 
@@ -295,7 +297,7 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			await QueryRateLimit();
+			dontWait = QueryRateLimit();
 		}
 
 		public ICommand AccountsCommand
