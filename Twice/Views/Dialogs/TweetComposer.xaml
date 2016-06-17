@@ -12,7 +12,7 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:proxies="clr-namespace:Twice.Views.Proxies" WindowStartupLocation="CenterOwner"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
+             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" FocusManager.FocusedElement="{Binding ElementName=txtInput}"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d" Style="{StaticResource DialogStyle}" Title="{lex:Loc ComposeTweet}"
              d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="500">
@@ -82,7 +82,7 @@
 					<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 							 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" VerticalScrollBarVisibility="Auto"
 							 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}" MaxHeight="80"
-							 VerticalAlignment="Top">
+							 VerticalAlignment="Top" x:Name="txtInput">
 						<TextBox.InputBindings>
 							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 						</TextBox.InputBindings>

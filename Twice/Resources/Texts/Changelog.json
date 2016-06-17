@@ -17,7 +17,8 @@
         ],
         "Fixes": [
             "Relative time for statuses is now updated regularly",
-            "Options for a tweet now work when menu was opened by clicking the options button"
+            "Options for a tweet now work when menu was opened by clicking the options button",
+            "Compose dialogs now have correct keyboard focus when opened"
         ],
         "Issues": [ ]
     },

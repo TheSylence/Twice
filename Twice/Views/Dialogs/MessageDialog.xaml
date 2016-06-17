@@ -10,7 +10,7 @@
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
-        Style="{StaticResource DialogStyle}"
+        Style="{StaticResource DialogStyle}" FocusManager.FocusedElement="{Binding ElementName=txtRecipient}"
 		DataContext="{Binding ComposeMessage, Source={StaticResource Locator}}"
         mc:Ignorable="d" Title="{lex:Loc ComposeMessage}" Height="500" Width="400">
 	<i:Interaction.Behaviors>
@@ -36,7 +36,7 @@
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 
-			<TextBox materialDesign:HintAssist.Hint="{lex:Loc Recipient}"
+			<TextBox materialDesign:HintAssist.Hint="{lex:Loc Recipient}" x:Name="txtRecipient"
 				 Text="{Binding Recipient, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
 			<materialDesign:PackIcon Kind="Check" Grid.Column="1" Visibility="{Binding CanSend, Converter={StaticResource BoolToVisibleConv}}" />
@@ -53,7 +53,11 @@
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 			<TextBox materialDesign:HintAssist.Hint="{lex:Loc Message}" AcceptsReturn="True"
 					 VerticalAlignment="Top" Margin="5"
-				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+				<i:Interaction.Behaviors>
+					<behaviors:CommandOnReturn Command="{Binding OkCommand}"/>
+				</i:Interaction.Behaviors>
+			</TextBox>
 		</ScrollViewer>
 	</DockPanel>
 </dialogs:DialogWindow>
