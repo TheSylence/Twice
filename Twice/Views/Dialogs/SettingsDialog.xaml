@@ -264,7 +264,10 @@
 																<RowDefinition Height="Auto" />
 															</Grid.RowDefinitions>
 
-															<TextBlock Text="{lex:Loc NoFurtherSettingsForThisNotificationType}" TextWrapping="Wrap" />
+															<StackPanel Orientation="Horizontal">
+																<RadioButton Content="{lex:Loc Top}" Margin="5" IsChecked="{Binding Top, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+																<RadioButton Content="{lex:Loc Bottom}" Margin="5" IsChecked="{Binding Top, Converter={StaticResource InvertBoolConv}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+															</StackPanel>
 
 															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
 																	Grid.Row="1" HorizontalAlignment="Right" Margin="5">

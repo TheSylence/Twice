@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using GalaSoft.MvvmLight;
+using MahApps.Metro.Controls;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Flyouts
 {
 	internal class NotificationViewModel : ObservableObject
 	{
-		public NotificationViewModel( ColumnItem item )
+		public NotificationViewModel( ColumnItem item, bool top )
 		{
 			Type = NotificationType.Information;
 
@@ -21,6 +22,10 @@ namespace Twice.ViewModels.Flyouts
 			{
 				SetText( message.Model.Text );
 			}
+
+			FlyoutPosition = top
+				? Position.Top
+				: Position.Bottom;
 		}
 
 		public NotificationViewModel( string message, NotificationType type )
@@ -32,6 +37,21 @@ namespace Twice.ViewModels.Flyouts
 		private void SetText( string text )
 		{
 			Text = text;
+		}
+
+		public Position FlyoutPosition
+		{
+			[DebuggerStepThrough] get { return _FlyoutPosition; }
+			set
+			{
+				if( _FlyoutPosition == value )
+				{
+					return;
+				}
+
+				_FlyoutPosition = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		public string Text
@@ -64,8 +84,13 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private Position _FlyoutPosition;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private NotificationType _Type;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Text;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private NotificationType _Type;
 	}
 }

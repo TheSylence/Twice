@@ -172,6 +172,8 @@ namespace Twice.Converters
 			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
 			link.TextDecorations = null;
 			link.ContextMenu = CreateHashtagContextMenu( entity );
+			link.CommandParameter = Constants.Twitter.HashTag + entity.Tag;
+			link.Command = GlobalCommands.StartSearchCommand;
 
 			return link;
 		}

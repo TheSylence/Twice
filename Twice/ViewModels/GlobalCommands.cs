@@ -63,6 +63,11 @@ namespace Twice.ViewModels
 			Process.Start( args.AbsoluteUri );
 		}
 
+		private static async void ExecuteStartSearchCommand( string query )
+		{
+			await ViewServices.OpenSearch( query );
+		}
+
 		private static readonly IKernel Kernel;
 
 		private static RelayCommand<string> _CreateMuteCommand;
@@ -80,6 +85,9 @@ namespace Twice.ViewModels
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private static RelayCommand<Uri> _OpenUrlCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private static RelayCommand<string> _StartSearchCommand;
 
 		public static ICommand CreateMuteCommand
 			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
@@ -102,6 +110,9 @@ namespace Twice.ViewModels
 		/// </summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
 												( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+
+		public static ICommand StartSearchCommand
+			=> _StartSearchCommand ?? ( _StartSearchCommand = new RelayCommand<string>( ExecuteStartSearchCommand ) );
 
 		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
 	}

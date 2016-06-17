@@ -9,7 +9,8 @@
             "Sound notifications are now working",
             "Notification popups can be action center notifications on Windows 10",
             "Added preview button for notifications in settings",
-            "Columns can be locked, i.e. fixed in width and position"
+            "Columns can be locked, i.e. fixed in width and position",
+            "In-App notifications can be displayed at bottom of app"
         ],
         "Changes": [
             "Some visual elements in a status now use the accent color",

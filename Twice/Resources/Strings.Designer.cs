@@ -214,6 +214,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom.
+        /// </summary>
+        public static string Bottom {
+            get {
+                return ResourceManager.GetString("Bottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string Browse {
@@ -1461,6 +1470,15 @@ namespace Twice.Resources {
         public static string ToggleColumnLock {
             get {
                 return ResourceManager.GetString("ToggleColumnLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top.
+        /// </summary>
+        public static string Top {
+            get {
+                return ResourceManager.GetString("Top", resourceCulture);
             }
         }
         

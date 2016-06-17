@@ -119,9 +119,18 @@ namespace Twice.Views.Services
 				: Task.FromResult<string>( null );
 		}
 
-		public async Task OpenSearch()
+		public async Task OpenSearch( string query = null )
 		{
-			await ShowWindow<SearchDialog, ISearchDialogViewModel>();
+			Action<ISearchDialogViewModel> vmSetup = vm =>
+			{
+				if( !string.IsNullOrWhiteSpace( query ) )
+				{
+					vm.SearchQuery = query;
+					vm.SearchCommand.Execute( null );
+				}
+			};
+
+			await ShowWindow<SearchDialog, ISearchDialogViewModel>( vmSetup );
 		}
 
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
@@ -223,10 +232,7 @@ namespace Twice.Views.Services
 
 		public async Task ViewDirectMessage( MessageViewModel msg )
 		{
-			Action<IMessageDetailsViewModel> vmSetup = vm =>
-			{
-				vm.Message = msg;
-			};
+			Action<IMessageDetailsViewModel> vmSetup = vm => { vm.Message = msg; };
 
 			await ShowWindow<MessageDetailsDialog, IMessageDetailsViewModel>( vmSetup );
 		}

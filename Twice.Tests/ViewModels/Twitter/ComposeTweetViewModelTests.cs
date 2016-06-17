@@ -83,7 +83,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			twitterConfig.SetupGet( t => t.MaxImageSize ).Returns( 1 );
 
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error, null ) ).Verifiable();
 
 			var vm = new ComposeTweetViewModel
 			{
@@ -110,7 +110,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			Thread.Sleep( 50 );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error, null ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -172,7 +172,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error, null ) ).Verifiable();
 
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
@@ -206,7 +206,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsTrue( set );
-			notifier.Verify( n => n.DisplayMessage( "exception_message", NotificationType.Error ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( "exception_message", NotificationType.Error, null ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

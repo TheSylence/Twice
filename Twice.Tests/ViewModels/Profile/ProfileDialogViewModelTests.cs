@@ -240,7 +240,7 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ) ).Verifiable();
 
 			var contextList = new Mock<ITwitterContextList>();
 			var context = new Mock<IContextEntry>();
@@ -260,7 +260,7 @@ namespace Twice.Tests.ViewModels.Profile
 			await vm.OnLoad( null );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
@@ -268,7 +268,7 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ) ).Verifiable();
 
 			var user = DummyGenerator.CreateDummyUser();
 			user.UserID = 123;

@@ -654,4 +654,10 @@
   <data name="ToggleColumnLock" xml:space="preserve">
     <value>Spalten sperren/entsprerren</value>
   </data>
+  <data name="Top" xml:space="preserve">
+    <value>Oben</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Unten</value>
+  </data>
 </root>

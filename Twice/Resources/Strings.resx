@@ -654,4 +654,10 @@
   <data name="ToggleColumnLock" xml:space="preserve">
     <value>Toggle columns lock</value>
   </data>
+  <data name="Top" xml:space="preserve">
+    <value>Top</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
 </root>

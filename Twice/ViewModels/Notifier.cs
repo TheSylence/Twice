@@ -6,6 +6,7 @@ using System.Windows.Media;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using NotificationsExtensions;
 using NotificationsExtensions.Toasts;
 using Twice.Messages;
@@ -54,7 +55,7 @@ namespace Twice.ViewModels
 
 		private void NotifyToast( ColumnItem item )
 		{
-			var context = new NotificationViewModel( item );
+			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop );
 			NotifyToast( context );
 		}
 
@@ -71,7 +72,7 @@ namespace Twice.ViewModels
 			} );
 		}
 
-		public void DisplayMessage( string message, NotificationType type )
+		public void DisplayMessage( string message, NotificationType type, bool? positionOverwriteTop )
 		{
 			if( !Config.Notifications.ToastsEnabled )
 			{
@@ -79,6 +80,12 @@ namespace Twice.ViewModels
 			}
 
 			var context = new NotificationViewModel( message, type );
+			if( positionOverwriteTop.HasValue )
+			{
+				context.FlyoutPosition = positionOverwriteTop.Value
+					? Position.Top
+					: Position.Bottom;
+			}
 			NotifyToast( context );
 		}
 
