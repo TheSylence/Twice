@@ -81,6 +81,15 @@
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 					<materialDesign:PackIcon Kind="AccountMultiple" />
 				</Button>
+				
+				<Button Width="36" Height="36" Command="{Binding ToggleColumnsLockCommand}"
+					ToolTip="{lex:Loc ToggleColumnLock}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+					<Grid>
+						<materialDesign:PackIcon Kind="Lock" Visibility="{Binding ColumnsLocked, Converter={StaticResource BoolToVisibleConv}}" />
+						<materialDesign:PackIcon Kind="LockOpenOutline" Visibility="{Binding ColumnsLocked, Converter={StaticResource InvertBoolToVisibleConv}}" />
+					</Grid>
+				</Button>
 
 				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc Settings}" Command="{Binding SettingsCommand}"

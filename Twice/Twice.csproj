@@ -246,6 +246,7 @@
     <Compile Include="Behaviors\ScrollIntoView.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\WindowHelper.cs" />
+    <Compile Include="CentralMessageHandler.cs" />
     <Compile Include="Constants.Auth.cs" />
     <Compile Include="Controls\ColumnHeader.xaml.cs">
       <DependentUpon>ColumnHeader.xaml</DependentUpon>

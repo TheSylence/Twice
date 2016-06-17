@@ -1456,6 +1456,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle columns lock.
+        /// </summary>
+        public static string ToggleColumnLock {
+            get {
+                return ResourceManager.GetString("ToggleColumnLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Translate tweet.
         /// </summary>
         public static string TranslateTweet {

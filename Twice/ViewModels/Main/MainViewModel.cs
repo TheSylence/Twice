@@ -12,10 +12,12 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Ninject;
+using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Utilities;
+using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 using Twice.Views.Services;
 
@@ -54,75 +56,6 @@ namespace Twice.ViewModels.Main
 			};
 			statusUpdateTimer.Tick += StatusUpdateTimer_Tick;
 			statusUpdateTimer.Start();
-		}
-
-		public async Task OnLoad( object data )
-		{
-			if( !HasContexts )
-			{
-				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
-
-				if( await ViewServiceRepository.Confirm( csa ) )
-				{
-					await ViewServiceRepository.ShowAccounts( true );
-				}
-			}
-
-			await CheckCredentials();
-
-			var loadTasks = Columns.Select( c => c.Load() );
-			await Task.WhenAll( loadTasks );
-
-			try
-			{
-				await TwitterConfig.QueryConfig();
-			}
-			catch( Exception ex )
-			{
-				LogTo.WarnException( "Failed to read current config from twitter", ex );
-			}
-
-			if( Configuration?.General?.CheckForUpdates == true )
-			{
-				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
-
-				LogTo.Info( "Searching for app updates..." );
-				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
-
-				try
-				{
-					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
-					{
-						var release = await mgr.UpdateApp();
-
-						Version newVersion = release?.Version?.Version;
-
-						if( newVersion == null )
-						{
-							LogTo.Warn( "UpdateApp returned null" );
-						}
-						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
-						{
-							LogTo.Info( $"Updated app to {release.Version}" );
-							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
-						}
-						else
-						{
-							LogTo.Info( "App is up to date" );
-						}
-					}
-				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
-				catch( Exception ex )
-				{
-					LogTo.WarnException( "Error during update check", ex );
-				}
-			}
-
-			await QueryRateLimit();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -259,6 +192,12 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
+		private void ExecuteToggleColumnsLockCommand()
+		{
+			ColumnsLocked = !ColumnsLocked;
+			MessengerInstance.Send( new ColumnLockMessage( ColumnsLocked ) );
+		}
+
 		private async Task QueryRateLimit()
 		{
 			foreach( var context in ContextList.Contexts )
@@ -287,6 +226,78 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
+		public async Task OnLoad( object data )
+		{
+			if( !HasContexts )
+			{
+				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
+
+				if( await ViewServiceRepository.Confirm( csa ) )
+				{
+					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+
+			await CheckCredentials();
+			
+			await Task.WhenAll( Columns.Select( c => c.Load() ) );
+
+			// It's late and I didn't have enough coffee...
+			ColumnsLocked = !Configuration.General.ColumnsLocked;
+			await Dispatcher.RunAsync( ExecuteToggleColumnsLockCommand );
+
+			try
+			{
+				await TwitterConfig.QueryConfig();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to read current config from twitter", ex );
+			}
+
+			if( Configuration?.General?.CheckForUpdates == true )
+			{
+				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
+
+				LogTo.Info( "Searching for app updates..." );
+				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
+
+				try
+				{
+					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
+					{
+						var release = await mgr.UpdateApp();
+
+						Version newVersion = release?.Version?.Version;
+
+						if( newVersion == null )
+						{
+							LogTo.Warn( "UpdateApp returned null" );
+						}
+						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							LogTo.Info( $"Updated app to {release.Version}" );
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
+						}
+						else
+						{
+							LogTo.Info( "App is up to date" );
+						}
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( "Error during update check", ex );
+				}
+			}
+
+			await QueryRateLimit();
+		}
+
 		public ICommand AccountsCommand
 			=> _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
 
@@ -297,6 +308,21 @@ namespace Twice.ViewModels.Main
 
 		public ICollection<IColumnViewModel> Columns { get; }
 
+		public bool ColumnsLocked
+		{
+			[DebuggerStepThrough] get { return _ColumnsLocked; }
+			set
+			{
+				if( _ColumnsLocked == value )
+				{
+					return;
+				}
+
+				_ColumnsLocked = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public IDragDropHandler DragDropHandler { get; }
 
 		public bool HasContexts => ContextList.Contexts.Any();
@@ -304,7 +330,9 @@ namespace Twice.ViewModels.Main
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 
 		public ICommand NewMessageCommand
-			=> _NewMessageCommand ?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
+			=>
+				_NewMessageCommand
+				?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
 
 		public ICommand NewTweetCommand
 			=> _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
@@ -315,6 +343,12 @@ namespace Twice.ViewModels.Main
 		public ICommand SettingsCommand
 			=> _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 
+		public ICommand ToggleColumnsLockCommand
+			=> _ToggleColumnsLockCommand ?? ( _ToggleColumnsLockCommand = new RelayCommand( ExecuteToggleColumnsLockCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
 		[Inject]
 		public IAppUpdaterFactory UpdateFactory { private get; set; }
 
@@ -324,18 +358,30 @@ namespace Twice.ViewModels.Main
 
 		private readonly INotifier Notifier;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AccountsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _ColumnsLocked;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _InfoCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewMessageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ManageColumnsCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _NewTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewMessageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _NewTweetCommand;
 
 		private RelayCommand _SearchCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SettingsCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SettingsCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ToggleColumnsLockCommand;
 	}
 }

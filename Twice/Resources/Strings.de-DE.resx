@@ -651,4 +651,7 @@
   <data name="ConfirmDeleteStatus" xml:space="preserve">
     <value>Soll dieser Tweet wirklich gelöscht werden?</value>
   </data>
+  <data name="ToggleColumnLock" xml:space="preserve">
+    <value>Spalten sperren/entsprerren</value>
+  </data>
 </root>

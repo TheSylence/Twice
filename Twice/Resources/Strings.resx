@@ -651,4 +651,7 @@
   <data name="ConfirmDeleteStatus" xml:space="preserve">
     <value>Do you really want to delete this tweet?</value>
   </data>
+  <data name="ToggleColumnLock" xml:space="preserve">
+    <value>Toggle columns lock</value>
+  </data>
 </root>
