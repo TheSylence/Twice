@@ -91,7 +91,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			context.Setup( c => c.Notifier.DisplayMessage( It.IsAny<string>(), NotificationType.Success, null ) ).Verifiable();
-			context.Setup( c => c.Twitter.Statuses.DeleteTweetAsync( 456 ) ).Returns( Task.FromResult<Status>( null ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.DeleteTweetAsync( 456 ) ).Returns( Task.FromResult<Status>( null ) )
+				.Verifiable();
 
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
@@ -115,6 +116,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Act
 			vm.DeleteStatusCommand.Execute( null );
 			waitHandle.Wait( 1000 );
+			Thread.Sleep( 50 );
 
 			// Assert
 			context.Verify( c => c.Twitter.Statuses.DeleteTweetAsync( 456 ), Times.Once() );
@@ -129,7 +131,8 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.Statuses.RetweetAsync( It.IsAny<ulong>() ) ).Throws( new TwitterQueryException( "Error Message" ) );
+			context.Setup( c => c.Twitter.Statuses.RetweetAsync( It.IsAny<ulong>() ) ).Throws(
+				new TwitterQueryException( "Error Message" ) );
 			context.Setup( c => c.Notifier.DisplayMessage( "Error Message", NotificationType.Error, null ) ).Verifiable();
 
 			var vm = new StatusViewModel( status, context.Object, null, null );
