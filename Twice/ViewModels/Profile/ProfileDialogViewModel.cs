@@ -71,7 +71,6 @@ namespace Twice.ViewModels.Profile
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
-
 				await Task.WhenAll( statuses.Select( s => s.LoadQuotedTweet() ) );
 			}
 			return statuses;

@@ -1,6 +1,7 @@
 using LinqToTwitter;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Twitter.Repositories
 {
@@ -8,11 +9,11 @@ namespace Twice.Models.Twitter.Repositories
 	{
 		Task FollowUser( ulong userId );
 
-		Task<List<User>> LookupUsers( IEnumerable<ulong> userIDs );
+		Task<List<UserEx>> LookupUsers( IEnumerable<ulong> userIDs );
 
-		Task<List<User>> LookupUsers( string userList );
+		Task<List<UserEx>> LookupUsers( string userList );
 
-		Task<User> ShowUser( ulong userId, bool includeEntities );
+		Task<UserEx> ShowUser( ulong userId, bool includeEntities );
 
 		Task UnfollowUser( ulong userId );
 	}

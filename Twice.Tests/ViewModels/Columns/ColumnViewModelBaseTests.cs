@@ -12,6 +12,7 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
 using Twice.ViewModels;
@@ -476,11 +477,11 @@ namespace Twice.Tests.ViewModels.Columns
 		public void ReceivingFriendsStoresThemInCache()
 		{
 			// Arrange
-			var userList = new List<User>
+			var userList = new List<UserEx>
 			{
-				new User {UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
-				new User {UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
-				new User {UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"}
+				new UserEx {UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new UserEx {UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new UserEx {UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"}
 			};
 
 			var twitterContext = new Mock<ITwitterContext>();

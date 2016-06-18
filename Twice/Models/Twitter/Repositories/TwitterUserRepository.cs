@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
+using LitJson;
 using Twice.Models.Cache;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Twitter.Repositories
 {
@@ -22,30 +25,44 @@ namespace Twice.Models.Twitter.Repositories
 			await Context.CreateFriendshipAsync( userId, true );
 		}
 
-		public Task<List<User>> LookupUsers( IEnumerable<ulong> userIds )
+		public Task<List<UserEx>> LookupUsers( IEnumerable<ulong> userIds )
 		{
 			var userList = string.Join( ",", userIds );
 
 			return LookupUsers( userList );
 		}
 
-		public async Task<List<User>> LookupUsers( string userList )
+		public async Task<List<UserEx>> LookupUsers( string userList )
 		{
 			if( string.IsNullOrEmpty( userList ) )
 			{
-				return new List<User>();
+				return new List<UserEx>();
 			}
 
-			var users = await
-				Queryable.Where( s => s.Type == UserType.Lookup && s.UserIdList == userList && s.IncludeEntities == false )
-					.ToListAsync();
+			var idStr = Uri.EscapeDataString( userList );
+			string queryString = $"users/lookup.json?user_id={idStr}&include_entities=true";
+			Raw rawResult;
+			try
+			{
+				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
+				if( rawResult == null )
+				{
+					return new List<UserEx>();
+				}
+			}
+			catch( TwitterQueryException )
+			{
+				return new List<UserEx>();
+			}
+
+			var json = JsonMapper.ToObject( rawResult.Response );
+			List<UserEx> users = json.Select( j => new UserEx( j.Value ) ).ToList();
 
 			await Cache.AddUsers( users.Select( u => new UserCacheEntry( u ) ).ToList() );
 			return users;
 		}
 
-
-		public async Task<User> ShowUser( ulong userId, bool includeEntities )
+		public async Task<UserEx> ShowUser( ulong userId, bool includeEntities )
 		{
 			var cached = await Cache.GetUser( userId );
 			if( cached != null )
@@ -53,9 +70,24 @@ namespace Twice.Models.Twitter.Repositories
 				return cached;
 			}
 
-			var user = await
-				Queryable.Where( s => s.UserID == userId && s.IncludeEntities == includeEntities && s.Type == UserType.Show )
-					.SingleOrDefaultAsync();
+			var idStr = Uri.EscapeDataString( userId.ToString() );
+			string queryString = $"users/show.json?user_id={idStr}&include_entities=true";
+			Raw rawResult;
+			try
+			{
+				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
+				if( rawResult == null )
+				{
+					return null;
+				}
+			}
+			catch( TwitterQueryException )
+			{
+				return null;
+			}
+
+			var json = JsonMapper.ToObject( rawResult.Response );
+			var user = new UserEx( json );
 
 			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
 
@@ -66,7 +98,5 @@ namespace Twice.Models.Twitter.Repositories
 		{
 			await Context.DestroyFriendshipAsync( userId );
 		}
-
-		public TwitterQueryable<User> Queryable => Context.User;
 	}
 }

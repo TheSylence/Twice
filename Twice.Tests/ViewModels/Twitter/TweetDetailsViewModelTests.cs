@@ -5,6 +5,7 @@ using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
@@ -70,7 +71,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.Search.SearchReplies( It.IsAny<Status>() ) ).Returns(
 				Task.FromResult( new List<Status>() ) );
 			context.Setup( c => c.Twitter.Users.LookupUsers( It.IsAny<IEnumerable<ulong>>() ) ).Returns(
-				Task.FromResult( new List<User>() ) );
+				Task.FromResult( new List<UserEx>() ) );
 			context.Setup( c => c.Twitter.Statuses.FindRetweeters( 123, It.IsAny<int>() ) ).Returns(
 				Task.FromResult( new List<ulong>() ) );
 
@@ -102,7 +103,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.Search.SearchReplies( It.IsAny<Status>() ) ).Returns(
 				Task.FromResult( new List<Status>() ) );
 			context.Setup( c => c.Twitter.Users.LookupUsers( It.IsAny<IEnumerable<ulong>>() ) ).Returns(
-				Task.FromResult( new List<User>() ) );
+				Task.FromResult( new List<UserEx>() ) );
 			context.Setup( c => c.Twitter.Statuses.FindRetweeters( 123, It.IsAny<int>() ) ).Returns(
 				Task.FromResult( new List<ulong>() ) ).Verifiable();
 

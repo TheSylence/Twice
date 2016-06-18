@@ -12,7 +12,7 @@
              xmlns:profile="clr-namespace:Twice.ViewModels.Profile"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
+             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" xmlns:vm="clr-namespace:Twice.ViewModels"
              mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Padding="30" Width="1000" Height="700"
 			WindowStartupLocation="CenterOwner" Title="{Binding User.Model.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
@@ -39,7 +39,7 @@
 					<Button Content="{lex:Loc Follow}" Command="{Binding FollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
 					<Button Content="{lex:Loc Unfollow}" Command="{Binding UnfollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />
 					<StackPanel Orientation="Horizontal" Visibility="{Binding Friendship.TargetRelationship.Following, Converter={StaticResource BoolToVisibleConv}}">
-						<TextBlock Text="{lex:Loc FollowsYou}" />
+						<TextBlock Text="{lex:Loc FollowsYou}" Margin="5" />
 					</StackPanel>
 				</StackPanel>
 
@@ -60,7 +60,12 @@
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,5">
 						<materialDesign:PackIcon Kind="Link" Width="12" Height="12" />
-						<TextBlock Text="{Binding User.Model.Url}" Margin="10,0" />
+						<ContentControl Margin="10,0">
+							<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
+									   CommandParameter="{Binding User.Url}">
+								<TextBlock Text="{Binding User.Model.Url}" />
+							</Hyperlink>
+						</ContentControl>
 					</StackPanel>
 				</StackPanel>
 			</Grid>

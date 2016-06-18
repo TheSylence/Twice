@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using LinqToTwitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Tests
 {
@@ -55,7 +56,12 @@ namespace Twice.Tests
 
 		internal static User CreateDummyUser( ulong? userId = null )
 		{
-			return new User
+			return CreateDummyUserEx( userId );
+		}
+
+		internal static UserEx CreateDummyUserEx( ulong? userId = null )
+		{
+			return new UserEx
 			{
 				ProfileImageUrl = "http://example.com/image_normal.png",
 				ProfileImageUrlHttps = "https://example.com/image_normal.png",

@@ -15,6 +15,7 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
 using Twice.Utilities;
@@ -340,7 +341,7 @@ namespace Twice.ViewModels.Columns
 		{
 			var completeList = e.Friends.ToList();
 			LogTo.Info( $"Received {completeList.Count} of user's friends" );
-			var usersToAdd = new List<User>( completeList.Count );
+			var usersToAdd = new List<UserEx>( completeList.Count );
 
 			while( completeList.Any() )
 			{
