@@ -4,11 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
              mc:Ignorable="d"  x:Name="This" d:DesignHeight="300" d:DesignWidth="300">
 	<DockPanel Margin="{Binding Padding, ElementName=This}">
-		<Button MaxWidth="25" MinWidth="25" Margin="5" MaxHeight="25" MinHeight="25" DockPanel.Dock="Right" Click="BrowseButton_OnClick" VerticalAlignment="Center">
-			<materialDesign:PackIcon Kind="DotsHorizontal" />
+		<Button MaxWidth="25" MinWidth="25" Margin="5" MaxHeight="25" MinHeight="25" DockPanel.Dock="Right" Click="BrowseButton_OnClick" 
+				VerticalAlignment="Center" Style="{DynamicResource MaterialDesignRaisedButton}">
+			<materialDesign:PackIcon Kind="DotsHorizontal" VerticalAlignment="Center" HorizontalAlignment="Center" 
+									 Width="24" Height="24" ToolTip="{lex:Loc Browse}" />
 		</Button>
+		
 		<TextBox Text="{Binding Value, ElementName=This, Mode=TwoWay}" VerticalAlignment="Center" />
 	</DockPanel>
 </UserControl>

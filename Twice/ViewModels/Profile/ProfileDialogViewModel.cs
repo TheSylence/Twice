@@ -22,11 +22,13 @@ namespace Twice.ViewModels.Profile
 		{
 			await Context.Twitter.Users.FollowUser( User.UserId );
 
-			if( Friendship?.TargetRelationship?.FollowedBy != null )
+			if( Friendship?.TargetRelationship?.FollowedBy == null )
 			{
-				Friendship.TargetRelationship.FollowedBy = true;
-				RaisePropertyChanged( nameof( Friendship ) );
+				return;
 			}
+
+			Friendship.TargetRelationship.FollowedBy = true;
+			RaisePropertyChanged( nameof( Friendship ) );
 		}
 
 		private async void ExecuteUnfollowUserCommand()

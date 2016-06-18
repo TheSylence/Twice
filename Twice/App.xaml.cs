@@ -73,6 +73,7 @@ namespace Twice
 		{
 			SingleInstance.Stop();
 
+			CentralHandler.Dispose();
 			LogTo.Info( "Application exit" );
 			Kernel?.Dispose();
 
@@ -96,6 +97,8 @@ namespace Twice
 			ConfigureLogging();
 			LogTo.Info( "Application start" );
 			LogEnvironmentInfo();
+
+			CentralHandler = new CentralMessageHandler( Kernel );
 
 			var conf = Kernel.Get<IConfig>();
 			var palette = new PaletteHelper();
@@ -132,24 +135,18 @@ namespace Twice
 			// This is done so DateTime's in XAML are parsed based on the user
 			// language instead of en-US which is the default language for XAML.
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
 				new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private static void LogEnvironmentInfo()
 		{
 			LogTo.Info( $"App version: {Assembly.GetExecutingAssembly().GetName().Version}" );
 
-			string osVersionString;
-			if( OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
-			{
-				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit";
-			}
-			else
-			{
-				osVersionString = $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
-			}
+			string osVersionString = OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64
+				? $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit"
+				: $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
 
 			LogTo.Info( osVersionString );
 			if( !string.IsNullOrEmpty( OsVersionInfo.ServicePack ) )
@@ -195,7 +192,9 @@ namespace Twice
 			LogManager.Configuration = config;
 		}
 
-		public static IKernel Kernel { get; private set; }
 		private static WindowSettings WindowSettings;
+
+		public static IKernel Kernel { get; private set; }
+		private CentralMessageHandler CentralHandler;
 	}
 }

@@ -328,12 +328,9 @@ namespace Twice.Models.Cache
 				cmd.AddParameter( "id", id );
 
 				var json = await cmd.ExecuteScalarAsync() as string;
-				if( json == null )
-				{
-					return null;
-				}
-
-				return JsonConvert.DeserializeObject<Status>( json );
+				return json == null
+					? null
+					: JsonConvert.DeserializeObject<Status>( json );
 			}
 		}
 
@@ -456,12 +453,9 @@ namespace Twice.Models.Cache
 				cmd.CommandText = "SELECT Data FROM TwitterConfig;";
 				var json = await cmd.ExecuteScalarAsync() as string;
 
-				if( string.IsNullOrEmpty( json ) )
-				{
-					return null;
-				}
-
-				return JsonConvert.DeserializeObject<LinqToTwitter.Configuration>( json );
+				return string.IsNullOrEmpty( json )
+					? null
+					: JsonConvert.DeserializeObject<LinqToTwitter.Configuration>( json );
 			}
 		}
 

@@ -9,6 +9,7 @@ namespace Twice.ViewModels.Main
 		ICommand AccountsCommand { get; }
 		ICommand AddColumnCommand { get; }
 		ICollection<IColumnViewModel> Columns { get; }
+		bool ColumnsLocked { get; }
 		IDragDropHandler DragDropHandler { get; }
 		bool HasContexts { get; }
 		ICommand InfoCommand { get; }
@@ -16,5 +17,6 @@ namespace Twice.ViewModels.Main
 		ICommand NewTweetCommand { get; }
 		ICommand SearchCommand { get; }
 		ICommand SettingsCommand { get; }
+		ICommand ToggleColumnsLockCommand { get; }
 	}
 }

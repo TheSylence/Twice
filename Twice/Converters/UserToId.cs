@@ -12,12 +12,7 @@ namespace Twice.Converters
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			User user = value as User;
-			if( user == null )
-			{
-				return DependencyProperty.UnsetValue;
-			}
-
-			return user.GetUserId();
+			return user?.GetUserId() ?? DependencyProperty.UnsetValue;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )

@@ -82,8 +82,8 @@
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.617, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.0.0-ci617\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.0.0.620, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.0.0-ci620\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -204,6 +204,7 @@
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
+    <Compile Include="ViewModels\Twitter\ColumnItemTests.cs" />
     <Compile Include="ViewModels\Twitter\ComposeMessageViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModelTests.cs" />

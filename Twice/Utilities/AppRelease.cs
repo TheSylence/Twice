@@ -8,7 +8,7 @@ namespace Twice.Utilities
 	/// </summary>
 	internal class AppRelease
 	{
-		public AppRelease( ReleaseEntry entry )
+		public AppRelease( IReleaseEntry entry )
 		{
 			Version = entry.Version;
 		}

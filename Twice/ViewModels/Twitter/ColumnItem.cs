@@ -7,6 +7,11 @@ namespace Twice.ViewModels.Twitter
 {
 	internal abstract class ColumnItem : ObservableObject
 	{
+		public void UpdateRelativeTime()
+		{
+			RaisePropertyChanged( nameof( CreatedAt ) );
+		}
+
 		public abstract DateTime CreatedAt { get; }
 		public abstract Entities Entities { get; }
 		public abstract ulong Id { get; }

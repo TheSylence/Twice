@@ -56,7 +56,7 @@ namespace Twice.Models.Twitter
 				sb.AppendLine();
 
 				sb.AppendLine( "--- RATE LIMITS START ---" );
-				foreach( var category in response?.RateLimits )
+				foreach( var category in response.RateLimits )
 				{
 					var limits = category.Value.Where( l => l.Limit != l.Remaining ).ToArray();
 					if( !limits.Any() )

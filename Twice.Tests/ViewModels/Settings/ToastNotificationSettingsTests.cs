@@ -21,7 +21,7 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
 			// Act
-			var vm = new ToastNotificationSettings( cfg.Object );
+			var vm = new ToastNotificationSettings( cfg.Object, null );
 
 			// Assert
 			Assert.AreEqual( notify.ToastsEnabled, vm.Enabled );
@@ -38,7 +38,7 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notify );
 
-			var vm = new ToastNotificationSettings( cfg.Object )
+			var vm = new ToastNotificationSettings( cfg.Object, null )
 			{
 				Enabled = false
 			};

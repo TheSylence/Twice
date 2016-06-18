@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using GongSolutions.Wpf.DragDrop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
+using GongSolutions.Wpf.DragDrop;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.ViewModels.Columns;
@@ -19,6 +19,12 @@ namespace Twice.ViewModels.Main
 			ColumnList = columnList;
 
 			messenger.Register<DragMessage>( this, OnDragMessage );
+			messenger.Register<ColumnLockMessage>( this, OnColumnLock );
+		}
+
+		private void OnColumnLock( ColumnLockMessage msg )
+		{
+			IsLocked = msg.Locked;
 		}
 
 		private void OnDragMessage( DragMessage msg )
@@ -28,7 +34,7 @@ namespace Twice.ViewModels.Main
 
 		bool IDragSource.CanStartDrag( IDragInfo dragInfo )
 		{
-			return !ResizeInProgress && DragDrop.DefaultDragHandler.CanStartDrag( dragInfo );
+			return !IsLocked && !ResizeInProgress && DragDrop.DefaultDragHandler.CanStartDrag( dragInfo );
 		}
 
 		void IDragSource.DragCancelled()
@@ -71,6 +77,7 @@ namespace Twice.ViewModels.Main
 		}
 
 		private readonly IColumnDefinitionList ColumnList;
+		private bool IsLocked;
 		private bool ResizeInProgress;
 	}
 }

@@ -24,7 +24,7 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
 
-			var vm = new NotificationSettings( cfg.Object );
+			var vm = new NotificationSettings( cfg.Object, null );
 
 			// Act
 			vm.AvailableNotifications.First().Enabled = false;
@@ -48,7 +48,7 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
 
-			var vm = new NotificationSettings( cfg.Object );
+			var vm = new NotificationSettings( cfg.Object, null );
 
 			// Act
 			vm.AvailableNotifications.First().Enabled = true;
@@ -73,7 +73,7 @@ namespace Twice.Tests.ViewModels.Settings
 			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
 
 			// Act
-			var vm = new NotificationSettings( cfg.Object );
+			var vm = new NotificationSettings( cfg.Object, null );
 
 			// Assert
 			var toast = vm.EnabledNotifications.OfType<ToastNotificationSettings>().SingleOrDefault();
@@ -100,7 +100,7 @@ namespace Twice.Tests.ViewModels.Settings
 			var cfg = new Mock<IConfig>();
 			cfg.SetupGet( c => c.Notifications ).Returns( notifi );
 
-			var vm = new NotificationSettings( cfg.Object );
+			var vm = new NotificationSettings( cfg.Object, null );
 
 			// Act
 			vm.AvailableNotifications.First( n => n.Enabled ).Enabled = false;

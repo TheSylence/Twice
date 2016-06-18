@@ -7,7 +7,7 @@ using System.Windows.Interactivity;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Executes a command when the Return or Enter-Key was pressed in a TextBox
+	///     Executes a command when the Return or Enter-Key was pressed in a TextBox
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CommandOnReturn : Behavior<TextBox>
@@ -41,7 +41,7 @@ namespace Twice.Behaviors
 			DependencyProperty.Register( "Command", typeof(ICommand), typeof(CommandOnReturn), new PropertyMetadata( null ) );
 
 		/// <summary>
-		/// The command to execute
+		///     The command to execute
 		/// </summary>
 		public ICommand Command
 		{
@@ -50,11 +50,11 @@ namespace Twice.Behaviors
 		}
 
 		/// <summary>
-		/// Parameter that will be passed to the command
+		///     Parameter that will be passed to the command
 		/// </summary>
 		public object CommandParameter
 		{
-			get { return (object)GetValue( CommandParameterProperty ); }
+			get { return GetValue( CommandParameterProperty ); }
 			set { SetValue( CommandParameterProperty, value ); }
 		}
 	}

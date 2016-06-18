@@ -40,12 +40,9 @@ namespace Twice.Models.Twitter
 				return status.Entities.UserMentionEntities.Any( m => comp.Compare( m.ScreenName, value ) == 0 );
 
 			default:
-				if( !entry.CaseSensitive )
-				{
-					return status.Text.ToLower().Contains( value.ToLower() );
-				}
-
-				return status.Text.Contains( value );
+				return !entry.CaseSensitive
+					? status.Text.ToLower().Contains( value.ToLower() )
+					: status.Text.Contains( value );
 			}
 		}
 

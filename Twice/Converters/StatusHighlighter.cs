@@ -155,12 +155,9 @@ namespace Twice.Converters
 			}
 
 			var urlEntity = entity as UrlEntity;
-			if( urlEntity != null )
-			{
-				return urlEntity.Url;
-			}
-
-			return string.Empty;
+			return urlEntity != null
+				? urlEntity.Url
+				: string.Empty;
 		}
 
 		/// <summary>
@@ -175,6 +172,8 @@ namespace Twice.Converters
 			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
 			link.TextDecorations = null;
 			link.ContextMenu = CreateHashtagContextMenu( entity );
+			link.CommandParameter = Constants.Twitter.HashTag + entity.Tag;
+			link.Command = GlobalCommands.StartSearchCommand;
 
 			return link;
 		}

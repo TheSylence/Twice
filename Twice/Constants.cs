@@ -5,7 +5,7 @@ using System.IO;
 namespace Twice
 {
 	/// <summary>
-	///     Class containing constants that are used throughout the application.
+	/// Class containing constants that are used throughout the application.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static partial class Constants
@@ -13,7 +13,7 @@ namespace Twice
 		public static class Gui
 		{
 			/// <summary>
-			///     Number of user pictures for retweets to display in the detail dialog
+			/// Number of user pictures for retweets to display in the detail dialog
 			/// </summary>
 			internal const int MaxRetweets = 10;
 		}
@@ -43,6 +43,7 @@ namespace Twice
 			internal static readonly string ColumnDefintionFileName = P( "columns.json" );
 			internal static readonly string ConfigFileName = P( "config.json" );
 			internal static readonly string WindowSettingsFileName = P( "window.json" );
+			internal static readonly string DefaultNotificationSoundFile = P( "HumanBird.wav" );
 
 			internal static string AppDataFolder
 			{
@@ -61,22 +62,22 @@ namespace Twice
 		}
 
 		/// <summary>
-		///     Constants associated with twitter.
+		/// Constants associated with twitter.
 		/// </summary>
 		public static class Twitter
 		{
 			/// <summary>
-			///     Prefix for a hashtag.
+			/// Prefix for a hashtag.
 			/// </summary>
 			internal const string HashTag = "#";
 
 			/// <summary>
-			///     Maximum characters allowed in a tweet.
+			/// Maximum characters allowed in a tweet.
 			/// </summary>
 			internal const int MaxTweetLength = 140;
 
 			/// <summary>
-			///     Prefix for a user mention.
+			/// Prefix for a user mention.
 			/// </summary>
 			internal const string Mention = "@";
 
@@ -96,5 +97,21 @@ namespace Twice
 				public const int StatusDuplicate = 187;
 			}
 		}
+
+		// Debug constant to keep #if out of other files because of CodeMaid problems
+		// with preprocessor directives
+		internal static bool Debug
+		{
+			get
+			{
+#if DEBUG
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
+		internal const string ApplicationId = "com.squirrel.twice.Twice";
 	}
 }

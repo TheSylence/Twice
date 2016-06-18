@@ -309,8 +309,8 @@
   <data name="PopupNotification" xml:space="preserve">
     <value>Benachrichtigungspopup</value>
   </data>
-  <data name="ToastNotification" xml:space="preserve">
-    <value>Toastbenachrichtigungen</value>
+  <data name="InAppNotification" xml:space="preserve">
+    <value>Benachrichtigungen in der App</value>
   </data>
   <data name="NoFurtherSettingsForThisNotificationType" xml:space="preserve">
     <value>Für diese Benachrichtigungen gibt es keine weiteren Einstellungen</value>
@@ -632,5 +632,32 @@
   </data>
   <data name="Message" xml:space="preserve">
     <value>Nachricht</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="LeaveEmptyForDefaultSound" xml:space="preserve">
+    <value>Leer lassen um den Standardton zu verwenden</value>
+  </data>
+  <data name="Windows10ActionCenterNotification" xml:space="preserve">
+    <value>Windows 10 Info-Center-Benachrichtigungen</value>
+  </data>
+  <data name="TestNotification" xml:space="preserve">
+    <value>Das ist eine Testbenachrichtigung</value>
+  </data>
+  <data name="ConfirmDeleteStatus" xml:space="preserve">
+    <value>Soll dieser Tweet wirklich gelöscht werden?</value>
+  </data>
+  <data name="ToggleColumnLock" xml:space="preserve">
+    <value>Spalten sperren/entsprerren</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Oben</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Unten</value>
   </data>
 </root>

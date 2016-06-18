@@ -214,6 +214,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom.
+        /// </summary>
+        public static string Bottom {
+            get {
+                return ResourceManager.GetString("Bottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bugfix.
         /// </summary>
         public static string Bugfix {
@@ -363,6 +381,15 @@ namespace Twice.Resources {
         public static string ConfirmDeleteFilter {
             get {
                 return ResourceManager.GetString("ConfirmDeleteFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this tweet?.
+        /// </summary>
+        public static string ConfirmDeleteStatus {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteStatus", resourceCulture);
             }
         }
         
@@ -763,6 +790,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In-App notifications.
+        /// </summary>
+        public static string InAppNotification {
+            get {
+                return ResourceManager.GetString("InAppNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include pre-releases.
         /// </summary>
         public static string IncludePrereleases {
@@ -822,6 +858,15 @@ namespace Twice.Resources {
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave empty for default sound.
+        /// </summary>
+        public static string LeaveEmptyForDefaultSound {
+            get {
+                return ResourceManager.GetString("LeaveEmptyForDefaultSound", resourceCulture);
             }
         }
         
@@ -1056,6 +1101,15 @@ namespace Twice.Resources {
         public static string PopupNotification {
             get {
                 return ResourceManager.GetString("PopupNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
             }
         }
         
@@ -1357,6 +1411,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is a test notification.
+        /// </summary>
+        public static string TestNotification {
+            get {
+                return ResourceManager.GetString("TestNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
         public static string Theme {
@@ -1402,11 +1465,20 @@ namespace Twice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notification toasts in app.
+        ///   Looks up a localized string similar to Toggle columns lock.
         /// </summary>
-        public static string ToastNotification {
+        public static string ToggleColumnLock {
             get {
-                return ResourceManager.GetString("ToastNotification", resourceCulture);
+                return ResourceManager.GetString("ToggleColumnLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top.
+        /// </summary>
+        public static string Top {
+            get {
+                return ResourceManager.GetString("Top", resourceCulture);
             }
         }
         
@@ -1596,6 +1668,15 @@ namespace Twice.Resources {
         public static string WhatsHappening {
             get {
                 return ResourceManager.GetString("WhatsHappening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows 10 Action Center notifications.
+        /// </summary>
+        public static string Windows10ActionCenterNotification {
+            get {
+                return ResourceManager.GetString("Windows10ActionCenterNotification", resourceCulture);
             }
         }
         

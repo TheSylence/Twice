@@ -1,7 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {
@@ -97,6 +97,6 @@ namespace Twice.ViewModels.Wizards
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _GotoPrevPageCommand;
 
-		private int CurrentPageKey = 0;
+		private int CurrentPageKey;
 	}
 }

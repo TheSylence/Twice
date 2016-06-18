@@ -81,6 +81,15 @@
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
 					<materialDesign:PackIcon Kind="AccountMultiple" />
 				</Button>
+				
+				<Button Width="36" Height="36" Command="{Binding ToggleColumnsLockCommand}"
+					ToolTip="{lex:Loc ToggleColumnLock}"
+						Style="{StaticResource MaterialDesignToolForegroundButton}">
+					<Grid>
+						<materialDesign:PackIcon Kind="Lock" Visibility="{Binding ColumnsLocked, Converter={StaticResource BoolToVisibleConv}}" />
+						<materialDesign:PackIcon Kind="LockOpenOutline" Visibility="{Binding ColumnsLocked, Converter={StaticResource InvertBoolToVisibleConv}}" />
+					</Grid>
+				</Button>
 
 				<Button Width="36" Height="36"
 					ToolTip="{lex:Loc Settings}" Command="{Binding SettingsCommand}"
@@ -106,6 +115,10 @@
 						<DataTemplate DataType="columns:IColumnViewModel">
 							<Button Width="36" Height="36" ToolTip="{Binding Title}"
 						Style="{StaticResource MaterialDesignToolForegroundButton}">
+								<i:Interaction.Behaviors>
+									<behaviors:ScrollIntoView Item="{Binding}" Control="{Binding ElementName=itColumnList}"/>
+								</i:Interaction.Behaviors>
+
 								<materialDesign:PackIcon Kind="{Binding Icon, Converter={StaticResource IconToVisualConv}}" />
 							</Button>
 						</DataTemplate>
@@ -114,72 +127,77 @@
 			</StackPanel>
 		</DockPanel>
 
-		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Column="1">
-			<ItemsControl ItemsSource="{Binding Columns}"
+		<ItemsControl ItemsSource="{Binding Columns}" Grid.Column="1" x:Name="itColumnList"
 							  dragDrop:DragDrop.IsDragSource="True"
 							  dragDrop:DragDrop.IsDropTarget="True"
 							  dragDrop:DragDrop.DragSourceIgnore="False"
 							  dragDrop:DragDrop.DragHandler="{Binding DragDropHandler}"
 							  dragDrop:DragDrop.DropHandler="{Binding DragDropHandler}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal" />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="columns:IColumnViewModel">
-						<Grid Margin="0,0,5,0">
-							<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
-								<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
-									<i:Interaction.Behaviors>
-										<behaviors:ColumnHeaderHandler ActionDispatcher="{Binding ActionDispatcher}" />
-									</i:Interaction.Behaviors>
-								</controls1:ColumnHeader>
+			<ItemsControl.Template>
+				<ControlTemplate>
+					<ScrollViewer Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+						<ItemsPresenter />
+					</ScrollViewer>
+				</ControlTemplate>
+			</ItemsControl.Template>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel Orientation="Horizontal" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="columns:IColumnViewModel">
+					<Grid Margin="0,0,5,0">
+						<DockPanel HorizontalAlignment="Left" Width="{Binding Width}">
+							<controls1:ColumnHeader DataContext="{Binding}" DockPanel.Dock="Top">
+								<i:Interaction.Behaviors>
+									<behaviors:ColumnHeaderHandler ActionDispatcher="{Binding ActionDispatcher}" />
+								</i:Interaction.Behaviors>
+							</controls1:ColumnHeader>
 
-								<views:StatusContainer>
-									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
+							<views:StatusContainer>
+								<ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
 											  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True"
 											  VirtualizingStackPanel.IsVirtualizing="True"
 											  VirtualizingStackPanel.ScrollUnit="Pixel"
 											  VirtualizingStackPanel.VirtualizationMode="Recycling">
-										<ItemsControl.ItemTemplateSelector>
-											<views:GenericTemplateSelector>
-												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}"/>
-												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
-											</views:GenericTemplateSelector>
-										</ItemsControl.ItemTemplateSelector>
-										<ItemsControl.ItemsPanel>
-											<ItemsPanelTemplate>
-												<VirtualizingStackPanel />
-											</ItemsPanelTemplate>
-										</ItemsControl.ItemsPanel>
-										<ItemsControl.Template>
-											<ControlTemplate>
-												<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+									<ItemsControl.ItemTemplateSelector>
+										<views:GenericTemplateSelector>
+											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
+										</views:GenericTemplateSelector>
+									</ItemsControl.ItemTemplateSelector>
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<VirtualizingStackPanel />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.Template>
+										<ControlTemplate>
+											<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
 													Padding="{TemplateBinding Control.Padding}"
 													BorderBrush="{TemplateBinding Border.BorderBrush}"
 													Background="{TemplateBinding Panel.Background}"
 													SnapsToDevicePixels="True">
-													<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
+												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
 														  VerticalScrollBarVisibility="Auto" Focusable="False">
-														<i:Interaction.Behaviors>
-															<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
-														</i:Interaction.Behaviors>
+													<i:Interaction.Behaviors>
+														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+													</i:Interaction.Behaviors>
 
-														<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-													</ScrollViewer>
-												</Border>
-											</ControlTemplate>
-										</ItemsControl.Template>
-									</ItemsControl>
-								</views:StatusContainer>
-							</DockPanel>
+													<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+												</ScrollViewer>
+											</Border>
+										</ControlTemplate>
+									</ItemsControl.Template>
+								</ItemsControl>
+							</views:StatusContainer>
+						</DockPanel>
 
-							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
-						</Grid>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
+						<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 	</Grid>
-</controls:MetroWindow> 
+</controls:MetroWindow>  

@@ -51,7 +51,15 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) )
@@ -126,7 +134,13 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var column = new Mock<IColumnViewModel>();
 			column.Setup( c => c.Load() ).Returns( Task.CompletedTask ).Verifiable();
@@ -155,7 +169,13 @@ namespace Twice.Tests.ViewModels.Main
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 
-			var vm = new MainViewModel( contextList.Object, null, columnList.Object, columnFactory.Object );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var vm = new MainViewModel( contextList.Object, null, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			// Act
 			await vm.OnLoad( null );
@@ -197,17 +217,19 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( generalCfg );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var updaterFactory = new Mock<IAppUpdaterFactory>();
 			updaterFactory.Setup( f => f.Construct( It.IsAny<bool>() ) ).Throws( new Exception( "Update.exe not found" ) );
 
 			vm.UpdateFactory = updaterFactory.Object;
-
-			var generalCfg = new GeneralConfig {CheckForUpdates = true};
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( generalCfg );
-			vm.Configuration = config.Object;
 
 			// Act
 			var ex = await ExceptionAssert.CatchAsync<Exception>( () => vm.OnLoad( null ) );
@@ -275,7 +297,13 @@ namespace Twice.Tests.ViewModels.Main
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
 
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.ShowSettings() ).Returns( Task.CompletedTask );
@@ -299,7 +327,14 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var generalCfg = new GeneralConfig();
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( generalCfg );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var updater = new Mock<IAppUpdater>();
 			var updaterFactory = new Mock<IAppUpdaterFactory>( MockBehavior.Strict );
@@ -307,11 +342,6 @@ namespace Twice.Tests.ViewModels.Main
 			updaterFactory.Setup( f => f.Construct( false ) ).Returns( Task.FromResult( updater.Object ) );
 
 			vm.UpdateFactory = updaterFactory.Object;
-
-			var generalCfg = new GeneralConfig();
-
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( generalCfg );
 			vm.Configuration = config.Object;
 
 			// Act
@@ -340,7 +370,13 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) )
@@ -364,10 +400,18 @@ namespace Twice.Tests.ViewModels.Main
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information, null ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( generalCfg );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
+			{
+				Configuration = config.Object,
+				Dispatcher = new SyncDispatcher()
+			};
 
 			var version = new SemanticVersion( 999, 9, 9, 9 );
 			var updater = new Mock<IAppUpdater>();
@@ -377,17 +421,13 @@ namespace Twice.Tests.ViewModels.Main
 			updaterFactory.Setup( f => f.Construct( It.IsAny<bool>() ) ).Returns( Task.FromResult( updater.Object ) );
 			vm.UpdateFactory = updaterFactory.Object;
 
-			var generalCfg = new GeneralConfig {CheckForUpdates = true};
-
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( generalCfg );
 			vm.Configuration = config.Object;
 
 			// Act
 			await vm.OnLoad( null );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information, null ), Times.Once() );
 		}
 	}
 }

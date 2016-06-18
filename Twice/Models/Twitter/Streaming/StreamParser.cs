@@ -1,16 +1,16 @@
-﻿using Anotar.NLog;
-using LinqToTwitter;
-using LitJson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using LinqToTwitter;
+using LitJson;
 
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
 	///     Parser for twitter streams.
 	/// </summary>
-	internal class StreamParser : IDisposable, IStreamParser
+	internal class StreamParser : IStreamParser
 	{
 		/// <summary>
 		///     Initializes a new instance of the <see cref="StreamParser" /> class.
@@ -39,7 +39,7 @@ namespace Twice.Models.Twitter.Streaming
 		///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
 		///     unmanaged resources.
 		/// </param>
-		protected void Dispose( bool disposing )
+		private void Dispose( bool disposing )
 		{
 			if( disposing )
 			{
@@ -165,16 +165,6 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///     Performs application-defined tasks associated with freeing, releasing, or resetting
-		///     unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		/// <summary>
 		///     Occurs when a status was deleted.
 		/// </summary>
 		public event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
@@ -213,6 +203,16 @@ namespace Twice.Models.Twitter.Streaming
 		///     Occurs when an event was received.
 		/// </summary>
 		public event EventHandler<EventStreamEventArgs> UnknownEventReceived;
+
+		/// <summary>
+		///     Performs application-defined tasks associated with freeing, releasing, or resetting
+		///     unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
 
 		public void StartStreaming()
 		{

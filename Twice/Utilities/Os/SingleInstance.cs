@@ -24,6 +24,10 @@ namespace Twice.Utilities.Os
 		public static bool Start()
 		{
 			string mutextName = $"Twice.{AssemblyGuid}".Replace( "-", "" );
+			if( Constants.Debug )
+			{
+				mutextName += ".DEBUG";
+			}
 
 			bool onlyInstance;
 			AppMutex = new Mutex( true, mutextName, out onlyInstance );
@@ -40,7 +44,9 @@ namespace Twice.Utilities.Os
 			}
 		}
 
+		// ReSharper disable once InconsistentNaming
 		internal static readonly int WM_SHOWFIRSTINSTANCE;
+
 		private static Mutex AppMutex;
 		private static bool ReleaseMutex;
 
@@ -50,12 +56,9 @@ namespace Twice.Utilities.Os
 			{
 				IEnumerable<GuidAttribute> attributes =
 					Assembly.GetExecutingAssembly().GetCustomAttributes<GuidAttribute>().ToArray();
-				if( !attributes.Any() )
-				{
-					return string.Empty;
-				}
-
-				return attributes.First().Value;
+				return !attributes.Any()
+					? string.Empty
+					: attributes.First().Value;
 			}
 		}
 	}

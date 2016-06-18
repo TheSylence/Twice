@@ -10,7 +10,7 @@
              xmlns:views="clr-namespace:Twice.Views"
              xmlns:flyouts="clr-namespace:Twice.ViewModels.Flyouts"
              d:DataContext="{d:DesignInstance flyouts:NotificationViewModel}"
-             mc:Ignorable="d" Position="Top" TitleVisibility="Collapsed" Theme="Accent"
+             mc:Ignorable="d" Position="{Binding FlyoutPosition}" TitleVisibility="Collapsed" Theme="Accent"
              d:DesignHeight="300" d:DesignWidth="300" Height="50">
 	<i:Interaction.Behaviors>
 		<behaviors:FlyoutControl Name="{x:Static views:FlyoutNames.NotificationBar}" />

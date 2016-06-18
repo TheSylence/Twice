@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Ninject;
+using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Utilities;
+using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 using Twice.Views.Services;
 
@@ -47,6 +50,13 @@ namespace Twice.ViewModels.Main
 			};
 			rateLimitTimer.Tick += RateLimitTimer_Tick;
 			rateLimitTimer.Start();
+
+			var statusUpdateTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromSeconds( 10 )
+			};
+			statusUpdateTimer.Tick += StatusUpdateTimer_Tick;
+			statusUpdateTimer.Start();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -54,12 +64,12 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
-		private bool CanExecuteNewTweetCommand()
+		private bool CanExecuteNewMessageCommand()
 		{
 			return HasContexts;
 		}
 
-		private bool CanExecuteNewMessageCommand()
+		private bool CanExecuteNewTweetCommand()
 		{
 			return HasContexts;
 		}
@@ -183,6 +193,12 @@ namespace Twice.ViewModels.Main
 			await ViewServiceRepository.ShowSettings();
 		}
 
+		private void ExecuteToggleColumnsLockCommand()
+		{
+			ColumnsLocked = !ColumnsLocked;
+			MessengerInstance.Send( new ColumnLockMessage( ColumnsLocked ) );
+		}
+
 		private async Task QueryRateLimit()
 		{
 			foreach( var context in ContextList.Contexts )
@@ -203,6 +219,15 @@ namespace Twice.ViewModels.Main
 			await QueryRateLimit();
 		}
 
+		private void StatusUpdateTimer_Tick( object sender, EventArgs e )
+		{
+			foreach( var col in Columns )
+			{
+				col.UpdateRelativeTimes();
+			}
+		}
+
+		[SuppressMessage( "ReSharper", "NotAccessedVariable" )]
 		public async Task OnLoad( object data )
 		{
 			if( !HasContexts )
@@ -215,10 +240,13 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			await CheckCredentials();
+			var dontWait = CheckCredentials();
 
-			var loadTasks = Columns.Select( c => c.Load() );
-			await Task.WhenAll( loadTasks );
+			await Task.WhenAll( Columns.Select( c => c.Load() ) );
+
+			// It's late and I didn't have enough coffee...
+			ColumnsLocked = !Configuration.General.ColumnsLocked;
+			await Dispatcher.RunAsync( ExecuteToggleColumnsLockCommand );
 
 			try
 			{
@@ -269,7 +297,7 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			await QueryRateLimit();
+			dontWait = QueryRateLimit();
 		}
 
 		public ICommand AccountsCommand
@@ -282,6 +310,21 @@ namespace Twice.ViewModels.Main
 
 		public ICollection<IColumnViewModel> Columns { get; }
 
+		public bool ColumnsLocked
+		{
+			[DebuggerStepThrough] get { return _ColumnsLocked; }
+			set
+			{
+				if( _ColumnsLocked == value )
+				{
+					return;
+				}
+
+				_ColumnsLocked = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public IDragDropHandler DragDropHandler { get; }
 
 		public bool HasContexts => ContextList.Contexts.Any();
@@ -289,7 +332,9 @@ namespace Twice.ViewModels.Main
 		public ICommand InfoCommand => _InfoCommand ?? ( _InfoCommand = new RelayCommand( ExecuteInfoCommand ) );
 
 		public ICommand NewMessageCommand
-			=> _NewMessageCommand ?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
+			=>
+				_NewMessageCommand
+				?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
 
 		public ICommand NewTweetCommand
 			=> _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
@@ -299,6 +344,12 @@ namespace Twice.ViewModels.Main
 
 		public ICommand SettingsCommand
 			=> _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
+
+		public ICommand ToggleColumnsLockCommand
+			=> _ToggleColumnsLockCommand ?? ( _ToggleColumnsLockCommand = new RelayCommand( ExecuteToggleColumnsLockCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		[Inject]
 		public IAppUpdaterFactory UpdateFactory { private get; set; }
@@ -311,6 +362,9 @@ namespace Twice.ViewModels.Main
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _AccountsCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _ColumnsLocked;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _InfoCommand;
@@ -328,5 +382,8 @@ namespace Twice.ViewModels.Main
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _SettingsCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ToggleColumnsLockCommand;
 	}
 }

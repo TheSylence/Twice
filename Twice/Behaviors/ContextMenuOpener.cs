@@ -15,10 +15,13 @@ namespace Twice.Behaviors
 
 		private void AssociatedObject_Click( object sender, RoutedEventArgs e )
 		{
-			if( Element?.ContextMenu != null )
+			if( Element?.ContextMenu == null )
 			{
-				Element.ContextMenu.IsOpen = true;
+				return;
 			}
+
+			Element.ContextMenu.IsOpen = true;
+			Element.ContextMenu.DataContext = Element.DataContext;
 		}
 
 		public static readonly DependencyProperty ElementProperty =

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
-using Twice.Models.Twitter;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Dialogs
@@ -13,11 +12,10 @@ namespace Twice.ViewModels.Dialogs
 	[ConfigureAwait( false )]
 	internal class SearchDialogViewModel : DialogViewModel, ISearchDialogViewModel
 	{
-		public SearchDialogViewModel(  )
+		public SearchDialogViewModel()
 		{
 			SearchResults = new ObservableCollection<object>();
 		}
-		
 
 		private bool CanExecuteSearchCommand()
 		{
@@ -30,19 +28,25 @@ namespace Twice.ViewModels.Dialogs
 			var context = ContextList.Contexts.First();
 			SearchResults.Clear();
 
-			if( Mode == SearchMode.Users )
+			switch( Mode )
 			{
-				var result = await context.Twitter.Search.SearchUsers( SearchQuery );
-				var users = result.Select( u => new UserViewModel( u ) );
+				case SearchMode.Users:
+				{
+					var result = await context.Twitter.Search.SearchUsers( SearchQuery );
+					var users = result.Select( u => new UserViewModel( u ) );
 
-				await Dispatcher.RunAsync( () => SearchResults.AddRange( users ) );
-			}
-			else if( Mode == SearchMode.Statuses )
-			{
-				var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
-				var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) );
+					await Dispatcher.RunAsync( () => SearchResults.AddRange( users ) );
+				}
+				break;
 
-				await Dispatcher.RunAsync( () => SearchResults.AddRange( statuses ) );
+				case SearchMode.Statuses:
+				{
+					var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
+					var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) );
+
+					await Dispatcher.RunAsync( () => SearchResults.AddRange( statuses ) );
+				}
+				break;
 			}
 
 			IsSearching = false;
@@ -99,12 +103,15 @@ namespace Twice.ViewModels.Dialogs
 
 		public ICollection<object> SearchResults { get; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSearching;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSearching;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private SearchMode _Mode;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private SearchMode _Mode;
 
 		private RelayCommand _SearchCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SearchQuery;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _SearchQuery;
 	}
 }

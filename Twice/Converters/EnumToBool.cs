@@ -35,12 +35,9 @@ namespace Twice.Converters
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			string parameterString = parameter as string;
-			if( parameterString == null )
-			{
-				return DependencyProperty.UnsetValue;
-			}
-
-			return Enum.Parse( targetType, parameterString );
+			return parameterString == null
+				? DependencyProperty.UnsetValue
+				: Enum.Parse( targetType, parameterString );
 		}
 	}
 }

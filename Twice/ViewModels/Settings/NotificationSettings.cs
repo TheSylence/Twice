@@ -8,13 +8,13 @@ namespace Twice.ViewModels.Settings
 {
 	internal class NotificationSettings : ViewModelBaseEx, INotificationSettings
 	{
-		public NotificationSettings( IConfig currentConfig )
+		public NotificationSettings( IConfig currentConfig, INotifier notifier )
 		{
 			AvailableNotifications = new List<NotificationModuleSettings>
 			{
 				new SoundNotificationSettings( currentConfig ),
-				new PopupNotificationSettings( currentConfig ),
-				new ToastNotificationSettings( currentConfig )
+				new PopupNotificationSettings( currentConfig, notifier ),
+				new ToastNotificationSettings( currentConfig, notifier )
 			};
 			foreach( var notifyModule in AvailableNotifications )
 			{

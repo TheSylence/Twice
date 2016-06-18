@@ -79,6 +79,14 @@ namespace Twice.ViewModels.Columns
 			} );
 		}
 
+		public void UpdateRelativeTimes()
+		{
+			foreach( var it in Items )
+			{
+				it.UpdateRelativeTime();
+			}
+		}
+
 		protected async Task AddItem( MessageViewModel message, bool append = true )
 		{
 			await Dispatcher.RunAsync( () =>

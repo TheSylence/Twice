@@ -9,9 +9,11 @@
 			CheckForUpdates = true;
 			IncludePrereleaseUpdates = false;
 			TweetFetchCount = 50;
+			ColumnsLocked = false;
 		}
 
 		public bool CheckForUpdates { get; set; }
+		public bool ColumnsLocked { get; set; }
 		public bool IncludePrereleaseUpdates { get; set; }
 		public string Language { get; set; }
 		public bool RealtimeStreaming { get; set; }
