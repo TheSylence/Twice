@@ -79,7 +79,13 @@ namespace Twice.ViewModels
 				return;
 			}
 
-			var context = new NotificationViewModel( message, type );
+			var context = new NotificationViewModel( message, type )
+			{
+				FlyoutPosition = Config.Notifications.ToastsTop
+					? Position.Top
+					: Position.Bottom
+			};
+
 			if( positionOverwriteTop.HasValue )
 			{
 				context.FlyoutPosition = positionOverwriteTop.Value
