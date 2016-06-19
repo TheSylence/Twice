@@ -2,6 +2,7 @@ using System;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -17,6 +18,23 @@ namespace Twice.ViewModels.Twitter
 			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps?.Replace( "_normal", "_bigger" );
 
 			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
+			if( Uri.IsWellFormedUriString( user.Url, UriKind.Absolute ) )
+			{
+				Url = new Uri( user.Url );
+			}
+			else
+			{
+				Url = user.GetUserUrl();
+			}
+		}
+
+		public UserViewModel( UserEx user )
+			: this( (User)user )
+		{
+			if( Uri.IsWellFormedUriString( user.UrlDisplay , UriKind.Absolute) )
+			{
+				Url = new Uri( user.UrlDisplay );
+			}
 		}
 
 		public User Model { get; }
@@ -25,7 +43,7 @@ namespace Twice.ViewModels.Twitter
 		public string ProfileImageUrlHttpsMini { get; }
 		public string ProfileImageUrlHttpsOrig { get; }
 		public string ScreenName { get; }
-		public Uri Url => new Uri( Model.Url );
+		public Uri Url { get; }
 		public ulong UserId => Model.GetUserId();
 	}
 }

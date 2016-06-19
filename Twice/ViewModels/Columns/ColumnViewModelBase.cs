@@ -45,7 +45,6 @@ namespace Twice.ViewModels.Columns
 
 			if( config.General.RealtimeStreaming )
 			{
-				Parser.FriendsReceived += Parser_FriendsReceived;
 				Parser.StatusReceived += Parser_StatusReceived;
 				Parser.StatusDeleted += Parser_ItemDeleted;
 				Parser.DirectMessageDeleted += Parser_ItemDeleted;
@@ -337,24 +336,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
-		{
-			var completeList = e.Friends.ToList();
-			LogTo.Info( $"Received {completeList.Count} of user's friends" );
-			var usersToAdd = new List<UserEx>( completeList.Count );
-
-			while( completeList.Any() )
-			{
-				var userList = string.Join( ",", completeList.Take( 100 ) );
-				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
-
-				var userData = await Context.Twitter.Users.LookupUsers( userList );
-				usersToAdd.AddRange( userData );
-			}
-
-			Debug.Assert( usersToAdd.Count == e.Friends.Length );
-			await Cache.AddUsers( usersToAdd.Select( u => new UserCacheEntry( u ) ).ToList() );
-		}
+		
 
 		private async void Parser_ItemDeleted( object sender, DeleteStreamEventArgs e )
 		{

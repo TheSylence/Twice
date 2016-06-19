@@ -474,42 +474,6 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void ReceivingFriendsStoresThemInCache()
-		{
-			// Arrange
-			var userList = new List<UserEx>
-			{
-				new UserEx {UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
-				new UserEx {UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
-				new UserEx {UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"}
-			};
-
-			var twitterContext = new Mock<ITwitterContext>();
-			var userRepo = new Mock<ITwitterUserRepository>();
-			userRepo.Setup( t => t.LookupUsers( "123,456,789" ) ).Returns( Task.FromResult( userList ) );
-			twitterContext.SetupGet( c => c.Users ).Returns( userRepo.Object );
-
-			var context = new Mock<IContextEntry>();
-			context.SetupGet( c => c.Twitter ).Returns( twitterContext.Object );
-
-			var definition = new ColumnDefinition( ColumnType.User );
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
-			var parser = new Mock<IStreamParser>();
-			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
-
-			var cache = new Mock<ICache>();
-			cache.Setup( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ) ).Returns( Task.CompletedTask );
-			vm.Cache = cache.Object;
-
-			// Act
-			parser.Raise( p => p.FriendsReceived += null, new FriendsStreamEventArgs( "{\"friends\":[123,456,789]}" ) );
-
-			// Assert
-			cache.Verify( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ), Times.Once() );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void RefereshingDataAddsStatuses()
 		{
 			// Arrange

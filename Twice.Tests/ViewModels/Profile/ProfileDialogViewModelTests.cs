@@ -205,7 +205,7 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( UserViewModel ) ) ).Returns( new UserViewModel( DummyGenerator.CreateDummyUser() ) );
+			typeResolver.Setup( t => t.Resolve( typeof( UserViewModel ) ) ).Returns( new UserViewModel( DummyGenerator.CreateDummyUserEx() ) );
 
 			var vm = new ProfileDialogViewModel();
 			var tester = new PropertyChangedTester( vm, false, typeResolver.Object );

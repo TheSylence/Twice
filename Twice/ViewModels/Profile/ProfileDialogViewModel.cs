@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
@@ -92,7 +93,7 @@ namespace Twice.ViewModels.Profile
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
 
-			User user = null;
+			UserEx user = null;
 			try
 			{
 				user = await Context.Twitter.Users.ShowUser( ProfileId, true );

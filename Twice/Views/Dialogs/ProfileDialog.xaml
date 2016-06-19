@@ -63,7 +63,7 @@
 						<ContentControl Margin="10,0">
 							<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
 									   CommandParameter="{Binding User.Url}">
-								<TextBlock Text="{Binding User.Model.Url}" />
+								<TextBlock Text="{Binding User.Model.UrlDisplay}" />
 							</Hyperlink>
 						</ContentControl>
 					</StackPanel>

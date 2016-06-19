@@ -1,8 +1,8 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
@@ -65,6 +65,12 @@ namespace Twice.Models.Twitter
 			return user.UserID != 0
 				? user.UserID
 				: ulong.Parse( user.UserIDResponse );
+		}
+
+		public static Uri GetUserUrl( this User user )
+		{
+			string userName = user.GetScreenName();
+			return new Uri( string.Format( CultureInfo.InvariantCulture, "httsp://twitter.com/{0}", userName ) );
 		}
 
 		public static bool IsTweetUrl( Uri uri )
