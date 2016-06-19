@@ -8,7 +8,7 @@ namespace Twice.Models.Twitter.Entities
 	/// <summary>
 	///     Extended user entity that includes some data that Linq2Twitter doesn't offer
 	/// </summary>
-	internal class UserEx : User
+	internal class UserEx : User, IHighlightable
 	{
 		public UserEx()
 		{
@@ -30,6 +30,9 @@ namespace Twice.Models.Twitter.Entities
 				UrlDisplay = UrlEntities.UrlEntities.First().DisplayUrl;
 			}
 		}
+
+		public LinqToTwitter.Entities Entities => BioEntities;
+		public string Text => Description;
 
 		public LinqToTwitter.Entities BioEntities { get; }
 		public string UrlDisplay { get; }

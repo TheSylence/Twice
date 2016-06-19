@@ -31,13 +31,14 @@ namespace Twice.ViewModels.Twitter
 		public UserViewModel( UserEx user )
 			: this( (User)user )
 		{
-			if( Uri.IsWellFormedUriString( user.UrlDisplay , UriKind.Absolute) )
+			if( Uri.IsWellFormedUriString( user.UrlDisplay, UriKind.Absolute ) )
 			{
 				Url = new Uri( user.UrlDisplay );
 			}
 		}
 
 		public User Model { get; }
+		public UserEx ModelEx => Model as UserEx;
 		public string ProfileImageUrlHttps { get; }
 		public string ProfileImageUrlHttpsBig { get; }
 		public string ProfileImageUrlHttpsMini { get; }

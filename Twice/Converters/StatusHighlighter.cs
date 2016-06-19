@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Resources;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
@@ -83,7 +84,7 @@ namespace Twice.Converters
 			return menu;
 		}
 
-		private static IEnumerable<EntityBase> ExtractEntities( ColumnItem item )
+		private static IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
 		{
 			IEnumerable<EntityBase> entities = item.Entities.HashTagEntities;
 			entities = entities.Concat( item.Entities.MediaEntities );
@@ -183,7 +184,7 @@ namespace Twice.Converters
 		/// </summary>
 		/// <param name="item">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
-		private static IEnumerable<Inline> GenerateInlines( ColumnItem item )
+		private static IEnumerable<Inline> GenerateInlines( IHighlightable item )
 		{
 			var allEntities = ExtractEntities( item ).ToArray();
 
@@ -320,14 +321,14 @@ namespace Twice.Converters
 				return null;
 			}
 
-			var tweet = value as ColumnItem;
+			var tweet = value as IHighlightable;
 			if( tweet == null )
 			{
 				if( Debugger.IsAttached )
 				{
 					Debugger.Break();
 				}
-				throw new ArgumentException( @"Value is not a status object", nameof( value ) );
+				throw new ArgumentException( @"Value is not an IHighlightable", nameof( value ) );
 			}
 
 			return GenerateInlines( tweet ).ToArray();

@@ -13,7 +13,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" xmlns:vm="clr-namespace:Twice.ViewModels"
-             mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}"
+					xmlns:controls1="clr-namespace:Twice.Controls"
+					mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Padding="30" Width="1000" Height="700"
 			WindowStartupLocation="CenterOwner" Title="{Binding User.Model.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
 	<i:Interaction.Behaviors>
@@ -48,7 +49,8 @@
 						<TextBlock Text="{Binding User.Model.Name}" FontWeight="Bold" />
 						<TextBlock Text="{Binding User.Model.ScreenNameResponse, StringFormat=@{0}}" FontWeight="Thin" Margin="5,0" />
 					</StackPanel>
-					<TextBlock Text="{Binding User.Model.Description}" TextWrapping="Wrap" Margin="0,10" />
+					<controls1:BindableTextBlock Elements="{Binding User.ModelEx, Converter={StaticResource StatusHighlighterConv}}" 
+												  TextWrapping="Wrap" Margin="0,10" />
 
 					<StackPanel Orientation="Horizontal" Margin="0,5">
 						<materialDesign:PackIcon Kind="Clock" Width="12" Height="12" />
@@ -63,7 +65,7 @@
 						<ContentControl Margin="10,0">
 							<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
 									   CommandParameter="{Binding User.Url}">
-								<TextBlock Text="{Binding User.Model.UrlDisplay}" />
+								<TextBlock Text="{Binding User.ModelEx.UrlDisplay}" />
 							</Hyperlink>
 						</ContentControl>
 					</StackPanel>
