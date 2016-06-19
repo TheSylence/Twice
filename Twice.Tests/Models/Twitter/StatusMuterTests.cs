@@ -52,7 +52,7 @@ namespace Twice.Tests.Models.Twitter
 
 			var upperStatus = new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					HashTagEntities = new List<HashTagEntity>
 					{
@@ -66,7 +66,7 @@ namespace Twice.Tests.Models.Twitter
 
 			var lowerStatus = new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					HashTagEntities = new List<HashTagEntity>
 					{
@@ -130,7 +130,7 @@ namespace Twice.Tests.Models.Twitter
 			// Act
 			bool noTag = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					HashTagEntities = new List<HashTagEntity>()
 				}
@@ -138,7 +138,7 @@ namespace Twice.Tests.Models.Twitter
 
 			bool otherTag = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					HashTagEntities = new List<HashTagEntity>
 					{
@@ -149,7 +149,7 @@ namespace Twice.Tests.Models.Twitter
 
 			bool sameTag = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					HashTagEntities = new List<HashTagEntity>
 					{
@@ -225,7 +225,7 @@ namespace Twice.Tests.Models.Twitter
 			// Act
 			bool noUser = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					UserMentionEntities = new List<UserMentionEntity>()
 				}
@@ -233,7 +233,7 @@ namespace Twice.Tests.Models.Twitter
 
 			bool otherUser = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					UserMentionEntities = new List<UserMentionEntity>
 					{
@@ -244,7 +244,7 @@ namespace Twice.Tests.Models.Twitter
 
 			bool sameUser = muter.IsMuted( new Status
 			{
-				Entities = new Entities
+				Entities = new LinqToTwitter.Entities
 				{
 					UserMentionEntities = new List<UserMentionEntity>
 					{

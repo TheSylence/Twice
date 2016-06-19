@@ -22,7 +22,10 @@ namespace Twice.Models.Twitter.Entities
 			var ent = user.GetValue<JsonData>( "entities" );
 
 			UrlEntities = new LinqToTwitter.Entities( ent.GetValue<JsonData>( "url" ) );
-			BioEntities = new LinqToTwitter.Entities( ent.GetValue<JsonData>( "description" ) );
+			BioEntities = new LinqToTwitter.Entities( ent.GetValue<JsonData>( "description" ) )
+			{
+				HashTagEntities = EntityParser.ExtractHashtags( Description )
+			};
 
 			UrlDisplay = Url;
 			if( UrlEntities.UrlEntities.Any() )
