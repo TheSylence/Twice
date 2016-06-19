@@ -322,6 +322,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close notification after X seconds.
+        /// </summary>
+        public static string CloseNotificationDelay {
+            get {
+                return ResourceManager.GetString("CloseNotificationDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column.
         /// </summary>
         public static string Column {

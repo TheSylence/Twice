@@ -262,6 +262,7 @@
 															<Grid.RowDefinitions>
 																<RowDefinition Height="Auto" />
 																<RowDefinition Height="Auto" />
+																<RowDefinition Height="Auto" />
 															</Grid.RowDefinitions>
 
 															<StackPanel Orientation="Horizontal">
@@ -269,8 +270,13 @@
 																<RadioButton Content="{lex:Loc Bottom}" Margin="5" IsChecked="{Binding Top, Converter={StaticResource InvertBoolConv}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 															</StackPanel>
 
+															<StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+																<TextBlock Text="{lex:Loc CloseNotificationDelay}" VerticalAlignment="Center" />
+																<TextBox Text="{Binding CloseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0" VerticalAlignment="Center" MinWidth="100" />
+															</StackPanel>
+
 															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
-																	Grid.Row="1" HorizontalAlignment="Right" Margin="5">
+																	Grid.Row="2" HorizontalAlignment="Right" Margin="5">
 																<DockPanel>
 																	<materialDesign:PackIcon Kind="Play" DockPanel.Dock="Left" />
 																	<TextBlock Text="{lex:Loc Preview}" Margin="5,0" VerticalAlignment="Center" />

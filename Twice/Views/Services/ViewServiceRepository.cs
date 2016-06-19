@@ -7,17 +7,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Fody;
-using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using Ninject;
 using Twice.Models.Columns;
+using Twice.Utilities.Ui;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
+using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Dialogs;
+using Twice.Views.Flyouts;
 using Twice.Views.Wizards;
 
 namespace Twice.Views.Services
@@ -71,7 +74,7 @@ namespace Twice.Views.Services
 
 			TResult result = null;
 
-			DispatcherHelper.CheckBeginInvokeOnUI(
+			Dispatcher.CheckBeginInvokeOnUI(
 				async () =>
 				{
 					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
@@ -117,6 +120,32 @@ namespace Twice.Views.Services
 			return dlg.ShowDialog( Application.Current.MainWindow ) == true
 				? Task.FromResult( dlg.FileName )
 				: Task.FromResult<string>( null );
+		}
+
+		public void OpenNotificationFlyout( NotificationViewModel vm )
+		{
+			Dispatcher.CheckBeginInvokeOnUI( () =>
+			{
+				if( CurrentlyOpenNotification != null )
+				{
+					CurrentlyOpenNotification.IsOpen = false;
+					( (NotificationViewModel)CurrentlyOpenNotification.DataContext ).OnClosed();
+					CurrentlyOpenNotification = null;
+				}
+
+				MetroWindow mainWindow = Application.Current.MainWindow as MetroWindow;
+				Flyout flyout = mainWindow?.Flyouts.Items.OfType<NotificationBar>().FirstOrDefault();
+				if( flyout == null )
+				{
+					return;
+				}
+
+				flyout.DataContext = vm;
+				vm.Reset();
+
+				flyout.IsOpen = true;
+				CurrentlyOpenNotification = flyout;
+			} );
 		}
 
 		public async Task OpenSearch( string query = null )
@@ -267,7 +296,12 @@ namespace Twice.Views.Services
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
 
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
 		private static MetroWindow Window
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
+
+		private Flyout CurrentlyOpenNotification;
 	}
 }

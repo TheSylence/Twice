@@ -12,7 +12,7 @@ namespace Twice.ViewModels
 
 		void OnItem( ColumnItem item, ColumnNotifications columnSettings );
 
-		void PreviewInAppNotification( string message, bool top );
+		void PreviewInAppNotification( string message, bool top, int closeTime );
 
 		void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner );
 	}

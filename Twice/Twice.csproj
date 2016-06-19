@@ -236,12 +236,12 @@
     <Compile Include="Behaviors\AutoComplete.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\ClickHandler.cs" />
+    <Compile Include="Behaviors\CloseableFlyout.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
     <Compile Include="Behaviors\ColumnHeaderHandler.cs" />
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
-    <Compile Include="Behaviors\FlyoutControl.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\ScrollIntoView.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
@@ -273,8 +273,6 @@
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\DmMessage.cs" />
     <Compile Include="Messages\EntityAction.cs" />
-    <Compile Include="Messages\FlyoutAction.cs" />
-    <Compile Include="Messages\FlyoutMessage.cs" />
     <Compile Include="Models\Cache\ICache.cs" />
     <Compile Include="Models\Cache\MessageCacheEntry.cs" />
     <Compile Include="Models\Cache\NullCache.cs" />
@@ -541,7 +539,6 @@
     <Compile Include="ViewModels\Settings\MuteSettings.cs" />
     <Compile Include="ViewModels\Settings\SettingsDialogViewModel.cs" />
     <Compile Include="ViewModels\Settings\VisualSettings.cs" />
-    <Compile Include="Views\FlyoutNames.cs" />
     <Compile Include="ViewModels\Validation\CommonValidations.cs" />
     <Compile Include="ViewModels\Validation\IPropertyValidatorContainer.cs" />
     <Compile Include="ViewModels\Validation\IValidationSetup.cs" />
