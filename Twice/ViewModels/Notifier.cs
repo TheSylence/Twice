@@ -44,8 +44,24 @@ namespace Twice.ViewModels
 			}
 		}
 
+		public void DisplayMessage( string message, NotificationType type )
+		{
+			if( !Config.Notifications.ToastsEnabled )
+			{
+				return;
+			}
+
+			var context = new NotificationViewModel( message, type, Config.Notifications.ToastsTop );
+
+			NotifyToast( context );
+		}
+
 		private void NotifyPopup( ColumnItem item, bool win10 )
 		{
+			if( win10 )
+			{
+				DisplayWin10Message( item.Text );
+			}
 		}
 
 		private void NotifySound( ColumnItem item )
@@ -70,29 +86,6 @@ namespace Twice.ViewModels
 				Dispatcher.CheckBeginInvokeOnUI( () =>
 					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
 			} );
-		}
-
-		public void DisplayMessage( string message, NotificationType type, bool? positionOverwriteTop )
-		{
-			if( !Config.Notifications.ToastsEnabled )
-			{
-				return;
-			}
-
-			var context = new NotificationViewModel( message, type )
-			{
-				FlyoutPosition = Config.Notifications.ToastsTop
-					? Position.Top
-					: Position.Bottom
-			};
-
-			if( positionOverwriteTop.HasValue )
-			{
-				context.FlyoutPosition = positionOverwriteTop.Value
-					? Position.Top
-					: Position.Bottom;
-			}
-			NotifyToast( context );
 		}
 
 		public void DisplayWin10Message( string message )
@@ -132,6 +125,21 @@ namespace Twice.ViewModels
 			if( Config.Notifications.PopupEnabled && columnSettings.Popup )
 			{
 				NotifyPopup( item, Config.Notifications.Win10Enabled );
+			}
+		}
+
+		public void PreviewInAppNotification( string message, bool top )
+		{
+			var context = new NotificationViewModel( message, NotificationType.Information, top );
+
+			NotifyToast( context );
+		}
+
+		public void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner )
+		{
+			if( win10 )
+			{
+				DisplayWin10Message( message );
 			}
 		}
 

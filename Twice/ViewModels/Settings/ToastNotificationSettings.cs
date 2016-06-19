@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Settings
 
 		protected override void ExecutePreviewCommand()
 		{
-			Notifier.DisplayMessage( Strings.TestNotification, NotificationType.Information, Top );
+			Notifier.PreviewInAppNotification( Strings.TestNotification, Top );
 		}
 
 		public override string Title => Strings.InAppNotification;

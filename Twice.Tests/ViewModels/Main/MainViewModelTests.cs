@@ -400,7 +400,7 @@ namespace Twice.Tests.ViewModels.Main
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information, null ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
 			var generalCfg = new GeneralConfig { CheckForUpdates = true };
@@ -427,7 +427,7 @@ namespace Twice.Tests.ViewModels.Main
 			await vm.OnLoad( null );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information, null ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ), Times.Once() );
 		}
 	}
 }

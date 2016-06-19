@@ -28,10 +28,14 @@ namespace Twice.ViewModels.Flyouts
 				: Position.Bottom;
 		}
 
-		public NotificationViewModel( string message, NotificationType type )
+		public NotificationViewModel( string message, NotificationType type, bool top )
 		{
 			SetText( message );
 			Type = type;
+
+			FlyoutPosition = top
+				? Position.Top
+				: Position.Bottom;
 		}
 
 		private void SetText( string text )

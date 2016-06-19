@@ -26,7 +26,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.DisplayMessage( "test", NotificationType.Information, null );
+			notifier.DisplayMessage( "test", NotificationType.Information );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Once() );
@@ -44,7 +44,7 @@ namespace Twice.Tests.ViewModels
 			var notifier = new Notifier( config.Object, messenger.Object, new SyncDispatcher() );
 
 			// Act
-			notifier.DisplayMessage( "test", NotificationType.Information, null );
+			notifier.DisplayMessage( "test", NotificationType.Information );
 
 			// Assert
 			messenger.Verify( m => m.Send( It.IsAny<FlyoutMessage>() ), Times.Never() );
