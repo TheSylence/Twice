@@ -73,7 +73,7 @@ namespace Twice
 		{
 			SingleInstance.Stop();
 
-			CentralHandler.Dispose();
+			CentralHandler?.Dispose();
 			LogTo.Info( "Application exit" );
 			Kernel?.Dispose();
 
