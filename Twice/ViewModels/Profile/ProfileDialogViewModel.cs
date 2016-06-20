@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
@@ -71,7 +72,6 @@ namespace Twice.ViewModels.Profile
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
-
 				await Task.WhenAll( statuses.Select( s => s.LoadQuotedTweet() ) );
 			}
 			return statuses;
@@ -84,7 +84,7 @@ namespace Twice.ViewModels.Profile
 
 		public async Task OnLoad( object data )
 		{
-			if( ProfileId == 0 )
+			if( ProfileId == 0 && string.IsNullOrWhiteSpace(ScreenName) )
 			{
 				Close( false );
 				return;
@@ -93,10 +93,17 @@ namespace Twice.ViewModels.Profile
 			IsBusy = true;
 			Context = ContextList.Contexts.First();
 
-			User user = null;
+			UserEx user = null;
 			try
 			{
-				user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+				if( ProfileId == 0 )
+				{
+					user = await Context.Twitter.Users.ShowUser( ScreenName, true );
+				}
+				else
+				{
+					user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+				}
 			}
 			catch( TwitterQueryException ex )
 			{
@@ -136,6 +143,11 @@ namespace Twice.ViewModels.Profile
 		public void Setup( ulong profileId )
 		{
 			ProfileId = profileId;
+		}
+
+		public void Setup( string screenName )
+		{
+			ScreenName = screenName;
 		}
 
 		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
@@ -210,5 +222,6 @@ namespace Twice.ViewModels.Profile
 		private IContextEntry Context;
 		private ulong MaxId = ulong.MaxValue;
 		private ulong ProfileId;
+		private string ScreenName;
 	}
 }

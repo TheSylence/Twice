@@ -21,7 +21,7 @@ namespace Twice.Tests.Models.Cache
 			using( var con = OpenConnection() )
 			using( var cache = new SqliteCache( con ) )
 			{
-				var user = DummyGenerator.CreateDummyUser();
+				var user = DummyGenerator.CreateDummyUserEx();
 				user.UserID = 123;
 				user.ScreenName = "test";
 
@@ -643,7 +643,7 @@ namespace Twice.Tests.Models.Cache
 			using( var con = OpenConnection() )
 			using( var cache = new SqliteCache( con ) )
 			{
-				var user = DummyGenerator.CreateDummyUser();
+				var user = DummyGenerator.CreateDummyUserEx();
 				user.UserID = 123;
 				user.ScreenName = "testi";
 

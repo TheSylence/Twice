@@ -1,6 +1,6 @@
+using LinqToTwitter;
 using System.Collections.Generic;
 using System.Windows.Input;
-using LinqToTwitter;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Twitter;
 
@@ -9,6 +9,8 @@ namespace Twice.ViewModels.Profile
 	internal interface IProfileDialogViewModel : IDialogViewModel, ILoadCallback
 	{
 		void Setup( ulong id );
+
+		void Setup( string screenName );
 
 		ICommand FollowUserCommand { get; }
 		Friendship Friendship { get; }

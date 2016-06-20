@@ -4,12 +4,13 @@ using Newtonsoft.Json;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
 {
 	internal class UserCacheEntry
 	{
-		public UserCacheEntry( User user )
+		public UserCacheEntry( UserEx user )
 		{
 			UserId = user.GetUserId();
 			UserName = user.GetScreenName();

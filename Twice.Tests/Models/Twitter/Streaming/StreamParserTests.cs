@@ -1,12 +1,12 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 
@@ -30,7 +30,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			var userStream = new Mock<IStreamingConnection>();
 			userStream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) ).Returns( Task.FromResult( streamingList ) );
 
-			var parser = StreamParser.Create( userStream.Object );
+			var parser = StreamParser.Create( userStream.Object, null );
 
 			parser.StartStreaming();
 
@@ -55,7 +55,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 
 			// Act
 			parser.StartStreaming();
@@ -78,7 +78,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			EventStreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -112,7 +112,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			FriendsStreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -128,7 +128,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-			CollectionAssert.AreEqual( new ulong[] { 123, 456, 789 }, receivedData.Friends );
+			CollectionAssert.AreEqual( new ulong[] {123, 456, 789}, receivedData.Friends );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -145,7 +145,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			DeleteStreamEventArgs receivedDelete = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -178,7 +178,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			DirectMessageStreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -210,7 +210,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			DeleteStreamEventArgs receivedDelete = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -243,7 +243,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			StatusStreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -275,7 +275,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			StreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -308,7 +308,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 				.Callback<Func<StreamContent, Task>>( func => func( content ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) );
 
-			var parser = StreamParser.Create( stream.Object );
+			var parser = StreamParser.Create( stream.Object, null );
 			EventStreamEventArgs receivedData = null;
 			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
 
@@ -334,7 +334,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			userStream.Setup( s => s.Start( It.IsAny<Func<IStreamContent, Task>>() ) )
 				.Returns( Task.FromResult( new List<IStreaming>() ) ).Verifiable();
 
-			var parser = StreamParser.Create( userStream.Object );
+			var parser = StreamParser.Create( userStream.Object, null );
 
 			// Act
 			parser.StartStreaming();
@@ -351,7 +351,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			var userStream = new Mock<IStreamingConnection>();
 
 			// Act
-			var parser = StreamParser.Create( userStream.Object );
+			var parser = StreamParser.Create( userStream.Object, null );
 
 			// Assert
 			Assert.IsNotNull( parser );

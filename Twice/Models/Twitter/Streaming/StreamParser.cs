@@ -16,8 +16,10 @@ namespace Twice.Models.Twitter.Streaming
 		///     Initializes a new instance of the <see cref="StreamParser" /> class.
 		/// </summary>
 		/// <param name="stream">The user stream.</param>
-		private StreamParser( IStreamingConnection stream )
+		/// <param name="context">The context this stream is associated with</param>
+		private StreamParser( IStreamingConnection stream, IContextEntry context )
 		{
+			AssociatedContext = context;
 			Connections = new List<IStreaming>();
 			Stream = stream;
 		}
@@ -26,10 +28,11 @@ namespace Twice.Models.Twitter.Streaming
 		///     Creates a new parser for the specified stream.
 		/// </summary>
 		/// <param name="userStream">The stream.</param>
+		/// <param name="context">The context this stream is associated with</param>
 		/// <returns>The created parser.</returns>
-		public static StreamParser Create( IStreamingConnection userStream )
+		public static StreamParser Create( IStreamingConnection userStream, IContextEntry context )
 		{
-			return new StreamParser( userStream );
+			return new StreamParser( userStream, context );
 		}
 
 		/// <summary>
@@ -226,6 +229,8 @@ namespace Twice.Models.Twitter.Streaming
 			StreamingTask = Stream.Start( c => Task.Run( () => ParseContent( c ) ) )
 				.ContinueWith( t => Connections.AddRange( t.Result ) );
 		}
+
+		public IContextEntry AssociatedContext { get; }
 
 		public Task StreamingTask { get; private set; }
 		private readonly List<IStreaming> Connections;

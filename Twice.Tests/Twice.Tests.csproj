@@ -211,6 +211,7 @@
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\StatusComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
+    <Compile Include="Models\Twitter\Entities\EntityParserTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
