@@ -69,7 +69,7 @@ namespace Twice.Tests.Models.Cache
 				using( var cmd = con.CreateCommand() )
 				{
 					cmd.CommandText = "INSERT INTO Users (Id, UserName, UserData) VALUES (@id1, @name1, @data1), "
-									+ "(@id2, @name2, @data2);";
+					                  + "(@id2, @name2, @data2);";
 
 					cmd.AddParameter( "id1", 111 );
 					cmd.AddParameter( "id2", 222 );
@@ -106,6 +106,21 @@ namespace Twice.Tests.Models.Cache
 
 				data = JsonConvert.DeserializeObject<User>( users.First( u => u.UserId == 222 ).Data );
 				Assert.AreEqual( new DateTime( 6, 5, 4, 3, 2, 1 ), data.CreatedAt );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task CachingEmptyHashtagListDoesNothing()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				// Act
+				var ex = await ExceptionAssert.CatchAsync<Exception>( () => cache.AddHashtags( new List<string>() ) );
+
+				// Assert
+				Assert.IsNull( ex );
 			}
 		}
 
@@ -428,6 +443,66 @@ namespace Twice.Tests.Models.Cache
 				// Assert
 				Assert.AreEqual( status.UserID, fromDb.UserID );
 				Assert.AreEqual( status.Text, fromDb.Text );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task StatusesCanBeMappedToColumns()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var id1 = Guid.NewGuid();
+				var id2 = Guid.NewGuid();
+
+				var s1 = new List<Status>
+				{
+					DummyGenerator.CreateDummyStatus(),
+					DummyGenerator.CreateDummyStatus()
+				};
+
+				s1[0].StatusID = 1;
+				s1[1].StatusID = 2;
+
+				var s2 = new List<Status>
+				{
+					DummyGenerator.CreateDummyStatus()
+				};
+
+				s2[0].StatusID = 3;
+
+				// Act
+				await cache.MapStatusesToColumn( s1, id1 );
+				await cache.MapStatusesToColumn( s2, id2 );
+
+				// Assert
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT StatusId FROM ColumnStatuses WHERE ColumnId=@col ORDER BY StatusId ASC;";
+					cmd.AddParameter( "col", id1 );
+
+					using( var reader = cmd.ExecuteReader() )
+					{
+						Assert.IsTrue( reader.Read() );
+						Assert.AreEqual( 1, reader.GetInt32( 0 ) );
+
+						Assert.IsTrue( reader.Read() );
+						Assert.AreEqual( 2, reader.GetInt32( 0 ) );
+					}
+				}
+
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT StatusId FROM ColumnStatuses WHERE ColumnId=@col ORDER BY StatusId ASC;";
+					cmd.AddParameter( "col", id2 );
+
+					using( var reader = cmd.ExecuteReader() )
+					{
+						Assert.IsTrue( reader.Read() );
+						Assert.AreEqual( 3, reader.GetInt32( 0 ) );
+					}
+				}
 			}
 		}
 

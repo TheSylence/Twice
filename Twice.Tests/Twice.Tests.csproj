@@ -192,6 +192,7 @@
     <Compile Include="Converters\SourceNameTests.cs" />
     <Compile Include="Converters\SourceUrlTests.cs" />
     <Compile Include="Converters\StatusHighlighterTests.cs" />
+    <Compile Include="Converters\StatusLinkTests.cs" />
     <Compile Include="Converters\UserToIdTests.cs" />
     <Compile Include="Converters\UtcToLocalTests.cs" />
     <Compile Include="DummyGenerator.cs" />
@@ -204,8 +205,11 @@
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Media\InstragramExtractorTests.cs" />
+    <Compile Include="Models\Media\MediaExtractorRepositoryTests.cs" />
     <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
+    <Compile Include="Models\Twitter\Comparers\StatusComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
     <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />
+    <Compile Include="Models\Twitter\TwitterConfigurationTests.cs" />
     <Compile Include="Models\Twitter\TwitterContextListTests.cs" />
     <Compile Include="Models\Twitter\TwitterHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -234,6 +239,7 @@
     <Compile Include="ViewModels\Columns\ColumnFactoryTests.cs" />
     <Compile Include="ViewModels\Columns\ColumnViewModelBaseTests.cs" />
     <Compile Include="ViewModels\Columns\Definitions\ColumnDefinitionListTests.cs" />
+    <Compile Include="ViewModels\Columns\FavoritesColumnTests.cs" />
     <Compile Include="ViewModels\Columns\MessageColumnTests.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />

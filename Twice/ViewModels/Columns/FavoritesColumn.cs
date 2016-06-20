@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
+using Seal.Fody;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -13,6 +14,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
+	[LeaveUnsealed]
 	internal class FavoritesColumn : ColumnViewModelBase
 	{
 		public FavoritesColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,

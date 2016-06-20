@@ -1,7 +1,8 @@
-using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Twice.Models.Media
 {
@@ -16,18 +17,18 @@ namespace Twice.Models.Media
 		{
 			string url = $"https://api.instagram.com/oembed/?url={originalUrl}";
 
-			using( var web = new WebClient() )
-			{
-				var json = web.DownloadString( url );
+			var json = Client.DownloadString( url );
 
-				var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
-				return new Uri( info.thumbnail_url );
-			}
+			var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
+			return new Uri( info.thumbnail_url );
 		}
+
+		private static readonly WebClient Client = new WebClient();
 
 		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?(www\\.)?instagram\\.com\\/p\\/[\\w-]+(\\/)?",
 			RegexOptions.Compiled );
 
+		[ExcludeFromCodeCoverage]
 		private class InstagramResponse
 		{
 			// ReSharper disable once InconsistentNaming

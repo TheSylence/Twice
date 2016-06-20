@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 namespace Twice.Behaviors
@@ -6,6 +7,7 @@ namespace Twice.Behaviors
 	/// <summary>
 	/// Helper methods for working with WPF Windows
 	/// </summary>
+	[ExcludeFromCodeCoverage]
 	internal static class WindowHelper
 	{
 		/// <summary>

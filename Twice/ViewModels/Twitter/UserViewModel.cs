@@ -11,9 +11,9 @@ namespace Twice.ViewModels.Twitter
 			Model = user;
 
 			ProfileImageUrlHttps = user.ProfileImageUrlHttps;
-			ProfileImageUrlHttpsOrig = user.ProfileImageUrlHttps.Replace( "_normal", "" );
-			ProfileImageUrlHttpsMini = user.ProfileImageUrlHttps.Replace( "_normal", "_mini" );
-			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps.Replace( "_normal", "_bigger" );
+			ProfileImageUrlHttpsOrig = user.ProfileImageUrlHttps?.Replace( "_normal", "" );
+			ProfileImageUrlHttpsMini = user.ProfileImageUrlHttps?.Replace( "_normal", "_mini" );
+			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps?.Replace( "_normal", "_bigger" );
 
 			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
 		}
