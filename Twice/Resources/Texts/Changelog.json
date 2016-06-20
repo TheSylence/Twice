@@ -11,7 +11,10 @@
             "In-App notification now indicates when it will close"
         ],
         "Fixes": [
-            "Preview for In-App notification works everytime"
+            "Preview for In-App notification works everytime",
+            "Mentions and hashtags in user biographies are now correctly highlighted",
+            "Fixed potential crash on app exit",
+            "Improved UI responsiveness when opening user profiles"
         ],
         "Issues": [ ]
     },
