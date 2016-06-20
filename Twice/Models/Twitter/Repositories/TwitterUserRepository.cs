@@ -20,6 +20,30 @@ namespace Twice.Models.Twitter.Repositories
 		{
 		}
 
+		private async Task<UserEx> LoadUserFromQuery( string queryString )
+		{
+			Raw rawResult;
+			try
+			{
+				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
+				if( rawResult == null )
+				{
+					return null;
+				}
+			}
+			catch( TwitterQueryException )
+			{
+				return null;
+			}
+
+			var json = JsonMapper.ToObject( rawResult.Response );
+			var user = new UserEx( json );
+
+			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
+
+			return user;
+		}
+
 		public async Task FollowUser( ulong userId )
 		{
 			await Context.CreateFriendshipAsync( userId, true );
@@ -62,6 +86,20 @@ namespace Twice.Models.Twitter.Repositories
 			return users;
 		}
 
+		public async Task<UserEx> ShowUser( string screenName, bool includeEntities )
+		{
+			// TODO: Caching?
+
+			var idStr = Uri.EscapeDataString( screenName );
+			string queryString = $"users/show.json?screen_name={idStr}";
+			if( includeEntities )
+			{
+				queryString += "&include_entities=true";
+			}
+
+			return await LoadUserFromQuery( queryString );
+		}
+
 		public async Task<UserEx> ShowUser( ulong userId, bool includeEntities )
 		{
 			var cached = await Cache.GetUser( userId );
@@ -71,27 +109,13 @@ namespace Twice.Models.Twitter.Repositories
 			}
 
 			var idStr = Uri.EscapeDataString( userId.ToString() );
-			string queryString = $"users/show.json?user_id={idStr}&include_entities=true";
-			Raw rawResult;
-			try
+			string queryString = $"users/show.json?user_id={idStr}";
+			if( includeEntities )
 			{
-				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
-				if( rawResult == null )
-				{
-					return null;
-				}
-			}
-			catch( TwitterQueryException )
-			{
-				return null;
+				queryString += "&include_entities=true";
 			}
 
-			var json = JsonMapper.ToObject( rawResult.Response );
-			var user = new UserEx( json );
-
-			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
-
-			return user;
+			return await LoadUserFromQuery( queryString );
 		}
 
 		public async Task UnfollowUser( ulong userId )

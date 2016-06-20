@@ -291,7 +291,14 @@ namespace Twice.Converters
 			link.SetResourceReference( TextElement.ForegroundProperty, "MentionBrush" );
 			link.TextDecorations = null;
 			link.Command = GlobalCommands.OpenProfileCommand;
-			link.CommandParameter = entity.Id;
+			if( entity.Id == 0 )
+			{
+				link.CommandParameter = entity.ScreenName;
+			}
+			else
+			{
+				link.CommandParameter = entity.Id;
+			}
 			link.ContextMenu = CreateUserContextMenu( entity );
 
 			return link;

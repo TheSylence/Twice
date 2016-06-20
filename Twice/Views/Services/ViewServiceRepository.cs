@@ -285,6 +285,13 @@ namespace Twice.Views.Services
 			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
+		public async Task ViewProfile( string screenName )
+		{
+			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( screenName ); };
+
+			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
+		}
+
 		public async Task ViewStatus( StatusViewModel status )
 		{
 			Action<ITweetDetailsViewModel> vmSetup = vm =>

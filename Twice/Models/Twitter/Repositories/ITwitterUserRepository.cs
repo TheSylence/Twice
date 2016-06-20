@@ -1,4 +1,3 @@
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Twitter.Entities;
@@ -14,6 +13,8 @@ namespace Twice.Models.Twitter.Repositories
 		Task<List<UserEx>> LookupUsers( string userList );
 
 		Task<UserEx> ShowUser( ulong userId, bool includeEntities );
+
+		Task<UserEx> ShowUser( string screenName, bool includeEntities );
 
 		Task UnfollowUser( ulong userId );
 	}

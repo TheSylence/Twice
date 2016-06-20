@@ -47,6 +47,8 @@ namespace Twice.Views.Services
 
 		Task ViewProfile( ulong userId );
 
+		Task ViewProfile( string screenName );
+
 		Task ViewStatus( StatusViewModel vm );
 	}
 }
