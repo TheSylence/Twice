@@ -53,17 +53,9 @@ namespace Twice.ViewModels.Twitter
 				: TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
 		}
 
-		public async Task LoadQuotedTweet()
+		public async Task LoadDataAsync()
 		{
-			var quoteId = ExtractQuotedTweetUrl();
-			if( quoteId != 0 )
-			{
-				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
-				if( quoted != null )
-				{
-					QuotedTweet = new StatusViewModel( quoted, Context, Config, ViewServiceRepository );
-				}
-			}
+			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias() );
 		}
 
 		public async Task LoadRetweets()
@@ -169,7 +161,8 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			ExecAsync( async () => await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID ), Strings.StatusDeleted,
+			ExecAsync( async () => await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID ),
+				Strings.StatusDeleted,
 				NotificationType.Success );
 		}
 
@@ -229,6 +222,56 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
 
+		private async Task LoadInlineMedias()
+		{
+			if( Config?.Visual?.InlineMedia != true )
+			{
+				return;
+			}
+
+			var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
+				.Distinct( TwitterComparers.MediaEntityComparer )
+				.Select( m => new Uri( m.MediaUrlHttps ) );
+
+			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+			{
+				vm.OpenRequested += Image_OpenRequested;
+				_InlineMedias.Add( vm );
+			}
+
+			var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
+				.Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
+
+			foreach( var url in urls )
+			{
+				var extracted = await MediaExtractor.ExtractMedia( url );
+				if( extracted != null )
+				{
+					var vm = new StatusMediaViewModel( extracted );
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
+				}
+			}
+
+			RaisePropertyChanged( nameof( InlineMedias ) );
+		}
+
+		private async Task LoadQuotedTweet()
+		{
+			var quoteId = ExtractQuotedTweetUrl();
+			if( quoteId != 0 )
+			{
+				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
+				if( quoted != null )
+				{
+					QuotedTweet = new StatusViewModel( quoted, Context, Config, ViewServiceRepository );
+				}
+			}
+		}
+
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
+
 		public ICommand BlockUserCommand
 			=>
 				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
@@ -264,45 +307,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
 		public override ulong Id => Model.StatusID;
-
-		public IEnumerable<StatusMediaViewModel> InlineMedias
-		{
-			get
-			{
-				if( _InlineMedias != null )
-				{
-					return _InlineMedias;
-				}
-
-				_InlineMedias = new List<StatusMediaViewModel>();
-				if( !Config.Visual.InlineMedia )
-				{
-					return _InlineMedias;
-				}
-
-				var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
-					.Distinct( TwitterComparers.MediaEntityComparer )
-					.Select( m => new Uri( m.MediaUrlHttps ) );
-
-				foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
-				{
-					vm.OpenRequested += Image_OpenRequested;
-					_InlineMedias.Add( vm );
-				}
-
-				var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
-					.Distinct( TwitterComparers.UrlEntityComparer )
-					.Select( e => MediaExtractor.ExtractMedia( e.ExpandedUrl ) );
-
-				foreach( var vm in urls.Where( u => u != null ).Select( url => new StatusMediaViewModel( url ) ) )
-				{
-					vm.OpenRequested += Image_OpenRequested;
-					_InlineMedias.Add( vm );
-				}
-
-				return _InlineMedias;
-			}
-		}
+		public IEnumerable<StatusMediaViewModel> InlineMedias => _InlineMedias;
 
 		public bool IsFavorited => Model.Favorited;
 		public bool IsReply => Model.InReplyToStatusID != 0;
@@ -343,36 +348,43 @@ namespace Twice.ViewModels.Twitter
 
 		public UserViewModel SourceUser { get; }
 		public override string Text => Model.Text;
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
+		private readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
 		private readonly IConfig Config;
 		private readonly Status OriginalStatus;
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _BlockUserCommand;
 
 		private IClipboard _Clipboard;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CopyTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _CopyTweetUrlCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _DeleteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
-
-		private List<StatusMediaViewModel> _InlineMedias;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _FavoriteStatusCommand;
 
 		private IMediaExtractorRepository _MediaExtractor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _QuoteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReplyToAllCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReportSpamCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ReportSpamCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _RetweetStatusCommand;
 	}
 }

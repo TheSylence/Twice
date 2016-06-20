@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Media;
@@ -9,7 +10,7 @@ namespace Twice.Tests.Models.Media
 	public class MediaExtractorRepositoryTests
 	{
 		[TestMethod, TestCategory( "Models.Media" )]
-		public void AllExtractorsAreChecked()
+		public async Task AllExtractorsAreChecked()
 		{
 			// Arrange
 			var repository = new MediaExtractorRepository();
@@ -22,7 +23,7 @@ namespace Twice.Tests.Models.Media
 			repository.AddExtractor( e2.Object );
 
 			// Act
-			repository.ExtractMedia( "test" );
+			await repository.ExtractMedia( "test" );
 
 			// Assert
 			e1.Verify( v => v.CanExtract( "test" ), Times.Once() );
@@ -30,7 +31,7 @@ namespace Twice.Tests.Models.Media
 		}
 
 		[TestMethod, TestCategory( "Models.Media" )]
-		public void NonMatchingExtractorIsNotUsed()
+		public async Task NonMatchingExtractorIsNotUsed()
 		{
 			// Arrange
 			var repository = new MediaExtractorRepository();
@@ -41,7 +42,7 @@ namespace Twice.Tests.Models.Media
 			repository.AddExtractor( extractor.Object );
 
 			// Act
-			repository.ExtractMedia( "test" );
+			await repository.ExtractMedia( "test" );
 
 			// Assert
 			extractor.Verify( v => v.CanExtract( "test" ), Times.Once() );
@@ -49,20 +50,20 @@ namespace Twice.Tests.Models.Media
 		}
 
 		[TestMethod, TestCategory( "Models.Media" )]
-		public void NullIsReturnedWhenNoExtractorWasFound()
+		public async Task NullIsReturnedWhenNoExtractorWasFound()
 		{
 			// Arrange
 			var repository = new MediaExtractorRepository();
 
 			// Act
-			var url = repository.ExtractMedia( "test" );
+			var url = await repository.ExtractMedia( "test" );
 
 			// Assert
 			Assert.IsNull( url );
 		}
 
 		[TestMethod, TestCategory( "Models.Media" )]
-		public void SearchEndsWithFirstMatch()
+		public async Task SearchEndsWithFirstMatch()
 		{
 			// Arrange
 			var repository = new MediaExtractorRepository();
@@ -75,7 +76,7 @@ namespace Twice.Tests.Models.Media
 			repository.AddExtractor( e2.Object );
 
 			// Act
-			repository.ExtractMedia( "test" );
+			await repository.ExtractMedia( "test" );
 
 			// Assert
 			e1.Verify( v => v.CanExtract( "test" ), Times.Once() );

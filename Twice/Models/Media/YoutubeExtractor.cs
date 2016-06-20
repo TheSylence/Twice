@@ -1,14 +1,15 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Twice.Models.Media
 {
 	internal class YoutubeExtractor : IMediaExtractor
 	{
-		private static Uri BuildThumbnailUri( string videoId )
+		private static Task<Uri> BuildThumbnailUri( string videoId )
 		{
-			return new Uri( $"http://img.youtube.com/vi/{videoId}/0.jpg" );
+			return Task.FromResult( new Uri( $"http://img.youtube.com/vi/{videoId}/0.jpg" ) );
 		}
 
 		public bool CanExtract( string originalUrl )
@@ -42,7 +43,7 @@ namespace Twice.Models.Media
 			return false;
 		}
 
-		public Uri GetMediaUrl( string originalUrl )
+		public Task<Uri> GetMediaUrl( string originalUrl )
 		{
 			string videoId = null;
 

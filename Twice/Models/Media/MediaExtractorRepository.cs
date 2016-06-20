@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Media
 {
@@ -11,11 +12,15 @@ namespace Twice.Models.Media
 			Extractors.Add( extractor );
 		}
 
-		public Uri ExtractMedia( string originalUrl )
+		public async Task<Uri> ExtractMedia( string originalUrl )
 		{
 			var extractor = Extractors.FirstOrDefault( e => e.CanExtract( originalUrl ) );
+			if( extractor == null )
+			{
+				return null;
+			}
 
-			return extractor?.GetMediaUrl( originalUrl );
+			return await extractor.GetMediaUrl( originalUrl );
 		}
 
 		internal static IMediaExtractorRepository Default { get; } = new MediaExtractorRepository();

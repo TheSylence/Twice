@@ -159,7 +159,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void ExtendedMediasAreIncludedInInlineMedias()
+		public async Task ExtendedMediasAreIncludedInInlineMedias()
 		{
 			// Arrange
 			var json = File.ReadAllText( "Data/tweet_extmedia.json" );
@@ -171,6 +171,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var visualConfig = new VisualConfig {InlineMedia = true};
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 			var vm = new StatusViewModel( status, context.Object, config.Object, null );
+			await vm.LoadDataAsync();
 
 			// Act
 			var medias = vm.InlineMedias.ToArray();
@@ -270,7 +271,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void InlineMediasAreExtractedCorrectly()
+		public async Task InlineMediasAreExtractedCorrectly()
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
@@ -288,6 +289,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			var vm = new StatusViewModel( status, context.Object, config.Object, null );
+			await vm.LoadDataAsync();
 			var medias = vm.InlineMedias.ToArray();
 
 			// Assert
@@ -298,7 +300,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void InlineMediasContainExtractedMedias()
+		public async Task InlineMediasContainExtractedMedias()
 		{
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 123 );
@@ -314,12 +316,15 @@ namespace Twice.Tests.ViewModels.Twitter
 			config.SetupGet( c => c.Visual ).Returns( visualConfig );
 
 			var extractorRepo = new Mock<IMediaExtractorRepository>();
-			extractorRepo.Setup( r => r.ExtractMedia( It.IsAny<string>() ) ).Returns<string>( url => new Uri( url ) );
+			extractorRepo.Setup( r => r.ExtractMedia( It.IsAny<string>() ) ).Returns<string>(
+				url => Task.FromResult( new Uri( url ) ) );
 
 			var vm = new StatusViewModel( status, context.Object, config.Object, null )
 			{
 				MediaExtractor = extractorRepo.Object
 			};
+
+			await vm.LoadDataAsync();
 
 			// Act
 			var medias = vm.InlineMedias.ToArray();
@@ -334,7 +339,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void InlineMediaUseExtendedEntities()
+		public async Task InlineMediaUseExtendedEntities()
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
@@ -352,6 +357,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Act
 			var vm = new StatusViewModel( status, context.Object, config.Object, null );
+			await vm.LoadDataAsync();
 			var medias = vm.InlineMedias.ToArray();
 
 			// Assert

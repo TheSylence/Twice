@@ -1,8 +1,9 @@
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Media
 {
@@ -13,17 +14,18 @@ namespace Twice.Models.Media
 			return Pattern.IsMatch( originalUrl );
 		}
 
-		public Uri GetMediaUrl( string originalUrl )
+		public async Task<Uri> GetMediaUrl( string originalUrl )
 		{
 			string url = $"https://api.instagram.com/oembed/?url={originalUrl}";
 
-			var json = Client.DownloadString( url );
+			using( var client = new WebClient() )
+			{
+				var json = await client.DownloadStringTaskAsync( url );
 
-			var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
-			return new Uri( info.thumbnail_url );
+				var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
+				return new Uri( info.thumbnail_url );
+			}
 		}
-
-		private static readonly WebClient Client = new WebClient();
 
 		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?(www\\.)?instagram\\.com\\/p\\/[\\w-]+(\\/)?",
 			RegexOptions.Compiled );

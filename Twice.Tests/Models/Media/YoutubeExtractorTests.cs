@@ -61,7 +61,10 @@ namespace Twice.Tests.Models.Media
 			{
 				var expectedId = testCases[kvp.Key];
 
-				Assert.IsTrue( kvp.Value.AbsoluteUri.Contains( expectedId ), kvp.Key );
+				kvp.Value.Wait();
+				var uri = kvp.Value.Result;
+
+				Assert.IsTrue( uri.AbsoluteUri.Contains( expectedId ), kvp.Key );
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Media
 {
@@ -6,6 +7,6 @@ namespace Twice.Models.Media
 	{
 		void AddExtractor( IMediaExtractor extractor );
 
-		Uri ExtractMedia( string originalUrl );
+		Task<Uri> ExtractMedia( string originalUrl );
 	}
 }

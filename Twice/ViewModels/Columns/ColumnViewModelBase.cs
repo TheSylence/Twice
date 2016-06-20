@@ -193,7 +193,7 @@ namespace Twice.ViewModels.Columns
 		{
 			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 
-			await vm.LoadQuotedTweet();
+			await vm.LoadDataAsync();
 			return vm;
 		}
 

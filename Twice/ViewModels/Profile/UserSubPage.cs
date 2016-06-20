@@ -78,8 +78,14 @@ namespace Twice.ViewModels.Profile
 					IsLoading = true;
 					Task.Run( async () =>
 					{
-						_Items = new ObservableCollection<object>( await LoadAction() );
+						_Items = new ObservableCollection<object>();
 						RaisePropertyChanged( nameof( Items ) );
+
+						var toAdd = await LoadAction();
+						foreach( var it in toAdd )
+						{
+							await Dispatcher.RunAsync( () => _Items.Add( it ) );
+						}
 					} ).ContinueWith( t => { IsLoading = false; } );
 				}
 

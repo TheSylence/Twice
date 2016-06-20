@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Media
 {
@@ -6,6 +7,6 @@ namespace Twice.Models.Media
 	{
 		bool CanExtract( string originalUrl );
 
-		Uri GetMediaUrl( string originalUrl );
+		Task<Uri> GetMediaUrl( string originalUrl );
 	}
 }
