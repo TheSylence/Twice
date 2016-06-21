@@ -1,6 +1,6 @@
-using System;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
+using System;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 
@@ -37,6 +37,7 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public bool IsVerified => Model.Verified;
 		public User Model { get; }
 		public UserEx ModelEx => Model as UserEx;
 		public string ProfileImageUrlHttps { get; }

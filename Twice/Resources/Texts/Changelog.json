@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [
             "In-App notification can be dismissed manually",
-            "Auto close delay for in-app notifications can be configured"
+            "Auto close delay for in-app notifications can be configured",
+            "Verified twitter accounts are now marked as such"
         ],
         "Changes": [
             "In-App notification now indicates when it will close"

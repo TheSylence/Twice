@@ -62,6 +62,7 @@
 						<TextBlock Text="{Binding Partner.Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 						<TextBlock Text="{Binding Partner.ScreenName}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 								VerticalAlignment="Center" />
+						<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 					</StackPanel>
 				</DockPanel>
 
@@ -376,7 +377,8 @@
 									</i:Interaction.Behaviors>
 									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-								VerticalAlignment="Center" />
+												VerticalAlignment="Center" />
+									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 								</StackPanel>
 							</DockPanel>
 
@@ -515,6 +517,7 @@
 					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 							VerticalAlignment="Center" />
+					<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 				</StackPanel>
 
 				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
