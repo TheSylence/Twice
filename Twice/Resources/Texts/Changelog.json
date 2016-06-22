@@ -1,6 +1,6 @@
 ﻿[
     {
-        "Version": "0.x.x",
+        "Version": "0.6.2",
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
@@ -15,7 +15,8 @@
             "Preview for In-App notification works everytime",
             "Mentions and hashtags in user biographies are now correctly highlighted",
             "Fixed potential crash on app exit",
-            "Improved UI responsiveness when opening user profiles"
+            "Improved UI responsiveness when opening user profiles",
+            "Retweet dialog now closes after retweeting/quoting the tweet"
         ],
         "Issues": [ ]
     },

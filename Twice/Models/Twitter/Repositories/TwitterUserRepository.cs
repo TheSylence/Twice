@@ -63,6 +63,20 @@ namespace Twice.Models.Twitter.Repositories
 				return new List<UserEx>();
 			}
 
+			if( !userList.Contains( "," ) )
+			{
+				var result = new List<UserEx>();
+
+				ulong userid;
+				if( ulong.TryParse( userList, out userid ) )
+				{
+					var user = await ShowUser( userid, true );
+					result.Add( user );
+				}
+
+				return result;
+			}
+
 			var idStr = Uri.EscapeDataString( userList );
 			string queryString = $"users/lookup.json?user_id={idStr}&include_entities=true";
 			Raw rawResult;
