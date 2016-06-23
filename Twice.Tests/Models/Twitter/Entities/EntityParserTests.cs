@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Twitter.Entities;
 
 namespace Twice.Tests.Models.Twitter.Entities
 {
-	[TestClass]
+	[TestClass, ExcludeFromCodeCoverage]
 	public class EntityParserTests
 	{
 		[TestMethod, TestCategory( "Models.Twitter.Entities" )]

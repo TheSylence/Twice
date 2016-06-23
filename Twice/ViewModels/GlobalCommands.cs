@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -14,6 +15,7 @@ namespace Twice.ViewModels
 	///     Class containing commands that are available everywhere in the application.
 	/// </summary>
 	[ConfigureAwait( false )]
+	[ExcludeFromCodeCoverage]
 	internal class GlobalCommands
 	{
 		static GlobalCommands()

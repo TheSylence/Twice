@@ -59,7 +59,7 @@ namespace Twice.ViewModels.Columns
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 			CountExpression = s => s.Count == config.General.TweetFetchCount;
-			SubTitle = "@" + context.AccountName;
+			SubTitle = "@" + Context.AccountName;
 		}
 
 		public event EventHandler Changed;
