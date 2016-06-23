@@ -32,6 +32,13 @@ namespace Twice.Models.Twitter
 			} ), cache );
 		}
 
+		internal ContextEntry( INotifier notifier, TwitterAccountData data, ICache cache, ITwitterContext context )
+		{
+			Data = data;
+			Notifier = notifier;
+			Twitter = context;
+		}
+
 		public override bool Equals( object obj )
 		{
 			var other = obj as ContextEntry;

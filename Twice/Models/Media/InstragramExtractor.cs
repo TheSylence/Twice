@@ -1,7 +1,9 @@
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Twice.Models.Media
 {
@@ -12,13 +14,13 @@ namespace Twice.Models.Media
 			return Pattern.IsMatch( originalUrl );
 		}
 
-		public Uri GetMediaUrl( string originalUrl )
+		public async Task<Uri> GetMediaUrl( string originalUrl )
 		{
 			string url = $"https://api.instagram.com/oembed/?url={originalUrl}";
 
-			using( var web = new WebClient() )
+			using( var client = new WebClient() )
 			{
-				var json = web.DownloadString( url );
+				var json = await client.DownloadStringTaskAsync( url );
 
 				var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
 				return new Uri( info.thumbnail_url );
@@ -28,6 +30,7 @@ namespace Twice.Models.Media
 		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?(www\\.)?instagram\\.com\\/p\\/[\\w-]+(\\/)?",
 			RegexOptions.Compiled );
 
+		[ExcludeFromCodeCoverage]
 		private class InstagramResponse
 		{
 			// ReSharper disable once InconsistentNaming

@@ -660,4 +660,7 @@
   <data name="Bottom" xml:space="preserve">
     <value>Bottom</value>
   </data>
+  <data name="CloseNotificationDelay" xml:space="preserve">
+    <value>Close notification after X seconds</value>
+  </data>
 </root>

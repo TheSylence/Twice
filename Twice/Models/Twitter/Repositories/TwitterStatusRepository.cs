@@ -99,7 +99,7 @@ namespace Twice.Models.Twitter.Repositories
 			}
 
 			var cachedList = cached.ToList();
-			var query = Queryable.Where( s => s.Type == StatusType.User && s.UserID == userId );
+			var query = Queryable.Where( s => s.Type == StatusType.User && s.UserID == userId && s.Count == 20 );
 
 			if( since != 0 )
 			{

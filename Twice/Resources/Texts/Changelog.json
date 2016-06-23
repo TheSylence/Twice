@@ -1,10 +1,31 @@
 ﻿[
     {
+        "Version": "0.6.2",
+        "Date": "2016-06-23",
+        "Description": "",
+        "NewFeatures": [
+            "In-App notification can be dismissed manually",
+            "Auto close delay for in-app notifications can be configured",
+            "Verified twitter accounts are now marked as such"
+        ],
+        "Changes": [
+            "In-App notification now indicates when it will close"
+        ],
+        "Fixes": [
+            "Preview for In-App notification works everytime",
+            "Mentions and hashtags in user biographies are now correctly highlighted",
+            "Fixed potential crash on app exit",
+            "Improved UI responsiveness when opening user profiles",
+            "Retweet dialog now closes after retweeting/quoting the tweet"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.1",
         "Date": "2016-06-19",
         "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
+        "NewFeatures": [ ],
+        "Changes": [ ],
         "Fixes": [
             "In-App notification displays at correct position"
         ],

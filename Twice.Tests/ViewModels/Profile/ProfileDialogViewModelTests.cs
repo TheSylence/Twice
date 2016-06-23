@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Resources;
 using Twice.ViewModels;
 using Twice.ViewModels.Profile;
@@ -23,7 +24,7 @@ namespace Twice.Tests.ViewModels.Profile
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var user = DummyGenerator.CreateDummyUser();
+			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -80,7 +81,7 @@ namespace Twice.Tests.ViewModels.Profile
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var user = DummyGenerator.CreateDummyUser();
+			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -137,7 +138,7 @@ namespace Twice.Tests.ViewModels.Profile
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var user = DummyGenerator.CreateDummyUser();
+			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
 			var firstStatus = DummyGenerator.CreateDummyStatus( user );
@@ -204,7 +205,7 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( UserViewModel ) ) ).Returns( new UserViewModel( DummyGenerator.CreateDummyUser() ) );
+			typeResolver.Setup( t => t.Resolve( typeof( UserViewModel ) ) ).Returns( new UserViewModel( DummyGenerator.CreateDummyUserEx() ) );
 
 			var vm = new ProfileDialogViewModel();
 			var tester = new PropertyChangedTester( vm, false, typeResolver.Object );
@@ -240,11 +241,11 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ) ).Verifiable();
 
 			var contextList = new Mock<ITwitterContextList>();
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult<User>( null ) );
+			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult<UserEx>( null ) );
 
 			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
 			var vm = new ProfileDialogViewModel
@@ -260,7 +261,7 @@ namespace Twice.Tests.ViewModels.Profile
 			await vm.OnLoad( null );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
@@ -268,9 +269,9 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error, null ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ) ).Verifiable();
 
-			var user = DummyGenerator.CreateDummyUser();
+			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -311,7 +312,7 @@ namespace Twice.Tests.ViewModels.Profile
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var user = DummyGenerator.CreateDummyUser();
+			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
 			var status = DummyGenerator.CreateDummyStatus( user );

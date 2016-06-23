@@ -42,6 +42,20 @@ namespace Twice.Tests.ViewModels
 		}
 
 		[TestMethod, TestCategory( "ViewModels" )]
+		public void NotifyPropertyChangedIsImplementedCorrectly()
+		{
+			// Arrange
+			var vm = new DialogViewModel();
+			var tester = new PropertyChangedTester( vm );
+
+			// Act
+			tester.Test();
+
+			// Assert
+			tester.Verify();
+		}
+
+		[TestMethod, TestCategory( "ViewModels" )]
 		public void OkCommandClosesDialog()
 		{
 			// Arrange

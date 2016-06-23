@@ -1,32 +1,30 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
 using NotificationsExtensions;
 using NotificationsExtensions.Toasts;
-using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Utilities;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
-using Twice.Views;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels
 {
 	internal class Notifier : INotifier
 	{
-		public Notifier( IConfig config, IMessenger messenger, IDispatcher dispatcher )
+		public Notifier( IConfig config, IMessenger messenger, IDispatcher dispatcher, IViewServiceRepository viewServices )
 		{
 			Dispatcher = dispatcher;
 			MessengerInstance = messenger;
 			Config = config;
+			ViewServices = viewServices;
 
 			if( config.Notifications.SoundEnabled )
 			{
@@ -44,8 +42,22 @@ namespace Twice.ViewModels
 			}
 		}
 
+		public void PreviewInAppNotification( string message, bool top, int closeTime )
+		{
+			var context = new NotificationViewModel( message, NotificationType.Information, top )
+			{
+				CloseDelay = TimeSpan.FromSeconds( closeTime )
+			};
+
+			NotifyToast( context );
+		}
+
 		private void NotifyPopup( ColumnItem item, bool win10 )
 		{
+			if( win10 )
+			{
+				DisplayWin10Message( item.Text );
+			}
 		}
 
 		private void NotifySound( ColumnItem item )
@@ -55,43 +67,34 @@ namespace Twice.ViewModels
 
 		private void NotifyToast( ColumnItem item )
 		{
-			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop );
+			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop )
+			{
+				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
+			};
+
 			NotifyToast( context );
 		}
 
 		private void NotifyToast( NotificationViewModel vm )
 		{
-			Dispatcher.CheckBeginInvokeOnUI(
-				() => MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Open, vm ) ) );
+			vm.Dispatcher = Dispatcher;
+			vm.MessengerInstance = MessengerInstance;
 
-			Task.Delay( TimeSpan.FromSeconds( 5 ) ).ContinueWith( t =>
-			{
-				// TODO: This should be moved into the ViewModel of the Toast
-				Dispatcher.CheckBeginInvokeOnUI( () =>
-					MessengerInstance.Send( new FlyoutMessage( FlyoutNames.NotificationBar, FlyoutAction.Close ) ) );
-			} );
+			ViewServices.OpenNotificationFlyout( vm );
 		}
 
-		public void DisplayMessage( string message, NotificationType type, bool? positionOverwriteTop )
+		public void DisplayMessage( string message, NotificationType type )
 		{
 			if( !Config.Notifications.ToastsEnabled )
 			{
 				return;
 			}
 
-			var context = new NotificationViewModel( message, type )
+			var context = new NotificationViewModel( message, type, Config.Notifications.ToastsTop )
 			{
-				FlyoutPosition = Config.Notifications.ToastsTop
-					? Position.Top
-					: Position.Bottom
+				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
 			};
 
-			if( positionOverwriteTop.HasValue )
-			{
-				context.FlyoutPosition = positionOverwriteTop.Value
-					? Position.Top
-					: Position.Bottom;
-			}
 			NotifyToast( context );
 		}
 
@@ -135,10 +138,19 @@ namespace Twice.ViewModels
 			}
 		}
 
+		public void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner )
+		{
+			if( win10 )
+			{
+				DisplayWin10Message( message );
+			}
+		}
+
 		private readonly IConfig Config;
 		private readonly IDispatcher Dispatcher;
 		private readonly IMessenger MessengerInstance;
 		private readonly MediaPlayer Player;
 		private readonly NotifyIcon PopupNotify;
+		private readonly IViewServiceRepository ViewServices;
 	}
 }

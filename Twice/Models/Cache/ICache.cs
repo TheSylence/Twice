@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LinqToTwitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
 {
@@ -27,7 +28,7 @@ namespace Twice.Models.Cache
 
 		Task<List<Status>> GetStatusesForUser( ulong userId );
 
-		Task<User> GetUser( ulong userId );
+		Task<UserEx> GetUser( ulong userId );
 
 		Task MapStatusesToColumn( IList<Status> statuses, Guid columnId );
 

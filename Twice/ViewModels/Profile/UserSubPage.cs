@@ -1,10 +1,10 @@
-using Fody;
-using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Fody;
+using GalaSoft.MvvmLight;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 
@@ -13,7 +13,8 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class UserSubPage : ObservableObject
 	{
-		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction, Func<Task<IEnumerable<object>>> loadMoreAction, int count )
+		public UserSubPage( string title, Func<Task<IEnumerable<object>>> loadAction,
+			Func<Task<IEnumerable<object>>> loadMoreAction, int count )
 			: this( title, loadAction, count )
 		{
 			LoadMoreAction = loadMoreAction;
@@ -41,13 +42,10 @@ namespace Twice.ViewModels.Profile
 			{
 				var newData = await LoadMoreAction();
 
-				await Dispatcher.RunAsync( () =>
+				foreach( var item in newData )
 				{
-					foreach( var item in newData )
-					{
-						_Items.Add( item );
-					}
-				} );
+					await Dispatcher.RunAsync( () => _Items.Add( item ) );
+				}
 			}
 		}
 
@@ -57,8 +55,7 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
+			[DebuggerStepThrough] get { return _IsLoading; }
 
 			set
 			{
@@ -81,8 +78,14 @@ namespace Twice.ViewModels.Profile
 					IsLoading = true;
 					Task.Run( async () =>
 					{
-						_Items = new ObservableCollection<object>( await LoadAction() );
+						_Items = new ObservableCollection<object>();
 						RaisePropertyChanged( nameof( Items ) );
+
+						var toAdd = await LoadAction();
+						foreach( var it in toAdd )
+						{
+							await Dispatcher.RunAsync( () => _Items.Add( it ) );
+						}
 					} ).ContinueWith( t => { IsLoading = false; } );
 				}
 

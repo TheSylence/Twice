@@ -1,8 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
+using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
 
 namespace Twice.Tests.Models.Twitter.Streaming
@@ -19,14 +25,50 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			var parser = new Mock<IStreamParser>();
 			parser.Setup( p => p.Dispose() ).Verifiable();
 
-			var repo = new TestStreamingRepository( contextList.Object );
+			var repo = new TestStreamingRepository( contextList.Object, null );
 			repo.InjectStream( 123, parser.Object );
 
 			// Act
-			var second = repo.GetParser( new ColumnDefinition( ColumnType.User ) { SourceAccounts = new ulong[] { 123 } } );
+			var second = repo.GetParser( new ColumnDefinition( ColumnType.User ) {SourceAccounts = new ulong[] {123}} );
 
 			// Assert
 			Assert.AreSame( parser.Object, second );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ReceivingFriendsStoresThemInCache()
+		{
+			// Arrange
+			var userList = new List<UserEx>
+			{
+				new UserEx {UserID = 123, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new UserEx {UserID = 456, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"},
+				new UserEx {UserID = 789, IncludeEntities = false, Type = UserType.Lookup, UserIdList = "123,456,789"}
+			};
+
+			var contextList = new Mock<ITwitterContextList>();
+			var twitterContext = new Mock<ITwitterContext>();
+			var userRepo = new Mock<ITwitterUserRepository>();
+			userRepo.Setup( t => t.LookupUsers( "123,456,789" ) ).Returns( Task.FromResult( userList ) );
+			twitterContext.SetupGet( c => c.Users ).Returns( userRepo.Object );
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Twitter ).Returns( twitterContext.Object );
+
+			var parser = new Mock<IStreamParser>();
+			parser.SetupGet( c => c.AssociatedContext ).Returns( context.Object );
+
+			var cache = new Mock<ICache>();
+			cache.Setup( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ) ).Returns( Task.CompletedTask );
+
+			var repo = new TestStreamingRepository( contextList.Object, cache.Object );
+			repo.InjectStream( 123, parser.Object );
+
+			// Act
+			parser.Raise( p => p.FriendsReceived += null, new FriendsStreamEventArgs( "{\"friends\":[123,456,789]}" ) );
+
+			// Assert
+			cache.Verify( c => c.AddUsers( It.IsAny<IList<UserCacheEntry>>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -38,7 +80,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			var parser = new Mock<IStreamParser>();
 			parser.Setup( p => p.Dispose() ).Verifiable();
 
-			var repo = new TestStreamingRepository( contextList.Object );
+			var repo = new TestStreamingRepository( contextList.Object, null );
 			repo.InjectStream( 123, parser.Object );
 
 			// Act
@@ -50,14 +92,14 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 		private class TestStreamingRepository : StreamingRepository
 		{
-			public TestStreamingRepository( ITwitterContextList contextList )
-				: base( contextList )
+			public TestStreamingRepository( ITwitterContextList contextList, ICache cache )
+				: base( contextList, cache )
 			{
 			}
 
 			public void InjectStream( ulong id, IStreamParser parser )
 			{
-				LoadedParsers.Add( new ParserKey( id, LinqToTwitter.StreamingType.User ), parser );
+				AddParser( parser, new ParserKey( id, StreamingType.User ) );
 			}
 		}
 	}

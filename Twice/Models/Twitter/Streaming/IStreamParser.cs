@@ -45,5 +45,7 @@ namespace Twice.Models.Twitter.Streaming
 		event EventHandler<EventStreamEventArgs> UnknownEventReceived;
 
 		void StartStreaming();
+
+		IContextEntry AssociatedContext { get; }
 	}
 }

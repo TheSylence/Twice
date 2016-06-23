@@ -44,7 +44,7 @@ namespace Twice.ViewModels.Twitter
 				status = inReplyTo;
 			}
 
-			await Task.WhenAll( PreviousConversationTweets.Select( s => s.LoadQuotedTweet() ) );
+			await Task.WhenAll( PreviousConversationTweets.Select( s => s.LoadDataAsync() ) );
 			IsLoadingPrevious = false;
 		}
 
@@ -57,7 +57,7 @@ namespace Twice.ViewModels.Twitter
 				FollowingConversationTweets.AddRange(
 					replies.Select( r => new StatusViewModel( r, Context, Configuration, ViewServiceRepository ) ) ) );
 
-			await Task.WhenAll( FollowingConversationTweets.Select( s => s.LoadQuotedTweet() ) );
+			await Task.WhenAll( FollowingConversationTweets.Select( s => s.LoadDataAsync() ) );
 
 			RaisePropertyChanged( nameof( FollowingConversationTweets ) );
 			IsLoadingFollowing = false;
@@ -81,7 +81,7 @@ namespace Twice.ViewModels.Twitter
 
 			await
 				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
-					DisplayTweet.LoadQuotedTweet() );
+					DisplayTweet.LoadDataAsync() );
 		}
 
 		public IContextEntry Context { get; set; }

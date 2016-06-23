@@ -55,8 +55,10 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 1 );
-			context.Setup( c => c.Twitter.Messages.IncomingMessages( It.IsAny<int>(), It.IsAny<ulong?>() ) ).Returns( Task.FromResult( incomingMessages ) );
-			context.Setup( c => c.Twitter.Messages.OutgoingMessages( It.IsAny<int>(), It.IsAny<ulong?>() ) ).Returns( Task.FromResult( outgoingMessages ) );
+			context.Setup( c => c.Twitter.Messages.IncomingMessages( It.IsAny<int>(), It.IsAny<ulong?>() ) ).Returns(
+				Task.FromResult( incomingMessages ) );
+			context.Setup( c => c.Twitter.Messages.OutgoingMessages( It.IsAny<int>(), It.IsAny<ulong?>() ) ).Returns(
+				Task.FromResult( outgoingMessages ) );
 
 			var definition = new ColumnDefinition( ColumnType.User );
 			var config = new Mock<IConfig>();
@@ -102,6 +104,38 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			Assert.AreEqual( 1, vm.Items.Count );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void StatusIsRejected()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+
+			var vm = new TestColumn( context.Object, new ColumnDefinition( ColumnType.Messages ), config.Object, parser.Object );
+
+			// Act
+			bool suitable = vm.Suitable( DummyGenerator.CreateDummyStatus() );
+
+			// Assert
+			Assert.IsFalse( suitable );
+		}
+
+		private class TestColumn : MessageColumn
+		{
+			public TestColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
+				IMessenger messenger = null )
+				: base( context, definition, config, parser, messenger )
+			{
+			}
+
+			public bool Suitable( Status status )
+			{
+				return IsSuitableForColumn( status );
+			}
 		}
 	}
 }

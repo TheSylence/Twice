@@ -2,10 +2,11 @@ using System;
 using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal abstract class ColumnItem : ObservableObject
+	internal abstract class ColumnItem : ObservableObject, IHighlightable
 	{
 		public void UpdateRelativeTime()
 		{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Twice.Models.Columns;
+using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Views.Services
@@ -15,6 +16,8 @@ namespace Twice.Views.Services
 		Task<bool> Confirm( ConfirmServiceArgs args );
 
 		Task<string> OpenFile( FileServiceArgs args = null );
+
+		void OpenNotificationFlyout( NotificationViewModel vm );
 
 		Task OpenSearch( string query = null );
 
@@ -43,6 +46,8 @@ namespace Twice.Views.Services
 		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );
+
+		Task ViewProfile( string screenName );
 
 		Task ViewStatus( StatusViewModel vm );
 	}

@@ -5,17 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              IsPinned="True" CloseButtonVisibility="Collapsed"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:flyouts="clr-namespace:Twice.ViewModels.Flyouts"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
-             xmlns:views="clr-namespace:Twice.Views"
-             xmlns:flyouts="clr-namespace:Twice.ViewModels.Flyouts"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
              d:DataContext="{d:DesignInstance flyouts:NotificationViewModel}"
              mc:Ignorable="d" Position="{Binding FlyoutPosition}" TitleVisibility="Collapsed" Theme="Accent"
              d:DesignHeight="300" d:DesignWidth="300" Height="50">
 	<i:Interaction.Behaviors>
-		<behaviors:FlyoutControl Name="{x:Static views:FlyoutNames.NotificationBar}" />
+		<behaviors:CloseableFlyout />
 	</i:Interaction.Behaviors>
-	<Grid>
-		<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-	</Grid>
+	<DockPanel>
+		<ProgressBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Maximum="100" Value="{Binding AutoCloseProgress}" />
+
+		<DockPanel>
+			<Button Style="{DynamicResource MaterialDesignToolForegroundButton}" Margin="20,10"
+					ToolTip="{lex:Loc Dismiss}" DockPanel.Dock="Left" VerticalAlignment="Center"
+					Command="{Binding DismissCommand}" Foreground="{DynamicResource SecondaryAccentBrush}">
+				<materialDesign:PackIcon Kind="Close"/>
+			</Button>
+
+			<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+		</DockPanel>
+	</DockPanel>
 </controls:Flyout>

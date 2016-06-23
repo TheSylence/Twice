@@ -25,7 +25,10 @@ namespace Twice.Tests.ViewModels.Profile
 
 			var waitHandle = new ManualResetEventSlim( false );
 			int loadChanges = 0;
-			var page = new UserSubPage( "", loadAction, 2 );
+			var page = new UserSubPage( "", loadAction, 2 )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
 			page.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( UserSubPage.IsLoading ) )

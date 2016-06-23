@@ -60,6 +60,8 @@ namespace Twice.ViewModels.Dialogs
 		private async void ExecuteQuoteCommand()
 		{
 			await ViewServiceRepository.QuoteTweet( Status, Accounts.Where( a => a.Use ).Select( a => a.Context.UserId ) );
+
+			Close( true );
 		}
 
 		private void ExecuteRetweetCommand()
@@ -68,6 +70,8 @@ namespace Twice.ViewModels.Dialogs
 			{
 				Status.RetweetStatus( acc.Context.Twitter );
 			}
+
+			Close( true );
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -14,6 +15,7 @@ namespace Twice.ViewModels
 	///     Class containing commands that are available everywhere in the application.
 	/// </summary>
 	[ConfigureAwait( false )]
+	[ExcludeFromCodeCoverage]
 	internal class GlobalCommands
 	{
 		static GlobalCommands()
@@ -47,9 +49,18 @@ namespace Twice.ViewModels
 			await ViewServices.ViewDirectMessage( message );
 		}
 
-		private static async void ExecuteOpenProfileCommand( ulong args )
+		private static async void ExecuteOpenProfileCommand( object args )
 		{
-			await ViewServices.ViewProfile( args );
+			string screenName = args.ToString();
+			ulong userid;
+			if( ulong.TryParse( screenName, out userid ) )
+			{
+				await ViewServices.ViewProfile( userid );
+			}
+			else
+			{
+				await ViewServices.ViewProfile( screenName );
+			}
 		}
 
 		private static async void ExecuteOpenStatusCommand( StatusViewModel vm )
@@ -79,7 +90,7 @@ namespace Twice.ViewModels
 		private static RelayCommand<MessageViewModel> _OpenMessageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<ulong> _OpenProfileCommand;
+		private static RelayCommand<object> _OpenProfileCommand;
 
 		private static RelayCommand<StatusViewModel> _OpenStatusCommand;
 
@@ -99,7 +110,7 @@ namespace Twice.ViewModels
 			=> _OpenMessageCommand ?? ( _OpenMessageCommand = new RelayCommand<MessageViewModel>( ExecuteOpenMessageCommand ) );
 
 		public static ICommand OpenProfileCommand
-			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<ulong>( ExecuteOpenProfileCommand ) );
+			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<object>( ExecuteOpenProfileCommand ) );
 
 		public static ICommand OpenStatusCommand
 			=> _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(

@@ -1,3 +1,4 @@
+using System;
 using LinqToTwitter;
 using System.Collections.Generic;
 
@@ -12,6 +13,11 @@ namespace Twice.Models.Twitter.Comparers
 
 		public int GetHashCode( Status obj )
 		{
+			if( obj == null )
+			{
+				throw new ArgumentNullException();
+			}
+
 			return obj.GetStatusId().GetHashCode();
 		}
 	}

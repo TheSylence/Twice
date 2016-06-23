@@ -8,6 +8,7 @@ using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
 {
@@ -382,7 +383,7 @@ namespace Twice.Models.Cache
 			return result;
 		}
 
-		public async Task<User> GetUser( ulong userId )
+		public async Task<UserEx> GetUser( ulong userId )
 		{
 			await Cleanup();
 
@@ -394,7 +395,7 @@ namespace Twice.Models.Cache
 				var json = await cmd.ExecuteScalarAsync() as string;
 				if( !string.IsNullOrEmpty( json ) )
 				{
-					return JsonConvert.DeserializeObject<User>( json );
+					return JsonConvert.DeserializeObject<UserEx>( json );
 				}
 			}
 

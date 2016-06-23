@@ -15,6 +15,7 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
+using Twice.Models.Twitter.Entities;
 using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
 using Twice.Utilities;
@@ -44,7 +45,6 @@ namespace Twice.ViewModels.Columns
 
 			if( config.General.RealtimeStreaming )
 			{
-				Parser.FriendsReceived += Parser_FriendsReceived;
 				Parser.StatusReceived += Parser_StatusReceived;
 				Parser.StatusDeleted += Parser_ItemDeleted;
 				Parser.DirectMessageDeleted += Parser_ItemDeleted;
@@ -59,7 +59,7 @@ namespace Twice.ViewModels.Columns
 			MaxIdFilterExpression = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 			CountExpression = s => s.Count == config.General.TweetFetchCount;
-			SubTitle = "@" + context.AccountName;
+			SubTitle = "@" + Context.AccountName;
 		}
 
 		public event EventHandler Changed;
@@ -193,7 +193,7 @@ namespace Twice.ViewModels.Columns
 		{
 			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 
-			await vm.LoadQuotedTweet();
+			await vm.LoadDataAsync();
 			return vm;
 		}
 
@@ -336,24 +336,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		private async void Parser_FriendsReceived( object sender, FriendsStreamEventArgs e )
-		{
-			var completeList = e.Friends.ToList();
-			LogTo.Info( $"Received {completeList.Count} of user's friends" );
-			var usersToAdd = new List<User>( completeList.Count );
-
-			while( completeList.Any() )
-			{
-				var userList = string.Join( ",", completeList.Take( 100 ) );
-				completeList.RemoveRange( 0, Math.Min( 100, completeList.Count ) );
-
-				var userData = await Context.Twitter.Users.LookupUsers( userList );
-				usersToAdd.AddRange( userData );
-			}
-
-			Debug.Assert( usersToAdd.Count == e.Friends.Length );
-			await Cache.AddUsers( usersToAdd.Select( u => new UserCacheEntry( u ) ).ToList() );
-		}
+		
 
 		private async void Parser_ItemDeleted( object sender, DeleteStreamEventArgs e )
 		{

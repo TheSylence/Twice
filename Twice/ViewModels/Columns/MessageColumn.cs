@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using Seal.Fody;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using Newtonsoft.Json;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -16,9 +17,11 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
+	[LeaveUnsealed]
 	internal class MessageColumn : ColumnViewModelBase
 	{
-		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser, IMessenger messenger = null )
+		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
+			IMessenger messenger = null )
 			: base( context, definition, config, parser, messenger )
 		{
 			MessengerInstance.Register<DmMessage>( this, OnDirectMessage );

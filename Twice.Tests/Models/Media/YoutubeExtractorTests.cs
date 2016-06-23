@@ -24,7 +24,9 @@ namespace Twice.Tests.Models.Media
 				{"http://youtube.com/", false},
 				{"https://google.com/watch?v=12345", false},
 				{"https://youtube.com/watch?v=", false},
-				{"http://youtube.com/watch/video/", false}
+				{"http://youtube.com/watch/video/", false},
+				{"https://youtube.com/watch?video=12345", false },
+				{"https://youtube.com/watch?v=%20&video=123456", false }
 			};
 
 			// Act
@@ -59,7 +61,10 @@ namespace Twice.Tests.Models.Media
 			{
 				var expectedId = testCases[kvp.Key];
 
-				Assert.IsTrue( kvp.Value.AbsoluteUri.Contains( expectedId ), kvp.Key );
+				kvp.Value.Wait();
+				var uri = kvp.Value.Result;
+
+				Assert.IsTrue( uri.AbsoluteUri.Contains( expectedId ), kvp.Key );
 			}
 		}
 	}

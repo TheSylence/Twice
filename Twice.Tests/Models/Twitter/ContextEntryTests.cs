@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Twitter;
 using Twice.ViewModels;
 
@@ -9,6 +9,22 @@ namespace Twice.Tests.Models.Twitter
 	[TestClass, ExcludeFromCodeCoverage]
 	public class ContextEntryTests
 	{
+		[TestMethod, TestCategory( "Models.Twitter" )]
+		public void DisposingEntryDisposesContext()
+		{
+			// Arrange
+			var context = new Mock<ITwitterContext>();
+			context.Setup( c => c.Dispose() ).Verifiable();
+
+			var entry = new ContextEntry( null, null, null, context.Object );
+
+			// Act
+			entry.Dispose();
+
+			// Assert
+			context.Verify( c => c.Dispose(), Times.Once() );
+		}
+
 		[TestMethod, TestCategory( "Models.Twitter" )]
 		public void EqualsCheckForUserId()
 		{
