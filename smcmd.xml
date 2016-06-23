@@ -12,6 +12,7 @@
 		<source_subtree>Twice\bin\</source_subtree>
 		<source_subtree>Twice\obj\</source_subtree>
 		<source_subtree>ThirdParty\</source_subtree>
+		<source_subtree>packages\</source_subtree>
 	   </source_subdirectory_list>
        <checkpoint_name>@CHECKPOINT_NAME@</checkpoint_name>
    </command> 
