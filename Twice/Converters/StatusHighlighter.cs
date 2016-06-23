@@ -1,6 +1,4 @@
-﻿using LinqToTwitter;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,12 +7,13 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using LinqToTwitter;
+using Ninject;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
 using Twice.ViewModels;
-using Twice.ViewModels.Twitter;
 
 namespace Twice.Converters
 {
@@ -86,10 +85,10 @@ namespace Twice.Converters
 
 		private static IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
 		{
-			IEnumerable<EntityBase> entities = item.Entities.HashTagEntities;
-			entities = entities.Concat( item.Entities.MediaEntities );
-			entities = entities.Concat( item.Entities.UrlEntities );
-			entities = entities.Concat( item.Entities.UserMentionEntities );
+			IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
+			entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
+			entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );
+			entities = entities.Concat( item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>() );
 
 			var tweetText = TwitterHelper.NormalizeText( item.Text );
 

@@ -85,6 +85,11 @@ namespace Twice.Models.Twitter
 
 		public static string NormalizeText( string text )
 		{
+			if( string.IsNullOrWhiteSpace( text ) )
+			{
+				return text;
+			}
+
 			try
 			{
 				return text.Normalize( NormalizationForm.FormC );
