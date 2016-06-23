@@ -155,6 +155,8 @@ namespace Twice.ViewModels.Main
 
 		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
+			ColumnList.SetExistingContexts( ContextList.Contexts.Select( c => c.UserId ) );
+
 			RaisePropertyChanged( nameof( HasContexts ) );
 		}
 

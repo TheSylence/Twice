@@ -1,9 +1,9 @@
-﻿using Anotar.NLog;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Anotar.NLog;
+using Newtonsoft.Json;
 using Twice.Models.Cache;
 using Twice.Utilities;
 using Twice.ViewModels;
@@ -99,6 +99,20 @@ namespace Twice.Models.Twitter
 		{
 			Dispose( true );
 			GC.SuppressFinalize( this );
+		}
+
+		public void RemoveAccount( ulong userId )
+		{
+			LogTo.Info( $"Removing account {userId}" );
+			var toRemove = Contexts.FirstOrDefault( c => c.UserId == userId );
+			if( toRemove == null )
+			{
+				LogTo.Warn( "Account wasn't found" );
+				return;
+			}
+
+			Contexts.Remove( toRemove );
+			SaveToFile();
 		}
 
 		/// <summary>

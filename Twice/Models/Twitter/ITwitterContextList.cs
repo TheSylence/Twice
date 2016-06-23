@@ -20,6 +20,12 @@ namespace Twice.Models.Twitter
 		/// <param name="data"></param>
 		void UpdateAccount( TwitterAccountData data );
 
+		/// <summary>
+		/// Removes an account.
+		/// </summary>
+		/// <param name="userId"></param>
+		void RemoveAccount( ulong userId );
+
 		void UpdateAllAccounts();
 
 		ICollection<IContextEntry> Contexts { get; }

@@ -1,8 +1,8 @@
-using Anotar.NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Anotar.NLog;
 using Twice.Utilities;
 
 namespace Twice.Models.Columns
@@ -55,6 +55,18 @@ namespace Twice.Models.Columns
 			Update( definitions );
 
 			RaiseChanged();
+		}
+
+		/// <summary>
+		///     Informs the list about existing contexts.
+		///     All definitions that belong to not existing users will be removed.
+		/// </summary>
+		/// <param name="ids"></param>
+		public void SetExistingContexts( IEnumerable<ulong> ids )
+		{
+			var columns = Load();
+
+			Save( columns.Where( col => col.SourceAccounts.Any( ids.Contains ) ) );
 		}
 
 		public void Update( IEnumerable<ColumnDefinition> definitions )

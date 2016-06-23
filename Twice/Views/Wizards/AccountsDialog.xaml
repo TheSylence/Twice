@@ -58,7 +58,8 @@
 								</CheckBox>
 								<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
 											CommandParameter="{Binding}" Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
-								<Button Margin="5">
+								<Button Margin="5" Command="{Binding Data.DeleteAccountCommand, Source={StaticResource DataProxy}}"
+										CommandParameter="{Binding}">
 									<DockPanel>
 										<materialDesign:PackIcon Kind="Delete" Margin="5,0" />
 										<TextBlock Text="{lex:Loc Delete}" />

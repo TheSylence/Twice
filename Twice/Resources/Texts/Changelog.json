@@ -1,10 +1,21 @@
 ﻿[
     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [ ],
+        "Changes": [ ],
+        "Fixes": [
+            "Accounts can be removed"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.3",
         "Date": "2016-06-23",
         "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
+        "NewFeatures": [ ],
+        "Changes": [ ],
         "Fixes": [
             "Fixed potential crash in status/profile parser"
         ],
