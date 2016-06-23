@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.6.3",
+        "Date": "2016-06-23",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed potential crash in status/profile parser"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.2",
         "Date": "2016-06-23",
         "Description": "",
