@@ -6,7 +6,8 @@
         "NewFeatures": [ ],
         "Changes": [ ],
         "Fixes": [
-            "Accounts can be removed"
+            "Accounts can be removed",
+            "Fixed crash when opening user profile via retweet message"
         ],
         "Issues": [ ]
     },
