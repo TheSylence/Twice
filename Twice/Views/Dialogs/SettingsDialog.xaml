@@ -20,6 +20,7 @@
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
+		<behaviors:CallbackOnLoad Callback="{Binding}" />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.Resources>
 		<xaml:Markdown x:Key="Markdown">
@@ -135,6 +136,10 @@
 
 						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 					</StackPanel>
+
+					<views:StatusContainer Grid.Column="1">
+						<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}"/>
+					</views:StatusContainer>
 				</Grid>
 			</TabItem>
 			<TabItem Header="{lex:Loc Muting}" DataContext="{Binding Mute}">

@@ -713,6 +713,7 @@
     <EmbeddedResource Include="Resources\Documentation\Mute.md" />
     <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
     <EmbeddedResource Include="Resources\Texts\Changelog.json" />
+    <EmbeddedResource Include="Resources\Data\PreviewStatuses.json" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>

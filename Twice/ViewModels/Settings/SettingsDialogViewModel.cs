@@ -33,6 +33,16 @@ namespace Twice.ViewModels.Settings
 			return base.OnOk();
 		}
 
+		public async Task OnLoad( object data )
+		{
+			await Task.WhenAll(
+				General.OnLoad( data ),
+				Visual.OnLoad( data ),
+				Mute.OnLoad( data ),
+				Notifications.OnLoad( data )
+				);
+		}
+
 		public IGeneralSettings General { get; }
 		public IMuteSettings Mute { get; }
 		public INotificationSettings Notifications { get; }
