@@ -51,6 +51,11 @@ namespace Twice.ViewModels
 
 		private static async void ExecuteOpenProfileCommand( object args )
 		{
+			if( args == null )
+			{
+				return;
+			}
+
 			string screenName = args.ToString();
 			ulong userid;
 			if( ulong.TryParse( screenName, out userid ) )

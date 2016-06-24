@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Anotar.NLog;
 using LinqToTwitter;
 
 namespace Twice.Models.Twitter
@@ -62,9 +63,17 @@ namespace Twice.Models.Twitter
 
 		public static ulong GetUserId( this User user )
 		{
-			return user.UserID != 0
-				? user.UserID
-				: ulong.Parse( user.UserIDResponse );
+			try
+			{
+				return user.UserID != 0
+					? user.UserID
+					: ulong.Parse( user.UserIDResponse );
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "", ex );
+				return 0;
+			}
 		}
 
 		public static Uri GetUserUrl( this User user )
