@@ -57,6 +57,13 @@ namespace Twice.ViewModels.Main
 			};
 			statusUpdateTimer.Tick += StatusUpdateTimer_Tick;
 			statusUpdateTimer.Start();
+
+			var updateCheckTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromHours( 1 )
+			};
+			updateCheckTimer.Tick += UpdateCheckTimer_Tick;
+			updateCheckTimer.Start();
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -86,6 +93,49 @@ namespace Twice.ViewModels.Main
 				catch( Exception ex )
 				{
 					LogTo.WarnException( $"Credentials for {context.AccountName} could not be checked", ex );
+				}
+			}
+		}
+
+		private async Task CheckForUpdates()
+		{
+			if( Configuration?.General?.CheckForUpdates == true )
+			{
+				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
+
+				LogTo.Info( "Searching for app updates..." );
+				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
+
+				try
+				{
+					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
+					{
+						var release = await mgr.UpdateApp();
+
+						Version newVersion = release?.Version?.Version;
+
+						if( newVersion == null )
+						{
+							LogTo.Warn( "UpdateApp returned null" );
+						}
+						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
+						{
+							LogTo.Info( $"Updated app to {release.Version}" );
+							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
+								NotificationType.Information );
+						}
+						else
+						{
+							LogTo.Info( "App is up to date" );
+						}
+					}
+				}
+				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
+				{
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( "Error during update check", ex );
 				}
 			}
 		}
@@ -155,6 +205,8 @@ namespace Twice.ViewModels.Main
 
 		private void ContextList_ContextsChanged( object sender, EventArgs e )
 		{
+			ColumnList.SetExistingContexts( ContextList.Contexts.Select( c => c.UserId ) );
+
 			RaisePropertyChanged( nameof( HasContexts ) );
 		}
 
@@ -227,6 +279,11 @@ namespace Twice.ViewModels.Main
 			}
 		}
 
+		private async void UpdateCheckTimer_Tick( object sender, EventArgs e )
+		{
+			await CheckForUpdates();
+		}
+
 		[SuppressMessage( "ReSharper", "NotAccessedVariable" )]
 		public async Task OnLoad( object data )
 		{
@@ -257,47 +314,7 @@ namespace Twice.ViewModels.Main
 				LogTo.WarnException( "Failed to read current config from twitter", ex );
 			}
 
-			if( Configuration?.General?.CheckForUpdates == true )
-			{
-				bool useBetaChannel = Configuration?.General?.IncludePrereleaseUpdates == true;
-
-				LogTo.Info( "Searching for app updates..." );
-				LogTo.Info( $"Using beta channel for updates: {useBetaChannel}" );
-
-				try
-				{
-					using( var mgr = await UpdateFactory.Construct( useBetaChannel ) )
-					{
-						var release = await mgr.UpdateApp();
-
-						Version newVersion = release?.Version?.Version;
-
-						if( newVersion == null )
-						{
-							LogTo.Warn( "UpdateApp returned null" );
-						}
-						else if( newVersion > Assembly.GetExecutingAssembly().GetName().Version )
-						{
-							LogTo.Info( $"Updated app to {release.Version}" );
-							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
-						}
-						else
-						{
-							LogTo.Info( "App is up to date" );
-						}
-					}
-				}
-				catch( Exception ex ) when( ex.Message.Contains( "Update.exe" ) )
-				{
-				}
-				catch( Exception ex )
-				{
-					LogTo.WarnException( "Error during update check", ex );
-				}
-			}
-
-			dontWait = QueryRateLimit();
+			await Task.WhenAll( CheckForUpdates(), QueryRateLimit() );
 		}
 
 		public ICommand AccountsCommand

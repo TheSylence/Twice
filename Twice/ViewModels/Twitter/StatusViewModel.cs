@@ -95,7 +95,7 @@ namespace Twice.ViewModels.Twitter
 				OriginalStatus.User.GetUserId(),
 				Model.User.GetUserId()
 			};
-			userIds.AddRange( Model.Entities.UserMentionEntities.Select( m => m.Id ) );
+			userIds.AddRange( Model.Entities?.UserMentionEntities?.Select( m => m.Id ) ?? Enumerable.Empty<ulong>() );
 
 			return userIds.Any();
 		}

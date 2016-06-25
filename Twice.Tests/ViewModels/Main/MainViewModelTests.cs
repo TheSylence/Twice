@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -124,6 +126,36 @@ namespace Twice.Tests.ViewModels.Main
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]
+		public void ChangingAccountsInformsColumnList()
+		{
+			// Arrange
+			var ctx1 = new Mock<IContextEntry>();
+			ctx1.SetupGet( c => c.UserId ).Returns( 123 );
+			var ctx2 = new Mock<IContextEntry>();
+			ctx2.SetupGet( c => c.UserId ).Returns( 111 );
+
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[]
+			{
+				ctx1.Object, ctx2.Object
+			} );
+			var notifier = new Mock<INotifier>();
+			var columnList = new Mock<IColumnDefinitionList>();
+
+			Expression<Func<IEnumerable<ulong>, bool>> checkAction = ids => ids.Contains( 123ul ) && ids.Contains( 111ul );
+
+			columnList.Setup( c => c.SetExistingContexts( It.Is( checkAction ) ) ).Verifiable();
+			var columnFactory = new Mock<IColumnFactory>();
+
+			// Act
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+			contextList.Raise( ctx => ctx.ContextsChanged += null, EventArgs.Empty );
+
+			// Assert
+			columnList.Verify( c => c.SetExistingContexts( It.Is( checkAction ) ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Main" )]
 		public async Task ColumnsAreLoadedOnLoad()
 		{
 			// Arrange
@@ -217,7 +249,7 @@ namespace Twice.Tests.ViewModels.Main
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
@@ -403,7 +435,7 @@ namespace Twice.Tests.ViewModels.Main
 			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );

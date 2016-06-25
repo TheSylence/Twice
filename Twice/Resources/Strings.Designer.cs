@@ -376,6 +376,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove this account?.
+        /// </summary>
+        public static string ConfirmDeleteAccount {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this column?.
         /// </summary>
         public static string ConfirmDeleteColumn {

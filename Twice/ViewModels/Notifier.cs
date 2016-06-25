@@ -42,16 +42,6 @@ namespace Twice.ViewModels
 			}
 		}
 
-		public void PreviewInAppNotification( string message, bool top, int closeTime )
-		{
-			var context = new NotificationViewModel( message, NotificationType.Information, top )
-			{
-				CloseDelay = TimeSpan.FromSeconds( closeTime )
-			};
-
-			NotifyToast( context );
-		}
-
 		private void NotifyPopup( ColumnItem item, bool win10 )
 		{
 			if( win10 )
@@ -62,7 +52,15 @@ namespace Twice.ViewModels
 
 		private void NotifySound( ColumnItem item )
 		{
-			Dispatcher.CheckBeginInvokeOnUI( () => Player?.Play() );
+			Dispatcher.CheckBeginInvokeOnUI( () =>
+			{
+				if( Player != null )
+				{
+					Player.Stop();
+					Player.Position = TimeSpan.Zero;
+					Player.Play();
+				}
+			} );
 		}
 
 		private void NotifyToast( ColumnItem item )
@@ -136,6 +134,16 @@ namespace Twice.ViewModels
 			{
 				NotifyPopup( item, Config.Notifications.Win10Enabled );
 			}
+		}
+
+		public void PreviewInAppNotification( string message, bool top, int closeTime )
+		{
+			var context = new NotificationViewModel( message, NotificationType.Information, top )
+			{
+				CloseDelay = TimeSpan.FromSeconds( closeTime )
+			};
+
+			NotifyToast( context );
 		}
 
 		public void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner )

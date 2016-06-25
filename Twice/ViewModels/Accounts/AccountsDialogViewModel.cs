@@ -1,15 +1,16 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
+using Twice.Views.Services;
 
 namespace Twice.ViewModels.Accounts
 {
@@ -80,6 +81,19 @@ namespace Twice.ViewModels.Accounts
 			Close( true );
 		}
 
+		private async void ExecuteDeleteAccountCommand( AccountEntry account )
+		{
+			var csa = new ConfirmServiceArgs( Strings.ConfirmDeleteAccount );
+
+			if( !await ViewServiceRepository.Confirm( csa ) )
+			{
+				return;
+			}
+
+			AddedAccounts.Remove( account );
+			ContextList.RemoveAccount( account.Data.UserId );
+		}
+
 		private void ExecuteMakeDefaultAccountCommand( AccountEntry entry )
 		{
 			foreach( var acc in AddedAccounts )
@@ -109,9 +123,19 @@ namespace Twice.ViewModels.Accounts
 			=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
 				ExecuteMakeDefaultAccountCommand ) );
 
+		public ICommand DeleteAccountCommand
+			=> _DeleteAccountCommand ?? ( _DeleteAccountCommand = new RelayCommand<AccountEntry>( ExecuteDeleteAccountCommand ) )
+			;
+
 		private readonly ITwitterAuthorizer Authorizer;
+
 		private readonly IColumnDefinitionList ColumnList;
+
 		private RelayCommand _AddAccountCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand<AccountEntry> _DeleteAccountCommand;
+
 		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
 		private CancellationTokenSource PinEntryCancelled;
 	}

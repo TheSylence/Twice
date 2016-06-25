@@ -663,4 +663,7 @@
   <data name="CloseNotificationDelay" xml:space="preserve">
     <value>Benachrichtigung nach X Sekunden schließen</value>
   </data>
+  <data name="ConfirmDeleteAccount" xml:space="preserve">
+    <value>Soll dieses Konto wirklich entfernt werden?</value>
+  </data>
 </root>
