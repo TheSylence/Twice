@@ -431,7 +431,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var parser = new Mock<IStreamParser>();
 
 			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
-			var tester = new PropertyChangedTester( vm, true, new NinjectTypeResolver() );
+			var tester = new PropertyChangedTester( vm, true );
 
 			// Act
 			tester.Test( nameof( ColumnViewModelBase.Muter ), nameof( ColumnViewModelBase.Cache ) );

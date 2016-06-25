@@ -7,7 +7,9 @@
         "Changes": [
             "Application data is now stored in roaming appdata"
         ],
-        "Fixes": [],
+        "Fixes": [
+            "Fixed crashes when (un)following users"
+        ],
         "Issues": [ ]
     },
     {

@@ -19,9 +19,22 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		internal void OverwriteContext( IContextEntry context )
+		{
+			Context = context;
+		}
+
 		private async void ExecuteFollowUserCommand()
 		{
-			await Context.Twitter.Users.FollowUser( User.UserId );
+			try
+			{
+				await Context.Twitter.Users.FollowUser( User.UserId );
+			}
+			catch( TwitterQueryException ex )
+			{
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+				return;
+			}
 
 			if( Friendship?.TargetRelationship?.FollowedBy == null )
 			{
@@ -34,7 +47,15 @@ namespace Twice.ViewModels.Profile
 
 		private async void ExecuteUnfollowUserCommand()
 		{
-			await Context.Twitter.Users.UnfollowUser( User.UserId );
+			try
+			{
+				await Context.Twitter.Users.UnfollowUser( User.UserId );
+			}
+			catch( TwitterQueryException ex )
+			{
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+				return;
+			}
 
 			if( Friendship?.TargetRelationship?.FollowedBy != null )
 			{
@@ -84,7 +105,7 @@ namespace Twice.ViewModels.Profile
 
 		public async Task OnLoad( object data )
 		{
-			if( ProfileId == 0 && string.IsNullOrWhiteSpace(ScreenName) )
+			if( ProfileId == 0 && string.IsNullOrWhiteSpace( ScreenName ) )
 			{
 				Close( false );
 				return;
