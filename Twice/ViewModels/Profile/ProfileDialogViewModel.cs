@@ -91,7 +91,7 @@ namespace Twice.ViewModels.Profile
 			}
 
 			IsBusy = true;
-			Context = ContextList.Contexts.First();
+			Context = ContextList.Contexts.First( ctx => ctx.IsDefault );
 
 			UserEx user = null;
 			try

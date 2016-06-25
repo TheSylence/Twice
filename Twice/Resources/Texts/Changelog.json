@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [ ],
         "Changes": [
-            "Update check is now done once an hour"
+            "Update check is now done once an hour",
+            "(Un)following a user from the profile dialog is now done using the default account"
         ],
         "Fixes": [
             "Accounts can be removed",
