@@ -206,7 +206,9 @@
 
 						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
 
-						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" 
+								   Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" 
+								   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" Visibility="{Binding IsReply, Converter={StaticResource BoolToVisibleConv}}">
@@ -223,7 +225,9 @@
 
 						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
 												 Foreground="{DynamicResource SecondaryAccentBrush}" />
-						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" />
+						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" 
+								   FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+								   Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
 				</StackPanel>
 
@@ -265,6 +269,9 @@
 													<Setter Property="Visibility" Value="Visible" />
 													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 												</DataTrigger>
+												<DataTrigger Binding="{Binding IsFavorited}" Value="False">
+													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+												</DataTrigger>
 											</Style.Triggers>
 										</Style>
 									</Button.Style>
@@ -287,6 +294,9 @@
 													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 													<Setter Property="IsEnabled" Value="False" />
 												</DataTrigger>
+												<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
+													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+												</DataTrigger>
 											</Style.Triggers>
 										</Style>
 									</materialDesign:PopupBox.Style>
@@ -298,6 +308,9 @@
 													<Style.Triggers>
 														<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
 															<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+														</DataTrigger>
+														<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
+															<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
 														</DataTrigger>
 													</Style.Triggers>
 												</Style>
@@ -311,7 +324,8 @@
 									</StackPanel>
 								</materialDesign:PopupBox>
 
-								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" Grid.Column="0" Grid.Row="1">
+								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" 
+										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -326,7 +340,7 @@
 									<materialDesign:PackIcon Kind="ReplyAll" />
 								</Button>
 
-								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1">
+								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -355,7 +369,7 @@
 										<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
 							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
 											<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
-													   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+													   Foreground="{DynamicResource MaterialDesignBody}" />
 										</Hyperlink>
 									</ContentControl>
 								</StackPanel>
@@ -375,16 +389,21 @@
 										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
 									</i:Interaction.Behaviors>
-									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-												VerticalAlignment="Center" />
+									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" 
+											   FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" 
+											   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
+									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" 
+											   Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+												VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 								</StackPanel>
 							</DockPanel>
 
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
-					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" 
+															FontSize="{DynamicResource GlobalFontSize}"
+															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
+															Foreground="{DynamicResource MaterialDesignBody}" />
 
 								<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
 											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
@@ -407,7 +426,7 @@
 								<ContentControl>
 									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
 												Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-										<TextBlock Text="{Binding CreatedAt}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+										<TextBlock Text="{Binding CreatedAt}" Foreground="{DynamicResource MaterialDesignBody}" />
 									</Hyperlink>
 								</ContentControl>
 
@@ -417,7 +436,7 @@
 									<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
 											   CommandParameter="{Binding Model.Source, Converter={StaticResource SourceUrlConv}}">
 										<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}"
-												   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+												   Foreground="{DynamicResource MaterialDesignBody}" />
 									</Hyperlink>
 								</ContentControl>
 							</StackPanel>
