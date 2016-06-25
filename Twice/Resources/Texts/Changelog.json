@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [ ],
-        "Changes": [ ],
+        "Changes": [
+            "Update check is now done once an hour"
+        ],
         "Fixes": [
             "Accounts can be removed",
             "Fixed crash when opening user profile via retweet message"
