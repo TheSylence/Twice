@@ -14,6 +14,7 @@
 			xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
 			xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 			xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
+			xmlns:system="clr-namespace:System;assembly=mscorlib"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
@@ -138,7 +139,22 @@
 					</StackPanel>
 
 					<views:StatusContainer Grid.Column="1">
-						<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}"/>
+						<views:StatusContainer.Resources>
+							<ResourceDictionary x:Name="PreviewResourceDictionary">
+								<system:Double x:Key="GlobalFontSize">12.0</system:Double>
+								<SolidColorBrush x:Key="HashtagBrush" Color="Blue" />
+								<SolidColorBrush x:Key="LinkBrush" Color="Blue" />
+								<SolidColorBrush x:Key="MentionBrush" Color="Blue" />
+							</ResourceDictionary>
+						</views:StatusContainer.Resources>
+						<i:Interaction.Behaviors>
+							<behaviors:PreviewResourceManipulator Dictionary="{Binding ElementName=PreviewResourceDictionary}"
+																  FontSize="{Binding SelectedFontSize.Size}"
+																  HashtagColor="{Binding SelectedHashtagColor.ColorBrush}"
+																  LinkColor="{Binding SelectedLinkColor.ColorBrush}"
+																  MentionColor="{Binding SelectedMentionColor.ColorBrush}"/>
+						</i:Interaction.Behaviors>
+						<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}" />
 					</views:StatusContainer>
 				</Grid>
 			</TabItem>

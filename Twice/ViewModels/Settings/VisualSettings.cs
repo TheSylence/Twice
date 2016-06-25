@@ -72,6 +72,8 @@ namespace Twice.ViewModels.Settings
 			PreviewStatuses.AddRange( JsonConvert.DeserializeObject<List<Status>>( json )
 				.Select( s => new StatusViewModel( s, ContextList.Contexts.First(), Configuration, ViewServiceRepository ) ) );
 
+			RaisePropertyChanged( nameof( SelectedFontSize ) );
+
 			return Task.CompletedTask;
 		}
 
