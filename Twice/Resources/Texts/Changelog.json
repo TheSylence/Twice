@@ -10,7 +10,8 @@
         ],
         "Fixes": [
             "Accounts can be removed",
-            "Fixed crash when opening user profile via retweet message"
+            "Fixed crash when opening user profile via retweet message",
+            "Select all checkbox in account column selection is now behaving correctly"
         ],
         "Issues": [ ]
     },

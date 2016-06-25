@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Twice.Models.Columns;
@@ -14,7 +15,35 @@ namespace Twice.ViewModels.ColumnManagement
 			AvailableColumnTypes =
 				ColumnTypeListFactory.GetItems( types ).Select( t => new ItemSelection<ColumnTypeItem>( t, true ) ).ToList();
 
+			foreach( var c in AvailableColumnTypes )
+			{
+				c.PropertyChanged += ColumnType_PropertyChanged;
+			}
+
 			SelectAll = true;
+		}
+
+		private void ColumnType_PropertyChanged( object sender, PropertyChangedEventArgs e )
+		{
+			if( e.PropertyName != nameof( ItemSelection<ColumnTypeItem>.IsSelected ) )
+			{
+				return;
+			}
+
+			UpdateSelectAll();
+		}
+
+		private void UpdateSelectAll()
+		{
+			if( InSelection )
+			{
+				return;
+			}
+
+			bool all = AvailableColumnTypes.All( c => c.IsSelected );
+			_SelectAll = all;
+
+			RaisePropertyChanged( nameof( SelectAll ) );
 		}
 
 		public ICollection<ItemSelection<ColumnTypeItem>> AvailableColumnTypes { get; }
@@ -29,15 +58,20 @@ namespace Twice.ViewModels.ColumnManagement
 					return;
 				}
 
+				InSelection = true;
 				_SelectAll = value;
 				foreach( var type in AvailableColumnTypes )
 				{
 					type.IsSelected = _SelectAll;
 				}
 
+				InSelection = false;
+
 				RaisePropertyChanged();
 			}
 		}
+
+		private bool InSelection;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _SelectAll;
