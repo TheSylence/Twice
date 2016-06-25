@@ -37,7 +37,7 @@ namespace Twice.ViewModels.Twitter
 			else
 			{
 				Model = OriginalStatus;
-				SourceUser = new UserViewModel( Model.User );
+				SourceUser = null;
 			}
 
 			User = new UserViewModel( Model.User );
