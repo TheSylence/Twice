@@ -34,7 +34,7 @@ namespace Twice
 #if DEBUG
 				return file;
 #else
-				return Path.Combine( AppDataFolder, file );
+				return Path.Combine( RoamingAppDataFolder, file );
 #endif
 			}
 
@@ -45,6 +45,20 @@ namespace Twice
 			internal static readonly string WindowSettingsFileName = P( "window.json" );
 			internal static readonly string DefaultNotificationSoundFile = P( "HumanBird.wav" );
 
+			internal static string RoamingAppDataFolder
+			{
+				get
+				{
+					var roamingAppData = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData );
+					var path = Path.Combine( roamingAppData, "Twice" );
+					if( !Directory.Exists( path ) )
+					{
+						Directory.CreateDirectory( path );
+					}
+					return path;
+				}
+			}
+
 			internal static string AppDataFolder
 			{
 				get
@@ -52,10 +66,6 @@ namespace Twice
 					var localAppData = Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData );
 
 					var path = Path.Combine( localAppData, "Twice", "data" );
-					if( !Directory.Exists( path ) )
-					{
-						Directory.CreateDirectory( path );
-					}
 					return path;
 				}
 			}
