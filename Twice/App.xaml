@@ -59,7 +59,7 @@
 
 			<Style TargetType="controls:MetroWindow" x:Key="WindowStyle">
 				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-				<Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="TextElement.FontWeight" Value="Regular" />
 				<Setter Property="TextElement.FontSize" Value="13" />
@@ -80,7 +80,7 @@
 			<Style TargetType="Hyperlink">
 				<Setter Property="TextDecorations" Value="{x:Null}" />
 				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
-				<Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 			</Style>
 
 			<viewModels:ViewModelLocator x:Key="Locator" />

@@ -140,19 +140,17 @@
 
 					<views:StatusContainer Grid.Column="1">
 						<views:StatusContainer.Resources>
-							<ResourceDictionary x:Name="PreviewResourceDictionary">
-								<system:Double x:Key="GlobalFontSize">12.0</system:Double>
-								<SolidColorBrush x:Key="HashtagBrush" Color="Blue" />
-								<SolidColorBrush x:Key="LinkBrush" Color="Blue" />
-								<SolidColorBrush x:Key="MentionBrush" Color="Blue" />
-							</ResourceDictionary>
+							<ResourceDictionary x:Name="PreviewResourceDictionary" />
 						</views:StatusContainer.Resources>
 						<i:Interaction.Behaviors>
 							<behaviors:PreviewResourceManipulator Dictionary="{Binding ElementName=PreviewResourceDictionary}"
 																  FontSize="{Binding SelectedFontSize.Size}"
 																  HashtagColor="{Binding SelectedHashtagColor.ColorBrush}"
 																  LinkColor="{Binding SelectedLinkColor.ColorBrush}"
-																  MentionColor="{Binding SelectedMentionColor.ColorBrush}"/>
+																  MentionColor="{Binding SelectedMentionColor.ColorBrush}"
+																  PrimaryColorName="{Binding SelectedPrimaryColor.Name}"
+																  AccentColorName="{Binding SelectedAccentColor.Name}"
+																  DarkTheme="{Binding UseDarkTheme}" />
 						</i:Interaction.Behaviors>
 						<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}" />
 					</views:StatusContainer>
