@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Settings
 {
@@ -8,6 +9,7 @@ namespace Twice.ViewModels.Settings
 		ICollection<FontSizeItem> AvailableFontSizes { get; }
 		ICollection<ColorItem> AvailablePrimaryColors { get; }
 		bool InlineMedias { get; set; }
+		ICollection<StatusViewModel> PreviewStatuses { get; }
 		ColorItem SelectedAccentColor { get; set; }
 		FontSizeItem SelectedFontSize { get; set; }
 		ColorItem SelectedHashtagColor { get; set; }

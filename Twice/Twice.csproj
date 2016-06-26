@@ -243,6 +243,7 @@
     <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
+    <Compile Include="Behaviors\PreviewResourceManipulator.cs" />
     <Compile Include="Behaviors\ScrollIntoView.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\WindowHelper.cs" />
@@ -713,6 +714,7 @@
     <EmbeddedResource Include="Resources\Documentation\Mute.md" />
     <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
     <EmbeddedResource Include="Resources\Texts\Changelog.json" />
+    <EmbeddedResource Include="Resources\Data\PreviewStatuses.json" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>

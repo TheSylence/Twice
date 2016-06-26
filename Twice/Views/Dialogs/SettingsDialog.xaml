@@ -14,12 +14,14 @@
 			xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
 			xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 			xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
+			xmlns:system="clr-namespace:System;assembly=mscorlib"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource Locator}}"
              d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
+		<behaviors:CallbackOnLoad Callback="{Binding}" />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.Resources>
 		<xaml:Markdown x:Key="Markdown">
@@ -135,6 +137,26 @@
 
 						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 					</StackPanel>
+
+					<views:StatusContainer Grid.Column="1" Margin="5">
+						<views:StatusContainer.Resources>
+							<ResourceDictionary x:Name="PreviewResourceDictionary" />
+						</views:StatusContainer.Resources>
+						<i:Interaction.Behaviors>
+							<behaviors:PreviewResourceManipulator Dictionary="{Binding ElementName=PreviewResourceDictionary}"
+																  FontSize="{Binding SelectedFontSize.Size}"
+																  HashtagColor="{Binding SelectedHashtagColor.ColorBrush}"
+																  LinkColor="{Binding SelectedLinkColor.ColorBrush}"
+																  MentionColor="{Binding SelectedMentionColor.ColorBrush}"
+																  PrimaryColorName="{Binding SelectedPrimaryColor.Name}"
+																  AccentColorName="{Binding SelectedAccentColor.Name}"
+																  DarkTheme="{Binding UseDarkTheme}" />
+						</i:Interaction.Behaviors>
+
+						<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+							<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+						</ScrollViewer>
+					</views:StatusContainer>
 				</Grid>
 			</TabItem>
 			<TabItem Header="{lex:Loc Muting}" DataContext="{Binding Mute}">

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -8,11 +9,16 @@ namespace Twice.ViewModels.Settings
 {
 	internal abstract class NotificationModuleSettings : ObservableObject, ISettingsSection
 	{
-		public abstract void SaveTo( IConfig config );
-
 		protected virtual void ExecutePreviewCommand()
 		{
 		}
+
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
+		}
+
+		public abstract void SaveTo( IConfig config );
 
 		public bool Enabled
 		{
@@ -32,7 +38,8 @@ namespace Twice.ViewModels.Settings
 		public ICommand PreviewCommand => _PreviewCommand ?? ( _PreviewCommand = new RelayCommand( ExecutePreviewCommand ) );
 		public abstract string Title { get; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Enabled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _Enabled;
 
 		private RelayCommand _PreviewCommand;
 	}

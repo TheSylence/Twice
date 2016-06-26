@@ -49,9 +49,9 @@ namespace Twice.Injections
 
 					File.Move( file, Path.Combine( roamingAppDataFolder, targetFile ) );
 				}
-			}
 
-			Directory.Delete( localAppDataFolder );
+				Directory.Delete( localAppDataFolder );
+			}
 		}
 	}
 }

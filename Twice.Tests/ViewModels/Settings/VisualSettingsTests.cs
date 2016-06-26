@@ -1,11 +1,13 @@
-﻿using MaterialDesignColors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
+using MaterialDesignColors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Configuration;
+using Twice.Models.Twitter;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Settings;
 
@@ -14,6 +16,32 @@ namespace Twice.Tests.ViewModels.Settings
 	[TestClass, ExcludeFromCodeCoverage]
 	public class VisualSettingsTests
 	{
+		[TestMethod, TestCategory( "ViewModels.Settings" )]
+		public async Task PreviewStatusesAreLoadedCorrectly()
+		{
+			// Arrange
+			var cfg = new Mock<IConfig>();
+			cfg.SetupGet( c => c.Visual ).Returns( new VisualConfig() );
+
+			var colors = new Mock<IColorProvider>();
+			var lang = new Mock<ILanguageProvider>();
+
+			var context = new Mock<IContextEntry>();
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+
+			var vm = new VisualSettings( cfg.Object, colors.Object, lang.Object )
+			{
+				ContextList = contextList.Object
+			};
+
+			// Act
+			await vm.OnLoad( null );
+
+			// Assert
+			Assert.AreEqual( 4, vm.PreviewStatuses.Count );
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
 		public void PropertyChangedIsImplementedCorrectly()
 		{
@@ -138,8 +166,8 @@ namespace Twice.Tests.ViewModels.Settings
 
 		private static Swatch CreateSwatch( string name )
 		{
-			var primaryHues = new[] { new Hue( "p", Colors.Red, Colors.Blue ) };
-			var accentHues = new[] { new Hue( "a", Colors.Green, Colors.Yellow ) };
+			var primaryHues = new[] {new Hue( "p", Colors.Red, Colors.Blue )};
+			var accentHues = new[] {new Hue( "a", Colors.Green, Colors.Yellow )};
 
 			return new Swatch( name, primaryHues, accentHues );
 		}
