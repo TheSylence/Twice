@@ -6,7 +6,6 @@ using System.Windows.Media;
 using MaterialDesignColors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities.Ui;
@@ -40,13 +39,7 @@ namespace Twice.Tests.ViewModels.Settings
 			await vm.OnLoad( null );
 
 			// Assert
-			var firstTweetEver = vm.PreviewStatuses.Last().Model;
-
-			Assert.AreEqual( 20ul, firstTweetEver.ID );
-			Assert.AreEqual( "just setting up my twttr", firstTweetEver.Text );
-
-			Assert.AreEqual( "2006-03-21 20:50:14",
-				firstTweetEver.CreatedAt.ToString( "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture ) );
+			Assert.AreEqual( 4, vm.PreviewStatuses.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]

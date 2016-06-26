@@ -69,11 +69,13 @@ namespace Twice.ViewModels.Settings
 		public Task OnLoad( object data )
 		{
 			var json = Resource.AsString( "Twice.Resources.Data.PreviewStatuses.json" );
-			PreviewStatuses.AddRange( JsonConvert.DeserializeObject<List<Status>>( json )
-				.Select( s => new StatusViewModel( s, ContextList.Contexts.First(), Configuration, ViewServiceRepository ) ) );
 
-			RaisePropertyChanged( nameof( SelectedFontSize ) );
+			var statuses =  JsonConvert.DeserializeObject<List<Status>>( json )
+				.Select( s => new StatusViewModel( s, ContextList.Contexts.First(), Configuration, ViewServiceRepository ) ) .ToList();
 
+			statuses[1].QuotedTweet = statuses[0];
+
+			PreviewStatuses.AddRange( statuses );
 			return Task.CompletedTask;
 		}
 

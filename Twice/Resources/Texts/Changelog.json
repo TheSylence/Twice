@@ -3,12 +3,15 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [ ],
+        "NewFeatures": [
+            "Visual settings now include a preview"
+        ],
         "Changes": [
             "Application data is now stored in roaming appdata"
         ],
         "Fixes": [
-            "Fixed crashes when (un)following users"
+            "Fixed crashes when (un)following users",
+            "Verified icon is now visible in light theme"
         ],
         "Issues": [ ]
     },

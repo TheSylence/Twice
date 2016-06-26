@@ -395,7 +395,7 @@
 									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" 
 											   Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 												VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
-									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
+									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
 								</StackPanel>
 							</DockPanel>
 

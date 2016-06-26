@@ -138,7 +138,7 @@
 						<CheckBox Content="{lex:Loc InlineMediaInTimeline}" IsChecked="{Binding InlineMedias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 					</StackPanel>
 
-					<views:StatusContainer Grid.Column="1">
+					<views:StatusContainer Grid.Column="1" Margin="5">
 						<views:StatusContainer.Resources>
 							<ResourceDictionary x:Name="PreviewResourceDictionary" />
 						</views:StatusContainer.Resources>
@@ -152,7 +152,10 @@
 																  AccentColorName="{Binding SelectedAccentColor.Name}"
 																  DarkTheme="{Binding UseDarkTheme}" />
 						</i:Interaction.Behaviors>
-						<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+
+						<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+							<ItemsControl ItemsSource="{Binding PreviewStatuses}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+						</ScrollViewer>
 					</views:StatusContainer>
 				</Grid>
 			</TabItem>
