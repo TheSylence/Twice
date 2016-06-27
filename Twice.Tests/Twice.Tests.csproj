@@ -187,6 +187,7 @@
     <Compile Include="Converters\InvertBoolTests.cs" />
     <Compile Include="Converters\LocalizeTests.cs" />
     <Compile Include="Converters\MathConverterTests.cs" />
+    <Compile Include="Converters\MnemonicsRemoverTests.cs" />
     <Compile Include="Converters\NotNullTests.cs" />
     <Compile Include="Converters\RelativeDateTests.cs" />
     <Compile Include="Converters\SourceNameTests.cs" />

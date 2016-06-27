@@ -79,7 +79,7 @@
 												<StackPanel Orientation="Vertical">
 													<Image Source="{Binding Image}" Width="72" Height="72" Margin="5" />
 
-													<Button Content="{Binding ScreenName}" Margin="5" Style="{StaticResource MaterialDesignRaisedButton}"
+													<Button Content="{Binding ScreenName, Converter={StaticResource MnemonicsConv}}" Margin="5" Style="{StaticResource MaterialDesignRaisedButton}"
 															Command="{Binding Data.CurrentPage.GotoNextPageCommand, Source={StaticResource DataProxy}}"
 															CommandParameter="{Binding Context.UserId}" />
 												</StackPanel>

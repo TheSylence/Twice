@@ -13,7 +13,8 @@
             "Fixed crashes when (un)following users",
             "Verified icon is now visible in light theme",
             "Profiles of protected accounts are now viewed from an account that follows the user",
-            "Statuses in columns are now sorted correctly"
+            "Statuses in columns are now sorted correctly",
+            "Account names with underscores are now correctly displayed"
         ],
         "Issues": [ ]
     },
