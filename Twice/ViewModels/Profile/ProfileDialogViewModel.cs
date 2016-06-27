@@ -19,6 +19,77 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		public async Task OnLoad( object data )
+		{
+			if( ProfileId == 0 && string.IsNullOrWhiteSpace( ScreenName ) )
+			{
+				Close( false );
+				return;
+			}
+
+			IsBusy = true;
+			var contextId = await ( Cache?.FindFriend( ProfileId ) ?? Task.FromResult( 0ul ) );
+
+			IContextEntry friendContext = ContextList.Contexts.FirstOrDefault( ctx => ctx.UserId == contextId );
+			Context = friendContext ?? ContextList.Contexts.FirstOrDefault( ctx => ctx.IsDefault ) ?? ContextList.Contexts.First();
+
+			UserEx user = null;
+			try
+			{
+				if( ProfileId == 0 )
+				{
+					user = await Context.Twitter.Users.ShowUser( ScreenName, true );
+				}
+				else
+				{
+					user = await Context.Twitter.Users.ShowUser( ProfileId, true );
+				}
+			}
+			catch( TwitterQueryException ex )
+			{
+				LogTo.WarnException( "Failed to load user profile", ex );
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+			}
+			if( user == null )
+			{
+				Notifier.DisplayMessage( Strings.UserNotFound, NotificationType.Error );
+				Close( false );
+				return;
+			}
+
+			User = new UserViewModel( user );
+			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserId );
+
+			UserPages = new List<UserSubPage>
+			{
+				new UserSubPage( Strings.Tweets, LoadStatuses, LoadMoreStatuses, User.Model.StatusesCount )
+				{
+					Dispatcher = Dispatcher
+				},
+				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount )
+				{
+					Dispatcher = Dispatcher
+				},
+				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
+				{
+					Dispatcher = Dispatcher
+				}
+			};
+			RaisePropertyChanged( nameof( UserPages ) );
+
+			IsBusy = false;
+		}
+
+		public void Setup( ulong profileId )
+		{
+			ProfileId = profileId;
+		}
+
+		public void Setup( string screenName )
+		{
+			ScreenName = screenName;
+		}
+
 		internal void OverwriteContext( IContextEntry context )
 		{
 			Context = context;
@@ -103,74 +174,6 @@ namespace Twice.ViewModels.Profile
 			return await LoadStatuses( null );
 		}
 
-		public async Task OnLoad( object data )
-		{
-			if( ProfileId == 0 && string.IsNullOrWhiteSpace( ScreenName ) )
-			{
-				Close( false );
-				return;
-			}
-
-			IsBusy = true;
-			Context = ContextList.Contexts.FirstOrDefault( ctx => ctx.IsDefault ) ?? ContextList.Contexts.First();
-
-			UserEx user = null;
-			try
-			{
-				if( ProfileId == 0 )
-				{
-					user = await Context.Twitter.Users.ShowUser( ScreenName, true );
-				}
-				else
-				{
-					user = await Context.Twitter.Users.ShowUser( ProfileId, true );
-				}
-			}
-			catch( TwitterQueryException ex )
-			{
-				LogTo.WarnException( "Failed to load user profile", ex );
-				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
-			}
-			if( user == null )
-			{
-				Notifier.DisplayMessage( Strings.UserNotFound, NotificationType.Error );
-				Close( false );
-				return;
-			}
-
-			User = new UserViewModel( user );
-			Friendship = await Context.Twitter.Friendships.GetFriendshipWith( Context.UserId, User.UserId );
-
-			UserPages = new List<UserSubPage>
-			{
-				new UserSubPage( Strings.Tweets, LoadStatuses, LoadMoreStatuses, User.Model.StatusesCount )
-				{
-					Dispatcher = Dispatcher
-				},
-				new UserSubPage( Strings.Following, LoadFollowings, User.Model.FriendsCount )
-				{
-					Dispatcher = Dispatcher
-				},
-				new UserSubPage( Strings.Followers, LoadFollowers, User.Model.FollowersCount )
-				{
-					Dispatcher = Dispatcher
-				}
-			};
-			RaisePropertyChanged( nameof( UserPages ) );
-
-			IsBusy = false;
-		}
-
-		public void Setup( ulong profileId )
-		{
-			ProfileId = profileId;
-		}
-
-		public void Setup( string screenName )
-		{
-			ScreenName = screenName;
-		}
-
 		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
 			ExecuteFollowUserCommand ) );
 
@@ -204,6 +207,9 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		public ICommand UnfollowUserCommand => _UnfollowUserCommand ?? ( _UnfollowUserCommand = new RelayCommand(
 			ExecuteUnfollowUserCommand ) );
 
@@ -223,22 +229,15 @@ namespace Twice.ViewModels.Profile
 		}
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
-
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		private RelayCommand _FollowUserCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private Friendship _Friendship;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsBusy;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
 
 		private RelayCommand _UnfollowUserCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private UserViewModel _User;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private UserViewModel _User;
 
 		private IContextEntry Context;
 		private ulong MaxId = ulong.MaxValue;

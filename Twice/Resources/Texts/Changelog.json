@@ -11,7 +11,8 @@
         ],
         "Fixes": [
             "Fixed crashes when (un)following users",
-            "Verified icon is now visible in light theme"
+            "Verified icon is now visible in light theme",
+            "Profiles of protected accounts are now viewed from an account that follows the user"
         ],
         "Issues": [ ]
     },

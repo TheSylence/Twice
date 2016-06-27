@@ -1,9 +1,10 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using Twice.Models.Cache;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Validation;
 
@@ -11,6 +12,8 @@ namespace Twice.ViewModels
 {
 	internal class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
+		public event EventHandler<CloseEventArgs> CloseRequested;
+
 		protected virtual bool CanExecuteOkCommand()
 		{
 			return !HasErrors;
@@ -45,9 +48,13 @@ namespace Twice.ViewModels
 			}
 		}
 
-		public event EventHandler<CloseEventArgs> CloseRequested;
+		[Inject]
+		public ICache Cache { get; set; }
 
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
@@ -66,16 +73,10 @@ namespace Twice.ViewModels
 			}
 		}
 
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _OkCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _OkCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 	}
 }

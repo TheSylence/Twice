@@ -274,10 +274,7 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand AttachImageCommand
 			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
-
-		[Inject]
-		public ICache Cache { get; set; }
-
+		
 		public bool ConfirmationRequired
 		{
 			get { return Accounts.Where( a => a.Use ).Any( a => a.Context.RequiresConfirmation ); }

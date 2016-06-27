@@ -30,6 +30,10 @@ namespace Twice.Models.Cache
 
 		Task<UserEx> GetUser( ulong userId );
 
+		Task<IEnumerable<ulong>> GetUserFriends( ulong userId );
+
+		Task<ulong> FindFriend( ulong friendId );
+
 		Task MapStatusesToColumn( IList<Status> statuses, Guid columnId );
 
 		Task<LinqToTwitter.Configuration> ReadTwitterConfig();
@@ -37,5 +41,7 @@ namespace Twice.Models.Cache
 		Task RemoveStatus( ulong id );
 
 		Task SaveTwitterConfig( LinqToTwitter.Configuration cfg );
+
+		Task SetUserFriends( ulong userId, IEnumerable<ulong> friendIds );
 	}
 }

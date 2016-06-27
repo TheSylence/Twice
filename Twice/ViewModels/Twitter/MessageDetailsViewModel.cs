@@ -76,9 +76,6 @@ namespace Twice.ViewModels.Twitter
 
 		public ICollection<MessageViewModel> PreviousMessages { get; }
 
-		[Inject]
-		public ICache Cache { get; set; }
-
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoadingPrevious;
 
