@@ -24,7 +24,8 @@ namespace Twice.Tests
 					SymbolEntities = new List<SymbolEntity>(),
 					UrlEntities = new List<UrlEntity>(),
 					UserMentionEntities = new List<UserMentionEntity>()
-				}
+				},
+				IDString = "0"
 			};
 		}
 

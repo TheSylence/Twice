@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -15,7 +14,6 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.Models.Twitter.Entities;
 using Twice.Models.Twitter.Streaming;
 using Twice.Resources;
 using Twice.Utilities;
@@ -87,7 +85,7 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		protected async Task AddItem( MessageViewModel message, bool append = true )
+		protected async Task AddItem( MessageViewModel message )
 		{
 			await Dispatcher.RunAsync( () =>
 			{
@@ -99,64 +97,41 @@ namespace Twice.ViewModels.Columns
 					ItemCollection.Remove( item );
 				}
 
-				if( append )
-				{
-					ItemCollection.Add( message );
-				}
-				else
-				{
-					ItemCollection.Insert( 0, message );
-				}
+				int index = GetInsertIndex( message );
+				ItemCollection.Insert( index, message );
 			} );
 
 			RaiseNewItem( message );
 		}
 
-		protected async Task AddItem( StatusViewModel status, bool append = true )
+		protected async Task AddItem( StatusViewModel status )
 		{
 			SinceId = Math.Min( SinceId, status.Id );
 			MaxId = Math.Min( MaxId, status.Id );
 
-			await Dispatcher.RunAsync( () =>
-			{
-				if( append )
-				{
-					ItemCollection.Add( status );
-				}
-				else
-				{
-					ItemCollection.Insert( 0, status );
-				}
-			} );
+			int insertIndex = GetInsertIndex( status );
+			await Dispatcher.RunAsync( () => { ItemCollection.Insert( insertIndex, status ); } );
 			RaiseNewItem( status );
 
 			await UpdateCache( status.Model );
 		}
 
-		protected async Task AddItems( IEnumerable<MessageViewModel> messages, bool append = true )
+		protected async Task AddItems( IEnumerable<MessageViewModel> messages )
 		{
 			var messageViewModels = messages as MessageViewModel[] ?? messages.ToArray();
 			if( messageViewModels.Any() )
 			{
 				foreach( var s in messageViewModels )
 				{
-					//await UpdateCache( s.Model );
-
-					if( append )
-					{
-						await Dispatcher.RunAsync( () => ItemCollection.Add( s ) );
-					}
-					else
-					{
-						await Dispatcher.RunAsync( () => ItemCollection.Insert( 0, s ) );
-					}
+					int index = GetInsertIndex( s );
+					await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
 				}
 
 				RaiseNewItem( messageViewModels.Last() );
 			}
 		}
 
-		protected async Task AddItems( IEnumerable<StatusViewModel> statuses, bool append = true )
+		protected async Task AddItems( IEnumerable<StatusViewModel> statuses )
 		{
 			var statusViewModels = statuses as StatusViewModel[] ?? statuses.ToArray();
 			if( statusViewModels.Any() )
@@ -168,14 +143,8 @@ namespace Twice.ViewModels.Columns
 				{
 					await UpdateCache( s.Model );
 
-					if( append )
-					{
-						await Dispatcher.RunAsync( () => ItemCollection.Add( s ) );
-					}
-					else
-					{
-						await Dispatcher.RunAsync( () => ItemCollection.Insert( 0, s ) );
-					}
+					int index = GetInsertIndex( s );
+					await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
 				}
 
 				RaiseNewItem( statusViewModels.Last() );
@@ -224,7 +193,7 @@ namespace Twice.ViewModels.Columns
 				list.Add( await CreateViewModel( s ) );
 			}
 
-			await AddItems( list, false );
+			await AddItems( list );
 		}
 
 		protected virtual Task OnFavorite( Status status )
@@ -306,6 +275,21 @@ namespace Twice.ViewModels.Columns
 			Deleted?.Invoke( this, EventArgs.Empty );
 		}
 
+		private int GetInsertIndex( ColumnItem item )
+		{
+			var newId = item.Id;
+
+			// Statuses are ordered descending by id
+			for( int i = 0; i < ItemCollection.Count; ++i )
+			{
+				if( ItemCollection[i].Id < newId )
+				{
+					return i;
+				}
+			}
+			return ItemCollection.Count;
+		}
+
 		private async void Parser_DirectMessageReceived( object sender, DirectMessageStreamEventArgs e )
 		{
 			if( !IsSuitableForColumn( e.Message ) )
@@ -314,7 +298,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			var it = await CreateViewModel( e.Message );
-			await AddItem( it, false );
+			await AddItem( it );
 		}
 
 		private async void Parser_FavoriteEventReceived( object sender, FavoriteStreamEventArgs e )
@@ -336,8 +320,6 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		
-
 		private async void Parser_ItemDeleted( object sender, DeleteStreamEventArgs e )
 		{
 			await RemoveItem( e.Id );
@@ -356,7 +338,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			var s = await CreateViewModel( e.Status );
-			await AddItem( s, false );
+			await AddItem( s );
 		}
 
 		private async Task UpdateCache( Status status )

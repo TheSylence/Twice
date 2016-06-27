@@ -57,7 +57,7 @@ namespace Twice.ViewModels.Columns
 				list.Add( await CreateViewModel( s ) );
 			}
 
-			await AddItems( list, false );
+			await AddItems( list );
 		}
 
 		protected override async Task OnFavorite( Status status )

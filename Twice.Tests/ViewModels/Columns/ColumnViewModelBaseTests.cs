@@ -474,6 +474,58 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ItemsAreSortedBasedOnId()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+			var muter = new Mock<IStatusMuter>();
+			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false );
+
+			var column = new TestColumn( context.Object, new ColumnDefinition( ColumnType.Timeline ), config.Object, parser.Object )
+			{
+				Dispatcher = new SyncDispatcher(),
+				Muter = muter.Object
+			};
+			column.SetLoading( false );
+
+			var s1 = DummyGenerator.CreateDummyStatus();
+			s1.ID = s1.StatusID = 1;
+			var s2 = DummyGenerator.CreateDummyStatus();
+			s2.ID = s2.StatusID = 2;
+			var s3 = DummyGenerator.CreateDummyStatus();
+			s3.ID = s3.StatusID = 3;
+
+			var waitHandle = new ManualResetEventSlim( false );
+			column.NewItem += ( s, e ) =>
+			{
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s2 ) );
+			bool set1 = waitHandle.Wait(1000);
+			waitHandle.Reset();
+
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s3 ) );
+			bool set2 = waitHandle.Wait( 1000 );
+			waitHandle.Reset();
+
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s1 ) );
+			bool set3 = waitHandle.Wait(1000);
+		
+			// Assert
+			Assert.IsTrue( set1 );
+			Assert.IsTrue( set2 );
+			Assert.IsTrue( set3 );
+
+			var ids = column.Items.Select( it => it.Id ).ToArray();
+			CollectionAssert.AreEqual( new ulong[] { 3, 2, 1 }, ids );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void RefereshingDataAddsStatuses()
 		{
 			// Arrange
@@ -557,7 +609,7 @@ namespace Twice.Tests.ViewModels.Columns
 				StatusFilterExpression = s => true;
 				Icon = Icon.User;
 			}
-
+			
 			public void RaiseStatusWrapper( ColumnItem iteme )
 			{
 				RaiseNewItem( iteme );
