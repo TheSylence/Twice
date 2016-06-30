@@ -49,7 +49,7 @@ namespace Twice.Models.Twitter.Repositories
 				response = await Queryable.Where( s => s.Type == StatusType.Retweeters && s.ID == statusId )
 					.SingleOrDefaultAsync();
 			}
-			catch( TwitterQueryException ex )
+			catch( Exception ex )
 			{
 				LogTo.WarnException( "Exception while searching retweeters:", ex );
 				return new List<ulong>();
@@ -75,7 +75,7 @@ namespace Twice.Models.Twitter.Repositories
 				await Cache.AddStatuses( new[] {status} );
 				return status;
 			}
-			catch( TwitterQueryException ex )
+			catch( Exception ex )
 			{
 				LogTo.ErrorException( $"Failed to retrieve status with id {statusId}", ex );
 				return null;
@@ -118,7 +118,16 @@ namespace Twice.Models.Twitter.Repositories
 				query = query.Where( s => s.MaxID == max );
 			}
 
-			var statusList = await query.ToListAsync();
+			List<Status> statusList;
+			try
+			{
+				statusList = await query.ToListAsync();
+			}
+			catch( Exception ex )
+			{
+				LogTo.ErrorException( $"Failed to load tweets for user {userId} (since: {since}, max: {max})", ex );
+				return cachedList;
+			}
 			var newStatuses = statusList.Except( cachedList, TwitterComparers.StatusComparer ).ToList();
 			await Cache.AddStatuses( newStatuses );
 
