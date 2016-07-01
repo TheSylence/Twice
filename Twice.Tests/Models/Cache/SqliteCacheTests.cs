@@ -600,8 +600,8 @@ namespace Twice.Tests.Models.Cache
 				}
 
 				// Act
-				var statusesC1 = ( await cache.GetStatusesForColumn( c1 ) ).ToArray();
-				var statusesC2 = ( await cache.GetStatusesForColumn( c2 ) ).ToArray();
+				var statusesC1 = ( await cache.GetStatusesForColumn( c1, 999 ) ).ToArray();
+				var statusesC2 = ( await cache.GetStatusesForColumn( c2, 999 ) ).ToArray();
 
 				// Assert
 				Assert.AreEqual( 2, statusesC1.Length );

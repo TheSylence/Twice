@@ -60,31 +60,6 @@ namespace Twice.ViewModels.Columns
 			SubTitle = "@" + Context.AccountName;
 		}
 
-		public event EventHandler Changed;
-
-		public event EventHandler Deleted;
-
-		public event EventHandler<ColumnItemEventArgs> NewItem;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await OnLoad().ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
-		public void UpdateRelativeTimes()
-		{
-			foreach( var it in Items )
-			{
-				it.UpdateRelativeTime();
-			}
-		}
-
 		protected async Task AddItem( MessageViewModel message )
 		{
 			await Dispatcher.RunAsync( () =>
@@ -98,7 +73,10 @@ namespace Twice.ViewModels.Columns
 				}
 
 				int index = GetInsertIndex( message );
-				ItemCollection.Insert( index, message );
+				if( index >= 0 )
+				{
+					ItemCollection.Insert( index, message );
+				}
 			} );
 
 			RaiseNewItem( message );
@@ -110,10 +88,13 @@ namespace Twice.ViewModels.Columns
 			MaxId = Math.Min( MaxId, status.Id );
 
 			int insertIndex = GetInsertIndex( status );
-			await Dispatcher.RunAsync( () => { ItemCollection.Insert( insertIndex, status ); } );
-			RaiseNewItem( status );
+			if( insertIndex >= 0 )
+			{
+				await Dispatcher.RunAsync( () => { ItemCollection.Insert( insertIndex, status ); } );
+				RaiseNewItem( status );
 
-			await UpdateCache( status.Model );
+				await UpdateCache( status.Model );
+			}
 		}
 
 		protected async Task AddItems( IEnumerable<MessageViewModel> messages )
@@ -124,7 +105,10 @@ namespace Twice.ViewModels.Columns
 				foreach( var s in messageViewModels )
 				{
 					int index = GetInsertIndex( s );
-					await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
+					if( index >= 0 )
+					{
+						await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
+					}
 				}
 
 				RaiseNewItem( messageViewModels.Last() );
@@ -144,7 +128,10 @@ namespace Twice.ViewModels.Columns
 					await UpdateCache( s.Model );
 
 					int index = GetInsertIndex( s );
-					await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
+					if( index >= 0 )
+					{
+						await Dispatcher.RunAsync( () => ItemCollection.Insert( index, s ) );
+					}
 				}
 
 				RaiseNewItem( statusViewModels.Last() );
@@ -175,6 +162,7 @@ namespace Twice.ViewModels.Columns
 			var statuses =
 				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, MaxIdFilterExpression );
 			var list = new List<StatusViewModel>();
+			await Cache.MapStatusesToColumn( statuses, Definition.Id );
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
 				list.Add( await CreateViewModel( s ) );
@@ -187,6 +175,7 @@ namespace Twice.ViewModels.Columns
 		{
 			var statuses =
 				await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			await Cache.MapStatusesToColumn( statuses, Definition.Id );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ).Reverse() )
 			{
@@ -203,8 +192,18 @@ namespace Twice.ViewModels.Columns
 
 		protected virtual async Task OnLoad()
 		{
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression );
 			var list = new List<StatusViewModel>();
+			var cachedStatuses = await Cache.GetStatusesForColumn( Definition.Id, Configuration.General.TweetFetchCount );
+			foreach( var s in cachedStatuses.Where( s => !Muter.IsMuted( s ) ) )
+			{
+				list.Add( await CreateViewModel( s ) );
+			}
+			await AddItems( list );
+
+			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			await Cache.MapStatusesToColumn( statuses, Definition.Id );
+			list.Clear();
+
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
 				list.Add( await CreateViewModel( s ) );
@@ -286,7 +285,12 @@ namespace Twice.ViewModels.Columns
 				{
 					return i;
 				}
+				else if( ItemCollection[i].Id == newId )
+				{
+					return -1;
+				}
 			}
+
 			return ItemCollection.Count;
 		}
 
@@ -347,8 +351,32 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
+		public event EventHandler Changed;
+
+		public event EventHandler Deleted;
+
+		public event EventHandler<ColumnItemEventArgs> NewItem;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await OnLoad().ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
+			} );
+		}
+
+		public void UpdateRelativeTimes()
+		{
+			foreach( var it in Items )
+			{
+				it.UpdateRelativeTime();
+			}
+		}
+
 		public IColumnActionDispatcher ActionDispatcher { get; }
-		public ICache Cache { get; set; }
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -356,9 +384,6 @@ namespace Twice.ViewModels.Columns
 		public ColumnDefinition Definition { get; }
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
 
 		public abstract Icon Icon { get; }
 
@@ -378,8 +403,6 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public ICollection<ColumnItem> Items { get; }
-
-		public IStatusMuter Muter { get; set; }
 
 		public string SubTitle
 		{
@@ -429,6 +452,13 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		public ICache Cache { get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
+
+		public IStatusMuter Muter { get; set; }
+
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 		protected ulong SinceId { get; private set; } = ulong.MinValue;
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
@@ -439,16 +469,22 @@ namespace Twice.ViewModels.Columns
 		private readonly SmartCollection<ColumnItem> ItemCollection;
 		private readonly IStreamParser Parser;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _ClearCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _DeleteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _SubTitle;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private double _Width;
 	}
 }

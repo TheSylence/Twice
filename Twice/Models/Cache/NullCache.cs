@@ -60,7 +60,7 @@ namespace Twice.Models.Cache
 			return Task.FromResult<Status>( null );
 		}
 
-		public Task<List<Status>> GetStatusesForColumn( Guid columnId )
+		public Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit )
 		{
 			return Task.FromResult( new List<Status>() );
 		}

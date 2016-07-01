@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Ninject.Modules;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -32,8 +33,10 @@ namespace Twice.Injections
 			}
 		}
 
+		[Conditional("DEBUG")]
 		private static void MigrateAppData()
 		{
+#if !DEBUG
 			var localAppDataFolder = Constants.IO.AppDataFolder;
 			var roamingAppDataFolder = Constants.IO.RoamingAppDataFolder;
 
@@ -52,6 +55,7 @@ namespace Twice.Injections
 
 				Directory.Delete( localAppDataFolder );
 			}
+#endif
 		}
 	}
 }

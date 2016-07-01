@@ -24,7 +24,7 @@ namespace Twice.Models.Cache
 
 		Task<Status> GetStatus( ulong id );
 
-		Task<List<Status>> GetStatusesForColumn( Guid columnId );
+		Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit );
 
 		Task<List<Status>> GetStatusesForUser( ulong userId );
 

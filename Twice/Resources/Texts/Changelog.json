@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Visual settings now include a preview"
+            "Visual settings now include a preview",
+            "Old tweets in column are now loaded from local cache"
         ],
         "Changes": [
             "Application data is now stored in roaming appdata"
@@ -14,7 +15,8 @@
             "Verified icon is now visible in light theme",
             "Profiles of protected accounts are now viewed from an account that follows the user",
             "Statuses in columns are now sorted correctly",
-            "Account names with underscores are now correctly displayed"
+            "Account names with underscores are now correctly displayed",
+            "Fixed issue where some statuses would display more than once"
         ],
         "Issues": [ ]
     },

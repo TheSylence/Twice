@@ -290,7 +290,7 @@ namespace Twice.Models.Cache
 			}
 		}
 
-		public async Task<List<Status>> GetStatusesForColumn( Guid columnId )
+		public async Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit )
 		{
 			List<Status> result = new List<Status>();
 
@@ -298,8 +298,9 @@ namespace Twice.Models.Cache
 			{
 				cmd.CommandText =
 					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id " +
-					" WHERE c.ColumnId = @columnId ORDER BY s.Id";
+					" WHERE c.ColumnId = @columnId ORDER BY s.Id DESC LIMIT 0, @limit";
 				cmd.AddParameter( "columnId", columnId );
+				cmd.AddParameter( "limit", limit );
 
 				using( var reader = await cmd.ExecuteReaderAsync() )
 				{
