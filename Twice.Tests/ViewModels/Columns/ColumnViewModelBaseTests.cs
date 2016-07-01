@@ -12,7 +12,6 @@ using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
-using Twice.Models.Twitter.Entities;
 using Twice.Models.Twitter.Repositories;
 using Twice.Models.Twitter.Streaming;
 using Twice.ViewModels;
@@ -132,12 +131,18 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus()
 			};
 
+			for( int i = 0; i < statuses.Count; ++i )
+			{
+				statuses[i].StatusID = (ulong)( i + 1 );
+			}
+
 			var twitterContext = new Mock<ITwitterContext>();
 
 			var statusRepo = new Mock<ITwitterStatusRepository>();
-			statusRepo.Setup(
-				s => s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns(
-					Task.FromResult( statuses ) );
+			statusRepo.Setup( s => s.Filter(
+				It.IsAny<Expression<Func<Status, bool>>>(),
+				It.IsAny<Expression<Func<Status, bool>>>(),
+				It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
 
@@ -156,6 +161,56 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ItemsAreSortedBasedOnId()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+			var muter = new Mock<IStatusMuter>();
+			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false );
+
+			var column = new TestColumn( context.Object, new ColumnDefinition( ColumnType.Timeline ), config.Object,
+				parser.Object )
+			{
+				Dispatcher = new SyncDispatcher(),
+				Muter = muter.Object
+			};
+			column.SetLoading( false );
+
+			var s1 = DummyGenerator.CreateDummyStatus();
+			s1.ID = s1.StatusID = 1;
+			var s2 = DummyGenerator.CreateDummyStatus();
+			s2.ID = s2.StatusID = 2;
+			var s3 = DummyGenerator.CreateDummyStatus();
+			s3.ID = s3.StatusID = 3;
+
+			var waitHandle = new ManualResetEventSlim( false );
+			column.NewItem += ( s, e ) => { waitHandle.Set(); };
+
+			// Act
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s2 ) );
+			bool set1 = waitHandle.Wait( 1000 );
+			waitHandle.Reset();
+
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s3 ) );
+			bool set2 = waitHandle.Wait( 1000 );
+			waitHandle.Reset();
+
+			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s1 ) );
+			bool set3 = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( set1 );
+			Assert.IsTrue( set2 );
+			Assert.IsTrue( set3 );
+
+			var ids = column.Items.Select( it => it.Id ).ToArray();
+			CollectionAssert.AreEqual( new ulong[] {3, 2, 1}, ids );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void LoadingMoreDataAddsStatuses()
 		{
 			// Arrange
@@ -171,6 +226,11 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus(),
 				DummyGenerator.CreateDummyStatus()
 			};
+
+			for( int i = 0; i < statuses.Count; ++i )
+			{
+				statuses[i].StatusID = (ulong)( i + 1 );
+			}
 
 			var waitHandle = new ManualResetEventSlim( false );
 
@@ -464,65 +524,15 @@ namespace Twice.Tests.ViewModels.Columns
 			var s2 = new StatusViewModel( status, context.Object, config.Object, null );
 			vm.Items.Add( s2 );
 
-			var deleteArgs = new DeleteStreamEventArgs( "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}" );
+			var deleteArgs =
+				new DeleteStreamEventArgs(
+					"{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}" );
 
 			// Act
 			parser.Raise( e => e.StatusDeleted += null, deleteArgs );
 
 			// Assert
 			Assert.IsFalse( vm.Items.Any( s => s.Id == 1234 ) );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void ItemsAreSortedBasedOnId()
-		{
-			// Arrange
-			var context = new Mock<IContextEntry>();
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
-			var parser = new Mock<IStreamParser>();
-			var muter = new Mock<IStatusMuter>();
-			muter.Setup( m => m.IsMuted( It.IsAny<Status>() ) ).Returns( false );
-
-			var column = new TestColumn( context.Object, new ColumnDefinition( ColumnType.Timeline ), config.Object, parser.Object )
-			{
-				Dispatcher = new SyncDispatcher(),
-				Muter = muter.Object
-			};
-			column.SetLoading( false );
-
-			var s1 = DummyGenerator.CreateDummyStatus();
-			s1.ID = s1.StatusID = 1;
-			var s2 = DummyGenerator.CreateDummyStatus();
-			s2.ID = s2.StatusID = 2;
-			var s3 = DummyGenerator.CreateDummyStatus();
-			s3.ID = s3.StatusID = 3;
-
-			var waitHandle = new ManualResetEventSlim( false );
-			column.NewItem += ( s, e ) =>
-			{
-				waitHandle.Set();
-			};
-
-			// Act
-			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s2 ) );
-			bool set1 = waitHandle.Wait(1000);
-			waitHandle.Reset();
-
-			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s3 ) );
-			bool set2 = waitHandle.Wait( 1000 );
-			waitHandle.Reset();
-
-			parser.Raise( p => p.StatusReceived += null, new StatusStreamEventArgs( s1 ) );
-			bool set3 = waitHandle.Wait(1000);
-		
-			// Assert
-			Assert.IsTrue( set1 );
-			Assert.IsTrue( set2 );
-			Assert.IsTrue( set3 );
-
-			var ids = column.Items.Select( it => it.Id ).ToArray();
-			CollectionAssert.AreEqual( new ulong[] { 3, 2, 1 }, ids );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -541,6 +551,11 @@ namespace Twice.Tests.ViewModels.Columns
 				DummyGenerator.CreateDummyStatus(),
 				DummyGenerator.CreateDummyStatus()
 			};
+
+			for( int i = 0; i < statuses.Count; ++i )
+			{
+				statuses[i].StatusID = (ulong)( i + 1 );
+			}
 
 			var waitHandle = new ManualResetEventSlim( false );
 
@@ -609,7 +624,7 @@ namespace Twice.Tests.ViewModels.Columns
 				StatusFilterExpression = s => true;
 				Icon = Icon.User;
 			}
-			
+
 			public void RaiseStatusWrapper( ColumnItem iteme )
 			{
 				RaiseNewItem( iteme );
