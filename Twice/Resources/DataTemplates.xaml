@@ -536,7 +536,7 @@
 					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
 					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 							VerticalAlignment="Center" />
-					<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
+					<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 				</StackPanel>
 
 				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"

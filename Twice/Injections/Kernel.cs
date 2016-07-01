@@ -1,10 +1,9 @@
-﻿using Ninject;
-using Ninject.Modules;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
+using Ninject;
+using Ninject.Modules;
 using Twice.Models.Media;
 
 namespace Twice.Injections
@@ -17,23 +16,11 @@ namespace Twice.Injections
 		{
 			MigrateAppData();
 
-
 			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
 		}
 
-		private static IEnumerable<INinjectModule> InjectionModules
-		{
-			get
-			{
-				yield return new ModelInjectionModule();
-				yield return new ViewModelInjectionModule();
-				yield return new ServiceInjectionModule();
-				yield return new UtilitiyInjectionModule();
-			}
-		}
-
-		[Conditional("DEBUG")]
+		[Conditional( "DEBUG" )]
 		private static void MigrateAppData()
 		{
 #if !DEBUG
@@ -56,6 +43,17 @@ namespace Twice.Injections
 				Directory.Delete( localAppDataFolder );
 			}
 #endif
+		}
+
+		private static IEnumerable<INinjectModule> InjectionModules
+		{
+			get
+			{
+				yield return new ModelInjectionModule();
+				yield return new ViewModelInjectionModule();
+				yield return new ServiceInjectionModule();
+				yield return new UtilitiyInjectionModule();
+			}
 		}
 	}
 }

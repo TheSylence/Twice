@@ -152,6 +152,8 @@ namespace Twice.Behaviors
 			{
 				return;
 			}
+
+			// TODO: Update Resouce Dictionaries
 		}
 
 		public static readonly DependencyProperty AccentColorNameProperty =

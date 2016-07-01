@@ -10,7 +10,6 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
-using Twice.Models.Cache;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Views.Services;
@@ -24,55 +23,6 @@ namespace Twice.ViewModels.Twitter
 		public ComposeTweetViewModel()
 		{
 			Accounts = new List<AccountEntry>();
-		}
-
-		public async Task OnLoad( object data )
-		{
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged -= Acc_UseChanged;
-			}
-
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged += Acc_UseChanged;
-			}
-
-			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
-			defAccount.Use = true;
-
-			if( PreSelectedAccounts.Any() )
-			{
-				foreach( var acc in Accounts )
-				{
-					acc.Use = PreSelectedAccounts.Contains( acc.Context.UserId );
-				}
-			}
-
-			RaisePropertyChanged( nameof( Accounts ) );
-
-			InitializeText();
-			ConfirmationSet = false;
-
-			Medias.Clear();
-			AttachedMedias.Clear();
-
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.UserName ).ToList();
-			RaisePropertyChanged( nameof( KnownUserNames ) );
-			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
-			RaisePropertyChanged( nameof( KnownHashtags ) );
-		}
-
-		public void PreSelectAccounts( IEnumerable<ulong> accounts )
-		{
-			PreSelectedAccounts = accounts.ToArray();
-		}
-
-		public void SetReply( StatusViewModel status, bool toAll )
-		{
-			InReplyTo = status;
-			ReplyToAll = toAll;
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -247,7 +197,8 @@ namespace Twice.ViewModels.Twitter
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
 					await
-						acc.Context.Twitter.Statuses.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId ).ConfigureAwait( false );
+						acc.Context.Twitter.Statuses.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId )
+							.ConfigureAwait( false );
 				}
 			} ).ContinueWith( async t =>
 			{
@@ -269,12 +220,61 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( t => { IsSending = false; } );
 		}
 
+		public async Task OnLoad( object data )
+		{
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged -= Acc_UseChanged;
+			}
+
+			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged += Acc_UseChanged;
+			}
+
+			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
+			defAccount.Use = true;
+
+			if( PreSelectedAccounts.Any() )
+			{
+				foreach( var acc in Accounts )
+				{
+					acc.Use = PreSelectedAccounts.Contains( acc.Context.UserId );
+				}
+			}
+
+			RaisePropertyChanged( nameof( Accounts ) );
+
+			InitializeText();
+			ConfirmationSet = false;
+
+			Medias.Clear();
+			AttachedMedias.Clear();
+
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.UserName ).ToList();
+			RaisePropertyChanged( nameof( KnownUserNames ) );
+			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
+			RaisePropertyChanged( nameof( KnownHashtags ) );
+		}
+
+		public void PreSelectAccounts( IEnumerable<ulong> accounts )
+		{
+			PreSelectedAccounts = accounts.ToArray();
+		}
+
+		public void SetReply( StatusViewModel status, bool toAll )
+		{
+			InReplyTo = status;
+			ReplyToAll = toAll;
+		}
+
 		public ICollection<AccountEntry> Accounts { get; private set; }
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
 			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
-		
+
 		public bool ConfirmationRequired
 		{
 			get { return Accounts.Where( a => a.Use ).Any( a => a.Context.RequiresConfirmation ); }
@@ -361,9 +361,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		public StatusViewModel QuotedTweet
 		{
 			[DebuggerStepThrough] get { return _QuotedTweet; }
@@ -448,37 +445,52 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private readonly int LowWarnThreshold = 135;
+		[Inject]
+		public INotifier Notifier { get; set; }
+
+		private const int LowWarnThreshold = 135;
 		private readonly List<Media> Medias = new List<Media>();
-		private readonly int MediumWarnThreshold = 125;
+		private const int MediumWarnThreshold = 125;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _AttachImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _ConfirmationSet;
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _InReplyTo;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _InReplyTo;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _LowCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _MediumCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _QuotedTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _QuotedTweet;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _RemoveQuoteCommand;
 
 		private RelayCommand _RemoveReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _StayOpen;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private int _TextLength;
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;

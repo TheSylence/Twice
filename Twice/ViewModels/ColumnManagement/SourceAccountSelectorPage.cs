@@ -24,7 +24,7 @@ namespace Twice.ViewModels.ColumnManagement
 
 			var accounts = sourceAccounts.Select( id => Accounts.Single( acc => acc.Context.UserId == id ) ).ToArray();
 
-			int pageKey = 1;
+			const int pageKey = 1;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[0] );
 			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountsKey, sourceAccounts.ToArray() );
 			Wizard.SetProperty( AddColumnDialogViewModel.SourceAccountNamesKey,

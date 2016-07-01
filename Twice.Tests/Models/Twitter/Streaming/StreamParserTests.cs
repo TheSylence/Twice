@@ -46,7 +46,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public async Task KeepAliveMessageIsIgnored()
 		{
 			// Arrange
-			string strContent = "";
+			const string strContent = "";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
@@ -68,7 +68,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingFavoriteRaisesEvent()
 		{
 			// Arrange
-			string strContent =
+			const string strContent =
 				"{ \"event\":\"favorite\", \"created_at\": \"Sat Sep 04 16:10:54 +0000 2010\", \"target\": { \"id\": 123 }, \"source\": { \"id\": 456 }, \"target_object\": { \"created_at\": \"Wed Jun 06 20:07:10 +0000 2012\", \"id_str\": \"210462857140252672\" } }";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
@@ -103,7 +103,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingFriendlistRaisesEvent()
 		{
 			// Arrange
-			string strContent = "{\"friends\":[123,456,789]}";
+			const string strContent = "{\"friends\":[123,456,789]}";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
@@ -135,7 +135,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingMessageDeleteRaisesEvent()
 		{
 			// Arrange
-			string strContent =
+			const string strContent =
 				"{\"delete\":{\"direct_message\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
@@ -201,7 +201,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingStatusDeleteRaisesEvent()
 		{
 			// Arrange
-			string strContent = "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}";
+			const string strContent = "{\"delete\":{\"status\":{\"id\":1234,\"id_str\":\"1234\",\"user_id\":3,\"user_id_str\":\"3\"}}}";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
@@ -266,7 +266,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingUnknownDataRaisesEvent()
 		{
 			// Arrange
-			string strContent = "{\"test\":[1,2,3]}";
+			const string strContent = "{\"test\":[1,2,3]}";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );
 
@@ -298,7 +298,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 		public void ReceivingUnkownDataRaisesEvent()
 		{
 			// Arrange
-			string strContent =
+			const string strContent =
 				"{ \"event\":\"unknown\", \"created_at\": \"Sat Sep 04 16:10:54 +0000 2010\", \"target\": { \"id\": 123 }, \"source\": { \"id\": 456 }, \"target_object\": { \"created_at\": \"Wed Jun 06 20:07:10 +0000 2012\", \"id_str\": \"210462857140252672\" } }";
 			var execute = new Mock<ITwitterExecute>();
 			StreamContent content = new StreamContent( execute.Object, strContent );

@@ -285,7 +285,8 @@ namespace Twice.ViewModels.Columns
 				{
 					return i;
 				}
-				else if( ItemCollection[i].Id == newId )
+
+				if( ItemCollection[i].Id == newId )
 				{
 					return -1;
 				}

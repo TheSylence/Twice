@@ -134,6 +134,7 @@ namespace Twice.Tests.Models.Cache
 			};
 
 			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new SqliteCache( sb.ToString() ) );
 
 			// Assert

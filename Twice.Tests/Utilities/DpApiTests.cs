@@ -11,7 +11,7 @@ namespace Twice.Tests.Utilities
 		public void MachineAndUserKeysAreDifferent()
 		{
 			// Arrange
-			string plain = "Hello World this is a test with some text";
+			const string plain = "Hello World this is a test with some text";
 
 			// Act
 			string machine = DpApi.Encrypt( DpApi.KeyType.MachineKey, plain );
@@ -25,7 +25,7 @@ namespace Twice.Tests.Utilities
 		public void MachineLevelEncryptionCanBeDecrypted()
 		{
 			// Arrange
-			string plain = "Hello World this is a test with some text";
+			const string plain = "Hello World this is a test with some text";
 
 			// Act
 			string encrypted = DpApi.Encrypt( plain );
@@ -40,7 +40,7 @@ namespace Twice.Tests.Utilities
 		public void UserLevelEncryptionCanBeDecrypted()
 		{
 			// Arrange
-			string plain = "Hello World this is a test with some text";
+			const string plain = "Hello World this is a test with some text";
 
 			// Act
 			string encrypted = DpApi.Encrypt( DpApi.KeyType.UserKey, plain );

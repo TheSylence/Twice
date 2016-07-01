@@ -27,7 +27,7 @@ namespace Twice.ViewModels.ColumnManagement
 			ulong userId = (ulong)args;
 			var targetAccounts = Wizard.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ).ToList();
 			targetAccounts.Add( userId );
-			int pageKey = 3;
+			const int pageKey = 3;
 			Wizard.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, targetAccounts.ToArray() );
 
 			var screenNames = Wizard.GetProperty<string[]>( AddColumnDialogViewModel.TargetAccountNamesKey ).ToList();

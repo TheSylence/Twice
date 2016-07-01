@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
-using Ninject;
-using Twice.Models.Cache;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter

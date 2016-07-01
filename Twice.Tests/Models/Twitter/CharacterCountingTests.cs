@@ -29,7 +29,7 @@ namespace Twice.Tests.Models.Twitter
 		public void InvalidTweet141Chars()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"A lie gets halfway around the world before the truth has a chance to get its pants on. -- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
@@ -43,7 +43,7 @@ namespace Twice.Tests.Models.Twitter
 		public void InvalidTweet141CharsNewLine()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"A lie gets halfway around the world before the truth has a chance to get its pants on. \n- Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
@@ -115,7 +115,7 @@ namespace Twice.Tests.Models.Twitter
 		public void TwitterExampleIsCountedCorrectly()
 		{
 			// Arrange
-			var str = "café";
+			const string str = "café";
 
 			// Act
 			int count = TwitterHelper.CountCharacters( str, MockConfig() );
@@ -128,7 +128,7 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140Chars()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"A lie gets halfway around the world before the truth has a chance to get its pants on. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
@@ -142,7 +142,7 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140CharsDoubleByte()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"のののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののののの";
 
 			// Act
@@ -156,7 +156,7 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140CharsDoubleWord()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431\U0001f431";
 
 			// Act
@@ -170,7 +170,7 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweet140CharsWithAccent()
 		{
 			// Arrange
-			var str =
+			const string str =
 				"A lié géts halfway arøünd thé wørld béføré thé truth has a chance tø get its pants øn. Winston Churchill (1874-1965) http://bit.ly/dJpywL";
 
 			// Act
@@ -184,7 +184,7 @@ namespace Twice.Tests.Models.Twitter
 		public void ValidTweetLessThan20Chars()
 		{
 			// Arrange
-			var str = "I am a Tweet";
+			const string str = "I am a Tweet";
 
 			// Act
 			int count = TwitterHelper.CountCharacters( str, MockConfig() );

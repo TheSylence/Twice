@@ -12,7 +12,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void DuplicateHashtagIsFoundTwice()
 		{
 			// Arrange
-			string text = "#test #test";
+			const string text = "#test #test";
 
 			// Act
 			var hashtags = EntityParser.ExtractHashtags( text );
@@ -26,7 +26,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void HashatagAtEndIsCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "Hello #World";
+			const string text = "Hello #World";
 
 			// Act
 			var hashtags = EntityParser.ExtractHashtags( text );
@@ -44,7 +44,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void HashtagAtStartIsCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "#Hello World!";
+			const string text = "#Hello World!";
 
 			// Act
 			var hashtags = EntityParser.ExtractHashtags( text );
@@ -62,7 +62,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void HashtagsInMiddleAreCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "Hello #World this is a test";
+			const string text = "Hello #World this is a test";
 
 			// Act
 			var hashtags = EntityParser.ExtractHashtags( text );
@@ -80,7 +80,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void MentionAtEndIsCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "This is a @test";
+			const string text = "This is a @test";
 
 			// Act
 			var mentions = EntityParser.ExtractMentions( text );
@@ -98,7 +98,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void MentionAtStartIsCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "@username Hello";
+			const string text = "@username Hello";
 
 			// Act
 			var mentions = EntityParser.ExtractMentions( text );
@@ -116,7 +116,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void MentionInMiddleIsExtractedCorrectly()
 		{
 			// Arrange
-			string text = "Hello @World how are you?";
+			const string text = "Hello @World how are you?";
 
 			// Act
 			var mentions = EntityParser.ExtractMentions( text );
@@ -134,7 +134,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void MultipleHashtagsAreCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "Hello #World this #is a test";
+			const string text = "Hello #World this #is a test";
 
 			// Act
 			var hashtags = EntityParser.ExtractHashtags( text );
@@ -157,7 +157,7 @@ namespace Twice.Tests.Models.Twitter.Entities
 		public void MultipleMentionsAreCorrectlyExtracted()
 		{
 			// Arrange
-			string text = "@user @test Hello";
+			const string text = "@user @test Hello";
 
 			// Act
 			var mentions = EntityParser.ExtractMentions( text );

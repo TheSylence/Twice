@@ -9,12 +9,7 @@ namespace Twice.Converters
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			string strValue = value as string;
-			if( strValue == null )
-			{
-				return value;
-			}
-
-			return strValue.Replace( "_", "__" );
+			return strValue?.Replace( "_", "__" ) ?? value;
 		}
 
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
