@@ -16,7 +16,8 @@
             "Profiles of protected accounts are now viewed from an account that follows the user",
             "Statuses in columns are now sorted correctly",
             "Account names with underscores are now correctly displayed",
-            "Fixed issue where some statuses would display more than once"
+            "Fixed issue where some statuses would display more than once",
+            "Accounts in user profile and search are no longer marked as verified when they are not"
         ],
         "Issues": [ ]
     },
