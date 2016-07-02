@@ -12,7 +12,7 @@ namespace Twice.Tests.Models.Twitter
 		public void AppIsCorrectlyRecognized()
 		{
 			// Arrange
-			var url = "<a href=\"http://example.com\" rel=\"nofollow\">ExampleApp</a>";
+			const string url = "<a href=\"http://example.com\" rel=\"nofollow\">ExampleApp</a>";
 
 			// Act
 			var source = new TweetSource( url );
@@ -40,7 +40,7 @@ namespace Twice.Tests.Models.Twitter
 		public void MalformedSourceThrows()
 		{
 			// Arrange
-			var url = "this is a test";
+			const string url = "this is a test";
 
 			// Act
 			// ReSharper disable once ObjectCreationAsStatement
@@ -65,8 +65,8 @@ namespace Twice.Tests.Models.Twitter
 		public void StrangeFormattedAppsAreRecognized()
 		{
 			// Arrange
-			var wrongOrderUrl = "<a rel=\"nofollow\" href=\"http://example.com\">ExampleApp</a>";
-			var noRelUrl = "<a href=\"http://example.com\">ExampleApp</a>";
+			const string wrongOrderUrl = "<a rel=\"nofollow\" href=\"http://example.com\">ExampleApp</a>";
+			const string noRelUrl = "<a href=\"http://example.com\">ExampleApp</a>";
 
 			// Act
 			var wrongOrderSource = new TweetSource( wrongOrderUrl );
@@ -83,7 +83,7 @@ namespace Twice.Tests.Models.Twitter
 		public void WebIsCorrectlyRecognized()
 		{
 			// Arrange
-			var url = "web";
+			const string url = "web";
 
 			// Act
 			var source = new TweetSource( url );

@@ -155,8 +155,8 @@ namespace Twice.Tests.ViewModels
 		public void PropertiesAreCorrectlySetDuringConstruction()
 		{
 			// Arrange
-			int value = 123;
-			var desc = "desc";
+			const int value = 123;
+			const string desc = "desc";
 
 			// Act
 			var vd = new ValueDescription<int>( value, "desc" );

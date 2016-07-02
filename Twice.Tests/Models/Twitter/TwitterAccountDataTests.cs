@@ -31,11 +31,11 @@ namespace Twice.Tests.Models.Twitter
 		public void DecryptionOnlyDecryptsTokens()
 		{
 			// Arrange
-			string name = "name";
-			string url = "url";
+			const string name = "name";
+			const string url = "url";
 			string token = DpApi.Encrypt( "the oauth token" );
 			string secret = DpApi.Encrypt( "the token secret" );
-			ulong userId = 123456;
+			const ulong userId = 123456;
 
 			var data = new TwitterAccountData
 			{
@@ -111,11 +111,11 @@ namespace Twice.Tests.Models.Twitter
 		public void EncryptionOnlyEncryptsTokens()
 		{
 			// Arrange
-			string name = "name";
-			string url = "url";
-			string token = "the oauth token";
-			string secret = "the token secret";
-			ulong userId = 123456;
+			const string name = "name";
+			const string url = "url";
+			const string token = "the oauth token";
+			const string secret = "the token secret";
+			const ulong userId = 123456;
 
 			var data = new TwitterAccountData
 			{

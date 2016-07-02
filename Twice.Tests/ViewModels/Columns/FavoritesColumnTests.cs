@@ -42,7 +42,7 @@ namespace Twice.Tests.ViewModels.Columns
 			column.SetLoading( false );
 			column.NewItem += ( s, e ) => { waitHandle.Set(); };
 
-			string json =
+			const string json =
 				"{\"event\":\"favorite\",\"created_at\":\"Sat Sep 04 16:10:54 +0000 2010\",\"target\":{\"id\": 123},\"source\":{\"id\": 456},\"target_object\":{\"text\": \"Hello World\"}}";
 
 			// Act

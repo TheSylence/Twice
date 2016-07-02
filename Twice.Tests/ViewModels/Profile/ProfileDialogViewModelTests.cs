@@ -1,11 +1,11 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
@@ -19,6 +19,54 @@ namespace Twice.Tests.ViewModels.Profile
 	public class ProfileDialogViewModelTests
 	{
 		[TestMethod, TestCategory( "ViewModels.Profile" )]
+		public void ExceptionDuringFollowIsCaught()
+		{
+			// Arrange
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "Test", NotificationType.Error ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.Users.FollowUser( 123 ) ).Throws( new TwitterQueryException( "Test" ) );
+
+			var vm = new ProfileDialogViewModel
+			{
+				Notifier = notifier.Object,
+				User = new UserViewModel( DummyGenerator.CreateDummyUser( 123 ) )
+			};
+			vm.OverwriteContext( context.Object );
+
+			// Act
+			vm.FollowUserCommand.Execute( null );
+
+			// Assert
+			notifier.Verify( n => n.DisplayMessage( "Test", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Profile" )]
+		public void ExceptionDuringUnfollowIsCaught()
+		{
+			// Arrange
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "Test", NotificationType.Error ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.Users.UnfollowUser( 123 ) ).Throws( new TwitterQueryException( "Test" ) );
+
+			var vm = new ProfileDialogViewModel
+			{
+				Notifier = notifier.Object,
+				User = new UserViewModel( DummyGenerator.CreateDummyUser( 123 ) )
+			};
+			vm.OverwriteContext( context.Object );
+
+			// Act
+			vm.UnfollowUserCommand.Execute( null );
+
+			// Assert
+			notifier.Verify( n => n.DisplayMessage( "Test", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Profile" )]
 		public async Task FollowersAreLoaded()
 		{
 			// Arrange
@@ -31,7 +79,8 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ) ).Returns( Task.FromResult( new List<User> { user } ) );
+			context.Setup( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ) ).Returns(
+				Task.FromResult( new List<User> {user} ) );
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -41,7 +90,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -88,7 +137,8 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Friendships.ListFriends( 123, 200, true ) ).Returns( Task.FromResult( new List<User> { user } ) );
+			context.Setup( c => c.Twitter.Friendships.ListFriends( 123, 200, true ) ).Returns(
+				Task.FromResult( new List<User> {user} ) );
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -98,7 +148,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -151,8 +201,10 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns( Task.FromResult( new List<Status> { firstStatus } ) ).Verifiable();
-			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456 ) ).Returns( Task.FromResult( new List<Status> { secondStatus } ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns(
+				Task.FromResult( new List<Status> {firstStatus} ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456 ) ).Returns(
+				Task.FromResult( new List<Status> {secondStatus} ) ).Verifiable();
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -162,7 +214,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -205,7 +257,8 @@ namespace Twice.Tests.ViewModels.Profile
 		{
 			// Arrange
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( UserViewModel ) ) ).Returns( new UserViewModel( DummyGenerator.CreateDummyUserEx() ) );
+			typeResolver.Setup( t => t.Resolve( typeof(UserViewModel) ) ).Returns(
+				new UserViewModel( DummyGenerator.CreateDummyUserEx() ) );
 
 			var vm = new ProfileDialogViewModel();
 			var tester = new PropertyChangedTester( vm, false, typeResolver.Object );
@@ -247,7 +300,7 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult<UserEx>( null ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -287,7 +340,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
@@ -322,7 +375,8 @@ namespace Twice.Tests.ViewModels.Profile
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 444 );
 			context.Setup( c => c.Twitter.Users.ShowUser( 123ul, It.IsAny<bool>() ) ).Returns( Task.FromResult( user ) );
-			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns( Task.FromResult( new List<Status> { status } ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ) ).Returns(
+				Task.FromResult( new List<Status> {status} ) ).Verifiable();
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 444, 123 ) ).Returns( Task.FromResult( new Friendship
 			{
 				TargetRelationship = new Relationship
@@ -332,7 +386,7 @@ namespace Twice.Tests.ViewModels.Profile
 				}
 			} ) );
 
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } ).Verifiable();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} ).Verifiable();
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,

@@ -75,7 +75,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			cache.Verify( c => c.AddMessages( It.IsAny<IList<MessageCacheEntry>>() ), Times.Once() );
-			Assert.AreEqual( 3, vm.Items.Count );
+			Assert.AreEqual( 2, vm.Items.Count );
 
 			var partners = vm.Items.OfType<MessageViewModel>().Select( i => i.Partner.UserId ).Distinct().ToArray();
 			CollectionAssert.AreEquivalent( new ulong[] {2, 3}, partners );

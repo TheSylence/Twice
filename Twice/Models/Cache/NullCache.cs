@@ -1,9 +1,9 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
@@ -35,6 +35,11 @@ namespace Twice.Models.Cache
 		{
 		}
 
+		public Task<ulong> FindFriend( ulong friendId )
+		{
+			return Task.FromResult( 0ul );
+		}
+
 		public Task<IEnumerable<string>> GetKnownHashtags()
 		{
 			return Task.FromResult( Enumerable.Empty<string>() );
@@ -55,7 +60,7 @@ namespace Twice.Models.Cache
 			return Task.FromResult<Status>( null );
 		}
 
-		public Task<List<Status>> GetStatusesForColumn( Guid columnId )
+		public Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit )
 		{
 			return Task.FromResult( new List<Status>() );
 		}
@@ -68,6 +73,11 @@ namespace Twice.Models.Cache
 		public Task<UserEx> GetUser( ulong userId )
 		{
 			return Task.FromResult<UserEx>( null );
+		}
+
+		public Task<IEnumerable<ulong>> GetUserFriends( ulong userId )
+		{
+			return Task.FromResult( Enumerable.Empty<ulong>() );
 		}
 
 		public Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
@@ -86,6 +96,11 @@ namespace Twice.Models.Cache
 		}
 
 		public Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
+		{
+			return Task.CompletedTask;
+		}
+
+		public Task SetUserFriends( ulong userId, IEnumerable<ulong> friendIds )
 		{
 			return Task.CompletedTask;
 		}

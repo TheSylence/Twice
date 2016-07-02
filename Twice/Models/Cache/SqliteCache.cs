@@ -30,51 +30,6 @@ namespace Twice.Models.Cache
 			Init();
 		}
 
-		private async Task Cleanup()
-		{
-			string[] tables =
-			{
-				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
-			};
-
-			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
-
-			await Semaphore.WaitAsync( SemaphoreWait );
-			try
-			{
-				using( var tx = new Transaction( Connection ) )
-				{
-					foreach( var table in tables )
-					{
-						using( var cmd = Connection.CreateCommand() )
-						{
-							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
-							cmd.AddParameter( "now", now );
-							await cmd.ExecuteNonQueryAsync();
-						}
-					}
-
-					tx.Commit();
-				}
-			}
-			finally
-			{
-				Semaphore.Release();
-			}
-		}
-
-		private void Init()
-		{
-			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
-			{
-				using( var cmd = Connection.CreateCommand() )
-				{
-					cmd.CommandText = qry;
-					cmd.ExecuteNonQuery();
-				}
-			}
-		}
-
 		public async Task AddHashtags( IList<string> hashTags )
 		{
 			if( !hashTags.Any() )
@@ -335,7 +290,7 @@ namespace Twice.Models.Cache
 			}
 		}
 
-		public async Task<List<Status>> GetStatusesForColumn( Guid columnId )
+		public async Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit )
 		{
 			List<Status> result = new List<Status>();
 
@@ -343,8 +298,9 @@ namespace Twice.Models.Cache
 			{
 				cmd.CommandText =
 					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id " +
-					" WHERE c.ColumnId = @columnId ORDER BY s.Id";
+					" WHERE c.ColumnId = @columnId ORDER BY s.Id DESC LIMIT 0, @limit";
 				cmd.AddParameter( "columnId", columnId );
+				cmd.AddParameter( "limit", limit );
 
 				using( var reader = await cmd.ExecuteReaderAsync() )
 				{
@@ -400,6 +356,42 @@ namespace Twice.Models.Cache
 			}
 
 			return null;
+		}
+
+		public async Task<IEnumerable<ulong>> GetUserFriends( ulong userId )
+		{
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT FriendId FROM UserFriends WHERE UserId = @userId;";
+				cmd.AddParameter( "userId", userId );
+
+				List<ulong> result = new List<ulong>();
+				using( var reader = await cmd.ExecuteReaderAsync() )
+				{
+					while( await reader.ReadAsync() )
+					{
+						result.Add( (ulong)Convert.ChangeType( reader.GetValue( 0 ), typeof( ulong ) ) );
+					}
+				}
+				return result;
+			}
+		}
+
+		public async Task<ulong> FindFriend( ulong friendId )
+		{
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT UserId FROM UserFriends WHERE FriendId = @friendId LIMIT 1;";
+				cmd.AddParameter( "friendId", friendId );
+
+				var db = await cmd.ExecuteScalarAsync();
+				if( db == null )
+				{
+					return 0;
+				}
+
+				return (ulong)Convert.ChangeType( db, typeof( ulong ) );
+			}
 		}
 
 		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
@@ -501,6 +493,103 @@ namespace Twice.Models.Cache
 			finally
 			{
 				Semaphore.Release();
+			}
+		}
+
+		public async Task SetUserFriends( ulong userId, IEnumerable<ulong> friendIds )
+		{
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "DELETE FROM UserFriends WHERE UserId = @userId;";
+						cmd.AddParameter( "userId", userId );
+						await cmd.ExecuteNonQueryAsync();
+					}
+
+					var friends = friendIds.ToArray();
+
+					int count = friends.Length;
+					const int batchSize = 100;
+					int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
+
+					for( int batchIdx = 0; batchIdx < runsNeeded; ++batchIdx )
+					{
+						var items = friends.Skip( batchIdx * batchSize ).Take( batchSize );
+
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES ";
+							cmd.AddParameter( "userId", userId );
+
+							cmd.CommandText += string.Join( ",", items.Select( ( s, i ) =>
+							{
+								// ReSharper disable AccessToDisposedClosure
+								cmd.AddParameter( $"friendId{i}", s );
+
+								// ReSharper restore AccessToDisposedClosure
+
+								return $"( @userId, @friendId{i} )";
+							} ) );
+
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		private async Task Cleanup()
+		{
+			string[] tables =
+			{
+				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
+			};
+
+			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
+
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table} WHERE Expires < @now;";
+							cmd.AddParameter( "now", now );
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		private void Init()
+		{
+			foreach( var qry in GetDdlQueries().Concat( GetInitQueries() ) )
+			{
+				using( var cmd = Connection.CreateCommand() )
+				{
+					cmd.CommandText = qry;
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 

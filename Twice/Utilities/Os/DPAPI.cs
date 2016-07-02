@@ -125,7 +125,7 @@ namespace Twice.Utilities.Os
 
 				// Disable any types of UI. CryptUnprotectData does not mention
 				// CryptprotectLocalMachine flag in the list of supported flags so we will not set it up.
-				int flags = CryptprotectUIForbidden;
+				const int flags = CryptprotectUIForbidden;
 
 				// Call DPAPI to decrypt data.
 				bool success = NativeMethods.CryptUnprotectData( ref cipherTextBlob,

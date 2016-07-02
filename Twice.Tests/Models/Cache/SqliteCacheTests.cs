@@ -134,6 +134,7 @@ namespace Twice.Tests.Models.Cache
 			};
 
 			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new SqliteCache( sb.ToString() ) );
 
 			// Assert
@@ -165,8 +166,34 @@ namespace Twice.Tests.Models.Cache
 				CollectionAssert.AreEquivalent( new[]
 				{
 					"Hashtags", "Users", "TwitterConfig",
-					"Statuses", "ColumnStatuses", "Messages"
+					"Statuses", "ColumnStatuses", "Messages",
+					"UserFriends"
 				}, tableNames );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task CorrectUserIdIsFoundForFriend()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES (1, 5), (2,4), (3,5);";
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				var noFriend = await cache.FindFriend( 15 );
+				var single = await cache.FindFriend( 4 );
+				var two = await cache.FindFriend( 5 );
+
+				// Assert
+				Assert.AreEqual( 0ul, noFriend );
+				Assert.AreEqual( 2ul, single );
+				Assert.IsTrue( two == 1ul || two == 3ul, two.ToString() );
 			}
 		}
 
@@ -340,6 +367,44 @@ namespace Twice.Tests.Models.Cache
 
 				var msg = JsonConvert.DeserializeObject<DirectMessage>( fromDb.Data );
 				Assert.AreEqual( message.Text, msg.Text );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task OldFriendsAreOverwritten()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES (123,1), (123,2), (123,3);";
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				await cache.SetUserFriends( 123, new ulong[] {4, 5, 6} );
+
+				// Assert
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT FriendId FROM UserFriends WHERE UserId = '123' ORDER BY FriendId;";
+					using( var reader = cmd.ExecuteReader() )
+					{
+						Assert.IsTrue( reader.Read() );
+						int id = reader.GetInt32( 0 );
+						Assert.AreEqual( 4, id );
+
+						Assert.IsTrue( reader.Read() );
+						id = reader.GetInt32( 0 );
+						Assert.AreEqual( 5, id );
+
+						Assert.IsTrue( reader.Read() );
+						id = reader.GetInt32( 0 );
+						Assert.AreEqual( 6, id );
+					}
+				}
 			}
 		}
 
@@ -536,8 +601,8 @@ namespace Twice.Tests.Models.Cache
 				}
 
 				// Act
-				var statusesC1 = ( await cache.GetStatusesForColumn( c1 ) ).ToArray();
-				var statusesC2 = ( await cache.GetStatusesForColumn( c2 ) ).ToArray();
+				var statusesC1 = ( await cache.GetStatusesForColumn( c1, 999 ) ).ToArray();
+				var statusesC2 = ( await cache.GetStatusesForColumn( c2, 999 ) ).ToArray();
 
 				// Assert
 				Assert.AreEqual( 2, statusesC1.Length );
@@ -668,6 +733,59 @@ namespace Twice.Tests.Models.Cache
 						Assert.AreEqual( user.ScreenName, jsonUser.ScreenName );
 					}
 				}
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task UserFriendsCanBeCached()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				// Act
+				await cache.SetUserFriends( 123, new ulong[] {1, 2, 3} );
+
+				// Assert
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "SELECT FriendId FROM UserFriends WHERE UserId = '123' ORDER BY FriendId;";
+					using( var reader = cmd.ExecuteReader() )
+					{
+						Assert.IsTrue( reader.Read() );
+						int id = reader.GetInt32( 0 );
+						Assert.AreEqual( 1, id );
+
+						Assert.IsTrue( reader.Read() );
+						id = reader.GetInt32( 0 );
+						Assert.AreEqual( 2, id );
+
+						Assert.IsTrue( reader.Read() );
+						id = reader.GetInt32( 0 );
+						Assert.AreEqual( 3, id );
+					}
+				}
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task UserFriendsCanBeRead()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES (123,1), (123,2), (123,3);";
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				var friends = ( await cache.GetUserFriends( 123 ) ).ToArray();
+
+				// Assert
+				CollectionAssert.AreEquivalent( new ulong[] {1, 2, 3}, friends );
 			}
 		}
 

@@ -122,7 +122,7 @@ namespace Twice.ViewModels.Columns
 			if( msg.Action == EntityAction.Create )
 			{
 				var vm = await CreateViewModel( msg.DirectMessage );
-				await AddItem( vm, false );
+				await AddItem( vm );
 			}
 		}
 

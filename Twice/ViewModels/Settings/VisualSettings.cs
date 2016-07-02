@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using Resourcer;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities.Ui;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Settings
 {
@@ -57,6 +62,21 @@ namespace Twice.ViewModels.Settings
 			SelectedLinkColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.LinkColor );
 			SelectedMentionColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.MentionColor );
 			InlineMedias = currentConfig.Visual.InlineMedia;
+
+			PreviewStatuses = new List<StatusViewModel>();
+		}
+
+		public Task OnLoad( object data )
+		{
+			var json = Resource.AsString( "Twice.Resources.Data.PreviewStatuses.json" );
+
+			var statuses =  JsonConvert.DeserializeObject<List<Status>>( json )
+				.Select( s => new StatusViewModel( s, ContextList.Contexts.First(), Configuration, ViewServiceRepository ) ) .ToList();
+
+			statuses[1].QuotedTweet = statuses[0];
+
+			PreviewStatuses.AddRange( statuses );
+			return Task.CompletedTask;
 		}
 
 		public void SaveTo( IConfig config )
@@ -89,8 +109,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool InlineMedias
 		{
-			[DebuggerStepThrough]
-			get { return _InlineMedias; }
+			[DebuggerStepThrough] get { return _InlineMedias; }
 			set
 			{
 				if( _InlineMedias == value )
@@ -103,10 +122,11 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public ICollection<StatusViewModel> PreviewStatuses { get; }
+
 		public ColorItem SelectedAccentColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedAccentColor; }
+			[DebuggerStepThrough] get { return _SelectedAccentColor; }
 			set
 			{
 				if( _SelectedAccentColor == value )
@@ -121,8 +141,7 @@ namespace Twice.ViewModels.Settings
 
 		public FontSizeItem SelectedFontSize
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedFontSize; }
+			[DebuggerStepThrough] get { return _SelectedFontSize; }
 			set
 			{
 				if( _SelectedFontSize == value )
@@ -137,8 +156,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedHashtagColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedHashtagColor; }
+			[DebuggerStepThrough] get { return _SelectedHashtagColor; }
 			set
 			{
 				if( _SelectedHashtagColor == value )
@@ -153,8 +171,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedLinkColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedLinkColor; }
+			[DebuggerStepThrough] get { return _SelectedLinkColor; }
 			set
 			{
 				if( _SelectedLinkColor == value )
@@ -169,8 +186,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedMentionColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedMentionColor; }
+			[DebuggerStepThrough] get { return _SelectedMentionColor; }
 			set
 			{
 				if( _SelectedMentionColor == value )
@@ -185,8 +201,7 @@ namespace Twice.ViewModels.Settings
 
 		public ColorItem SelectedPrimaryColor
 		{
-			[DebuggerStepThrough]
-			get { return _SelectedPrimaryColor; }
+			[DebuggerStepThrough] get { return _SelectedPrimaryColor; }
 			set
 			{
 				if( _SelectedPrimaryColor == value )
@@ -201,8 +216,7 @@ namespace Twice.ViewModels.Settings
 
 		public bool UseDarkTheme
 		{
-			[DebuggerStepThrough]
-			get { return _UseDarkTheme; }
+			[DebuggerStepThrough] get { return _UseDarkTheme; }
 			set
 			{
 				if( _UseDarkTheme == value )

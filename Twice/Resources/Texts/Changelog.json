@@ -1,5 +1,27 @@
 ﻿[
     {
+        "Version": "0.6.5",
+        "Date": "2016-07-03",
+        "Description": "",
+        "NewFeatures": [
+            "Visual settings now include a preview",
+            "Old tweets in column are now loaded from local cache"
+        ],
+        "Changes": [
+            "Application data is now stored in roaming appdata"
+        ],
+        "Fixes": [
+            "Fixed crashes when (un)following users",
+            "Verified icon is now visible in light theme",
+            "Profiles of protected accounts are now viewed from an account that follows the user",
+            "Statuses in columns are now sorted correctly",
+            "Account names with underscores are now correctly displayed",
+            "Fixed issue where some statuses would display more than once",
+            "Accounts in user profile and search are no longer marked as verified when they are not"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.4",
         "Date": "2016-06-25",
         "Description": "",

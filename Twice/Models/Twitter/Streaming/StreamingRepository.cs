@@ -54,6 +54,8 @@ namespace Twice.Models.Twitter.Streaming
 			LogTo.Info( $"Received {completeList.Count} of user's friends" );
 			var usersToAdd = new List<UserEx>( completeList.Count );
 
+			await Cache.SetUserFriends( context.UserId, completeList );
+
 			while( completeList.Any() )
 			{
 				var userList = string.Join( ",", completeList.Take( 100 ) );

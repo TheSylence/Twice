@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
-using Ninject;
-using Twice.Models.Cache;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter
@@ -75,9 +73,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<MessageViewModel> PreviousMessages { get; }
-
-		[Inject]
-		public ICache Cache { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoadingPrevious;

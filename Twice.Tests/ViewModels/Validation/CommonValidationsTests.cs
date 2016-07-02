@@ -27,7 +27,7 @@ namespace Twice.Tests.ViewModels.Validation
 		public void NotEmptyRespectsWhitespaces()
 		{
 			// Arrange
-			var emptyString = "\t \r\n";
+			const string emptyString = "\t \r\n";
 			var whitespaceSetup = new ValidationSetup<string>();
 			var setup = new ValidationSetup<string>();
 

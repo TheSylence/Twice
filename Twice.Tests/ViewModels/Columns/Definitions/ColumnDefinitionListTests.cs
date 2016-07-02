@@ -81,7 +81,7 @@ namespace Twice.Tests.ViewModels.Columns.Definitions
 		public void LoadingNonExistentFileReturnsEmptyList()
 		{
 			// Arrange
-			string fileName = "non.existing.file";
+			const string fileName = "non.existing.file";
 			var list = new ColumnDefinitionList( fileName );
 
 			// Act

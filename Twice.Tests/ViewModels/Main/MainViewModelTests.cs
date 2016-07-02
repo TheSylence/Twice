@@ -141,8 +141,10 @@ namespace Twice.Tests.ViewModels.Main
 			} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
-
+			
+			// ReSharper disable PossibleMultipleEnumeration
 			Expression<Func<IEnumerable<ulong>, bool>> checkAction = ids => ids.Contains( 123ul ) && ids.Contains( 111ul );
+			// ReSharper restore PossibleMultipleEnumeration
 
 			columnList.Setup( c => c.SetExistingContexts( It.Is( checkAction ) ) ).Verifiable();
 			var columnFactory = new Mock<IColumnFactory>();
