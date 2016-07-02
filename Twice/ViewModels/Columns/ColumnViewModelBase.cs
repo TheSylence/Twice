@@ -200,7 +200,18 @@ namespace Twice.ViewModels.Columns
 			}
 			await AddItems( list );
 
-			var statuses = await Context.Twitter.Statuses.Filter( CountExpression, StatusFilterExpression, SinceIdFilterExpression );
+			var filterList = new List<Expression<Func<Status, bool>>>( 3 )
+			{
+				CountExpression,
+				StatusFilterExpression
+			};
+
+			if( SinceId != 0 )
+			{
+				filterList.Add( SinceIdFilterExpression );
+			}
+
+			var statuses = await Context.Twitter.Statuses.Filter( filterList.ToArray() );
 			await Cache.MapStatusesToColumn( statuses, Definition.Id );
 			list.Clear();
 

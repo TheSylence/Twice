@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using Ninject;
 using Ninject.Modules;
@@ -20,7 +20,6 @@ namespace Twice.Injections
 			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
 		}
 
-		[Conditional( "DEBUG" )]
 		private static void MigrateAppData()
 		{
 #if !DEBUG
