@@ -244,6 +244,7 @@
     <Compile Include="ViewModels\Columns\FavoritesColumnTests.cs" />
     <Compile Include="ViewModels\Columns\MentionsColumnTests.cs" />
     <Compile Include="ViewModels\Columns\MessageColumnTests.cs" />
+    <Compile Include="ViewModels\Columns\UserColumnTests.cs" />
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\ImageDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\MediaItemTests.cs" />
+    <Compile Include="ViewModels\Twitter\MessageDetailsViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\MessageViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\StatusViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModelTests.cs" />

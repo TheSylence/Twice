@@ -8,7 +8,7 @@ namespace Twice.Tests
 	[ExcludeFromCodeCoverage]
 	internal static class DummyGenerator
 	{
-		internal static DirectMessage CreateDummyMessage( User sender = null, User recipient = null )
+		internal static DirectMessage CreateDummyMessage( User sender = null, User recipient = null, ulong id = 0 )
 		{
 			sender = sender ?? CreateDummyUser();
 			recipient = recipient ?? CreateDummyUser();
@@ -16,7 +16,9 @@ namespace Twice.Tests
 			return new DirectMessage
 			{
 				Sender = sender,
+				SenderID = sender.UserID,
 				Recipient = recipient,
+				RecipientID = recipient.UserID,
 				Entities = new Entities
 				{
 					HashTagEntities = new List<HashTagEntity>(),
@@ -25,7 +27,9 @@ namespace Twice.Tests
 					UrlEntities = new List<UrlEntity>(),
 					UserMentionEntities = new List<UserMentionEntity>()
 				},
-				IDString = "0"
+				IDString = id.ToString(),
+				ID = id,
+				IDResponse = id
 			};
 		}
 

@@ -24,9 +24,10 @@ namespace Twice.ViewModels.Twitter
 			Message.WasRead = true;
 			var userId = Message.Partner.Model.GetUserId();
 
-			var messages = ( await Cache.GetMessages() )
-				.Where( m => m.Recipient == userId || m.Sender == userId )
+			var cacheMessages = ( await Cache.GetMessages() );
+			var messages = cacheMessages.Where( m => m.Recipient == userId || m.Sender == userId )
 				.Select( m => JsonConvert.DeserializeObject<DirectMessage>( m.Data ) )
+				.Where( m => m.GetMessageId() < Message.Id )
 				.OrderBy( m => m.CreatedAt );
 
 			foreach( var m in messages )

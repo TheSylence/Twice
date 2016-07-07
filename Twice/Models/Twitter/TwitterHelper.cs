@@ -76,6 +76,23 @@ namespace Twice.Models.Twitter
 			}
 		}
 
+		public static ulong GetUserId( this Status status )
+		{
+			var id = status.UserID;
+			if( id != 0)
+			{
+				return id;
+			}
+
+			if( ulong.TryParse( status.User.UserIDResponse, out id ) && id != 0 )
+			{
+				return id;
+			}
+
+			id = status.User.GetUserId();
+			return id;
+		}
+
 		public static Uri GetUserUrl( this User user )
 		{
 			string userName = user.GetScreenName();
