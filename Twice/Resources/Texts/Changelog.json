@@ -1,4 +1,15 @@
 ﻿[
+     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed issues with loading statuses for some columns"
+        ],
+        "Issues": [ ]
+    },
     {
         "Version": "0.6.5",
         "Date": "2016-07-03",

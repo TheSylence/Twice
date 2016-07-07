@@ -39,6 +39,53 @@ namespace Twice.Tests.Models.Cache
 		}
 
 		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task CleanupRemovesColumnMappings()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.ID = 123;
+
+				var colId = Guid.NewGuid();
+
+				await cache.MapStatusesToColumn( new[] { status }, colId );
+
+				// Act
+				var statuses = await cache.GetStatusesForColumn( colId, 1 );
+
+				// Assert
+				Assert.AreEqual( 0, statuses.Count );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task NonExistingStatusIsNotFetchedForColumn()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.ID = 123;
+				var colId = Guid.NewGuid();
+
+				await cache.AddStatuses( new[] { status } );
+				await cache.MapStatusesToColumn( new[] { status }, colId );
+
+				// Act
+				var beforeDelete = await cache.GetStatusesForColumn( colId, 1 );
+				await cache.RemoveStatus( status.ID );
+				var afterDelete = await cache.GetStatusesForColumn( colId, 1 );
+
+				// Assert
+				Assert.AreEqual( 1, beforeDelete.Count );
+				Assert.AreEqual( 0, afterDelete.Count );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
 		public async Task CachedHastagsCanBeRetrieved()
 		{
 			// Arrange
