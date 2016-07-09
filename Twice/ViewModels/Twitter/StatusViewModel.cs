@@ -229,9 +229,9 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			var entities = Model.Entities.MediaEntities.Concat( Model.ExtendedEntities.MediaEntities )
+			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities.MediaEntities )
 				.Distinct( TwitterComparers.MediaEntityComparer )
-				.Select( m => new Uri( m.MediaUrlHttps ) );
+				.Select( m => new Uri( m.MediaUrlHttps ) ) ?? Enumerable.Empty<Uri>();
 
 			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
 			{
@@ -239,8 +239,9 @@ namespace Twice.ViewModels.Twitter
 				_InlineMedias.Add( vm );
 			}
 
-			var urls = Model.Entities.UrlEntities.Concat( Model.ExtendedEntities.UrlEntities )
-				.Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
+			var urls = Model.Entities?.UrlEntities?.Concat( Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>() )
+				.Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl )
+						?? Enumerable.Empty<string>();
 
 			foreach( var url in urls )
 			{
@@ -308,7 +309,6 @@ namespace Twice.ViewModels.Twitter
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
 		public override ulong Id => Model.StatusID;
 		public IEnumerable<StatusMediaViewModel> InlineMedias => _InlineMedias;
-
 		public bool IsFavorited => Model.Favorited;
 		public bool IsReply => Model.InReplyToStatusID != 0;
 		public bool IsRetweeted => Model.Retweeted;
