@@ -123,7 +123,7 @@
 
 						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 							</StackPanel>
 						</StackPanel>
@@ -145,7 +145,7 @@
 										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 				</StackPanel>
 				<StackPanel>
-					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 
 					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
@@ -400,7 +400,7 @@
 							</DockPanel>
 
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" 
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" 
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
 															Foreground="{DynamicResource MaterialDesignBody}" />
@@ -540,7 +540,7 @@
 				</StackPanel>
 
 				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
-					   TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}" />
+					   TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}" />
 			</Grid>
 		</materialDesign:Card>
 	</DataTemplate>
