@@ -8,7 +8,8 @@
         "Fixes": [
             "Fixed issues with loading statuses for some columns",
             "Settings dialog is now big enough to display all options",
-            "Long words are now correctly wrapped in statuses"
+            "Long words are now correctly wrapped in statuses",
+            "Fixed crash while trying to load instagram image in status"
         ],
         "Issues": [ ]
     },
