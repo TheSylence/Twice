@@ -16,7 +16,7 @@
 			xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource Locator}}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="600">
+             d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="650">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
