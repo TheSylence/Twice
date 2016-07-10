@@ -400,6 +400,7 @@
 											   Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 												VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
+									<materialDesign:PackIcon Kind="LockOutline" Visibility="{Binding User.IsProtected, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
 								</StackPanel>
 							</DockPanel>
 
