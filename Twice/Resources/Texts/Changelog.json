@@ -10,7 +10,8 @@
             "Settings dialog is now big enough to display all options",
             "Long words are now correctly wrapped in statuses",
             "Fixed crash while trying to load instagram image in status",
-            "Fixed crash when viewing details of test tweets in settings dialog"
+            "Fixed crash when viewing details of test tweets in settings dialog",
+            "Favourites column now has correct title"
         ],
         "Issues": [ ]
     },

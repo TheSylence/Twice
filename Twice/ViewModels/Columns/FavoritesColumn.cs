@@ -10,6 +10,7 @@ using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
+using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
@@ -23,6 +24,7 @@ namespace Twice.ViewModels.Columns
 		{
 			MaxIdFilterExpressionFavorites = s => s.MaxID == MaxId - 1;
 			SinceIdFilterExpressionFavorites = s => s.SinceID == SinceId;
+			Title = Strings.Favourites;
 		}
 
 		protected override bool IsSuitableForColumn( Status status )
