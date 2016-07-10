@@ -5,11 +5,12 @@
         "Description": "",
         "NewFeatures": [
             "Tweets can be scheduled",
-            "Tweet deletion can be scheduled"
+            "Tweet deletion can be scheduled",
+            "Images can now be viewed in full size"
         ],
         "Changes": [],
         "Fixes": [
-            "Fixed rare case when entities in user biographies were shown more than once"
+             "Fixed rare case when entities in user biographies were shown more than once"
         ],
         "Issues": [ ]
     },

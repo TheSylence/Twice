@@ -43,7 +43,9 @@
 						   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 			<controls:FlipView.ItemTemplate>
 				<DataTemplate DataType="dialogs:ImageEntry">
-					<Image Source="{Binding ImageUrl}" />
+					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+						<Image Source="{Binding ImageUrl}" />
+					</ScrollViewer>
 				</DataTemplate>
 			</controls:FlipView.ItemTemplate>
 		</controls:FlipView>
