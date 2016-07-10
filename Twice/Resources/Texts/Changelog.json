@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [],
-        "Changes": [],
+        "Changes": [
+            "Clicking a quote in a tweet now opens the quote instead of the tweet"
+        ],
         "Fixes": [
             "Fixed issues with loading statuses for some columns",
             "Settings dialog is now big enough to display all options",

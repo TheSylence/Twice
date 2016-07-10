@@ -137,6 +137,10 @@
 	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+			<i:Interaction.Behaviors>
+				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+										CommandParameter="{Binding}" />
+			</i:Interaction.Behaviors>
 			<StackPanel Orientation="Vertical">
 				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center"
