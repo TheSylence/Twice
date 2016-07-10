@@ -123,7 +123,7 @@
 
 						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 							</StackPanel>
 						</StackPanel>
@@ -137,6 +137,10 @@
 	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+			<i:Interaction.Behaviors>
+				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
+										CommandParameter="{Binding}" />
+			</i:Interaction.Behaviors>
 			<StackPanel Orientation="Vertical">
 				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center"
@@ -145,7 +149,7 @@
 										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 				</StackPanel>
 				<StackPanel>
-					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}"
+					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 
 					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
@@ -165,7 +169,7 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="3" Padding="0,0,0,5">
+		<materialDesign:Card Margin="2" Padding="0,0,0,5">
 			<materialDesign:Card.Style>
 				<Style TargetType="materialDesign:Card">
 					<Style.Triggers>
@@ -400,7 +404,7 @@
 							</DockPanel>
 
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="WrapWithOverflow" 
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" 
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
 															Foreground="{DynamicResource MaterialDesignBody}" />
@@ -540,7 +544,7 @@
 				</StackPanel>
 
 				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
-					   TextWrapping="WrapWithOverflow" FontSize="{DynamicResource GlobalFontSize}" />
+					   TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}" />
 			</Grid>
 		</materialDesign:Card>
 	</DataTemplate>

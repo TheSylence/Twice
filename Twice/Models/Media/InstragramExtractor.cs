@@ -1,3 +1,4 @@
+using Anotar.NLog;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -18,12 +19,20 @@ namespace Twice.Models.Media
 		{
 			string url = $"https://api.instagram.com/oembed/?url={originalUrl}";
 
-			using( var client = new WebClient() )
+			try
 			{
-				var json = await client.DownloadStringTaskAsync( url );
+				using( var client = new WebClient() )
+				{
+					var json = await client.DownloadStringTaskAsync( url );
 
-				var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
-				return new Uri( info.thumbnail_url );
+					var info = JsonConvert.DeserializeObject<InstagramResponse>( json );
+					return new Uri( info.thumbnail_url );
+				}
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to load image from instagram", ex );
+				return null;
 			}
 		}
 

@@ -141,7 +141,6 @@ namespace Twice.Tests.ViewModels.Columns
 			var statusRepo = new Mock<ITwitterStatusRepository>();
 			statusRepo.Setup( s => s.Filter(
 				It.IsAny<Expression<Func<Status, bool>>>(),
-				It.IsAny<Expression<Func<Status, bool>>>(),
 				It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns( Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );

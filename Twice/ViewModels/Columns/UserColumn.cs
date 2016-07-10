@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Seal.Fody;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -10,6 +11,7 @@ using Twice.Models.Twitter.Streaming;
 
 namespace Twice.ViewModels.Columns
 {
+	[LeaveUnsealed]
 	internal class UserColumn : ColumnViewModelBase
 	{
 		public UserColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
@@ -21,18 +23,7 @@ namespace Twice.ViewModels.Columns
 
 		protected override bool IsSuitableForColumn( Status status )
 		{
-			if( status.UserID == UserId )
-			{
-				return true;
-			}
-
-			ulong id;
-			if( ulong.TryParse( status.User.UserIDResponse, out id ) )
-			{
-				return id == UserId;
-			}
-
-			return status.User.UserID == UserId;
+			return status.GetUserId() == UserId;
 		}
 
 		protected override bool IsSuitableForColumn( DirectMessage message )

@@ -17,7 +17,7 @@ namespace Twice.Models.Cache
 			Id = message.GetMessageId();
 		}
 
-		private MessageCacheEntry( ulong id, ulong sender, ulong recipient, string data )
+		internal MessageCacheEntry( ulong id, ulong sender, ulong recipient, string data )
 		{
 			Id = id;
 			Sender = sender;

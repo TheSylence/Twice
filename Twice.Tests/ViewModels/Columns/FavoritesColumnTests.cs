@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Cache;
@@ -21,7 +21,6 @@ namespace Twice.Tests.ViewModels.Columns
 		public void FavoriteIsAddedToColumn()
 		{
 			// Arrange
-			var definition = new ColumnDefinition( ColumnType.Favorites );
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = true} );
 			var parser = new Mock<IStreamParser>();
@@ -34,7 +33,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var waitHandle = new ManualResetEventSlim( false );
 
-			var column = new FavoritesTestColumn( context.Object, definition, config.Object, parser.Object )
+			var column = new FavoritesTestColumn( context.Object, null, config.Object, parser.Object )
 			{
 				Dispatcher = new SyncDispatcher(),
 				Cache = cache.Object
@@ -54,16 +53,63 @@ namespace Twice.Tests.ViewModels.Columns
 			Assert.AreEqual( 1, column.Items.Count );
 		}
 
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void MessageIsAlwaysRejected()
+		{
+			// Arrange
+			var column = new FavoritesTestColumn();
+
+			var msg = DummyGenerator.CreateDummyMessage();
+
+			// Act
+			bool suitable = column.Suitable( msg );
+
+			// Assert
+			Assert.IsFalse( suitable );
+		}
+
 		private class FavoritesTestColumn : FavoritesColumn
 		{
-			public FavoritesTestColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser, IMessenger messenger = null )
-				: base( context, definition, config, parser, messenger )
+			public FavoritesTestColumn( IContextEntry context = null, ColumnDefinition definition = null, IConfig config = null, IStreamParser parser = null )
+				: base( context ?? DefaultContext(), definition ?? DefaultDefinition(), config ?? DefaultConfig(), parser ?? DefaultParser() )
 			{
 			}
 
 			public void SetLoading( bool loading )
 			{
 				IsLoading = loading;
+			}
+
+			public bool Suitable( DirectMessage msg )
+			{
+				return IsSuitableForColumn( msg );
+			}
+
+			private static IConfig DefaultConfig()
+			{
+				var cfg = new Mock<IConfig>();
+				cfg.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+
+				return cfg.Object;
+			}
+
+			private static IContextEntry DefaultContext()
+			{
+				var context = new Mock<IContextEntry>();
+
+				return context.Object;
+			}
+
+			private static ColumnDefinition DefaultDefinition()
+			{
+				return new ColumnDefinition( ColumnType.Favorites );
+			}
+
+			private static IStreamParser DefaultParser()
+			{
+				var parser = new Mock<IStreamParser>();
+
+				return parser.Object;
 			}
 		}
 	}

@@ -1,4 +1,22 @@
 ﻿[
+     {
+        "Version": "0.6.6",
+        "Date": "2016-07-10",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [
+            "Clicking a quote in a tweet now opens the quote instead of the tweet"
+        ],
+        "Fixes": [
+            "Fixed issues with loading statuses for some columns",
+            "Settings dialog is now big enough to display all options",
+            "Long words are now correctly wrapped in statuses",
+            "Fixed crash while trying to load instagram image in status",
+            "Fixed crash when viewing details of test tweets in settings dialog",
+            "Favourites column now has correct title"
+        ],
+        "Issues": [ ]
+    },
     {
         "Version": "0.6.5",
         "Date": "2016-07-03",

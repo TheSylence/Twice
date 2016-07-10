@@ -210,6 +210,23 @@ namespace Twice.Models.Cache
 			Connection.Dispose();
 		}
 
+		public async Task<ulong> FindFriend( ulong friendId )
+		{
+			using( var cmd = Connection.CreateCommand() )
+			{
+				cmd.CommandText = "SELECT UserId FROM UserFriends WHERE FriendId = @friendId LIMIT 1;";
+				cmd.AddParameter( "friendId", friendId );
+
+				var db = await cmd.ExecuteScalarAsync();
+				if( db == null )
+				{
+					return 0;
+				}
+
+				return (ulong)Convert.ChangeType( db, typeof( ulong ) );
+			}
+		}
+
 		public async Task<IEnumerable<string>> GetKnownHashtags()
 		{
 			await Cleanup();
@@ -292,12 +309,14 @@ namespace Twice.Models.Cache
 
 		public async Task<List<Status>> GetStatusesForColumn( Guid columnId, int limit )
 		{
+			await Cleanup();
+
 			List<Status> result = new List<Status>();
 
 			using( var cmd = Connection.CreateCommand() )
 			{
 				cmd.CommandText =
-					"SELECT s.StatusData FROM ColumnStatuses c LEFT JOIN Statuses s ON c.StatusId = s.Id " +
+					"SELECT s.StatusData FROM ColumnStatuses c JOIN Statuses s ON c.StatusId = s.Id " +
 					" WHERE c.ColumnId = @columnId ORDER BY s.Id DESC LIMIT 0, @limit";
 				cmd.AddParameter( "columnId", columnId );
 				cmd.AddParameter( "limit", limit );
@@ -374,23 +393,6 @@ namespace Twice.Models.Cache
 					}
 				}
 				return result;
-			}
-		}
-
-		public async Task<ulong> FindFriend( ulong friendId )
-		{
-			using( var cmd = Connection.CreateCommand() )
-			{
-				cmd.CommandText = "SELECT UserId FROM UserFriends WHERE FriendId = @friendId LIMIT 1;";
-				cmd.AddParameter( "friendId", friendId );
-
-				var db = await cmd.ExecuteScalarAsync();
-				if( db == null )
-				{
-					return 0;
-				}
-
-				return (ulong)Convert.ChangeType( db, typeof( ulong ) );
 			}
 		}
 
@@ -570,6 +572,12 @@ namespace Twice.Models.Cache
 							cmd.AddParameter( "now", now );
 							await cmd.ExecuteNonQueryAsync();
 						}
+					}
+
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "DELETE FROM ColumnStatuses WHERE NOT EXISTS (Select s.Id FROM Statuses s WHERE s.Id = ColumnStatuses.StatusId);";
+						await cmd.ExecuteNonQueryAsync();
 					}
 
 					tx.Commit();
