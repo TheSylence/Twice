@@ -1,9 +1,20 @@
 ﻿[
-     {
+    {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed rare case when entities in user biographies were shown more than once"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.6",
         "Date": "2016-07-10",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [ ],
         "Changes": [
             "Clicking a quote in a tweet now opens the quote instead of the tweet"
         ],

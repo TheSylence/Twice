@@ -137,7 +137,20 @@ namespace Twice.Converters
 				Debug.Assert( found );
 			}
 
-			return allEntities.OrderBy( e => e.Start );
+			var ordered = allEntities.OrderBy( e => e.Start ).ToList();
+
+			for( int i=ordered.Count-1; i>0; --i )
+			{
+				var current = ordered[i];
+				var next = ordered[i - 1];
+
+				if( current.Start == next.Start && current.End == next.End )
+				{
+					ordered.RemoveAt( i );
+				}
+			}
+
+			return ordered;
 		}
 
 		private static string ExtractEntityText( EntityBase entity )
