@@ -246,7 +246,10 @@ namespace Twice.ViewModels.Columns
 				await Dispatcher.RunAsync( () => ItemCollection.Remove( status ) );
 			}
 
-			await Cache.RemoveStatus( itemId );
+			if( Cache != null )
+			{
+				await Cache.RemoveStatus( itemId );
+			}
 		}
 
 		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
@@ -359,6 +362,11 @@ namespace Twice.ViewModels.Columns
 
 		private async Task UpdateCache( Status status )
 		{
+			if( Cache == null )
+			{
+				return;
+			}
+
 			await Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() );
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
