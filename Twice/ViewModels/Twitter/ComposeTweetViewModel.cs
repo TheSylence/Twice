@@ -23,6 +23,85 @@ namespace Twice.ViewModels.Twitter
 		public ComposeTweetViewModel()
 		{
 			Accounts = new List<AccountEntry>();
+
+			Validate( () => ScheduleDate )
+				.If( () => IsTweetScheduled )
+				.Check( dt => dt.Date >= DateTime.Now.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+
+			Validate( () => ScheduleTime )
+				.If( () => IsTweetScheduled )
+				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || dt.Date > DateTime.Now.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+
+			Validate( () => DeletionDate )
+				.If( () => IsDeletionScheduled )
+				.Check( dt => dt.Date >= DateTime.Now.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+
+			Validate( () => DeletionTime )
+				.If( () => IsDeletionScheduled )
+				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || dt.Date > DateTime.Now.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+
+			Validate( () => DeletionDate )
+				.If( () => IsDeletionScheduled && IsTweetScheduled )
+				.Check( dt => dt.Date >= ScheduleDate.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+
+			Validate( () => DeletionTime )
+				.If( () => IsDeletionScheduled && IsTweetScheduled )
+				.Check( dt => dt.TimeOfDay >= ScheduleDate.TimeOfDay || dt.Date > ScheduleDate.Date )
+				.Message( Strings.DateMustBeInTheFuture );
+		}
+
+		public async Task OnLoad( object data )
+		{
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged -= Acc_UseChanged;
+			}
+
+			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			foreach( var acc in Accounts )
+			{
+				acc.UseChanged += Acc_UseChanged;
+			}
+
+			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
+			defAccount.Use = true;
+
+			if( PreSelectedAccounts.Any() )
+			{
+				foreach( var acc in Accounts )
+				{
+					acc.Use = PreSelectedAccounts.Contains( acc.Context.UserId );
+				}
+			}
+
+			RaisePropertyChanged( nameof( Accounts ) );
+
+			InitializeText();
+			ConfirmationSet = false;
+
+			Medias.Clear();
+			AttachedMedias.Clear();
+
+			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.UserName ).ToList();
+			RaisePropertyChanged( nameof( KnownUserNames ) );
+			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
+			RaisePropertyChanged( nameof( KnownHashtags ) );
+		}
+
+		public void PreSelectAccounts( IEnumerable<ulong> accounts )
+		{
+			PreSelectedAccounts = accounts.ToArray();
+		}
+
+		public void SetReply( StatusViewModel status, bool toAll )
+		{
+			InReplyTo = status;
+			ReplyToAll = toAll;
 		}
 
 		internal static string GetMimeType( string fileName )
@@ -220,56 +299,8 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( t => { IsSending = false; } );
 		}
 
-		public async Task OnLoad( object data )
-		{
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged -= Acc_UseChanged;
-			}
-
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
-			foreach( var acc in Accounts )
-			{
-				acc.UseChanged += Acc_UseChanged;
-			}
-
-			var defAccount = Accounts.FirstOrDefault( a => a.IsDefault ) ?? Accounts.First();
-			defAccount.Use = true;
-
-			if( PreSelectedAccounts.Any() )
-			{
-				foreach( var acc in Accounts )
-				{
-					acc.Use = PreSelectedAccounts.Contains( acc.Context.UserId );
-				}
-			}
-
-			RaisePropertyChanged( nameof( Accounts ) );
-
-			InitializeText();
-			ConfirmationSet = false;
-
-			Medias.Clear();
-			AttachedMedias.Clear();
-
-			KnownUserNames = ( await Cache.GetKnownUsers().ConfigureAwait( false ) ).Select( u => u.UserName ).ToList();
-			RaisePropertyChanged( nameof( KnownUserNames ) );
-			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
-			RaisePropertyChanged( nameof( KnownHashtags ) );
-		}
-
-		public void PreSelectAccounts( IEnumerable<ulong> accounts )
-		{
-			PreSelectedAccounts = accounts.ToArray();
-		}
-
-		public void SetReply( StatusViewModel status, bool toAll )
-		{
-			InReplyTo = status;
-			ReplyToAll = toAll;
-		}
-
 		public ICollection<AccountEntry> Accounts { get; private set; }
+
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -298,6 +329,36 @@ namespace Twice.ViewModels.Twitter
 		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
 			ExecuteDeleteMediaCommand ) );
 
+		public DateTime DeletionDate
+		{
+			[DebuggerStepThrough] get { return _DeletionDate; }
+			set
+			{
+				if( _DeletionDate == value )
+				{
+					return;
+				}
+
+				_DeletionDate = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public DateTime DeletionTime
+		{
+			[DebuggerStepThrough] get { return _DeletionTime; }
+			set
+			{
+				if( _DeletionTime == value )
+				{
+					return;
+				}
+
+				_DeletionTime = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public StatusViewModel InReplyTo
 		{
 			[DebuggerStepThrough] get { return _InReplyTo; }
@@ -309,6 +370,21 @@ namespace Twice.ViewModels.Twitter
 				}
 
 				_InReplyTo = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool IsDeletionScheduled
+		{
+			[DebuggerStepThrough] get { return _IsDeletionScheduled; }
+			set
+			{
+				if( _IsDeletionScheduled == value )
+				{
+					return;
+				}
+
+				_IsDeletionScheduled = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -328,7 +404,23 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public bool IsTweetScheduled
+		{
+			[DebuggerStepThrough] get { return _IsTweetScheduled; }
+			set
+			{
+				if( _IsTweetScheduled == value )
+				{
+					return;
+				}
+
+				_IsTweetScheduled = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public ICollection<string> KnownHashtags { get; private set; }
+
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -361,6 +453,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		public StatusViewModel QuotedTweet
 		{
 			[DebuggerStepThrough] get { return _QuotedTweet; }
@@ -383,6 +478,36 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand RemoveReplyCommand => _RemoveReplyCommand ?? ( _RemoveReplyCommand = new RelayCommand(
 			ExecuteRemoveReplyCommand ) );
+
+		public DateTime ScheduleDate
+		{
+			[DebuggerStepThrough] get { return _ScheduleDate; }
+			set
+			{
+				if( _ScheduleDate == value )
+				{
+					return;
+				}
+
+				_ScheduleDate = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public DateTime ScheduleTime
+		{
+			[DebuggerStepThrough] get { return _ScheduleTime; }
+			set
+			{
+				if( _ScheduleTime == value )
+				{
+					return;
+				}
+
+				_ScheduleTime = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public ICommand SendTweetCommand
 			=>
@@ -445,52 +570,51 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		private const int LowWarnThreshold = 135;
-		private readonly List<Media> Medias = new List<Media>();
+
 		private const int MediumWarnThreshold = 125;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AttachImageCommand;
+		private readonly List<Media> Medias = new List<Media>();
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private StatusViewModel _InReplyTo;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _DeletionDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _DeletionTime;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _InReplyTo;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsDeletionScheduled;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private StatusViewModel _QuotedTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RemoveQuoteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsTweetScheduled;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _QuotedTweet;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
 
 		private RelayCommand _RemoveReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _ScheduleDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _ScheduleTime;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
