@@ -112,12 +112,11 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
-			var nullItems = page.Items;
+			var ignore = page.Items;
 			waitHandle.Wait( 1000 );
 			var items = page.Items;
 
 			// Assert
-			Assert.IsNull( nullItems );
 			Assert.IsNotNull( items.SingleOrDefault() );
 
 			context.Verify( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ), Times.Once() );
