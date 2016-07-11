@@ -176,6 +176,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -287,6 +288,13 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Proxy\HttpListenerWrapper.cs" />
+    <Compile Include="Models\Proxy\HttpRequestImpl.cs" />
+    <Compile Include="Models\Proxy\HttpResponseImpl.cs" />
+    <Compile Include="Models\Proxy\IHttpListener.cs" />
+    <Compile Include="Models\Proxy\IHttpRequest.cs" />
+    <Compile Include="Models\Proxy\IHttpResponse.cs" />
+    <Compile Include="Models\Proxy\MediaProxyServer.cs" />
     <Compile Include="Models\Media\IMediaExtractor.cs" />
     <Compile Include="Models\Media\IMediaExtractorRepository.cs" />
     <Compile Include="Models\Media\InstragramExtractor.cs" />
@@ -339,6 +347,8 @@
     <Compile Include="Models\Twitter\Repositories\TwitterStreamingRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\TwitterUserRepository.cs" />
     <Compile Include="PreserveAttribute.cs" />
+    <Compile Include="Utilities\HttpClientWrapper.cs" />
+    <Compile Include="Models\Proxy\IHttpClient.cs" />
     <Compile Include="Utilities\ResourceHelper.cs" />
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />

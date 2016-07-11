@@ -18,7 +18,9 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Twice.Injections;
+using Twice.Models;
 using Twice.Models.Configuration;
+using Twice.Models.Proxy;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.Views;
@@ -48,6 +50,8 @@ namespace Twice
 
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
 			Current.DispatcherUnhandledException += Handler.DispatcherUnhandledException;
+
+			ProxyServer = new MediaProxyServer();
 		}
 
 		internal static void ApplyWindowSettings( Window window )
@@ -55,9 +59,8 @@ namespace Twice
 			WindowSettings = WindowSettings.Load( Constants.IO.WindowSettingsFileName );
 			WindowSettings?.Apply( new WindowWrapper( window ) );
 
-			// Default settings contain no width or height
-			// so instanciate them only AFTER setting the position
-			// otherwise the window would disappear
+			// Default settings contain no width or height so instanciate them only AFTER setting the
+			// position otherwise the window would disappear
 			if( WindowSettings == null )
 			{
 				WindowSettings = new WindowSettings();
@@ -71,6 +74,7 @@ namespace Twice
 
 		protected override void OnExit( ExitEventArgs e )
 		{
+			ProxyServer.Stop();
 			SingleInstance.Stop();
 
 			CentralHandler?.Dispose();
@@ -92,6 +96,7 @@ namespace Twice
 
 			DispatcherHelper.Initialize();
 			Kernel = new Kernel();
+			ProxyServer.Start();
 
 			base.OnStartup( e );
 			ConfigureLogging();
@@ -132,12 +137,12 @@ namespace Twice
 			dict.SetCurrentThreadCulture = true;
 			dict.Culture = CultureInfo.GetCultureInfo( language );
 
-			// This is done so DateTime's in XAML are parsed based on the user
-			// language instead of en-US which is the default language for XAML.
+			// This is done so DateTime's in XAML are parsed based on the user language instead of
+			// en-US which is the default language for XAML.
 			var xmlLang = XmlLanguage.GetLanguage( dict.Culture.IetfLanguageTag );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(FrameworkElement),
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );
-			FrameworkElement.LanguageProperty.OverrideMetadata( typeof(Run), new FrameworkPropertyMetadata( xmlLang ) );
+			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
 		}
 
 		private static void LogEnvironmentInfo()
@@ -192,9 +197,9 @@ namespace Twice
 			LogManager.Configuration = config;
 		}
 
-		private static WindowSettings WindowSettings;
-
 		public static IKernel Kernel { get; private set; }
+		private static WindowSettings WindowSettings;
+		private readonly MediaProxyServer ProxyServer;
 		private CentralMessageHandler CentralHandler;
 	}
 }
