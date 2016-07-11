@@ -14,6 +14,7 @@ using Twice.Resources;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
+using MediaType = LinqToTwitter.MediaType;
 
 namespace Twice.Tests.ViewModels.Twitter
 {

@@ -229,9 +229,14 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities.MediaEntities )
-				.Distinct( TwitterComparers.MediaEntityComparer )
-				.Select( m => new Uri( m.MediaUrlHttps ) ) ?? Enumerable.Empty<Uri>();
+			var videos = (Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+				Enumerable.Empty<MediaEntity>()).ToArray();
+
+			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>() )
+				.Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
+				?? Enumerable.Empty<MediaEntity>();
+
+			entities = entities.Concat( videos );
 
 			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
 			{

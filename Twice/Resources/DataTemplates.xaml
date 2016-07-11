@@ -417,11 +417,11 @@
 												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
-											<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
+											<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Play">
 												<i:Interaction.Behaviors>
 													<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
 												</i:Interaction.Behaviors>
-											</Image>
+											</MediaElement>
 										</DataTemplate>
 									</controls1:FlipView.ItemTemplate>
 								</controls1:FlipView>
