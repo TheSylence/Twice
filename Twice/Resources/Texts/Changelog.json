@@ -7,7 +7,8 @@
             "Tweets can be scheduled",
             "Tweet deletion can be scheduled",
             "Images can now be viewed in full size",
-            "Protected accounts are now marked as such"
+            "Protected accounts are now marked as such",
+            "Conversation view now scrolls to bottom when loading, displaying the actual item that was replied to"
         ],
         "Changes": [],
         "Fixes": [

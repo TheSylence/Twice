@@ -30,7 +30,11 @@
 				<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
 									   DisplayIndicators="False">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-						<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+						<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}">
+							<i:Interaction.Behaviors>
+								<behaviors:ScrollToEnd Controller="{Binding}" />
+							</i:Interaction.Behaviors>
+						</ItemsControl>
 					</ScrollViewer>
 				</views:StatusContainer>
 

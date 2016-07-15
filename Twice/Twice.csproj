@@ -247,6 +247,7 @@
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\PreviewResourceManipulator.cs" />
     <Compile Include="Behaviors\ScrollIntoView.cs" />
+    <Compile Include="Behaviors\ScrollToEnd.cs" />
     <Compile Include="Behaviors\SelectOnDoubleClick.cs" />
     <Compile Include="Behaviors\WindowHelper.cs" />
     <Compile Include="CentralMessageHandler.cs" />
@@ -360,6 +361,7 @@
     <Compile Include="Models\Proxy\IHttpClient.cs" />
     <Compile Include="Utilities\ResourceHelper.cs" />
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
+    <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />

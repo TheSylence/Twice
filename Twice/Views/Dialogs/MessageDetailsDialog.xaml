@@ -25,7 +25,11 @@
 
 		<Grid MaxHeight="250" Visibility="{Binding PreviousMessages, Converter={StaticResource VisibleIfItemsConv}}">
 			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding PreviousMessages}" ItemTemplate="{StaticResource MessageViewTemplate}" />
+				<ItemsControl ItemsSource="{Binding PreviousMessages}" ItemTemplate="{StaticResource MessageViewTemplate}">
+					<i:Interaction.Behaviors>
+						<behaviors:ScrollToEnd Controller="{Binding}" />
+					</i:Interaction.Behaviors>
+				</ItemsControl>
 			</ScrollViewer>
 
 			<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
