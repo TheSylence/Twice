@@ -46,12 +46,13 @@ namespace Twice.ViewModels.Twitter
 			OpenRequested?.Invoke( this, EventArgs.Empty );
 		}
 
+		public bool IsAnimated => Type == MediaType.Animated;
+
 		public ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand(
 			ExecuteOpenImageCommand ) );
 
-		public MediaType Type { get; }
 		public Uri Url { get; }
-
+		private readonly MediaType Type;
 		private RelayCommand _OpenImageCommand;
 		private MediaEntity Entity;
 	}

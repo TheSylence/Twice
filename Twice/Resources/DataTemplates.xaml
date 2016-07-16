@@ -417,9 +417,10 @@
 												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
-											<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Play">
+											<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Play" UnloadedBehavior="Manual">
 												<i:Interaction.Behaviors>
 													<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+													<behaviors:MediaController IsAnimated="{Binding IsAnimated}" />
 												</i:Interaction.Behaviors>
 											</MediaElement>
 										</DataTemplate>

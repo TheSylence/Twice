@@ -14,19 +14,7 @@ namespace Twice.Models.Media
 
 		public Task<Uri> GetMediaUrl( string originalUrl )
 		{
-			bool https = originalUrl.StartsWith( "https:", StringComparison.Ordinal );
-
-			Uri url;
-			if( https )
-			{
-				url = MediaProxyServer.BuildUrl( originalUrl );
-			}
-			else
-			{
-				url = new Uri( originalUrl );
-			}
-
-			return Task.FromResult( url );
+			return Task.FromResult( new Uri( originalUrl ) );
 		}
 
 		private static readonly Regex Pattern =
