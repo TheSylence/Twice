@@ -290,6 +290,7 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Media\TwitterVideoExtractor.cs" />
     <Compile Include="Models\Proxy\HttpListenerWrapper.cs" />
     <Compile Include="Models\Proxy\HttpRequestImpl.cs" />
     <Compile Include="Models\Proxy\HttpResponseImpl.cs" />
@@ -361,6 +362,7 @@
     <Compile Include="Models\Proxy\IHttpClient.cs" />
     <Compile Include="Utilities\ResourceHelper.cs" />
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
+    <Compile Include="ViewModels\Columns\StaticColumn.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />

@@ -1,11 +1,10 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Twice.Utilities;
 
 namespace Twice.Models.Proxy
@@ -18,18 +17,12 @@ namespace Twice.Models.Proxy
 			Http = listener ?? new HttpListenerWrapper( new HttpListener() );
 		}
 
-		public void Dispose()
-		{
-			Client.Dispose();
-		}
-
 		public void Start()
 		{
-			const string prefix = "http://localhost:60123/twice/media/";
-			Http.AddPrefix( prefix );
+			Http.AddPrefix( Prefix );
 			Http.Start();
 
-			LogTo.Info( $"Starting proxy server on {prefix}" );
+			LogTo.Info( $"Starting proxy server on {Prefix}" );
 			IsRunning = true;
 			ServerThread = new Thread( RunThreaded );
 			ServerThread.Start();
@@ -43,6 +36,17 @@ namespace Twice.Models.Proxy
 
 			Http.Stop();
 			Http.ClearPrefixes();
+		}
+
+		internal static Uri BuildUrl( string url )
+		{
+			var encoded = Uri.EscapeUriString( url );
+			return new Uri( $"{Prefix}?stream={encoded}" );
+		}
+
+		internal static Uri BuildUrl( Uri url )
+		{
+			return BuildUrl( url.AbsoluteUri );
 		}
 
 		internal async Task HandleRequest( IHttpRequest request, IHttpResponse response )
@@ -71,7 +75,15 @@ namespace Twice.Models.Proxy
 					{
 						var data = await get.Content.ReadAsByteArrayAsync();
 
-						response.SetContentInfo( get.Content.Headers.ContentLength ?? 0, get.Content.Headers.ContentType.MediaType, get.Content.Headers.ContentMD5 );
+						var contentLength = get.Content.Headers.ContentLength ?? 0;
+						var contentType = get.Content.Headers.ContentType.MediaType;
+						var contentMd5 = get.Content.Headers.ContentMD5;
+
+						LogTo.Debug( $"Content-Length: {contentLength}" );
+						LogTo.Debug( $"Content-Type: {contentType}" );
+						LogTo.Debug( $"Content-MD5: {contentMd5}" );
+
+						response.SetContentInfo( contentLength, contentType, contentMd5 );
 						response.SetCacheInfo( get.Content.Headers.Expires, get.Content.Headers.LastModified );
 
 						response.OutputStream.Write( data, 0, data.Length );
@@ -107,6 +119,12 @@ namespace Twice.Models.Proxy
 			}
 		}
 
+		public void Dispose()
+		{
+			Client.Dispose();
+		}
+
+		private const string Prefix = "http://localhost:60123/twice/media/";
 		private readonly IHttpClient Client;
 		private readonly IHttpListener Http;
 		private bool IsRunning;

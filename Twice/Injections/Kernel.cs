@@ -18,6 +18,7 @@ namespace Twice.Injections
 
 			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
+			MediaExtractorRepository.Default.AddExtractor( new TwitterVideoExtractor() );
 		}
 
 		private static void MigrateAppData()

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Models.Proxy;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -16,7 +17,7 @@ namespace Twice.ViewModels.Twitter
 	{
 		public StatusMediaViewModel( Uri url )
 		{
-			Url = GetUrl( url );
+			Url = MediaProxyServer.BuildUrl( url );
 			Type = MediaType.Image;
 		}
 
@@ -27,7 +28,7 @@ namespace Twice.ViewModels.Twitter
 			{
 			case "animated_gif":
 			case "video":
-				Url = GetUrl( entity.VideoInfo.Variants[0].Url );
+				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url );
 				Type = MediaType.Animated;
 				break;
 
@@ -39,18 +40,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public event EventHandler OpenRequested;
-
-		private static Uri GetUrl( Uri mediaUrl )
-		{
-			const string baseUrl = "http://localhost:60123/twice/media/?stream=";
-
-			return new Uri( baseUrl + Uri.EscapeUriString( mediaUrl.AbsoluteUri ) );
-		}
-
-		private static Uri GetUrl( string mediaUrl )
-		{
-			return GetUrl( new Uri( mediaUrl ) );
-		}
 
 		private void ExecuteOpenImageCommand()
 		{
