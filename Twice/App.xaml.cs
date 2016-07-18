@@ -18,9 +18,9 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Twice.Injections;
-using Twice.Models;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
+using Twice.Models.Scheduling;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.Views;
@@ -74,6 +74,7 @@ namespace Twice
 
 		protected override void OnExit( ExitEventArgs e )
 		{
+			Scheduler?.Stop();
 			ProxyServer.Stop();
 			SingleInstance.Stop();
 
@@ -97,6 +98,9 @@ namespace Twice
 			DispatcherHelper.Initialize();
 			Kernel = new Kernel();
 			ProxyServer.Start();
+
+			Scheduler = Kernel.Get<IScheduler>();
+			Scheduler.Start();
 
 			base.OnStartup( e );
 			ConfigureLogging();
@@ -201,5 +205,6 @@ namespace Twice
 		private static WindowSettings WindowSettings;
 		private readonly MediaProxyServer ProxyServer;
 		private CentralMessageHandler CentralHandler;
+		private IScheduler Scheduler;
 	}
 }

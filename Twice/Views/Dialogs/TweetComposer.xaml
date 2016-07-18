@@ -15,7 +15,7 @@
              xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" FocusManager.FocusedElement="{Binding ElementName=txtInput}"
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
              mc:Ignorable="d" Style="{StaticResource DialogStyle}" Title="{lex:Loc ComposeTweet}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="500">
+             d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="550">
 	<controls:MetroWindow.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
@@ -34,8 +34,55 @@
 
 			<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}" VerticalAlignment="Bottom" Margin="5,3" Grid.Column="0" />
 
-			<Button Content="{lex:Loc SendTweet}" Command="{Binding SendTweetCommand}" Grid.Column="0" Grid.ColumnSpan="2"
-				HorizontalAlignment="Right" Margin="5" />
+			<StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+				<ToggleButton x:Name="scheduleToggle" Style="{StaticResource MaterialDesignActionToggleButton}">
+					<ToggleButton.Content>
+						<materialDesign:PackIcon Kind="Alarm" />
+					</ToggleButton.Content>
+					<materialDesign:ToggleButtonAssist.OnContent>
+						<materialDesign:PackIcon Kind="AlarmCheck" />
+					</materialDesign:ToggleButtonAssist.OnContent>
+				</ToggleButton>
+				<Button Content="{lex:Loc SendTweet}" Command="{Binding SendTweetCommand}"
+					HorizontalAlignment="Right" Margin="5" />
+			</StackPanel>
+		</Grid>
+
+		<Grid Margin="8" DockPanel.Dock="Bottom" Visibility="{Binding ElementName=scheduleToggle, Path=IsChecked, Converter={StaticResource BoolToVisibleConv}}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<DockPanel Margin="5">
+				<materialDesign:PackIcon Kind="AlertCircle" DockPanel.Dock="Left" />
+				<TextBlock Text="{lex:Loc AppMustRunForSchedule}" TextWrapping="Wrap" Margin="5,0" />
+			</DockPanel>
+
+			<StackPanel Orientation="Vertical" Grid.Row="1">
+				<CheckBox Content="{lex:Loc ScheduleTweet}" Margin="5,10" IsChecked="{Binding IsTweetScheduled}" />
+				<DockPanel LastChildFill="False" IsEnabled="{Binding IsTweetScheduled}">
+					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
+											SelectedDate="{Binding ScheduleDate}" />
+					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
+														   SelectedTime="{Binding ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
+				</DockPanel>
+			</StackPanel>
+
+			<StackPanel Orientation="Vertical" Grid.Row="2">
+				<CheckBox Content="{lex:Loc ScheduleTweetDeletion}" Margin="5,10" IsChecked="{Binding IsDeletionScheduled}" />
+				<DockPanel LastChildFill="False" IsEnabled="{Binding IsDeletionScheduled}">
+					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
+											SelectedDate="{Binding DeletionDate}" />
+					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
+														   SelectedTime="{Binding DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
+				</DockPanel>
+			</StackPanel>
 		</Grid>
 
 		<StackPanel Orientation="Vertical">
@@ -205,8 +252,8 @@
 				<GroupBox.HeaderTemplate>
 					<DataTemplate>
 						<DockPanel LastChildFill="True">
-							<Button Style="{StaticResource MaterialDesignToolForegroundButton}" DockPanel.Dock="Right" 
-									Command="{Binding Data.RemoveReplyCommand, Source={StaticResource DataProxy}}" 
+							<Button Style="{StaticResource MaterialDesignToolForegroundButton}" DockPanel.Dock="Right"
+									Command="{Binding Data.RemoveReplyCommand, Source={StaticResource DataProxy}}"
 									ToolTip="{lex:Loc RemoveReply}" VerticalAlignment="Center">
 								<materialDesign:PackIcon Kind="CloseCircleOutline" />
 							</Button>

@@ -211,6 +211,7 @@
     <Compile Include="Models\Media\InstragramExtractorTests.cs" />
     <Compile Include="Models\Media\MediaExtractorRepositoryTests.cs" />
     <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
+    <Compile Include="Models\Scheduling\SchedulerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\StatusComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
+    <Compile Include="Models\Twitter\TweetHelperTests.cs" />
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
     <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />

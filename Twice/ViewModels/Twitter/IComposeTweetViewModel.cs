@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Twice.ViewModels.Main;
@@ -29,5 +30,12 @@ namespace Twice.ViewModels.Twitter
 		bool StayOpen { get; set; }
 		string Text { get; set; }
 		int TextLength { get; set; }
+		bool IsTweetScheduled { get; set; }
+		bool IsDeletionScheduled { get; set; }
+
+		DateTime ScheduleDate { get; set; }
+		DateTime DeletionDate { get; set; }
+		DateTime ScheduleTime { get; set; }
+		DateTime DeletionTime { get; set; }
 	}
 }
