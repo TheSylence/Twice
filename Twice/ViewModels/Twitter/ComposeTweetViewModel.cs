@@ -10,6 +10,7 @@ using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
+using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Views.Services;
@@ -31,7 +32,7 @@ namespace Twice.ViewModels.Twitter
 
 			Validate( () => ScheduleTime )
 				.If( () => IsTweetScheduled )
-				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || dt.Date > DateTime.Now.Date )
+				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || ScheduleDate.Date > DateTime.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )
@@ -41,7 +42,7 @@ namespace Twice.ViewModels.Twitter
 
 			Validate( () => DeletionTime )
 				.If( () => IsDeletionScheduled )
-				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || dt.Date > DateTime.Now.Date )
+				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || DeletionDate.Date > DateTime.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )
@@ -51,7 +52,7 @@ namespace Twice.ViewModels.Twitter
 
 			Validate( () => DeletionTime )
 				.If( () => IsDeletionScheduled && IsTweetScheduled )
-				.Check( dt => dt.TimeOfDay >= ScheduleDate.TimeOfDay || dt.Date > ScheduleDate.Date )
+				.Check( dt => dt.TimeOfDay >= ScheduleDate.TimeOfDay || DeletionDate.Date > ScheduleDate.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 		}
 
@@ -91,6 +92,13 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
+			
+			ScheduleDate = DateTime.Now;
+			ScheduleTime = DateTime.Now;
+			DeletionDate = DateTime.Now;
+			DeletionTime = DateTime.Now;
+			IsTweetScheduled = false;
+			IsDeletionScheduled = false;
 		}
 
 		public void PreSelectAccounts( IEnumerable<ulong> accounts )
@@ -158,6 +166,19 @@ namespace Twice.ViewModels.Twitter
 			return TwitterHelper.CountCharacters( Text, TwitterConfig ) <= Constants.Twitter.MaxTweetLength;
 		}
 
+		private async Task CloseOrReload()
+		{
+			await Dispatcher.RunAsync( async () =>
+			{
+				if( !StayOpen )
+				{
+					Close( true );
+				}
+
+				await OnLoad( null );
+			} );
+		}
+
 		private async void ExecuteAttachImageCommand()
 		{
 			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
@@ -192,7 +213,7 @@ namespace Twice.ViewModels.Twitter
 			await Dispatcher.RunAsync( () =>
 			{
 				Medias.Add( media );
-				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData ) );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, selectedFile ) );
 			} );
 		}
 
@@ -228,7 +249,27 @@ namespace Twice.ViewModels.Twitter
 
 		private async void ExecuteSendTweetCommand()
 		{
-			await SendTweet();
+			List<Tuple<ulong, ulong>> statusIds = new List<Tuple<ulong, ulong>>();
+
+			if( IsTweetScheduled )
+			{
+				ScheduleTweet();
+			}
+			else
+			{
+				var statuses = await SendTweet();
+				statusIds.AddRange( statuses );
+			}
+
+			if( IsDeletionScheduled )
+			{
+				ScheduleDeletion( statusIds );
+			}
+
+			if( IsTweetScheduled )
+			{
+				await CloseOrReload();
+			}
 		}
 
 		private void InitializeText()
@@ -259,7 +300,35 @@ namespace Twice.ViewModels.Twitter
 			Text = string.Join( " ", toAdd );
 		}
 
-		private async Task SendTweet()
+		private void ScheduleDeletion( List<Tuple<ulong, ulong>> tweetIds )
+		{
+			var job = new SchedulerJob
+			{
+				JobType = SchedulerJobType.DeleteStatus,
+				IdsToDelete = tweetIds.Select( t => t.Item1 ).ToList(),
+				AccountIds = tweetIds.Select( t => t.Item2 ).ToList(),
+				TargetTime = DeletionDate + DeletionTime.TimeOfDay
+			};
+
+			Scheduler.AddJob( job );
+		}
+
+		private void ScheduleTweet()
+		{
+			var job = new SchedulerJob
+			{
+				JobType = SchedulerJobType.CreateStatus,
+				Text = Text,
+				AccountIds = Accounts.Where( a => a.Use ).Select( a => a.Context.UserId ).ToList(),
+				TargetTime = ScheduleDate + ScheduleTime.TimeOfDay,
+				InReplyToStatus = InReplyTo?.Id ?? 0,
+				FilesToAttach = AttachedMedias.Select( m => m.FileName ).ToList()
+			};
+
+			Scheduler.AddJob( job );
+		}
+
+		private async Task<List<Tuple<ulong, ulong>>> SendTweet()
 		{
 			IsSending = true;
 
@@ -269,15 +338,19 @@ namespace Twice.ViewModels.Twitter
 				textToTweet += " " + QuotedTweet.Model.GetUrl().AbsoluteUri;
 			}
 
+			var result = new List<Tuple<ulong, ulong>>();
+
 			await Task.Run( async () =>
 			{
 				ulong inReplyToId = InReplyTo?.Id ?? 0;
 
 				foreach( var acc in Accounts.Where( a => a.Use ) )
 				{
-					await
+					var status = await
 						acc.Context.Twitter.Statuses.TweetAsync( textToTweet, Medias.Select( m => m.MediaID ), inReplyToId )
 							.ConfigureAwait( false );
+
+					result.Add( new Tuple<ulong, ulong>( status.ID, acc.Context.UserId ) );
 				}
 			} ).ContinueWith( async t =>
 			{
@@ -287,16 +360,10 @@ namespace Twice.ViewModels.Twitter
 					return;
 				}
 
-				await Dispatcher.RunAsync( async () =>
-				{
-					if( !StayOpen )
-					{
-						Close( true );
-					}
-
-					await OnLoad( null );
-				} );
+				await CloseOrReload();
 			} ).ContinueWith( t => { IsSending = false; } );
+
+			return result;
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
@@ -493,6 +560,9 @@ namespace Twice.ViewModels.Twitter
 				RaisePropertyChanged();
 			}
 		}
+
+		[Inject]
+		public IScheduler Scheduler { get; set; }
 
 		public DateTime ScheduleTime
 		{

@@ -283,7 +283,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var vm = new ComposeTweetViewModel();
-			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {} ) );
+			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {}, "test.png" ) );
 			vm.ViewServiceRepository = viewServices.Object;
 			vm.Dispatcher = new SyncDispatcher();
 

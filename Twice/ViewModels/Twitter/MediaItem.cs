@@ -7,10 +7,11 @@ namespace Twice.ViewModels.Twitter
 {
 	internal class MediaItem
 	{
-		public MediaItem( ulong mediaId, byte[] mediaData )
+		public MediaItem( ulong mediaId, byte[] mediaData, string fileName )
 		{
 			MediaId = mediaId;
 			MediaData = mediaData;
+			FileName = fileName;
 		}
 
 		private static ImageSource LoadImage( byte[] imageData )
@@ -35,6 +36,7 @@ namespace Twice.ViewModels.Twitter
 			return image;
 		}
 
+		public string FileName { get; }
 		public Lazy<ImageSource> Image => new Lazy<ImageSource>( () => LoadImage( MediaData ) );
 		public ulong MediaId { get; }
 		private readonly byte[] MediaData;

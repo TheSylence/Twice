@@ -274,6 +274,7 @@
     <Compile Include="Injections\CacheProvider.cs" />
     <Compile Include="Injections\ColumnDefinitionListProvider.cs" />
     <Compile Include="Injections\Kernel.cs" />
+    <Compile Include="Injections\SchedulerProvider.cs" />
     <Compile Include="Injections\UtilitiyInjectionModule.cs" />
     <Compile Include="Messages\DmMessage.cs" />
     <Compile Include="Messages\EntityAction.cs" />

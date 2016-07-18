@@ -43,11 +43,10 @@ namespace Twice.Tests.Models.Scheduling
 				var job = new SchedulerJob
 				{
 					JobType = SchedulerJobType.Test,
-					AccountId = 123,
+					AccountIds = new List<ulong> {123},
 					FilesToAttach = new List<string> {"1", "2", "3"},
-					IdToDelete = 456,
+					IdsToDelete = new List<ulong> {456},
 					InReplyToStatus = 678,
-					InReplyToUser = "test",
 					TargetTime = new DateTime( 1, 2, 3, 4, 5, 6 ),
 					Text = "hello world"
 				};
@@ -61,13 +60,12 @@ namespace Twice.Tests.Models.Scheduling
 
 				Assert.IsNotNull( jobList );
 				Assert.AreEqual( 1, jobList.Count );
-				Assert.AreEqual( job.AccountId, jobList[0].AccountId );
+				CollectionAssert.AreEquivalent( job.AccountIds, jobList[0].AccountIds );
 				Assert.AreEqual( job.InReplyToStatus, jobList[0].InReplyToStatus );
-				Assert.AreEqual( job.InReplyToUser, jobList[0].InReplyToUser );
 				Assert.AreEqual( job.TargetTime, jobList[0].TargetTime );
 				Assert.AreEqual( job.Text, jobList[0].Text );
 				Assert.AreEqual( job.JobType, jobList[0].JobType );
-				Assert.AreEqual( job.IdToDelete, jobList[0].IdToDelete );
+				CollectionAssert.AreEquivalent( job.IdsToDelete, jobList[0].IdsToDelete );
 				CollectionAssert.AreEquivalent( job.FilesToAttach, jobList[0].FilesToAttach );
 			}
 			finally
@@ -115,14 +113,18 @@ namespace Twice.Tests.Models.Scheduling
 				new SchedulerJob
 				{
 					JobType = SchedulerJobType.CreateStatus,
-					AccountId = 123,
-					InReplyToUser = "test",
+					AccountIds = new List<ulong> {123},
 					InReplyToStatus = 444,
 					TargetTime = new DateTime( 1, 2, 3, 4, 5, 6 ),
 					Text = "hello world",
 					FilesToAttach = new List<string> {"123", "456", "789"}
 				},
-				new SchedulerJob {JobType = SchedulerJobType.DeleteStatus, AccountId = 456, IdToDelete = 5678},
+				new SchedulerJob
+				{
+					JobType = SchedulerJobType.DeleteStatus,
+					AccountIds = new List<ulong> {456},
+					IdsToDelete = new List<ulong> {5678}
+				},
 				new SchedulerJob {JobType = SchedulerJobType.Test}
 			};
 			File.WriteAllText( fileName, JsonConvert.SerializeObject( jobList ) );
@@ -134,17 +136,16 @@ namespace Twice.Tests.Models.Scheduling
 			Assert.AreEqual( 3, scheduler.JobList.Count() );
 			var create = scheduler.JobList.SingleOrDefault( j => j.JobType == SchedulerJobType.CreateStatus );
 			Assert.IsNotNull( create );
-			Assert.AreEqual( jobList[0].AccountId, create.AccountId );
+			CollectionAssert.AreEquivalent( jobList[0].AccountIds, create.AccountIds );
 			Assert.AreEqual( jobList[0].InReplyToStatus, create.InReplyToStatus );
-			Assert.AreEqual( jobList[0].InReplyToUser, create.InReplyToUser );
 			Assert.AreEqual( jobList[0].TargetTime, create.TargetTime );
 			Assert.AreEqual( jobList[0].Text, create.Text );
 			CollectionAssert.AreEquivalent( jobList[0].FilesToAttach, create.FilesToAttach );
 
 			var delete = scheduler.JobList.SingleOrDefault( j => j.JobType == SchedulerJobType.DeleteStatus );
 			Assert.IsNotNull( delete );
-			Assert.AreEqual( jobList[1].AccountId, delete.AccountId );
-			Assert.AreEqual( jobList[1].IdToDelete, delete.IdToDelete );
+			CollectionAssert.AreEquivalent( jobList[1].AccountIds, delete.AccountIds );
+			CollectionAssert.AreEquivalent( jobList[1].IdsToDelete, delete.IdsToDelete );
 
 			var test = scheduler.JobList.SingleOrDefault( j => j.JobType == SchedulerJobType.Test );
 			Assert.IsNotNull( test );
