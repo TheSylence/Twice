@@ -1,5 +1,6 @@
 # Twice
 [![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=3600)](https://ci.appveyor.com/project/TheSylence/Twice)
+[![Github Releases (by Asset)](https://img.shields.io/github/downloads/TheSylence/Twice/Setup.exe.svg?maxAge=259200)]()
 [![Github All Releases](https://img.shields.io/github/downloads/TheSylence/Twice/total.svg?maxAge=3600)]()
 [![GitHub issues](https://img.shields.io/github/issues/TheSylence/Twice.svg?maxAge=3600)]()
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/TheSylence/Twice/master/LICENSE)
