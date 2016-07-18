@@ -5,16 +5,17 @@ using System.Threading;
 using Anotar.NLog;
 using Newtonsoft.Json;
 using Twice.Models.Scheduling.Processors;
+using Twice.Models.Twitter;
 
 namespace Twice.Models.Scheduling
 {
 	internal class Scheduler : IScheduler
 	{
-		public Scheduler( string fileName )
+		public Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig )
 		{
 			FileName = fileName;
-			JobProcessors.Add( SchedulerJobType.DeleteStatus, new DeleteStatusProcessor() );
-			JobProcessors.Add( SchedulerJobType.CreateStatus, new CreateStatusProcessor() );
+			JobProcessors.Add( SchedulerJobType.DeleteStatus, new DeleteStatusProcessor( contextList ) );
+			JobProcessors.Add( SchedulerJobType.CreateStatus, new CreateStatusProcessor( contextList, twitterConfig ) );
 
 			if( File.Exists( FileName ) )
 			{
@@ -30,8 +31,8 @@ namespace Twice.Models.Scheduling
 			}
 		}
 
-		internal Scheduler( string fileName, IJobProcessor testProcessor )
-			: this( fileName )
+		internal Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig, IJobProcessor testProcessor )
+			: this( fileName, contextList, twitterConfig )
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
 		}

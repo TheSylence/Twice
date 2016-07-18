@@ -112,25 +112,6 @@ namespace Twice.ViewModels.Twitter
 			ReplyToAll = toAll;
 		}
 
-		internal static string GetMimeType( string fileName )
-		{
-			var ext = Path.GetExtension( fileName );
-
-			var lookup = new Dictionary<string, string>
-			{
-				{".png", "image/png"},
-				{".gif", "image/gif"},
-				{".bmp", "image/bmp"}
-			};
-
-			if( ext != null && lookup.ContainsKey( ext ) )
-			{
-				return lookup[ext];
-			}
-
-			return "application/octet-stream";
-		}
-
 		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
@@ -199,11 +180,10 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
-
 			var acc = usedAccounts.First();
 			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
 
-			string mediaType = GetMimeType( selectedFile );
+			string mediaType = TwitterHelper.GetMimeType( selectedFile );
 			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
 			{
 				IsSending = false;

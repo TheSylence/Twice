@@ -1,6 +1,8 @@
 ﻿using Ninject.Activation;
 using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Twice.Models.Scheduling;
+using Twice.Models.Twitter;
 
 namespace Twice.Injections
 {
@@ -14,7 +16,10 @@ namespace Twice.Injections
 		/// <returns>The created instance.</returns>
 		protected override IScheduler CreateInstance( IContext context )
 		{
-			return new Scheduler( Constants.IO.SchedulerFileName );
+			var contextList = context.Kernel.Get<ITwitterContextList>();
+			var config = context.Kernel.Get<ITwitterConfiguration>();
+
+			return new Scheduler( Constants.IO.SchedulerFileName, contextList, config );
 		}
 	}
 }

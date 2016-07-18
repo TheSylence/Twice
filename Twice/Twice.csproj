@@ -301,6 +301,7 @@
     <Compile Include="Models\Media\InstragramExtractor.cs" />
     <Compile Include="Models\Media\MediaExtractorRepository.cs" />
     <Compile Include="Models\Media\YoutubeExtractor.cs" />
+    <Compile Include="Models\Scheduling\Processors\AbstractProcessor.cs" />
     <Compile Include="Models\Scheduling\Processors\CreateStatusProcessor.cs" />
     <Compile Include="Models\Scheduling\Processors\DeleteStatusProcessor.cs" />
     <Compile Include="Models\Scheduling\IJobProcessor.cs" />

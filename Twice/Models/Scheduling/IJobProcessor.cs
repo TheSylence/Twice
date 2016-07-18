@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Twice.Models.Scheduling
 {
 	internal interface IJobProcessor
 	{
-		void Process( SchedulerJob job );
+		Task Process( SchedulerJob job );
 	}
 }

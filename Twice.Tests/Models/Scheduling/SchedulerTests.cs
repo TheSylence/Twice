@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Twice.Models.Scheduling;
+using Twice.Models.Twitter;
 
 namespace Twice.Tests.Models.Scheduling
 {
@@ -18,7 +20,10 @@ namespace Twice.Tests.Models.Scheduling
 		public void FutureJobIsNotExecuted()
 		{
 			// Arrange
-			var scheduler = new Scheduler( "invalid.filename" );
+			var contextList = new Mock<ITwitterContextList>();
+			var config = new Mock<ITwitterConfiguration>();
+
+			var scheduler = new Scheduler( "invalid.filename", contextList.Object, config.Object );
 			var job = new SchedulerJob
 			{
 				TargetTime = DateTime.Now.AddHours( 1 )
@@ -38,14 +43,17 @@ namespace Twice.Tests.Models.Scheduling
 			try
 			{
 				// Arrange
-				var scheduler = new Scheduler( fileName );
+				var contextList = new Mock<ITwitterContextList>();
+				var config = new Mock<ITwitterConfiguration>();
+
+				var scheduler = new Scheduler( fileName, contextList.Object, config.Object );
 
 				var job = new SchedulerJob
 				{
 					JobType = SchedulerJobType.Test,
-					AccountIds = new List<ulong> {123},
-					FilesToAttach = new List<string> {"1", "2", "3"},
-					IdsToDelete = new List<ulong> {456},
+					AccountIds = new List<ulong> { 123 },
+					FilesToAttach = new List<string> { "1", "2", "3" },
+					IdsToDelete = new List<ulong> { 456 },
 					InReplyToStatus = 678,
 					TargetTime = new DateTime( 1, 2, 3, 4, 5, 6 ),
 					Text = "hello world"
@@ -78,16 +86,19 @@ namespace Twice.Tests.Models.Scheduling
 		public void JobIsExecutedInThread()
 		{
 			// Arrange
+			var contextList = new Mock<ITwitterContextList>();
+			var config = new Mock<ITwitterConfiguration>();
+
 			var waitHandle = new ManualResetEventSlim( false );
 
 			var proc = new Mock<IJobProcessor>();
-			proc.Setup( p => p.Process( It.IsAny<SchedulerJob>() ) ).Callback( () => waitHandle.Set() ).Verifiable();
-
-			var scheduler = new Scheduler( "SchedulerTests.JobIsExecutedInThread.json", proc.Object );
+			proc.Setup( p => p.Process( It.IsAny<SchedulerJob>() ) ).Returns( Task.CompletedTask ).Callback( () => waitHandle.Set() ).Verifiable();
+			
+			var scheduler = new Scheduler( "SchedulerTests.JobIsExecutedInThread.json", contextList.Object, config.Object, proc.Object );
 			scheduler.Start();
 			try
 			{
-				var job = new SchedulerJob {JobType = SchedulerJobType.Test, TargetTime = DateTime.Now.AddMilliseconds( -1 )};
+				var job = new SchedulerJob { JobType = SchedulerJobType.Test, TargetTime = DateTime.Now.AddMilliseconds( -1 ) };
 				scheduler.AddJob( job );
 
 				// Act
@@ -107,6 +118,9 @@ namespace Twice.Tests.Models.Scheduling
 		public void JobListIsLoadedOnConstruction()
 		{
 			// Arrange
+			var contextList = new Mock<ITwitterContextList>();
+			var config = new Mock<ITwitterConfiguration>();
+
 			var fileName = "SchedulerTests.JobListIsLoadedOnConstruction.json";
 			var jobList = new List<SchedulerJob>
 			{
@@ -130,7 +144,7 @@ namespace Twice.Tests.Models.Scheduling
 			File.WriteAllText( fileName, JsonConvert.SerializeObject( jobList ) );
 
 			// Act
-			var scheduler = new Scheduler( fileName );
+			var scheduler = new Scheduler( fileName, contextList.Object, config.Object );
 
 			// Assert
 			Assert.AreEqual( 3, scheduler.JobList.Count() );
@@ -155,11 +169,14 @@ namespace Twice.Tests.Models.Scheduling
 		public void LoadingBrokenJobListDoesNotCrash()
 		{
 			// Arrange
+			var contextList = new Mock<ITwitterContextList>();
+			var config = new Mock<ITwitterConfiguration>();
+
 			var fileName = "SchedulerTests.LoadingBrokenJobListDoesNotCrash.json";
 			File.WriteAllText( fileName, @"This is a broken JSON file" );
 
 			// Act
-			var ex = ExceptionAssert.Catch<Exception>( () => new Scheduler( fileName ) );
+			var ex = ExceptionAssert.Catch<Exception>( () => new Scheduler( fileName, contextList.Object, config.Object ) );
 
 			// Assert
 			Assert.IsNull( ex );
@@ -169,6 +186,9 @@ namespace Twice.Tests.Models.Scheduling
 		public void PastJobIsExecuted()
 		{
 			// Arrange
+			var contextList = new Mock<ITwitterContextList>();
+			var config = new Mock<ITwitterConfiguration>();
+
 			var job = new SchedulerJob
 			{
 				TargetTime = DateTime.Now.AddHours( -1 )
@@ -176,7 +196,7 @@ namespace Twice.Tests.Models.Scheduling
 
 			var proc = new Mock<IJobProcessor>();
 			proc.Setup( p => p.Process( job ) ).Verifiable();
-			var scheduler = new Scheduler( "invalid.filename", proc.Object );
+			var scheduler = new Scheduler( "invalid.filename", contextList.Object, config.Object, proc.Object );
 
 			// Act
 			bool processed = scheduler.ProcessJob( job );

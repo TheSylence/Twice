@@ -298,31 +298,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( correctId );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void MimeTypeForFileIsDetectedCorrectly()
-		{
-			// Arrange
-			var testCases = new Dictionary<string, string>
-			{
-				{"file.jpg", "application/octet-stream"},
-				{"file.png", "image/png"},
-				{"file.bmp", "image/bmp"},
-				{"file.gif", "image/gif"},
-				{"file.png.gif", "image/gif"},
-				{"file", "application/octet-stream"},
-				{"name.exe", "application/octet-stream"},
-				{"name", "application/octet-stream"}
-			};
-
-			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => ComposeTweetViewModel.GetMimeType( kvp.Key ) );
-
-			// Assert
-			foreach( var kvp in results )
-			{
-				Assert.AreEqual( testCases[kvp.Key], kvp.Value );
-			}
-		}
+		
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public async Task OwnUserNameIsNotIncludedInReplyToAll()
