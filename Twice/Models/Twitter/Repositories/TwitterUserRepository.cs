@@ -46,7 +46,7 @@ namespace Twice.Models.Twitter.Repositories
 
 		public async Task FollowUser( ulong userId )
 		{
-			await Context.CreateFriendshipAsync( userId, true );
+			await Context.CreateFriendshipAsync( userId, false );
 		}
 
 		public Task<List<UserEx>> LookupUsers( IEnumerable<ulong> userIds )
