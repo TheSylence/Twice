@@ -9,6 +9,7 @@ namespace Twice.Models.Columns
 		Mentions,
 		Activity,
 
-		DebugOrTest
+		DebugOrTest,
+		Unknown
 	}
 }
