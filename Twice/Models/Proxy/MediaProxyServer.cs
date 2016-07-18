@@ -40,8 +40,13 @@ namespace Twice.Models.Proxy
 
 		internal static Uri BuildUrl( string url )
 		{
-			var encoded = Uri.EscapeUriString( url );
-			return new Uri( $"{Prefix}?stream={encoded}" );
+			if( url.StartsWith( "https://", StringComparison.OrdinalIgnoreCase ) )
+			{
+				var encoded = Uri.EscapeUriString( url );
+				return new Uri( $"{Prefix}?stream={encoded}" );
+			}
+
+			return new Uri( url );
 		}
 
 		internal static Uri BuildUrl( Uri url )
