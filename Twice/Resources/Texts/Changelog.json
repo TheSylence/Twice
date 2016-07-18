@@ -1,6 +1,6 @@
 ﻿[
     {
-        "Version": "0.x.x",
+        "Version": "0.7.0",
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
@@ -10,7 +10,9 @@
             "Protected accounts are now marked as such",
             "Conversation view now scrolls to bottom when loading, displaying the actual item that was replied to"
         ],
-        "Changes": [],
+        "Changes": [
+            "Following a user no longer enables notification for this user"
+        ],
         "Fixes": [
              "Fixed rare case when entities in user biographies were shown more than once"
         ],
