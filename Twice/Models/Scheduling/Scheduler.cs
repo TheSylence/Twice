@@ -10,14 +10,15 @@ namespace Twice.Models.Scheduling
 {
 	internal class Scheduler : IScheduler
 	{
-		public Scheduler()
+		public Scheduler( string fileName )
 		{
+			FileName = fileName;
 			JobProcessors.Add( SchedulerJobType.DeleteStatus, new DeleteStatusProcessor() );
 			JobProcessors.Add( SchedulerJobType.CreateStatus, new CreateStatusProcessor() );
 
-			if( File.Exists( Constants.IO.SchedulerFileName ) )
+			if( File.Exists( FileName ) )
 			{
-				var json = File.ReadAllText( Constants.IO.SchedulerFileName );
+				var json = File.ReadAllText( FileName );
 				try
 				{
 					Jobs.AddRange( JsonConvert.DeserializeObject<List<SchedulerJob>>( json ) );
@@ -29,15 +30,19 @@ namespace Twice.Models.Scheduling
 			}
 		}
 
-		internal Scheduler( IJobProcessor testProcessor )
-			: this()
+		internal Scheduler( string fileName, IJobProcessor testProcessor )
+			: this( fileName )
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
 		}
 
 		public void AddJob( SchedulerJob job )
 		{
-			UpdateJobList();
+			lock( JobListLock )
+			{
+				Jobs.Add( job );
+				UpdateJobList();
+			}
 		}
 
 		public void Start()
@@ -97,12 +102,12 @@ namespace Twice.Models.Scheduling
 
 		private void UpdateJobList()
 		{
-			lock( JobListLock )
-			{
-				var json = JsonConvert.SerializeObject( Jobs );
-				File.WriteAllText( Constants.IO.SchedulerFileName, json );
-			}
+			var json = JsonConvert.SerializeObject( Jobs );
+			File.WriteAllText( FileName, json );
 		}
+
+		internal IEnumerable<SchedulerJob> JobList => Jobs;
+		private readonly string FileName;
 
 		private readonly object JobListLock = new object();
 		private readonly Dictionary<SchedulerJobType, IJobProcessor> JobProcessors = new Dictionary<SchedulerJobType, IJobProcessor>();
