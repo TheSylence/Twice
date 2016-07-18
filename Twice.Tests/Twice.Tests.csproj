@@ -211,6 +211,7 @@
     <Compile Include="Models\Media\InstragramExtractorTests.cs" />
     <Compile Include="Models\Media\MediaExtractorRepositoryTests.cs" />
     <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
+    <Compile Include="Models\Scheduling\Processors\CreateStatusProcessorTests.cs" />
     <Compile Include="Models\Scheduling\Processors\DeleteStatusProcessorTests.cs" />
     <Compile Include="Models\Scheduling\SchedulerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
