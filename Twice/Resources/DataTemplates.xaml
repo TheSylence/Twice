@@ -8,7 +8,63 @@
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:behaviors="clr-namespace:Twice.Behaviors"
-                    xmlns:views="clr-namespace:Twice.Views">
+                    xmlns:views="clr-namespace:Twice.Views"
+                    xmlns:scheduling="clr-namespace:Twice.Models.Scheduling">
+	<DataTemplate x:Key="ScheduleViewTemplate" DataType="twitter:ScheduleItem">
+		<materialDesign:Card Margin="3" Padding="0,0,0,5">
+			<StackPanel Orientation="Vertical">
+				<DockPanel>
+					<StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">
+						<StackPanel.Resources>
+							<scheduling:SchedulerJobType x:Key="CreateStatus">CreateStatus</scheduling:SchedulerJobType>
+							<scheduling:SchedulerJobType x:Key="DeleteStatus">DeleteStatus</scheduling:SchedulerJobType>
+						</StackPanel.Resources>
+						<materialDesign:PackIcon Kind="Alarm" Foreground="{DynamicResource SecondaryAccentBrush}" />
+						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc TweetScheduledFor}}" 
+								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource CreateStatus}}"
+								   Margin="5,0" />
+						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc DeletionScheduledFor}}" 
+								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource DeleteStatus}}"
+								   Margin="5,0" />
+					</StackPanel>
+				</DockPanel>
+
+				<Grid>
+					<Grid Background="Transparent">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+
+						<StackPanel Grid.Row="0" Grid.Column="0">
+							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+
+							</Grid>
+						</StackPanel>
+
+						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
+							<StackPanel>
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
+										Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+							</StackPanel>
+						</StackPanel>
+					</Grid>
+
+					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
+				</Grid>
+			</StackPanel>
+		</materialDesign:Card>
+	</DataTemplate>
 	<DataTemplate x:Key="MessageViewTemplate" DataType="twitter:MessageViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<materialDesign:Card.Style>
@@ -100,24 +156,6 @@
 
 									<materialDesign:PackIcon Kind="ReplyAll" />
 								</Button>
-
-								<!--<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1">
-									<Button.Style>
-										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-									<i:Interaction.Behaviors>
-										<behaviors:ContextMenuOpener Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
-									</i:Interaction.Behaviors>
-
-									<materialDesign:PackIcon Kind="DotsHorizontal" />
-								</Button>-->
 							</Grid>
 						</StackPanel>
 
@@ -210,8 +248,8 @@
 
 						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
 
-						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}" 
-								   Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}" 
+						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}"
+								   Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 								   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
 
@@ -229,7 +267,7 @@
 
 						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
 												 Foreground="{DynamicResource SecondaryAccentBrush}" />
-						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center" 
+						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center"
 								   FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 								   Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
@@ -274,7 +312,7 @@
 													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 												</DataTrigger>
 												<DataTrigger Binding="{Binding IsFavorited}" Value="False">
-													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 												</DataTrigger>
 											</Style.Triggers>
 										</Style>
@@ -299,7 +337,7 @@
 													<Setter Property="IsEnabled" Value="False" />
 												</DataTrigger>
 												<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
-													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 												</DataTrigger>
 											</Style.Triggers>
 										</Style>
@@ -314,7 +352,7 @@
 															<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
 														</DataTrigger>
 														<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
-															<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+															<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 														</DataTrigger>
 													</Style.Triggers>
 												</Style>
@@ -328,7 +366,7 @@
 									</StackPanel>
 								</materialDesign:PopupBox>
 
-								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}" 
+								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}"
 										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
@@ -393,10 +431,10 @@
 										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
 												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
 									</i:Interaction.Behaviors>
-									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}" 
-											   FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" 
+									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}"
+											   FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"
 											   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
-									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}" 
+									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
 											   Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
 												VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
@@ -405,7 +443,7 @@
 							</DockPanel>
 
 							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" 
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
 															Foreground="{DynamicResource MaterialDesignBody}" />

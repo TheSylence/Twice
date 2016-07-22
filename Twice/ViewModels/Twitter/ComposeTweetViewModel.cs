@@ -287,7 +287,8 @@ namespace Twice.ViewModels.Twitter
 				JobType = SchedulerJobType.DeleteStatus,
 				IdsToDelete = tweetIds.Select( t => t.Item1 ).ToList(),
 				AccountIds = tweetIds.Select( t => t.Item2 ).ToList(),
-				TargetTime = DeletionDate + DeletionTime.TimeOfDay
+				TargetTime = DeletionDate + DeletionTime.TimeOfDay,
+				Text = Text
 			};
 
 			Scheduler.AddJob( job );
@@ -433,6 +434,11 @@ namespace Twice.ViewModels.Twitter
 
 				_IsDeletionScheduled = value;
 				RaisePropertyChanged();
+
+				if( value )
+				{
+					IsTweetScheduled = false;
+				}
 			}
 		}
 
@@ -463,6 +469,11 @@ namespace Twice.ViewModels.Twitter
 
 				_IsTweetScheduled = value;
 				RaisePropertyChanged();
+
+				if( value )
+				{
+					IsDeletionScheduled = false;
+				}
 			}
 		}
 

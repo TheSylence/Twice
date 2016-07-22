@@ -16,6 +16,7 @@ namespace Twice.Models.Scheduling
 		public List<string> FilesToAttach { get; set; }
 		public List<ulong> IdsToDelete { get; set; }
 		public ulong InReplyToStatus { get; set; }
+		public ulong JobId { get; set; }
 		public SchedulerJobType JobType { get; set; }
 		public DateTime TargetTime { get; set; }
 		public string Text { get; set; }

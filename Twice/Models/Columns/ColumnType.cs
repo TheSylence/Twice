@@ -8,8 +8,9 @@ namespace Twice.Models.Columns
 		Favorites,
 		Mentions,
 		Activity,
+		Schedule,
 
-		DebugOrTest,
+		DebugOrTest = 999,
 		Unknown
 	}
 }

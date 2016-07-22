@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Anotar.NLog;
 using Newtonsoft.Json;
@@ -29,38 +31,17 @@ namespace Twice.Models.Scheduling
 					LogTo.WarnException( "Failed to load joblist from file", ex );
 				}
 			}
+
+			JobIdCounter = Jobs.Any()
+				? Jobs.Max( j => j.JobId ) + 1
+				: 0;
 		}
 
-		internal Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig, IJobProcessor testProcessor )
+		internal Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig,
+			IJobProcessor testProcessor )
 			: this( fileName, contextList, twitterConfig )
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
-		}
-
-		public void AddJob( SchedulerJob job )
-		{
-			lock( JobListLock )
-			{
-				Jobs.Add( job );
-				UpdateJobList();
-			}
-		}
-
-		public void Start()
-		{
-			LogTo.Info( "Starting scheduler thread" );
-
-			IsRunning = true;
-			ThreadObject = new Thread( RunThreaded );
-			ThreadObject.Start();
-		}
-
-		public void Stop()
-		{
-			LogTo.Info( "Stopping scheduler thread" );
-
-			IsRunning = false;
-			ThreadObject?.Join();
 		}
 
 		internal bool ProcessJob( SchedulerJob job )
@@ -73,6 +54,7 @@ namespace Twice.Models.Scheduling
 					processor.Process( job );
 					return true;
 				}
+
 				LogTo.Warn( $"Unknown job type was scheduled ({job.JobType})" );
 			}
 
@@ -97,6 +79,11 @@ namespace Twice.Models.Scheduling
 					}
 				}
 
+				lock( JobListLock )
+				{
+					JobListUpdated?.Invoke( this, EventArgs.Empty );
+				}
+
 				Thread.Sleep( 1000 );
 			}
 		}
@@ -107,14 +94,54 @@ namespace Twice.Models.Scheduling
 			File.WriteAllText( FileName, json );
 		}
 
-		internal IEnumerable<SchedulerJob> JobList => Jobs;
+		public event EventHandler JobListUpdated;
+
+		public void AddJob( SchedulerJob job )
+		{
+			Debug.Assert( job.AccountIds.Any() );
+			Debug.Assert( !string.IsNullOrEmpty( job.Text ) );
+
+			lock( JobListLock )
+			{
+				job.JobId = JobIdCounter++;
+
+				Jobs.Add( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
+
+		public void Start()
+		{
+			LogTo.Info( "Starting scheduler thread" );
+
+			IsRunning = true;
+			ThreadObject = new Thread( RunThreaded );
+			ThreadObject.Start();
+		}
+
+		public void Stop()
+		{
+			LogTo.Info( "Stopping scheduler thread" );
+
+			IsRunning = false;
+			ThreadObject?.Join();
+		}
+
+		public IEnumerable<SchedulerJob> JobList => Jobs;
 		private readonly string FileName;
-
 		private readonly object JobListLock = new object();
-		private readonly Dictionary<SchedulerJobType, IJobProcessor> JobProcessors = new Dictionary<SchedulerJobType, IJobProcessor>();
-		private readonly List<SchedulerJob> Jobs = new List<SchedulerJob>();
 
+		private readonly Dictionary<SchedulerJobType, IJobProcessor> JobProcessors =
+			new Dictionary<SchedulerJobType, IJobProcessor>();
+
+		private readonly List<SchedulerJob> Jobs = new List<SchedulerJob>();
 		private bool IsRunning;
+		private ulong JobIdCounter;
 		private Thread ThreadObject;
 	}
 }

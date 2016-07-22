@@ -687,4 +687,16 @@
   <data name="DateMustBeInTheFuture" xml:space="preserve">
     <value>Zeitpunkt muss in der Zukunft liegen</value>
   </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Zeitplan</value>
+  </data>
+  <data name="ScheduleDescription" xml:space="preserve">
+    <value>Liste von geplanten Aktionen</value>
+  </data>
+  <data name="TweetScheduledFor" xml:space="preserve">
+    <value>Tweet für {0} geplant</value>
+  </data>
+  <data name="DeletionScheduledFor" xml:space="preserve">
+    <value>Löschung für {0} geplant</value>
+  </data>
 </root>

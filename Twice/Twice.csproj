@@ -363,8 +363,10 @@
     <Compile Include="Models\Proxy\IHttpClient.cs" />
     <Compile Include="Utilities\ResourceHelper.cs" />
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
+    <Compile Include="ViewModels\Columns\ScheduleColumn.cs" />
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
+    <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />

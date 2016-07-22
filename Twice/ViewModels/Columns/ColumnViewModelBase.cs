@@ -82,6 +82,20 @@ namespace Twice.ViewModels.Columns
 			RaiseNewItem( message );
 		}
 
+		protected async Task AddItem( ScheduleItem item )
+		{
+			await Dispatcher.RunAsync( () =>
+			{
+				int index = GetInsertIndex( item );
+				if( index >= 0 )
+				{
+					ItemCollection.Insert( index, item );
+				}
+			} );
+
+			RaiseNewItem( item );
+		}
+
 		protected async Task AddItem( StatusViewModel status )
 		{
 			SinceId = Math.Min( SinceId, status.Id );
@@ -198,6 +212,7 @@ namespace Twice.ViewModels.Columns
 			{
 				list.Add( await CreateViewModel( s ) );
 			}
+
 			await AddItems( list );
 
 			var filterList = new List<Expression<Func<Status, bool>>>( 3 )
