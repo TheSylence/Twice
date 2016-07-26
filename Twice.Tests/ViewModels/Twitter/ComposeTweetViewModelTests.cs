@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LinqToTwitter;
@@ -9,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
+using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
@@ -242,7 +244,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error ) ).Verifiable();
 
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws(
+				new Exception( "exception_message" ) );
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -299,8 +302,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( correctId );
 		}
 
-		
-
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public async Task OwnUserNameIsNotIncludedInReplyToAll()
 		{
@@ -344,7 +345,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null,
+			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
 				null ) );
 
 			var obj = new ComposeTweetViewModel
@@ -388,8 +389,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
-				Task.FromResult( status ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) )
+				.Returns(
+					Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
 			var waitHandle = new ManualResetEventSlim( false );
@@ -414,7 +416,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
+			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ),
+				Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -514,6 +517,50 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( disabledDateInFuture );
 			Assert.IsTrue( enabledDateInPast );
 			Assert.IsFalse( enabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ScheduleJobIsCreatedIfNeeded()
+		{
+			// Arrange
+			Expression<Func<SchedulerJob, bool>> jobVerifier =
+				job => job.JobType == SchedulerJobType.CreateStatus
+						&& job.Text == "Hello World";
+
+			var scheduler = new Mock<IScheduler>();
+			scheduler.Setup( s => s.AddJob( It.Is( jobVerifier ) ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
+
+			var vm = new ComposeTweetViewModel
+			{
+				Scheduler = scheduler.Object,
+				TwitterConfig = new Mock<ITwitterConfiguration>().Object,
+				Dispatcher = new SyncDispatcher(),
+				IsTweetScheduled = true,
+				ScheduleDate = DateTime.Now.AddDays( 10 ),
+				ScheduleTime = DateTime.Now.AddMinutes( 1 ),
+				Text = "Hello World",
+			};
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && !vm.IsSending )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.SendTweetCommand.Execute( null );
+
+			// Assert
+			Assert.IsTrue( waitHandle.Wait( 1000 ) );
+			scheduler.Verify( s => s.AddJob( It.Is( jobVerifier ) ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

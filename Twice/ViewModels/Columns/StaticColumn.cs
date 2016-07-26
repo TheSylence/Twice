@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
+	[ExcludeFromCodeCoverage]
 	internal class StaticColumn : ColumnViewModelBase
 	{
 		public StaticColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,

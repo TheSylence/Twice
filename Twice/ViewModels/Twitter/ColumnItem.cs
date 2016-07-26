@@ -8,7 +8,7 @@ namespace Twice.ViewModels.Twitter
 {
 	internal abstract class ColumnItem : ObservableObject, IHighlightable
 	{
-		public void UpdateRelativeTime()
+		public virtual void UpdateRelativeTime()
 		{
 			RaisePropertyChanged( nameof( CreatedAt ) );
 		}

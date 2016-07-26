@@ -256,6 +256,7 @@
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
     <Compile Include="ViewModels\ItemSelectionTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
+    <Compile Include="ViewModels\Main\TestColumnMock.cs" />
     <Compile Include="ViewModels\NotifierTests.cs" />
     <Compile Include="ViewModels\Profile\ProfileDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Profile\UserSubPageTests.cs" />

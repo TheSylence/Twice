@@ -229,6 +229,7 @@ namespace Twice.ViewModels.Twitter
 
 		private async void ExecuteSendTweetCommand()
 		{
+			IsSending = true;
 			List<Tuple<ulong, ulong>> statusIds = new List<Tuple<ulong, ulong>>();
 
 			if( IsTweetScheduled )
@@ -250,6 +251,8 @@ namespace Twice.ViewModels.Twitter
 			{
 				await CloseOrReload();
 			}
+
+			IsSending = false;
 		}
 
 		private void InitializeText()
@@ -311,8 +314,6 @@ namespace Twice.ViewModels.Twitter
 
 		private async Task<List<Tuple<ulong, ulong>>> SendTweet()
 		{
-			IsSending = true;
-
 			var textToTweet = Text;
 			if( QuotedTweet != null )
 			{

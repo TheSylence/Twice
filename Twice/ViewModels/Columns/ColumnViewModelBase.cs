@@ -386,11 +386,11 @@ namespace Twice.ViewModels.Columns
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
-		public event EventHandler Changed;
+		public virtual event EventHandler Changed;
 
-		public event EventHandler Deleted;
+		public virtual event EventHandler Deleted;
 
-		public event EventHandler<ColumnItemEventArgs> NewItem;
+		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
 
 		public async Task Load()
 		{

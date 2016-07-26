@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -7,6 +7,7 @@ using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class ScrollToEnd : Behavior<ItemsControl>
 	{
 		protected override void OnAttached()
