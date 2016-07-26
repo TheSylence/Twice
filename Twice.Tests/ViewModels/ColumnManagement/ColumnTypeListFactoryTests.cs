@@ -14,7 +14,14 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 		{
 			// Arrange
 			var expectedTypes = new[]
-			{ColumnType.Favorites, ColumnType.Mentions, ColumnType.Messages, ColumnType.Timeline, ColumnType.User};
+			{
+				ColumnType.Favorites,
+				ColumnType.Mentions,
+				ColumnType.Messages,
+				ColumnType.Timeline,
+				ColumnType.User,
+				ColumnType.Schedule
+			};
 
 			// Act
 			var constructed = ColumnTypeListFactory.GetItems().Select( c => c.Type ).ToArray();
