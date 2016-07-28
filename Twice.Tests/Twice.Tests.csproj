@@ -233,6 +233,7 @@
     <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="Utilities\SerializerTests.cs" />
+    <Compile Include="Utilities\SmartCollectionTests.cs" />
     <Compile Include="Utilities\Ui\WindowSettingsTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModelTests.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Info\InfoDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ItemSelectionTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
     <Compile Include="ViewModels\Main\TestColumnMock.cs" />
