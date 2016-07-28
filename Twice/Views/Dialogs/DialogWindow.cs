@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using Twice.Behaviors;
@@ -13,6 +14,7 @@ namespace Twice.Views.Dialogs
 	/// Dialogs are modal because they work like a user would expect them to. Using non-modal
 	/// requires toplevel and this could cause some strange behaviors when switching applications, etc.
 	/// </remarks>
+	[ExcludeFromCodeCoverage]
 	public class DialogWindow : MetroWindow
 	{
 		protected override void OnActivated( EventArgs e )
@@ -26,8 +28,12 @@ namespace Twice.Views.Dialogs
 		protected override void OnMouseDown( MouseButtonEventArgs e )
 		{
 			var pos = e.GetPosition( this );
+			var mainWindowWidth = Application.Current.MainWindow.ActualWidth;
+			var mainWindowHeight = Application.Current.MainWindow.ActualHeight;
+			var posRelToMain = e.GetPosition( Application.Current.MainWindow );
 
-			bool close = CloseOnClick && ( pos.X < 0 || pos.Y < 0 || pos.X > ActualWidth || pos.Y > ActualHeight );
+			bool close = CloseOnClick && ( pos.X < 0 || pos.Y < 0 || pos.X > ActualWidth || pos.Y > ActualHeight )
+			             && ( posRelToMain.X >= 0 || posRelToMain.Y >= 0 || posRelToMain.X <= mainWindowWidth || posRelToMain.Y <= mainWindowHeight );
 			if( close )
 			{
 				WindowHelper.SetResult( this, false );
