@@ -294,6 +294,11 @@ namespace Twice.Views.Services
 
 		public async Task ViewStatus( StatusViewModel status )
 		{
+			if( status == null )
+			{
+				return;
+			}
+
 			Action<ITweetDetailsViewModel> vmSetup = vm =>
 			{
 				vm.Context = status.Context;
