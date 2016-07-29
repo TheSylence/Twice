@@ -71,7 +71,7 @@ namespace Twice.ViewModels.Settings
 			var json = Resource.AsString( "Twice.Resources.Data.PreviewStatuses.json" );
 
 			var statuses =  JsonConvert.DeserializeObject<List<Status>>( json )
-				.Select( s => new StatusViewModel( s, ContextList.Contexts.First(), Configuration, ViewServiceRepository ) ) .ToList();
+				.Select( s => new StatusViewModel( s, ContextList.Contexts.FirstOrDefault(), Configuration, ViewServiceRepository ) ) .ToList();
 
 			statuses[1].QuotedTweet = statuses[0];
 

@@ -17,7 +17,8 @@
             "Fixed rare case when entities in user biographies were shown more than once",
             "Fixed possible crash when migrating appdata from versions older then 0.6.5",
             "Clicking outside the application no longer closes an opened window",
-            "Fixed rare crash when trying to view a tweet"
+            "Fixed rare crash when trying to view a tweet",
+            "Fixed crash when opening settings when no account was added"
         ],
         "Issues": [ ]
     },
