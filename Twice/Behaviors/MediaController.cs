@@ -12,6 +12,7 @@ namespace Twice.Behaviors
 		protected override void OnAttached()
 		{
 			AssociatedObject.MediaEnded += AssociatedObject_MediaEnded;
+			AssociatedObject.MediaOpened += AssociatedObject_MediaOpened;
 
 			base.OnAttached();
 		}

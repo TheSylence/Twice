@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Twice.Models.Proxy;
 
 namespace Twice.Models.Media
@@ -12,9 +14,24 @@ namespace Twice.Models.Media
 			return Pattern.IsMatch( originalUrl );
 		}
 
-		public Task<Uri> GetMediaUrl( string originalUrl )
+		public async Task<Uri> GetMediaUrl( string originalUrl )
 		{
-			return Task.FromResult( new Uri( originalUrl ) );
+			try
+			{
+				using( var client = new WebClient() )
+				{
+					var twitterVideoContent = await client.DownloadStringTaskAsync( originalUrl );
+					var iframeUrl = "";
+
+					var iframeContent = await client.DownloadStringTaskAsync( iframeUrl );
+					return null;
+				}
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to load video from twitter", ex );
+				return null;
+			}
 		}
 
 		private static readonly Regex Pattern =
