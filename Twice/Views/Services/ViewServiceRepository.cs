@@ -266,6 +266,18 @@ namespace Twice.Views.Services
 			await ShowWindow<MessageDetailsDialog, IMessageDetailsViewModel>( vmSetup );
 		}
 
+		public async Task ViewImage( IList<StatusMediaViewModel> imageSet, StatusMediaViewModel selectedImage )
+		{
+			Action<IImageDialogViewModel> setup = vm =>
+			{
+				vm.SetImages( imageSet );
+				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage.Url )
+									?? vm.Images.FirstOrDefault();
+			};
+
+			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
+		}
+
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
 		{
 			Action<IImageDialogViewModel> setup = vm =>

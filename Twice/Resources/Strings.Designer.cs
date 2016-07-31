@@ -421,6 +421,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this scheduled job?.
+        /// </summary>
+        public static string ConfirmDeleteSchedule {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this tweet?.
         /// </summary>
         public static string ConfirmDeleteStatus {

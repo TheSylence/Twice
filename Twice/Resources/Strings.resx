@@ -699,4 +699,7 @@
   <data name="DeletionScheduledFor" xml:space="preserve">
     <value>Deletion scheduled for {0}</value>
   </data>
+  <data name="ConfirmDeleteSchedule" xml:space="preserve">
+    <value>Do you really want to delete this scheduled job?</value>
+  </data>
 </root>

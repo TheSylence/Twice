@@ -63,6 +63,12 @@
 					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 				</Grid>
 			</StackPanel>
+
+			<materialDesign:Card.ContextMenu>
+				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+					<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteScheduleCommand}" />
+				</ContextMenu>
+			</materialDesign:Card.ContextMenu>
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="MessageViewTemplate" DataType="twitter:MessageViewModel">

@@ -65,6 +65,7 @@ namespace Twice.Models.Scheduling
 		{
 			while( IsRunning )
 			{
+				bool updatedJobs = false;
 				lock( JobListLock )
 				{
 					for( int i = Jobs.Count - 1; i >= 0; --i )
@@ -73,15 +74,19 @@ namespace Twice.Models.Scheduling
 
 						if( ProcessJob( job ) )
 						{
+							updatedJobs = true;
 							Jobs.RemoveAt( i );
 							UpdateJobList();
 						}
 					}
 				}
 
-				lock( JobListLock )
+				if( updatedJobs )
 				{
-					JobListUpdated?.Invoke( this, EventArgs.Empty );
+					lock( JobListLock )
+					{
+						JobListUpdated?.Invoke( this, EventArgs.Empty );
+					}
 				}
 
 				Thread.Sleep( 1000 );
@@ -114,13 +119,29 @@ namespace Twice.Models.Scheduling
 				JobListUpdated?.Invoke( this, EventArgs.Empty );
 			}
 		}
+		public void DeleteJob( SchedulerJob job )
+		{
+			lock( JobListLock )
+			{
+				Jobs.Remove( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
 
 		public void Start()
 		{
 			LogTo.Info( "Starting scheduler thread" );
 
 			IsRunning = true;
-			ThreadObject = new Thread( RunThreaded );
+			ThreadObject = new Thread( RunThreaded )
+			{
+				Name = "SchedulerThread"
+			};
 			ThreadObject.Start();
 		}
 

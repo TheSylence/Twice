@@ -216,8 +216,8 @@ namespace Twice.ViewModels.Twitter
 			var selected = sender as StatusMediaViewModel;
 			Debug.Assert( selected != null );
 
-			var allUris = InlineMedias.Select( e => e.Url ).ToList();
-			var selectedUri = selected.Url;
+			var allUris = InlineMedias.ToList();
+			var selectedUri = selected;
 
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}

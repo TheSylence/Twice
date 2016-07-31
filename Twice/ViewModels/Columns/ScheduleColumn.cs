@@ -57,7 +57,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			var userVm = new UserViewModel( user );
-			var item = new ScheduleItem( job, userVm );
+			var item = new ScheduleItem( job, userVm, Scheduler, ViewServiceRepository );
 			return item;
 		}
 
@@ -68,6 +68,8 @@ namespace Twice.ViewModels.Columns
 
 		private async Task SetJobs()
 		{
+			await Dispatcher.RunAsync( () => Items.Clear() );
+
 			foreach( var job in Scheduler.JobList.ToArray() )
 			{
 				await AddItem( await CreateViewModel( job ) );

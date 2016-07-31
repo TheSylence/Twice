@@ -20,7 +20,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			var vm = new ImageDialogViewModel
 			{
 				Clipboard = clipboard.Object,
-				SelectedImage = new ImageEntry( new Uri( "https://example.com/link.url" ), "ImageTitle" )
+				SelectedImage = new ImageEntry( new Uri( "https://example.com/link.url" ), false, "ImageTitle" )
 			};
 
 			// Act
@@ -55,7 +55,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 		{
 			// Arrange
 			var resolver = new Mock<ITypeResolver>();
-			resolver.Setup( r => r.Resolve( typeof( ImageEntry ) ) ).Returns( new ImageEntry( new Uri( "http://example.com" ) ) );
+			resolver.Setup( r => r.Resolve( typeof( ImageEntry ) ) ).Returns( new ImageEntry( new Uri( "http://example.com" ), false ) );
 
 			var vm = new ImageDialogViewModel();
 			var tester = new PropertyChangedTester( vm, false, resolver.Object );
@@ -77,7 +77,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			var vm = new ImageDialogViewModel
 			{
 				ProcessStarter = procStarter.Object,
-				SelectedImage = new ImageEntry( new Uri( "https://example.com/link.url" ), "ImageTitle" )
+				SelectedImage = new ImageEntry( new Uri( "https://example.com/link.url" ), false, "ImageTitle" )
 			};
 
 			// Act

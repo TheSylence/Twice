@@ -699,4 +699,7 @@
   <data name="DeletionScheduledFor" xml:space="preserve">
     <value>Löschung für {0} geplant</value>
   </data>
+  <data name="ConfirmDeleteSchedule" xml:space="preserve">
+    <value>Soll diese geplante Aktion wirklich gelöscht werden?</value>
+  </data>
 </root>

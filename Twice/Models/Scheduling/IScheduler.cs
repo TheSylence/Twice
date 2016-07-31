@@ -9,6 +9,8 @@ namespace Twice.Models.Scheduling
 
 		void AddJob( SchedulerJob job );
 
+		void DeleteJob( SchedulerJob job );
+
 		void Start();
 
 		void Stop();

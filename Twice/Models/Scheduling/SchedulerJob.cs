@@ -12,6 +12,18 @@ namespace Twice.Models.Scheduling
 			IdsToDelete = new List<ulong>();
 		}
 
+		public override bool Equals( object obj )
+		{
+			var job = obj as SchedulerJob;
+			return JobId == job?.JobId;
+		}
+
+		public override int GetHashCode()
+		{
+			// ReSharper disable once NonReadonlyMemberInGetHashCode
+			return JobId.GetHashCode();
+		}
+
 		public List<ulong> AccountIds { get; set; }
 		public List<string> FilesToAttach { get; set; }
 		public List<ulong> IdsToDelete { get; set; }
