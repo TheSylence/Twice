@@ -12,11 +12,6 @@ namespace Twice.ViewModels.Wizards
 			Wizard = wizard;
 		}
 
-		public virtual bool CanNavigateForward()
-		{
-			return true;
-		}
-
 		public virtual void OnNavigatedFrom( bool backward )
 		{
 		}

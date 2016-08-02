@@ -116,11 +116,11 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
-		public TimeSpan CloseDelay { get; set; }
+		public TimeSpan CloseDelay { private get; set; }
 
 		public ICommand DismissCommand => _DismissCommand ?? ( _DismissCommand = new RelayCommand( ExecuteDismissCommand ) );
 
-		public IDispatcher Dispatcher { get; set; }
+		public IDispatcher Dispatcher { private get; set; }
 
 		public Position FlyoutPosition
 		{
@@ -137,7 +137,7 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
-		public IMessenger MessengerInstance { get; set; }
+		public IMessenger MessengerInstance { private get; set; }
 
 		public string Text
 		{

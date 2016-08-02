@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Ninject;
 
 namespace Twice.Tests
 {
@@ -39,7 +39,7 @@ namespace Twice.Tests
 			var properties =
 				Object.GetType()
 					.GetProperties( bindingFlags )
-					.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic )
+					.Where( p => p.CanRead && p.CanWrite && p.SetMethod.IsPublic && p.GetMethod.IsPublic )
 					.ToArray();
 			if( !properties.Any() )
 			{
@@ -118,7 +118,8 @@ namespace Twice.Tests
 				{typeof( DateTime ), DateTime.Now},
 				{typeof( bool ), true},
 				{typeof( CultureInfo ), CultureInfo.CurrentUICulture},
-				{typeof( DateTime? ), DateTime.Now}
+				{typeof( DateTime? ), DateTime.Now},
+				{typeof( TimeSpan ), TimeSpan.FromSeconds( 1 )}
 			};
 
 			object v;

@@ -255,6 +255,7 @@
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Flyouts\NotificationViewModelTests.cs" />
     <Compile Include="ViewModels\Info\InfoDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ItemSelectionTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
@@ -283,6 +284,7 @@
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
     <Compile Include="ViewModels\ValueDescriptionTests.cs" />
+    <Compile Include="ViewModels\Wizards\WizardViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Twice\Twice.csproj">

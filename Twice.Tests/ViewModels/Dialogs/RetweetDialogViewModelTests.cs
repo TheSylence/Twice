@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Twitter;
+using Twice.ViewModels;
 using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
@@ -14,6 +16,31 @@ namespace Twice.Tests.ViewModels.Dialogs
 	[ExcludeFromCodeCoverage, TestClass]
 	public class RetweetDialogViewModelTests
 	{
+		[TestMethod, TestCategory( "ViewModels.Dialogs" )]
+		public async Task AccountsAreCorrectlyLoaded()
+		{
+			// Arrange
+			var vm = new RetweetDialogViewModel();
+			var c1 = new Mock<IContextEntry>();
+			c1.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
+			var c2 = new Mock<IContextEntry>();
+			c2.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
+			
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new[]
+			{
+				c1.Object, c2.Object
+			} );
+
+			vm.ContextList = contextList.Object;
+
+			// Act
+			await vm.OnLoad( null );
+
+			// Assert
+			Assert.AreEqual( 2, vm.Accounts.Count );
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Dialogs" )]
 		public void ConfirmationMustBeSetOnAccount()
 		{
@@ -139,6 +166,48 @@ namespace Twice.Tests.ViewModels.Dialogs
 			Assert.IsFalse( withoutAccount );
 			Assert.IsFalse( withUnselectedAccount );
 			Assert.IsTrue( withSelectedAccount );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Dialog" )]
+		public async Task RetweetIsExecutedImmediatlyWithOneAccount()
+		{
+			// Arrange
+			var vm = new RetweetDialogViewModel();
+			var contextList = new Mock<ITwitterContextList>();
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.Notifier ).Returns( new Mock<INotifier>().Object );
+			context.Setup( c => c.Twitter.Statuses.RetweetAsync( 123ul ) ).Returns( Task.FromResult( new LinqToTwitter.Status() ) ).Verifiable();
+			context.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+
+			var status = DummyGenerator.CreateDummyStatus();
+			status.ID = 123ul;
+			var statusVm = new StatusViewModel( status, context.Object, null, null )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+
+			vm.ContextList = contextList.Object;
+			vm.Status = statusVm;
+			vm.Dispatcher = new SyncDispatcher();
+
+			var waitHandle = new ManualResetEventSlim( false );
+
+			bool closed = false;
+			vm.CloseRequested += ( s, e ) =>
+			{
+				closed = true;
+				waitHandle.Set();
+			};
+
+			// Act
+			await vm.OnLoad( null );
+			bool set = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( set , "WaitHandle not set");
+			Assert.IsTrue( closed );
+			context.Verify( c => c.Twitter.Statuses.RetweetAsync( 123ul ), Times.Once() );
 		}
 	}
 }

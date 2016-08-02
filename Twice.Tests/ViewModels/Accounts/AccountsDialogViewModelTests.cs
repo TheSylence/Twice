@@ -1,21 +1,47 @@
-﻿using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Accounts;
+using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Accounts
 {
 	[TestClass, ExcludeFromCodeCoverage]
 	public class AccountsDialogViewModelTests
 	{
+		[TestMethod, TestCategory( "ViewModels.Accounts" )]
+		public void AccountDeletionMustBeConfirmed()
+		{
+			// Arrange
+			var columnList = new Mock<IColumnDefinitionList>();
+			var contextList = new Mock<ITwitterContextList>();
+			contextList.SetupGet( c => c.Contexts ).Returns( new IContextEntry[0] );
+			var auth = new Mock<ITwitterAuthorizer>();
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( false ) ).Verifiable();
+
+			var vm = new AccountsDialogViewModel( columnList.Object, contextList.Object, auth.Object )
+			{
+				ViewServiceRepository = viewServices.Object
+			};
+
+			var context = new Mock<IContextEntry>();
+
+			// Act
+			vm.DeleteAccountCommand.Execute( new AccountEntry( context.Object ) );
+
+			// Assert
+			viewServices.Verify( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ), Times.Once() );
+		}
+
 		[TestMethod, TestCategory( "ViewModels.Accounts" )]
 		public void AccountListIsPopulated()
 		{
