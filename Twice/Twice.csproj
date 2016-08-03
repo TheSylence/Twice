@@ -362,6 +362,9 @@
     <Compile Include="Utilities\HttpClientWrapper.cs" />
     <Compile Include="Models\Proxy\IHttpClient.cs" />
     <Compile Include="Utilities\ResourceHelper.cs" />
+    <Compile Include="Utilities\Ui\IScreenRepository.cs" />
+    <Compile Include="Utilities\Ui\ScreenRepository.cs" />
+    <Compile Include="Utilities\Ui\VirtualScreen.cs" />
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
     <Compile Include="ViewModels\Columns\ScheduleColumn.cs" />
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
@@ -401,7 +404,6 @@
     <Compile Include="Utilities\Ui\Timer.cs" />
     <Compile Include="Utilities\Ui\TimerFactory.cs" />
     <Compile Include="Messages\WaitMessage.cs" />
-    <Compile Include="Utilities\Ui\VirtualScreenWrapper.cs" />
     <Compile Include="Utilities\Ui\WaitMessageHandler.cs" />
     <Compile Include="Utilities\Ui\WaitOperation.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntry.cs" />

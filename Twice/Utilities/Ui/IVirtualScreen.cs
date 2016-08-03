@@ -1,8 +1,10 @@
 namespace Twice.Utilities.Ui
 {
-	interface IVirtualScreen
+	internal interface IVirtualScreen
 	{
-		double Width { get; }
 		double Height { get; }
+		double Left { get; }
+		double Top { get; }
+		double Width { get; }
 	}
 }

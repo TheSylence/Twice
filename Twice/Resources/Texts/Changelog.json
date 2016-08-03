@@ -19,7 +19,8 @@
             "Clicking outside the application no longer closes an opened window",
             "Fixed rare crash when trying to view a tweet by clicking on it",
             "Fixed crash when opening settings when no account was added",
-            "Fixed rare crash when viewing a tweet with replies"
+            "Fixed rare crash when viewing a tweet with replies",
+            "Window position is saved for displays that are left to the primary display"
         ],
         "Issues": [ ]
     },
