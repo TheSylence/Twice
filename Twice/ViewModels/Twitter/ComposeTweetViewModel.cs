@@ -170,6 +170,16 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			IsSending = true;
+			
+			if( Path.GetExtension(selectedFile) == ".gif" )
+			{
+				if( GifValidator.Validate(selectedFile) != GifValidator.ValidationResult.Ok )
+				{
+					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+					IsSending = false;
+					return;
+				}
+			}
 
 			byte[] mediaData = File.ReadAllBytes( selectedFile );
 			if( mediaData.Length > TwitterConfig.MaxImageSize )

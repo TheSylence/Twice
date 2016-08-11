@@ -318,6 +318,7 @@
     <Compile Include="Models\Twitter\Entities\IHighlightable.cs" />
     <Compile Include="Models\Twitter\Entities\EntityParser.cs" />
     <Compile Include="Models\Twitter\Entities\UserEx.cs" />
+    <Compile Include="Models\Twitter\GifValidator.cs" />
     <Compile Include="Models\Twitter\ITwitterConfiguration.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFavoritesRepository.cs" />
     <Compile Include="Models\Twitter\Repositories\ITwitterFriendshipRepository.cs" />
