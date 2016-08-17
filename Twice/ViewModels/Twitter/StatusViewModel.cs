@@ -75,7 +75,7 @@ namespace Twice.ViewModels.Twitter
 
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
-			}, Strings.RetweetedStatus );
+			}, Strings.RetweetedStatus, NotificationType.Success );
 		}
 
 		private bool CanExecuteBlockUserCommand()
