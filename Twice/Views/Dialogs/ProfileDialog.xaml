@@ -49,6 +49,7 @@
 						<TextBlock Text="{Binding User.Model.Name}" FontWeight="Bold" />
 						<TextBlock Text="{Binding User.Model.ScreenNameResponse, StringFormat=@{0}}" FontWeight="Thin" Margin="5,0" />
 						<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
+						<materialDesign:PackIcon Kind="LockOutline" Visibility="{Binding User.IsProtected, Converter={StaticResource BoolToVisibleConv}}" />
 					</StackPanel>
 					<controls1:BindableTextBlock Elements="{Binding User.ModelEx, Converter={StaticResource StatusHighlighterConv}}" 
 												  TextWrapping="Wrap" Margin="0,10" />

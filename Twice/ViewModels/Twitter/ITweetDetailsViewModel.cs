@@ -4,7 +4,7 @@ using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface ITweetDetailsViewModel : IDialogViewModel, ILoadCallback
+	internal interface ITweetDetailsViewModel : IDialogViewModel, ILoadCallback, IScrollController
 	{
 		IContextEntry Context { get; set; }
 		StatusViewModel DisplayTweet { get; set; }

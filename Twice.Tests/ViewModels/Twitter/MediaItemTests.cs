@@ -13,7 +13,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void EmptyDataDoesNotLoadImage()
 		{
 			// Arrange
-			var media = new MediaItem( 123, new byte[0] );
+			var media = new MediaItem( 123, new byte[0], "test.png" );
 
 			// Act
 			var loaded = media.Image.Value;
@@ -31,7 +31,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			{
 				stream?.CopyTo( mem );
 
-				var media = new MediaItem( 123, mem.ToArray() );
+				var media = new MediaItem( 123, mem.ToArray(), "test.png" );
 
 				// Act
 				var loaded = media.Image.Value;
@@ -47,7 +47,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void NullDataDoesNotLoadImage()
 		{
 			// Arrange
-			var media = new MediaItem( 123, null );
+			var media = new MediaItem( 123, null, "test.png" );
 
 			// Act
 			var loaded = media.Image.Value;

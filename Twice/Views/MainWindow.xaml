@@ -165,6 +165,7 @@
 										<views:GenericTemplateSelector>
 											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
 											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:ScheduleItem" Template="{StaticResource ScheduleViewTemplate}" />
 										</views:GenericTemplateSelector>
 									</ItemsControl.ItemTemplateSelector>
 									<ItemsControl.ItemsPanel>

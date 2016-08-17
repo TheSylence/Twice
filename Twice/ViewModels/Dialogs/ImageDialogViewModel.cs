@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
 using Twice.Utilities.Os;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -14,6 +15,15 @@ namespace Twice.ViewModels.Dialogs
 		public ImageDialogViewModel()
 		{
 			Images = new ObservableCollection<ImageEntry>();
+		}
+
+		public void SetImages( IEnumerable<Uri> images )
+		{
+			Images.Clear();
+			foreach( var url in images )
+			{
+				Images.Add( new ImageEntry( url, false ) );
+			}
 		}
 
 		private void ExecuteCopyToClipboardCommand()
@@ -26,10 +36,10 @@ namespace Twice.ViewModels.Dialogs
 			ProcessStarter.Start( SelectedImage.ImageUrl.AbsoluteUri );
 		}
 
-		public void SetImages( IEnumerable<Uri> urls )
+		public void SetImages( IEnumerable<StatusMediaViewModel> images )
 		{
 			Images.Clear();
-			foreach( var url in urls )
+			foreach( var url in images )
 			{
 				Images.Add( new ImageEntry( url ) );
 			}

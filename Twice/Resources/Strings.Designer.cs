@@ -169,6 +169,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The app must be running at the time you set here. Otherwise the action will be executed the next time the app launches..
+        /// </summary>
+        public static string AppMustRunForSchedule {
+            get {
+                return ResourceManager.GetString("AppMustRunForSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attach image.
         /// </summary>
         public static string AttachImage {
@@ -295,6 +304,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear column.
         /// </summary>
         public static string ClearColumn {
@@ -399,6 +417,15 @@ namespace Twice.Resources {
         public static string ConfirmDeleteFilter {
             get {
                 return ResourceManager.GetString("ConfirmDeleteFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete this scheduled job?.
+        /// </summary>
+        public static string ConfirmDeleteSchedule {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteSchedule", resourceCulture);
             }
         }
         
@@ -520,6 +547,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date must be in the future.
+        /// </summary>
+        public static string DateMustBeInTheFuture {
+            get {
+                return ResourceManager.GetString("DateMustBeInTheFuture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to d.
         /// </summary>
         public static string DaysShort {
@@ -534,6 +570,15 @@ namespace Twice.Resources {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion scheduled for {0}.
+        /// </summary>
+        public static string DeletionScheduledFor {
+            get {
+                return ResourceManager.GetString("DeletionScheduledFor", resourceCulture);
             }
         }
         
@@ -1114,6 +1159,24 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick date.
+        /// </summary>
+        public static string PickDate {
+            get {
+                return ResourceManager.GetString("PickDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick time.
+        /// </summary>
+        public static string PickTime {
+            get {
+                return ResourceManager.GetString("PickTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification popups.
         /// </summary>
         public static string PopupNotification {
@@ -1281,6 +1344,42 @@ namespace Twice.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string Schedule {
+            get {
+                return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of scheduled actions.
+        /// </summary>
+        public static string ScheduleDescription {
+            get {
+                return ResourceManager.GetString("ScheduleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule Tweet.
+        /// </summary>
+        public static string ScheduleTweet {
+            get {
+                return ResourceManager.GetString("ScheduleTweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule Tweet deletion.
+        /// </summary>
+        public static string ScheduleTweetDeletion {
+            get {
+                return ResourceManager.GetString("ScheduleTweetDeletion", resourceCulture);
             }
         }
         
@@ -1551,6 +1650,15 @@ namespace Twice.Resources {
         public static string Tweets {
             get {
                 return ResourceManager.GetString("Tweets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tweet scheduled for {0}.
+        /// </summary>
+        public static string TweetScheduledFor {
+            get {
+                return ResourceManager.GetString("TweetScheduledFor", resourceCulture);
             }
         }
         

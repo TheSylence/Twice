@@ -21,7 +21,7 @@ namespace Twice.ViewModels
 
 		protected void Close( bool result )
 		{
-			Dispatcher.CheckBeginInvokeOnUI( () =>
+			Dispatcher?.CheckBeginInvokeOnUI( () =>
 			{
 				CloseRequested?.Invoke( this, result
 					? CloseEventArgs.Ok

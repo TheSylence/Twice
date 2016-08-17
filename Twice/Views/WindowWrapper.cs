@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 namespace Twice.Views
 {
+	[ExcludeFromCodeCoverage]
 	class WindowWrapper : IWindowAdapter
 	{
 		public WindowWrapper( Window window )

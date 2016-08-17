@@ -86,7 +86,8 @@
                 "ScreenNameResponse": "TwiceApp",
                 "CreateAt": "",
                 "ProfileImageUrl": "http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-                "ProfileImageUrlHttps": "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png"
+                "ProfileImageUrlHttps": "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+                "Protected": true
             }
         },
         "User": {
@@ -96,7 +97,8 @@
             "ScreenNameResponse": "TwiceApp",
             "CreateAt": "",
             "ProfileImageUrl": "http://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-            "ProfileImageUrlHttps": "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png"
+            "ProfileImageUrlHttps": "https://abs.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
+            "Protected": true
 
         },
         "Lang": "en"

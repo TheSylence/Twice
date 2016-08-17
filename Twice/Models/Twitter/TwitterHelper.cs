@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Anotar.NLog;
@@ -41,6 +43,25 @@ namespace Twice.Models.Twitter
 				: ulong.Parse( message.IDString );
 		}
 
+		public static string GetMimeType( string fileName )
+		{
+			var ext = Path.GetExtension( fileName );
+
+			var lookup = new Dictionary<string, string>
+			{
+				{".png", "image/png"},
+				{".gif", "image/gif"},
+				{".bmp", "image/bmp"}
+			};
+
+			if( ext != null && lookup.ContainsKey( ext ) )
+			{
+				return lookup[ext];
+			}
+
+			return "application/octet-stream";
+		}
+
 		public static string GetScreenName( this User user )
 		{
 			return user.ScreenName ?? user.ScreenNameResponse;
@@ -79,7 +100,7 @@ namespace Twice.Models.Twitter
 		public static ulong GetUserId( this Status status )
 		{
 			var id = status.UserID;
-			if( id != 0)
+			if( id != 0 )
 			{
 				return id;
 			}

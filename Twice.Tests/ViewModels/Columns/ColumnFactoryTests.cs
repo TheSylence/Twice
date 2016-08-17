@@ -132,7 +132,7 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			// Act
-			var constructed = factory.Construct( new ColumnDefinition( ColumnType.DebugOrTest )
+			var constructed = factory.Construct( new ColumnDefinition( ColumnType.Unknown )
 			{
 				SourceAccounts = new ulong[] {1},
 				TargetAccounts = new ulong[] {1}

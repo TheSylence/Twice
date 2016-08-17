@@ -75,7 +75,7 @@ namespace Twice.ViewModels.Twitter
 
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
-			}, Strings.RetweetedStatus );
+			}, Strings.RetweetedStatus, NotificationType.Success );
 		}
 
 		private bool CanExecuteBlockUserCommand()
@@ -216,8 +216,8 @@ namespace Twice.ViewModels.Twitter
 			var selected = sender as StatusMediaViewModel;
 			Debug.Assert( selected != null );
 
-			var allUris = InlineMedias.Select( e => e.Url ).ToList();
-			var selectedUri = selected.Url;
+			var allUris = InlineMedias.ToList();
+			var selectedUri = selected;
 
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
@@ -229,9 +229,14 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities.MediaEntities )
-				.Distinct( TwitterComparers.MediaEntityComparer )
-				.Select( m => new Uri( m.MediaUrlHttps ) ) ?? Enumerable.Empty<Uri>();
+			var videos = (Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+				Enumerable.Empty<MediaEntity>()).ToArray();
+
+			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>() )
+				.Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
+				?? Enumerable.Empty<MediaEntity>();
+
+			entities = entities.Concat( videos );
 
 			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
 			{

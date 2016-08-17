@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Twice.ViewModels.Twitter
 		{
 			PreviousMessages = new ObservableCollection<MessageViewModel>();
 		}
+
+		public event EventHandler ScrollRequested;
 
 		[ConfigureAwait( false )]
 		public async Task OnLoad( object data )
@@ -41,6 +44,7 @@ namespace Twice.ViewModels.Twitter
 
 			RaisePropertyChanged( nameof( PreviousMessages ) );
 			IsLoadingPrevious = false;
+			await Dispatcher.RunAsync( () => ScrollRequested?.Invoke( this, EventArgs.Empty ) );
 		}
 
 		public bool IsLoadingPrevious

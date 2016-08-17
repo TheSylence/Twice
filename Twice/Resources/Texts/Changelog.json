@@ -1,9 +1,34 @@
 ﻿[
-     {
+    {
+        "Version": "0.7.0",
+        "Date": "2016-08-17",
+        "Description": "",
+        "NewFeatures": [
+            "Tweets can be scheduled",
+            "Tweet deletion can be scheduled",
+            "Images can now be viewed in full size",
+            "Protected accounts are now marked as such",
+            "Conversation view now scrolls to bottom when loading, displaying the actual item that was replied to"
+        ],
+        "Changes": [
+            "Following a user no longer enables notification for this user"
+        ],
+        "Fixes": [
+            "Fixed rare case when entities in user biographies were shown more than once",
+            "Fixed possible crash when migrating appdata from versions older then 0.6.5",
+            "Clicking outside the application no longer closes an opened window",
+            "Fixed rare crash when trying to view a tweet by clicking on it",
+            "Fixed crash when opening settings when no account was added",
+            "Fixed rare crash when viewing a tweet with replies",
+            "Window position is saved for displays that are left to the primary display"
+        ],
+        "Issues": [ ]
+    },
+    {
         "Version": "0.6.6",
         "Date": "2016-07-10",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [ ],
         "Changes": [
             "Clicking a quote in a tweet now opens the quote instead of the tweet"
         ],

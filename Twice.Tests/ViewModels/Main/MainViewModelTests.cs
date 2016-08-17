@@ -15,6 +15,7 @@ using Twice.Utilities;
 using Twice.ViewModels;
 using Twice.ViewModels.Columns;
 using Twice.ViewModels.Main;
+using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Main
@@ -141,9 +142,10 @@ namespace Twice.Tests.ViewModels.Main
 			} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
-			
+
 			// ReSharper disable PossibleMultipleEnumeration
 			Expression<Func<IEnumerable<ulong>, bool>> checkAction = ids => ids.Contains( 123ul ) && ids.Contains( 111ul );
+
 			// ReSharper restore PossibleMultipleEnumeration
 
 			columnList.Setup( c => c.SetExistingContexts( It.Is( checkAction ) ) ).Verifiable();
@@ -155,6 +157,38 @@ namespace Twice.Tests.ViewModels.Main
 
 			// Assert
 			columnList.Verify( c => c.SetExistingContexts( It.Is( checkAction ) ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Main" )]
+		public void ColumnEventsAreSubscribedTo()
+		{
+			// Arrange
+			var contextList = new Mock<ITwitterContextList>();
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.OnItem( It.IsAny<ColumnItem>(), It.IsAny<ColumnNotifications>() ) ).Verifiable();
+
+			var columnList = new Mock<IColumnDefinitionList>();
+			columnList.Setup( c => c.Load() ).Returns( new[] {new ColumnDefinition( ColumnType.DebugOrTest )} );
+			columnList.Setup( c => c.Update( It.IsAny<IEnumerable<ColumnDefinition>>() ) ).Verifiable();
+			columnList.Setup( c => c.Remove( It.IsAny<IEnumerable<ColumnDefinition>>() ) ).Verifiable();
+
+			var column = new Mock<TestColumnMock>();
+
+			Expression<Func<ColumnDefinition, bool>> columnVerifier = col => col.Type == ColumnType.DebugOrTest;
+			var columnFactory = new Mock<IColumnFactory>();
+			columnFactory.Setup( c => c.Construct( It.Is( columnVerifier ) ) ).Returns( column.Object );
+
+			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
+
+			// Act
+			column.Raise( c => c.Changed += null, EventArgs.Empty );
+			column.Raise( c => c.NewItem += null, new ColumnItemEventArgs( null ) );
+			column.Raise( c => c.Deleted += null, EventArgs.Empty );
+
+			// Assert
+			columnList.Verify( c => c.Update( It.IsAny<IEnumerable<ColumnDefinition>>() ), Times.Once() );
+			columnList.Verify( c => c.Remove( It.IsAny<IEnumerable<ColumnDefinition>>() ), Times.Once() );
+			notifier.Verify( n => n.OnItem( It.IsAny<ColumnItem>(), It.IsAny<ColumnNotifications>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]

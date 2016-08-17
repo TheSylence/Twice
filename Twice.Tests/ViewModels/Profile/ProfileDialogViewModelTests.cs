@@ -106,19 +106,17 @@ namespace Twice.Tests.ViewModels.Profile
 			{
 				if( e.PropertyName == nameof( UserSubPage.IsLoading ) && page.IsLoading == false )
 				{
+					Thread.Sleep( 50 );
 					waitHandle.Set();
 				}
 			};
 
 			// Act
-			var nullItems = page.Items;
-
+			var ignore = page.Items;
 			waitHandle.Wait( 1000 );
-
 			var items = page.Items;
 
 			// Assert
-			Assert.IsNull( nullItems );
 			Assert.IsNotNull( items.SingleOrDefault() );
 
 			context.Verify( c => c.Twitter.Friendships.ListFollowers( 123, 200, true ), Times.Once() );

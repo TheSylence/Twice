@@ -1,10 +1,12 @@
-﻿using System.Windows;
+﻿using MahApps.Metro.Controls;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Interactivity;
-using MahApps.Metro.Controls;
 using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	[ExcludeFromCodeCoverage]
 	internal class CloseableFlyout : Behavior<Flyout>
 	{
 		protected override void OnAttached()

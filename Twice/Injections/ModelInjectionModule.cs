@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
+using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 
@@ -24,6 +25,7 @@ namespace Twice.Injections
 			Bind<IStreamingRepository>().To<StreamingRepository>().InSingletonScope();
 			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
 			Bind<ITwitterConfiguration>().To<TwitterConfiguration>().InSingletonScope();
+			Bind<IScheduler>().ToProvider<SchedulerProvider>().InSingletonScope();
 		}
 	}
 }

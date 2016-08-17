@@ -126,10 +126,10 @@
 											<ItemsControl ItemsSource="{Binding NewFeatures}">
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="system:String">
-														<StackPanel Orientation="Horizontal">
-															<materialDesign:PackIcon Kind="PlusCircleOutline" />
-															<TextBlock Text="{Binding}" Margin="5,0" />
-														</StackPanel>
+														<DockPanel>
+															<materialDesign:PackIcon Kind="PlusCircleOutline" DockPanel.Dock="Left" />
+															<TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="5,0" />
+														</DockPanel>
 													</DataTemplate>
 												</ItemsControl.ItemTemplate>
 											</ItemsControl>
@@ -138,10 +138,10 @@
 											<ItemsControl ItemsSource="{Binding Changes}">
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="system:String">
-														<StackPanel Orientation="Horizontal">
-															<materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" />
-															<TextBlock Text="{Binding}" Margin="5,0" />
-														</StackPanel>
+														<DockPanel>
+															<materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" DockPanel.Dock="Left" />
+															<TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="5,0" />
+														</DockPanel>
 													</DataTemplate>
 												</ItemsControl.ItemTemplate>
 											</ItemsControl>
@@ -150,10 +150,10 @@
 											<ItemsControl ItemsSource="{Binding Fixes}">
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="system:String">
-														<StackPanel Orientation="Horizontal">
-															<materialDesign:PackIcon Kind="CheckCircleOutline" />
-															<TextBlock Text="{Binding}" Margin="5,0" />
-														</StackPanel>
+														<DockPanel>
+															<materialDesign:PackIcon Kind="CheckCircleOutline" DockPanel.Dock="Left" />
+															<TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="5,0" />
+														</DockPanel>
 													</DataTemplate>
 												</ItemsControl.ItemTemplate>
 											</ItemsControl>
@@ -162,10 +162,10 @@
 											<ItemsControl ItemsSource="{Binding Issues}">
 												<ItemsControl.ItemTemplate>
 													<DataTemplate DataType="system:String">
-														<StackPanel Orientation="Horizontal">
-															<materialDesign:PackIcon Kind="AlertCircleOutline" />
-															<TextBlock Text="{Binding}" Margin="5,0" />
-														</StackPanel>
+														<DockPanel>
+															<materialDesign:PackIcon Kind="AlertCircleOutline" DockPanel.Dock="Left" />
+															<TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="5,0" />
+														</DockPanel>
 													</DataTemplate>
 												</ItemsControl.ItemTemplate>
 											</ItemsControl>

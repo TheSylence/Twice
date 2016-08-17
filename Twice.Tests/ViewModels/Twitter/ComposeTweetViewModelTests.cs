@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LinqToTwitter;
@@ -9,11 +10,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
+using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.ViewModels;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
+using MediaType = LinqToTwitter.MediaType;
 
 namespace Twice.Tests.ViewModels.Twitter
 {
@@ -168,6 +171,72 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DeletionDateMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+
+			var pastDate = DateTime.Now.AddDays( -1 );
+			var futureDate = DateTime.Now.AddDays( 1 );
+
+			// Act
+			vm.IsDeletionScheduled = false;
+			vm.DeletionDate = pastDate;
+			bool disabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionDate ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = false;
+			vm.DeletionDate = futureDate;
+			bool disabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionDate ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = true;
+			vm.DeletionDate = pastDate;
+			bool enabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionDate ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = true;
+			vm.DeletionDate = futureDate;
+			bool enabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionDate ) ).Cast<object>().Any();
+
+			// Assert
+			Assert.IsFalse( disabledDateInPast );
+			Assert.IsFalse( disabledDateInFuture );
+			Assert.IsTrue( enabledDateInPast );
+			Assert.IsFalse( enabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DeletionTimeMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+
+			var pastDate = DateTime.Now.AddHours( -1 );
+			var futureDate = DateTime.Now.AddHours( 1 );
+
+			// Act
+			vm.IsDeletionScheduled = false;
+			vm.DeletionTime = pastDate;
+			bool disabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = false;
+			vm.DeletionTime = futureDate;
+			bool disabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = true;
+			vm.DeletionTime = pastDate;
+			bool enabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = true;
+			vm.DeletionTime = futureDate;
+			bool enabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			// Assert
+			Assert.IsFalse( disabledDateInPast );
+			Assert.IsFalse( disabledDateInFuture );
+			Assert.IsTrue( enabledDateInPast );
+			Assert.IsFalse( enabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ExceptionOnSendIsDisplayedInNotifier()
 		{
 			// Arrange
@@ -175,7 +244,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			notifier.Setup( n => n.DisplayMessage( "exception_message", NotificationType.Error ) ).Verifiable();
 
 			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws( new Exception( "exception_message" ) );
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.IsAny<IEnumerable<ulong>>(), 0 ) ).Throws(
+				new Exception( "exception_message" ) );
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
@@ -217,7 +287,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var vm = new ComposeTweetViewModel();
-			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {} ) );
+			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {}, "test.png" ) );
 			vm.ViewServiceRepository = viewServices.Object;
 			vm.Dispatcher = new SyncDispatcher();
 
@@ -230,32 +300,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			Assert.IsTrue( wrongId );
 			Assert.IsFalse( correctId );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void MimeTypeForFileIsDetectedCorrectly()
-		{
-			// Arrange
-			var testCases = new Dictionary<string, string>
-			{
-				{"file.jpg", "application/octet-stream"},
-				{"file.png", "image/png"},
-				{"file.bmp", "image/bmp"},
-				{"file.gif", "image/gif"},
-				{"file.png.gif", "image/gif"},
-				{"file", "application/octet-stream"},
-				{"name.exe", "application/octet-stream"},
-				{"name", "application/octet-stream"}
-			};
-
-			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => ComposeTweetViewModel.GetMimeType( kvp.Key ) );
-
-			// Assert
-			foreach( var kvp in results )
-			{
-				Assert.AreEqual( testCases[kvp.Key], kvp.Value );
-			}
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -301,7 +345,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null,
+			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
 				null ) );
 
 			var obj = new ComposeTweetViewModel
@@ -345,8 +389,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			var status = DummyGenerator.CreateDummyStatus();
-			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) ).Returns(
-				Task.FromResult( status ) ).Verifiable();
+			context.Setup( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ) )
+				.Returns(
+					Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
 			var waitHandle = new ManualResetEventSlim( false );
@@ -371,7 +416,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			waitHandle.Wait( 1000 );
 
 			// Assert
-			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ), Times.Once() );
+			context.Verify( c => c.Twitter.Statuses.TweetAsync( "Hello world " + url, It.IsAny<IEnumerable<ulong>>(), 0 ),
+				Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -405,6 +451,116 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsNull( vm.InReplyTo );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ScheduleDateMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+
+			var pastDate = DateTime.Now.AddDays( -1 );
+			var futureDate = DateTime.Now.AddDays( 1 );
+
+			// Act
+			vm.IsTweetScheduled = false;
+			vm.ScheduleDate = pastDate;
+			bool disabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleDate ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = false;
+			vm.ScheduleDate = futureDate;
+			bool disabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleDate ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = true;
+			vm.ScheduleDate = pastDate;
+			bool enabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleDate ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = true;
+			vm.ScheduleDate = futureDate;
+			bool enabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleDate ) ).Cast<object>().Any();
+
+			// Assert
+			Assert.IsFalse( disabledDateInPast );
+			Assert.IsFalse( disabledDateInFuture );
+			Assert.IsTrue( enabledDateInPast );
+			Assert.IsFalse( enabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ScheduledTimeMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+
+			var pastDate = DateTime.Now.AddHours( -1 );
+			var futureDate = DateTime.Now.AddHours( 1 );
+
+			// Act
+			vm.IsTweetScheduled = false;
+			vm.ScheduleTime = pastDate;
+			bool disabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleTime ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = false;
+			vm.ScheduleTime = futureDate;
+			bool disabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleTime ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = true;
+			vm.ScheduleTime = pastDate;
+			bool enabledDateInPast = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleTime ) ).Cast<object>().Any();
+
+			vm.IsTweetScheduled = true;
+			vm.ScheduleTime = futureDate;
+			bool enabledDateInFuture = vm.GetErrors( nameof( ComposeTweetViewModel.ScheduleTime ) ).Cast<object>().Any();
+
+			// Assert
+			Assert.IsFalse( disabledDateInPast );
+			Assert.IsFalse( disabledDateInFuture );
+			Assert.IsTrue( enabledDateInPast );
+			Assert.IsFalse( enabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ScheduleJobIsCreatedIfNeeded()
+		{
+			// Arrange
+			Expression<Func<SchedulerJob, bool>> jobVerifier =
+				job => job.JobType == SchedulerJobType.CreateStatus
+						&& job.Text == "Hello World";
+
+			var scheduler = new Mock<IScheduler>();
+			scheduler.Setup( s => s.AddJob( It.Is( jobVerifier ) ) ).Verifiable();
+
+			var context = new Mock<IContextEntry>();
+			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
+
+			var vm = new ComposeTweetViewModel
+			{
+				Scheduler = scheduler.Object,
+				TwitterConfig = new Mock<ITwitterConfiguration>().Object,
+				Dispatcher = new SyncDispatcher(),
+				IsTweetScheduled = true,
+				ScheduleDate = DateTime.Now.AddDays( 10 ),
+				ScheduleTime = DateTime.Now.AddMinutes( 1 ),
+				Text = "Hello World",
+			};
+
+			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && !vm.IsSending )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.SendTweetCommand.Execute( null );
+
+			// Assert
+			Assert.IsTrue( waitHandle.Wait( 1000 ) );
+			scheduler.Verify( s => s.AddJob( It.Is( jobVerifier ) ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

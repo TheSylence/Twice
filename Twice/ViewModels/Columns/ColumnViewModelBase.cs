@@ -82,6 +82,20 @@ namespace Twice.ViewModels.Columns
 			RaiseNewItem( message );
 		}
 
+		protected async Task AddItem( ScheduleItem item )
+		{
+			await Dispatcher.RunAsync( () =>
+			{
+				int index = GetInsertIndex( item );
+				if( index >= 0 )
+				{
+					ItemCollection.Insert( index, item );
+				}
+			} );
+
+			RaiseNewItem( item );
+		}
+
 		protected async Task AddItem( StatusViewModel status )
 		{
 			SinceId = Math.Min( SinceId, status.Id );
@@ -198,6 +212,7 @@ namespace Twice.ViewModels.Columns
 			{
 				list.Add( await CreateViewModel( s ) );
 			}
+
 			await AddItems( list );
 
 			var filterList = new List<Expression<Func<Status, bool>>>( 3 )
@@ -246,7 +261,10 @@ namespace Twice.ViewModels.Columns
 				await Dispatcher.RunAsync( () => ItemCollection.Remove( status ) );
 			}
 
-			await Cache.RemoveStatus( itemId );
+			if( Cache != null )
+			{
+				await Cache.RemoveStatus( itemId );
+			}
 		}
 
 		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
@@ -359,15 +377,20 @@ namespace Twice.ViewModels.Columns
 
 		private async Task UpdateCache( Status status )
 		{
+			if( Cache == null )
+			{
+				return;
+			}
+
 			await Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() );
 			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
 		}
 
-		public event EventHandler Changed;
+		public virtual event EventHandler Changed;
 
-		public event EventHandler Deleted;
+		public virtual event EventHandler Deleted;
 
-		public event EventHandler<ColumnItemEventArgs> NewItem;
+		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
 
 		public async Task Load()
 		{

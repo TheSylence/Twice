@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Anotar.NLog;
 using Ninject;
 using Ninject.Modules;
 using Twice.Models.Media;
@@ -18,30 +20,38 @@ namespace Twice.Injections
 
 			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
+			//MediaExtractorRepository.Default.AddExtractor( new TwitterVideoExtractor() );
 		}
 
 		private static void MigrateAppData()
 		{
-#if !DEBUG
-			var localAppDataFolder = Constants.IO.AppDataFolder;
-			var roamingAppDataFolder = Constants.IO.RoamingAppDataFolder;
-
-			if( Directory.Exists( localAppDataFolder ) )
+			try
 			{
-				foreach( var file in Directory.GetFiles( localAppDataFolder ) )
+#if !DEBUG
+				var localAppDataFolder = Constants.IO.AppDataFolder;
+				var roamingAppDataFolder = Constants.IO.RoamingAppDataFolder;
+
+				if( Directory.Exists( localAppDataFolder ) )
 				{
-					var targetFile = Path.GetFileName( file );
-					if( targetFile == null )
+					foreach( var file in Directory.GetFiles( localAppDataFolder ) )
 					{
-						continue;
+						var targetFile = Path.GetFileName( file );
+						if( targetFile == null )
+						{
+							continue;
+						}
+
+						File.Move( file, Path.Combine( roamingAppDataFolder, targetFile ) );
 					}
 
-					File.Move( file, Path.Combine( roamingAppDataFolder, targetFile ) );
+					Directory.Delete( localAppDataFolder );
 				}
-
-				Directory.Delete( localAppDataFolder );
-			}
 #endif
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to migrate appdata", ex );
+			}
 		}
 
 		private static IEnumerable<INinjectModule> InjectionModules

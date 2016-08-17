@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Threading;
 
 namespace Twice.Utilities.Ui
 {
+	[ExcludeFromCodeCoverage]
 	internal class TimerFactory : ITimerFactory
 	{
 		public ITimer Create( int timeout )

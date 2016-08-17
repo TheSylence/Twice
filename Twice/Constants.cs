@@ -44,6 +44,7 @@ namespace Twice
 			internal static readonly string ConfigFileName = P( "config.json" );
 			internal static readonly string WindowSettingsFileName = P( "window.json" );
 			internal static readonly string DefaultNotificationSoundFile = P( "HumanBird.wav" );
+			internal static readonly string SchedulerFileName = P( "scheduler.json" );
 
 			internal static string RoamingAppDataFolder
 			{

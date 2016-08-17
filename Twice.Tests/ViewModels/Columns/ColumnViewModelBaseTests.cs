@@ -46,6 +46,23 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void RelativeTimesAreUpdated()
+		{
+			// Arrange
+			var item = new Mock<ColumnItem>();
+			item.Setup( it => it.UpdateRelativeTime() ).Verifiable();
+
+			var vm = new TestColumn();
+			vm.Items.Add( item.Object );
+
+			// Act
+			vm.UpdateRelativeTimes();
+
+			// Assert
+			item.Verify( it => it.UpdateRelativeTime(), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void ClearCommandClearsAllStatuses()
 		{
 			// Arrange
@@ -617,11 +634,40 @@ namespace Twice.Tests.ViewModels.Columns
 
 		private class TestColumn : ColumnViewModelBase
 		{
-			public TestColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
-				: base( context, definition, config, parser )
+			public TestColumn( IContextEntry context, ColumnDefinition definition, IConfig config = null, IStreamParser parser = null )
+				: base( context, definition, config ?? DefaultConfig(), parser ?? DefaultParser() )
 			{
 				StatusFilterExpression = s => true;
 				Icon = Icon.User;
+			}
+
+			public TestColumn()
+				: base( DefaultContext(), new ColumnDefinition(ColumnType.User), DefaultConfig(), DefaultParser() )
+			{
+				
+			}
+
+			private static IConfig DefaultConfig()
+			{
+				var cfg = new Mock<IConfig>();
+				cfg.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+
+				return cfg.Object;
+			}
+
+			private static IContextEntry DefaultContext()
+			{
+				var context = new Mock<IContextEntry>();
+				context.SetupGet( c => c.AccountName ).Returns( string.Empty );
+
+				return context.Object;
+			}
+
+			private static IStreamParser DefaultParser()
+			{
+				var parser = new Mock<IStreamParser>();
+
+				return parser.Object;
 			}
 
 			public void RaiseStatusWrapper( ColumnItem iteme )

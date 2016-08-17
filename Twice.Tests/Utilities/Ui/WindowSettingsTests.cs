@@ -134,12 +134,15 @@ namespace Twice.Tests.Utilities.Ui
 			screen.SetupGet( s => s.Width ).Returns( 500 );
 			screen.SetupGet( s => s.Height ).Returns( 400 );
 
+			var screenRepo = new Mock<IScreenRepository>();
+			screenRepo.Setup( s => s.GetScreenFromPosition( It.IsAny<double>(), It.IsAny<double>() ) ).Returns( screen.Object );
+
 			var settings = new WindowSettings
 			{
 				Width = 250,
 				Height = 200,
 				Left = 700,
-				VirtualScreen = screen.Object
+				ScreenRepo = screenRepo.Object
 			};
 
 			var window = new Mock<IWindowAdapter>();
@@ -160,13 +163,16 @@ namespace Twice.Tests.Utilities.Ui
 			screen.SetupGet( s => s.Width ).Returns( 500 );
 			screen.SetupGet( s => s.Height ).Returns( 400 );
 
+			var screenRepo = new Mock<IScreenRepository>();
+			screenRepo.Setup( s => s.GetScreenFromPosition( It.IsAny<double>(), It.IsAny<double>() ) ).Returns( screen.Object );
+
 			var settings = new WindowSettings
 			{
 				Width = 250,
 				Height = 200,
 				Left = 0,
 				Top = 700,
-				VirtualScreen = screen.Object
+				ScreenRepo = screenRepo.Object
 			};
 
 			var window = new Mock<IWindowAdapter>();
@@ -187,11 +193,14 @@ namespace Twice.Tests.Utilities.Ui
 			screen.SetupGet( s => s.Width ).Returns( 500 );
 			screen.SetupGet( s => s.Height ).Returns( 400 );
 
+			var screenRepo = new Mock<IScreenRepository>();
+			screenRepo.Setup( s => s.GetScreenFromPosition( It.IsAny<double>(), It.IsAny<double>() ) ).Returns( screen.Object );
+
 			var settings = new WindowSettings
 			{
 				Width = 1000,
 				Height = 1000,
-				VirtualScreen = screen.Object
+				ScreenRepo = screenRepo.Object
 			};
 
 			var window = new Mock<IWindowAdapter>();

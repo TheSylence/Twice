@@ -138,6 +138,7 @@
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.102.0\lib\net46\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -206,16 +207,22 @@
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Proxy\MediaProxyServerTests.cs" />
     <Compile Include="Models\Media\InstragramExtractorTests.cs" />
     <Compile Include="Models\Media\MediaExtractorRepositoryTests.cs" />
     <Compile Include="Models\Media\YoutubeExtractorTests.cs" />
+    <Compile Include="Models\Scheduling\Processors\CreateStatusProcessorTests.cs" />
+    <Compile Include="Models\Scheduling\Processors\DeleteStatusProcessorTests.cs" />
+    <Compile Include="Models\Scheduling\SchedulerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\MediaEntityComparerTests.cs" />
     <Compile Include="Models\Twitter\Comparers\StatusComparerTests.cs" />
     <Compile Include="Models\Twitter\ContextEntryTests.cs" />
     <Compile Include="Models\Twitter\Entities\EntityParserTests.cs" />
+    <Compile Include="Models\Twitter\GifValidatorTests.cs" />
     <Compile Include="Models\Twitter\StatusMuterTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamingRepositoryTests.cs" />
     <Compile Include="Models\Twitter\Streaming\StreamParserTests.cs" />
+    <Compile Include="Models\Twitter\TweetHelperTests.cs" />
     <Compile Include="Models\Twitter\TweetSourceTests.cs" />
     <Compile Include="Models\Twitter\CharacterCountingTests.cs" />
     <Compile Include="Models\Twitter\TwitterAccountDataTests.cs" />
@@ -227,6 +234,7 @@
     <Compile Include="SyncDispatcher.cs" />
     <Compile Include="Utilities\DpApiTests.cs" />
     <Compile Include="Utilities\SerializerTests.cs" />
+    <Compile Include="Utilities\SmartCollectionTests.cs" />
     <Compile Include="Utilities\Ui\WindowSettingsTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountEntryTests.cs" />
     <Compile Include="ViewModels\Accounts\AccountsDialogViewModelTests.cs" />
@@ -248,8 +256,11 @@
     <Compile Include="ViewModels\Dialogs\RetweetDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Dialogs\TextInputDialogViewModelTests.cs" />
     <Compile Include="ViewModels\DialogViewModelTests.cs" />
+    <Compile Include="ViewModels\Flyouts\NotificationViewModelTests.cs" />
+    <Compile Include="ViewModels\Info\InfoDialogViewModelTests.cs" />
     <Compile Include="ViewModels\ItemSelectionTests.cs" />
     <Compile Include="ViewModels\Main\MainViewModelTests.cs" />
+    <Compile Include="ViewModels\Main\TestColumnMock.cs" />
     <Compile Include="ViewModels\NotifierTests.cs" />
     <Compile Include="ViewModels\Profile\ProfileDialogViewModelTests.cs" />
     <Compile Include="ViewModels\Profile\UserSubPageTests.cs" />
@@ -274,6 +285,7 @@
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />
     <Compile Include="ViewModels\Validation\ValidationViewModelTests.cs" />
     <Compile Include="ViewModels\ValueDescriptionTests.cs" />
+    <Compile Include="ViewModels\Wizards\WizardViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Twice\Twice.csproj">
@@ -310,7 +322,29 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Gifs\TooHigh.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Gifs\TooWide.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Gifs\Valid.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Gifs\TooManyFrames.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Gifs\TooManyPixels.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

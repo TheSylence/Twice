@@ -128,11 +128,18 @@ namespace Twice.Models.Twitter.Repositories
 				LogTo.ErrorException( $"Failed to load tweets for user {userId} (since: {since}, max: {max})", ex );
 				return cachedList;
 			}
+
 			var newStatuses = statusList.Except( cachedList, TwitterComparers.StatusComparer ).ToList();
 			await Cache.AddStatuses( newStatuses );
 
 			cachedList.AddRange( newStatuses );
 			return cachedList;
+		}
+
+		public async Task<List<Status>> List( ulong[] statusIds )
+		{
+			string idList = string.Join( ",", statusIds );
+			return await Context.Status.Where( s => s.Type == StatusType.Lookup && s.TweetIDs == idList ).ToListAsync();
 		}
 
 		public Task<Status> RetweetAsync( ulong statusId )

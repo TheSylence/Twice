@@ -46,6 +46,12 @@ namespace Twice.ViewModels.ColumnManagement
 				yield return
 					new ColumnTypeItem( ColumnType.Favorites, Strings.Favourites, Strings.FavouritesDescription, PackIconKind.Star );
 			}
+
+			if( typeList.Contains( ColumnType.Schedule ) )
+			{
+				yield return
+					new ColumnTypeItem( ColumnType.Schedule, Strings.Schedule, Strings.ScheduleDescription, PackIconKind.Alarm );
+			}
 		}
 	}
 }

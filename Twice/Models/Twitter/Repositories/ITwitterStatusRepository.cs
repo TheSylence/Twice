@@ -1,8 +1,8 @@
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using LinqToTwitter;
 
 namespace Twice.Models.Twitter.Repositories
 {
@@ -17,6 +17,8 @@ namespace Twice.Models.Twitter.Repositories
 		Task<Status> GetTweet( ulong statusId, bool includeEntities );
 
 		Task<List<Status>> GetUserTweets( ulong userId, ulong since = 0, ulong max = 0 );
+
+		Task<List<Status>> List( ulong[] statusIds );
 
 		Task<Status> RetweetAsync( ulong statusId );
 

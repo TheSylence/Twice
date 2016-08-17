@@ -666,4 +666,40 @@
   <data name="ConfirmDeleteAccount" xml:space="preserve">
     <value>Soll dieses Konto wirklich entfernt werden?</value>
   </data>
+  <data name="ScheduleTweet" xml:space="preserve">
+    <value>Tweet planen</value>
+  </data>
+  <data name="ScheduleTweetDeletion" xml:space="preserve">
+    <value>Löschen des Tweets planen</value>
+  </data>
+  <data name="PickDate" xml:space="preserve">
+    <value>Datum auswählen</value>
+  </data>
+  <data name="PickTime" xml:space="preserve">
+    <value>Zeit auswählen</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Leeren</value>
+  </data>
+  <data name="AppMustRunForSchedule" xml:space="preserve">
+    <value>Die App muss zum eingestellten Zeitpunkt laufen, damit die Aktion ausgeführt wird. Sonst wird sie ausgeführt, wenn die App das nächste mal gestartet wird.</value>
+  </data>
+  <data name="DateMustBeInTheFuture" xml:space="preserve">
+    <value>Zeitpunkt muss in der Zukunft liegen</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Zeitplan</value>
+  </data>
+  <data name="ScheduleDescription" xml:space="preserve">
+    <value>Liste von geplanten Aktionen</value>
+  </data>
+  <data name="TweetScheduledFor" xml:space="preserve">
+    <value>Tweet für {0} geplant</value>
+  </data>
+  <data name="DeletionScheduledFor" xml:space="preserve">
+    <value>Löschung für {0} geplant</value>
+  </data>
+  <data name="ConfirmDeleteSchedule" xml:space="preserve">
+    <value>Soll diese geplante Aktion wirklich gelöscht werden?</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using Anotar.NLog;
 using Newtonsoft.Json;
 using Twice.Views;
 
@@ -69,17 +70,20 @@ namespace Twice.Utilities.Ui
 			var x = Width;
 			var y = Height;
 
+			LogTo.Debug( $"Loaded Window size: {x}|{y}" );
+			var screen = ScreenRepo.GetScreenFromPosition( x, y );
+
 			// Make sure the window is at most as large as the available screen space.
-
-			if( x > VirtualScreen.Width )
+			if( x > screen.Width )
 			{
-				x = VirtualScreen.Width;
+				x = screen.Width;
 			}
-			if( y > VirtualScreen.Height )
+			if( y > screen.Height )
 			{
-				y = VirtualScreen.Height;
+				y = screen.Height;
 			}
 
+			LogTo.Debug( $"Clipped Window size: {x}|{y}" );
 			return new Point( x, y );
 		}
 
@@ -88,25 +92,30 @@ namespace Twice.Utilities.Ui
 			var x = Left;
 			var y = Top;
 
+			LogTo.Debug( $"Loaded Window position: {x}|{y}" );
+			var screen = ScreenRepo.GetScreenFromPosition( x, y );
+
 			// If the window is half off the screen, move it into view
-			if( y + size.Y / 2 > VirtualScreen.Height )
+			if( y + size.Y / 2 > screen.Height )
 			{
-				y = VirtualScreen.Height - size.Y;
+				y = screen.Height - size.Y;
 			}
-			if( x + size.X / 2 > VirtualScreen.Width )
+			if( x + size.X / 2 > screen.Width )
 			{
-				x = VirtualScreen.Width - size.X;
-			}
-
-			if( y < 0 )
-			{
-				y = 0;
-			}
-			if( x < 0 )
-			{
-				x = 0;
+				x = screen.Width - size.X;
 			}
 
+			// Ensure window does not hang off screen
+			if( y < screen.Top )
+			{
+				y = screen.Top;
+			}
+			if( x < screen.Left )
+			{
+				x = screen.Left;
+			}
+
+			LogTo.Debug( $"Clipped Window position: {x}|{y}" );
 			return new Point( x, y );
 		}
 
@@ -115,6 +124,6 @@ namespace Twice.Utilities.Ui
 		public WindowState State { get; set; }
 		public double Top { get; set; }
 		public double Width { get; set; }
-		internal IVirtualScreen VirtualScreen { get; set; } = new VirtualScreenWrapper();
+		internal IScreenRepository ScreenRepo { get; set; } = new ScreenRepository();
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -46,6 +47,8 @@ namespace Twice.ViewModels.Twitter
 
 			await Task.WhenAll( PreviousConversationTweets.Select( s => s.LoadDataAsync() ) );
 			IsLoadingPrevious = false;
+
+			await Dispatcher.RunAsync( () => ScrollRequested?.Invoke( this, EventArgs.Empty ) );
 		}
 
 		private async Task StartLoadingResponses()
@@ -143,5 +146,7 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoadingPrevious;
+
+		public event EventHandler ScrollRequested;
 	}
 }

@@ -32,6 +32,37 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
+		public void DoubleEntitiesAreOnlyCreatedOnce()
+		{
+			// Arrange
+			var conv = new StatusHighlighter();
+			var status = DummyGenerator.CreateDummyStatus();
+			status.Text = "@hello";
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity
+			{
+				Start = 0,
+				ScreenName = "hello",
+				End = 6
+			} );
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity
+			{
+				Start = 0,
+				ScreenName = "hello",
+				End = 6
+			} );
+
+			var vm = new StatusViewModel( status, null, null, null );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 1, links.Length );
+			Assert.AreEqual( "@hello", ( (Run)links[0].Inlines.First() ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
 		public void DifferentCasingInEntitiesIsHandledCorrectly()
 		{
 			// Arrange

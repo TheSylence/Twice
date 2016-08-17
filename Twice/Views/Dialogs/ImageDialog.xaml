@@ -43,7 +43,13 @@
 						   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 			<controls:FlipView.ItemTemplate>
 				<DataTemplate DataType="dialogs:ImageEntry">
-					<Image Source="{Binding ImageUrl}" />
+					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+						<MediaElement Source="{Binding ImageUrl}" Stretch="Uniform" LoadedBehavior="Play" UnloadedBehavior="Manual">
+							<i:Interaction.Behaviors>
+								<behaviors:MediaController IsAnimated="{Binding IsAnimated}" />
+							</i:Interaction.Behaviors>
+						</MediaElement>
+					</ScrollViewer>
 				</DataTemplate>
 			</controls:FlipView.ItemTemplate>
 		</controls:FlipView>
