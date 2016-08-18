@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [],
         "Changes": [
-            "Improved sensitivity for detection of a click in a column header"
+            "Improved sensitivity for detection of a click in a column header",
+            "Added information which of your accounts is followed by a user to the profile dialog"
         ],
         "Fixes": [],
         "Issues": []

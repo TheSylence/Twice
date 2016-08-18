@@ -718,7 +718,7 @@ namespace Twice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Follows you.
+        ///   Looks up a localized string similar to Follows {0}.
         /// </summary>
         public static string FollowsYou {
             get {

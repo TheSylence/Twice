@@ -484,7 +484,7 @@
     <value>Konto hinzufügen</value>
   </data>
   <data name="FollowsYou" xml:space="preserve">
-    <value>Folgt dir</value>
+    <value>Folgt {0}</value>
   </data>
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Bitte die Spalten auswählen, die für diesen Account erstellt werden sollen</value>

@@ -484,7 +484,7 @@
     <value>Add account</value>
   </data>
   <data name="FollowsYou" xml:space="preserve">
-    <value>Follows you</value>
+    <value>Follows {0}</value>
   </data>
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Select the columns you want to add for this account</value>
