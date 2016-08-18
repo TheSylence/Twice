@@ -3,9 +3,12 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+        "Videos and gifs can be played/paused and muted"
+        ],
         "Changes": [
             "Improved sensitivity for detection of a click in a column header",
+            "Audio for videos is now muted by default",
             "Added information which of your accounts is followed by a user to the profile dialog"
         ],
         "Fixes": [],

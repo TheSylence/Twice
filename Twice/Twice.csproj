@@ -236,6 +236,7 @@
     <Compile Include="Attributes\IconAttribute.cs" />
     <Compile Include="Attributes\LocalizeKeyAttribute.cs" />
     <Compile Include="Behaviors\AutoComplete.cs" />
+    <Compile Include="Behaviors\BehaviorBase.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
     <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableFlyout.cs" />

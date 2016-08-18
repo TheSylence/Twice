@@ -1033,6 +1033,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mute audio.
+        /// </summary>
+        public static string MuteAudio {
+            get {
+                return ResourceManager.GetString("MuteAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mute hashtag.
         /// </summary>
         public static string MuteHashtag {
@@ -1177,6 +1186,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play/Pause.
+        /// </summary>
+        public static string PlayPause {
+            get {
+                return ResourceManager.GetString("PlayPause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification popups.
         /// </summary>
         public static string PopupNotification {
@@ -1245,6 +1263,15 @@ namespace Twice.Resources {
         public static string RemoveQuote {
             get {
                 return ResourceManager.GetString("RemoveQuote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeat.
+        /// </summary>
+        public static string Repeat {
+            get {
+                return ResourceManager.GetString("Repeat", resourceCulture);
             }
         }
         
