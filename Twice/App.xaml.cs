@@ -177,13 +177,7 @@ namespace Twice
 		private void ConfigureLogging()
 		{
 			var config = new LoggingConfiguration();
-
-			var debuggerTarget = new DebuggerTarget
-			{
-				Layout = "[${level:uppercase=true}] ${logger}: ${message} ${exception}"
-			};
-			config.AddTarget( "debugger", debuggerTarget );
-
+			
 			var fileTarget = new FileTarget
 			{
 				Layout = "${longdate} [${level:uppercase=true}] ${logger}: ${message} ${exception}",
@@ -192,8 +186,18 @@ namespace Twice
 			};
 			config.AddTarget( "Logfile", fileTarget );
 
-			var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
-			config.LoggingRules.Add( debuggerRule );
+			// Don't bother with logging something to a debugger in release mode
+			if( Constants.Debug )
+			{
+				var debuggerTarget = new DebuggerTarget
+				{
+					Layout = "[${level:uppercase=true}] ${logger}: ${message} ${exception}"
+				};
+				config.AddTarget( "debugger", debuggerTarget );
+
+				var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
+				config.LoggingRules.Add( debuggerRule );
+			}
 
 			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
 			config.LoggingRules.Add( fileRule );
