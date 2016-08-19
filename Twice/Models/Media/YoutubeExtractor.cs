@@ -9,7 +9,7 @@ namespace Twice.Models.Media
 	{
 		public bool CanExtract( string originalUrl )
 		{
-			if( !originalUrl.ToLower().Contains( "youtube" ) )
+			if( !originalUrl.ToLower().Contains( "youtu" ) )
 			{
 				return false;
 			}
