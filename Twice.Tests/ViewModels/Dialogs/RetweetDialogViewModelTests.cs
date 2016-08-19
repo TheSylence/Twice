@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Twitter;
 using Twice.ViewModels;
 using Twice.ViewModels.Dialogs;
@@ -25,7 +25,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			c1.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
 			var c2 = new Mock<IContextEntry>();
 			c2.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
-			
+
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( new[]
 			{
@@ -182,10 +182,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 
 			var notifyHandle = new ManualResetEventSlim( false );
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Success ) ).Callback( () =>
-			  {
-				  notifyHandle.Set();
-			  } );
+			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Success ) ).Callback( () => { notifyHandle.Set(); } );
 
 			context.SetupGet( c => c.Notifier ).Returns( notifier.Object );
 
@@ -193,7 +190,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			status.ID = 123ul;
 			var statusVm = new StatusViewModel( status, context.Object, null, null )
 			{
-				Dispatcher = new SyncDispatcher(),
+				Dispatcher = new SyncDispatcher()
 			};
 
 			vm.ContextList = contextList.Object;
@@ -211,10 +208,10 @@ namespace Twice.Tests.ViewModels.Dialogs
 
 			// Act
 			await vm.OnLoad( null );
-			bool set = waitHandle.Wait( 1000 ) && notifyHandle.Wait(1000);
+			bool set = waitHandle.Wait( 1000 ) && notifyHandle.Wait( 1000 );
 
 			// Assert
-			Assert.IsTrue( set , "WaitHandle not set");
+			Assert.IsTrue( set, "WaitHandle not set" );
 			Assert.IsTrue( closed );
 			context.Verify( c => c.Twitter.Statuses.RetweetAsync( 123ul ), Times.Once() );
 		}

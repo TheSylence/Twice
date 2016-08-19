@@ -52,7 +52,7 @@ namespace Twice.Models.Twitter.Streaming
 		/// <summary>
 		///     Raw event type.
 		/// </summary>
-		public string EventStr { get; private set; }
+		public string EventStr { get; }
 
 		/// <summary>
 		///     The source user.

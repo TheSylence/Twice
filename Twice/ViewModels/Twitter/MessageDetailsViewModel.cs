@@ -27,7 +27,7 @@ namespace Twice.ViewModels.Twitter
 			Message.WasRead = true;
 			var userId = Message.Partner.Model.GetUserId();
 
-			var cacheMessages = ( await Cache.GetMessages() );
+			var cacheMessages = await Cache.GetMessages();
 			var messages = cacheMessages.Where( m => m.Recipient == userId || m.Sender == userId )
 				.Select( m => JsonConvert.DeserializeObject<DirectMessage>( m.Data ) )
 				.Where( m => m.GetMessageId() < Message.Id )
@@ -50,7 +50,7 @@ namespace Twice.ViewModels.Twitter
 		public bool IsLoadingPrevious
 		{
 			[DebuggerStepThrough] get { return _IsLoadingPrevious; }
-			set
+			private set
 			{
 				if( _IsLoadingPrevious == value )
 				{

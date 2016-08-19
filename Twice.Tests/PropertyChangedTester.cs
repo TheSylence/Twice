@@ -147,7 +147,7 @@ namespace Twice.Tests
 			throw new InvalidOperationException( $"{type.Name} - Don't known how to create non default value" );
 		}
 
-		public bool SkipInjectedProperties { get; set; } = true;
+		private bool SkipInjectedProperties { get; } = true;
 		private readonly List<string> Errors = new List<string>();
 		private readonly bool IncludeInherited;
 		private readonly INotifyPropertyChanged Object;

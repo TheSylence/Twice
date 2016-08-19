@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -19,7 +18,7 @@ namespace Twice.Tests.ViewModels.Columns
 		{
 			// Arrange
 			var column = new TestUserColumn();
-			
+
 			var s1 = new Status {UserID = 123};
 			var s2 = new Status {UserID = 222};
 
