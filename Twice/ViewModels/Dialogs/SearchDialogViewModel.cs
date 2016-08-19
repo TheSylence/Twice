@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -42,7 +43,8 @@ namespace Twice.ViewModels.Dialogs
 				case SearchMode.Statuses:
 				{
 					var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
-					var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) );
+					var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) ).ToArray();
+					await Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) );
 
 					await Dispatcher.RunAsync( () => SearchResults.AddRange( statuses ) );
 				}
