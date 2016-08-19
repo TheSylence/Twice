@@ -60,6 +60,31 @@ namespace Twice.ViewModels.Columns
 			SubTitle = "@" + Context.AccountName;
 		}
 
+		public virtual event EventHandler Changed;
+
+		public virtual event EventHandler Deleted;
+
+		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
+
+		public async Task Load()
+		{
+			Parser.StartStreaming();
+
+			await OnLoad().ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof( IsLoading ) );
+			} );
+		}
+
+		public void UpdateRelativeTimes()
+		{
+			foreach( var it in Items )
+			{
+				it.UpdateRelativeTime();
+			}
+		}
+
 		protected async Task AddItem( MessageViewModel message )
 		{
 			await Dispatcher.RunAsync( () =>
@@ -382,36 +407,15 @@ namespace Twice.ViewModels.Columns
 				return;
 			}
 
-			await Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() );
-			await Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() );
-		}
-
-		public virtual event EventHandler Changed;
-
-		public virtual event EventHandler Deleted;
-
-		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
-
-		public async Task Load()
-		{
-			Parser.StartStreaming();
-
-			await OnLoad().ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
-		public void UpdateRelativeTimes()
-		{
-			foreach( var it in Items )
-			{
-				it.UpdateRelativeTime();
-			}
+			await Task.WhenAll
+			(
+				Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() ),
+				Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() ) 
+			);
 		}
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
+		public ICache Cache { get; set; }
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -419,6 +423,9 @@ namespace Twice.ViewModels.Columns
 		public ColumnDefinition Definition { get; }
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		public abstract Icon Icon { get; }
 
@@ -438,6 +445,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public ICollection<ColumnItem> Items { get; }
+
+		public IStatusMuter Muter { get; set; }
 
 		public string SubTitle
 		{
@@ -487,13 +496,6 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		public ICache Cache { get; set; }
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
-
-		public IStatusMuter Muter { get; set; }
-
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
 		protected ulong SinceId { get; private set; } = ulong.MinValue;
 		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
@@ -504,22 +506,16 @@ namespace Twice.ViewModels.Columns
 		private readonly SmartCollection<ColumnItem> ItemCollection;
 		private readonly IStreamParser Parser;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ClearCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SubTitle;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Title;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private double _Width;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}
 }
