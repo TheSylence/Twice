@@ -1,10 +1,10 @@
 ﻿[
     {
-        "Version": "0.x.x",
-        "Date": "9999-12-31",
+        "Version": "0.7.1",
+        "Date": "2016-08-19",
         "Description": "",
         "NewFeatures": [
-        "Videos and gifs can be played/paused and muted"
+            "Videos and gifs can be paused and muted"
         ],
         "Changes": [
             "Improved sensitivity for detection of a click in a column header",
