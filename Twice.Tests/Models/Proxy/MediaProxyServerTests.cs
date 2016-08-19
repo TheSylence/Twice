@@ -17,8 +17,10 @@ namespace Twice.Tests.Models.Proxy
 		public async Task DataIsCorrectlyWrittenToResponse()
 		{
 			// Arrange
-			var responseMsg = new HttpResponseMessage( HttpStatusCode.OK );
-			responseMsg.Content = new ByteArrayContent( new byte[] {1, 2, 3, 4} );
+			var responseMsg = new HttpResponseMessage( HttpStatusCode.OK )
+			{
+				Content = new ByteArrayContent( new byte[] {1, 2, 3, 4} )
+			};
 			responseMsg.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue( "video/mp4" );
 			responseMsg.Content.Headers.ContentLength = 4;
 

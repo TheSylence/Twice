@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace Twice.Models.Configuration
 {
 	internal class MuteConfig

@@ -40,11 +40,11 @@
 					<Button Content="{lex:Loc Follow}" Command="{Binding FollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource InvertBoolToVisibleConv}}" />
 					<Button Content="{lex:Loc Unfollow}" Command="{Binding UnfollowUserCommand}" Visibility="{Binding Friendship.TargetRelationship.FollowedBy, Converter={StaticResource BoolToVisibleConv}}" />
 					<StackPanel Orientation="Horizontal" Visibility="{Binding Friendship.TargetRelationship.Following, Converter={StaticResource BoolToVisibleConv}}">
-						<TextBlock Text="{lex:Loc FollowsYou}" Margin="5" />
+						<TextBlock Text="{Binding Friendship.SourceRelationship.ScreenName, ConverterParameter={lex:Loc FollowsYou}, Converter={StaticResource LocConv}}" Margin="5" />
 					</StackPanel>
 				</StackPanel>
 
-				<StackPanel Grid.Column="1" Margin="5,0" HorizontalAlignment="Left">
+				<StackPanel Grid.Column="1" Margin="5" HorizontalAlignment="Left">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding User.Model.Name}" FontWeight="Bold" />
 						<TextBlock Text="{Binding User.Model.ScreenNameResponse, StringFormat=@{0}}" FontWeight="Thin" Margin="5,0" />

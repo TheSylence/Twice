@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using Anotar.NLog;
 using Ninject;
@@ -31,20 +30,20 @@ namespace Twice.Injections
 				var localAppDataFolder = Constants.IO.AppDataFolder;
 				var roamingAppDataFolder = Constants.IO.RoamingAppDataFolder;
 
-				if( Directory.Exists( localAppDataFolder ) )
+				if( System.IO.Directory.Exists( localAppDataFolder ) )
 				{
-					foreach( var file in Directory.GetFiles( localAppDataFolder ) )
+					foreach( var file in System.IO.Directory.GetFiles( localAppDataFolder ) )
 					{
-						var targetFile = Path.GetFileName( file );
+						var targetFile = System.IO.Path.GetFileName( file );
 						if( targetFile == null )
 						{
 							continue;
 						}
 
-						File.Move( file, Path.Combine( roamingAppDataFolder, targetFile ) );
+						System.IO.File.Move( file, System.IO.Path.Combine( roamingAppDataFolder, targetFile ) );
 					}
 
-					Directory.Delete( localAppDataFolder );
+					System.IO.Directory.Delete( localAppDataFolder );
 				}
 #endif
 			}

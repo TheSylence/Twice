@@ -12,6 +12,11 @@ namespace Twice.Models.Media
 	{
 		public bool CanExtract( string originalUrl )
 		{
+			if( !originalUrl.ToLower().Contains( "instagram" ) )
+			{
+				return false;
+			}
+
 			return Pattern.IsMatch( originalUrl );
 		}
 
@@ -36,7 +41,7 @@ namespace Twice.Models.Media
 			}
 		}
 
-		private static readonly Regex Pattern = new Regex( "(http(s)?:\\/\\/)?(www\\.)?instagram\\.com\\/p\\/[\\w-]+(\\/)?",
+		private static readonly Regex Pattern = new Regex( "(?:http(?:s)?:\\/\\/)?(?:www\\.)?instagram\\.com\\/p\\/[\\w-]+(?:\\/)?",
 			RegexOptions.Compiled );
 
 		[ExcludeFromCodeCoverage]

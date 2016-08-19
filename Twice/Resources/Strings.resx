@@ -484,7 +484,7 @@
     <value>Add account</value>
   </data>
   <data name="FollowsYou" xml:space="preserve">
-    <value>Follows you</value>
+    <value>Follows {0}</value>
   </data>
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Select the columns you want to add for this account</value>
@@ -701,5 +701,14 @@
   </data>
   <data name="ConfirmDeleteSchedule" xml:space="preserve">
     <value>Do you really want to delete this scheduled job?</value>
+  </data>
+  <data name="MuteAudio" xml:space="preserve">
+    <value>Mute audio</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Play/Pause</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Repeat</value>
   </data>
 </root>

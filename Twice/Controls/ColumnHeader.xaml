@@ -15,7 +15,7 @@
 	<UserControl.Resources>
 		<proxies:ColumnDataProxy Data="{Binding}" x:Key="ColumnDataProxy" />
 	</UserControl.Resources>
-	<Grid>
+	<Grid Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />

@@ -10,11 +10,6 @@ namespace Twice.Behaviors
 	[ExcludeFromCodeCoverage]
 	internal class ScrollToEnd : Behavior<ItemsControl>
 	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
-		}
-
 		private static void OnControllerChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{
 			var b = d as ScrollToEnd;

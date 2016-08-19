@@ -18,14 +18,7 @@ namespace Twice.ViewModels.Twitter
 			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps?.Replace( "_normal", "_bigger" );
 
 			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
-			if( Uri.IsWellFormedUriString( user.Url, UriKind.Absolute ) )
-			{
-				Url = new Uri( user.Url );
-			}
-			else
-			{
-				Url = user.GetUserUrl();
-			}
+			Url = Uri.IsWellFormedUriString( user.Url, UriKind.Absolute ) ? new Uri( user.Url ) : user.GetUserUrl();
 		}
 
 		public UserViewModel( UserEx user )

@@ -484,7 +484,7 @@
     <value>Konto hinzufügen</value>
   </data>
   <data name="FollowsYou" xml:space="preserve">
-    <value>Folgt dir</value>
+    <value>Folgt {0}</value>
   </data>
   <data name="SelectColumnsYouWantToAddForNewAccount" xml:space="preserve">
     <value>Bitte die Spalten auswählen, die für diesen Account erstellt werden sollen</value>
@@ -701,5 +701,14 @@
   </data>
   <data name="ConfirmDeleteSchedule" xml:space="preserve">
     <value>Soll diese geplante Aktion wirklich gelöscht werden?</value>
+  </data>
+  <data name="MuteAudio" xml:space="preserve">
+    <value>Audio stummschalten</value>
+  </data>
+  <data name="PlayPause" xml:space="preserve">
+    <value>Abspielen/Pause</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Wiederholen</value>
   </data>
 </root>

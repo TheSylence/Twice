@@ -39,7 +39,7 @@ namespace Twice.ViewModels.Settings
 
 		private static IEnumerable<ValueDescription<string>> ListDisplays()
 		{
-			return DisplayHelper.GetAvailableDisplays().Select( ( kvp ) => new ValueDescription<string>( kvp.Key, kvp.Value ) );
+			return DisplayHelper.GetAvailableDisplays().Select( kvp => new ValueDescription<string>( kvp.Key, kvp.Value ) );
 		}
 
 		public ICollection<ValueDescription<Corner>> AvailableCorners { get; }

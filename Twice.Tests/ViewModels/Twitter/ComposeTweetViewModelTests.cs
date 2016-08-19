@@ -541,7 +541,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				IsTweetScheduled = true,
 				ScheduleDate = DateTime.Now.AddDays( 10 ),
 				ScheduleTime = DateTime.Now.AddMinutes( 1 ),
-				Text = "Hello World",
+				Text = "Hello World"
 			};
 
 			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
