@@ -12,6 +12,11 @@ namespace Twice.Models.Media
 	{
 		public bool CanExtract( string originalUrl )
 		{
+			if( !originalUrl.ToLower().Contains( "instagram" ) )
+			{
+				return false;
+			}
+
 			return Pattern.IsMatch( originalUrl );
 		}
 

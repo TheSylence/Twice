@@ -7,13 +7,13 @@ namespace Twice.Models.Media
 {
 	internal class YoutubeExtractor : IMediaExtractor
 	{
-		private static Task<Uri> BuildThumbnailUri( string videoId )
-		{
-			return Task.FromResult( new Uri( $"http://img.youtube.com/vi/{videoId}/0.jpg" ) );
-		}
-
 		public bool CanExtract( string originalUrl )
 		{
+			if( !originalUrl.ToLower().Contains( "youtube" ) )
+			{
+				return false;
+			}
+
 			var uri = new Uri( originalUrl );
 			switch( uri.Host )
 			{
@@ -63,6 +63,11 @@ namespace Twice.Models.Media
 			}
 
 			return BuildThumbnailUri( videoId );
+		}
+
+		private static Task<Uri> BuildThumbnailUri( string videoId )
+		{
+			return Task.FromResult( new Uri( $"http://img.youtube.com/vi/{videoId}/0.jpg" ) );
 		}
 	}
 }
