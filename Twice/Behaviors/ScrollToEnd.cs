@@ -8,7 +8,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ScrollToEnd : Behavior<ItemsControl>
+	internal class ScrollToEnd : BehaviorBase<ItemsControl>
 	{
 		private static void OnControllerChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{

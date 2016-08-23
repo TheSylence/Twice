@@ -6,7 +6,7 @@ using System.Windows.Interactivity;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ManualToggleButton : Behavior<Button>
+	internal class ManualToggleButton : BehaviorBase<Button>
 	{
 		protected override void OnAttached()
 		{

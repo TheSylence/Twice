@@ -7,7 +7,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class CloseableView : Behavior<Window>
+	internal class CloseableView : BehaviorBase<Window>
 	{
 		protected override void OnAttached()
 		{

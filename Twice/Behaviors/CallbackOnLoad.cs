@@ -9,7 +9,7 @@ namespace Twice.Behaviors
 	///     Offers the ability to execute async code when a FrameworkElement has been loaded.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
-	internal class CallbackOnLoad : Behavior<FrameworkElement>
+	internal class CallbackOnLoad : BehaviorBase<FrameworkElement>
 	{
 		protected override void OnAttached()
 		{

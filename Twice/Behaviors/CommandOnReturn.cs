@@ -10,7 +10,7 @@ namespace Twice.Behaviors
 	///     Executes a command when the Return or Enter-Key was pressed in a TextBox
 	/// </summary>
 	[ExcludeFromCodeCoverage]
-	internal class CommandOnReturn : Behavior<TextBox>
+	internal class CommandOnReturn : BehaviorBase<TextBox>
 	{
 		protected override void OnAttached()
 		{

@@ -7,7 +7,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class CloseableFlyout : Behavior<Flyout>
+	internal class CloseableFlyout : BehaviorBase<Flyout>
 	{
 		protected override void OnAttached()
 		{

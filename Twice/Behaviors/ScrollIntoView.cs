@@ -6,7 +6,7 @@ using System.Windows.Interactivity;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ScrollIntoView : Behavior<Button>
+	internal class ScrollIntoView : BehaviorBase<Button>
 	{
 		protected override void OnAttached()
 		{

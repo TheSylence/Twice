@@ -8,7 +8,7 @@ using Twice.ViewModels.Columns;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ColumnHeaderHandler : Behavior<ColumnHeader>
+	internal class ColumnHeaderHandler : BehaviorBase<ColumnHeader>
 	{
 		protected override void OnAttached()
 		{
