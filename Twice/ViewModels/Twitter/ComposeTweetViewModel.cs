@@ -290,7 +290,8 @@ namespace Twice.ViewModels.Twitter
 			var currentContextName = Constants.Twitter.Mention + InReplyTo.Context.AccountName;
 			toAdd = toAdd.Where( m => m != currentContextName );
 
-			Text = string.Join( " ", toAdd );
+			Text = string.Join( " ", toAdd ) + " ";
+			ScrollToEnd?.Invoke( this, EventArgs.Empty );
 		}
 
 		private void ScheduleDeletion( List<Tuple<ulong, ulong>> tweetIds )
@@ -690,5 +691,6 @@ namespace Twice.ViewModels.Twitter
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
+		public event EventHandler ScrollToEnd;
 	}
 }

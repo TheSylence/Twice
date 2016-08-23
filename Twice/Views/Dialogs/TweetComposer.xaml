@@ -136,6 +136,7 @@
 						<i:Interaction.Behaviors>
 							<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
 							<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
+							<behaviors:CursorMovement Controller="{Binding}"/>
 						</i:Interaction.Behaviors>
 					</TextBox>
 				</Grid>
