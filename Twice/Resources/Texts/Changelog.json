@@ -6,7 +6,8 @@
         "NewFeatures": [],
         "Changes": [],
         "Fixes": [
-            "Media and quotes are now loaded in search results"
+            "Media and quotes are now loaded in search results",
+            "When replying to a tweet, the cursor is now placed after the usernames"
         ],
         "Issues": []
     },
