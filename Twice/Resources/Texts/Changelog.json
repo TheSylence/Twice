@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [],
-        "Changes": [],
+        "Changes": [
+            "Various UI tweaks throughout the app"
+        ],
         "Fixes": [
             "Media and quotes are now loaded in search results",
             "When replying to a tweet, the cursor is now placed after the usernames",

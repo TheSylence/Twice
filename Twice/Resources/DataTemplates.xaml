@@ -305,7 +305,7 @@
 
 								<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
 									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
-									Grid.Column="0" Grid.Row="0">
+									Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -329,7 +329,7 @@
 									</Grid>
 								</Button>
 
-								<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True">
+								<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True" HorizontalAlignment="Center">
 									<materialDesign:PopupBox.Style>
 										<Style TargetType="materialDesign:PopupBox">
 											<Style.Triggers>
@@ -373,7 +373,8 @@
 								</materialDesign:PopupBox>
 
 								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}"
-										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}">
+										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
+										HorizontalAlignment="Center">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
@@ -388,7 +389,8 @@
 									<materialDesign:PackIcon Kind="ReplyAll" />
 								</Button>
 
-								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}">
+								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
+										HorizontalAlignment="Center">
 									<Button.Style>
 										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
