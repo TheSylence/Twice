@@ -745,10 +745,11 @@
       <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Resources\Documentation\Mute.md" />
+    <EmbeddedResource Include="Resources\Documentation\Mute_en.md" />
     <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
     <EmbeddedResource Include="Resources\Texts\Changelog.json" />
     <EmbeddedResource Include="Resources\Data\PreviewStatuses.json" />
+    <EmbeddedResource Include="Resources\Documentation\Mute_de.md" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -18,8 +20,8 @@ namespace Twice.ViewModels.Settings
 		{
 			Entries = new ObservableCollection<MuteEntry>( config.Mute.Entries );
 
-			// TODO: Load for correct language
-			HelpDocument = Resource.AsString( "Twice.Resources.Documentation.Mute.md" );
+			string languageCode = CultureInfo.CreateSpecificCulture( config.General.Language ).TwoLetterISOLanguageName;
+			HelpDocument = Resource.AsStringUnChecked( $"Twice.Resources.Documentation.Mute_{languageCode}.md" );
 		}
 
 		private bool CanExecuteEditCommand()
