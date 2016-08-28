@@ -13,7 +13,7 @@
             "When replying to a tweet, the cursor is now placed after the usernames",
             "Compose dialog no longer closes when clicking outside and 'Stay Open' is checked",
             "Correct time zone is now used in tweet details",
-            ""
+            "Fixed rare case where statuses are displayed twice"
         ],
         "Issues": []
     },
