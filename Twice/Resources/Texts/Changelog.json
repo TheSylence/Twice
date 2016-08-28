@@ -23,7 +23,9 @@
             "Audio for videos is now muted by default",
             "Added information which of your accounts is followed by a user to the profile dialog"
         ],
-        "Fixes": [],
+        "Fixes": [
+            "Correct time zone is now used in tweet details"
+        ],
         "Issues": []
     },
     {

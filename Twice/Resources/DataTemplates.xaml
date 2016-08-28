@@ -516,7 +516,7 @@
 								<ContentControl>
 									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
 												Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-										<TextBlock Text="{Binding CreatedAt}" Foreground="{DynamicResource MaterialDesignBody}" />
+										<TextBlock Text="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
 									</Hyperlink>
 								</ContentControl>
 
