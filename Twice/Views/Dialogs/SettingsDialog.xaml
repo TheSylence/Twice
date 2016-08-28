@@ -16,7 +16,7 @@
 			xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource Locator}}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="700" Height="650">
+             d:DesignHeight="300" d:DesignWidth="300" Width="800" Height="650">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
@@ -30,6 +30,12 @@
 					<Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
 				</Style>
 			</xaml:Markdown.DocumentStyle>
+			<xaml:Markdown.Heading1Style>
+				<Style TargetType="Paragraph">
+					<Setter Property="FontWeight" Value="Bold" />
+					<Setter Property="TextDecorations" Value="Underline" />
+				</Style>
+			</xaml:Markdown.Heading1Style>
 		</xaml:Markdown>
 
 		<xaml:TextToFlowDocumentConverter x:Key="FlowDocConv" Markdown="{StaticResource Markdown}" />
@@ -222,7 +228,8 @@
 						</StackPanel>
 					</StackPanel>
 
-					<FlowDocumentScrollViewer Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
+					<FlowDocumentScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" 
+											  Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
 				</Grid>
 			</TabItem>
 			<TabItem Header="{lex:Loc Notifications}" DataContext="{Binding Notifications}">

@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [],
         "Changes": [
-            "Various UI tweaks throughout the app"
+            "Various UI tweaks throughout the app",
+            "Added documentation for different kind of mutes"
         ],
         "Fixes": [
             "Media and quotes are now loaded in search results",
