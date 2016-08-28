@@ -11,6 +11,7 @@
         "Fixes": [
             "Media and quotes are now loaded in search results",
             "When replying to a tweet, the cursor is now placed after the usernames",
+            "Compose dialog no longer closes when clicking outside and 'Stay Open' is checked",
             "Correct time zone is now used in tweet details"
         ],
         "Issues": []
