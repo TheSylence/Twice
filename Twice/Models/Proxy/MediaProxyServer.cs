@@ -19,13 +19,20 @@ namespace Twice.Models.Proxy
 
 		public void Start()
 		{
-			Http.AddPrefix( Prefix );
-			Http.Start();
+			try
+			{
+				Http.AddPrefix( Prefix );
+				Http.Start();
 
-			LogTo.Info( $"Starting proxy server on {Prefix}" );
-			IsRunning = true;
-			ServerThread = new Thread( RunThreaded );
-			ServerThread.Start();
+				LogTo.Info( $"Starting proxy server on {Prefix}" );
+				IsRunning = true;
+				ServerThread = new Thread( RunThreaded );
+				ServerThread.Start();
+			}
+			catch( HttpListenerException ex )
+			{
+				LogTo.ErrorException( "Failed to start media proxy server", ex );
+			}
 		}
 
 		public void Stop()
@@ -34,8 +41,15 @@ namespace Twice.Models.Proxy
 			IsRunning = false;
 			ServerThread?.Join();
 
-			Http.Stop();
-			Http.ClearPrefixes();
+			try
+			{
+				Http.Stop();
+				Http.ClearPrefixes();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Error while shutting down http listener", ex );
+			}
 		}
 
 		internal static Uri BuildUrl( string url )
