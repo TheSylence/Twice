@@ -7,7 +7,8 @@
         "Changes": [],
         "Fixes": [
             "Media and quotes are now loaded in search results",
-            "When replying to a tweet, the cursor is now placed after the usernames"
+            "When replying to a tweet, the cursor is now placed after the usernames",
+            "Correct time zone is now used in tweet details"
         ],
         "Issues": []
     },
@@ -23,9 +24,7 @@
             "Audio for videos is now muted by default",
             "Added information which of your accounts is followed by a user to the profile dialog"
         ],
-        "Fixes": [
-            "Correct time zone is now used in tweet details"
-        ],
+        "Fixes": [],
         "Issues": []
     },
     {
