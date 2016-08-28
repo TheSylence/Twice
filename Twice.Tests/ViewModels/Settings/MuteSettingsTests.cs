@@ -16,6 +16,7 @@ namespace Twice.Tests.ViewModels.Settings
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			config.SetupGet( c => c.Mute ).Returns( new MuteConfig() );
 			var vm = new MuteSettings( config.Object );
 			vm.AddCommand.Execute( null );
@@ -35,6 +36,7 @@ namespace Twice.Tests.ViewModels.Settings
 			muteCfg.Entries.Add( new MuteEntry { Filter = "test", EndDate = DateTime.Now } );
 
 			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			config.SetupGet( c => c.Mute ).Returns( muteCfg );
 
 			// Act
@@ -55,6 +57,7 @@ namespace Twice.Tests.ViewModels.Settings
 			muteCfg.Entries.Add( new MuteEntry { Filter = "test", EndDate = DateTime.Now } );
 
 			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			config.SetupGet( c => c.Mute ).Returns( muteCfg );
 
 			var vm = new MuteSettings( config.Object );
@@ -77,6 +80,7 @@ namespace Twice.Tests.ViewModels.Settings
 			muteCfg.Entries.Add( new MuteEntry { Filter = "test", EndDate = DateTime.Now } );
 
 			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			config.SetupGet( c => c.Mute ).Returns( muteCfg );
 
 			var vm = new MuteSettings( config.Object );
@@ -100,6 +104,7 @@ namespace Twice.Tests.ViewModels.Settings
 			muteCfg.Entries.Add( new MuteEntry { Filter = "test", EndDate = DateTime.Now } );
 
 			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
 			config.SetupGet( c => c.Mute ).Returns( muteCfg );
 
 			var vm = new MuteSettings( config.Object );
