@@ -47,7 +47,7 @@ namespace Twice.ViewModels.Twitter
 
 		public ulong ExtractQuotedTweetUrl()
 		{
-			var quoteUrl = Model?.Entities?.UrlEntities?.SingleOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
+			var quoteUrl = Model?.Entities?.UrlEntities?.FirstOrDefault( e => TwitterHelper.IsTweetUrl( e.ExpandedUrl ) );
 			return quoteUrl == null
 				? 0
 				: TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
