@@ -5,7 +5,7 @@ using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal interface IComposeTweetViewModel : ILoadCallback, IDialogViewModel
+	internal interface IComposeTweetViewModel : ILoadCallback, IDialogViewModel, ICursorController
 	{
 		void PreSelectAccounts( IEnumerable<ulong> accounts );
 

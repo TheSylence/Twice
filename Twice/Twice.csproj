@@ -245,6 +245,7 @@
     <Compile Include="Behaviors\ColumnScrollHandler.cs" />
     <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
+    <Compile Include="Behaviors\CursorMovement.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\MediaController.cs" />
     <Compile Include="Behaviors\PreviewResourceManipulator.cs" />
@@ -370,6 +371,7 @@
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
     <Compile Include="ViewModels\Columns\ScheduleColumn.cs" />
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
+    <Compile Include="ViewModels\ICursorController.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
@@ -743,10 +745,11 @@
       <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Resources\Documentation\Mute.md" />
+    <EmbeddedResource Include="Resources\Documentation\Mute_en.md" />
     <EmbeddedResource Include="Resources\Licenses\MahApps.Metro.txt" />
     <EmbeddedResource Include="Resources\Texts\Changelog.json" />
     <EmbeddedResource Include="Resources\Data\PreviewStatuses.json" />
+    <EmbeddedResource Include="Resources\Documentation\Mute_de.md" />
     <None Include="Twice.nuspec" />
   </ItemGroup>
   <ItemGroup>

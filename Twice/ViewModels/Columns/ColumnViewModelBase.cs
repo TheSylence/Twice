@@ -335,14 +335,14 @@ namespace Twice.ViewModels.Columns
 			// Statuses are ordered descending by id
 			for( int i = 0; i < ItemCollection.Count; ++i )
 			{
-				if( ItemCollection[i].Id < newId )
-				{
-					return i;
-				}
-
 				if( ItemCollection[i].Id == newId )
 				{
 					return -1;
+				}
+
+				if( ItemCollection[i].Id < newId )
+				{
+					return i;
 				}
 			}
 

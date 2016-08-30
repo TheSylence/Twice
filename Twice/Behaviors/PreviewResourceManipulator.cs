@@ -11,7 +11,7 @@ using Twice.Views;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class PreviewResourceManipulator : Behavior<StatusContainer>
+	internal class PreviewResourceManipulator : BehaviorBase<StatusContainer>
 	{
 		public PreviewResourceManipulator()
 		{

@@ -6,7 +6,7 @@ using System.Windows.Interactivity;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ContextMenuOpener : Behavior<Button>
+	internal class ContextMenuOpener : BehaviorBase<Button>
 	{
 		protected override void OnAttached()
 		{

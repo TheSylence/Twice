@@ -32,8 +32,10 @@ namespace Twice.Views.Dialogs
 			var mainWindowHeight = Application.Current.MainWindow.ActualHeight;
 			var posRelToMain = e.GetPosition( Application.Current.MainWindow );
 
-			bool close = CloseOnClick && ( pos.X < 0 || pos.Y < 0 || pos.X > ActualWidth || pos.Y > ActualHeight )
-			             && ( posRelToMain.X >= 0 || posRelToMain.Y >= 0 || posRelToMain.X <= mainWindowWidth || posRelToMain.Y <= mainWindowHeight );
+			bool insideMainWindow = posRelToMain.X >= 0 && posRelToMain.Y >= 0 && posRelToMain.X <= mainWindowWidth && posRelToMain.Y <= mainWindowHeight;
+			bool outsideWindow = pos.X < 0 || pos.Y < 0 || pos.X > ActualWidth || pos.Y > ActualHeight;
+
+			bool close = CloseOnClick && outsideWindow && insideMainWindow;
 			if( close )
 			{
 				WindowHelper.SetResult( this, false );

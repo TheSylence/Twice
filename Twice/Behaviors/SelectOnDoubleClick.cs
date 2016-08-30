@@ -8,7 +8,7 @@ namespace Twice.Behaviors
 	/// Selects the whole content of a TextBox when it was double clicked.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
-	internal class SelectOnDoubleClick : Behavior<TextBox>
+	internal class SelectOnDoubleClick : BehaviorBase<TextBox>
 	{
 		protected override void OnAttached()
 		{

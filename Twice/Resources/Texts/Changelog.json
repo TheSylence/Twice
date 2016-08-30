@@ -1,5 +1,24 @@
 ﻿[
     {
+        "Version": "0.7.2",
+        "Date": "2016-08-30",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [
+            "Various UI tweaks throughout the app",
+            "Added documentation for different kind of mutes"
+        ],
+        "Fixes": [
+            "Media and quotes are now loaded in search results",
+            "When replying to a tweet, the cursor is now placed after the usernames",
+            "Compose dialog no longer closes when clicking outside and 'Stay Open' is checked",
+            "Correct time zone is now used in tweet details",
+            "Fixed rare case where statuses are displayed twice",
+            "Fixed loading of statuses that contain more than one url that points to another status"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.7.1",
         "Date": "2016-08-19",
         "Description": "",

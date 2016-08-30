@@ -14,7 +14,7 @@ using WPFTextBoxAutoComplete;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class AutoComplete : Behavior<TextBox>
+	internal class AutoComplete : BehaviorBase<TextBox>
 	{
 		public AutoComplete()
 		{

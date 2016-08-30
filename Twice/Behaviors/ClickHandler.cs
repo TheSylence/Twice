@@ -10,7 +10,7 @@ namespace Twice.Behaviors
 	/// </summary>
 	/// <remarks>Essentially this is a nicer way than using EventToCommand for the click command</remarks>
 	[ExcludeFromCodeCoverage]
-	internal class ClickHandler : Behavior<FrameworkElement>
+	internal class ClickHandler : BehaviorBase<FrameworkElement>
 	{
 		protected override void OnAttached()
 		{

@@ -8,7 +8,7 @@ using Twice.ViewModels.Columns;
 namespace Twice.Behaviors
 {
 	[ExcludeFromCodeCoverage]
-	internal class ColumnScrollHandler : Behavior<ScrollViewer>
+	internal class ColumnScrollHandler : BehaviorBase<ScrollViewer>
 	{
 		protected override void OnAttached()
 		{
