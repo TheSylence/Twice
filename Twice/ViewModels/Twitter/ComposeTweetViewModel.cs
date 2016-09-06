@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
+using GongSolutions.Wpf.DragDrop;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Views.Services;
+using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -56,6 +60,53 @@ namespace Twice.ViewModels.Twitter
 				.Message( Strings.DateMustBeInTheFuture );
 		}
 
+		public event EventHandler ScrollToEnd;
+
+		public void DragOver( IDropInfo dropInfo )
+		{
+			var data = dropInfo.Data as DataObject;
+			if( data == null )
+			{
+				return;
+			}
+
+			if( data.ContainsImage() )
+			{
+				dropInfo.Effects = DragDropEffects.Copy;
+			}
+			if( data.ContainsFileDropList() )
+			{
+				var files = data.GetFileDropList();
+				var filesToAttach = new StringCollection();
+
+				foreach( var file in files )
+				{
+					if( TwitterHelper.IsSupportedImage( file ) )
+					{
+						filesToAttach.Add( file );
+					}
+				}
+
+				if( filesToAttach.Count > 0 )
+				{
+					data.SetFileDropList( filesToAttach );
+					dropInfo.Effects = DragDropEffects.Copy;
+				}
+			}
+			
+			DragDrop.DefaultDropHandler.DragOver( dropInfo );
+		}
+
+		public async void Drop( IDropInfo dropInfo )
+		{
+			string fileName = Path.GetTempFileName();
+
+			// TODO: Write image data to file
+			DragDrop.DefaultDropHandler.Drop( dropInfo );
+
+			await AttachImage( fileName );
+		}
+
 		public async Task OnLoad( object data )
 		{
 			foreach( var acc in Accounts )
@@ -92,7 +143,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
-			
+
 			ScheduleDate = DateTime.Now;
 			ScheduleTime = DateTime.Now;
 			DeletionDate = DateTime.Now;
@@ -115,6 +166,46 @@ namespace Twice.ViewModels.Twitter
 		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
+		}
+
+		private async Task AttachImage( string fileName )
+		{
+			IsSending = true;
+
+			if( Path.GetExtension( fileName ) == ".gif" )
+			{
+				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
+				{
+					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+					IsSending = false;
+					return;
+				}
+			}
+
+			byte[] mediaData = File.ReadAllBytes( fileName );
+			if( mediaData.Length > TwitterConfig.MaxImageSize )
+			{
+				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+				IsSending = false;
+				return;
+			}
+
+			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
+			var acc = usedAccounts.First();
+			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
+
+			string mediaType = TwitterHelper.GetMimeType( fileName );
+			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
+			{
+				IsSending = false;
+				return t.Result;
+			} );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				Medias.Add( media );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
+			} );
 		}
 
 		private bool CanExecuteRemoveQuoteCommand()
@@ -169,42 +260,7 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			IsSending = true;
-			
-			if( Path.GetExtension(selectedFile) == ".gif" )
-			{
-				if( GifValidator.Validate(selectedFile) != GifValidator.ValidationResult.Ok )
-				{
-					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-					IsSending = false;
-					return;
-				}
-			}
-
-			byte[] mediaData = File.ReadAllBytes( selectedFile );
-			if( mediaData.Length > TwitterConfig.MaxImageSize )
-			{
-				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-				IsSending = false;
-				return;
-			}
-
-			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
-			var acc = usedAccounts.First();
-			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
-
-			string mediaType = TwitterHelper.GetMimeType( selectedFile );
-			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
-			{
-				IsSending = false;
-				return t.Result;
-			} );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				Medias.Add( media );
-				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, selectedFile ) );
-			} );
+			await AttachImage( selectedFile );
 		}
 
 		private async void ExecuteDeleteMediaCommand( ulong id )
@@ -387,7 +443,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
-			ExecuteDeleteMediaCommand ) );
+			                                      ExecuteDeleteMediaCommand ) );
 
 		public DateTime DeletionDate
 		{
@@ -543,11 +599,11 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand RemoveQuoteCommand
 			=>
-				_RemoveQuoteCommand
-				?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
+			_RemoveQuoteCommand
+			?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
 
 		public ICommand RemoveReplyCommand => _RemoveReplyCommand ?? ( _RemoveReplyCommand = new RelayCommand(
-			ExecuteRemoveReplyCommand ) );
+			                                      ExecuteRemoveReplyCommand ) );
 
 		public DateTime ScheduleDate
 		{
@@ -584,7 +640,7 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand SendTweetCommand
 			=>
-				_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
+			_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
 			;
 
 		public bool StayOpen
@@ -691,6 +747,5 @@ namespace Twice.ViewModels.Twitter
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
-		public event EventHandler ScrollToEnd;
 	}
 }
