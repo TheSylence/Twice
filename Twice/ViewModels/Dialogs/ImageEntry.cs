@@ -10,15 +10,18 @@ namespace Twice.ViewModels.Dialogs
 			ImageUrl = url;
 			Title = title ?? url.AbsoluteUri;
 			IsAnimated = animated;
+			DisplayUrl = url;
 		}
 
 		public ImageEntry( StatusMediaViewModel media )
 		{
 			ImageUrl = media.Url;
 			IsAnimated = media.IsAnimated;
-			Title = ImageUrl.AbsoluteUri;
+			Title = media.DisplayUrl.AbsoluteUri;
+			DisplayUrl = media.DisplayUrl;
 		}
 
+		public Uri DisplayUrl { get; set; }
 		public Uri ImageUrl { get; set; }
 		public bool IsAnimated { get; set; }
 		public string Title { get; set; }
