@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [],
-        "Changes": [],
+        "Changes": [
+            "Reworked autocomplete functionality when entering hashtags and mentions"
+        ],
         "Fixes": [
             "Image viewer now uses correct url for images and videos"
         ],

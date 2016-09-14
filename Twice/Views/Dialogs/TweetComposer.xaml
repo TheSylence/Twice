@@ -134,8 +134,7 @@
 							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 						</TextBox.InputBindings>
 						<i:Interaction.Behaviors>
-							<behaviors:AutoComplete TriggerChar="@" ItemsSource="{Binding KnownUserNames}" />
-							<behaviors:AutoComplete TriggerChar="#" ItemsSource="{Binding KnownHashtags}" />
+							<behaviors:AutoComplete Users="{Binding KnownUserNames}" Hashtags="{Binding KnownHashtags}" />
 							<behaviors:CursorMovement Controller="{Binding}"/>
 						</i:Interaction.Behaviors>
 					</TextBox>

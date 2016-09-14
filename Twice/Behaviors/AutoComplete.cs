@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interactivity;
-using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
-using WPFTextBoxAutoComplete;
 
 namespace Twice.Behaviors
 {
@@ -18,67 +17,49 @@ namespace Twice.Behaviors
 	{
 		public AutoComplete()
 		{
-			AutoCompleteBox = new TextBox
-			{
-				HorizontalAlignment = HorizontalAlignment.Stretch,
-				VerticalAlignment = VerticalAlignment.Center
-			};
-			AutoCompleteBehavior.SetAutoCompleteStringComparison( AutoCompleteBox, StringComparison.OrdinalIgnoreCase );
+			AutoCompleteBox = new ListView();
 
 			AutoCompletePopup = new Popup
 			{
 				Child = AutoCompleteBox,
 				StaysOpen = false,
-				Placement = PlacementMode.Center
+				Placement = PlacementMode.Bottom,
+				MaxHeight = 300
 			};
 
-			AutoCompleteBox.PreviewKeyDown += AutoCompleteBox_PreviewKeyDown;
-			AutoCompleteBox.PreviewTextInput += AutoCompleteBox_PreviewTextInput;
+			ShadowAssist.SetShadowDepth( AutoCompletePopup, ShadowDepth.Depth3 );
+
+			AutoCompletePopup.Closed += AutoCompletePopup_Closed;
+		}
+
+		private enum SourceMode
+		{
+			None,
+			Hashtags,
+			Users
 		}
 
 		protected override void OnAttached()
 		{
-			base.OnAttached();
-
-			AutoCompleteBox.Background = (Brush)Application.Current.FindResource( "MaterialDesignPaper" );
-			AutoCompleteBox.Foreground = (Brush)Application.Current.FindResource( "MaterialDesignBody" );
-
 			AssociatedObject.PreviewTextInput += AssociatedObject_TextInput;
-			AutoCompletePopup.PlacementTarget = AssociatedObject;
+			AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
 
 			var binding = new Binding( "ActualWidth" )
 			{
 				Source = AssociatedObject
 			};
 			AutoCompletePopup.SetBinding( FrameworkElement.WidthProperty, binding );
+
+			AutoCompletePopup.PlacementTarget = AssociatedObject;
 		}
 
-		private static void OnItemsSourceChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		private void AssociatedObject_PreviewKeyDown( object sender, KeyEventArgs e )
 		{
-			var auto = d as AutoComplete;
-			auto?.OnItemsSourceChanged( e.NewValue as IEnumerable<string> );
-		}
-
-		private void AssociatedObject_TextInput( object sender, TextCompositionEventArgs e )
-		{
-			if( string.IsNullOrEmpty( TriggerChar ) )
+			if( !AutoCompletePopup.IsOpen )
 			{
 				return;
 			}
 
-			var text = e.Text;
-			if( text.StartsWith( TriggerChar, StringComparison.Ordinal ) )
-			{
-				AutoCompletePopup.IsOpen = true;
-				AutoCompleteBox.Focus();
-				HintAssist.SetHint( AutoCompleteBox, TriggerChar );
-				AutoCompleteBox.Text = string.Empty;
-				e.Handled = true;
-			}
-		}
-
-		private void AutoCompleteBox_PreviewKeyDown( object sender, KeyEventArgs e )
-		{
 			bool close = false;
 
 			switch( e.Key )
@@ -88,59 +69,150 @@ namespace Twice.Behaviors
 				break;
 
 			case Key.Return:
-				var insertText = $"{TriggerChar}{AutoCompleteBox.Text}";
+				var filter = FilterText ?? string.Empty;
+				var insertText = filter + FilteredItems.ElementAt( AutoCompleteBox.SelectedIndex ).Substring( filter.Length );
 				var currentCaret = AssociatedObject.CaretIndex;
 
-				AssociatedObject.Text = AssociatedObject.Text.Insert( currentCaret, insertText );
+				string newText = AssociatedObject.Text;
+				newText = newText.Remove( currentCaret - filter.Length, filter.Length );
+				currentCaret -= filter.Length;
+				newText = newText.Insert( currentCaret, insertText );
 
 				close = true;
 
+				AssociatedObject.Text = newText;
 				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
 				break;
+
+			case Key.Up:
+				AutoCompleteBox.SelectedIndex--;
+				e.Handled = true;
+				break;
+
+			case Key.Down:
+				AutoCompleteBox.SelectedIndex++;
+				e.Handled = true;
+				break;
+			}
+
+			int itemCount = FilteredItems.Count();
+			if( AutoCompleteBox.SelectedIndex < 0 )
+			{
+				AutoCompleteBox.SelectedIndex = itemCount - 1;
+			}
+			if( AutoCompleteBox.SelectedIndex >= itemCount )
+			{
+				AutoCompleteBox.SelectedIndex = 0;
 			}
 
 			if( close )
 			{
+				FilterText = string.Empty;
 				e.Handled = true;
 				AutoCompletePopup.IsOpen = false;
+				Mode = SourceMode.None;
 				AssociatedObject.Focus();
 			}
 		}
 
-		private void AutoCompleteBox_PreviewTextInput( object sender, TextCompositionEventArgs e )
+		private void AssociatedObject_TextInput( object sender, TextCompositionEventArgs e )
 		{
-			if( e.Text.Equals( TriggerChar ) )
+			var text = e.Text;
+			if( text.StartsWith( Constants.Twitter.HashTag, StringComparison.Ordinal ) )
 			{
-				e.Handled = true;
+				FilterText = string.Empty;
+				AutoCompletePopup.IsOpen = true;
+				AutoCompleteBox.ItemsSource = FilteredHashtags;
+				AutoCompleteBox.SelectedIndex = 0;
+				Mode = SourceMode.Hashtags;
+			}
+			else if( text.StartsWith( Constants.Twitter.Mention, StringComparison.Ordinal ) )
+			{
+				FilterText = string.Empty;
+				AutoCompletePopup.IsOpen = true;
+				AutoCompleteBox.ItemsSource = FilteredUsers;
+				AutoCompleteBox.SelectedIndex = 0;
+				Mode = SourceMode.Users;
+			}
+			else if( AutoCompletePopup.IsOpen )
+			{
+				string selectedText = (string)AutoCompleteBox.SelectedItem;
+
+				FilterText += text;
+
+				var items = FilteredItems.ToList();
+
+				Debug.WriteLine( string.Join( " - ", items ) );
+
+				AutoCompleteBox.ItemsSource = items;
+				AutoCompleteBox.SelectedIndex = items.IndexOf( selectedText );
+				if( AutoCompleteBox.SelectedIndex < 0 )
+				{
+					AutoCompleteBox.SelectedIndex = 0;
+				}
+				AutoCompleteBox.InvalidateProperty( ItemsControl.ItemsSourceProperty );
 			}
 		}
 
-		private void OnItemsSourceChanged( IEnumerable<string> items )
+		private void AutoCompletePopup_Closed( object sender, EventArgs e )
 		{
-			AutoCompleteBehavior.SetAutoCompleteItemsSource( AutoCompleteBox, items );
+			FilterText = string.Empty;
 		}
 
-		public static readonly DependencyProperty ItemsSourceProperty =
-			DependencyProperty.Register( "ItemsSource", typeof(IEnumerable<string>), typeof(AutoComplete),
-				new PropertyMetadata( new string[] {}, OnItemsSourceChanged ) );
-
-		public static readonly DependencyProperty TriggerCharProperty =
-			DependencyProperty.Register( "TriggerChar", typeof(string), typeof(AutoComplete),
-				new PropertyMetadata( string.Empty ) );
-
-		public IEnumerable<string> ItemsSource
+		public IEnumerable<string> Hashtags
 		{
 			get { return (IEnumerable<string>)GetValue( ItemsSourceProperty ); }
 			set { SetValue( ItemsSourceProperty, value ); }
 		}
 
-		public string TriggerChar
+		public IEnumerable<string> Users
 		{
-			get { return (string)GetValue( TriggerCharProperty ); }
-			set { SetValue( TriggerCharProperty, value ); }
+			get { return (IEnumerable<string>)GetValue( UsersProperty ); }
+			set { SetValue( UsersProperty, value ); }
 		}
 
-		private readonly TextBox AutoCompleteBox;
+		private IEnumerable<string> FilteredHashtags
+		{
+			get
+			{
+				var items = Hashtags?.Distinct() ?? Enumerable.Empty<string>();
+
+				if( !string.IsNullOrWhiteSpace( FilterText ) )
+				{
+					items = items.Where( it => it.StartsWith( FilterText, StringComparison.OrdinalIgnoreCase ) );
+				}
+
+				return items.OrderBy( x => x );
+			}
+		}
+
+		private IEnumerable<string> FilteredItems => Mode == SourceMode.Hashtags ? FilteredHashtags : FilteredUsers;
+
+		private IEnumerable<string> FilteredUsers
+		{
+			get
+			{
+				var items = Users?.Distinct() ?? Enumerable.Empty<string>();
+
+				if( !string.IsNullOrWhiteSpace( FilterText ) )
+				{
+					items = items.Where( it => it.StartsWith( FilterText, StringComparison.OrdinalIgnoreCase ) );
+				}
+
+				return items.OrderBy( x => x );
+			}
+		}
+
+		public static readonly DependencyProperty ItemsSourceProperty =
+			DependencyProperty.Register( "Hashtags", typeof( IEnumerable<string> ), typeof( AutoComplete ),
+				new PropertyMetadata( new string[] {} ) );
+
+		public static readonly DependencyProperty UsersProperty =
+			DependencyProperty.Register( "Users", typeof( IEnumerable<string> ), typeof( AutoComplete ), new PropertyMetadata( new string[] {} ) );
+
+		private readonly ListView AutoCompleteBox;
 		private readonly Popup AutoCompletePopup;
+		private string FilterText;
+		private SourceMode Mode = SourceMode.None;
 	}
 }
