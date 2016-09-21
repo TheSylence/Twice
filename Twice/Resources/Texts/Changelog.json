@@ -3,7 +3,9 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+            "Images can be attached to a tweet by dropping them onto the compose dialog"
+        ],
         "Changes": [
             "Reworked autocomplete functionality when entering hashtags and mentions"
         ],
