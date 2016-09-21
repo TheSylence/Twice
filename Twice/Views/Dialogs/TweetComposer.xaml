@@ -11,9 +11,12 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:proxies="clr-namespace:Twice.Views.Proxies" WindowStartupLocation="CenterOwner"
-             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared" AllowDrop="True"
+			 xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" FocusManager.FocusedElement="{Binding ElementName=txtInput}"
-             DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}" CloseOnClick="{Binding StayOpen, Converter={StaticResource InvertBoolConv}}"
+             DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
+			 dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
+			 CloseOnClick="{Binding StayOpen, Converter={StaticResource InvertBoolConv}}"
              mc:Ignorable="d" Style="{StaticResource DialogStyle}" Title="{lex:Loc ComposeTweet}"
              d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="550">
 	<controls:MetroWindow.Resources>
@@ -129,11 +132,12 @@
 					<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 							 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" VerticalScrollBarVisibility="Auto"
 							 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}" MaxHeight="80"
-							 VerticalAlignment="Top" x:Name="txtInput">
+							 VerticalAlignment="Top" x:Name="txtInput" AllowDrop="True">
 						<TextBox.InputBindings>
 							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 						</TextBox.InputBindings>
 						<i:Interaction.Behaviors>
+							<behaviors:ImageDataHandler AttachCommand="{Binding AttachImageCommand}" />
 							<behaviors:AutoComplete Users="{Binding KnownUserNames}" Hashtags="{Binding KnownHashtags}" />
 							<behaviors:CursorMovement Controller="{Binding}"/>
 						</i:Interaction.Behaviors>

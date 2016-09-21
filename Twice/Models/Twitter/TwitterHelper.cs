@@ -51,7 +51,9 @@ namespace Twice.Models.Twitter
 			{
 				{".png", "image/png"},
 				{".gif", "image/gif"},
-				{".bmp", "image/bmp"}
+				{".bmp", "image/bmp"},
+				{".jpg", "image/jpg"},
+				{".jpeg", "image/jpg"}
 			};
 
 			if( ext != null && lookup.ContainsKey( ext ) )
@@ -118,6 +120,13 @@ namespace Twice.Models.Twitter
 		{
 			string userName = user.GetScreenName();
 			return new Uri( string.Format( CultureInfo.InvariantCulture, "httsp://twitter.com/{0}", userName ) );
+		}
+
+		public static bool IsSupportedImage( string fileName )
+		{
+			var mime = GetMimeType( fileName );
+
+			return mime.StartsWith( "image/" );
 		}
 
 		public static bool IsTweetUrl( Uri uri )
