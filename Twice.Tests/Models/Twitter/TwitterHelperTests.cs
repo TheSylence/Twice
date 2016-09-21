@@ -15,7 +15,7 @@ namespace Twice.Tests.Models.Twitter
 			// Arrange
 			var testCases = new Dictionary<string, string>
 			{
-				{"file.jpg", "application/octet-stream"},
+				{"file.jpg", "image/jpg"},
 				{"file.png", "image/png"},
 				{"file.bmp", "image/bmp"},
 				{"file.gif", "image/gif"},

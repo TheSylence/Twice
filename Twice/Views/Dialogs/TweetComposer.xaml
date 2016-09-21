@@ -137,6 +137,7 @@
 							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 						</TextBox.InputBindings>
 						<i:Interaction.Behaviors>
+							<behaviors:ImageDataHandler AttachCommand="{Binding AttachImageCommand}" />
 							<behaviors:AutoComplete Users="{Binding KnownUserNames}" Hashtags="{Binding KnownHashtags}" />
 							<behaviors:CursorMovement Controller="{Binding}"/>
 						</i:Interaction.Behaviors>

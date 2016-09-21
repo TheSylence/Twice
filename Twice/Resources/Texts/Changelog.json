@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Images can be attached to a tweet by dropping them onto the compose dialog"
+            "Images can be attached to a tweet by dropping them onto the compose dialog",
+            "Images can be pasted from clipboard when composing a tweet"
         ],
         "Changes": [
             "Reworked autocomplete functionality when entering hashtags and mentions"

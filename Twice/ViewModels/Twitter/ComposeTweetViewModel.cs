@@ -176,7 +176,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
 		}
 
-		private async Task AttachImage( string fileName )
+		public async Task AttachImage( string fileName )
 		{
 			IsSending = true;
 
@@ -259,10 +259,16 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
-		private async void ExecuteAttachImageCommand()
+		private async void ExecuteAttachImageCommand( string fileName )
 		{
-			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
-			var selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
+			string selectedFile = fileName;
+
+			if( selectedFile == null )
+			{
+				var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
+				selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
+			}
+
 			if( selectedFile == null )
 			{
 				return;
@@ -428,7 +434,7 @@ namespace Twice.ViewModels.Twitter
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
-			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
+			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand<string>( ExecuteAttachImageCommand ) );
 
 		public bool ConfirmationRequired
 		{
@@ -729,7 +735,7 @@ namespace Twice.ViewModels.Twitter
 		private readonly List<Media> Medias = new List<Media>();
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AttachImageCommand;
+		private RelayCommand<string> _AttachImageCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _ConfirmationSet;
