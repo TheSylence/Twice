@@ -48,6 +48,7 @@ namespace Twice.ViewModels.Twitter
 
 		public override Entities Entities { get; }
 		public override ulong Id => Job.JobId;
+		public override ulong OrderId => Id;
 		public DateTime TargetDate => Job.TargetTime;
 		public override string Text => Job.Text;
 		public SchedulerJobType Type => Job.JobType;
@@ -55,7 +56,6 @@ namespace Twice.ViewModels.Twitter
 		private readonly IScheduler Scheduler;
 		private readonly IViewServiceRepository ViewServices;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteScheduleCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteScheduleCommand;
 	}
 }

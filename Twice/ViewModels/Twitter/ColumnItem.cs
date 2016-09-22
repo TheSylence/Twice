@@ -32,6 +32,7 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		public abstract ulong OrderId { get; }
 		public abstract string Text { get; }
 		public UserViewModel User { get; protected set; }
 

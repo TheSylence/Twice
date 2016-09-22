@@ -229,12 +229,12 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			var videos = (Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-				Enumerable.Empty<MediaEntity>()).ToArray();
+			var videos = ( Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+			               Enumerable.Empty<MediaEntity>() ).ToArray();
 
 			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>() )
-				.Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
-				?? Enumerable.Empty<MediaEntity>();
+				               .Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
+			               ?? Enumerable.Empty<MediaEntity>();
 
 			entities = entities.Concat( videos );
 
@@ -245,8 +245,8 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			var urls = Model.Entities?.UrlEntities?.Concat( Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>() )
-				.Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl )
-						?? Enumerable.Empty<string>();
+				           .Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl )
+			           ?? Enumerable.Empty<string>();
 
 			foreach( var url in urls )
 			{
@@ -275,12 +275,9 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
-
 		public ICommand BlockUserCommand
 			=>
-				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
+			_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
 			;
 
 		public IClipboard Clipboard
@@ -301,8 +298,8 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand DeleteStatusCommand
 			=>
-				_DeleteStatusCommand
-				?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
+			_DeleteStatusCommand
+			?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
 
 		public IDispatcher Dispatcher { get; set; }
 		public bool DisplayMedia => InlineMedias.Any();
@@ -325,71 +322,65 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public Status Model { get; }
+		public override ulong OrderId => OriginalStatus.GetStatusId();
+
 		public StatusViewModel QuotedTweet { get; set; }
 
 		public ICommand QuoteStatusCommand
 			=>
-				_QuoteStatusCommand
-				?? ( _QuoteStatusCommand = new RelayCommand( ExecuteQuoteStatusCommand ) );
+			_QuoteStatusCommand
+			?? ( _QuoteStatusCommand = new RelayCommand( ExecuteQuoteStatusCommand ) );
 
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
 
 		public ICommand ReplyToAllCommand
 			=>
-				_ReplyToAllCommand
-				?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
+			_ReplyToAllCommand
+			?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
 
 		public ICommand ReportSpamCommand
 			=>
-				_ReportSpamCommand
-				?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
+			_ReportSpamCommand
+			?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
 
 		public ICollection<UserViewModel> RetweetedBy { get; }
 
 		public ICommand RetweetStatusCommand
 			=>
-				_RetweetStatusCommand
-				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
+			_RetweetStatusCommand
+			?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
 		public override string Text => Model.Text;
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
 		private readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
 		private readonly IConfig Config;
 		private readonly Status OriginalStatus;
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _BlockUserCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
 
 		private IClipboard _Clipboard;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CopyTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CopyTweetUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _DeleteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _FavoriteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
 
 		private IMediaExtractorRepository _MediaExtractor;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _QuoteStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyToAllCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReportSpamCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReportSpamCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RetweetStatusCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
 	}
 }

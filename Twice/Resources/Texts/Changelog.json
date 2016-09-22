@@ -13,7 +13,8 @@
         ],
         "Fixes": [
             "Image viewer now uses correct url for images and videos",
-            "Fixed not all urls of extracted medias were removed from status text"
+            "Fixed not all urls of extracted medias were removed from status text",
+            "Retweeted statuses are now correctly sorted in timelines"
         ],
         "Issues": []
     },
