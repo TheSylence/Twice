@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
+using Twice.Models.Media;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
@@ -13,7 +14,7 @@ namespace Twice.Injections
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		///     Loads the module into the kernel.
+		/// Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
@@ -26,6 +27,7 @@ namespace Twice.Injections
 			Bind<IColumnDefinitionList>().ToProvider<ColumnDefinitionListProvider>().InSingletonScope();
 			Bind<ITwitterConfiguration>().To<TwitterConfiguration>().InSingletonScope();
 			Bind<IScheduler>().ToProvider<SchedulerProvider>().InSingletonScope();
+			Bind<IMediaExtractorRepository>().ToConstant( MediaExtractorRepository.Default );
 		}
 	}
 }

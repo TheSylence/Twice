@@ -12,7 +12,8 @@
             "Reworked autocomplete functionality when entering hashtags and mentions"
         ],
         "Fixes": [
-            "Image viewer now uses correct url for images and videos"
+            "Image viewer now uses correct url for images and videos",
+            "Fixed not all urls of extracted medias were removed from status text"
         ],
         "Issues": []
     },

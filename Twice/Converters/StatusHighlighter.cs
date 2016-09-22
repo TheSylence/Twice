@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
+using Twice.Models.Media;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
@@ -22,13 +23,59 @@ namespace Twice.Converters
 	/// </summary>
 	internal class StatusHighlighter : IValueConverter
 	{
-		public StatusHighlighter( IConfig config )
+		public StatusHighlighter( IConfig config, IMediaExtractorRepository mediaExtractorRepo = null )
 		{
 			OverrideConfig = config;
+			OverrideExtractorRepo = mediaExtractorRepo;
 		}
 
 		public StatusHighlighter()
 		{
+		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value produced by the binding source.</param>
+		/// <param name="targetType">The type of the binding target property.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			if( value == null )
+			{
+				return null;
+			}
+
+			var tweet = value as IHighlightable;
+			if( tweet == null )
+			{
+				if( Debugger.IsAttached )
+				{
+					Debugger.Break();
+				}
+				throw new ArgumentException( @"Value is not an IHighlightable", nameof( value ) );
+			}
+
+			return GenerateInlines( tweet ).ToArray();
+		}
+
+		/// <summary>
+		///     Converts a value.
+		/// </summary>
+		/// <param name="value">The value that is produced by the binding target.</param>
+		/// <param name="targetType">The type to convert to.</param>
+		/// <param name="parameter">The converter parameter to use.</param>
+		/// <param name="culture">The culture to use in the converter.</param>
+		/// <returns>
+		///     A converted value. If the method returns null, the valid null value is used.
+		/// </returns>
+		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+		{
+			throw new NotSupportedException();
 		}
 
 		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
@@ -139,7 +186,7 @@ namespace Twice.Converters
 
 			var ordered = allEntities.OrderBy( e => e.Start ).ToList();
 
-			for( int i=ordered.Count-1; i>0; --i )
+			for( int i = ordered.Count - 1; i > 0; --i )
 			{
 				var current = ordered[i];
 				var next = ordered[i - 1];
@@ -230,7 +277,10 @@ namespace Twice.Converters
 						else
 						{
 							UrlEntity urlEntity = entity as UrlEntity;
-							if( !TwitterHelper.IsTweetUrl( urlEntity.ExpandedUrl ) )
+							var url = urlEntity.ExpandedUrl;
+
+							if( !TwitterHelper.IsTweetUrl( url ) &&
+							    ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
 							{
 								yield return GenerateLink( urlEntity );
 							}
@@ -323,55 +373,11 @@ namespace Twice.Converters
 			return text;
 		}
 
-		/// <summary>
-		///     Converts a value.
-		/// </summary>
-		/// <param name="value">The value produced by the binding source.</param>
-		/// <param name="targetType">The type of the binding target property.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
-		{
-			if( value == null )
-			{
-				return null;
-			}
-
-			var tweet = value as IHighlightable;
-			if( tweet == null )
-			{
-				if( Debugger.IsAttached )
-				{
-					Debugger.Break();
-				}
-				throw new ArgumentException( @"Value is not an IHighlightable", nameof( value ) );
-			}
-
-			return GenerateInlines( tweet ).ToArray();
-		}
-
-		/// <summary>
-		///     Converts a value.
-		/// </summary>
-		/// <param name="value">The value that is produced by the binding target.</param>
-		/// <param name="targetType">The type to convert to.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
-		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
-		/// </returns>
-		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
-		{
-			throw new NotSupportedException();
-		}
-
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
+		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 		private const string AlternativeAtSign = "\uFF20";
 		private const string AlternativeHashtagSign = "\uFF03";
 		private static IConfig OverrideConfig;
-
-		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
+		private static IMediaExtractorRepository OverrideExtractorRepo;
 	}
 }
