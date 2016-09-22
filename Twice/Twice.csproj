@@ -290,6 +290,7 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Media\GenericMediaExtractor.cs" />
     <Compile Include="Models\Media\TwitterVideoExtractor.cs" />
     <Compile Include="Models\Proxy\HttpListenerWrapper.cs" />
     <Compile Include="Models\Proxy\HttpRequestImpl.cs" />
