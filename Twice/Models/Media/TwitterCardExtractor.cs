@@ -13,7 +13,7 @@ namespace Twice.Models.Media
 		{
 			using( var client = new HttpClient() )
 			{
-				var response = await client.GetAsync( "http://www.golem.de/news/notebook-dell-verpasst-dem-xps-13-einen-groesseren-akku-1609-123274.html" );
+				var response = await client.GetAsync( url );
 				var str = await response.Content.ReadAsStringAsync();
 
 				return ExtractCard( str );

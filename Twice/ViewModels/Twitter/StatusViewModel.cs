@@ -55,7 +55,7 @@ namespace Twice.ViewModels.Twitter
 
 		public async Task LoadDataAsync()
 		{
-			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias() );
+			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias(), LoadCard() );
 		}
 
 		public async Task LoadRetweets()
@@ -222,6 +222,36 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
 
+		private async Task LoadCard()
+		{
+			if( Entities?.UrlEntities == null )
+			{
+				return;
+			}
+
+			TwitterCard card = null;
+
+			foreach( var url in Entities.UrlEntities.Select( u => u.ExpandedUrl ) )
+			{
+				card = await CardExtractor.ExtractCard( new Uri( url ) );
+				if( card != null )
+				{
+					break;
+				}
+			}
+
+			if( card != null )
+			{
+				Card = new CardViewModel( card );
+				HasCard = Card.Card.IsValid;
+			}
+			else
+			{
+				Card = null;
+				HasCard = false;
+			}
+		}
+
 		private async Task LoadInlineMedias()
 		{
 			if( Config?.Visual?.InlineMedia != true )
@@ -280,6 +310,27 @@ namespace Twice.ViewModels.Twitter
 			_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
 			;
 
+		public CardViewModel Card
+		{
+			[DebuggerStepThrough] get { return _Card; }
+			set
+			{
+				if( _Card == value )
+				{
+					return;
+				}
+
+				_Card = value;
+				RaisePropertyChanged( nameof( Card ) );
+			}
+		}
+
+		public ITwitterCardExtractor CardExtractor
+		{
+			get { return _CardExtractor ?? DefaultCardExtractor; }
+			set { _CardExtractor = value; }
+		}
+
 		public IClipboard Clipboard
 		{
 			get { return _Clipboard ?? DefaultClipboard; }
@@ -302,17 +353,39 @@ namespace Twice.ViewModels.Twitter
 			?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
 
 		public IDispatcher Dispatcher { get; set; }
+
 		public bool DisplayMedia => InlineMedias.Any();
+
 		public override Entities Entities => Model.Entities;
 
 		public ICommand FavoriteStatusCommand
 			=> _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );
 
+		public bool HasCard
+		{
+			[DebuggerStepThrough] get { return _HasCard; }
+			private set
+			{
+				if( _HasCard == value )
+				{
+					return;
+				}
+
+				_HasCard = value;
+				RaisePropertyChanged( nameof( HasCard ) );
+			}
+		}
+
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
+
 		public override ulong Id => Model.StatusID;
+
 		public IEnumerable<StatusMediaViewModel> InlineMedias => _InlineMedias;
+
 		public bool IsFavorited => Model.Favorited;
+
 		public bool IsReply => Model.InReplyToStatusID != 0;
+
 		public bool IsRetweeted => Model.Retweeted;
 
 		public IMediaExtractorRepository MediaExtractor
@@ -322,6 +395,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public Status Model { get; }
+
 		public override ulong OrderId => OriginalStatus.GetStatusId();
 
 		public StatusViewModel QuotedTweet { get; set; }
@@ -351,15 +425,28 @@ namespace Twice.ViewModels.Twitter
 			?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
+
 		public override string Text => Model.Text;
+
+		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
+
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+
 		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
+
 		private readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
+
 		private readonly IConfig Config;
+
 		private readonly Status OriginalStatus;
+
 		private readonly IViewServiceRepository ViewServiceRepository;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
+
+		private ITwitterCardExtractor _CardExtractor;
 
 		private IClipboard _Clipboard;
 
@@ -370,6 +457,8 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
 
 		private IMediaExtractorRepository _MediaExtractor;
 

@@ -379,7 +379,9 @@
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
     <Compile Include="ViewModels\ICursorController.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
+    <Compile Include="ViewModels\Twitter\CardViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
+    <Compile Include="Views\CardTemplateSelector.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />

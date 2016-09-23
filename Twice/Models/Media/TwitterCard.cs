@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Twice.Models.Media
 {
@@ -49,6 +50,11 @@ namespace Twice.Models.Media
 			{
 				ImageAlt = temp;
 			}
+
+			if( meta.TryGetValue( "twitter:url", out temp ) )
+			{
+				Url = new Uri( temp );
+			}
 		}
 
 		public string Description { get; }
@@ -63,5 +69,6 @@ namespace Twice.Models.Media
 		public string Site { get; }
 		public string Title { get; }
 		public CardType Type { get; }
+		public Uri Url { get; }
 	}
 }
