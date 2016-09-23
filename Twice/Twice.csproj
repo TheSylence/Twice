@@ -81,6 +81,10 @@
       <HintPath>..\packages\gong-wpf-dragdrop.1.0.0\lib\net46\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\squirrel.windows.1.4.4\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -290,6 +294,10 @@
     <Compile Include="Models\Configuration\Corner.cs" />
     <Compile Include="Models\Configuration\IConfig.cs" />
     <Compile Include="Models\Configuration\NotificationConfig.cs" />
+    <Compile Include="Models\Media\CardType.cs" />
+    <Compile Include="Models\Media\ITwitterCardExtractor.cs" />
+    <Compile Include="Models\Media\TwitterCard.cs" />
+    <Compile Include="Models\Media\TwitterCardExtractor.cs" />
     <Compile Include="Models\Media\GenericMediaExtractor.cs" />
     <Compile Include="Models\Media\TwitterVideoExtractor.cs" />
     <Compile Include="Models\Proxy\HttpListenerWrapper.cs" />
@@ -371,7 +379,9 @@
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
     <Compile Include="ViewModels\ICursorController.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
+    <Compile Include="ViewModels\Twitter\CardViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
+    <Compile Include="Views\CardTemplateSelector.cs" />
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />
