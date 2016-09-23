@@ -15,7 +15,8 @@
         "Fixes": [
             "Image viewer now uses correct url for images and videos",
             "Fixed not all urls of extracted medias were removed from status text",
-            "Retweeted statuses are now correctly sorted in timelines"
+            "Retweeted statuses are now correctly sorted in timelines",
+            "Removed focus lines around controls in some cases"
         ],
         "Issues": []
     },
