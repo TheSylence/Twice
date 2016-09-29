@@ -23,6 +23,11 @@ namespace Twice.Models.Media
 		private TwitterCard ExtractCard( string http )
 		{
 			int headEnd = http.IndexOf( "</head>", StringComparison.OrdinalIgnoreCase );
+			if( headEnd == -1 )
+			{
+				return null;
+			}
+
 			string html = http.Substring( 0, headEnd ) + "</html>";
 			html = WebUtility.HtmlDecode( html );
 
