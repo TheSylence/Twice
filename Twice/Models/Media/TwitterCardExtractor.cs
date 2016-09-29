@@ -45,7 +45,10 @@ namespace Twice.Models.Media
 
 				if( name?.StartsWith( "twitter:", StringComparison.OrdinalIgnoreCase ) == true && value != null )
 				{
-					twitterMetaInfo.Add( name, value );
+					if( !twitterMetaInfo.ContainsKey( name ) )
+					{
+						twitterMetaInfo.Add( name, value );
+					}
 				}
 			}
 
