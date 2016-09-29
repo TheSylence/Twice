@@ -7,6 +7,8 @@ namespace Twice.Models.Media
 	{
 		void AddExtractor( IMediaExtractor extractor );
 
+		bool CanExtract( string url );
+
 		Task<Uri> ExtractMedia( string originalUrl );
 	}
 }

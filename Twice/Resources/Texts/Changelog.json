@@ -1,5 +1,26 @@
 ﻿[
     {
+        "Version": "0.7.3",
+        "Date": "2016-09-29",
+        "Description": "",
+        "NewFeatures": [
+            "Images can be attached to a tweet by dropping them onto the compose dialog",
+            "Images can be pasted from clipboard when composing a tweet",
+            "Urls that point to images are now directly displayed in statuses",
+            "Cards for weblinks are now displayed in status"
+        ],
+        "Changes": [
+            "Reworked autocomplete functionality when entering hashtags and mentions"
+        ],
+        "Fixes": [
+            "Image viewer now uses correct url for images and videos",
+            "Fixed not all urls of extracted medias were removed from status text",
+            "Retweeted statuses are now correctly sorted in timelines",
+            "Removed focus lines around controls in some cases"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.7.2",
         "Date": "2016-08-30",
         "Description": "",

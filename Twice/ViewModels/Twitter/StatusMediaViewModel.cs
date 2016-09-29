@@ -19,6 +19,7 @@ namespace Twice.ViewModels.Twitter
 		public StatusMediaViewModel( Uri url )
 		{
 			Url = MediaProxyServer.BuildUrl( url );
+			DisplayUrl = url;
 			Type = MediaType.Image;
 		}
 
@@ -30,11 +31,13 @@ namespace Twice.ViewModels.Twitter
 			case "animated_gif":
 			case "video":
 				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url );
+				DisplayUrl = new Uri( entity.VideoInfo.Variants[0].Url );
 				Type = MediaType.Animated;
 				break;
 
 			default:
 				Url = new Uri( entity.MediaUrl );
+				DisplayUrl = Url;
 				Type = MediaType.Image;
 				break;
 			}
@@ -45,6 +48,21 @@ namespace Twice.ViewModels.Twitter
 		private void ExecuteOpenImageCommand()
 		{
 			OpenRequested?.Invoke( this, EventArgs.Empty );
+		}
+
+		public Uri DisplayUrl
+		{
+			[DebuggerStepThrough] get { return _DisplayUrl; }
+			set
+			{
+				if( _DisplayUrl == value )
+				{
+					return;
+				}
+
+				_DisplayUrl = value;
+				RaisePropertyChanged( nameof( DisplayUrl ) );
+			}
 		}
 
 		public bool IsAnimated => Type == MediaType.Animated;
@@ -95,11 +113,13 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand(
-			ExecuteOpenImageCommand ) );
+			                                    ExecuteOpenImageCommand ) );
 
 		public Uri Url { get; }
 
 		private readonly MediaType Type;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Uri _DisplayUrl;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsMuted = true;
 

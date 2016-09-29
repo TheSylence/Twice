@@ -10,6 +10,52 @@
                     xmlns:behaviors="clr-namespace:Twice.Behaviors"
                     xmlns:views="clr-namespace:Twice.Views"
                     xmlns:scheduling="clr-namespace:Twice.Models.Scheduling">
+	<views:CardTemplateSelector x:Key="CardSelector">
+		<views:CardTemplateSelector.SummaryTemplate>
+			<DataTemplate DataType="twitter:CardViewModel">
+				<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+					<i:Interaction.Behaviors>
+						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
+										CommandParameter="{Binding Card.Url}" />
+					</i:Interaction.Behaviors>
+
+					<DockPanel LastChildFill="True">
+						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
+							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,0,3,0" />
+
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
+							<TextBlock Text="{Binding Card.Description}" TextWrapping="Wrap" />
+							<TextBlock Text="{Binding DisplayUrl}" FontWeight="Light" />
+						</StackPanel>
+					</DockPanel>
+				</materialDesign:Card>
+			</DataTemplate>
+		</views:CardTemplateSelector.SummaryTemplate>
+		<views:CardTemplateSelector.SummaryImageTemplate>
+			<DataTemplate DataType="twitter:CardViewModel">
+				<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
+                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+					<i:Interaction.Behaviors>
+						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
+										CommandParameter="{Binding Card.Url}" />
+					</i:Interaction.Behaviors>
+
+					<DockPanel LastChildFill="True">
+						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
+							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,0,3,0" />
+
+						<StackPanel Orientation="Vertical">
+							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
+							<TextBlock Text="{Binding Card.Description}" TextWrapping="Wrap" />
+							<TextBlock Text="{Binding DisplayUrl}" FontWeight="Light" />
+						</StackPanel>
+					</DockPanel>
+				</materialDesign:Card>
+			</DataTemplate>
+		</views:CardTemplateSelector.SummaryImageTemplate>
+	</views:CardTemplateSelector>
 	<DataTemplate x:Key="ScheduleViewTemplate" DataType="twitter:ScheduleItem">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<StackPanel Orientation="Vertical">
@@ -20,10 +66,10 @@
 							<scheduling:SchedulerJobType x:Key="DeleteStatus">DeleteStatus</scheduling:SchedulerJobType>
 						</StackPanel.Resources>
 						<materialDesign:PackIcon Kind="Alarm" Foreground="{DynamicResource SecondaryAccentBrush}" />
-						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc TweetScheduledFor}}" 
+						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc TweetScheduledFor}}"
 								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource CreateStatus}}"
 								   Margin="5,0" />
-						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc DeletionScheduledFor}}" 
+						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc DeletionScheduledFor}}"
 								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource DeleteStatus}}"
 								   Margin="5,0" />
 					</StackPanel>
@@ -48,7 +94,6 @@
 									<ColumnDefinition />
 									<ColumnDefinition />
 								</Grid.ColumnDefinitions>
-
 							</Grid>
 						</StackPanel>
 
@@ -459,6 +504,9 @@
 								<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
 											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
 
+								<ContentControl Content="{Binding Card}" Visibility="{Binding HasCard, Converter={StaticResource BoolToVisibleConv}}"
+												ContentTemplateSelector="{StaticResource CardSelector}" />
+
 								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
 												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
 									<controls1:FlipView.ItemTemplate>
@@ -483,10 +531,10 @@
 															<Setter Property="Margin" Value="5" />
 														</Style>
 													</StackPanel.Resources>
-													
+
 													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 														<materialDesign:PackIcon Kind="Repeat" />
-														
+
 														<materialDesign:ToggleButtonAssist.OnContent>
 															<materialDesign:PackIcon Kind="RepeatOff" />
 														</materialDesign:ToggleButtonAssist.OnContent>
@@ -494,7 +542,7 @@
 
 													<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 														<materialDesign:PackIcon Kind="Play" />
-														
+
 														<materialDesign:ToggleButtonAssist.OnContent>
 															<materialDesign:PackIcon Kind="Pause" />
 														</materialDesign:ToggleButtonAssist.OnContent>

@@ -12,6 +12,11 @@ namespace Twice.Models.Media
 			Extractors.Add( extractor );
 		}
 
+		public bool CanExtract( string url )
+		{
+			return Extractors.Any( e => e.CanExtract( url ) );
+		}
+
 		public async Task<Uri> ExtractMedia( string originalUrl )
 		{
 			var extractor = Extractors.FirstOrDefault( e => e.CanExtract( originalUrl ) );

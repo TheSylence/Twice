@@ -1,19 +1,22 @@
-﻿using System;
+﻿using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using GongSolutions.Wpf.DragDrop;
+using LinqToTwitter;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Views.Services;
+using DragDrop = GongSolutions.Wpf.DragDrop.DragDrop;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -56,6 +59,62 @@ namespace Twice.ViewModels.Twitter
 				.Message( Strings.DateMustBeInTheFuture );
 		}
 
+		public event EventHandler ScrollToEnd;
+
+		public void DragOver( IDropInfo dropInfo )
+		{
+			var data = dropInfo.Data as DataObject;
+			if( data == null )
+			{
+				return;
+			}
+
+			if( data.ContainsFileDropList() )
+			{
+				var files = data.GetFileDropList();
+				bool canAttach = false;
+
+				foreach( var file in files )
+				{
+					if( TwitterHelper.IsSupportedImage( file ) )
+					{
+						canAttach = true;
+					}
+				}
+
+				if( canAttach )
+				{
+					dropInfo.Effects = DragDropEffects.Copy;
+				}
+			}
+
+			DragDrop.DefaultDropHandler.DragOver( dropInfo );
+		}
+
+		public async void Drop( IDropInfo dropInfo )
+		{
+			var data = dropInfo.Data as DataObject;
+			if( data == null )
+			{
+				return;
+			}
+
+			if( data.ContainsFileDropList() )
+			{
+				var files = data.GetFileDropList();
+
+				foreach( var file in files )
+				{
+					if( TwitterHelper.IsSupportedImage( file ) )
+					{
+						await AttachImage( file );
+					}
+				}
+			}
+
+			DragDrop.DefaultDropHandler.Drop( dropInfo );
+		}
+
 		public async Task OnLoad( object data )
 		{
 			foreach( var acc in Accounts )
@@ -92,7 +151,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( KnownUserNames ) );
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
-			
+
 			ScheduleDate = DateTime.Now;
 			ScheduleTime = DateTime.Now;
 			DeletionDate = DateTime.Now;
@@ -115,6 +174,46 @@ namespace Twice.ViewModels.Twitter
 		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
+		}
+
+		public async Task AttachImage( string fileName )
+		{
+			IsSending = true;
+
+			if( Path.GetExtension( fileName ) == ".gif" )
+			{
+				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
+				{
+					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+					IsSending = false;
+					return;
+				}
+			}
+
+			byte[] mediaData = File.ReadAllBytes( fileName );
+			if( mediaData.Length > TwitterConfig.MaxImageSize )
+			{
+				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+				IsSending = false;
+				return;
+			}
+
+			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
+			var acc = usedAccounts.First();
+			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
+
+			string mediaType = TwitterHelper.GetMimeType( fileName );
+			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
+			{
+				IsSending = false;
+				return t.Result;
+			} );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				Medias.Add( media );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
+			} );
 		}
 
 		private bool CanExecuteRemoveQuoteCommand()
@@ -160,51 +259,22 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
-		private async void ExecuteAttachImageCommand()
+		private async void ExecuteAttachImageCommand( string fileName )
 		{
-			var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
-			var selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
+			string selectedFile = fileName;
+
+			if( selectedFile == null )
+			{
+				var fsa = new FileServiceArgs( "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif" );
+				selectedFile = await ViewServiceRepository.OpenFile( fsa ).ConfigureAwait( false );
+			}
+
 			if( selectedFile == null )
 			{
 				return;
 			}
 
-			IsSending = true;
-			
-			if( Path.GetExtension(selectedFile) == ".gif" )
-			{
-				if( GifValidator.Validate(selectedFile) != GifValidator.ValidationResult.Ok )
-				{
-					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-					IsSending = false;
-					return;
-				}
-			}
-
-			byte[] mediaData = File.ReadAllBytes( selectedFile );
-			if( mediaData.Length > TwitterConfig.MaxImageSize )
-			{
-				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-				IsSending = false;
-				return;
-			}
-
-			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
-			var acc = usedAccounts.First();
-			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
-
-			string mediaType = TwitterHelper.GetMimeType( selectedFile );
-			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
-			{
-				IsSending = false;
-				return t.Result;
-			} );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				Medias.Add( media );
-				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, selectedFile ) );
-			} );
+			await AttachImage( selectedFile );
 		}
 
 		private async void ExecuteDeleteMediaCommand( ulong id )
@@ -273,7 +343,7 @@ namespace Twice.ViewModels.Twitter
 				return;
 			}
 
-			List<string> mentions = new List<string> {InReplyTo.User.ScreenName};
+			List<string> mentions = new List<string> { InReplyTo.User.ScreenName };
 
 			if( ReplyToAll )
 			{
@@ -364,7 +434,7 @@ namespace Twice.ViewModels.Twitter
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
-			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand( ExecuteAttachImageCommand ) );
+			=> _AttachImageCommand ?? ( _AttachImageCommand = new RelayCommand<string>( ExecuteAttachImageCommand ) );
 
 		public bool ConfirmationRequired
 		{
@@ -373,7 +443,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool ConfirmationSet
 		{
-			[DebuggerStepThrough] get { return _ConfirmationSet; }
+			[DebuggerStepThrough]
+			get { return _ConfirmationSet; }
 			set
 			{
 				if( _ConfirmationSet == value )
@@ -387,11 +458,12 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand DeleteMediaCommand => _DeleteMediaCommand ?? ( _DeleteMediaCommand = new RelayCommand<ulong>(
-			ExecuteDeleteMediaCommand ) );
+												  ExecuteDeleteMediaCommand ) );
 
 		public DateTime DeletionDate
 		{
-			[DebuggerStepThrough] get { return _DeletionDate; }
+			[DebuggerStepThrough]
+			get { return _DeletionDate; }
 			set
 			{
 				if( _DeletionDate == value )
@@ -406,7 +478,8 @@ namespace Twice.ViewModels.Twitter
 
 		public DateTime DeletionTime
 		{
-			[DebuggerStepThrough] get { return _DeletionTime; }
+			[DebuggerStepThrough]
+			get { return _DeletionTime; }
 			set
 			{
 				if( _DeletionTime == value )
@@ -421,7 +494,8 @@ namespace Twice.ViewModels.Twitter
 
 		public StatusViewModel InReplyTo
 		{
-			[DebuggerStepThrough] get { return _InReplyTo; }
+			[DebuggerStepThrough]
+			get { return _InReplyTo; }
 			set
 			{
 				if( _InReplyTo == value )
@@ -436,7 +510,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsDeletionScheduled
 		{
-			[DebuggerStepThrough] get { return _IsDeletionScheduled; }
+			[DebuggerStepThrough]
+			get { return _IsDeletionScheduled; }
 			set
 			{
 				if( _IsDeletionScheduled == value )
@@ -456,7 +531,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsSending
 		{
-			[DebuggerStepThrough] get { return _IsSending; }
+			[DebuggerStepThrough]
+			get { return _IsSending; }
 			private set
 			{
 				if( _IsSending == value )
@@ -471,7 +547,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsTweetScheduled
 		{
-			[DebuggerStepThrough] get { return _IsTweetScheduled; }
+			[DebuggerStepThrough]
+			get { return _IsTweetScheduled; }
 			set
 			{
 				if( _IsTweetScheduled == value )
@@ -495,7 +572,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool LowCharsLeft
 		{
-			[DebuggerStepThrough] get { return _LowCharsLeft; }
+			[DebuggerStepThrough]
+			get { return _LowCharsLeft; }
 			set
 			{
 				if( _LowCharsLeft == value )
@@ -510,7 +588,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool MediumCharsLeft
 		{
-			[DebuggerStepThrough] get { return _MediumCharsLeft; }
+			[DebuggerStepThrough]
+			get { return _MediumCharsLeft; }
 			set
 			{
 				if( _MediumCharsLeft == value )
@@ -528,7 +607,8 @@ namespace Twice.ViewModels.Twitter
 
 		public StatusViewModel QuotedTweet
 		{
-			[DebuggerStepThrough] get { return _QuotedTweet; }
+			[DebuggerStepThrough]
+			get { return _QuotedTweet; }
 			set
 			{
 				if( _QuotedTweet == value )
@@ -543,15 +623,16 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand RemoveQuoteCommand
 			=>
-				_RemoveQuoteCommand
-				?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
+			_RemoveQuoteCommand
+			?? ( _RemoveQuoteCommand = new RelayCommand( ExecuteRemoveQuoteCommand, CanExecuteRemoveQuoteCommand ) );
 
 		public ICommand RemoveReplyCommand => _RemoveReplyCommand ?? ( _RemoveReplyCommand = new RelayCommand(
-			ExecuteRemoveReplyCommand ) );
+												  ExecuteRemoveReplyCommand ) );
 
 		public DateTime ScheduleDate
 		{
-			[DebuggerStepThrough] get { return _ScheduleDate; }
+			[DebuggerStepThrough]
+			get { return _ScheduleDate; }
 			set
 			{
 				if( _ScheduleDate == value )
@@ -569,7 +650,8 @@ namespace Twice.ViewModels.Twitter
 
 		public DateTime ScheduleTime
 		{
-			[DebuggerStepThrough] get { return _ScheduleTime; }
+			[DebuggerStepThrough]
+			get { return _ScheduleTime; }
 			set
 			{
 				if( _ScheduleTime == value )
@@ -584,12 +666,13 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand SendTweetCommand
 			=>
-				_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
+			_SendTweetCommand ?? ( _SendTweetCommand = new RelayCommand( ExecuteSendTweetCommand, CanExecuteSendTweetCommand ) )
 			;
 
 		public bool StayOpen
 		{
-			[DebuggerStepThrough] get { return _StayOpen; }
+			[DebuggerStepThrough]
+			get { return _StayOpen; }
 			set
 			{
 				if( _StayOpen == value )
@@ -604,7 +687,8 @@ namespace Twice.ViewModels.Twitter
 
 		public string Text
 		{
-			[DebuggerStepThrough] get { return _Text; }
+			[DebuggerStepThrough]
+			get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -627,7 +711,8 @@ namespace Twice.ViewModels.Twitter
 
 		public int TextLength
 		{
-			[DebuggerStepThrough] get { return _TextLength; }
+			[DebuggerStepThrough]
+			get { return _TextLength; }
 			set
 			{
 				if( _TextLength == value )
@@ -649,48 +734,65 @@ namespace Twice.ViewModels.Twitter
 
 		private readonly List<Media> Medias = new List<Media>();
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AttachImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand<string> _AttachImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ConfirmationSet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _ConfirmationSet;
 
 		private RelayCommand<ulong> _DeleteMediaCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _DeletionDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime _DeletionDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _DeletionTime;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime _DeletionTime;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _InReplyTo;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _InReplyTo;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsDeletionScheduled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsDeletionScheduled;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsSending;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsTweetScheduled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _IsTweetScheduled;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _LowCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _LowCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _MediumCharsLeft;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _MediumCharsLeft;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private StatusViewModel _QuotedTweet;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private StatusViewModel _QuotedTweet;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveQuoteCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _RemoveQuoteCommand;
 
 		private RelayCommand _RemoveReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _ScheduleDate;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime _ScheduleDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private DateTime _ScheduleTime;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private DateTime _ScheduleTime;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SendTweetCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private RelayCommand _SendTweetCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _StayOpen;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private bool _StayOpen;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private string _Text;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TextLength;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private int _TextLength;
 
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
-		public event EventHandler ScrollToEnd;
 	}
 }

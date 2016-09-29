@@ -370,6 +370,29 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void OrderIdIsCorrect()
+		{
+			// Arrange
+			var simpleStatus = DummyGenerator.CreateDummyStatus();
+			simpleStatus.StatusID = simpleStatus.ID = 123;
+
+			var retweetedStatus = DummyGenerator.CreateDummyStatus();
+			retweetedStatus.StatusID = retweetedStatus.ID = 222;
+
+			var retweet = DummyGenerator.CreateDummyStatus();
+			retweet.StatusID = retweet.ID = 333;
+			retweet.RetweetedStatus = retweetedStatus;
+
+			// Act
+			var simpleVm = new StatusViewModel( simpleStatus, null, null, null );
+			var retweetVm = new StatusViewModel( retweet, null, null, null );
+
+			// Assert
+			Assert.AreEqual( simpleStatus.ID, simpleVm.OrderId );
+			Assert.AreEqual( retweet.ID, retweetVm.OrderId );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeDeleted()
 		{
 			// Arrange

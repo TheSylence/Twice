@@ -35,11 +35,9 @@ namespace Twice.ViewModels.Twitter
 		public override Entities Entities => Model.Entities;
 
 		public override ulong Id => Model.GetMessageId();
-
 		public bool IsIncoming { get; }
-
 		public DirectMessage Model { get; }
-
+		public override ulong OrderId => Id;
 		public UserViewModel Partner { get; }
 
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
@@ -63,10 +61,8 @@ namespace Twice.ViewModels.Twitter
 
 		private readonly IViewServiceRepository ViewServiceRepository;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _ReplyCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _WasRead;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
 	}
 }

@@ -46,23 +46,6 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void RelativeTimesAreUpdated()
-		{
-			// Arrange
-			var item = new Mock<ColumnItem>();
-			item.Setup( it => it.UpdateRelativeTime() ).Verifiable();
-
-			var vm = new TestColumn();
-			vm.Items.Add( item.Object );
-
-			// Act
-			vm.UpdateRelativeTimes();
-
-			// Assert
-			item.Verify( it => it.UpdateRelativeTime(), Times.Once() );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void ClearCommandClearsAllStatuses()
 		{
 			// Arrange
@@ -257,7 +240,7 @@ namespace Twice.Tests.ViewModels.Columns
 				s =>
 					s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>(),
 						It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns(
-							Task.FromResult( statuses ) );
+				Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
 
@@ -482,7 +465,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var cache = new Mock<ICache>();
 			cache.Setup( c => c.AddUsers( It.Is<IList<UserCacheEntry>>( ca => ca[0].UserId == 123 ) ) ).Returns(
-				Task.CompletedTask )
+					Task.CompletedTask )
 				.Verifiable();
 			cache.Setup( c => c.AddHashtags( new[] {"hashtag"} ) ).Returns( Task.CompletedTask ).Verifiable();
 
@@ -582,7 +565,7 @@ namespace Twice.Tests.ViewModels.Columns
 				s =>
 					s.Filter( It.IsAny<Expression<Func<Status, bool>>>(), It.IsAny<Expression<Func<Status, bool>>>(),
 						It.IsAny<Expression<Func<Status, bool>>>() ) ).Returns(
-							Task.FromResult( statuses ) );
+				Task.FromResult( statuses ) );
 			twitterContext.SetupGet( c => c.Statuses ).Returns( statusRepo.Object );
 			context.Setup( c => c.Twitter ).Returns( twitterContext.Object );
 
@@ -608,6 +591,60 @@ namespace Twice.Tests.ViewModels.Columns
 			// Assert
 			Assert.IsTrue( wasSet );
 			Assert.AreEqual( 3, vm.Items.Count );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void RelativeTimesAreUpdated()
+		{
+			// Arrange
+			var item = new Mock<ColumnItem>();
+			item.Setup( it => it.UpdateRelativeTime() ).Verifiable();
+
+			var vm = new TestColumn();
+			vm.Items.Add( item.Object );
+
+			// Act
+			vm.UpdateRelativeTimes();
+
+			// Assert
+			item.Verify( it => it.UpdateRelativeTime(), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public async Task RetweetsAreCorrectlyOrdered()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
+			var parser = new Mock<IStreamParser>();
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object )
+			{
+				Dispatcher = new SyncDispatcher()
+			};
+
+			var s1 = DummyGenerator.CreateDummyStatus();
+			s1.ID = s1.StatusID = 1;
+			s1.Text = "s1";
+			var s2 = DummyGenerator.CreateDummyStatus();
+			s2.ID = s2.StatusID = 2;
+			s2.Text = "s2";
+			var s3 = DummyGenerator.CreateDummyStatus();
+			s3.RetweetedStatus = s1;
+			s3.ID = s3.StatusID = 3;
+			s3.Text = "s1";
+
+			// Act
+			await vm.Add( new StatusViewModel( s2, context.Object, null, null ) );
+			await vm.Add( new StatusViewModel( s3, context.Object, null, null ) );
+
+			// Assert
+			Assert.AreEqual( 2, vm.Items.Count );
+
+			Assert.AreEqual( "s1", vm.Items.First().Text );
+			Assert.AreEqual( "s2", vm.Items.Last().Text );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -642,9 +679,33 @@ namespace Twice.Tests.ViewModels.Columns
 			}
 
 			public TestColumn()
-				: base( DefaultContext(), new ColumnDefinition(ColumnType.User), DefaultConfig(), DefaultParser() )
+				: base( DefaultContext(), new ColumnDefinition( ColumnType.User ), DefaultConfig(), DefaultParser() )
 			{
-				
+			}
+
+			public Task Add( StatusViewModel status )
+			{
+				return AddItem( status );
+			}
+
+			public void RaiseStatusWrapper( ColumnItem iteme )
+			{
+				RaiseNewItem( iteme );
+			}
+
+			public void SetLoading( bool isLoading )
+			{
+				IsLoading = isLoading;
+			}
+
+			protected override bool IsSuitableForColumn( Status status )
+			{
+				return SuitableCheck( status );
+			}
+
+			protected override bool IsSuitableForColumn( DirectMessage message )
+			{
+				return false;
 			}
 
 			private static IConfig DefaultConfig()
@@ -668,26 +729,6 @@ namespace Twice.Tests.ViewModels.Columns
 				var parser = new Mock<IStreamParser>();
 
 				return parser.Object;
-			}
-
-			public void RaiseStatusWrapper( ColumnItem iteme )
-			{
-				RaiseNewItem( iteme );
-			}
-
-			public void SetLoading( bool isLoading )
-			{
-				IsLoading = isLoading;
-			}
-
-			protected override bool IsSuitableForColumn( Status status )
-			{
-				return SuitableCheck( status );
-			}
-
-			protected override bool IsSuitableForColumn( DirectMessage message )
-			{
-				return false;
 			}
 
 			public override Icon Icon { get; }

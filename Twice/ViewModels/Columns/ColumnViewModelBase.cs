@@ -330,17 +330,17 @@ namespace Twice.ViewModels.Columns
 
 		private int GetInsertIndex( ColumnItem item )
 		{
-			var newId = item.Id;
+			var newId = item.OrderId;
 
-			// Statuses are ordered descending by id
+			// Statuses are ordered descending by their order id
 			for( int i = 0; i < ItemCollection.Count; ++i )
 			{
-				if( ItemCollection[i].Id == newId )
+				if( ItemCollection[i].OrderId == newId )
 				{
 					return -1;
 				}
 
-				if( ItemCollection[i].Id < newId )
+				if( ItemCollection[i].OrderId < newId )
 				{
 					return i;
 				}

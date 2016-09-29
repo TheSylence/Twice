@@ -28,12 +28,12 @@ namespace Twice.ViewModels.Dialogs
 
 		private void ExecuteCopyToClipboardCommand()
 		{
-			Clipboard.SetText( SelectedImage.ImageUrl.AbsoluteUri );
+			Clipboard.SetText( SelectedImage.DisplayUrl.AbsoluteUri );
 		}
 
 		private void ExecuteOpenImageCommand()
 		{
-			ProcessStarter.Start( SelectedImage.ImageUrl.AbsoluteUri );
+			ProcessStarter.Start( SelectedImage.DisplayUrl.AbsoluteUri );
 		}
 
 		public void SetImages( IEnumerable<StatusMediaViewModel> images )
