@@ -279,6 +279,7 @@
     <Compile Include="ViewModels\Settings\SoundNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\ToastNotificationSettingsTests.cs" />
     <Compile Include="ViewModels\Settings\VisualSettingsTests.cs" />
+    <Compile Include="ViewModels\Twitter\CardViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\ColumnItemTests.cs" />
     <Compile Include="ViewModels\Twitter\ComposeMessageViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\ComposeTweetViewModelTests.cs" />
