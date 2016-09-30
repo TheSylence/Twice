@@ -11,6 +11,14 @@ namespace Twice.Models.Media
 	{
 		public async Task<TwitterCard> ExtractCard( Uri url )
 		{
+			if( url.Host.Equals("twitter.com", StringComparison.OrdinalIgnoreCase))
+			{
+				if( url.AbsolutePath.StartsWith( "/i/web/status/", StringComparison.OrdinalIgnoreCase ) )
+				{
+					return null;
+				}
+			}
+
 			using( var client = new HttpClient() )
 			{
 				var response = await client.GetAsync( url );
@@ -40,8 +48,12 @@ namespace Twice.Models.Media
 			var doc = new HtmlDocument();
 			doc.LoadHtml( html );
 
-			var head = doc.DocumentNode.SelectSingleNode( "html/head" );
-			var metaNodes = head.SelectNodes( "meta" );
+			var metaNodes = doc.DocumentNode?.SelectSingleNode( "html/head" )?.SelectNodes( "meta" );
+			if( metaNodes == null )
+			{
+				return null;
+			}
+
 			Dictionary<string, string> twitterMetaInfo = new Dictionary<string, string>();
 
 			foreach( var meta in metaNodes )

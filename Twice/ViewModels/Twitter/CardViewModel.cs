@@ -10,6 +10,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public TwitterCard Card { get; }
-		public string DisplayUrl => Card.Url.Host;
+		public string DisplayUrl => Card?.Url?.Host ?? string.Empty;
 	}
 }
