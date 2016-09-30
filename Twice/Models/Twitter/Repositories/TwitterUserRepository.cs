@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Fody;
 using LinqToTwitter;
 using LitJson;
@@ -88,8 +89,9 @@ namespace Twice.Models.Twitter.Repositories
 					return new List<UserEx>();
 				}
 			}
-			catch( TwitterQueryException )
+			catch( TwitterQueryException ex )
 			{
+				LogTo.WarnException( "Failed to lookup users", ex );
 				return new List<UserEx>();
 			}
 
