@@ -35,13 +35,18 @@ namespace Twice.Models.Scheduling
 			JobIdCounter = Jobs.Any()
 				? Jobs.Max( j => j.JobId ) + 1
 				: 0;
+
+			SleepTime = 1000;
 		}
 
+		private readonly int SleepTime;
+
 		internal Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig,
-			IJobProcessor testProcessor )
+			IJobProcessor testProcessor, int sleepTime = 1000 )
 			: this( fileName, contextList, twitterConfig )
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
+			SleepTime = sleepTime;
 		}
 
 		internal bool ProcessJob( SchedulerJob job )
@@ -89,7 +94,7 @@ namespace Twice.Models.Scheduling
 					}
 				}
 
-				Thread.Sleep( 1000 );
+				Thread.Sleep( SleepTime );
 			}
 		}
 
