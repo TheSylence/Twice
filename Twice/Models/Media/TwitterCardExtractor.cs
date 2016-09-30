@@ -20,8 +20,14 @@ namespace Twice.Models.Media
 			}
 		}
 
-		private TwitterCard ExtractCard( string http )
+		internal TwitterCard ExtractCard( string http )
 		{
+			int headStart = http.IndexOf( "<head>", StringComparison.OrdinalIgnoreCase );
+			if( headStart == -1 )
+			{
+				return null;
+			}
+
 			int headEnd = http.IndexOf( "</head>", StringComparison.OrdinalIgnoreCase );
 			if( headEnd == -1 )
 			{
