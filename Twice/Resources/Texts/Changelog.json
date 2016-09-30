@@ -1,12 +1,12 @@
 ﻿[
     {
         "Version": "0.7.4",
-        "Date": "2016-09-29",
+        "Date": "2016-09-30",
         "Description": "",
         "NewFeatures": [],
         "Changes": [],
         "Fixes": [
-            "Fixed possible crash when extracting cards from webpages"
+            "Fixed crashes when extracting cards from webpages"
         ],
         "Issues": []
     },
