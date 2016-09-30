@@ -211,6 +211,7 @@
     <Compile Include="Models\Columns\ColumnDefinitionTests.cs" />
     <Compile Include="Models\Configuration\ConfigTests.cs" />
     <Compile Include="Models\Configuration\MuteEntryTests.cs" />
+    <Compile Include="Models\Media\TwitterCardExtractorTests.cs" />
     <Compile Include="Models\Media\TwitterCardTests.cs" />
     <Compile Include="Models\Proxy\MediaProxyServerTests.cs" />
     <Compile Include="Models\Media\InstragramExtractorTests.cs" />
