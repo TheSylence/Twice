@@ -20,9 +20,20 @@ namespace Twice.Models.Media
 			}
 		}
 
-		private TwitterCard ExtractCard( string http )
+		internal TwitterCard ExtractCard( string http )
 		{
+			int headStart = http.IndexOf( "<head>", StringComparison.OrdinalIgnoreCase );
+			if( headStart == -1 )
+			{
+				return null;
+			}
+
 			int headEnd = http.IndexOf( "</head>", StringComparison.OrdinalIgnoreCase );
+			if( headEnd == -1 )
+			{
+				return null;
+			}
+
 			string html = http.Substring( 0, headEnd ) + "</html>";
 			html = WebUtility.HtmlDecode( html );
 
@@ -40,7 +51,10 @@ namespace Twice.Models.Media
 
 				if( name?.StartsWith( "twitter:", StringComparison.OrdinalIgnoreCase ) == true && value != null )
 				{
-					twitterMetaInfo.Add( name, value );
+					if( !twitterMetaInfo.ContainsKey( name ) )
+					{
+						twitterMetaInfo.Add( name, value );
+					}
 				}
 			}
 
