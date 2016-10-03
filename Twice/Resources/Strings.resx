@@ -711,4 +711,10 @@
   <data name="Repeat" xml:space="preserve">
     <value>Repeat</value>
   </data>
+  <data name="CacheCleared" xml:space="preserve">
+    <value>Cache cleared</value>
+  </data>
+  <data name="ClearCache" xml:space="preserve">
+    <value>Clear cache</value>
+  </data>
 </root>

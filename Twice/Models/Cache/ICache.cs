@@ -16,6 +16,10 @@ namespace Twice.Models.Cache
 
 		Task AddUsers( IList<UserCacheEntry> users );
 
+		Task Clear();
+
+		Task<ulong> FindFriend( ulong friendId );
+
 		Task<IEnumerable<string>> GetKnownHashtags();
 
 		Task<IEnumerable<UserCacheEntry>> GetKnownUsers();
@@ -31,8 +35,6 @@ namespace Twice.Models.Cache
 		Task<UserEx> GetUser( ulong userId );
 
 		Task<IEnumerable<ulong>> GetUserFriends( ulong userId );
-
-		Task<ulong> FindFriend( ulong friendId );
 
 		Task MapStatusesToColumn( IList<Status> statuses, Guid columnId );
 

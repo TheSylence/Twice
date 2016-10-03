@@ -21,7 +21,7 @@
 					</i:Interaction.Behaviors>
 
 					<DockPanel LastChildFill="True">
-						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
+						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
 							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,0,3,0" />
 
 						<StackPanel Orientation="Vertical">

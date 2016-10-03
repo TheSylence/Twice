@@ -1,9 +1,9 @@
-﻿using System;
+﻿using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
 using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
@@ -27,6 +27,11 @@ namespace Twice.Models.Cache
 		}
 
 		public Task AddUsers( IList<UserCacheEntry> users )
+		{
+			return Task.CompletedTask;
+		}
+
+		public Task Clear()
 		{
 			return Task.CompletedTask;
 		}
