@@ -55,7 +55,8 @@ namespace Twice.ViewModels.Twitter
 
 		public async Task LoadDataAsync()
 		{
-			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias(), LoadCard() );
+			var dontWait = LoadCard();
+			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias() );
 		}
 
 		public async Task LoadRetweets()
