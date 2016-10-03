@@ -39,53 +39,6 @@ namespace Twice.Tests.Models.Cache
 		}
 
 		[TestMethod, TestCategory( "Models.Cache" )]
-		public async Task CleanupRemovesColumnMappings()
-		{
-			// Arrange
-			using( var con = OpenConnection() )
-			using( var cache = new SqliteCache( con ) )
-			{
-				var status = DummyGenerator.CreateDummyStatus();
-				status.ID = 123;
-
-				var colId = Guid.NewGuid();
-
-				await cache.MapStatusesToColumn( new[] { status }, colId );
-
-				// Act
-				var statuses = await cache.GetStatusesForColumn( colId, 1 );
-
-				// Assert
-				Assert.AreEqual( 0, statuses.Count );
-			}
-		}
-
-		[TestMethod, TestCategory( "Models.Cache" )]
-		public async Task NonExistingStatusIsNotFetchedForColumn()
-		{
-			// Arrange
-			using( var con = OpenConnection() )
-			using( var cache = new SqliteCache( con ) )
-			{
-				var status = DummyGenerator.CreateDummyStatus();
-				status.ID = 123;
-				var colId = Guid.NewGuid();
-
-				await cache.AddStatuses( new[] { status } );
-				await cache.MapStatusesToColumn( new[] { status }, colId );
-
-				// Act
-				var beforeDelete = await cache.GetStatusesForColumn( colId, 1 );
-				await cache.RemoveStatus( status.ID );
-				var afterDelete = await cache.GetStatusesForColumn( colId, 1 );
-
-				// Assert
-				Assert.AreEqual( 1, beforeDelete.Count );
-				Assert.AreEqual( 0, afterDelete.Count );
-			}
-		}
-
-		[TestMethod, TestCategory( "Models.Cache" )]
 		public async Task CachedHastagsCanBeRetrieved()
 		{
 			// Arrange
@@ -172,6 +125,61 @@ namespace Twice.Tests.Models.Cache
 		}
 
 		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task CleanupRemovesColumnMappings()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.ID = 123;
+
+				var colId = Guid.NewGuid();
+
+				await cache.MapStatusesToColumn( new[] {status}, colId );
+
+				// Act
+				var statuses = await cache.GetStatusesForColumn( colId, 1 );
+
+				// Assert
+				Assert.AreEqual( 0, statuses.Count );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task ClearRemovesAllDataFromCache()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				await cache.AddHashtags( new[] {"one", "two", "three"} );
+				await cache.AddMessages( new[] {new MessageCacheEntry( DummyGenerator.CreateDummyMessage() )} );
+				await cache.AddStatuses( new[] {DummyGenerator.CreateDummyStatus()} );
+
+				var userToCache = DummyGenerator.CreateDummyUserEx( 1 );
+				userToCache.Name = userToCache.ScreenName = "test";
+				await cache.AddUsers( new[] {new UserCacheEntry( userToCache )} );
+
+				// Act
+				await cache.Clear();
+
+				// Assert
+				var tags = await cache.GetKnownHashtags();
+				Assert.AreEqual( 0, tags.Count() );
+
+				var msg = await cache.GetMessages();
+				Assert.AreEqual( 0, msg.Count );
+
+				var user = await cache.GetUser( 1 );
+				Assert.IsNull( user );
+
+				var status = await cache.GetStatus( 0 );
+				Assert.IsNull( status );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
 		public void ConstructingFromConnectionStringWorks()
 		{
 			// Arrange
@@ -180,12 +188,36 @@ namespace Twice.Tests.Models.Cache
 				DataSource = ":memory:"
 			};
 
-			// Act
-			// ReSharper disable once ObjectCreationAsStatement
+			// Act ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new SqliteCache( sb.ToString() ) );
 
 			// Assert
 			Assert.IsNull( ex, ex?.ToString() );
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task CorrectUserIdIsFoundForFriend()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				using( var cmd = con.CreateCommand() )
+				{
+					cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES (1, 5), (2,4), (3,5);";
+					cmd.ExecuteNonQuery();
+				}
+
+				// Act
+				var noFriend = await cache.FindFriend( 15 );
+				var single = await cache.FindFriend( 4 );
+				var two = await cache.FindFriend( 5 );
+
+				// Assert
+				Assert.AreEqual( 0ul, noFriend );
+				Assert.AreEqual( 2ul, single );
+				Assert.IsTrue( two == 1ul || two == 3ul, two.ToString() );
+			}
 		}
 
 		[TestMethod, TestCategory( "Models.Cache" )]
@@ -216,31 +248,6 @@ namespace Twice.Tests.Models.Cache
 					"Statuses", "ColumnStatuses", "Messages",
 					"UserFriends"
 				}, tableNames );
-			}
-		}
-
-		[TestMethod, TestCategory( "Models.Cache" )]
-		public async Task CorrectUserIdIsFoundForFriend()
-		{
-			// Arrange
-			using( var con = OpenConnection() )
-			using( var cache = new SqliteCache( con ) )
-			{
-				using( var cmd = con.CreateCommand() )
-				{
-					cmd.CommandText = "INSERT INTO UserFriends (UserId, FriendId) VALUES (1, 5), (2,4), (3,5);";
-					cmd.ExecuteNonQuery();
-				}
-
-				// Act
-				var noFriend = await cache.FindFriend( 15 );
-				var single = await cache.FindFriend( 4 );
-				var two = await cache.FindFriend( 5 );
-
-				// Assert
-				Assert.AreEqual( 0ul, noFriend );
-				Assert.AreEqual( 2ul, single );
-				Assert.IsTrue( two == 1ul || two == 3ul, two.ToString() );
 			}
 		}
 
@@ -414,6 +421,31 @@ namespace Twice.Tests.Models.Cache
 
 				var msg = JsonConvert.DeserializeObject<DirectMessage>( fromDb.Data );
 				Assert.AreEqual( message.Text, msg.Text );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Cache" )]
+		public async Task NonExistingStatusIsNotFetchedForColumn()
+		{
+			// Arrange
+			using( var con = OpenConnection() )
+			using( var cache = new SqliteCache( con ) )
+			{
+				var status = DummyGenerator.CreateDummyStatus();
+				status.ID = 123;
+				var colId = Guid.NewGuid();
+
+				await cache.AddStatuses( new[] {status} );
+				await cache.MapStatusesToColumn( new[] {status}, colId );
+
+				// Act
+				var beforeDelete = await cache.GetStatusesForColumn( colId, 1 );
+				await cache.RemoveStatus( status.ID );
+				var afterDelete = await cache.GetStatusesForColumn( colId, 1 );
+
+				// Assert
+				Assert.AreEqual( 1, beforeDelete.Count );
+				Assert.AreEqual( 0, afterDelete.Count );
 			}
 		}
 

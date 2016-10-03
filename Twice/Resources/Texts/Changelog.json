@@ -1,5 +1,18 @@
 ﻿[
     {
+        "Version": "0.7.6",
+        "Date": "2016-10-03",
+        "Description": "",
+        "NewFeatures": [
+            "Added button to settings dialog to manually clear the cache"
+        ],
+        "Changes": [],
+        "Fixes": [
+            "Fixed slow performance for loading statuses in columns"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.7.5",
         "Date": "2016-09-30",
         "Description": "",
@@ -99,13 +112,13 @@
             "Fixed rare crash when viewing a tweet with replies",
             "Window position is saved for displays that are left to the primary display"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.6",
         "Date": "2016-07-10",
         "Description": "",
-        "NewFeatures": [ ],
+        "NewFeatures": [],
         "Changes": [
             "Clicking a quote in a tweet now opens the quote instead of the tweet"
         ],
@@ -117,7 +130,7 @@
             "Fixed crash when viewing details of test tweets in settings dialog",
             "Favourites column now has correct title"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.5",
@@ -139,13 +152,13 @@
             "Fixed issue where some statuses would display more than once",
             "Accounts in user profile and search are no longer marked as verified when they are not"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.4",
         "Date": "2016-06-25",
         "Description": "",
-        "NewFeatures": [ ],
+        "NewFeatures": [],
         "Changes": [
             "Update check is now done once an hour",
             "(Un)following a user from the profile dialog is now done using the default account"
@@ -155,18 +168,18 @@
             "Fixed crash when opening user profile via retweet message",
             "Select all checkbox in account column selection is now behaving correctly"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.3",
         "Date": "2016-06-23",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "Fixed potential crash in status/profile parser"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.2",
@@ -187,18 +200,18 @@
             "Improved UI responsiveness when opening user profiles",
             "Retweet dialog now closes after retweeting/quoting the tweet"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.1",
         "Date": "2016-06-19",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "In-App notification displays at correct position"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.6.0",
@@ -223,7 +236,7 @@
             "Options for a tweet now work when menu was opened by clicking the options button",
             "Compose dialogs now have correct keyboard focus when opened"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.5.1",
@@ -236,8 +249,8 @@
         "Changes": [
             "Own statuses can be retweeted"
         ],
-        "Fixes": [ ],
-        "Issues": [ ]
+        "Fixes": [],
+        "Issues": []
     },
     {
         "Version": "0.5.0",
@@ -261,13 +274,13 @@
             "Fixed many crashes when no internet connection is available",
             "Fixed crash when openeing profile of a non existing user"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.4.2",
         "Date": "2016-06-05",
         "Description": "",
-        "NewFeatures": [ ],
+        "NewFeatures": [],
         "Changes": [
             "Reply to all' is now enabled for every tweet",
             "Own username is not used in reply when using 'Reply to all",
@@ -279,18 +292,18 @@
             "(un)following a user now updates the (un)follow button immediately",
             "Autocompletebox in light theme now uses correct colors"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.4.1",
         "Date": "2016-06-04",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "Fixed crash when Twitter reported a status deletion in realtime streaming"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.4.0",
@@ -318,7 +331,7 @@
             "When a status contains multiple images, all of them are now displayed",
             "Emojis in statuses no longer break following entities"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.3.0",
@@ -341,7 +354,7 @@
             "Profile pictures are now sharp in every dialog",
             "Editing a muting no longer creates a new one"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.2.0",
@@ -363,48 +376,48 @@
             "Changelogs are no longer being cut off in about dialog",
             "Using certain colors for entities no longer crashes"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.1.3",
         "Date": "2016-04-03",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "Fixed update search not working"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.1.2",
         "Date": "2016-04-03",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "Fixed crash when looking for updates"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.1.1",
         "Date": "2016-04-03",
         "Description": "",
-        "NewFeatures": [ ],
-        "Changes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
         "Fixes": [
             "Fixed crash when adding a new account"
         ],
-        "Issues": [ ]
+        "Issues": []
     },
     {
         "Version": "0.1.0",
         "Date": "2016-04-03",
         "Description": "First beta release",
-        "NewFeatures": [ ],
-        "Changes": [ ],
-        "Fixes": [ ],
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [],
         "Issues": [
             "Adding columns doesn't work",
             "Loading more content in the timeline column doesn't work",

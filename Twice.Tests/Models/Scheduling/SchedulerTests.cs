@@ -96,7 +96,7 @@ namespace Twice.Tests.Models.Scheduling
 				() => waitHandle.Set() ).Verifiable();
 
 			var scheduler = new Scheduler( "SchedulerTests.JobIsExecutedInThread.json", contextList.Object, config.Object,
-				proc.Object );
+				proc.Object, 20 );
 			scheduler.Start();
 			try
 			{

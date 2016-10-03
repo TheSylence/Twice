@@ -77,12 +77,26 @@
 					<TextBlock Text="{lex:Loc SpecialThanksTo}" Style="{StaticResource MaterialDesignBody1TextBlock}"
 							   VerticalAlignment="Center" />
 				</StackPanel>
-				<ContentControl Margin="15,0">
-					<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
-						<Hyperlink.CommandParameter>548023302</Hyperlink.CommandParameter>
-						<TextBlock Text="@FemmeNoireOnYT" />
-					</Hyperlink>
-				</ContentControl>
+				<StackPanel Orientation="Vertical">
+					<ContentControl Margin="15,0">
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+							<Hyperlink.CommandParameter>548023302</Hyperlink.CommandParameter>
+							<TextBlock Text="@FemmeNoireOnYT" />
+						</Hyperlink>
+					</ContentControl>
+					<ContentControl Margin="15,0">
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+							<Hyperlink.CommandParameter>630490891</Hyperlink.CommandParameter>
+							<TextBlock Text="@NicoVIII_RL" />
+						</Hyperlink>
+					</ContentControl>
+					<ContentControl Margin="15,0">
+						<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}">
+							<Hyperlink.CommandParameter>2223409086</Hyperlink.CommandParameter>
+							<TextBlock Text="@ichttt" />
+						</Hyperlink>
+					</ContentControl>
+				</StackPanel>
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="{lex:Loc Changelog}">

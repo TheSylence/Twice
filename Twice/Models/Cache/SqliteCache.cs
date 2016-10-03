@@ -205,6 +205,8 @@ namespace Twice.Models.Cache
 			}
 		}
 
+		
+
 		public void Dispose()
 		{
 			Connection.Dispose();
@@ -577,6 +579,42 @@ namespace Twice.Models.Cache
 					using( var cmd = Connection.CreateCommand() )
 					{
 						cmd.CommandText = "DELETE FROM ColumnStatuses WHERE NOT EXISTS (Select s.Id FROM Statuses s WHERE s.Id = ColumnStatuses.StatusId);";
+						await cmd.ExecuteNonQueryAsync();
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
+
+		public async Task Clear()
+		{
+			string[] tables =
+			{
+				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
+			};
+
+			await Semaphore.WaitAsync( SemaphoreWait );
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table};";
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "DELETE FROM ColumnStatuses";
 						await cmd.ExecuteNonQueryAsync();
 					}
 

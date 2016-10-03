@@ -81,6 +81,8 @@
 							<materialDesign:PackIcon Kind="HelpCircle" ToolTip="{lex:Loc TweetFetchCountDescription}" Margin="5,0" />
 						</StackPanel>
 						<ComboBox ItemsSource="{Binding AvailableFetchCounts}" SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						
+						<Button Content="{lex:Loc ClearCache}" Command="{Binding ClearCacheCommand}" Margin="5,10,5,0" />
 					</StackPanel>
 				</Grid>
 			</TabItem>

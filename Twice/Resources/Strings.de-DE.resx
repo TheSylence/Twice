@@ -711,4 +711,10 @@
   <data name="Repeat" xml:space="preserve">
     <value>Wiederholen</value>
   </data>
+  <data name="CacheCleared" xml:space="preserve">
+    <value>Cache geleert</value>
+  </data>
+  <data name="ClearCache" xml:space="preserve">
+    <value>Cache leeren</value>
+  </data>
 </root>

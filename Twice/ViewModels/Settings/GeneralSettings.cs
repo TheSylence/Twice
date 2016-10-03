@@ -4,7 +4,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using Twice.Models.Cache;
 using Twice.Models.Configuration;
+using Twice.Resources;
 using Twice.Utilities.Ui;
 
 namespace Twice.ViewModels.Settings
@@ -41,13 +46,6 @@ namespace Twice.ViewModels.Settings
 			TweetFetchCount = currentConfig.General.TweetFetchCount;
 		}
 
-		private static bool IsEnglish( CultureInfo lang )
-		{
-			var english = CultureInfo.CreateSpecificCulture( "en" );
-
-			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
-		}
-
 		public Task OnLoad( object data )
 		{
 			return Task.CompletedTask;
@@ -62,8 +60,26 @@ namespace Twice.ViewModels.Settings
 			config.General.TweetFetchCount = Math.Min( 200, Math.Max( 20, TweetFetchCount ) );
 		}
 
+		private static bool IsEnglish( CultureInfo lang )
+		{
+			var english = CultureInfo.CreateSpecificCulture( "en" );
+
+			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
+		}
+
+		private async void ExecuteClearCacheCommand()
+		{
+			await Cache.Clear();
+
+			Notifier.DisplayMessage( Strings.CacheCleared, NotificationType.Success );
+		}
+
 		public ICollection<int> AvailableFetchCounts { get; }
+
 		public ICollection<CultureInfo> AvailableLanguages { get; }
+
+		[Inject]
+		public ICache Cache { get; set; }
 
 		public bool CheckForUpdates
 		{
@@ -80,6 +96,8 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public ICommand ClearCacheCommand => _ClearCacheCommand ?? ( _ClearCacheCommand = new RelayCommand( ExecuteClearCacheCommand ) );
+
 		public bool IncludePrereleaseUpdates
 		{
 			[DebuggerStepThrough] get { return _IncludePrereleaseUpdates; }
@@ -94,6 +112,9 @@ namespace Twice.ViewModels.Settings
 				RaisePropertyChanged();
 			}
 		}
+
+		[Inject]
+		public INotifier Notifier { get; set; }
 
 		public bool RealtimeStreaming
 		{
@@ -140,19 +161,16 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _CheckForUpdates;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CheckForUpdates;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IncludePrereleaseUpdates;
+		private RelayCommand _ClearCacheCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _RealtimeStreaming;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IncludePrereleaseUpdates;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private CultureInfo _SelectedLanguage;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RealtimeStreaming;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _TweetFetchCount;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CultureInfo _SelectedLanguage;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TweetFetchCount;
 	}
 }
