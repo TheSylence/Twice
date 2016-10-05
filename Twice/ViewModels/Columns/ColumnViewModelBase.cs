@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -295,7 +296,20 @@ namespace Twice.ViewModels.Columns
 		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
 		{
 			IsLoading = true;
-			await Task.Run( async () => { await LoadMoreData().ContinueWith( t => { IsLoading = false; } ); } );
+			await Task.Run( async () =>
+			{
+				await LoadMoreData().ContinueWith( t =>
+				{
+					if( t.IsFaulted && t.Exception != null )
+					{
+						LogTo.WarnException( "Failed to load more data for column", t.Exception );
+
+						Notifier.DisplayMessage( t.Exception.GetReason(), NotificationType.Error );
+					}
+
+					IsLoading = false;
+				} );
+			} );
 		}
 
 		private async void ActionDispatcher_HeaderClicked( object sender, EventArgs e )
@@ -303,7 +317,20 @@ namespace Twice.ViewModels.Columns
 			if( !Configuration.General.RealtimeStreaming )
 			{
 				IsLoading = true;
-				await Task.Run( async () => { await LoadTopData().ContinueWith( t => { IsLoading = false; } ); } );
+				await Task.Run( async () =>
+				{
+					await LoadTopData().ContinueWith( t =>
+					{
+						if( t.IsFaulted && t.Exception != null )
+						{
+							LogTo.WarnException( "Failed to load top data for column", t.Exception );
+
+							Notifier.DisplayMessage( t.Exception.GetReason(), NotificationType.Error );
+						}
+
+						IsLoading = false;
+					} );
+				} );
 			}
 		}
 
@@ -410,7 +437,7 @@ namespace Twice.ViewModels.Columns
 			await Task.WhenAll
 			(
 				Cache.AddUsers( status.Entities.UserMentionEntities.Select( m => new UserCacheEntry( m ) ).ToList() ),
-				Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() ) 
+				Cache.AddHashtags( status.Entities.HashTagEntities.Select( h => h.Tag ).ToList() )
 			);
 		}
 
@@ -445,8 +472,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public ICollection<ColumnItem> Items { get; }
-
 		public IStatusMuter Muter { get; set; }
+		private INotifier Notifier => Context.Notifier;
 
 		public string SubTitle
 		{

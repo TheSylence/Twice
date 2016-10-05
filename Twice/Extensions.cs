@@ -53,7 +53,7 @@ namespace Twice
 				ex = ex.InnerException;
 			}
 
-			return ex.Message;
+			return ex?.Message;
 		}
 	}
 }
