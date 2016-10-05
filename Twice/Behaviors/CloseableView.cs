@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Allows a window to be closed from the window's DataContext
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CloseableView : BehaviorBase<Window>
 	{

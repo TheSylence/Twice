@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using Twice.Controls;
 using Twice.ViewModels.Columns;
 

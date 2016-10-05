@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Opens the associated context menu when pressing the button.
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ContextMenuOpener : BehaviorBase<Button>
 	{

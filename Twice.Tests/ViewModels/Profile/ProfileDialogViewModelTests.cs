@@ -112,6 +112,7 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
+			// ReSharper disable once UnusedVariable
 			var ignore = page.Items;
 			waitHandle.Wait( 1000 );
 			var items = page.Items;

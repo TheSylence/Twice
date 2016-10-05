@@ -12,6 +12,9 @@ using MaterialDesignThemes.Wpf;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Behavior that can be attached to a TextBox to allow autocomplete functionality.
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class AutoComplete : BehaviorBase<TextBox>
 	{

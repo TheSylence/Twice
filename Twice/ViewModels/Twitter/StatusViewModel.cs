@@ -55,6 +55,7 @@ namespace Twice.ViewModels.Twitter
 
 		public async Task LoadDataAsync()
 		{
+			// ReSharper disable once UnusedVariable
 			var dontWait = LoadCard();
 			await Task.WhenAll( LoadQuotedTweet(), LoadInlineMedias() );
 		}

@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using Ninject;
 using Twice.Utilities.Ui;

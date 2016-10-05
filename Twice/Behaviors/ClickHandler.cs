@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 
 namespace Twice.Behaviors
 {

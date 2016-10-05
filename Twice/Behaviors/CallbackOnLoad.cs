@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using System.Windows.Interactivity;
 using Twice.ViewModels.Main;
 
 namespace Twice.Behaviors

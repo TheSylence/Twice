@@ -164,6 +164,7 @@ namespace Twice.ViewModels.Profile
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
+				// ReSharper disable once UnusedVariable
 				var dontWait = Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) );
 			}
 			return statuses;
