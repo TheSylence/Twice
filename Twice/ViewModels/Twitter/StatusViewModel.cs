@@ -80,6 +80,30 @@ namespace Twice.ViewModels.Twitter
 			}, Strings.RetweetedStatus, NotificationType.Success );
 		}
 
+		private static void EnsureEntitiesAreNotNull( Entities ent )
+		{
+			if( ent.HashTagEntities == null )
+			{
+				ent.HashTagEntities = new List<HashTagEntity>();
+			}
+			if( ent.MediaEntities == null )
+			{
+				ent.MediaEntities = new List<MediaEntity>();
+			}
+			if( ent.SymbolEntities == null )
+			{
+				ent.SymbolEntities = new List<SymbolEntity>();
+			}
+			if( ent.UrlEntities == null )
+			{
+				ent.UrlEntities = new List<UrlEntity>();
+			}
+			if( ent.UserMentionEntities == null )
+			{
+				ent.UserMentionEntities = new List<UserMentionEntity>();
+			}
+		}
+
 		private bool CanExecuteBlockUserCommand()
 		{
 			return OriginalStatus.User.GetUserId() != Context.UserId;
@@ -299,7 +323,7 @@ namespace Twice.ViewModels.Twitter
 			var quoteId = ExtractQuotedTweetUrl();
 			if( quoteId != 0 )
 			{
-				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, false );
+				var quoted = await Context.Twitter.Statuses.GetTweet( quoteId, true );
 				if( quoted != null )
 				{
 					QuotedTweet = new StatusViewModel( quoted, Context, Config, ViewServiceRepository );
@@ -358,7 +382,35 @@ namespace Twice.ViewModels.Twitter
 
 		public bool DisplayMedia => InlineMedias.Any();
 
-		public override Entities Entities => Model.Entities;
+		public override Entities Entities
+		{
+			get
+			{
+				var ent = Model?.Entities;
+				var ext = Model?.ExtendedEntities;
+
+				if( ent == null )
+				{
+					ent = new Entities();
+				}
+				EnsureEntitiesAreNotNull( ent );
+
+				if( ext == null )
+				{
+					ext = new Entities();
+				}
+				EnsureEntitiesAreNotNull( ext );
+
+				return new Entities
+				{
+					HashTagEntities = ent.HashTagEntities.Concat( ext.HashTagEntities ).ToList(),
+					MediaEntities = ent.MediaEntities.Concat( ext.MediaEntities ).ToList(),
+					SymbolEntities = ent.SymbolEntities.Concat( ext.SymbolEntities ).ToList(),
+					UrlEntities = ent.UrlEntities.Concat( ext.UrlEntities ).ToList(),
+					UserMentionEntities = ent.UserMentionEntities.Concat( ext.UserMentionEntities ).ToList()
+				};
+			}
+		}
 
 		public ICommand FavoriteStatusCommand
 			=> _FavoriteStatusCommand ?? ( _FavoriteStatusCommand = new RelayCommand( ExecuteFavoriteStatusCommand ) );

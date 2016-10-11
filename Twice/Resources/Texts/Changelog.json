@@ -7,7 +7,9 @@
         "Changes": [
             "Errors while loading statuses for columns are now displayed"
         ],
-        "Fixes": [],
+        "Fixes": [
+            "Links in quoted statuses are now properly displayed and can be clicked"
+        ],
         "Issues": []
     },
     {
