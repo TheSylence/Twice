@@ -45,6 +45,10 @@ namespace Twice.Behaviors
 				AssociatedObject.Position = TimeSpan.Zero;
 				AssociatedObject.Play();
 			}
+			else
+			{
+				IsPlaying = false;
+			}
 		}
 
 		private void AssociatedObject_MediaFailed( object sender, ExceptionRoutedEventArgs e )
@@ -118,6 +122,8 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty IsAnimatedProperty =
 			DependencyProperty.Register( "IsAnimated", typeof( bool ), typeof( MediaController ), new PropertyMetadata( false ) );
+
+		
 
 		public static readonly DependencyProperty IsPlayingProperty =
 			DependencyProperty.Register( "IsPlaying", typeof( bool ), typeof( MediaController ), new PropertyMetadata( true, OnIsPlayingChanged ) );

@@ -515,7 +515,8 @@
 												<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
-														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" IsPlaying="{Binding IsPlaying}" Loop="{Binding Loop}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 													</i:Interaction.Behaviors>
 												</MediaElement>
 

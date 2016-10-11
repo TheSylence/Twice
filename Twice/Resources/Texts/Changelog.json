@@ -8,7 +8,8 @@
             "Errors while loading statuses for columns are now displayed"
         ],
         "Fixes": [
-            "Links in quoted statuses are now properly displayed and can be clicked"
+            "Links in quoted statuses are now properly displayed and can be clicked",
+            "Pause button in GIFs is now correctly toggled when repeat is disabled"
         ],
         "Issues": []
     },
