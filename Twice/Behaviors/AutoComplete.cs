@@ -88,6 +88,10 @@ namespace Twice.Behaviors
 				AutoCompleteBox.SelectedIndex++;
 				e.Handled = true;
 				break;
+
+			case Key.Back:
+				FilterText = FilterText.Substring( 0, FilterText.Length - 1 );
+				break;
 			}
 
 			int itemCount = FilteredItems.Count();
