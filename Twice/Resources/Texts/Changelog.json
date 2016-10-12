@@ -12,7 +12,8 @@
         "Fixes": [
             "Links in quoted statuses are now properly displayed and can be clicked",
             "Pause button in GIFs is now correctly toggled when repeat is disabled",
-            "Pressing the backspace key while having auto complete suggestions now behaves correctly"
+            "Pressing the backspace key while having auto complete suggestions now behaves correctly",
+            "Openeing a retweet multiple times no longer adds the same images of users that retweeted the status"
         ],
         "Issues": []
     },

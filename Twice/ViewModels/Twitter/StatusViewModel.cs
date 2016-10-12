@@ -65,7 +65,8 @@ namespace Twice.ViewModels.Twitter
 			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.GetStatusId(), Constants.Gui.MaxRetweets );
 			var retweeters = await Context.Twitter.Users.LookupUsers( ids );
 			var users = retweeters.Select( rt => new UserViewModel( rt ) );
-
+			
+			RetweetedBy.Clear();
 			RetweetedBy.AddRange( users );
 		}
 
