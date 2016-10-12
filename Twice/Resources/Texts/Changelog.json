@@ -3,13 +3,16 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+            "Auto complete suggestions in compose dialog can now be selected using a double click"
+        ],
         "Changes": [
             "Errors while loading statuses for columns are now displayed"
         ],
         "Fixes": [
             "Links in quoted statuses are now properly displayed and can be clicked",
-            "Pause button in GIFs is now correctly toggled when repeat is disabled"
+            "Pause button in GIFs is now correctly toggled when repeat is disabled",
+            "Pressing the backspace key while having auto complete suggestions now behaves correctly"
         ],
         "Issues": []
     },
