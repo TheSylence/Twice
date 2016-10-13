@@ -9,7 +9,8 @@
         ],
         "Changes": [
             "Errors while loading statuses for columns are now displayed",
-            "Images for twitter cards are now aligned top"
+            "Images for twitter cards are now aligned top",
+            "Image viewer now displays user friendly URLs for images extracted from image hosters"
         ],
         "Fixes": [
             "Links in quoted statuses are now properly displayed and can be clicked",

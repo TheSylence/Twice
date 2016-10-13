@@ -16,10 +16,10 @@ namespace Twice.ViewModels.Twitter
 
 	internal class StatusMediaViewModel : ObservableObject
 	{
-		public StatusMediaViewModel( Uri url )
+		public StatusMediaViewModel( Uri url, Uri displayUrl = null )
 		{
 			Url = MediaProxyServer.BuildUrl( url );
-			DisplayUrl = url;
+			DisplayUrl = displayUrl ?? url;
 			Type = MediaType.Image;
 		}
 
@@ -37,7 +37,7 @@ namespace Twice.ViewModels.Twitter
 
 			default:
 				Url = new Uri( entity.MediaUrl );
-				DisplayUrl = Url;
+				DisplayUrl = new Uri( entity.ExpandedUrl );
 				Type = MediaType.Image;
 				break;
 			}
