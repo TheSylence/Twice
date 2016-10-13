@@ -98,6 +98,8 @@ namespace Twice.Tests.Models.Scheduling
 			var scheduler = new Scheduler( "SchedulerTests.JobIsExecutedInThread.json", contextList.Object, config.Object,
 				proc.Object, 20 );
 			scheduler.Start();
+			bool set = false;
+
 			try
 			{
 				var job = new SchedulerJob
@@ -110,16 +112,17 @@ namespace Twice.Tests.Models.Scheduling
 				scheduler.AddJob( job );
 
 				// Act
-				bool set = waitHandle.Wait( 2000 );
+				set = waitHandle.Wait( 2000 );
 
-				// Assert
-				Assert.IsTrue( set );
-				proc.Verify( p => p.Process( It.IsAny<SchedulerJob>() ), Times.Once() );
 			}
 			finally
 			{
 				scheduler.Stop();
 			}
+
+			// Assert
+			Assert.IsTrue( set );
+			proc.Verify( p => p.Process( It.IsAny<SchedulerJob>() ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "Models.Scheduling" )]

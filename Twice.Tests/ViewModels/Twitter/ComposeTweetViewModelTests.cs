@@ -51,7 +51,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns(
 				Task.FromResult( media ) ).Verifiable();
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 			vm.Dispatcher = new SyncDispatcher();
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -97,7 +97,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -160,7 +160,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			};
 
 			// Act
-			await vm.OnLoad( null );
+			await vm.OnLoad( false );
 
 			// Assert
 			var usedAccount = vm.Accounts.SingleOrDefault( a => a.Use );
@@ -259,7 +259,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Text = "the_text"
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 
 			var waitHandle = new ManualResetEventSlim( false );
 			vm.PropertyChanged += ( s, e ) =>
@@ -331,7 +331,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			vm.SetReply( reply, true );
 
 			// Act
-			await vm.OnLoad( null );
+			await vm.OnLoad( false );
 
 			// Assert
 			Assert.IsTrue( vm.Text.Contains( "@them" ) );
@@ -402,7 +402,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -544,7 +544,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Text = "Hello World"
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 
 			var waitHandle = new ManualResetEventSlim( false );
 			vm.PropertyChanged += ( s, e ) =>
@@ -580,7 +580,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -620,7 +620,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var onlyWhitespace = vm.SendTweetCommand.CanExecute( null );
 
 			vm.Text = "test";
-			vm.Accounts.Add( new AccountEntry( contextEntry.Object ) );
+			vm.Accounts.Add( new AccountEntry( contextEntry.Object, false ) );
 			var noUsedAccounts = vm.SendTweetCommand.CanExecute( null );
 
 			vm.Accounts.First().Use = true;

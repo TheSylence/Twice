@@ -9,10 +9,15 @@ namespace Twice.ViewModels.Twitter
 {
 	internal class AccountEntry : ObservableObject
 	{
-		public AccountEntry( IContextEntry context )
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="loadImage">Disable this during tests so wpf won't try to load the image</param>
+		public AccountEntry( IContextEntry context, bool loadImage = true )
 		{
 			Context = context;
-			Image = new BitmapImage( context.ProfileImageUrl );
+			Image = loadImage ? new BitmapImage( context.ProfileImageUrl ) : new BitmapImage();
 		}
 
 		public event EventHandler UseChanged;

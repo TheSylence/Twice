@@ -8,10 +8,10 @@ namespace Twice.ViewModels.ColumnManagement
 {
 	internal class SourceAccountSelectorPage : WizardPageViewModel
 	{
-		public SourceAccountSelectorPage( IWizardViewModel wizard, ITwitterContextList contextList )
+		public SourceAccountSelectorPage( IWizardViewModel wizard, ITwitterContextList contextList, bool loadImages = true )
 			: base( wizard )
 		{
-			Accounts = contextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			Accounts = contextList.Contexts.Select( c => new AccountEntry( c, loadImages ) ).ToList();
 		}
 
 		protected override void ExecuteGotoNextPageCommand( object args )

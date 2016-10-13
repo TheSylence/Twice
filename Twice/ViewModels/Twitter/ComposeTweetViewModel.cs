@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Anotar.NLog;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -117,12 +118,20 @@ namespace Twice.ViewModels.Twitter
 
 		public async Task OnLoad( object data )
 		{
+			bool loadImage = data as bool? ?? true;
+
 			foreach( var acc in Accounts )
 			{
 				acc.UseChanged -= Acc_UseChanged;
 			}
 
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			Accounts = ContextList?.Contexts?.Select( c => new AccountEntry( c, loadImage ) ).ToList();
+			if( Accounts == null )
+			{
+				LogTo.Warn( "No accounts found" );
+				return;
+			}
+
 			foreach( var acc in Accounts )
 			{
 				acc.UseChanged += Acc_UseChanged;

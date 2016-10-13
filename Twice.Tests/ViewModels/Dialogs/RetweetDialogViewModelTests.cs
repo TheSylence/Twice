@@ -35,7 +35,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			vm.ContextList = contextList.Object;
 
 			// Act
-			await vm.OnLoad( null );
+			await vm.OnLoad( false );
 
 			// Assert
 			Assert.AreEqual( 2, vm.Accounts.Count );
@@ -59,13 +59,13 @@ namespace Twice.Tests.ViewModels.Dialogs
 			context2.SetupGet( c => c.RequiresConfirmation ).Returns( true );
 
 			// Act
-			vm.Accounts.Add( new AccountEntry( context.Object ) );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) );
 			bool noAccount = vm.ConfirmationRequired;
 
 			vm.Accounts.First().Use = true;
 			bool oneAccount = vm.ConfirmationRequired;
 
-			vm.Accounts.Add( new AccountEntry( context2.Object ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context2.Object, false ) {Use = true} );
 			bool requiredAccount = vm.ConfirmationRequired;
 
 			// Assert
@@ -101,7 +101,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			// Act
 			bool withoutAccount = vm.QuoteCommand.CanExecute( null );
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) );
 			bool withUnselectedAccount = vm.QuoteCommand.CanExecute( null );
 
 			vm.Accounts.First().Use = true;
@@ -134,8 +134,8 @@ namespace Twice.Tests.ViewModels.Dialogs
 				Status = statusVm,
 				ViewServiceRepository = viewServices.Object
 			};
-			vm.Accounts.Add( new AccountEntry( context.Object ) );
-			vm.Accounts.Add( new AccountEntry( context2.Object ) );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) );
+			vm.Accounts.Add( new AccountEntry( context2.Object, false ) );
 			vm.Accounts.First().Use = true;
 
 			// Act
@@ -156,7 +156,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			// Act
 			bool withoutAccount = vm.RetweetCommand.CanExecute( null );
 
-			vm.Accounts.Add( new AccountEntry( context.Object ) );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) );
 			bool withUnselectedAccount = vm.RetweetCommand.CanExecute( null );
 
 			vm.Accounts.First().Use = true;
@@ -207,7 +207,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			};
 
 			// Act
-			await vm.OnLoad( null );
+			await vm.OnLoad( false );
 			bool set = waitHandle.Wait( 1000 ) && notifyHandle.Wait( 1000 );
 
 			// Assert
