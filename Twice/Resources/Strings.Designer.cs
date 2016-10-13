@@ -700,6 +700,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter sensitive tweets.
+        /// </summary>
+        public static string FilterSensitiveTweets {
+            get {
+                return ResourceManager.GetString("FilterSensitiveTweets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finish.
         /// </summary>
         public static string Finish {
@@ -1519,6 +1528,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show content anyways.
+        /// </summary>
+        public static string ShowSensibleContent {
+            get {
+                return ResourceManager.GetString("ShowSensibleContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sound file.
         /// </summary>
         public static string SoundFile {
@@ -1659,6 +1677,15 @@ namespace Twice.Resources {
         public static string Tweet {
             get {
                 return ResourceManager.GetString("Tweet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This tweet may contain sensible content.
+        /// </summary>
+        public static string TweetContainsSensibleContent {
+            get {
+                return ResourceManager.GetString("TweetContainsSensibleContent", resourceCulture);
             }
         }
         

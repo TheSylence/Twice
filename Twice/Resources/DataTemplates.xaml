@@ -495,7 +495,8 @@
 								</StackPanel>
 							</DockPanel>
 
-							<StackPanel>
+							<Grid>
+								<StackPanel>
 								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
@@ -562,7 +563,18 @@
 									</controls1:FlipView.ItemTemplate>
 								</controls1:FlipView>
 							</StackPanel>
-
+								<Grid Visibility="{Binding HasSensibleContent, Converter={StaticResource BoolToVisibleConv}}" Background="{DynamicResource PrimaryHueLightBrush}">
+									<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+										<TextBlock Text="{lex:Loc TweetContainsSensibleContent}" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="5" TextAlignment="Center" />
+										<ContentControl HorizontalAlignment="Center" Margin="0,10,0,0">
+											<Hyperlink Command="{Binding DismissSensibleWarningCommand}">
+												<TextBlock Text="{lex:Loc ShowSensibleContent}" TextDecorations="Underline" />
+											</Hyperlink>
+										</ContentControl>
+									</StackPanel>
+								</Grid>
+							</Grid>
+							
 							<StackPanel Margin="5" Orientation="Horizontal" Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 								<ContentControl>
 									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
@@ -586,7 +598,7 @@
 
 					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 				</Grid>
-
+				
 				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
 						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<Grid.ColumnDefinitions>
@@ -625,7 +637,7 @@
 					</ItemsControl>
 				</Grid>
 			</StackPanel>
-
+			
 			<materialDesign:Card.ContextMenu>
 				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
 					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />

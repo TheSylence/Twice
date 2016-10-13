@@ -44,6 +44,7 @@ namespace Twice.ViewModels.Settings
 			CheckForUpdates = currentConfig.General.CheckForUpdates;
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
 			TweetFetchCount = currentConfig.General.TweetFetchCount;
+			FilterSensitiveTweets = currentConfig.General.FilterSensitiveTweets;
 		}
 
 		public Task OnLoad( object data )
@@ -58,6 +59,7 @@ namespace Twice.ViewModels.Settings
 			config.General.CheckForUpdates = CheckForUpdates;
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 			config.General.TweetFetchCount = Math.Min( 200, Math.Max( 20, TweetFetchCount ) );
+			config.General.FilterSensitiveTweets = FilterSensitiveTweets;
 		}
 
 		private static bool IsEnglish( CultureInfo lang )
@@ -97,6 +99,21 @@ namespace Twice.ViewModels.Settings
 		}
 
 		public ICommand ClearCacheCommand => _ClearCacheCommand ?? ( _ClearCacheCommand = new RelayCommand( ExecuteClearCacheCommand ) );
+
+		public bool FilterSensitiveTweets
+		{
+			[DebuggerStepThrough] get { return _FilterSensitiveTweets; }
+			set
+			{
+				if( _FilterSensitiveTweets == value )
+				{
+					return;
+				}
+
+				_FilterSensitiveTweets = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public bool IncludePrereleaseUpdates
 		{
@@ -164,6 +181,8 @@ namespace Twice.ViewModels.Settings
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CheckForUpdates;
 
 		private RelayCommand _ClearCacheCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _FilterSensitiveTweets;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IncludePrereleaseUpdates;
 

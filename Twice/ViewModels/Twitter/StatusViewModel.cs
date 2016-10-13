@@ -40,6 +40,7 @@ namespace Twice.ViewModels.Twitter
 				SourceUser = null;
 			}
 
+			HasSensibleContent = config?.General?.FilterSensitiveTweets == true && Model.PossiblySensitive;
 			User = new UserViewModel( Model.User );
 			Dispatcher = new DispatcherHelperWrapper();
 			RetweetedBy = new SmartCollection<UserViewModel>();

@@ -10,6 +10,7 @@ namespace Twice.ViewModels.Settings
 		ICollection<CultureInfo> AvailableLanguages { get; }
 		bool CheckForUpdates { get; set; }
 		ICommand ClearCacheCommand { get; }
+		bool FilterSensitiveTweets { get; set; }
 		bool IncludePrereleaseUpdates { get; set; }
 		bool RealtimeStreaming { get; set; }
 		CultureInfo SelectedLanguage { get; }

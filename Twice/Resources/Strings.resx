@@ -717,4 +717,13 @@
   <data name="ClearCache" xml:space="preserve">
     <value>Clear cache</value>
   </data>
+  <data name="FilterSensitiveTweets" xml:space="preserve">
+    <value>Filter sensitive tweets</value>
+  </data>
+  <data name="TweetContainsSensibleContent" xml:space="preserve">
+    <value>This tweet may contain sensible content</value>
+  </data>
+  <data name="ShowSensibleContent" xml:space="preserve">
+    <value>Show content anyways</value>
+  </data>
 </root>
