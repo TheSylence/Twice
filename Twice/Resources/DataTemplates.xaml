@@ -22,7 +22,7 @@
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
-							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,0,3,0" />
+							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
@@ -44,7 +44,7 @@
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
-							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,0,3,0" />
+							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />

@@ -8,7 +8,8 @@
             "Sensible content can be hidden if wanted"
         ],
         "Changes": [
-            "Errors while loading statuses for columns are now displayed"
+            "Errors while loading statuses for columns are now displayed",
+            "Images for twitter cards are now aligned top"
         ],
         "Fixes": [
             "Links in quoted statuses are now properly displayed and can be clicked",
