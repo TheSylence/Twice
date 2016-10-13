@@ -180,11 +180,12 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		protected Task<MessageViewModel> CreateViewModel( DirectMessage m )
+		protected async Task<MessageViewModel> CreateViewModel( DirectMessage m )
 		{
-			var vm = new MessageViewModel( m, Context, ViewServiceRepository );
+			var vm = new MessageViewModel( m, Context, Configuration, ViewServiceRepository );
+			await vm.LoadDataAsync();
 
-			return Task.FromResult( vm );
+			return vm;
 		}
 
 		protected async Task<StatusViewModel> CreateViewModel( Status s )

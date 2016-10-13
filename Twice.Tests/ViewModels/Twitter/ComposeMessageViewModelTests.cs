@@ -83,7 +83,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var resolver = new Mock<ITypeResolver>();
 			var context = new Mock<IContextEntry>();
 			resolver.Setup( r => r.Resolve( typeof( MessageViewModel ) ) )
-				.Returns( new MessageViewModel( DummyGenerator.CreateDummyMessage(), context.Object, null ) );
+				.Returns( new MessageViewModel( DummyGenerator.CreateDummyMessage(), context.Object, null, null ) );
 
 			var vm = new ComposeMessageViewModel();
 			var tester = new PropertyChangedTester( vm, false, resolver.Object );

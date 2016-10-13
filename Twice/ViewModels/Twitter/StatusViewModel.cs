@@ -22,10 +22,9 @@ namespace Twice.ViewModels.Twitter
 	internal class StatusViewModel : ColumnItem
 	{
 		public StatusViewModel( Status model, IContextEntry context, IConfig config, IViewServiceRepository viewServiceRepo )
+			: base( config, viewServiceRepo )
 		{
-			Config = config;
 			Context = context;
-			ViewServiceRepository = viewServiceRepo;
 
 			Model = model;
 			OriginalStatus = Model;
@@ -54,7 +53,7 @@ namespace Twice.ViewModels.Twitter
 				: TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
 		}
 
-		public async Task LoadDataAsync()
+		public override async Task LoadDataAsync()
 		{
 			// ReSharper disable once UnusedVariable
 			var dontWait = LoadCard();
@@ -239,16 +238,6 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.RetweetStatus( this );
 		}
 
-		private async void Image_OpenRequested( object sender, EventArgs args )
-		{
-			var selected = sender as StatusMediaViewModel;
-			Debug.Assert( selected != null );
-
-			var allUris = InlineMedias.ToList();
-			var selectedUri = selected;
-
-			await ViewServiceRepository.ViewImage( allUris, selectedUri );
-		}
 
 		private async Task LoadCard()
 		{
@@ -382,8 +371,6 @@ namespace Twice.ViewModels.Twitter
 
 		public IDispatcher Dispatcher { get; set; }
 
-		public bool DisplayMedia => InlineMedias.Any();
-
 		public override Entities Entities
 		{
 			get
@@ -436,19 +423,11 @@ namespace Twice.ViewModels.Twitter
 
 		public override ulong Id => Model.StatusID;
 
-		public IEnumerable<StatusMediaViewModel> InlineMedias => _InlineMedias;
-
 		public bool IsFavorited => Model.Favorited;
 
 		public bool IsReply => Model.InReplyToStatusID != 0;
 
 		public bool IsRetweeted => Model.Retweeted;
-
-		public IMediaExtractorRepository MediaExtractor
-		{
-			get { return _MediaExtractor ?? DefaultMediaExtractor; }
-			set { _MediaExtractor = value; }
-		}
 
 		public Status Model { get; }
 
@@ -488,15 +467,49 @@ namespace Twice.ViewModels.Twitter
 
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 
-		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
+		protected override async Task LoadInlineMedias()
+		{
+			if( Config?.Visual?.InlineMedia != true )
+			{
+				return;
+			}
 
-		private readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
+			var videos = (Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+						   Enumerable.Empty<MediaEntity>() ).ToArray();
 
-		private readonly IConfig Config;
+			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+
+			var entities = mediaEntities.Concat( extendedEntities ).Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer );
+
+			entities = entities.Concat( videos );
+
+			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+			{
+				vm.OpenRequested += Image_OpenRequested;
+				_InlineMedias.Add( vm );
+			}
+
+			var urlEntities = Model?.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var extendedUrlEntities = Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var urls = urlEntities.Concat( extendedUrlEntities ).Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
+
+			foreach( var url in urls )
+			{
+				var extracted = await MediaExtractor.ExtractMedia( url );
+				if( extracted != null )
+				{
+					var vm = new StatusMediaViewModel( extracted );
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
+				}
+			}
+
+			RaisePropertyChanged( nameof( InlineMedias ) );
+		}
 
 		private readonly Status OriginalStatus;
 
-		private readonly IViewServiceRepository ViewServiceRepository;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
 
@@ -515,8 +528,6 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
-
-		private IMediaExtractorRepository _MediaExtractor;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
 
