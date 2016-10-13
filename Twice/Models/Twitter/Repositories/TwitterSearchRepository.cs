@@ -77,6 +77,6 @@ namespace Twice.Models.Twitter.Repositories
 			return Context.User.Where( s => s.Type == UserType.Search && s.Query == query ).ToListAsync();
 		}
 
-		public TwitterQueryable<Search> Queryable => Context.Search;
+		private TwitterQueryable<Search> Queryable => Context.Search;
 	}
 }

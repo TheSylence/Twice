@@ -132,6 +132,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public INotifier Notifier { get; set; }
 
 		public string Recipient

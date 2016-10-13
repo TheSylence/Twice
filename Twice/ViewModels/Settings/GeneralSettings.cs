@@ -81,6 +81,7 @@ namespace Twice.ViewModels.Settings
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public ICache Cache { get; set; }
 
 		public bool CheckForUpdates
@@ -131,6 +132,7 @@ namespace Twice.ViewModels.Settings
 		}
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public INotifier Notifier { get; set; }
 
 		public bool RealtimeStreaming

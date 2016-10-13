@@ -98,7 +98,7 @@ namespace Twice.Tests.Models.Scheduling
 			var scheduler = new Scheduler( "SchedulerTests.JobIsExecutedInThread.json", contextList.Object, config.Object,
 				proc.Object, 20 );
 			scheduler.Start();
-			bool set = false;
+			bool set;
 
 			try
 			{

@@ -101,6 +101,7 @@ namespace Twice.ViewModels.Columns
 		}
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public ICache Cache { get; set; }
 
 		[Inject]
@@ -110,18 +111,22 @@ namespace Twice.ViewModels.Columns
 		public ITwitterContextList Contexts { get; set; }
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public IDispatcher Dispatcher { get; set; }
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public IStatusMuter Muter { get; set; }
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public IScheduler Scheduler { get; set; }
 
 		[Inject]
 		public IStreamingRepository StreamingRepo { get; set; }
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public IViewServiceRepository ViewServiceRepository { get; set; }
 
 		private readonly Dictionary<ColumnType, Func<ColumnArgumentsData, ColumnViewModelBase>> FactoryMap;
