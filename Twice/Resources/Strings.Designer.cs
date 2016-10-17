@@ -1573,6 +1573,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removed {0} muted statuses.
+        /// </summary>
+        public static string StatusesMuted {
+            get {
+                return ResourceManager.GetString("StatusesMuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stay open.
         /// </summary>
         public static string StayOpen {

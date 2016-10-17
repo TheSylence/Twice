@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [
             "Auto complete suggestions in compose dialog can now be selected using a double click",
-            "Sensible content can be hidden if wanted"
+            "Sensible content can be hidden if wanted",
+            "Mutings are now applied to already loaded columns"
         ],
         "Changes": [
             "Errors while loading statuses for columns are now displayed",

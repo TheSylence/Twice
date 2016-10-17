@@ -726,4 +726,7 @@
   <data name="ShowSensibleContent" xml:space="preserve">
     <value>Inhalt trotzdem anzeigen</value>
   </data>
+  <data name="StatusesMuted" xml:space="preserve">
+    <value>{0} stummgeschaltete Tweets entfernt</value>
+  </data>
 </root>

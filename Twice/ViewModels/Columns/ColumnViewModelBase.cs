@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Ninject;
+using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -38,6 +39,7 @@ namespace Twice.ViewModels.Columns
 			IsLoading = true;
 			Items = ItemCollection = new SmartCollection<ColumnItem>();
 			Parser = parser;
+			MessengerInstance.Register<FilterUpdateMessage>( this, OnFiltersUpdated );
 
 			ColumnConfiguration = new ColumnConfigurationViewModel( definition );
 			ColumnConfiguration.Saved += ColumnConfiguration_Saved;
@@ -374,6 +376,22 @@ namespace Twice.ViewModels.Columns
 			}
 
 			return ItemCollection.Count;
+		}
+
+		private async void OnFiltersUpdated( FilterUpdateMessage msg )
+		{
+			var toDelete = new List<StatusViewModel>();
+
+			foreach( var item in Items.OfType<StatusViewModel>() )
+			{
+				if( Muter.IsMuted( item.Model ) )
+				{
+					toDelete.Add( item );
+				}
+			}
+
+			msg.RemoveCount += toDelete.Count;
+			await Dispatcher.RunAsync( () => toDelete.ForEach( it => Items.Remove( it ) ) );
 		}
 
 		private async void Parser_DirectMessageReceived( object sender, DirectMessageStreamEventArgs e )

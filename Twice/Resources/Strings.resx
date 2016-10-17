@@ -726,4 +726,7 @@
   <data name="ShowSensibleContent" xml:space="preserve">
     <value>Show content anyways</value>
   </data>
+  <data name="StatusesMuted" xml:space="preserve">
+    <value>Removed {0} muted statuses</value>
+  </data>
 </root>

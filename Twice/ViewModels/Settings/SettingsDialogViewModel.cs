@@ -19,6 +19,16 @@ namespace Twice.ViewModels.Settings
 			Title = Strings.Settings;
 		}
 
+		public async Task OnLoad( object data )
+		{
+			await Task.WhenAll(
+				General.OnLoad( data ),
+				Visual.OnLoad( data ),
+				Mute.OnLoad( data ),
+				Notifications.OnLoad( data )
+			);
+		}
+
 		protected override Task<bool> OnOk()
 		{
 			using( new WaitOperation() )
@@ -31,16 +41,6 @@ namespace Twice.ViewModels.Settings
 			}
 
 			return base.OnOk();
-		}
-
-		public async Task OnLoad( object data )
-		{
-			await Task.WhenAll(
-				General.OnLoad( data ),
-				Visual.OnLoad( data ),
-				Mute.OnLoad( data ),
-				Notifications.OnLoad( data )
-				);
 		}
 
 		public IGeneralSettings General { get; }

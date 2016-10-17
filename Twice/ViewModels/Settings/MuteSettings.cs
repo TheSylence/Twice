@@ -6,7 +6,9 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
 using Resourcer;
+using Twice.Messages;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Views.Services;
@@ -40,6 +42,8 @@ namespace Twice.ViewModels.Settings
 			EditData = null;
 		}
 
+		bool Changed;
+
 		private void EditData_Saved( object sender, MuteEditArgs e )
 		{
 			Entries.Remove( SelectedEntry );
@@ -61,6 +65,7 @@ namespace Twice.ViewModels.Settings
 			EditData.Cancelled -= EditData_Cancelled;
 			EditData.Saved -= EditData_Saved;
 			EditData = null;
+			Changed = true;
 		}
 
 		private void ExecuteAddCommand()
@@ -97,6 +102,7 @@ namespace Twice.ViewModels.Settings
 
 			Entries.Remove( SelectedEntry );
 			SelectedEntry = null;
+			Changed = true;
 		}
 
 		public Task OnLoad( object data )
@@ -108,6 +114,18 @@ namespace Twice.ViewModels.Settings
 		{
 			config.Mute.Entries.Clear();
 			config.Mute.Entries.AddRange( Entries );
+			
+			if( Changed )
+			{
+				var msg = new FilterUpdateMessage();
+				MessengerInstance.Send( msg );
+
+				if( msg.RemoveCount > 0 )
+				{
+					var str = string.Format( Strings.StatusesMuted, msg.RemoveCount );
+					Notifier.DisplayMessage( str, NotificationType.Information );
+				}
+			}
 		}
 
 		public ICommand AddCommand => _AddCommand ?? ( _AddCommand = new RelayCommand( ExecuteAddCommand ) );
@@ -129,6 +147,9 @@ namespace Twice.ViewModels.Settings
 				RaisePropertyChanged();
 			}
 		}
+
+		[Inject]
+		public INotifier Notifier { get; set; }
 
 		public ICollection<MuteEntry> Entries { get; }
 
