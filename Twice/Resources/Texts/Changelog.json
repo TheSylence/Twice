@@ -1,7 +1,7 @@
 ﻿[
     {
-        "Version": "0.x.x",
-        "Date": "9999-12-31",
+        "Version": "0.8.0",
+        "Date": "2016-10-17",
         "Description": "",
         "NewFeatures": [
             "Auto complete suggestions in compose dialog can now be selected using a double click",
