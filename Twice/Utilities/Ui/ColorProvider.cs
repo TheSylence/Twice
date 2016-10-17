@@ -1,10 +1,10 @@
-﻿using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 
 namespace Twice.Utilities.Ui
 {
@@ -15,11 +15,6 @@ namespace Twice.Utilities.Ui
 		{
 			Swatches = new SwatchesProvider();
 			Palette = new PaletteHelper();
-		}
-
-		public Color GetColorByName( string name )
-		{
-			return Swatches.Swatches.First( s => s.Name == name ).ExemplarHue.Color;
 		}
 
 		public void SetAccentColor( string name )
@@ -55,6 +50,11 @@ namespace Twice.Utilities.Ui
 		public void SetPrimaryColor( string name )
 		{
 			Palette.ReplacePrimaryColor( name );
+		}
+
+		private Color GetColorByName( string name )
+		{
+			return Swatches.Swatches.First( s => s.Name == name ).ExemplarHue.Color;
 		}
 
 		public IEnumerable<Swatch> AvailableAccentColors => Swatches.Swatches.Where( a => a.IsAccented );

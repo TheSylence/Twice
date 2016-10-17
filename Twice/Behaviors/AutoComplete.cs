@@ -8,16 +8,21 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	///     Behavior that can be attached to a TextBox to allow autocomplete functionality.
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class AutoComplete : BehaviorBase<TextBox>
 	{
 		public AutoComplete()
 		{
 			AutoCompleteBox = new ListView();
+			AutoCompleteBox.MouseDoubleClick += AutoCompleteBox_MouseDoubleClick;
 
 			AutoCompletePopup = new Popup
 			{
@@ -69,19 +74,9 @@ namespace Twice.Behaviors
 				break;
 
 			case Key.Return:
-				var filter = FilterText ?? string.Empty;
-				var insertText = filter + FilteredItems.ElementAt( AutoCompleteBox.SelectedIndex ).Substring( filter.Length );
-				var currentCaret = AssociatedObject.CaretIndex;
-
-				string newText = AssociatedObject.Text;
-				newText = newText.Remove( currentCaret - filter.Length, filter.Length );
-				currentCaret -= filter.Length;
-				newText = newText.Insert( currentCaret, insertText );
+				InsertText();
 
 				close = true;
-
-				AssociatedObject.Text = newText;
-				AssociatedObject.CaretIndex = currentCaret + insertText.Length;
 				break;
 
 			case Key.Up:
@@ -92,6 +87,10 @@ namespace Twice.Behaviors
 			case Key.Down:
 				AutoCompleteBox.SelectedIndex++;
 				e.Handled = true;
+				break;
+
+			case Key.Back:
+				FilterText = FilterText.Substring( 0, FilterText.Length - 1 );
 				break;
 			}
 
@@ -107,12 +106,17 @@ namespace Twice.Behaviors
 
 			if( close )
 			{
-				FilterText = string.Empty;
 				e.Handled = true;
-				AutoCompletePopup.IsOpen = false;
-				Mode = SourceMode.None;
-				AssociatedObject.Focus();
+				CloseAutoCompleteBox();
 			}
+		}
+
+		private void CloseAutoCompleteBox()
+		{
+			FilterText = string.Empty;
+			AutoCompletePopup.IsOpen = false;
+			Mode = SourceMode.None;
+			AssociatedObject.Focus();
 		}
 
 		private void AssociatedObject_TextInput( object sender, TextCompositionEventArgs e )
@@ -154,9 +158,41 @@ namespace Twice.Behaviors
 			}
 		}
 
+		private void AutoCompleteBox_MouseDoubleClick( object sender, MouseButtonEventArgs e )
+		{
+			DependencyObject obj = (DependencyObject)e.OriginalSource;
+
+			while( obj != null && obj != AutoCompleteBox )
+			{
+				if( obj.GetType() == typeof( ListViewItem ) )
+				{
+					InsertText();
+					e.Handled = true;
+					CloseAutoCompleteBox();
+					break;
+				}
+				obj = VisualTreeHelper.GetParent( obj );
+			}
+		}
+
 		private void AutoCompletePopup_Closed( object sender, EventArgs e )
 		{
 			FilterText = string.Empty;
+		}
+
+		private void InsertText()
+		{
+			var filter = FilterText ?? string.Empty;
+			var insertText = filter + FilteredItems.ElementAt( AutoCompleteBox.SelectedIndex ).Substring( filter.Length );
+			var currentCaret = AssociatedObject.CaretIndex;
+
+			string newText = AssociatedObject.Text;
+			newText = newText.Remove( currentCaret - filter.Length, filter.Length );
+			currentCaret -= filter.Length;
+			newText = newText.Insert( currentCaret, insertText );
+
+			AssociatedObject.Text = newText;
+			AssociatedObject.CaretIndex = currentCaret + insertText.Length;
 		}
 
 		public IEnumerable<string> Hashtags

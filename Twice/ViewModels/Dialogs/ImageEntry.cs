@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Dialogs
 			DisplayUrl = media.DisplayUrl;
 		}
 
-		public Uri DisplayUrl { get; set; }
+		public Uri DisplayUrl { get; }
 		public Uri ImageUrl { get; set; }
 		public bool IsAnimated { get; set; }
 		public string Title { get; set; }

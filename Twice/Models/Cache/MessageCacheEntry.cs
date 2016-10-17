@@ -41,9 +41,9 @@ namespace Twice.Models.Cache
 			return new MessageCacheEntry( (ulong)id, (ulong)sender, (ulong)recipient, data );
 		}
 
-		public string Data { get; set; }
-		public ulong Id { get; set; }
-		public ulong Recipient { get; set; }
-		public ulong Sender { get; set; }
+		public string Data { get; }
+		public ulong Id { get;}
+		public ulong Recipient { get; }
+		public ulong Sender { get; }
 	}
 }

@@ -25,7 +25,7 @@ namespace Twice.Tests.Models.Proxy
 			responseMsg.Content.Headers.ContentLength = 4;
 
 			var client = new Mock<IHttpClient>();
-			client.Setup( c => c.GetAsync( new Uri( "https://example.com" ) ) ).Returns( Task.FromResult( responseMsg ) );
+			client.Setup( c => c.GetAsync( new Uri( "https://example.com" ), null ) ).Returns( Task.FromResult( responseMsg ) );
 			var proxy = new MediaProxyServer( client.Object );
 
 			var request = new Mock<IHttpRequest>();
@@ -84,7 +84,7 @@ namespace Twice.Tests.Models.Proxy
 		{
 			// Arrange
 			var client = new Mock<IHttpClient>();
-			client.Setup( c => c.GetAsync( It.IsAny<Uri>() ) ).Verifiable();
+			client.Setup( c => c.GetAsync( It.IsAny<Uri>(), null ) ).Verifiable();
 			var proxy = new MediaProxyServer( client.Object );
 
 			var request = new Mock<IHttpRequest>();
@@ -97,7 +97,7 @@ namespace Twice.Tests.Models.Proxy
 			await proxy.HandleRequest( request.Object, response.Object );
 
 			// Assert
-			client.Verify( c => c.GetAsync( It.IsAny<Uri>() ), Times.Never() );
+			client.Verify( c => c.GetAsync( It.IsAny<Uri>(), null ), Times.Never() );
 		}
 
 		[TestMethod, TestCategory( "Models.Proxy" )]
@@ -106,12 +106,13 @@ namespace Twice.Tests.Models.Proxy
 			// Arrange
 			var responseMsg = new HttpResponseMessage( HttpStatusCode.NotFound );
 			var client = new Mock<IHttpClient>();
-			client.Setup( c => c.GetAsync( new Uri( "https://example.com" ) ) ).Returns( Task.FromResult( responseMsg ) );
+			client.Setup( c => c.GetAsync( new Uri( "https://example.com" ), null ) ).Returns( Task.FromResult( responseMsg ) );
 
 			var proxy = new MediaProxyServer( client.Object );
 
 			var request = new Mock<IHttpRequest>();
 			request.Setup( c => c.GetQueryParameter( "stream" ) ).Returns( "https://example.com" );
+			request.Setup( c => c.GetQueryParameter( "user" ) ).Returns( string.Empty );
 
 			var response = new Mock<IHttpResponse>();
 			response.Setup( c => c.SetStatus( 404, It.IsAny<string>() ) ).Verifiable();
@@ -135,7 +136,7 @@ namespace Twice.Tests.Models.Proxy
 			// Act
 			try
 			{
-				proxy.Start();
+				proxy.Start( null );
 			}
 			finally
 			{
@@ -157,7 +158,7 @@ namespace Twice.Tests.Models.Proxy
 			// Act
 			try
 			{
-				proxy.Start();
+				proxy.Start( null );
 			}
 			finally
 			{

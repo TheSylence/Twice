@@ -115,6 +115,86 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ExceptionInTopDataLoadingIsNotified()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ) ).ThrowsAsync( new Exception( "test error" ) );
+
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "test error", NotificationType.Error ) ).Verifiable();
+
+			context.SetupGet( c => c.Notifier ).Returns( notifier.Object );
+
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
+			var parser = new Mock<IStreamParser>();
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( nameof( ColumnViewModelBase.IsLoading ).Equals( e.PropertyName ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.ActionDispatcher.OnHeaderClicked();
+
+			bool handleSet = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( handleSet );
+
+			context.Verify( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( "test error", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ExceptionInMoreDataLoadingIsNotified()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ) ).ThrowsAsync( new Exception( "test error" ) );
+
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "test error", NotificationType.Error ) ).Verifiable();
+
+			context.SetupGet( c => c.Notifier ).Returns( notifier.Object );
+
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			var parser = new Mock<IStreamParser>();
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( nameof( ColumnViewModelBase.IsLoading ).Equals( e.PropertyName ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.ActionDispatcher.OnBottomReached();
+
+			bool handleSet = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( handleSet );
+
+			context.Verify( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( "test error", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public async Task InitialLoadingAddsStatuses()
 		{
 			// Arrange

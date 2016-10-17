@@ -152,6 +152,7 @@ namespace Twice.Tests.ViewModels.Main
 			var columnFactory = new Mock<IColumnFactory>();
 
 			// Act
+			// ReSharper disable once UnusedVariable
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 			contextList.Raise( ctx => ctx.ContextsChanged += null, EventArgs.Empty );
 
@@ -178,6 +179,7 @@ namespace Twice.Tests.ViewModels.Main
 			var columnFactory = new Mock<IColumnFactory>();
 			columnFactory.Setup( c => c.Construct( It.Is( columnVerifier ) ) ).Returns( column.Object );
 
+			// ReSharper disable once UnusedVariable
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 
 			// Act

@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using Anotar.NLog;
 
 namespace Twice.Behaviors
@@ -45,6 +44,10 @@ namespace Twice.Behaviors
 			{
 				AssociatedObject.Position = TimeSpan.Zero;
 				AssociatedObject.Play();
+			}
+			else
+			{
+				IsPlaying = false;
 			}
 		}
 
@@ -119,6 +122,8 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty IsAnimatedProperty =
 			DependencyProperty.Register( "IsAnimated", typeof( bool ), typeof( MediaController ), new PropertyMetadata( false ) );
+
+		
 
 		public static readonly DependencyProperty IsPlayingProperty =
 			DependencyProperty.Register( "IsPlaying", typeof( bool ), typeof( MediaController ), new PropertyMetadata( true, OnIsPlayingChanged ) );

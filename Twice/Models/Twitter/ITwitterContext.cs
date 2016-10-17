@@ -28,5 +28,6 @@ namespace Twice.Models.Twitter
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }
+		string GetAuthorizationString( string requestUrl, string method = "GET" );
 	}
 }

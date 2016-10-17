@@ -43,6 +43,6 @@ namespace Twice.Models.Twitter.Repositories
 				.SelectMany( f => f.Users ).ToListAsync();
 		}
 
-		public TwitterQueryable<Friendship> Queryable => Context.Friendship;
+		private TwitterQueryable<Friendship> Queryable => Context.Friendship;
 	}
 }

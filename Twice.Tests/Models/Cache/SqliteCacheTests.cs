@@ -117,6 +117,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
+				// ReSharper disable once AccessToDisposedClosure
 				var ex = await ExceptionAssert.CatchAsync<Exception>( () => cache.AddHashtags( new List<string>() ) );
 
 				// Assert

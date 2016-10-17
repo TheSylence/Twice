@@ -4,6 +4,10 @@ using System.Windows.Interactivity;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Base class for a behavior that handles proper unloading.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public abstract class BehaviorBase<T> : Behavior<T> where T : FrameworkElement
 	{
 		protected override void OnChanged()

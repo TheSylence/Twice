@@ -74,6 +74,6 @@ namespace Twice.Tests.ViewModels.Main
 
 		public override Icon Icon { get; }
 		protected override Expression<Func<Status, bool>> StatusFilterExpression { get; }
-		public readonly Func<Status, bool> SuitableCheck = s => true;
+		private readonly Func<Status, bool> SuitableCheck = s => true;
 	}
 }

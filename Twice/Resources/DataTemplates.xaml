@@ -22,7 +22,7 @@
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
-							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,0,3,0" />
+							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
@@ -44,7 +44,7 @@
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
-							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,0,3,0" />
+							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
@@ -214,6 +214,61 @@
 							<StackPanel>
 								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+
+								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+									<controls1:FlipView.ItemTemplate>
+										<DataTemplate>
+											<Grid>
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+													<i:Interaction.Behaviors>
+														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+													</i:Interaction.Behaviors>
+												</MediaElement>
+
+												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
+													<StackPanel.Resources>
+														<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+															<Style.Triggers>
+																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
+																			Value="False">
+																	<Setter Property="Visibility" Value="Hidden" />
+																</DataTrigger>
+															</Style.Triggers>
+															<Setter Property="Margin" Value="5" />
+														</Style>
+													</StackPanel.Resources>
+
+													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Repeat" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="RepeatOff" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Play" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="Pause" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="VolumeOff" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="VolumeHigh" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+												</StackPanel>
+											</Grid>
+										</DataTemplate>
+									</controls1:FlipView.ItemTemplate>
+								</controls1:FlipView>
 							</StackPanel>
 						</StackPanel>
 					</Grid>
@@ -495,7 +550,8 @@
 								</StackPanel>
 							</DockPanel>
 
-							<StackPanel>
+							<Grid>
+								<StackPanel>
 								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
@@ -512,10 +568,11 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
-												<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
-														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" IsPlaying="{Binding IsPlaying}" Loop="{Binding Loop}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 													</i:Interaction.Behaviors>
 												</MediaElement>
 
@@ -561,7 +618,18 @@
 									</controls1:FlipView.ItemTemplate>
 								</controls1:FlipView>
 							</StackPanel>
-
+								<Grid Visibility="{Binding HasSensibleContent, Converter={StaticResource BoolToVisibleConv}}" Background="{DynamicResource PrimaryHueLightBrush}">
+									<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+										<TextBlock Text="{lex:Loc TweetContainsSensibleContent}" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="5" TextAlignment="Center" />
+										<ContentControl HorizontalAlignment="Center" Margin="0,10,0,0">
+											<Hyperlink Command="{Binding DismissSensibleWarningCommand}">
+												<TextBlock Text="{lex:Loc ShowSensibleContent}" TextDecorations="Underline" />
+											</Hyperlink>
+										</ContentControl>
+									</StackPanel>
+								</Grid>
+							</Grid>
+							
 							<StackPanel Margin="5" Orientation="Horizontal" Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 								<ContentControl>
 									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
@@ -585,7 +653,7 @@
 
 					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 				</Grid>
-
+				
 				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
 						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<Grid.ColumnDefinitions>
@@ -624,7 +692,7 @@
 					</ItemsControl>
 				</Grid>
 			</StackPanel>
-
+			
 			<materialDesign:Card.ContextMenu>
 				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
 					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
 using GalaSoft.MvvmLight.CommandWpf;
 using Twice.ViewModels.Twitter;
 
@@ -18,12 +19,20 @@ namespace Twice.ViewModels.Dialogs
 
 		public Task OnLoad( object data )
 		{
+			bool loadImages = data as bool? ?? true;
+
 			foreach( var acc in Accounts )
 			{
 				acc.UseChanged -= Acc_UseChanged;
 			}
 
-			Accounts = ContextList.Contexts.Select( c => new AccountEntry( c ) ).ToList();
+			Accounts = ContextList?.Contexts?.Select( c => new AccountEntry( c, loadImages ) ).ToList();
+			if( Accounts == null )
+			{
+				LogTo.Warn( "No accounts found" );
+				return Task.CompletedTask;
+			}
+
 			foreach( var acc in Accounts )
 			{
 				acc.UseChanged += Acc_UseChanged;

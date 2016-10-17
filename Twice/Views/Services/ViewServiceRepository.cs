@@ -321,6 +321,7 @@ namespace Twice.Views.Services
 		}
 
 		[Inject]
+		// ReSharper disable once MemberCanBePrivate.Global
 		public IDispatcher Dispatcher { get; set; }
 
 		private static MetroWindow Window

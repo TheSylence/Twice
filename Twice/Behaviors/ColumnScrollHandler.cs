@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using Twice.ViewModels.Columns;
 
 namespace Twice.Behaviors

@@ -3,7 +3,7 @@
 namespace Twice.Tests.Models.Twitter
 {
 	[TestClass]
-	internal class TweetHelperTests
+	public class TweetHelperTests
 	{
 	}
 }

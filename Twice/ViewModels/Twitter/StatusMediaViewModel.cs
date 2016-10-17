@@ -16,28 +16,28 @@ namespace Twice.ViewModels.Twitter
 
 	internal class StatusMediaViewModel : ObservableObject
 	{
-		public StatusMediaViewModel( Uri url )
+		public StatusMediaViewModel( Uri url, Uri displayUrl = null )
 		{
 			Url = MediaProxyServer.BuildUrl( url );
-			DisplayUrl = url;
+			DisplayUrl = displayUrl ?? url;
 			Type = MediaType.Image;
 		}
 
-		public StatusMediaViewModel( MediaEntity entity )
+		public StatusMediaViewModel( MediaEntity entity, ulong userId = 0 )
 		{
 			Entity = entity;
 			switch( entity.Type )
 			{
 			case "animated_gif":
 			case "video":
-				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url );
+				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url, userId );
 				DisplayUrl = new Uri( entity.VideoInfo.Variants[0].Url );
 				Type = MediaType.Animated;
 				break;
 
 			default:
-				Url = new Uri( entity.MediaUrl );
-				DisplayUrl = Url;
+				Url = MediaProxyServer.BuildUrl( entity.MediaUrl, userId );
+				DisplayUrl = new Uri( entity.ExpandedUrl );
 				Type = MediaType.Image;
 				break;
 			}

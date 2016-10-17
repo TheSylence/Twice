@@ -57,7 +57,7 @@ namespace Twice.ViewModels.Columns
 			}
 
 			var userVm = new UserViewModel( user );
-			var item = new ScheduleItem( job, userVm, Scheduler, ViewServiceRepository );
+			var item = new ScheduleItem( job, userVm, Scheduler, Configuration, ViewServiceRepository );
 			return item;
 		}
 

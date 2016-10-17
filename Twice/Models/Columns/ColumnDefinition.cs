@@ -45,7 +45,7 @@ namespace Twice.Models.Columns
 		public ColumnNotifications Notifications { get; set; }
 		public ulong[] SourceAccounts { get; set; }
 		public ulong[] TargetAccounts { get; set; }
-		public ColumnType Type { get; set; }
+		public ColumnType Type { get; }
 		public int Width { get; set; }
 	}
 }

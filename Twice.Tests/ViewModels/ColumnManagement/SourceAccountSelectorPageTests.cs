@@ -35,7 +35,7 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 
-			var vm = new SourceAccountSelectorPage( wizard.Object, contextList.Object );
+			var vm = new SourceAccountSelectorPage( wizard.Object, contextList.Object, false );
 
 			// Act
 			var userIds = vm.Accounts.Select( c => c.Context.UserId ).ToArray();

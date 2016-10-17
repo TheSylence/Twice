@@ -4,6 +4,9 @@ using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Allows manipulation of the cursor of a text box from a view model.
+	/// </summary>
 	internal class CursorMovement : BehaviorBase<TextBox>
 	{
 		private static void OnControllerChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )

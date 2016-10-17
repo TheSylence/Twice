@@ -69,8 +69,11 @@
 						<ComboBox Margin="{StaticResource Spacing}" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 								  DisplayMemberPath="NativeName" />
 
-						<CheckBox Content="{lex:Loc StreamContentInRealtime}" Margin="{StaticResource Spacing}"
+						<CheckBox Content="{lex:Loc StreamContentInRealtime}"
 								  IsChecked="{Binding RealtimeStreaming,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+						<CheckBox Content="{lex:Loc FilterSensitiveTweets}" Margin="{StaticResource Spacing}"
+								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						
 						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"
@@ -80,9 +83,10 @@
 							<TextBlock Text="{lex:Loc TweetFetchCount}" Style="{StaticResource MaterialDesignBody2TextBlock}" />
 							<materialDesign:PackIcon Kind="HelpCircle" ToolTip="{lex:Loc TweetFetchCountDescription}" Margin="5,0" />
 						</StackPanel>
-						<ComboBox ItemsSource="{Binding AvailableFetchCounts}" SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+						<ComboBox ItemsSource="{Binding AvailableFetchCounts}" Margin="{StaticResource Spacing}"
+								  SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						
-						<Button Content="{lex:Loc ClearCache}" Command="{Binding ClearCacheCommand}" Margin="5,10,5,0" />
+						<Button Content="{lex:Loc ClearCache}" Command="{Binding ClearCacheCommand}" Margin="{StaticResource Spacing}" />
 					</StackPanel>
 				</Grid>
 			</TabItem>

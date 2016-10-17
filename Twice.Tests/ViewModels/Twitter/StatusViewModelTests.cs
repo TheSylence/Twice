@@ -279,9 +279,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/1", ID = 1} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/2", ID = 2} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/3", ID = 3} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/1", ExpandedUrl = "https://img.example.com/image1.jpg", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/2", ExpandedUrl = "https://img.example.com/image2.jpg", ID = 2} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/3", ExpandedUrl = "https://img.example.com/image3.jpg", ID = 3} );
 
 			var config = new Mock<IConfig>();
 			var visualConfig = new VisualConfig {InlineMedia = true};
@@ -294,9 +294,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.AreEqual( 3, medias.Length );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/1" ) );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/2" ) );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/3" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/1" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/2" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/3" ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -349,9 +349,9 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 222;
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/1", ID = 1} );
-			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/2", ID = 2} );
-			status.ExtendedEntities.MediaEntities.Add( new MediaEntity {MediaUrl = "https://example.com/3", ID = 3} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/1", ExpandedUrl = "https://img.example.com/image1.jpg", ID = 1} );
+			status.Entities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/2", ExpandedUrl = "https://img.example.com/image2.jpg", ID = 2} );
+			status.ExtendedEntities.MediaEntities.Add( new MediaEntity {MediaUrl = "http://example.com/3", ExpandedUrl = "https://img.example.com/image3.jpg", ID = 3} );
 
 			var config = new Mock<IConfig>();
 			var visualConfig = new VisualConfig {InlineMedia = true};
@@ -364,9 +364,10 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.AreEqual( 3, medias.Length );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/1" ) );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/2" ) );
-			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "https://example.com/3" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/1" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/2" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/3" ) );
+			Assert.IsNotNull( medias.SingleOrDefault( m => m.DisplayUrl.AbsoluteUri == "https://img.example.com/image3.jpg" ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]

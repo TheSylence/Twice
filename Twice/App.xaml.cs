@@ -21,6 +21,7 @@ using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
 using Twice.Models.Scheduling;
+using Twice.Models.Twitter;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.Views;
@@ -95,17 +96,18 @@ namespace Twice
 				return;
 			}
 
+			ConfigureLogging();
+			LogTo.Info( "Application start" );
+			LogEnvironmentInfo();
+
 			DispatcherHelper.Initialize();
 			Kernel = new Kernel();
-			ProxyServer.Start();
+			ProxyServer.Start( Kernel.Get<ITwitterContextList>() );
 
 			Scheduler = Kernel.Get<IScheduler>();
 			Scheduler.Start();
 
 			base.OnStartup( e );
-			ConfigureLogging();
-			LogTo.Info( "Application start" );
-			LogEnvironmentInfo();
 
 			CentralHandler = new CentralMessageHandler( Kernel );
 
@@ -177,7 +179,7 @@ namespace Twice
 		private void ConfigureLogging()
 		{
 			var config = new LoggingConfiguration();
-			
+
 			var fileTarget = new FileTarget
 			{
 				Layout = "${longdate} [${level:uppercase=true}] ${logger}: ${message} ${exception}",
@@ -185,6 +187,9 @@ namespace Twice
 				DeleteOldFileOnStartup = true
 			};
 			config.AddTarget( "Logfile", fileTarget );
+
+			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
+			config.LoggingRules.Add( fileRule );
 
 			// Don't bother with logging something to a debugger in release mode
 			if( Constants.Debug )
@@ -198,9 +203,6 @@ namespace Twice
 				var debuggerRule = new LoggingRule( "*", LogLevel.Trace, debuggerTarget );
 				config.LoggingRules.Add( debuggerRule );
 			}
-
-			var fileRule = new LoggingRule( "*", LogLevel.Trace, fileTarget );
-			config.LoggingRules.Add( fileRule );
 
 			LogManager.Configuration = config;
 		}

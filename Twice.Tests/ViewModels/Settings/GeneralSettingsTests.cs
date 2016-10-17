@@ -109,7 +109,8 @@ namespace Twice.Tests.ViewModels.Settings
 				CheckForUpdates = false,
 				IncludePrereleaseUpdates = true,
 				Language = "de-DE",
-				RealtimeStreaming = false
+				RealtimeStreaming = false,
+				FilterSensitiveTweets = true
 			};
 
 			var cfgMock = new Mock<IConfig>();
@@ -126,6 +127,7 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( cfg.IncludePrereleaseUpdates, vm.IncludePrereleaseUpdates );
 			Assert.AreEqual( cfg.RealtimeStreaming, vm.RealtimeStreaming );
 			Assert.AreEqual( cfg.Language, vm.SelectedLanguage.Name );
+			Assert.AreEqual( cfg.FilterSensitiveTweets, vm.FilterSensitiveTweets );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Settings" )]
@@ -140,7 +142,8 @@ namespace Twice.Tests.ViewModels.Settings
 				CheckForUpdates = false,
 				IncludePrereleaseUpdates = true,
 				RealtimeStreaming = false,
-				SelectedLanguage = CultureInfo.CreateSpecificCulture( "es-ES" )
+				SelectedLanguage = CultureInfo.CreateSpecificCulture( "es-ES" ),
+				FilterSensitiveTweets = true
 			};
 
 			var saved = new Mock<IConfig>();
@@ -155,6 +158,7 @@ namespace Twice.Tests.ViewModels.Settings
 			Assert.AreEqual( vm.IncludePrereleaseUpdates, general.IncludePrereleaseUpdates );
 			Assert.AreEqual( vm.RealtimeStreaming, general.RealtimeStreaming );
 			Assert.AreEqual( vm.SelectedLanguage.Name, general.Language );
+			Assert.AreEqual( vm.FilterSensitiveTweets, general.FilterSensitiveTweets );
 		}
 	}
 }

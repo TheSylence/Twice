@@ -297,6 +297,7 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
+			// ReSharper disable once UnusedVariable
 			var dontWait = CheckCredentials();
 
 			await Task.WhenAll( Columns.Select( c => c.Load() ) );
