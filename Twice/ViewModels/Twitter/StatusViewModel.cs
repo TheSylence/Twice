@@ -418,6 +418,12 @@ namespace Twice.ViewModels.Twitter
 
 				_HasCard = value;
 				RaisePropertyChanged( nameof( HasCard ) );
+
+				if( _HasCard )
+				{
+					_InlineMedias.Clear();
+					RaisePropertyChanged( nameof( InlineMedias ) );
+				}
 			}
 		}
 
