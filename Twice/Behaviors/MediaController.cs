@@ -15,7 +15,7 @@ namespace Twice.Behaviors
 			{
 				AssociatedObject?.Stop();
 			}
-			catch( InvalidOperationException ex )
+			catch( Exception ex )
 			{
 				LogTo.WarnException( "Failed to cleanup.", ex );
 			}
