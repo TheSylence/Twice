@@ -17,8 +17,17 @@ namespace Twice.Utilities
 			Client.Dispose();
 		}
 
-		public Task<HttpResponseMessage> GetAsync( Uri url )
+		public Task<HttpResponseMessage> GetAsync( Uri url, string auth = null )
 		{
+			if( !string.IsNullOrWhiteSpace( auth ) )
+			{
+				Client.DefaultRequestHeaders.TryAddWithoutValidation( "Authorization", auth );
+			}
+			else
+			{
+				Client.DefaultRequestHeaders.Remove( "Authorization" );
+			}
+
 			return Client.GetAsync( url );
 		}
 

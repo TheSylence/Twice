@@ -48,7 +48,7 @@ namespace Twice.ViewModels.Twitter
 			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
 			var entities = mediaEntities.Distinct( TwitterComparers.MediaEntityComparer );
 
-			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity, Context.UserId ) ) )
 			{
 				vm.OpenRequested += Image_OpenRequested;
 				_InlineMedias.Add( vm );

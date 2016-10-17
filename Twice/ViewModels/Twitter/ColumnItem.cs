@@ -41,10 +41,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( CreatedAt ) );
 		}
 
-		protected virtual Task LoadInlineMedias()
-		{
-			return Task.CompletedTask;
-		}
+		protected abstract Task LoadInlineMedias();
 
 		private void ExecuteDismissSensibleWarningCommand()
 		{

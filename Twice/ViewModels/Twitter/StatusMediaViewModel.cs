@@ -23,20 +23,20 @@ namespace Twice.ViewModels.Twitter
 			Type = MediaType.Image;
 		}
 
-		public StatusMediaViewModel( MediaEntity entity )
+		public StatusMediaViewModel( MediaEntity entity, ulong userId = 0 )
 		{
 			Entity = entity;
 			switch( entity.Type )
 			{
 			case "animated_gif":
 			case "video":
-				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url );
+				Url = MediaProxyServer.BuildUrl( entity.VideoInfo.Variants[0].Url, userId );
 				DisplayUrl = new Uri( entity.VideoInfo.Variants[0].Url );
 				Type = MediaType.Animated;
 				break;
 
 			default:
-				Url = new Uri( entity.MediaUrl );
+				Url = MediaProxyServer.BuildUrl( entity.MediaUrl, userId );
 				DisplayUrl = new Uri( entity.ExpandedUrl );
 				Type = MediaType.Image;
 				break;

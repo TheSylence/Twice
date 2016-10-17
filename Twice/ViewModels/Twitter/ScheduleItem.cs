@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
@@ -30,6 +31,11 @@ namespace Twice.ViewModels.Twitter
 				UrlEntities = new List<UrlEntity>(),
 				UserMentionEntities = EntityParser.ExtractMentions( job.Text )
 			};
+		}
+
+		protected override Task LoadInlineMedias()
+		{
+			return Task.CompletedTask;
 		}
 
 		private async void ExecuteDeleteScheduleCommand()

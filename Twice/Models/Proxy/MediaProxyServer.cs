@@ -1,26 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anotar.NLog;
+using Twice.Models.Twitter;
 using Twice.Utilities;
 
 namespace Twice.Models.Proxy
 {
 	internal class MediaProxyServer : IDisposable
 	{
-		public MediaProxyServer( IHttpClient client = null, IHttpListener listener = null )
+		public MediaProxyServer( IHttpClient client = null, IHttpListener listener = null, ITwitterContextList contextList = null )
 		{
+			ContextList = contextList;
 			Client = client ?? new HttpClientWrapper( new HttpClient() );
 			Http = listener ?? new HttpListenerWrapper( new HttpListener() );
 		}
 
-		public void Start()
+		public void Dispose()
+		{
+			Client.Dispose();
+		}
+
+		public void Start( ITwitterContextList contextList = null )
 		{
 			try
 			{
+				ContextList = contextList;
 				Http.AddPrefix( Prefix );
 				Http.Start();
 
@@ -52,20 +62,26 @@ namespace Twice.Models.Proxy
 			}
 		}
 
-		internal static Uri BuildUrl( string url )
+		internal static Uri BuildUrl( string url, ulong userId = 0 )
 		{
 			if( url.StartsWith( "https://", StringComparison.OrdinalIgnoreCase ) )
 			{
 				var encoded = Uri.EscapeUriString( url );
-				return new Uri( $"{Prefix}?stream={encoded}" );
+				string request = $"{Prefix}?stream={encoded}";
+				if( userId != 0 )
+				{
+					request += $"&user={userId}";
+				}
+
+				return new Uri( request );
 			}
 
 			return new Uri( url );
 		}
 
-		internal static Uri BuildUrl( Uri url )
+		internal static Uri BuildUrl( Uri url, ulong userId = 0 )
 		{
-			return BuildUrl( url.AbsoluteUri );
+			return BuildUrl( url.AbsoluteUri, userId );
 		}
 
 		internal async Task HandleRequest( IHttpRequest request, IHttpResponse response )
@@ -82,12 +98,28 @@ namespace Twice.Models.Proxy
 			var requestUrl = request.GetQueryParameter( "stream" );
 			if( requestUrl != null )
 			{
+				string authHeader = string.Empty;
+				var userIdParam = request.GetQueryParameter( "user" );
+				ulong userId;
+				if( ulong.TryParse( userIdParam, out userId ) )
+				{
+					var context = GetContext( userId );
+					if( context != null )
+					{
+						authHeader = context.Twitter.Authorizer.GetAuthorizationString( "GET", requestUrl, new Dictionary<string, string>() );
+					}
+					else
+					{
+						LogTo.Warn( $"No information found for user {userId}" );
+					}
+				}
+
 				var requestUri = new Uri( requestUrl );
 				if( requestUri.Scheme.ToLower() == "https" )
 				{
 					LogTo.Debug( $"Proxy request for {requestUri}" );
 
-					var get = await Client.GetAsync( requestUri );
+					var get = await Client.GetAsync( requestUri, authHeader );
 					response.SetStatus( (int)get.StatusCode, get.ReasonPhrase );
 
 					if( get.IsSuccessStatusCode )
@@ -121,6 +153,11 @@ namespace Twice.Models.Proxy
 			response.OutputStream.Close();
 		}
 
+		private IContextEntry GetContext( ulong userId )
+		{
+			return ContextList?.Contexts?.FirstOrDefault( ctx => ctx.UserId == userId );
+		}
+
 		[ExcludeFromCodeCoverage]
 		private async void RunThreaded()
 		{
@@ -138,14 +175,10 @@ namespace Twice.Models.Proxy
 			}
 		}
 
-		public void Dispose()
-		{
-			Client.Dispose();
-		}
-
 		private const string Prefix = "http://localhost:60123/twice/media/";
 		private readonly IHttpClient Client;
 		private readonly IHttpListener Http;
+		private ITwitterContextList ContextList;
 		private bool IsRunning;
 		private Thread ServerThread;
 	}

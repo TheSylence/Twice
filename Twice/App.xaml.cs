@@ -21,6 +21,7 @@ using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
 using Twice.Models.Scheduling;
+using Twice.Models.Twitter;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.Views;
@@ -95,17 +96,18 @@ namespace Twice
 				return;
 			}
 
+			ConfigureLogging();
+			LogTo.Info( "Application start" );
+			LogEnvironmentInfo();
+
 			DispatcherHelper.Initialize();
 			Kernel = new Kernel();
-			ProxyServer.Start();
+			ProxyServer.Start( Kernel.Get<ITwitterContextList>() );
 
 			Scheduler = Kernel.Get<IScheduler>();
 			Scheduler.Start();
 
 			base.OnStartup( e );
-			ConfigureLogging();
-			LogTo.Info( "Application start" );
-			LogEnvironmentInfo();
 
 			CentralHandler = new CentralMessageHandler( Kernel );
 
