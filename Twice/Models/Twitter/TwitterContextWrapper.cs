@@ -41,13 +41,13 @@ namespace Twice.Models.Twitter
 
 		public string GetAuthorizationString( string requestUrl, string method = "GET" )
 		{
-			string header = Context.Authorizer.GetAuthorizationString( method, requestUrl, new Dictionary<string, string>() );
-			string token = Context.Authorizer.CredentialStore.OAuthToken;
-			string consumerKey = Context.Authorizer.CredentialStore.ConsumerKey;
-			header += $", oauth_token=\"{token}\"";
-			header += $", oauth_consumer_key=\"{consumerKey}\"";
+			var parameters = new Dictionary<string, string>
+			{
+				{ "oauth_token", Context.Authorizer.CredentialStore.OAuthToken },
+				{ "oauth_consumer_key", Context.Authorizer.CredentialStore.ConsumerKey }
+			};
 
-			return header;
+			return Context.Authorizer.GetAuthorizationString( method, requestUrl, parameters );
 		}
 
 		public async Task<LinqToTwitter.Configuration> GetConfig()
