@@ -115,7 +115,7 @@ namespace Twice.ViewModels.Twitter
 				var extracted = await MediaExtractor.ExtractMedia( url );
 				if( extracted != null )
 				{
-					var vm = new StatusMediaViewModel( extracted );
+					var vm = new StatusMediaViewModel( extracted, new Uri( url ) );
 					vm.OpenRequested += Image_OpenRequested;
 					_InlineMedias.Add( vm );
 				}
