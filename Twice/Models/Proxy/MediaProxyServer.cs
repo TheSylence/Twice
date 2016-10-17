@@ -98,7 +98,7 @@ namespace Twice.Models.Proxy
 			var requestUrl = request.GetQueryParameter( "stream" );
 			if( requestUrl != null )
 			{
-				string authHeader = string.Empty;
+				string authHeader = null;
 				var userIdParam = request.GetQueryParameter( "user" );
 				ulong userId;
 				if( ulong.TryParse( userIdParam, out userId ) )

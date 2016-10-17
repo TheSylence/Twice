@@ -65,7 +65,7 @@ namespace Twice.ViewModels.Twitter
 			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.GetStatusId(), Constants.Gui.MaxRetweets );
 			var retweeters = await Context.Twitter.Users.LookupUsers( ids );
 			var users = retweeters.Select( rt => new UserViewModel( rt ) );
-			
+
 			RetweetedBy.Clear();
 			RetweetedBy.AddRange( users );
 		}
@@ -79,6 +79,49 @@ namespace Twice.ViewModels.Twitter
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus, NotificationType.Success );
+		}
+
+		protected override async Task LoadInlineMedias()
+		{
+			if( Config?.Visual?.InlineMedia != true )
+			{
+				return;
+			}
+
+			var videos = ( Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+			               Enumerable.Empty<MediaEntity>() ).ToArray();
+
+			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+
+			var entities = mediaEntities.Concat( extendedEntities )
+				.Distinct( TwitterComparers.MediaEntityComparer )
+				.Except( videos, TwitterComparers.MediaEntityComparer );
+
+			entities = entities.Concat( videos );
+
+			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+			{
+				vm.OpenRequested += Image_OpenRequested;
+				_InlineMedias.Add( vm );
+			}
+
+			var urlEntities = Model?.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var extendedUrlEntities = Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var urls = urlEntities.Concat( extendedUrlEntities ).Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
+
+			foreach( var url in urls )
+			{
+				var extracted = await MediaExtractor.ExtractMedia( url );
+				if( extracted != null )
+				{
+					var vm = new StatusMediaViewModel( extracted );
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
+				}
+			}
+
+			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
 		private static void EnsureEntitiesAreNotNull( Entities ent )
@@ -238,7 +281,6 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.RetweetStatus( this );
 		}
 
-
 		private async Task LoadCard()
 		{
 			if( Entities?.UrlEntities == null )
@@ -267,46 +309,6 @@ namespace Twice.ViewModels.Twitter
 				Card = null;
 				HasCard = false;
 			}
-		}
-
-		private async Task LoadInlineMedias()
-		{
-			if( Config?.Visual?.InlineMedia != true )
-			{
-				return;
-			}
-
-			var videos = ( Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-			               Enumerable.Empty<MediaEntity>() ).ToArray();
-
-			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>() )
-				               .Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
-			               ?? Enumerable.Empty<MediaEntity>();
-
-			entities = entities.Concat( videos );
-
-			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
-			{
-				vm.OpenRequested += Image_OpenRequested;
-				_InlineMedias.Add( vm );
-			}
-
-			var urls = Model.Entities?.UrlEntities?.Concat( Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>() )
-				           .Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl )
-			           ?? Enumerable.Empty<string>();
-
-			foreach( var url in urls )
-			{
-				var extracted = await MediaExtractor.ExtractMedia( url );
-				if( extracted != null )
-				{
-					var vm = new StatusMediaViewModel( extracted, new Uri( url ) );
-					vm.OpenRequested += Image_OpenRequested;
-					_InlineMedias.Add( vm );
-				}
-			}
-
-			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
 		private async Task LoadQuotedTweet()
@@ -466,50 +468,7 @@ namespace Twice.ViewModels.Twitter
 		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
 
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-
-		protected override async Task LoadInlineMedias()
-		{
-			if( Config?.Visual?.InlineMedia != true )
-			{
-				return;
-			}
-
-			var videos = (Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-						   Enumerable.Empty<MediaEntity>() ).ToArray();
-
-			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
-			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
-
-			var entities = mediaEntities.Concat( extendedEntities ).Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer );
-
-			entities = entities.Concat( videos );
-
-			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
-			{
-				vm.OpenRequested += Image_OpenRequested;
-				_InlineMedias.Add( vm );
-			}
-
-			var urlEntities = Model?.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
-			var extendedUrlEntities = Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
-			var urls = urlEntities.Concat( extendedUrlEntities ).Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
-
-			foreach( var url in urls )
-			{
-				var extracted = await MediaExtractor.ExtractMedia( url );
-				if( extracted != null )
-				{
-					var vm = new StatusMediaViewModel( extracted );
-					vm.OpenRequested += Image_OpenRequested;
-					_InlineMedias.Add( vm );
-				}
-			}
-
-			RaisePropertyChanged( nameof( InlineMedias ) );
-		}
-
 		private readonly Status OriginalStatus;
-
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
 

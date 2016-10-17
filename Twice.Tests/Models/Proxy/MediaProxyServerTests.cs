@@ -112,6 +112,7 @@ namespace Twice.Tests.Models.Proxy
 
 			var request = new Mock<IHttpRequest>();
 			request.Setup( c => c.GetQueryParameter( "stream" ) ).Returns( "https://example.com" );
+			request.Setup( c => c.GetQueryParameter( "user" ) ).Returns( string.Empty );
 
 			var response = new Mock<IHttpResponse>();
 			response.Setup( c => c.SetStatus( 404, It.IsAny<string>() ) ).Verifiable();
