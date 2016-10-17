@@ -19,13 +19,10 @@ namespace Twice.Utilities
 
 		public Task<HttpResponseMessage> GetAsync( Uri url, string auth = null )
 		{
+			Client.DefaultRequestHeaders.Remove( "Authorization" );
 			if( !string.IsNullOrWhiteSpace( auth ) )
 			{
-				Client.DefaultRequestHeaders.TryAddWithoutValidation( "Authorization", auth );
-			}
-			else
-			{
-				Client.DefaultRequestHeaders.Remove( "Authorization" );
+				Client.DefaultRequestHeaders.Add( "Authorization", auth );
 			}
 
 			return Client.GetAsync( url );

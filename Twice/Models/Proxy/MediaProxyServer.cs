@@ -106,7 +106,7 @@ namespace Twice.Models.Proxy
 					var context = GetContext( userId );
 					if( context != null )
 					{
-						authHeader = context.Twitter.Authorizer.GetAuthorizationString( "GET", requestUrl, new Dictionary<string, string>() );
+						authHeader = context.Twitter.GetAuthorizationString(requestUrl );
 					}
 					else
 					{
