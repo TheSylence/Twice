@@ -6,6 +6,6 @@ namespace Twice.Models.Proxy
 {
 	internal interface IHttpClient : IDisposable
 	{
-		Task<HttpResponseMessage> GetAsync( Uri url );
+		Task<HttpResponseMessage> GetAsync( Uri url, string auth = null );
 	}
 }

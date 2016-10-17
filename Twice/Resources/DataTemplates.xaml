@@ -214,6 +214,61 @@
 							<StackPanel>
 								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+
+								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+									<controls1:FlipView.ItemTemplate>
+										<DataTemplate>
+											<Grid>
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+													<i:Interaction.Behaviors>
+														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+													</i:Interaction.Behaviors>
+												</MediaElement>
+
+												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
+													<StackPanel.Resources>
+														<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+															<Style.Triggers>
+																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
+																			Value="False">
+																	<Setter Property="Visibility" Value="Hidden" />
+																</DataTrigger>
+															</Style.Triggers>
+															<Setter Property="Margin" Value="5" />
+														</Style>
+													</StackPanel.Resources>
+
+													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Repeat" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="RepeatOff" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Play" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="Pause" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="VolumeOff" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="VolumeHigh" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+												</StackPanel>
+											</Grid>
+										</DataTemplate>
+									</controls1:FlipView.ItemTemplate>
+								</controls1:FlipView>
 							</StackPanel>
 						</StackPanel>
 					</Grid>
@@ -513,7 +568,7 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
-												<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
 														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"

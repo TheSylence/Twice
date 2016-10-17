@@ -22,10 +22,9 @@ namespace Twice.ViewModels.Twitter
 	internal class StatusViewModel : ColumnItem
 	{
 		public StatusViewModel( Status model, IContextEntry context, IConfig config, IViewServiceRepository viewServiceRepo )
+			: base( config, viewServiceRepo )
 		{
-			Config = config;
 			Context = context;
-			ViewServiceRepository = viewServiceRepo;
 
 			Model = model;
 			OriginalStatus = Model;
@@ -54,7 +53,7 @@ namespace Twice.ViewModels.Twitter
 				: TwitterHelper.ExtractTweetId( quoteUrl.ExpandedUrl );
 		}
 
-		public async Task LoadDataAsync()
+		public override async Task LoadDataAsync()
 		{
 			// ReSharper disable once UnusedVariable
 			var dontWait = LoadCard();
@@ -66,7 +65,7 @@ namespace Twice.ViewModels.Twitter
 			var ids = await Context.Twitter.Statuses.FindRetweeters( Model.GetStatusId(), Constants.Gui.MaxRetweets );
 			var retweeters = await Context.Twitter.Users.LookupUsers( ids );
 			var users = retweeters.Select( rt => new UserViewModel( rt ) );
-			
+
 			RetweetedBy.Clear();
 			RetweetedBy.AddRange( users );
 		}
@@ -80,6 +79,49 @@ namespace Twice.ViewModels.Twitter
 				Model.Retweeted = true;
 				RaisePropertyChanged( nameof( IsRetweeted ) );
 			}, Strings.RetweetedStatus, NotificationType.Success );
+		}
+
+		protected override async Task LoadInlineMedias()
+		{
+			if( Config?.Visual?.InlineMedia != true )
+			{
+				return;
+			}
+
+			var videos = ( Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
+			               Enumerable.Empty<MediaEntity>() ).ToArray();
+
+			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
+
+			var entities = mediaEntities.Concat( extendedEntities )
+				.Distinct( TwitterComparers.MediaEntityComparer )
+				.Except( videos, TwitterComparers.MediaEntityComparer );
+
+			entities = entities.Concat( videos );
+
+			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
+			{
+				vm.OpenRequested += Image_OpenRequested;
+				_InlineMedias.Add( vm );
+			}
+
+			var urlEntities = Model?.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var extendedUrlEntities = Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var urls = urlEntities.Concat( extendedUrlEntities ).Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl );
+
+			foreach( var url in urls )
+			{
+				var extracted = await MediaExtractor.ExtractMedia( url );
+				if( extracted != null )
+				{
+					var vm = new StatusMediaViewModel( extracted );
+					vm.OpenRequested += Image_OpenRequested;
+					_InlineMedias.Add( vm );
+				}
+			}
+
+			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
 		private static void EnsureEntitiesAreNotNull( Entities ent )
@@ -239,17 +281,6 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.RetweetStatus( this );
 		}
 
-		private async void Image_OpenRequested( object sender, EventArgs args )
-		{
-			var selected = sender as StatusMediaViewModel;
-			Debug.Assert( selected != null );
-
-			var allUris = InlineMedias.ToList();
-			var selectedUri = selected;
-
-			await ViewServiceRepository.ViewImage( allUris, selectedUri );
-		}
-
 		private async Task LoadCard()
 		{
 			if( Entities?.UrlEntities == null )
@@ -278,46 +309,6 @@ namespace Twice.ViewModels.Twitter
 				Card = null;
 				HasCard = false;
 			}
-		}
-
-		private async Task LoadInlineMedias()
-		{
-			if( Config?.Visual?.InlineMedia != true )
-			{
-				return;
-			}
-
-			var videos = ( Model.ExtendedEntities?.MediaEntities.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-			               Enumerable.Empty<MediaEntity>() ).ToArray();
-
-			var entities = Model.Entities?.MediaEntities?.Concat( Model.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>() )
-				               .Distinct( TwitterComparers.MediaEntityComparer ).Except( videos, TwitterComparers.MediaEntityComparer )
-			               ?? Enumerable.Empty<MediaEntity>();
-
-			entities = entities.Concat( videos );
-
-			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
-			{
-				vm.OpenRequested += Image_OpenRequested;
-				_InlineMedias.Add( vm );
-			}
-
-			var urls = Model.Entities?.UrlEntities?.Concat( Model?.ExtendedEntities?.UrlEntities ?? Enumerable.Empty<UrlEntity>() )
-				           .Distinct( TwitterComparers.UrlEntityComparer ).Select( e => e.ExpandedUrl )
-			           ?? Enumerable.Empty<string>();
-
-			foreach( var url in urls )
-			{
-				var extracted = await MediaExtractor.ExtractMedia( url );
-				if( extracted != null )
-				{
-					var vm = new StatusMediaViewModel( extracted, new Uri( url ) );
-					vm.OpenRequested += Image_OpenRequested;
-					_InlineMedias.Add( vm );
-				}
-			}
-
-			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
 		private async Task LoadQuotedTweet()
@@ -382,8 +373,6 @@ namespace Twice.ViewModels.Twitter
 
 		public IDispatcher Dispatcher { get; set; }
 
-		public bool DisplayMedia => InlineMedias.Any();
-
 		public override Entities Entities
 		{
 			get
@@ -436,19 +425,11 @@ namespace Twice.ViewModels.Twitter
 
 		public override ulong Id => Model.StatusID;
 
-		public IEnumerable<StatusMediaViewModel> InlineMedias => _InlineMedias;
-
 		public bool IsFavorited => Model.Favorited;
 
 		public bool IsReply => Model.InReplyToStatusID != 0;
 
 		public bool IsRetweeted => Model.Retweeted;
-
-		public IMediaExtractorRepository MediaExtractor
-		{
-			get { return _MediaExtractor ?? DefaultMediaExtractor; }
-			set { _MediaExtractor = value; }
-		}
 
 		public Status Model { get; }
 
@@ -487,16 +468,7 @@ namespace Twice.ViewModels.Twitter
 		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
 
 		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-
-		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
-
-		private readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
-
-		private readonly IConfig Config;
-
 		private readonly Status OriginalStatus;
-
-		private readonly IViewServiceRepository ViewServiceRepository;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
 
@@ -515,8 +487,6 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
-
-		private IMediaExtractorRepository _MediaExtractor;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
 

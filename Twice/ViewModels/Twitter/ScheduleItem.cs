@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using Twice.Models.Configuration;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
@@ -13,7 +15,8 @@ namespace Twice.ViewModels.Twitter
 {
 	internal class ScheduleItem : ColumnItem
 	{
-		public ScheduleItem( SchedulerJob job, UserViewModel user, IScheduler scheduler, IViewServiceRepository viewServices )
+		public ScheduleItem( SchedulerJob job, UserViewModel user, IScheduler scheduler, IConfig config, IViewServiceRepository viewServices )
+			: base( config, viewServices )
 		{
 			Job = job;
 			User = user;
@@ -28,6 +31,11 @@ namespace Twice.ViewModels.Twitter
 				UrlEntities = new List<UrlEntity>(),
 				UserMentionEntities = EntityParser.ExtractMentions( job.Text )
 			};
+		}
+
+		protected override Task LoadInlineMedias()
+		{
+			return Task.CompletedTask;
 		}
 
 		private async void ExecuteDeleteScheduleCommand()

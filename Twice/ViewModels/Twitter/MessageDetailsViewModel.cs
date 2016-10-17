@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Twitter
 
 			foreach( var m in messages )
 			{
-				var msg = new MessageViewModel( m, Message.Context, ViewServiceRepository )
+				var msg = new MessageViewModel( m, Message.Context, Configuration, ViewServiceRepository )
 				{
 					WasRead = true
 				};

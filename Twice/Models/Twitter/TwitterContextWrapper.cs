@@ -39,6 +39,17 @@ namespace Twice.Models.Twitter
 			Context.Dispose();
 		}
 
+		public string GetAuthorizationString( string requestUrl, string method = "GET" )
+		{
+			var parameters = new Dictionary<string, string>
+			{
+				{ "oauth_token", Context.Authorizer.CredentialStore.OAuthToken },
+				{ "oauth_consumer_key", Context.Authorizer.CredentialStore.ConsumerKey }
+			};
+
+			return Context.Authorizer.GetAuthorizationString( method, requestUrl, parameters );
+		}
+
 		public async Task<LinqToTwitter.Configuration> GetConfig()
 		{
 			var help = await Context.Help.Where( h => h.Type == HelpType.Configuration ).SingleOrDefaultAsync();

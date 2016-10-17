@@ -42,7 +42,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			{
 				Cache = cache.Object,
 				Dispatcher = new SyncDispatcher(),
-				Message = new MessageViewModel( msg2, context.Object, null )
+				Message = new MessageViewModel( msg2, context.Object, null, null )
 			};
 
 			// Act

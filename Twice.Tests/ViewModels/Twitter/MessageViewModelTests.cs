@@ -22,7 +22,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var msg = DummyGenerator.CreateDummyMessage();
 			msg.ID = 123;
-			var vm = new MessageViewModel( msg, context.Object, viewServices.Object );
+			var vm = new MessageViewModel( msg, context.Object, null, viewServices.Object );
 
 			// Act
 			vm.ReplyCommand.Execute( null );
