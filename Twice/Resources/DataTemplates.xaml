@@ -220,9 +220,11 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
-												<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 													</i:Interaction.Behaviors>
 												</MediaElement>
 
@@ -239,7 +241,7 @@
 														</Style>
 													</StackPanel.Resources>
 
-													<!--<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 														<materialDesign:PackIcon Kind="Repeat" />
 
 														<materialDesign:ToggleButtonAssist.OnContent>
@@ -261,7 +263,7 @@
 														<materialDesign:ToggleButtonAssist.OnContent>
 															<materialDesign:PackIcon Kind="VolumeHigh" />
 														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>-->
+													</ToggleButton>
 												</StackPanel>
 											</Grid>
 										</DataTemplate>
@@ -566,7 +568,7 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
-												<MediaElement Source="{Binding Url}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
 														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"

@@ -6,6 +6,7 @@
         "NewFeatures": [
             "Auto complete suggestions in compose dialog can now be selected using a double click",
             "Sensible content can be hidden if wanted",
+            "Images in DMs are now displayed",
             "Mutings are now applied to already loaded columns"
         ],
         "Changes": [
