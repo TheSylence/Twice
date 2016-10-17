@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.8.2",
+        "Date": "2016-10-17",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed crash that could occur when loading inline media"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.8.1",
         "Date": "2016-10-17",
         "Description": "",

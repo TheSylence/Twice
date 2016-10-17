@@ -11,7 +11,14 @@ namespace Twice.Behaviors
 	{
 		protected override void OnCleanup()
 		{
-			AssociatedObject?.Stop();
+			try
+			{
+				AssociatedObject?.Stop();
+			}
+			catch( InvalidOperationException ex )
+			{
+				LogTo.WarnException( "Failed to cleanup.", ex );
+			}
 		}
 
 		protected override void OnAttached()
