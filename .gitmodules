@@ -1,0 +1,3 @@
+[submodule "ThirdParty/LinqToTwitter"]
+	path = ThirdParty/LinqToTwitter
+	url = https://github.com/TheSylence/LinqToTwitter.git
