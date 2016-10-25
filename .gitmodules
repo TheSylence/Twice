@@ -1,3 +1,6 @@
 [submodule "ThirdParty/LinqToTwitter"]
 	path = ThirdParty/LinqToTwitter
 	url = https://github.com/TheSylence/LinqToTwitter.git
+[submodule "ThirdParty/Markdown.XAML"]
+	path = ThirdParty/Markdown.XAML
+	url = https://github.com/theunrepentantgeek/Markdown.XAML.git
