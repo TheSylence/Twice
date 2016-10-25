@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twice", "Twice\Twice.csproj", "{282A4006-E8AB-4F9B-A254-FFAA84FEDD55}"
 EndProject
@@ -18,7 +18,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		smcmd.xml = smcmd.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToTwitter.net", "ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.net\LinqToTwitter.net.csproj", "{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LinqToTwitter.Shared", "ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared\LinqToTwitter.Shared.shproj", "{7B25A4F0-18EA-4819-B67C-EFEA0E14F919}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LinqToTwitter.Shared.net", "ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared.net\LinqToTwitter.Shared.net.shproj", "{37396599-8A5A-4AC5-B583-C49EC4E40781}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToTwitter.Tests", "ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Tests\LinqToTwitter.Tests.csproj", "{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared.net\LinqToTwitter.Shared.net.projitems*{37396599-8a5a-4ac5-b583-c49ec4e40781}*SharedItemsImports = 13
+		ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared.net\LinqToTwitter.Shared.net.projitems*{554f8a8a-9cc0-40c9-b7ca-f3c3cf5190b2}*SharedItemsImports = 4
+		ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared\LinqToTwitter.Shared.projitems*{554f8a8a-9cc0-40c9-b7ca-f3c3cf5190b2}*SharedItemsImports = 4
+		ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.Shared\LinqToTwitter.Shared.projitems*{7b25a4f0-18ea-4819-b67c-efea0e14f919}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Analysis|Any CPU = Analysis|Any CPU
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +57,28 @@ Global
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B18A81D-7DC8-43F0-8E8A-474C5710C0C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Analysis|Any CPU.Build.0 = Release|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Analysis|Any CPU.Build.0 = Release|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{34186C3B-C308-4CAE-B462-DB7B5F5E378C} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
+		{554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
+		{7B25A4F0-18EA-4819-B67C-EFEA0E14F919} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
+		{37396599-8A5A-4AC5-B583-C49EC4E40781} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
+		{C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6} = {22F565F3-1C79-4258-B4B4-03ABDDAAEF44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		RESX_ConfirmAddLanguageFile = True

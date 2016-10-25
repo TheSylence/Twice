@@ -89,14 +89,6 @@
       <HintPath>..\packages\squirrel.windows.1.4.4\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LinqToTwitter.AspNet, Version=3.2.0.30483, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\linqtotwitter.4.1.0\lib\net45\LinqToTwitter.AspNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LinqToTwitter.net, Version=4.0.0.0, Culture=neutral, PublicKeyToken=957107be965c25d9, processorArchitecture=MSIL">
-      <HintPath>..\packages\linqtotwitter.4.1.0\lib\net45\LinqToTwitter.net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -770,6 +762,10 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ThirdParty\LinqToTwitter\src\LinqToTwitter\LinqToTwitter.net\LinqToTwitter.net.csproj">
+      <Project>{554f8a8a-9cc0-40c9-b7ca-f3c3cf5190b2}</Project>
+      <Name>LinqToTwitter.net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThirdParty\Markdown.XAML\src\Markdown.Xaml\Markdown.Xaml.csproj">
       <Project>{34186c3b-c308-4cae-b462-db7b5f5e378c}</Project>
       <Name>Markdown.Xaml</Name>
