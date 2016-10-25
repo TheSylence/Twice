@@ -729,4 +729,7 @@
   <data name="StatusesMuted" xml:space="preserve">
     <value>{0} stummgeschaltete Tweets entfernt</value>
   </data>
+  <data name="SendVersionStats" xml:space="preserve">
+    <value>Anonyme Versionstatistiken senden</value>
+  </data>
 </root>
