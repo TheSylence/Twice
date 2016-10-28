@@ -3,7 +3,8 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+            "Extended tweets are now displayed correctly"],
         "Changes": [],
         "Fixes": [
             "Fixed crash when pressing backspace key when autocomplete suggestion is active."
