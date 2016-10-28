@@ -818,6 +818,7 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
+	<MakeDir Directories="$(OutDir)" />
 	<CallTarget Targets="CopySQLiteInteropFiles" />
   </Target>
 </Project>
