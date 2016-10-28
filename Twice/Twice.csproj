@@ -817,4 +817,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+	<CallTarget Targets="CopySQLiteInteropFiles" />
+  </Target>
 </Project>
