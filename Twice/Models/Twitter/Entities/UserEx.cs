@@ -39,7 +39,7 @@ namespace Twice.Models.Twitter.Entities
 		public string Text => Description;
 
 		public LinqToTwitter.Entities BioEntities { get; }
-		public string UrlDisplay { get; }
+		public string UrlDisplay { get; set; }
 		public LinqToTwitter.Entities UrlEntities { get; }
 	}
 }

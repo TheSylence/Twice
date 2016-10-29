@@ -320,9 +320,6 @@ namespace Twice.Tests.ViewModels.Profile
 		public async Task UserDataIsLoaded()
 		{
 			// Arrange
-			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( Strings.UserNotFound, NotificationType.Error ) ).Verifiable();
-
 			var user = DummyGenerator.CreateDummyUserEx();
 			user.UserID = 123;
 
@@ -343,7 +340,6 @@ namespace Twice.Tests.ViewModels.Profile
 			var vm = new ProfileDialogViewModel
 			{
 				ContextList = contextList.Object,
-				Notifier = notifier.Object,
 				Dispatcher = new SyncDispatcher()
 			};
 
