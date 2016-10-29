@@ -732,4 +732,13 @@
   <data name="SendVersionStats" xml:space="preserve">
     <value>Anonyme Versionstatistiken senden</value>
   </data>
+  <data name="JoinedAt" xml:space="preserve">
+    <value>Beigetreten am</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Wohnort</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
 </root>

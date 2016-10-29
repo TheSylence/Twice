@@ -54,15 +54,15 @@
 					<controls1:BindableTextBlock Elements="{Binding User.ModelEx, Converter={StaticResource StatusHighlighterConv}}" 
 												  TextWrapping="Wrap" Margin="0,10" />
 
-					<StackPanel Orientation="Horizontal" Margin="0,5">
+					<StackPanel Orientation="Horizontal" Margin="0,5" ToolTip="{lex:Loc JoinedAt}">
 						<materialDesign:PackIcon Kind="Clock" Width="12" Height="12" />
 						<TextBlock Text="{Binding User.Model.CreatedAt}" Margin="10,0" />
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="0,5">
+					<StackPanel Orientation="Horizontal" Margin="0,5" ToolTip="{lex:Loc Location}">
 						<materialDesign:PackIcon Kind="AccountLocation" Width="12" Height="12" />
 						<TextBlock Text="{Binding User.Model.Location}" Margin="10,0" />
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="0,5">
+					<StackPanel Orientation="Horizontal" Margin="0,5" ToolTip="{lex:Loc Website}">
 						<materialDesign:PackIcon Kind="Link" Width="12" Height="12" />
 						<ContentControl Margin="10,0">
 							<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"

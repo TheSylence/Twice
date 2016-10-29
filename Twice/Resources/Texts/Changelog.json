@@ -7,7 +7,9 @@
             "Extended tweets are now displayed correctly",
             "Anonymous version info are now send on each start up (can be disabled in settings)"
         ],
-        "Changes": [],
+        "Changes": [
+            "Icons in profile dialog now have describing tooltips"
+        ],
         "Fixes": [
             "Fixed crash when pressing backspace key when autocomplete suggestion is active.",
             "Fixed crashes that could occur when displaying inline media"
