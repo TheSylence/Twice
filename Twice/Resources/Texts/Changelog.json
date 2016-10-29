@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Extended tweets are now displayed correctly"],
+            "Extended tweets are now displayed correctly",
+            "Anonymous version info are now send on each start up (can be disabled in settings)"
+        ],
         "Changes": [],
         "Fixes": [
             "Fixed crash when pressing backspace key when autocomplete suggestion is active."
