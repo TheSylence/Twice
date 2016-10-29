@@ -45,6 +45,7 @@ namespace Twice.ViewModels.Settings
 			IncludePrereleaseUpdates = currentConfig.General.IncludePrereleaseUpdates;
 			TweetFetchCount = currentConfig.General.TweetFetchCount;
 			FilterSensitiveTweets = currentConfig.General.FilterSensitiveTweets;
+			SendVersionStats = currentConfig.General.SendVersionStats;
 		}
 
 		public Task OnLoad( object data )
@@ -60,6 +61,7 @@ namespace Twice.ViewModels.Settings
 			config.General.IncludePrereleaseUpdates = IncludePrereleaseUpdates;
 			config.General.TweetFetchCount = Math.Min( 200, Math.Max( 20, TweetFetchCount ) );
 			config.General.FilterSensitiveTweets = FilterSensitiveTweets;
+			config.General.SendVersionStats = SendVersionStats;
 		}
 
 		private static bool IsEnglish( CultureInfo lang )
@@ -81,6 +83,7 @@ namespace Twice.ViewModels.Settings
 		public ICollection<CultureInfo> AvailableLanguages { get; }
 
 		[Inject]
+
 		// ReSharper disable once MemberCanBePrivate.Global
 		public ICache Cache { get; set; }
 
@@ -132,6 +135,7 @@ namespace Twice.ViewModels.Settings
 		}
 
 		[Inject]
+
 		// ReSharper disable once MemberCanBePrivate.Global
 		public INotifier Notifier { get; set; }
 
@@ -165,6 +169,21 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public bool SendVersionStats
+		{
+			[DebuggerStepThrough] get { return _SendVersionStats; }
+			set
+			{
+				if( _SendVersionStats == value )
+				{
+					return;
+				}
+
+				_SendVersionStats = value;
+				RaisePropertyChanged( nameof( SendVersionStats ) );
+			}
+		}
+
 		public int TweetFetchCount
 		{
 			[DebuggerStepThrough] get { return _TweetFetchCount; }
@@ -191,6 +210,8 @@ namespace Twice.ViewModels.Settings
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RealtimeStreaming;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CultureInfo _SelectedLanguage;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _SendVersionStats;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TweetFetchCount;
 	}

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
 using Twice.Models.Twitter;
@@ -19,6 +20,7 @@ namespace Twice.ViewModels.Twitter
 
 			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
 			Url = Uri.IsWellFormedUriString( user.Url, UriKind.Absolute ) ? new Uri( user.Url ) : user.GetUserUrl();
+			DisplayUrl = Url.AbsoluteUri;
 		}
 
 		public UserViewModel( UserEx user )
@@ -28,6 +30,8 @@ namespace Twice.ViewModels.Twitter
 			{
 				Url = new Uri( user.UrlDisplay );
 			}
+
+			DisplayUrl = user.UrlDisplay ?? Url.AbsoluteUri;
 		}
 
 		public bool IsProtected => Model.Protected;
@@ -40,6 +44,7 @@ namespace Twice.ViewModels.Twitter
 		public string ProfileImageUrlHttpsOrig { get; }
 		public string ScreenName { get; }
 		public Uri Url { get; }
+		public string DisplayUrl { get; }
 		public ulong UserId => Model.GetUserId();
 	}
 }

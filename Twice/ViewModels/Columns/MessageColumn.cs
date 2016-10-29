@@ -34,8 +34,7 @@ namespace Twice.ViewModels.Columns
 
 		protected override bool IsSuitableForColumn( DirectMessage message )
 		{
-			// TODO: Check context for user ids
-			return true;
+			return Context.UserId == message.SenderID || Context.UserId == message.RecipientID;
 		}
 
 		protected override async Task OnLoad()

@@ -74,6 +74,7 @@
 						<CheckBox Content="{lex:Loc FilterSensitiveTweets}" Margin="{StaticResource Spacing}"
 								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 						
+						<CheckBox Content="{lex:Loc SendVersionStats}" IsChecked="{Binding SendVersionStats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"

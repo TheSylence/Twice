@@ -101,7 +101,7 @@ namespace Twice.Models.Twitter
 		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType,
 			IEnumerable<ulong> additionalOwners )
 		{
-			return Context.UploadMediaAsync( mediaData, mediaType, additionalOwners );
+			return Context.UploadMediaAsync( mediaData, mediaType, additionalOwners, "tweet_image" );
 		}
 
 		public async Task<bool> VerifyCredentials()

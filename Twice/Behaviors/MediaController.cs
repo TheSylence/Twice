@@ -9,18 +9,6 @@ namespace Twice.Behaviors
 	[ExcludeFromCodeCoverage]
 	internal class MediaController : BehaviorBase<MediaElement>
 	{
-		protected override void OnCleanup()
-		{
-			try
-			{
-				AssociatedObject?.Stop();
-			}
-			catch( Exception ex )
-			{
-				LogTo.WarnException( "Failed to cleanup.", ex );
-			}
-		}
-
 		protected override void OnAttached()
 		{
 			AssociatedObject.IsMuted = MuteAudio;
@@ -28,7 +16,12 @@ namespace Twice.Behaviors
 			AssociatedObject.MediaFailed += AssociatedObject_MediaFailed;
 			AssociatedObject.MediaOpened += AssociatedObject_MediaOpened;
 
-			AssociatedObject.Stop();
+			Stop();
+		}
+
+		protected override void OnCleanup()
+		{
+			Stop();
 		}
 
 		private static void OnIsPlayingChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
@@ -50,7 +43,7 @@ namespace Twice.Behaviors
 			if( IsAnimated && Loop )
 			{
 				AssociatedObject.Position = TimeSpan.Zero;
-				AssociatedObject.Play();
+				Play();
 			}
 			else
 			{
@@ -66,7 +59,7 @@ namespace Twice.Behaviors
 		private void AssociatedObject_MediaOpened( object sender, RoutedEventArgs e )
 		{
 			AssociatedObject.IsMuted = MuteAudio;
-			AssociatedObject.Play();
+			Play();
 			ResetBeforePlay = false;
 		}
 
@@ -85,11 +78,11 @@ namespace Twice.Behaviors
 				}
 
 				ResetBeforePlay = false;
-				AssociatedObject.Play();
+				Play();
 			}
 			else
 			{
-				AssociatedObject.Pause();
+				Pause();
 			}
 		}
 
@@ -101,6 +94,42 @@ namespace Twice.Behaviors
 			}
 
 			AssociatedObject.IsMuted = mute;
+		}
+
+		private void Pause()
+		{
+			try
+			{
+				AssociatedObject.Pause();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to pause", ex );
+			}
+		}
+
+		private void Play()
+		{
+			try
+			{
+				AssociatedObject.Play();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to play", ex );
+			}
+		}
+
+		private void Stop()
+		{
+			try
+			{
+				AssociatedObject?.Stop();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to stop.", ex );
+			}
 		}
 
 		public bool IsAnimated
@@ -129,8 +158,6 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty IsAnimatedProperty =
 			DependencyProperty.Register( "IsAnimated", typeof( bool ), typeof( MediaController ), new PropertyMetadata( false ) );
-
-		
 
 		public static readonly DependencyProperty IsPlayingProperty =
 			DependencyProperty.Register( "IsPlaying", typeof( bool ), typeof( MediaController ), new PropertyMetadata( true, OnIsPlayingChanged ) );

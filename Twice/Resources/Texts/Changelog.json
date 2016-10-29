@@ -1,5 +1,24 @@
 ﻿[
     {
+        "Version": "0.9.0",
+        "Date": "2016-10-29",
+        "Description": "",
+        "NewFeatures": [
+            "Extended tweets are now displayed correctly",
+            "Anonymous version info are now send on each start up (can be disabled in settings)"
+        ],
+        "Changes": [
+            "Icons in profile dialog now have describing tooltips"
+        ],
+        "Fixes": [
+            "Fixed crash when pressing backspace key when autocomplete suggestion is active.",
+            "Fixed crashes that could occur when displaying inline media",
+            "User's website is displayed in profile dialog when dialog is re-opened",
+            "Fixed messages sometimes being displayed in wrong column"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.8.3",
         "Date": "2016-10-17",
         "Description": "",

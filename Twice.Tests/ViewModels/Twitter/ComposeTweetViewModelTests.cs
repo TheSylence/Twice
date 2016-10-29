@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using GongSolutions.Wpf.DragDrop;
 using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -237,6 +239,74 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DraggingContentDoesNothing()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+			var dropInfo = new Mock<IDropInfo>();
+			dropInfo.SetupGet( d => d.Data ).Returns( null );
+			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
+
+			// Act
+			vm.DragOver( dropInfo.Object );
+
+			// Assert
+			dropInfo.VerifyGet( d => d.Data, Times.Once() );
+			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Never() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DraggingNonFileContentDoesNothing()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+			var dropInfo = new Mock<IDropInfo>();
+			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject() );
+			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
+
+			// Act
+			vm.DragOver( dropInfo.Object );
+
+			// Assert
+			dropInfo.VerifyGet( d => d.Data, Times.Once() );
+			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Never() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DraggingUnsupportedFilesDoesNothing()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+			var dropInfo = new Mock<IDropInfo>();
+			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] {"file1.txt", "file2.exe"} ) );
+			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
+
+			// Act
+			vm.DragOver( dropInfo.Object );
+
+			// Assert
+			dropInfo.VerifyGet( d => d.Data, Times.Once() );
+			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Never() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DraggingImageFilesSetEffect()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+			var dropInfo = new Mock<IDropInfo>();
+			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] { "file1.png", "file2.exe" } ) );
+			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
+
+			// Act
+			vm.DragOver( dropInfo.Object );
+
+			// Assert
+			dropInfo.VerifyGet( d => d.Data, Times.Once() );
+			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ExceptionOnSendIsDisplayedInNotifier()
 		{
 			// Arrange
@@ -345,7 +415,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns( new StatusViewModel( status, null, null,
+			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns( new StatusViewModel( status, null, null,
 				null ) );
 
 			var obj = new ComposeTweetViewModel
@@ -525,7 +595,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			Expression<Func<SchedulerJob, bool>> jobVerifier =
 				job => job.JobType == SchedulerJobType.CreateStatus
-						&& job.Text == "Hello World";
+				       && job.Text == "Hello World";
 
 			var scheduler = new Mock<IScheduler>();
 			scheduler.Setup( s => s.AddJob( It.Is( jobVerifier ) ) ).Verifiable();

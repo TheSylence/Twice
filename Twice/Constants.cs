@@ -18,6 +18,12 @@ namespace Twice
 			internal const int MaxRetweets = 10;
 		}
 
+		public static class Web
+		{
+			internal const string CrashReportUrl = "http://software.btbsoft.org/twice/crash/report.php";
+			internal const string VersionStatsUrl = "http://software.btbsoft.org/twice/stats/report.php";
+		}
+
 		public static class Cache
 		{
 			internal static TimeSpan UserInfoExpiration = TimeSpan.FromDays( 2 );
@@ -109,8 +115,8 @@ namespace Twice
 			}
 		}
 
-		// Debug constant to keep #if out of other files because of CodeMaid problems
-		// with preprocessor directives
+		// Debug constant to keep #if out of other files because of CodeMaid problems with
+		// preprocessor directives
 		internal static bool Debug
 		{
 			get

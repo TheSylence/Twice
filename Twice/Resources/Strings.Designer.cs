@@ -934,6 +934,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Joined at.
+        /// </summary>
+        public static string JoinedAt {
+            get {
+                return ResourceManager.GetString("JoinedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Known issue.
         /// </summary>
         public static string KnownIssue {
@@ -975,6 +984,15 @@ namespace Twice.Resources {
         public static string LinkColor {
             get {
                 return ResourceManager.GetString("LinkColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
             }
         }
         
@@ -1510,6 +1528,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send anonymous version statistics.
+        /// </summary>
+        public static string SendVersionStats {
+            get {
+                return ResourceManager.GetString("SendVersionStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -1866,6 +1893,15 @@ namespace Twice.Resources {
         public static string Visual {
             get {
                 return ResourceManager.GetString("Visual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        public static string Website {
+            get {
+                return ResourceManager.GetString("Website", resourceCulture);
             }
         }
         

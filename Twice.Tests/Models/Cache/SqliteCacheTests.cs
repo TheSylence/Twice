@@ -8,6 +8,7 @@ using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Twice.Models.Cache;
+using Twice.Models.Twitter.Entities;
 
 namespace Twice.Tests.Models.Cache
 {
@@ -791,6 +792,7 @@ namespace Twice.Tests.Models.Cache
 				var user = DummyGenerator.CreateDummyUserEx();
 				user.UserID = 123;
 				user.ScreenName = "testi";
+				user.UrlDisplay = "display_url";
 
 				var entry = new UserCacheEntry( user );
 
@@ -808,9 +810,10 @@ namespace Twice.Tests.Models.Cache
 						Assert.AreEqual( 123L, reader.GetInt64( 0 ) );
 						Assert.AreEqual( "testi", reader.GetString( 1 ) );
 
-						var jsonUser = JsonConvert.DeserializeObject<User>( reader.GetString( 2 ) );
+						var jsonUser = JsonConvert.DeserializeObject<UserEx>( reader.GetString( 2 ) );
 						Assert.AreEqual( user.UserID, jsonUser.UserID );
 						Assert.AreEqual( user.ScreenName, jsonUser.ScreenName );
+						Assert.AreEqual( user.UrlDisplay, jsonUser.UrlDisplay );
 					}
 				}
 			}

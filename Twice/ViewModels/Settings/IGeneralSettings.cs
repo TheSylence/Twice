@@ -14,6 +14,7 @@ namespace Twice.ViewModels.Settings
 		bool IncludePrereleaseUpdates { get; set; }
 		bool RealtimeStreaming { get; set; }
 		CultureInfo SelectedLanguage { get; }
+		bool SendVersionStats { get; set; }
 		int TweetFetchCount { get; set; }
 	}
 }

@@ -90,7 +90,14 @@ namespace Twice.Behaviors
 				break;
 
 			case Key.Back:
-				FilterText = FilterText.Substring( 0, FilterText.Length - 1 );
+				if( FilterText.Length > 0 )
+				{
+					FilterText = FilterText.Substring( 0, FilterText.Length - 1 );
+				}
+				else
+				{
+					close = true;
+				}
 				break;
 			}
 

@@ -729,4 +729,16 @@
   <data name="StatusesMuted" xml:space="preserve">
     <value>Removed {0} muted statuses</value>
   </data>
+  <data name="SendVersionStats" xml:space="preserve">
+    <value>Send anonymous version statistics</value>
+  </data>
+  <data name="JoinedAt" xml:space="preserve">
+    <value>Joined at</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
 </root>
