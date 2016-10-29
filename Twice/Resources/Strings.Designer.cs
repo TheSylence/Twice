@@ -1510,6 +1510,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send anonymous version statistics.
+        /// </summary>
+        public static string SendVersionStats {
+            get {
+                return ResourceManager.GetString("SendVersionStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
