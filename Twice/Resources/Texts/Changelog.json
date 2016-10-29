@@ -9,7 +9,8 @@
         ],
         "Changes": [],
         "Fixes": [
-            "Fixed crash when pressing backspace key when autocomplete suggestion is active."
+            "Fixed crash when pressing backspace key when autocomplete suggestion is active.",
+            "Fixed crashes that could occur when displaying inline media"
         ],
         "Issues": []
     },
