@@ -132,6 +132,11 @@ namespace Twice.Converters
 
 		private static IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
 		{
+			if( item.Text == null )
+			{
+				return Enumerable.Empty<EntityBase>();
+			}
+
 			IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
 			entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
 			entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );

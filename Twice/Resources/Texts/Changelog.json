@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.9.1",
+        "Date": "2016-10-30",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed crash when receiving a tweet when realtime streaming is enabled"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.9.0",
         "Date": "2016-10-29",
         "Description": "",
