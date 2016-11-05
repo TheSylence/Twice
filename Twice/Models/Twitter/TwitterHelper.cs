@@ -119,7 +119,7 @@ namespace Twice.Models.Twitter
 		public static Uri GetUserUrl( this User user )
 		{
 			string userName = user.GetScreenName();
-			return new Uri( string.Format( CultureInfo.InvariantCulture, "httsp://twitter.com/{0}", userName ) );
+			return new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}", userName ) );
 		}
 
 		public static bool IsSupportedImage( string fileName )
