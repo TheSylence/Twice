@@ -13,7 +13,8 @@ namespace Twice.Models.Twitter.Streaming
 	[LeaveUnsealed]
 	internal class StreamingRepository : IStreamingRepository
 	{
-		protected StreamingRepository( ITwitterContextList contextList, ICache cache )
+		// ReSharper disable once MemberCanBeProtected.Global
+		public StreamingRepository( ITwitterContextList contextList, ICache cache )
 		{
 			ContextList = contextList;
 			Cache = cache;
