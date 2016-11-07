@@ -136,7 +136,7 @@ namespace Twice.Tests.Models.Proxy
 			// Act
 			try
 			{
-				proxy.Start( null );
+				proxy.Start();
 			}
 			finally
 			{
@@ -158,7 +158,7 @@ namespace Twice.Tests.Models.Proxy
 			// Act
 			try
 			{
-				proxy.Start( null );
+				proxy.Start();
 			}
 			finally
 			{

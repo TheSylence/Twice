@@ -11,6 +11,13 @@ namespace Twice.Models.Twitter
 {
 	internal static class TwitterHelper
 	{
+		/// <summary>
+		/// Applies Unicode Normalization to a text and then counts characters.
+		/// </summary>
+		/// <remarks>See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.</remarks>
+		/// <param name="text"></param>
+		/// <param name="twitterConfig"></param>
+		/// <returns></returns>
 		public static int CountCharacters( string text, ITwitterConfiguration twitterConfig )
 		{
 			text = ReplaceUrls( text, twitterConfig.UrlLength, twitterConfig.UrlLengthHttps );

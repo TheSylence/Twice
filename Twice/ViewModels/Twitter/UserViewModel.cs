@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
 using Twice.Models.Twitter;

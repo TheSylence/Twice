@@ -438,7 +438,6 @@
     <Compile Include="ViewModels\Columns\IColumnConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Columns\IColumnFactory.cs" />
     <Compile Include="ViewModels\Columns\MessageColumn.cs" />
-    <Compile Include="ViewModels\Columns\MessageEventArgs.cs" />
     <Compile Include="ViewModels\Columns\ColumnItemEventArgs.cs" />
     <Compile Include="ViewModels\Dialogs\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IConfirmDialogViewModel.cs" />

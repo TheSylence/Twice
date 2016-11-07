@@ -102,7 +102,7 @@ namespace Twice.ViewModels.Twitter
 
 		public IMediaExtractorRepository MediaExtractor
 		{
-			get { return _MediaExtractor ?? DefaultMediaExtractor; }
+			protected get { return _MediaExtractor ?? DefaultMediaExtractor; }
 			set { _MediaExtractor = value; }
 		}
 

@@ -16,18 +16,18 @@ namespace Twice.ViewModels
 		}
 
 		[Inject]
-		public IConfig Configuration { get; set; }
+		public IConfig Configuration { protected get; set; }
 
 		[Inject]
 		public ITwitterContextList ContextList { get; set; }
 
 		[Inject]
-		public IProcessStarter ProcessStarter { get; set; }
+		public IProcessStarter ProcessStarter { protected get; set; }
 
 		[Inject]
-		public ITwitterConfiguration TwitterConfig { get; set; }
+		public ITwitterConfiguration TwitterConfig { protected get; set; }
 
 		[Inject]
-		public IViewServiceRepository ViewServiceRepository { get; set; }
+		public IViewServiceRepository ViewServiceRepository { protected get; set; }
 	}
 }

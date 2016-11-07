@@ -6,6 +6,9 @@ using Twice.ViewModels;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Scrolls to the last element in an ItemsControl when requested.
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ScrollToEnd : BehaviorBase<ItemsControl>
 	{

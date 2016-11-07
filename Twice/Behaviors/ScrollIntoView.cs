@@ -4,6 +4,9 @@ using System.Windows.Controls;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Scrolls an item into view, when a button is button is pressed. 
+	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ScrollIntoView : BehaviorBase<Button>
 	{
@@ -35,12 +38,18 @@ namespace Twice.Behaviors
 		public static readonly DependencyProperty ItemProperty =
 			DependencyProperty.Register( "Item", typeof(object), typeof(ScrollIntoView), new PropertyMetadata( null ) );
 
+		/// <summary>
+		/// ItemControl that contains the item.
+		/// </summary>
 		public ItemsControl Control
 		{
 			get { return (ItemsControl)GetValue( ControlProperty ); }
 			set { SetValue( ControlProperty, value ); }
 		}
 
+		/// <summary>
+		/// The item that should be visible after the button press
+		/// </summary>
 		public object Item
 		{
 			get { return GetValue( ItemProperty ); }

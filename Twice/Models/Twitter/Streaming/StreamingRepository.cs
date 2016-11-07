@@ -13,7 +13,7 @@ namespace Twice.Models.Twitter.Streaming
 	[LeaveUnsealed]
 	internal class StreamingRepository : IStreamingRepository
 	{
-		public StreamingRepository( ITwitterContextList contextList, ICache cache )
+		protected StreamingRepository( ITwitterContextList contextList, ICache cache )
 		{
 			ContextList = contextList;
 			Cache = cache;

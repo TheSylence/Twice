@@ -6,6 +6,9 @@ using System.Windows.Media.Imaging;
 
 namespace Twice.Behaviors
 {
+	/// <summary>
+	/// Allows pasting image data from clipboard to a textbox.
+	/// </summary>
 	internal class ImageDataHandler : BehaviorBase<TextBox>
 	{
 		protected override void OnAttached()

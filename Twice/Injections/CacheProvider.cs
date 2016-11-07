@@ -18,7 +18,9 @@ namespace Twice.Injections
 				DataSource = Constants.IO.CacheFileName,
 				JournalMode = SQLiteJournalModeEnum.Wal,
 				Enlist = true,
+				// default size of a cluster in NTFS file system
 				PageSize = 4096,
+				// speed up cache operations by not waiting for file system flushs
 				SyncMode = SynchronizationModes.Off
 			};
 

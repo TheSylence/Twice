@@ -471,7 +471,7 @@ namespace Twice.ViewModels.Columns
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
 
 		[Inject]
-		public IDispatcher Dispatcher { get; set; }
+		public IDispatcher Dispatcher { protected get; set; }
 
 		public abstract Icon Icon { get; }
 

@@ -10,6 +10,8 @@ namespace Twice.ViewModels.Validation
 {
 	internal abstract class ValidationViewModel : ViewModelBaseEx, INotifyDataErrorInfo, IPropertyValidatorContainer, IValidationViewModel
 	{
+		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
 		public void ClearValidationErrors()
 		{
 			foreach( var kvp in ValidationMap )
@@ -28,6 +30,28 @@ namespace Twice.ViewModels.Validation
 		public void ClearValidationRules()
 		{
 			ValidationMap.Clear();
+		}
+
+		public IEnumerable GetErrors( string propertyName )
+		{
+			if( string.IsNullOrEmpty( propertyName ) || !ValidationMap.ContainsKey( propertyName ) )
+			{
+				return Enumerable.Empty<string>();
+			}
+
+			return ValidationMap[propertyName].Where( p => p.HasError ).Select( p => p.Error );
+		}
+
+		void IPropertyValidatorContainer.AddValidator<TProperty>( string propertyName, PropertyValidator<TProperty> validator )
+		{
+			List<PropertyValidatorBase> validatorList;
+			if( !ValidationMap.TryGetValue( propertyName, out validatorList ) )
+			{
+				validatorList = new List<PropertyValidatorBase>();
+				ValidationMap.Add( propertyName, validatorList );
+			}
+
+			validatorList.Add( validator );
 		}
 
 		public IValidationSetup<TProperty> ManualValidate<TProperty>( Expression<Func<TProperty>> propertyExpression )
@@ -53,7 +77,12 @@ namespace Twice.ViewModels.Validation
 			base.RaisePropertyChanged( propertyName );
 		}
 
-		public IValidationSetup<TProperty> Validate<TProperty>( Expression<Func<TProperty>> propertyExpression )
+		protected void RaiseErrorsChanged( string propertyName )
+		{
+			ErrorsChanged?.Invoke( this, new DataErrorsChangedEventArgs( propertyName ) );
+		}
+
+		protected IValidationSetup<TProperty> Validate<TProperty>( Expression<Func<TProperty>> propertyExpression )
 		{
 			if( propertyExpression == null )
 			{
@@ -65,11 +94,6 @@ namespace Twice.ViewModels.Validation
 
 			CachePropertyGetter( propertyName );
 			return new ValidationSetup<TProperty>( this, propertyName, false );
-		}
-
-		protected void RaiseErrorsChanged( string propertyName )
-		{
-			ErrorsChanged?.Invoke( this, new DataErrorsChangedEventArgs( propertyName ) );
 		}
 
 		protected void ValidateAll()
@@ -135,32 +159,6 @@ namespace Twice.ViewModels.Validation
 			RaiseErrorsChanged( propertyName );
 		}
 
-		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-		public IEnumerable GetErrors( string propertyName )
-		{
-			if( string.IsNullOrEmpty( propertyName ) || !ValidationMap.ContainsKey( propertyName ) )
-			{
-				return Enumerable.Empty<string>();
-			}
-
-			return ValidationMap[propertyName].Where( p => p.HasError ).Select( p => p.Error );
-		}
-
-		public bool HasErrors => ValidationMap.Values.Any( prop => prop.Any( validator => validator.HasError ) );
-
-		void IPropertyValidatorContainer.AddValidator<TProperty>( string propertyName, PropertyValidator<TProperty> validator )
-		{
-			List<PropertyValidatorBase> validatorList;
-			if( !ValidationMap.TryGetValue( propertyName, out validatorList ) )
-			{
-				validatorList = new List<PropertyValidatorBase>();
-				ValidationMap.Add( propertyName, validatorList );
-			}
-
-			validatorList.Add( validator );
-		}
-
 		public string AllErrors
 		{
 			get
@@ -174,6 +172,7 @@ namespace Twice.ViewModels.Validation
 			}
 		}
 
+		public bool HasErrors => ValidationMap.Values.Any( prop => prop.Any( validator => validator.HasError ) );
 		private readonly Dictionary<string, Func<object, object>> Getters = new Dictionary<string, Func<object, object>>();
 
 		private readonly Dictionary<string, List<PropertyValidatorBase>> ValidationMap =
