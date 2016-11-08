@@ -71,7 +71,7 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
-		public IContextEntry Context { get; private set; }
+		public IContextEntry Context { get; }
 		public override DateTime CreatedAt => Model.CreatedAt;
 
 		public override Entities Entities => Model.Entities;

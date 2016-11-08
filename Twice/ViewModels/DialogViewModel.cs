@@ -49,12 +49,12 @@ namespace Twice.ViewModels
 		}
 
 		[Inject]
-		public ICache Cache { get; set; }
+		public ICache Cache { protected get; set; }
 
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
 
 		[Inject]
-		public IDispatcher Dispatcher { get; set; }
+		public IDispatcher Dispatcher { protected get; set; }
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
