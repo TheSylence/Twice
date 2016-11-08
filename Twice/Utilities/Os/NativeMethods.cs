@@ -15,18 +15,6 @@ namespace Twice.Utilities.Os
 	[ExcludeFromCodeCoverage]
 	internal static class NativeMethods
 	{
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptProtectData( ref DATA_BLOB pPlainText, string szDescription, ref DATA_BLOB pEntropy,
-			IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pCipherText );
-
-		[DllImport( "crypt32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
-		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool CryptUnprotectData( ref DATA_BLOB pCipherText, ref string pszDescription,
-			ref DATA_BLOB pEntropy, IntPtr pReserved,
-			ref CRYPTPROTECT_PROMPTSTRUCT pPrompt, int dwFlags, ref DATA_BLOB pPlainText );
-
 		[DllImport( "user32.dll" )]
 		internal static extern bool EnumDisplayDevices( string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice,
 			uint dwFlags );
@@ -99,27 +87,6 @@ namespace Twice.Utilities.Os
 
 			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
 			public string DeviceKey;
-		}
-
-		/// <summary>
-		///     Prompt structure to be used for required parameters.
-		/// </summary>
-		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Unicode )]
-		internal struct CRYPTPROTECT_PROMPTSTRUCT
-		{
-			public int cbSize;
-			public int dwPromptFlags;
-			public IntPtr hwndApp;
-			public string szPrompt;
-		}
-
-		/// <summary>
-		///     BLOB structure used to pass data to DPAPI functions.
-		/// </summary>
-		internal struct DATA_BLOB
-		{
-			public int cbData;
-			public IntPtr pbData;
 		}
 	}
 }
