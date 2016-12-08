@@ -44,7 +44,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				TwitterConfig = twitterConfig.Object
 			};
 
-			var media = new Media {MediaID = 123456, Type = MediaType.Image};
+			var media = new Media {MediaID = 123456, Type = MediaType.Status};
 
 			const string mimeType = "image/png";
 

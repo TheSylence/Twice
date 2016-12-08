@@ -21,7 +21,7 @@ namespace Twice.Converters
 	/// <summary>
 	///     Converts a Status to an InlineCollection.
 	/// </summary>
-	internal class StatusHighlighter : IValueConverter
+	internal class StatusHighlighter : IValueConverter, IEqualityComparer<EntityBase>
 	{
 		public StatusHighlighter( IConfig config, IMediaExtractorRepository mediaExtractorRepo = null )
 		{
@@ -78,6 +78,22 @@ namespace Twice.Converters
 			throw new NotSupportedException();
 		}
 
+		public bool Equals( EntityBase x, EntityBase y )
+		{
+			return x.Start == y.Start && x.End == y.End;
+		}
+
+		public int GetHashCode( EntityBase obj )
+		{
+			int hash = 397;
+			unchecked
+			{
+				hash = hash * 23 + obj.Start;
+				hash = hash * 23 + obj.End;
+			}
+			return hash;
+		}
+
 		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
 		{
 			var menu = new ContextMenu();
@@ -130,81 +146,6 @@ namespace Twice.Converters
 			return menu;
 		}
 
-		private static IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
-		{
-			if( item.Text == null )
-			{
-				return Enumerable.Empty<EntityBase>();
-			}
-
-			IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
-			entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
-			entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );
-			entities = entities.Concat( item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>() );
-
-			var tweetText = TwitterHelper.NormalizeText( item.Text );
-
-			var allEntities = entities.ToArray();
-			foreach( var entity in allEntities )
-			{
-				int length = entity.End - entity.Start - 1;
-				List<string> extractedTextVersions = new List<string>
-				{
-					ExtractEntityText( entity )
-				};
-
-				if( entity is UserMentionEntity )
-				{
-					extractedTextVersions.Add( AlternativeAtSign + extractedTextVersions[0].Substring( 1 ) );
-				}
-				else if( entity is HashTagEntity )
-				{
-					extractedTextVersions.Add( AlternativeHashtagSign + extractedTextVersions[0].Substring( 1 ) );
-				}
-
-				var actualText = tweetText.Substring( entity.Start, length );
-
-				bool found = false;
-				foreach( var extractedText in extractedTextVersions )
-				{
-					// When the tweet contains emojis, the twitter API returns wrong indices for entities
-					if( extractedText != actualText )
-					{
-						var newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
-						if( newIndex == -1 )
-						{
-							newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
-						}
-						if( newIndex == -1 )
-						{
-							continue;
-						}
-
-						found = true;
-						entity.Start = newIndex;
-						entity.End = entity.Start + length + 1;
-					}
-				}
-
-				Debug.Assert( found );
-			}
-
-			var ordered = allEntities.OrderBy( e => e.Start ).ToList();
-
-			for( int i = ordered.Count - 1; i > 0; --i )
-			{
-				var current = ordered[i];
-				var next = ordered[i - 1];
-
-				if( current.Start == next.Start && current.End == next.End )
-				{
-					ordered.RemoveAt( i );
-				}
-			}
-
-			return ordered;
-		}
-
 		private static string ExtractEntityText( EntityBase entity )
 		{
 			var mentionEntity = entity as UserMentionEntity;
@@ -241,73 +182,6 @@ namespace Twice.Converters
 			link.Command = GlobalCommands.StartSearchCommand;
 
 			return link;
-		}
-
-		/// <summary>
-		///     Generates a collection of inlines from a tweet.
-		/// </summary>
-		/// <param name="item">The tweet to generate inlines from.</param>
-		/// <returns>The generated inlines.</returns>
-		private static IEnumerable<Inline> GenerateInlines( IHighlightable item )
-		{
-			var allEntities = ExtractEntities( item ).ToArray();
-
-			if( allEntities.Any() )
-			{
-				int lastEnd = 0;
-
-				foreach( EntityBase entity in allEntities )
-				{
-					if( entity.Start > lastEnd )
-					{
-						string text = item.Text.Substring( lastEnd, entity.Start - lastEnd );
-						yield return new Run( PrepareText( text ) );
-					}
-
-					var tagEntity = entity as HashTagEntity;
-					if( tagEntity != null )
-					{
-						yield return GenerateHashTag( tagEntity );
-					}
-					else if( entity is UrlEntity )
-					{
-						if( entity is MediaEntity )
-						{
-							if( !Config.Visual.InlineMedia )
-							{
-								MediaEntity mediaEnttiy = entity as MediaEntity;
-								yield return GenerateMedia( mediaEnttiy );
-							}
-						}
-						else
-						{
-							UrlEntity urlEntity = entity as UrlEntity;
-							var url = urlEntity.ExpandedUrl;
-
-							if( !TwitterHelper.IsTweetUrl( url ) &&
-							    ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
-							{
-								yield return GenerateLink( urlEntity );
-							}
-						}
-					}
-					else if( entity is UserMentionEntity )
-					{
-						yield return GenerateMention( (UserMentionEntity)entity );
-					}
-
-					lastEnd = entity.End;
-				}
-
-				if( lastEnd < item.Text.Length )
-				{
-					yield return new Run( PrepareText( item.Text.Substring( lastEnd ) ) );
-				}
-			}
-			else
-			{
-				yield return new Run( PrepareText( item.Text ) );
-			}
 		}
 
 		/// <summary>
@@ -376,6 +250,167 @@ namespace Twice.Converters
 			text = WebUtility.HtmlDecode( text );
 
 			return text;
+		}
+
+		static IEnumerable<EntityBase> RemoveExtendedTweetUrl( IEnumerable<UrlEntity> urls )
+		{
+			foreach( var url in urls )
+			{
+				if( !TwitterHelper.IsExtendedTweetUrl( url.ExpandedUrl ) )
+					yield return url;
+			}
+		}
+
+		private IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
+		{
+			if( item.Text == null )
+			{
+				return Enumerable.Empty<EntityBase>();
+			}
+
+			var hashTags = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
+			var medias = item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>();
+			var urls = item.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var mentions = item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>();
+
+			var entities = hashTags.Distinct( this )
+				.Concat( medias.Distinct( this ) )
+				.Concat( RemoveExtendedTweetUrl(urls).Distinct( this ) )
+				.Concat( mentions.Distinct( this ) );
+
+			//IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
+			//entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
+			//entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );
+			//entities = entities.Concat( item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>() );
+
+			var tweetText = TwitterHelper.NormalizeText( item.Text );
+
+			var allEntities = entities.ToArray();
+			foreach( var entity in allEntities )
+			{
+				int length = entity.End - entity.Start - 1;
+				List<string> extractedTextVersions = new List<string>
+				{
+					ExtractEntityText( entity )
+				};
+
+				if( entity is UserMentionEntity )
+				{
+					extractedTextVersions.Add( AlternativeAtSign + extractedTextVersions[0].Substring( 1 ) );
+				}
+				else if( entity is HashTagEntity )
+				{
+					extractedTextVersions.Add( AlternativeHashtagSign + extractedTextVersions[0].Substring( 1 ) );
+				}
+
+				var actualText = tweetText.Substring( entity.Start, length );
+
+				bool found = false;
+				foreach( var extractedText in extractedTextVersions )
+				{
+					// When the tweet contains emojis, the twitter API returns wrong indices for entities
+					if( extractedText != actualText )
+					{
+						var newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.Ordinal );
+						if( newIndex == -1 )
+						{
+							newIndex = tweetText.IndexOf( extractedText, entity.Start, StringComparison.OrdinalIgnoreCase );
+						}
+						if( newIndex == -1 )
+						{
+							continue;
+						}
+
+						found = true;
+						entity.Start = newIndex;
+						entity.End = entity.Start + length + 1;
+					}
+				}
+
+				Debug.Assert( found );
+			}
+
+			var ordered = allEntities.OrderBy( e => e.Start ).ToList();
+
+			for( int i = ordered.Count - 1; i > 0; --i )
+			{
+				var current = ordered[i];
+				var next = ordered[i - 1];
+
+				if( current.Start == next.Start && current.End == next.End )
+				{
+					ordered.RemoveAt( i );
+				}
+			}
+
+			return ordered;
+		}
+
+		/// <summary>
+		///     Generates a collection of inlines from a tweet.
+		/// </summary>
+		/// <param name="item">The tweet to generate inlines from.</param>
+		/// <returns>The generated inlines.</returns>
+		private IEnumerable<Inline> GenerateInlines( IHighlightable item )
+		{
+			var allEntities = ExtractEntities( item ).ToArray();
+
+			if( allEntities.Any() )
+			{
+				int lastEnd = 0;
+
+				foreach( EntityBase entity in allEntities )
+				{
+					if( entity.Start > lastEnd )
+					{
+						string text = item.Text.Substring( lastEnd, entity.Start - lastEnd );
+						yield return new Run( PrepareText( text ) );
+					}
+
+					var tagEntity = entity as HashTagEntity;
+					if( tagEntity != null )
+					{
+						yield return GenerateHashTag( tagEntity );
+					}
+					else if( entity is UrlEntity )
+					{
+						if( entity is MediaEntity )
+						{
+							if( !Config.Visual.InlineMedia )
+							{
+								MediaEntity mediaEnttiy = entity as MediaEntity;
+								yield return GenerateMedia( mediaEnttiy );
+							}
+						}
+						else
+						{
+							UrlEntity urlEntity = entity as UrlEntity;
+							var url = urlEntity.ExpandedUrl;
+
+							if( !TwitterHelper.IsTweetUrl( url ) &&
+							    ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
+							{
+								yield return GenerateLink( urlEntity );
+							}
+						}
+					}
+					else if( entity is UserMentionEntity )
+					{
+						yield return GenerateMention( (UserMentionEntity)entity );
+					}
+
+					lastEnd = entity.End;
+				}
+
+				if( lastEnd < item.Text.Length )
+				{
+					yield return new Run( PrepareText( item.Text.Substring( lastEnd ) ) );
+				}
+			}
+			else
+			{
+				yield return new Run( PrepareText( item.Text ) );
+			}
 		}
 
 		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();

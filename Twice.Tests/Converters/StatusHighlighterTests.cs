@@ -174,6 +174,33 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
+		public void TextOfExtendedTweetIsCorrect()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_extended.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+
+			// Assert
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
+			Assert.AreEqual( "Das ist mal wieder ein ", ( (Run)inlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[2], typeof( Run ) );
+			Assert.AreEqual( ". Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem ", ( (Run)inlines[2] ).Text );
+
+			Assert.IsInstanceOfType( inlines[4], typeof( Run ) );
+			Assert.AreEqual( "? Fragen :o ", ( (Run)inlines[4] ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
 		public void EntitiesAtStartAreCorrectlyEmbedded()
 		{
 			// Arrange
