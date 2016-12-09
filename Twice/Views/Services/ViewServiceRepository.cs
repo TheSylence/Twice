@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Fody;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -15,6 +16,7 @@ using Twice.Utilities.Ui;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
+using Twice.ViewModels.Dialogs.Data;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Info;
 using Twice.ViewModels.Profile;
@@ -22,6 +24,7 @@ using Twice.ViewModels.Twitter;
 using Twice.Views.Dialogs;
 using Twice.Views.Flyouts;
 using Twice.Views.Wizards;
+using ColumnDefinition = Twice.Models.Columns.ColumnDefinition;
 
 namespace Twice.Views.Services
 {
@@ -29,60 +32,9 @@ namespace Twice.Views.Services
 	[ConfigureAwait( false )]
 	internal class ViewServiceRepository : IViewServiceRepository
 	{
-		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TWindow : Window, new()
+		public ViewServiceRepository( IDialogStack dialogStack )
 		{
-			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
-		}
-
-		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			var dlg = new TWindow
-			{
-				Owner = Window
-			};
-
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			if( dlg.ShowDialog() != true )
-			{
-				return Task.FromResult<TResult>( null );
-			}
-
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
-			var resSetup = resultSetup ?? defaultResultSetup;
-			var result = resSetup( vm );
-
-			return Task.FromResult( result );
-		}
-
-		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
-
-			TResult result = null;
-
-			Dispatcher.CheckBeginInvokeOnUI(
-				async () =>
-				{
-					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
-					waitHandle.Set();
-				} );
-
-			waitHandle.Wait();
-			return result;
+			DialogStack = dialogStack;
 		}
 
 		public async Task ComposeMessage()
@@ -111,11 +63,9 @@ namespace Twice.Views.Services
 
 		public Task<string> OpenFile( FileServiceArgs fsa = null )
 		{
-			OpenFileDialog dlg = new OpenFileDialog();
+			var dlg = new OpenFileDialog();
 			if( fsa != null )
-			{
 				dlg.Filter = fsa.Filter;
-			}
 
 			return dlg.ShowDialog( Application.Current.MainWindow ) == true
 				? Task.FromResult( dlg.FileName )
@@ -133,12 +83,10 @@ namespace Twice.Views.Services
 					CurrentlyOpenNotification = null;
 				}
 
-				MetroWindow mainWindow = Application.Current.MainWindow as MetroWindow;
+				var mainWindow = Application.Current.MainWindow as MetroWindow;
 				Flyout flyout = mainWindow?.Flyouts.Items.OfType<NotificationBar>().FirstOrDefault();
 				if( flyout == null )
-				{
 					return;
-				}
 
 				flyout.DataContext = vm;
 				vm.Reset();
@@ -150,6 +98,8 @@ namespace Twice.Views.Services
 
 		public async Task OpenSearch( string query = null )
 		{
+			DialogStack.Push( new SearchDialogData( query ) );
+
 			Action<ISearchDialogViewModel> vmSetup = vm =>
 			{
 				if( !string.IsNullOrWhiteSpace( query ) )
@@ -159,7 +109,7 @@ namespace Twice.Views.Services
 				}
 			};
 
-			await ShowWindow<SearchDialog, ISearchDialogViewModel>( vmSetup );
+			await ShowHostedDialog<SearchDialog, ISearchDialogViewModel>( vmSetup );
 		}
 
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
@@ -217,9 +167,7 @@ namespace Twice.Views.Services
 			Action<IAccountsDialogViewModel> vmSetup = vm =>
 			{
 				if( directlyAddAccount )
-				{
 					vm.AddAccountCommand.Execute( null );
-				}
 			};
 			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>( null, vmSetup );
 		}
@@ -272,7 +220,7 @@ namespace Twice.Views.Services
 			{
 				vm.SetImages( imageSet );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage.Url )
-									?? vm.Images.FirstOrDefault();
+				                   ?? vm.Images.FirstOrDefault();
 			};
 
 			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
@@ -284,7 +232,7 @@ namespace Twice.Views.Services
 			{
 				vm.SetImages( imageSet );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
-									?? vm.Images.FirstOrDefault();
+				                   ?? vm.Images.FirstOrDefault();
 			};
 
 			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
@@ -307,9 +255,7 @@ namespace Twice.Views.Services
 		public async Task ViewStatus( StatusViewModel status )
 		{
 			if( status == null )
-			{
 				return;
-			}
 
 			Action<ITweetDetailsViewModel> vmSetup = vm =>
 			{
@@ -320,13 +266,104 @@ namespace Twice.Views.Services
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
 
+		private async Task ShowHostedDialog<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : UserControl, new()
+		{
+			await ShowHostedDialog<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
+		private Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TControl : UserControl, new()
+		{
+			var ctrl = new TControl();
+			var vm = ctrl.DataContext as TViewModel;
+
+			var host = new DialogWindowHost
+			{
+				Owner = Window,
+				Content = ctrl
+			};
+			
+			vmSetup?.Invoke( vm );
+
+			if( host.ShowDialog() != true )
+				return Task.FromResult<TResult>( null );
+
+			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			var resSetup = resultSetup ?? defaultResultSetup;
+			var result = resSetup( vm );
+
+			return Task.FromResult( result );
+		}
+
+		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : Window, new()
+		{
+			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
+		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var dlg = new TWindow
+			{
+				Owner = Window
+			};
+
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			if( dlg.ShowDialog() != true )
+				return Task.FromResult<TResult>( null );
+
+			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			var resSetup = resultSetup ?? defaultResultSetup;
+			var result = resSetup( vm );
+
+			return Task.FromResult( result );
+		}
+
+		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var waitHandle = new ManualResetEventSlim( false );
+
+			TResult result = null;
+
+			Dispatcher.CheckBeginInvokeOnUI(
+				async () =>
+				{
+					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
+					waitHandle.Set();
+				} );
+
+			waitHandle.Wait();
+			return result;
+		}
+
+		private readonly IDialogStack DialogStack;
+
+		private Flyout CurrentlyOpenNotification;
+
 		[Inject]
+
 		// ReSharper disable once MemberCanBePrivate.Global
 		public IDispatcher Dispatcher { get; set; }
 
 		private static MetroWindow Window
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
-
-		private Flyout CurrentlyOpenNotification;
 	}
 }
