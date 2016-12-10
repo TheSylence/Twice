@@ -114,7 +114,9 @@ namespace Twice.Converters
 
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.CopyUrl
+				Header = Strings.CopyUrl,
+				Command = GlobalCommands.CopyToClipboardCommand,
+				CommandParameter = entity.ExpandedUrl
 			} );
 
 			return menu;
@@ -136,11 +138,13 @@ namespace Twice.Converters
 			menu.Items.Add( new MenuItem
 			{
 				Header = Strings.Block
+				// TODO: Implement
 			} );
 
 			menu.Items.Add( new MenuItem
 			{
 				Header = Strings.ReportSpam
+				// TODO: Implement
 			} );
 
 			return menu;
