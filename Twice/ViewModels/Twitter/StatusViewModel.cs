@@ -207,7 +207,7 @@ namespace Twice.ViewModels.Twitter
 
 		private void ExecuteBlockUserCommand()
 		{
-			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.UserID, null, true ),
+			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.GetUserId(), null, true ),
 				Strings.BlockedUser, NotificationType.Success );
 		}
 

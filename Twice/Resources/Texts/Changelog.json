@@ -9,7 +9,8 @@
         "Changes": [],
         "Fixes": [
             "Extended tweets are now correctly displayed when realtime streaming (for real this time)",
-            "URLs from statuses in timeline can be copied to clipboard"
+            "URLs from statuses in timeline can be copied to clipboard",
+            "Fixed issue that could prevent blocking users"
         ],
         "Issues": []
     },
