@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
@@ -26,11 +27,9 @@ namespace Twice.ViewModels.Twitter
 				: model.Sender );
 
 			IsIncoming = Model.SenderID != context.UserId;
-		}
 
-		private async void ExecuteReplyCommand()
-		{
-			await ViewServiceRepository.ReplyToMessage( this );
+			BlockUserCommand = new LogMessageCommand( "Tried to block user from MessageViewModel", LogLevel.Warn );
+			ReportSpamCommand = new LogMessageCommand( "Tried to report user from MessageViewModel", LogLevel.Warn );
 		}
 
 		public override async Task LoadDataAsync()
@@ -71,6 +70,15 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( InlineMedias ) );
 		}
 
+		private async void ExecuteReplyCommand()
+		{
+			await ViewServiceRepository.ReplyToMessage( this );
+		}
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
+
 		public IContextEntry Context { get; }
 		public override DateTime CreatedAt => Model.CreatedAt;
 
@@ -100,9 +108,8 @@ namespace Twice.ViewModels.Twitter
 				RaisePropertyChanged();
 			}
 		}
-		
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
+		public override ICommand BlockUserCommand { get; }
+		public override ICommand ReportSpamCommand { get; }
 	}
 }

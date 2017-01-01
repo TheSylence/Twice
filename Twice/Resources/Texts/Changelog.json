@@ -4,7 +4,9 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Profile picture of a user can be viewed in full size by clicking on it in the profile dialog"
+            "Profile picture of a user can be viewed in full size by clicking on it in the profile dialog",
+            "Users can be blocked from the context menu of a mention",
+            "Users can be reported for spam from the context menu of a mention"
         ],
         "Changes": [],
         "Fixes": [

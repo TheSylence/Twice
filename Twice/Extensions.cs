@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Twice.Utilities;
 
 namespace Twice
@@ -42,8 +43,8 @@ namespace Twice
 			var a = value as T[] ?? value.ToArray();
 
 			return a.Length == b.Length
-					&& !a.Except( b ).Any()
-					&& !b.Except( a ).Any();
+			       && !a.Except( b ).Any()
+			       && !b.Except( a ).Any();
 		}
 
 		public static string GetReason( this Exception ex )
@@ -51,6 +52,12 @@ namespace Twice
 			while( ex is AggregateException )
 			{
 				ex = ex.InnerException;
+			}
+
+			var tex = ex as TargetInvocationException;
+			if( tex != null )
+			{
+				return tex.InnerException.GetReason();
 			}
 
 			return ex?.Message;

@@ -148,14 +148,14 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private bool CanExecuteBlockUserCommand()
+		private bool CanExecuteBlockUserCommand( ulong id )
 		{
-			return OriginalStatus.User.GetUserId() != Context.UserId;
+			return ( id == 0 ? OriginalStatus.GetUserId() : id ) != Context?.UserId;
 		}
 
 		private bool CanExecuteDeleteStatusCommand()
 		{
-			return OriginalStatus.User.GetUserId() == Context.UserId;
+			return OriginalStatus.GetUserId() == Context.UserId;
 		}
 
 		private bool CanExecuteReplyToAllCommand()
@@ -170,9 +170,9 @@ namespace Twice.ViewModels.Twitter
 			return userIds.Any();
 		}
 
-		private bool CanExecuteReportSpamCommand()
+		private bool CanExecuteReportSpamCommand( ulong id )
 		{
-			return OriginalStatus.User.GetUserId() != Context.UserId;
+			return ( id == 0 ? OriginalStatus.User.GetUserId() : id ) != Context?.UserId;
 		}
 
 		private void ExecAsync( Func<Task> action, string message = null, NotificationType type = NotificationType.Information )
@@ -185,10 +185,10 @@ namespace Twice.ViewModels.Twitter
 					await action();
 					return null;
 				}
-				catch( TwitterQueryException ex )
+				catch( Exception ex )
 				{
-					LogTo.WarnException( "Failed to retweet status", ex );
-					return ex.Message;
+					LogTo.WarnException( "Failed to execute action", ex );
+					return ex.GetReason();
 				}
 			} ).ContinueWith( t =>
 			{
@@ -205,9 +205,17 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
-		private void ExecuteBlockUserCommand()
+		private async void ExecuteBlockUserCommand( ulong id )
 		{
-			ExecAsync( async () => await Context.Twitter.CreateBlockAsync( OriginalStatus.GetUserId(), null, true ),
+			var csa = new ConfirmServiceArgs( Strings.ConfirmBlockUser );
+			if( !await ViewServiceRepository.Confirm( csa ) )
+			{
+				return;
+			}
+
+			var idToBlock = id == 0 ? OriginalStatus.GetUserId() : id;
+
+			ExecAsync( async () => { await Context.Twitter.CreateBlockAsync( idToBlock, null, true ); },
 				Strings.BlockedUser, NotificationType.Success );
 		}
 
@@ -271,9 +279,17 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ReplyToTweet( this, true );
 		}
 
-		private void ExecuteReportSpamCommand()
+		private async void ExecuteReportSpamCommand( ulong id )
 		{
-			ExecAsync( async () => { await Context.Twitter.ReportAsSpam( Model.User.GetUserId() ); }, Strings.TweetReportedAsSpam );
+			var csa = new ConfirmServiceArgs( Strings.ConfirmReportSpam );
+			if( !await ViewServiceRepository.Confirm( csa ) )
+			{
+				return;
+			}
+
+			var idToBlock = id == 0 ? OriginalStatus.GetUserId() : id;
+
+			ExecAsync( async () => { await Context.Twitter.ReportAsSpam( idToBlock ); }, Strings.TweetReportedAsSpam );
 		}
 
 		private async void ExecuteRetweetStatusCommand()
@@ -324,10 +340,43 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public ICommand BlockUserCommand
+		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
+
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private readonly Status OriginalStatus;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _BlockUserCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
+
+		private ITwitterCardExtractor _CardExtractor;
+
+		private IClipboard _Clipboard;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _ReportSpamCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
+
+		public override ICommand BlockUserCommand
 			=>
-			_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
-			;
+				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand<ulong>( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
+		;
 
 		public CardViewModel Card
 		{
@@ -368,8 +417,8 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand DeleteStatusCommand
 			=>
-			_DeleteStatusCommand
-			?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
+				_DeleteStatusCommand
+				?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
 
 		public IDispatcher Dispatcher { get; set; }
 
@@ -445,63 +494,30 @@ namespace Twice.ViewModels.Twitter
 
 		public ICommand QuoteStatusCommand
 			=>
-			_QuoteStatusCommand
-			?? ( _QuoteStatusCommand = new RelayCommand( ExecuteQuoteStatusCommand ) );
+				_QuoteStatusCommand
+				?? ( _QuoteStatusCommand = new RelayCommand( ExecuteQuoteStatusCommand ) );
 
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
 
 		public ICommand ReplyToAllCommand
 			=>
-			_ReplyToAllCommand
-			?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
+				_ReplyToAllCommand
+				?? ( _ReplyToAllCommand = new RelayCommand( ExecuteReplyToAllCommand, CanExecuteReplyToAllCommand ) );
 
-		public ICommand ReportSpamCommand
+		public override ICommand ReportSpamCommand
 			=>
-			_ReportSpamCommand
-			?? ( _ReportSpamCommand = new RelayCommand( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
+				_ReportSpamCommand
+				?? ( _ReportSpamCommand = new RelayCommand<ulong>( ExecuteReportSpamCommand, CanExecuteReportSpamCommand ) );
 
 		public ICollection<UserViewModel> RetweetedBy { get; }
 
 		public ICommand RetweetStatusCommand
 			=>
-			_RetweetStatusCommand
-			?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
+				_RetweetStatusCommand
+				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
 
 		public override string Text => Model.Text;
-
-		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
-
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-		private readonly Status OriginalStatus;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _BlockUserCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
-
-		private ITwitterCardExtractor _CardExtractor;
-
-		private IClipboard _Clipboard;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReportSpamCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
 	}
 }

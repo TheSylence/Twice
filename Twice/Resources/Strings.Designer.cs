@@ -412,6 +412,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to block this user?.
+        /// </summary>
+        public static string ConfirmBlockUser {
+            get {
+                return ResourceManager.GetString("ConfirmBlockUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to remove this account?.
         /// </summary>
         public static string ConfirmDeleteAccount {
@@ -462,6 +471,15 @@ namespace Twice.Resources {
         public static string ConfirmMediaRemoval {
             get {
                 return ResourceManager.GetString("ConfirmMediaRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to report this user for spamming?.
+        /// </summary>
+        public static string ConfirmReportSpam {
+            get {
+                return ResourceManager.GetString("ConfirmReportSpam", resourceCulture);
             }
         }
         

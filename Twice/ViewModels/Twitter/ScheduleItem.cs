@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter.Entities;
@@ -31,6 +32,9 @@ namespace Twice.ViewModels.Twitter
 				UrlEntities = new List<UrlEntity>(),
 				UserMentionEntities = EntityParser.ExtractMentions( job.Text )
 			};
+
+			BlockUserCommand = new LogMessageCommand( "Tried to block user from ScheduleItem", LogLevel.Warn );
+			ReportSpamCommand = new LogMessageCommand( "Tried to report user from ScheduleItem", LogLevel.Warn );
 		}
 
 		protected override Task LoadInlineMedias()
@@ -65,5 +69,7 @@ namespace Twice.ViewModels.Twitter
 		private readonly IViewServiceRepository ViewServices;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteScheduleCommand;
+		public override ICommand BlockUserCommand { get; }
+		public override ICommand ReportSpamCommand { get; }
 	}
 }

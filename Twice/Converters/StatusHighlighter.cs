@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
@@ -122,7 +123,7 @@ namespace Twice.Converters
 			return menu;
 		}
 
-		private static ContextMenu CreateUserContextMenu( UserMentionEntity entity )
+		private static ContextMenu CreateUserContextMenu( UserMentionEntity entity, IHighlightable item )
 		{
 			var menu = new ContextMenu();
 
@@ -134,17 +135,19 @@ namespace Twice.Converters
 			} );
 
 			menu.Items.Add( new Separator() );
-
+			
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.Block
-				// TODO: Implement
+				Header = Strings.Block,
+				Command = item.BlockUserCommand,
+				CommandParameter = entity.Id
 			} );
 
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.ReportSpam
-				// TODO: Implement
+				Header = Strings.ReportSpam,
+				Command = item.ReportSpamCommand,
+				CommandParameter = entity.Id
 			} );
 
 			return menu;
@@ -228,8 +231,9 @@ namespace Twice.Converters
 		///     Generates an inline from a mention entity.
 		/// </summary>
 		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <param name="item"></param>
 		/// <returns>The generated inline.</returns>
-		private static Inline GenerateMention( UserMentionEntity entity )
+		private static Inline GenerateMention( UserMentionEntity entity, IHighlightable item )
 		{
 			Hyperlink link = new Hyperlink();
 			link.Inlines.Add( Constants.Twitter.Mention + entity.ScreenName );
@@ -244,7 +248,7 @@ namespace Twice.Converters
 			{
 				link.CommandParameter = entity.Id;
 			}
-			link.ContextMenu = CreateUserContextMenu( entity );
+			link.ContextMenu = CreateUserContextMenu( entity, item );
 
 			return link;
 		}
@@ -256,7 +260,7 @@ namespace Twice.Converters
 			return text;
 		}
 
-		static IEnumerable<EntityBase> RemoveExtendedTweetUrl( IEnumerable<UrlEntity> urls )
+		private static IEnumerable<EntityBase> RemoveExtendedTweetUrl( IEnumerable<UrlEntity> urls )
 		{
 			foreach( var url in urls )
 			{
@@ -279,7 +283,7 @@ namespace Twice.Converters
 
 			var entities = hashTags.Distinct( this )
 				.Concat( medias.Distinct( this ) )
-				.Concat( RemoveExtendedTweetUrl(urls).Distinct( this ) )
+				.Concat( RemoveExtendedTweetUrl( urls ).Distinct( this ) )
 				.Concat( mentions.Distinct( this ) );
 
 			//IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
@@ -400,7 +404,7 @@ namespace Twice.Converters
 					}
 					else if( entity is UserMentionEntity )
 					{
-						yield return GenerateMention( (UserMentionEntity)entity );
+						yield return GenerateMention( (UserMentionEntity)entity, item );
 					}
 
 					lastEnd = entity.End;
@@ -417,11 +421,12 @@ namespace Twice.Converters
 			}
 		}
 
-		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
-		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 		private const string AlternativeAtSign = "\uFF20";
 		private const string AlternativeHashtagSign = "\uFF03";
 		private static IConfig OverrideConfig;
 		private static IMediaExtractorRepository OverrideExtractorRepo;
+
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
+		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 	}
 }

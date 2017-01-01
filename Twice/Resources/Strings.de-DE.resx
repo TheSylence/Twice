@@ -741,4 +741,10 @@
   <data name="Website" xml:space="preserve">
     <value>Website</value>
   </data>
+  <data name="ConfirmBlockUser" xml:space="preserve">
+    <value>Soll dieser Benutzer wirklich blockiert werden?</value>
+  </data>
+  <data name="ConfirmReportSpam" xml:space="preserve">
+    <value>Soll dieser Benutzer wirklich wegen Spam gemeldet werden?</value>
+  </data>
 </root>

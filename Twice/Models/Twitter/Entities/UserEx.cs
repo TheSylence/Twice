@@ -1,7 +1,10 @@
 ﻿using System.Linq;
+using System.Windows.Input;
 using LinqToTwitter;
 using LinqToTwitter.Common;
 using LitJson;
+using NLog;
+using Twice.ViewModels;
 
 namespace Twice.Models.Twitter.Entities
 {
@@ -14,6 +17,9 @@ namespace Twice.Models.Twitter.Entities
 		{
 			BioEntities = new LinqToTwitter.Entities();
 			UrlEntities = new LinqToTwitter.Entities();
+
+			BlockUserCommand = new LogMessageCommand( "Tried to block user from UserEx", LogLevel.Warn );
+			ReportSpamCommand = new LogMessageCommand( "Tried to report user from UserEx", LogLevel.Warn );
 		}
 
 		public UserEx( JsonData user )
@@ -41,5 +47,7 @@ namespace Twice.Models.Twitter.Entities
 		public LinqToTwitter.Entities BioEntities { get; }
 		public string UrlDisplay { get; set; }
 		public LinqToTwitter.Entities UrlEntities { get; }
+		public ICommand BlockUserCommand { get; }
+		public ICommand ReportSpamCommand { get; }
 	}
 }
