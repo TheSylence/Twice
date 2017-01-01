@@ -120,5 +120,7 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
 		private IMediaExtractorRepository _MediaExtractor;
+		public abstract ICommand BlockUserCommand { get; }
+		public abstract ICommand ReportSpamCommand { get; }
 	}
 }

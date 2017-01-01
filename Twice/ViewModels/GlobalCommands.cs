@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -84,32 +85,37 @@ namespace Twice.ViewModels
 			await ViewServices.OpenSearch( query );
 		}
 
+		private static void ExecuteCopyToClipboardCommand( string text )
+		{
+			Clipboard.SetText( text );
+		}
+
+		private static RelayCommand<string> _CopyToClipboardCommand;
+
 		private static readonly IKernel Kernel;
 
 		private static RelayCommand<string> _CreateMuteCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<Uri> _OpenImageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenImageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<MessageViewModel> _OpenMessageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<MessageViewModel> _OpenMessageCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<object> _OpenProfileCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<object> _OpenProfileCommand;
 
 		private static RelayCommand<StatusViewModel> _OpenStatusCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<Uri> _OpenUrlCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private static RelayCommand<string> _StartSearchCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<string> _StartSearchCommand;
+
+		public static ICommand CopyToClipboardCommand
+			=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand<string>( ExecuteCopyToClipboardCommand ) );
 
 		public static ICommand CreateMuteCommand
 			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
 
 		public static ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand<Uri>(
-			ExecuteOpenImageCommand ) );
+			                                           ExecuteOpenImageCommand ) );
 
 		public static ICommand OpenMessageCommand
 			=> _OpenMessageCommand ?? ( _OpenMessageCommand = new RelayCommand<MessageViewModel>( ExecuteOpenMessageCommand ) );
@@ -119,13 +125,13 @@ namespace Twice.ViewModels
 
 		public static ICommand OpenStatusCommand
 			=> _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
-				ExecuteOpenStatusCommand ) );
+				   ExecuteOpenStatusCommand ) );
 
 		/// <summary>
 		///     Command to open an URL in the default webbrowser.
 		/// </summary>
 		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
-												( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+		                                         ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
 
 		public static ICommand StartSearchCommand
 			=> _StartSearchCommand ?? ( _StartSearchCommand = new RelayCommand<string>( ExecuteStartSearchCommand ) );

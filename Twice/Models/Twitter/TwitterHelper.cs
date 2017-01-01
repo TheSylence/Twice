@@ -12,9 +12,11 @@ namespace Twice.Models.Twitter
 	internal static class TwitterHelper
 	{
 		/// <summary>
-		/// Applies Unicode Normalization to a text and then counts characters.
+		///     Applies Unicode Normalization to a text and then counts characters.
 		/// </summary>
-		/// <remarks>See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.</remarks>
+		/// <remarks>
+		///     See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.
+		/// </remarks>
 		/// <param name="text"></param>
 		/// <param name="twitterConfig"></param>
 		/// <returns></returns>
@@ -127,6 +129,11 @@ namespace Twice.Models.Twitter
 		{
 			string userName = user.GetScreenName();
 			return new Uri( string.Format( CultureInfo.InvariantCulture, "https://twitter.com/{0}", userName ) );
+		}
+
+		public static bool IsExtendedTweetUrl( string url )
+		{
+			return url.ToLowerInvariant().Contains( "/i/web/status/" );
 		}
 
 		public static bool IsSupportedImage( string fileName )

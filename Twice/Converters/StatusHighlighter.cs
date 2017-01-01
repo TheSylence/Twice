@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Ninject;
 using Twice.Models.Configuration;
@@ -21,7 +22,7 @@ namespace Twice.Converters
 	/// <summary>
 	///     Converts a Status to an InlineCollection.
 	/// </summary>
-	internal class StatusHighlighter : IValueConverter
+	internal class StatusHighlighter : IValueConverter, IEqualityComparer<EntityBase>
 	{
 		public StatusHighlighter( IConfig config, IMediaExtractorRepository mediaExtractorRepo = null )
 		{
@@ -78,6 +79,22 @@ namespace Twice.Converters
 			throw new NotSupportedException();
 		}
 
+		public bool Equals( EntityBase x, EntityBase y )
+		{
+			return x.Start == y.Start && x.End == y.End;
+		}
+
+		public int GetHashCode( EntityBase obj )
+		{
+			int hash = 397;
+			unchecked
+			{
+				hash = hash * 23 + obj.Start;
+				hash = hash * 23 + obj.End;
+			}
+			return hash;
+		}
+
 		private static ContextMenu CreateHashtagContextMenu( HashTagEntity entity )
 		{
 			var menu = new ContextMenu();
@@ -98,13 +115,15 @@ namespace Twice.Converters
 
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.CopyUrl
+				Header = Strings.CopyUrl,
+				Command = GlobalCommands.CopyToClipboardCommand,
+				CommandParameter = entity.ExpandedUrl
 			} );
 
 			return menu;
 		}
 
-		private static ContextMenu CreateUserContextMenu( UserMentionEntity entity )
+		private static ContextMenu CreateUserContextMenu( UserMentionEntity entity, IHighlightable item )
 		{
 			var menu = new ContextMenu();
 
@@ -116,31 +135,161 @@ namespace Twice.Converters
 			} );
 
 			menu.Items.Add( new Separator() );
-
+			
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.Block
+				Header = Strings.Block,
+				Command = item.BlockUserCommand,
+				CommandParameter = entity.Id
 			} );
 
 			menu.Items.Add( new MenuItem
 			{
-				Header = Strings.ReportSpam
+				Header = Strings.ReportSpam,
+				Command = item.ReportSpamCommand,
+				CommandParameter = entity.Id
 			} );
 
 			return menu;
 		}
 
-		private static IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
+		private static string ExtractEntityText( EntityBase entity )
+		{
+			var mentionEntity = entity as UserMentionEntity;
+			if( mentionEntity != null )
+			{
+				return "@" + mentionEntity.ScreenName;
+			}
+
+			var tagEntity = entity as HashTagEntity;
+			if( tagEntity != null )
+			{
+				return "#" + tagEntity.Tag;
+			}
+
+			var urlEntity = entity as UrlEntity;
+			return urlEntity != null
+				? urlEntity.Url
+				: string.Empty;
+		}
+
+		/// <summary>
+		///     Generates an inline from a hashtag entity.
+		/// </summary>
+		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <returns>The generated inline.</returns>
+		private static Inline GenerateHashTag( HashTagEntity entity )
+		{
+			Hyperlink link = new Hyperlink();
+			link.Inlines.Add( Constants.Twitter.HashTag + entity.Tag );
+			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
+			link.TextDecorations = null;
+			link.ContextMenu = CreateHashtagContextMenu( entity );
+			link.CommandParameter = Constants.Twitter.HashTag + entity.Tag;
+			link.Command = GlobalCommands.StartSearchCommand;
+
+			return link;
+		}
+
+		/// <summary>
+		///     Generates an inline from a link entity.
+		/// </summary>
+		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <returns>The generated inline.</returns>
+		private static Inline GenerateLink( UrlEntity entity )
+		{
+			Hyperlink link = new Hyperlink();
+			link.Inlines.Add( entity.DisplayUrl );
+			link.CommandParameter = new Uri( entity.ExpandedUrl );
+			link.Command = GlobalCommands.OpenUrlCommand;
+			link.ToolTip = entity.ExpandedUrl;
+			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
+			link.ContextMenu = CreateLinkContextMenu( entity );
+
+			return link;
+		}
+
+		/// <summary>
+		///     Generates an inline from a media entity.
+		/// </summary>
+		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <returns>The generated inline.</returns>
+		private static Inline GenerateMedia( MediaEntity entity )
+		{
+			Hyperlink link = new Hyperlink();
+			link.Inlines.Add( entity.DisplayUrl );
+			link.NavigateUri = new Uri( entity.MediaUrlHttps );
+			link.CommandParameter = entity.MediaUrlHttps;
+			link.Command = GlobalCommands.OpenUrlCommand;
+			link.ToolTip = entity.MediaUrlHttps;
+			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
+
+			return link;
+		}
+
+		/// <summary>
+		///     Generates an inline from a mention entity.
+		/// </summary>
+		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <param name="item"></param>
+		/// <returns>The generated inline.</returns>
+		private static Inline GenerateMention( UserMentionEntity entity, IHighlightable item )
+		{
+			Hyperlink link = new Hyperlink();
+			link.Inlines.Add( Constants.Twitter.Mention + entity.ScreenName );
+			link.SetResourceReference( TextElement.ForegroundProperty, "MentionBrush" );
+			link.TextDecorations = null;
+			link.Command = GlobalCommands.OpenProfileCommand;
+			if( entity.Id == 0 )
+			{
+				link.CommandParameter = entity.ScreenName;
+			}
+			else
+			{
+				link.CommandParameter = entity.Id;
+			}
+			link.ContextMenu = CreateUserContextMenu( entity, item );
+
+			return link;
+		}
+
+		private static string PrepareText( string text )
+		{
+			text = WebUtility.HtmlDecode( text );
+
+			return text;
+		}
+
+		private static IEnumerable<EntityBase> RemoveExtendedTweetUrl( IEnumerable<UrlEntity> urls )
+		{
+			foreach( var url in urls )
+			{
+				if( !TwitterHelper.IsExtendedTweetUrl( url.ExpandedUrl ) )
+					yield return url;
+			}
+		}
+
+		private IEnumerable<EntityBase> ExtractEntities( IHighlightable item )
 		{
 			if( item.Text == null )
 			{
 				return Enumerable.Empty<EntityBase>();
 			}
 
-			IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
-			entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
-			entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );
-			entities = entities.Concat( item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>() );
+			var hashTags = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
+			var medias = item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>();
+			var urls = item.Entities?.UrlEntities ?? Enumerable.Empty<UrlEntity>();
+			var mentions = item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>();
+
+			var entities = hashTags.Distinct( this )
+				.Concat( medias.Distinct( this ) )
+				.Concat( RemoveExtendedTweetUrl( urls ).Distinct( this ) )
+				.Concat( mentions.Distinct( this ) );
+
+			//IEnumerable<EntityBase> entities = item.Entities?.HashTagEntities ?? Enumerable.Empty<EntityBase>();
+			//entities = entities.Concat( item.Entities?.MediaEntities ?? Enumerable.Empty<EntityBase>() );
+			//entities = entities.Concat( item.Entities?.UrlEntities ?? Enumerable.Empty<EntityBase>() );
+			//entities = entities.Concat( item.Entities?.UserMentionEntities ?? Enumerable.Empty<EntityBase>() );
 
 			var tweetText = TwitterHelper.NormalizeText( item.Text );
 
@@ -205,50 +354,12 @@ namespace Twice.Converters
 			return ordered;
 		}
 
-		private static string ExtractEntityText( EntityBase entity )
-		{
-			var mentionEntity = entity as UserMentionEntity;
-			if( mentionEntity != null )
-			{
-				return "@" + mentionEntity.ScreenName;
-			}
-
-			var tagEntity = entity as HashTagEntity;
-			if( tagEntity != null )
-			{
-				return "#" + tagEntity.Tag;
-			}
-
-			var urlEntity = entity as UrlEntity;
-			return urlEntity != null
-				? urlEntity.Url
-				: string.Empty;
-		}
-
-		/// <summary>
-		///     Generates an inline from a hashtag entity.
-		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
-		private static Inline GenerateHashTag( HashTagEntity entity )
-		{
-			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( Constants.Twitter.HashTag + entity.Tag );
-			link.SetResourceReference( TextElement.ForegroundProperty, "HashtagBrush" );
-			link.TextDecorations = null;
-			link.ContextMenu = CreateHashtagContextMenu( entity );
-			link.CommandParameter = Constants.Twitter.HashTag + entity.Tag;
-			link.Command = GlobalCommands.StartSearchCommand;
-
-			return link;
-		}
-
 		/// <summary>
 		///     Generates a collection of inlines from a tweet.
 		/// </summary>
 		/// <param name="item">The tweet to generate inlines from.</param>
 		/// <returns>The generated inlines.</returns>
-		private static IEnumerable<Inline> GenerateInlines( IHighlightable item )
+		private IEnumerable<Inline> GenerateInlines( IHighlightable item )
 		{
 			var allEntities = ExtractEntities( item ).ToArray();
 
@@ -293,7 +404,7 @@ namespace Twice.Converters
 					}
 					else if( entity is UserMentionEntity )
 					{
-						yield return GenerateMention( (UserMentionEntity)entity );
+						yield return GenerateMention( (UserMentionEntity)entity, item );
 					}
 
 					lastEnd = entity.End;
@@ -310,79 +421,12 @@ namespace Twice.Converters
 			}
 		}
 
-		/// <summary>
-		///     Generates an inline from a link entity.
-		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
-		private static Inline GenerateLink( UrlEntity entity )
-		{
-			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( entity.DisplayUrl );
-			link.CommandParameter = new Uri( entity.ExpandedUrl );
-			link.Command = GlobalCommands.OpenUrlCommand;
-			link.ToolTip = entity.ExpandedUrl;
-			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
-			link.ContextMenu = CreateLinkContextMenu( entity );
-
-			return link;
-		}
-
-		/// <summary>
-		///     Generates an inline from a media entity.
-		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
-		private static Inline GenerateMedia( MediaEntity entity )
-		{
-			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( entity.DisplayUrl );
-			link.NavigateUri = new Uri( entity.MediaUrlHttps );
-			link.CommandParameter = entity.MediaUrlHttps;
-			link.Command = GlobalCommands.OpenUrlCommand;
-			link.ToolTip = entity.MediaUrlHttps;
-			link.SetResourceReference( TextElement.ForegroundProperty, "LinkBrush" );
-
-			return link;
-		}
-
-		/// <summary>
-		///     Generates an inline from a mention entity.
-		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
-		private static Inline GenerateMention( UserMentionEntity entity )
-		{
-			Hyperlink link = new Hyperlink();
-			link.Inlines.Add( Constants.Twitter.Mention + entity.ScreenName );
-			link.SetResourceReference( TextElement.ForegroundProperty, "MentionBrush" );
-			link.TextDecorations = null;
-			link.Command = GlobalCommands.OpenProfileCommand;
-			if( entity.Id == 0 )
-			{
-				link.CommandParameter = entity.ScreenName;
-			}
-			else
-			{
-				link.CommandParameter = entity.Id;
-			}
-			link.ContextMenu = CreateUserContextMenu( entity );
-
-			return link;
-		}
-
-		private static string PrepareText( string text )
-		{
-			text = WebUtility.HtmlDecode( text );
-
-			return text;
-		}
-
-		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
-		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 		private const string AlternativeAtSign = "\uFF20";
 		private const string AlternativeHashtagSign = "\uFF03";
 		private static IConfig OverrideConfig;
 		private static IMediaExtractorRepository OverrideExtractorRepo;
+
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
+		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 	}
 }

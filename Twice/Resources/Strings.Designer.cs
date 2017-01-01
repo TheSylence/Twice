@@ -412,6 +412,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to block this user?.
+        /// </summary>
+        public static string ConfirmBlockUser {
+            get {
+                return ResourceManager.GetString("ConfirmBlockUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to remove this account?.
         /// </summary>
         public static string ConfirmDeleteAccount {
@@ -462,6 +471,15 @@ namespace Twice.Resources {
         public static string ConfirmMediaRemoval {
             get {
                 return ResourceManager.GetString("ConfirmMediaRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to report this user for spamming?.
+        /// </summary>
+        public static string ConfirmReportSpam {
+            get {
+                return ResourceManager.GetString("ConfirmReportSpam", resourceCulture);
             }
         }
         
@@ -1735,7 +1753,7 @@ namespace Twice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take..
+        ///   Looks up a localized string similar to The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value the more time this fetch will take..
         /// </summary>
         public static string TweetFetchCountDescription {
             get {

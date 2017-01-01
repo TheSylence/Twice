@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Twice.Models.Twitter;
 
 namespace Twice.Models.Media
 {
@@ -14,7 +15,7 @@ namespace Twice.Models.Media
 			if( url.Host.Equals( "twitter.com", StringComparison.OrdinalIgnoreCase ) ||
 			    url.Host.Equals( "www.twitter.com", StringComparison.OrdinalIgnoreCase ) )
 			{
-				if( url.AbsolutePath.StartsWith( "/i/web/status/", StringComparison.OrdinalIgnoreCase ) )
+				if( TwitterHelper.IsExtendedTweetUrl( url.AbsolutePath ) )
 				{
 					return null;
 				}

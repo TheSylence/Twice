@@ -19,10 +19,12 @@ using Twice.Views.Services;
 
 namespace Twice.Tests.ViewModels.Twitter
 {
-	[TestClass, ExcludeFromCodeCoverage]
+	[TestClass]
+	[ExcludeFromCodeCoverage]
 	public class StatusViewModelTests
 	{
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void CopyTweetUrlWritesToClipboard()
 		{
 			// Arrange
@@ -46,7 +48,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			clipboard.VerifyAll();
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void CopyTweetWritesToClipboard()
 		{
 			// Arrange
@@ -68,7 +71,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			clipboard.Verify( c => c.SetText( "@Testi: hello world" ), Times.Once() );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void CreationDateIsCorrectlyExtracted()
 		{
 			// Arrange
@@ -84,7 +88,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.AreEqual( status.CreatedAt, created );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void DeletingStatusCallsTwitterApi()
 		{
 			// Arrange
@@ -123,7 +128,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Verify( c => c.Notifier.DisplayMessage( It.IsAny<string>(), NotificationType.Success ), Times.Once() );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ExecAsyncDisplaysErrorMessage()
 		{
 			// Arrange
@@ -158,7 +164,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Verify( c => c.Notifier.DisplayMessage( "Error Message", NotificationType.Error ), Times.Once() );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public async Task ExtendedMediasAreIncludedInInlineMedias()
 		{
 			// Arrange
@@ -180,7 +187,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.AreEqual( 3, medias.Length );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ForeignStatusCanBeQuoted()
 		{
 			// Arrange
@@ -198,7 +206,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ForeignStatusCanBeReportedAsSpam()
 		{
 			// Arrange
@@ -216,7 +225,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ForeignStatusCanBeRetweeted()
 		{
 			// Arrange
@@ -234,7 +244,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ForeignStatusCannotBeDeleted()
 		{
 			// Arrange
@@ -252,7 +263,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ForeignUserCanBeBlocked()
 		{
 			// Arrange
@@ -270,7 +282,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public async Task InlineMediasAreExtractedCorrectly()
 		{
 			// Arrange
@@ -299,7 +312,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsNotNull( medias.SingleOrDefault( m => m.Url.AbsoluteUri == "http://example.com/3" ) );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public async Task InlineMediasContainExtractedMedias()
 		{
 			var context = new Mock<IContextEntry>();
@@ -340,7 +354,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			extractorRepo.Verify( e => e.ExtractMedia( It.IsAny<string>() ), Times.Exactly( 3 ) );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public async Task InlineMediaUseExtendedEntities()
 		{
 			// Arrange
@@ -370,7 +385,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsNotNull( medias.SingleOrDefault( m => m.DisplayUrl.AbsoluteUri == "https://img.example.com/image3.jpg" ) );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void OrderIdIsCorrect()
 		{
 			// Arrange
@@ -393,7 +409,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.AreEqual( retweet.ID, retweetVm.OrderId );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeDeleted()
 		{
 			// Arrange
@@ -411,7 +428,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewMoels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewMoels.Twitter" )]
 		public void OwnStatusCanBeQuoted()
 		{
 			// Arrange
@@ -429,7 +447,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCanBeRetweeted()
 		{
 			// Arrange
@@ -447,7 +466,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void OwnStatusCannotBeReportedAsSpam()
 		{
 			// Arrange
@@ -465,7 +485,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void OwnUserCannotBeBlocked()
 		{
 			// Arrange
@@ -483,7 +504,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels" )]
+		[TestMethod]
+		[TestCategory( "ViewModels" )]
 		public void QuoteIsExtractedFromStatus()
 		{
 			// Arrange
@@ -501,7 +523,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( hasQuote );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void QuoteIsNotExtractedForDifferentUrls()
 		{
 			// Arrange
@@ -519,7 +542,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( hasQuote );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void QuotingTweetOpensDialog()
 		{
 			// Arrange
@@ -536,7 +560,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Verify( v => v.QuoteTweet( It.IsAny<StatusViewModel>(), null ), Times.Once() );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ReplyCanAlwaysBeExecuted()
 		{
 			// Arrange
@@ -552,12 +577,13 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( canExecute );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ReplyToAllIsAlwaysEnabled()
 		{
 			// Arrange
 			var context = new Mock<IContextEntry>();
-
+			
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 123;
 			status.Entities = new Entities
@@ -579,11 +605,15 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( multiple );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void ReportingSpamCallsTwitterApi()
 		{
 			// Arrange
 			var waitHandle = new ManualResetEventSlim( false );
+			
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.ReportAsSpam( 123 ) ).Returns( Task.CompletedTask ).Verifiable();
@@ -592,7 +622,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			user.UserID = 123;
 			var status = DummyGenerator.CreateDummyStatus( user );
 
-			var vm = new StatusViewModel( status, context.Object, null, null )
+			var vm = new StatusViewModel( status, context.Object, null, viewServices.Object )
 			{
 				Dispatcher = new SyncDispatcher()
 			};
@@ -613,7 +643,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Verify( c => c.Twitter.ReportAsSpam( 123 ), Times.Once() );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void RetweetsAreHandledCorrectly()
 		{
 			// Arrange
@@ -639,7 +670,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.AreEqual( 1ul, vm.Model.ID );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void StatusCanBeFavorited()
 		{
 			// Arrange
@@ -675,7 +707,8 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( status.Favorited );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void StatusCanBeUnfavorited()
 		{
 			// Arrange
@@ -712,13 +745,17 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( status.Favorited );
 		}
 
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		[TestMethod]
+		[TestCategory( "ViewModels.Twitter" )]
 		public void UserCanBeBlocked()
 		{
 			// Arrange
 			var status = DummyGenerator.CreateDummyStatus();
 			status.User.UserID = 111;
 			status.UserID = 111;
+
+			var viewServices = new Mock<IViewServiceRepository>();
+			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var twitter = new Mock<ITwitterContext>();
 			twitter.Setup( t => t.CreateBlockAsync( 111, It.IsAny<string>(), It.IsAny<bool>() ) ).Returns(
@@ -728,7 +765,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.Twitter ).Returns( twitter.Object );
 			context.SetupGet( c => c.UserId ).Returns( 123 );
 			var waitHandle = new ManualResetEventSlim( false );
-			var vm = new StatusViewModel( status, context.Object, null, null )
+			var vm = new StatusViewModel( status, context.Object, null, viewServices.Object )
 			{
 				Dispatcher = new SyncDispatcher()
 			};

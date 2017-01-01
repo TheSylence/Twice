@@ -1,6 +1,7 @@
 using System;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
+using Twice.Models.Proxy;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 
@@ -16,6 +17,10 @@ namespace Twice.ViewModels.Twitter
 			ProfileImageUrlHttpsOrig = user.ProfileImageUrlHttps?.Replace( "_normal", "" );
 			ProfileImageUrlHttpsMini = user.ProfileImageUrlHttps?.Replace( "_normal", "_mini" );
 			ProfileImageUrlHttpsBig = user.ProfileImageUrlHttps?.Replace( "_normal", "_bigger" );
+			if( !string.IsNullOrEmpty( ProfileImageUrlHttpsBig ) )
+			{
+				BigProfileImageUrl = MediaProxyServer.BuildUrl( ProfileImageUrlHttpsBig );
+			}
 
 			ScreenName = Constants.Twitter.Mention + Model.GetScreenName();
 			Url = Uri.IsWellFormedUriString( user.Url, UriKind.Absolute ) ? new Uri( user.Url ) : user.GetUserUrl();
@@ -39,6 +44,7 @@ namespace Twice.ViewModels.Twitter
 		public UserEx ModelEx => Model as UserEx;
 		public string ProfileImageUrlHttps { get; }
 		public string ProfileImageUrlHttpsBig { get; }
+		public Uri BigProfileImageUrl { get; }
 		public string ProfileImageUrlHttpsMini { get; }
 		public string ProfileImageUrlHttpsOrig { get; }
 		public string ScreenName { get; }
