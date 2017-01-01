@@ -1735,7 +1735,7 @@ namespace Twice.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value to more time this fetch will take..
+        ///   Looks up a localized string similar to The amount of tweets to load from the servers. This is used at startup and when loading more data. The higher the value the more time this fetch will take..
         /// </summary>
         public static string TweetFetchCountDescription {
             get {
