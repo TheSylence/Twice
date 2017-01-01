@@ -3,7 +3,9 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+            "Profile picture of a user can be viewed in full size by clicking on it in the profile dialog"
+        ],
         "Changes": [],
         "Fixes": [
             "Extended tweets are now correctly displayed when realtime streaming (for real this time)",
