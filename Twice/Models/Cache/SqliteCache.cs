@@ -37,7 +37,11 @@ namespace Twice.Models.Cache
 				return;
 			}
 
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -71,7 +75,11 @@ namespace Twice.Models.Cache
 
 		public async Task AddMessages( IList<MessageCacheEntry> messages )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -117,7 +125,11 @@ namespace Twice.Models.Cache
 
 		public async Task AddStatuses( IList<Status> statuses )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -165,7 +177,11 @@ namespace Twice.Models.Cache
 			int count = users.Count;
 			const int batchSize = 100;
 			int runsNeeded = (int)Math.Ceiling( count / (float)batchSize );
-			await Semaphore.WaitAsync( SemaphoreWait );
+
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
 
 			try
 			{
@@ -400,7 +416,11 @@ namespace Twice.Models.Cache
 
 		public async Task MapStatusesToColumn( IList<Status> statuses, Guid columnId )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -458,7 +478,11 @@ namespace Twice.Models.Cache
 
 		public async Task RemoveStatus( ulong id )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var cmd = Connection.CreateCommand() )
@@ -476,7 +500,11 @@ namespace Twice.Models.Cache
 
 		public async Task SaveTwitterConfig( LinqToTwitter.Configuration cfg )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var cmd = Connection.CreateCommand() )
@@ -502,7 +530,11 @@ namespace Twice.Models.Cache
 
 		public async Task SetUserFriends( ulong userId, IEnumerable<ulong> friendIds )
 		{
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -561,7 +593,11 @@ namespace Twice.Models.Cache
 
 			ulong now = SqliteHelper.GetDateValue( DateTime.Now );
 
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -598,7 +634,11 @@ namespace Twice.Models.Cache
 				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
 			};
 
-			await Semaphore.WaitAsync( SemaphoreWait );
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
 			try
 			{
 				using( var tx = new Transaction( Connection ) )
@@ -641,6 +681,6 @@ namespace Twice.Models.Cache
 
 		private readonly SQLiteConnection Connection;
 		private readonly SemaphoreSlim Semaphore = new SemaphoreSlim( 1, 1 );
-		private readonly TimeSpan SemaphoreWait = TimeSpan.FromSeconds( 5 );
+		private readonly TimeSpan SemaphoreWait = TimeSpan.FromSeconds( 10 );
 	}
 }

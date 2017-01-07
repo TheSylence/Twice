@@ -6,7 +6,8 @@
         "NewFeatures": [],
         "Changes": [],
         "Fixes": [
-            "Fixed possible crash when caching user's friends"
+            "Fixed possible crash when caching user's friends",
+            "Fixed possible crashes in local cache"
         ],
         "Issues": []
     },
