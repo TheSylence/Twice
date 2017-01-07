@@ -1,5 +1,16 @@
 ﻿[
     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed possible crash when caching user's friends"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.9.3",
         "Date": "2017-01-01",
         "Description": "",
