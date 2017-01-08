@@ -1285,6 +1285,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile of {0}.
+        /// </summary>
+        public static string ProfileOfUser {
+            get {
+                return ResourceManager.GetString("ProfileOfUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quoted tweet.
         /// </summary>
         public static string QuotedTweet {

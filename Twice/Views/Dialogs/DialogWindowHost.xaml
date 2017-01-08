@@ -10,7 +10,7 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" DataContext="{Binding DialogWindowHost, Source={StaticResource Locator}}"
-        Title="DialogWindowHost" MinHeight="600" MinWidth="500">
+        Title="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="500">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />

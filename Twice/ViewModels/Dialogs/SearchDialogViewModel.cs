@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using Twice.ViewModels.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -15,6 +16,8 @@ namespace Twice.ViewModels.Dialogs
 	{
 		public SearchDialogViewModel()
 		{
+			Title = Strings.Search;
+
 			SearchResults = new ObservableCollection<object>();
 		}
 

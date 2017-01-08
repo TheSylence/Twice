@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Fody;
+using MahApps.Metro.Controls;
+using Microsoft.Win32;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -7,10 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Fody;
-using MahApps.Metro.Controls;
-using Microsoft.Win32;
-using Ninject;
 using Twice.Models.Columns;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Accounts;
@@ -19,6 +19,7 @@ using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Dialogs.Data;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Info;
+using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Dialogs;
@@ -150,8 +151,8 @@ namespace Twice.Views.Services
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId )
 		{
-			ulong[] sourceAccounts = {accountId};
-			ulong[] targetAccounts = {accountId};
+			ulong[] sourceAccounts = { accountId };
+			ulong[] targetAccounts = { accountId };
 
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
@@ -220,7 +221,7 @@ namespace Twice.Views.Services
 			{
 				vm.SetImages( imageSet );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage.Url )
-				                   ?? vm.Images.FirstOrDefault();
+								   ?? vm.Images.FirstOrDefault();
 			};
 
 			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
@@ -232,7 +233,7 @@ namespace Twice.Views.Services
 			{
 				vm.SetImages( imageSet );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
-				                   ?? vm.Images.FirstOrDefault();
+								   ?? vm.Images.FirstOrDefault();
 			};
 
 			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
@@ -242,14 +243,14 @@ namespace Twice.Views.Services
 		{
 			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( userId ); };
 
-			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
+			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
 		public async Task ViewProfile( string screenName )
 		{
 			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( screenName ); };
 
-			await ShowWindow<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
+			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
 		}
 
 		public async Task ViewStatus( StatusViewModel status )
@@ -273,7 +274,7 @@ namespace Twice.Views.Services
 			await ShowHostedDialog<TWindow, TViewModel, object>( null, vmSetup );
 		}
 
-		private Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
 			Action<TViewModel> vmSetup = null )
 			where TViewModel : class
 			where TResult : class
@@ -287,17 +288,28 @@ namespace Twice.Views.Services
 				Owner = Window,
 				Content = ctrl
 			};
-			
+
+			// Setup must be called before VM is loaded
 			vmSetup?.Invoke( vm );
 
-			if( host.ShowDialog() != true )
-				return Task.FromResult<TResult>( null );
+			var loadVm = vm as ILoadCallback;
+			if( loadVm != null )
+			{
+				await loadVm.OnLoad( null );
+			}
 
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
-			var resSetup = resultSetup ?? defaultResultSetup;
-			var result = resSetup( vm );
+			TResult result = null;
+			await Dispatcher.RunAsync( () =>
+			{
+				if( host.ShowDialog() == true )
+				{
+					Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
+					var resSetup = resultSetup ?? defaultResultSetup;
+					result = resSetup( vm );
+				}
+			} );
 
-			return Task.FromResult( result );
+			return result;
 		}
 
 		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
@@ -326,7 +338,7 @@ namespace Twice.Views.Services
 			if( dlg.ShowDialog() != true )
 				return Task.FromResult<TResult>( null );
 
-			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 			var resSetup = resultSetup ?? defaultResultSetup;
 			var result = resSetup( vm );
 
@@ -354,10 +366,6 @@ namespace Twice.Views.Services
 			return result;
 		}
 
-		private readonly IDialogStack DialogStack;
-
-		private Flyout CurrentlyOpenNotification;
-
 		[Inject]
 
 		// ReSharper disable once MemberCanBePrivate.Global
@@ -365,5 +373,9 @@ namespace Twice.Views.Services
 
 		private static MetroWindow Window
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
+
+		private readonly IDialogStack DialogStack;
+
+		private Flyout CurrentlyOpenNotification;
 	}
 }
