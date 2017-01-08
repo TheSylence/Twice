@@ -1,9 +1,15 @@
 namespace Twice.ViewModels.Dialogs.Data
 {
-	interface IDialogStack
+	internal interface IDialogStack
 	{
-		void Push( DialogData data );
 		bool CanGoBack();
+
 		DialogData Pop();
+
+		void Push( DialogData data );
+
+		TResult ResultSetup<TViewModel, TResult>( TViewModel vm ) where TViewModel : class;
+
+		void Setup<TViewModel>( TViewModel vm ) where TViewModel : class;
 	}
 }

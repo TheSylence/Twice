@@ -101,16 +101,7 @@ namespace Twice.Views.Services
 		{
 			DialogStack.Push( new SearchDialogData( query ) );
 
-			Action<ISearchDialogViewModel> vmSetup = vm =>
-			{
-				if( !string.IsNullOrWhiteSpace( query ) )
-				{
-					vm.SearchQuery = query;
-					vm.SearchCommand.Execute( null );
-				}
-			};
-
-			await ShowHostedDialog<SearchDialog, ISearchDialogViewModel>( vmSetup );
+			await ShowHostedDialog<SearchDialog, ISearchDialogViewModel, object>();
 		}
 
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
@@ -241,16 +232,14 @@ namespace Twice.Views.Services
 
 		public async Task ViewProfile( ulong userId )
 		{
-			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( userId ); };
-
-			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
+			DialogStack.Push( new ProfileDialogData( userId ) );
+			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>();
 		}
 
 		public async Task ViewProfile( string screenName )
 		{
-			Action<IProfileDialogViewModel> vmSetup = vm => { vm.Setup( screenName ); };
-
-			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>( null, vmSetup );
+			DialogStack.Push( new ProfileDialogData( screenName ) );
+			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>();
 		}
 
 		public async Task ViewStatus( StatusViewModel status )
@@ -266,16 +255,8 @@ namespace Twice.Views.Services
 
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
-
-		private async Task ShowHostedDialog<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TWindow : UserControl, new()
-		{
-			await ShowHostedDialog<TWindow, TViewModel, object>( null, vmSetup );
-		}
-
-		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
+		
+		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>()
 			where TViewModel : class
 			where TResult : class
 			where TControl : UserControl, new()
@@ -290,10 +271,8 @@ namespace Twice.Views.Services
 			};
 
 			// Setup must be called before VM is loaded
-			vmSetup?.Invoke( vm );
-
-			var loadVm = vm as ILoadCallback;
-			if( loadVm != null )
+			DialogStack.Setup( vm );
+			if( vm is ILoadCallback loadVm )
 			{
 				await loadVm.OnLoad( null );
 			}
@@ -303,9 +282,7 @@ namespace Twice.Views.Services
 			{
 				if( host.ShowDialog() == true )
 				{
-					Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
-					var resSetup = resultSetup ?? defaultResultSetup;
-					result = resSetup( vm );
+					result = DialogStack.ResultSetup<TViewModel, TResult>( vm );
 				}
 			} );
 

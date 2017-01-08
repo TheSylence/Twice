@@ -3,10 +3,10 @@ using Twice.Views.Dialogs;
 
 namespace Twice.ViewModels.Dialogs.Data
 {
-	class SearchDialogData : DialogData
+	internal class SearchDialogData : DialogData
 	{
 		public SearchDialogData( string searchQuery )
-			: base( typeof(SearchDialog), typeof(ISearchDialogViewModel))
+			: base( typeof( SearchDialog ), typeof( ISearchDialogViewModel ) )
 		{
 			SearchQuery = searchQuery;
 		}
@@ -15,6 +15,22 @@ namespace Twice.ViewModels.Dialogs.Data
 		{
 			var other = obj as SearchDialogData;
 			return SearchQuery?.Equals( other?.SearchQuery, StringComparison.Ordinal ) == true;
+		}
+
+		public override object GetResult( object viewModel )
+		{
+			return null;
+		}
+
+		public override void Setup( object viewModel )
+		{
+			var vm = CastViewModel<ISearchDialogViewModel>( viewModel );
+
+			if( !string.IsNullOrWhiteSpace( SearchQuery ) )
+			{
+				vm.SearchQuery = SearchQuery;
+				vm.SearchCommand.Execute( null );
+			}
 		}
 
 		public string SearchQuery { get; }
