@@ -19,7 +19,6 @@ using Twice.ViewModels.Dialogs;
 using Twice.ViewModels.Dialogs.Data;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Info;
-using Twice.ViewModels.Main;
 using Twice.ViewModels.Profile;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Dialogs;
@@ -40,12 +39,15 @@ namespace Twice.Views.Services
 
 		public async Task ComposeMessage()
 		{
-			await ShowWindow<MessageDialog, IComposeMessageViewModel>();
+			DialogStack.Push( new ComposeMessageData() );
+
+			await ShowHostedDialog<MessageDialog, IComposeMessageViewModel>();
 		}
 
 		public async Task ComposeTweet()
 		{
-			await ShowWindow<TweetComposer, IComposeTweetViewModel>();
+			DialogStack.Push( new ComposeTweetData() );
+			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
 		public async Task<bool> Confirm( ConfirmServiceArgs args )
@@ -106,31 +108,21 @@ namespace Twice.Views.Services
 
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
 		{
-			Action<IComposeTweetViewModel> vmSetup = vm =>
-			{
-				vm.QuotedTweet = status;
-				vm.PreSelectAccounts( preSelectedAccounts ?? new ulong[0] );
-			};
-
-			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+			DialogStack.Push( new QuoteTweetData( status, preSelectedAccounts?.ToArray() ?? new ulong[0] ) );
+			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
 		public async Task ReplyToMessage( MessageViewModel message )
 		{
-			Action<IComposeMessageViewModel> vmSetup = vm =>
-			{
-				vm.Recipient = message.Partner.ScreenName;
-				vm.InReplyTo = message;
-			};
+			DialogStack.Push( new ComposeMessageData( message.Partner.ScreenName, message ) );
 
-			await ShowWindow<MessageDialog, IComposeMessageViewModel>( vmSetup );
+			await ShowHostedDialog<MessageDialog, IComposeMessageViewModel>();
 		}
 
 		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
 		{
-			Action<IComposeTweetViewModel> vmSetup = vm => { vm.SetReply( status, toAll ); };
-
-			await ShowWindow<TweetComposer, IComposeTweetViewModel>( vmSetup );
+			DialogStack.Push( new ComposeTweetData( status, toAll ) );
+			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
 		public async Task RetweetStatus( StatusViewModel status )
@@ -256,6 +248,13 @@ namespace Twice.Views.Services
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
 
+		private Task<object> ShowHostedDialog<TControl, TViewModel>()
+			where TViewModel : class
+			where TControl : UserControl, new()
+		{
+			return ShowHostedDialog<TControl, TViewModel, object>();
+		}
+
 		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>()
 			where TViewModel : class
 			where TResult : class
@@ -290,7 +289,7 @@ namespace Twice.Views.Services
 
 			var hostVm = host.DataContext as IDialogHostViewModel;
 			await hostVm.Setup( vm );
-			
+
 			TResult result = null;
 			await Dispatcher.RunAsync( () =>
 			{

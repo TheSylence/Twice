@@ -1,4 +1,4 @@
-﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.TweetComposer"
+﻿<UserControl x:Class="Twice.Views.Dialogs.TweetComposer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,23 +10,15 @@
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
-             xmlns:proxies="clr-namespace:Twice.Views.Proxies" WindowStartupLocation="CenterOwner"
-             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared" AllowDrop="True"
-			 xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" FocusManager.FocusedElement="{Binding ElementName=txtInput}"
+             xmlns:proxies="clr-namespace:Twice.Views.Proxies" 
+             xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+             FocusManager.FocusedElement="{Binding ElementName=txtInput}" AllowDrop="True" 
              DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
 			 dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
-			 CloseOnClick="{Binding StayOpen, Converter={StaticResource InvertBoolConv}}"
-             mc:Ignorable="d" Style="{StaticResource DialogStyle}" Title="{lex:Loc ComposeTweet}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="400" Height="550">
-	<controls:MetroWindow.Resources>
+             mc:Ignorable="d">
+	<UserControl.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
-	</controls:MetroWindow.Resources>
-	<i:Interaction.Behaviors>
-		<behaviors:CloseableView />
-		<behaviours:BorderlessWindowBehavior />
-		<behaviors:CallbackOnLoad Callback="{Binding}" />
-	</i:Interaction.Behaviors>
+	</UserControl.Resources>
 
 	<DockPanel LastChildFill="True">
 		<Grid DockPanel.Dock="Bottom">
@@ -279,4 +271,4 @@
 			<!-- Reply to Tweet End -->
 		</StackPanel>
 	</DockPanel>
-</dialogs:DialogWindow>
+</UserControl>

@@ -1,26 +1,19 @@
-﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.MessageDialog"
+﻿<UserControl x:Class="Twice.Views.Dialogs.MessageDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" WindowStartupLocation="CenterOwner"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
-        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
-        Style="{StaticResource DialogStyle}" FocusManager.FocusedElement="{Binding ElementName=txtRecipient}"
+        FocusManager.FocusedElement="{Binding ElementName=txtRecipient}"
 		DataContext="{Binding ComposeMessage, Source={StaticResource Locator}}"
-        mc:Ignorable="d" Title="{lex:Loc ComposeMessage}" Height="500" Width="400">
-	<i:Interaction.Behaviors>
-		<behaviors:CloseableView />
-		<behaviours:BorderlessWindowBehavior />
-		<behaviors:CallbackOnLoad Callback="{Binding}" />
-	</i:Interaction.Behaviors>
-	<controls:MetroWindow.InputBindings>
+        mc:Ignorable="d">
+	<UserControl.InputBindings>
 		<KeyBinding Modifiers="Control" Key="Return" Command="{Binding OkCommand}" />
-	</controls:MetroWindow.InputBindings>
+	</UserControl.InputBindings>
 	<DockPanel>
 		<Grid HorizontalAlignment="Right" DockPanel.Dock="Bottom">
 			<Button Command="{Binding OkCommand}" Margin="5" Content="{lex:Loc Send}"
@@ -60,4 +53,4 @@
 			</TextBox>
 		</ScrollViewer>
 	</DockPanel>
-</dialogs:DialogWindow>
+</UserControl>

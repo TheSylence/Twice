@@ -4,6 +4,7 @@ using Twice.Views.Dialogs;
 
 namespace Twice.ViewModels.Dialogs.Data
 {
+
 	internal class ProfileDialogData : DialogData
 	{
 		public ProfileDialogData( string screeName )

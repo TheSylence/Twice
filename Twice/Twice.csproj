@@ -372,10 +372,13 @@
     <Compile Include="ViewModels\Columns\ScheduleColumn.cs" />
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
     <Compile Include="ViewModels\Dialogs\ContentChangeEventArgs.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ComposeMessageData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ComposeTweetData.cs" />
     <Compile Include="ViewModels\Dialogs\Data\DialogData.cs" />
     <Compile Include="ViewModels\Dialogs\Data\DialogStack.cs" />
     <Compile Include="ViewModels\Dialogs\Data\IDialogStack.cs" />
     <Compile Include="ViewModels\Dialogs\Data\ProfileDialogData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\QuoteTweetData.cs" />
     <Compile Include="ViewModels\Dialogs\Data\SearchDialogData.cs" />
     <Compile Include="ViewModels\Dialogs\DialogHostViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\IContentChanger.cs" />
