@@ -1141,6 +1141,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string NavigateBack {
+            get {
+                return ResourceManager.GetString("NavigateBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New feature.
         /// </summary>
         public static string NewFeature {
