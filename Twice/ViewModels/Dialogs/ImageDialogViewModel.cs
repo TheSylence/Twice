@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Ninject;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -15,6 +16,7 @@ namespace Twice.ViewModels.Dialogs
 		public ImageDialogViewModel()
 		{
 			Images = new ObservableCollection<ImageEntry>();
+			Title = Strings.ImageViewer;
 		}
 
 		public void SetImages( IEnumerable<Uri> images )

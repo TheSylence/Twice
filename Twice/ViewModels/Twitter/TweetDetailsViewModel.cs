@@ -1,12 +1,13 @@
+using Fody;
+using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
 using Twice.Models.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -17,6 +18,25 @@ namespace Twice.ViewModels.Twitter
 		{
 			PreviousConversationTweets = new ObservableCollection<StatusViewModel>();
 			FollowingConversationTweets = new ObservableCollection<StatusViewModel>();
+			Title = Strings.Tweet;
+		}
+
+		public event EventHandler ScrollRequested;
+
+		public async Task OnLoad( object data )
+		{
+			if( DisplayTweet == null )
+			{
+				Close( false );
+				return;
+			}
+
+			PreviousConversationTweets.Clear();
+			FollowingConversationTweets.Clear();
+
+			await
+				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
+					DisplayTweet.LoadDataAsync() );
 		}
 
 		private async Task StartLoadingPrevTweets()
@@ -71,27 +91,12 @@ namespace Twice.ViewModels.Twitter
 			await DisplayTweet.LoadRetweets();
 		}
 
-		public async Task OnLoad( object data )
-		{
-			if( DisplayTweet == null )
-			{
-				Close( false );
-				return;
-			}
-
-			PreviousConversationTweets.Clear();
-			FollowingConversationTweets.Clear();
-
-			await
-				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
-					DisplayTweet.LoadDataAsync() );
-		}
-
 		public IContextEntry Context { get; set; }
 
 		public StatusViewModel DisplayTweet
 		{
-			[DebuggerStepThrough] get { return _DisplayTweet; }
+			[DebuggerStepThrough]
+			get { return _DisplayTweet; }
 			set
 			{
 				if( _DisplayTweet == value )
@@ -108,7 +113,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsLoadingFollowing
 		{
-			[DebuggerStepThrough] get { return _IsLoadingFollowing; }
+			[DebuggerStepThrough]
+			get { return _IsLoadingFollowing; }
 			private set
 			{
 				if( _IsLoadingFollowing == value )
@@ -123,7 +129,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsLoadingPrevious
 		{
-			[DebuggerStepThrough] get { return _IsLoadingPrevious; }
+			[DebuggerStepThrough]
+			get { return _IsLoadingPrevious; }
 			private set
 			{
 				if( _IsLoadingPrevious == value )
@@ -146,7 +153,5 @@ namespace Twice.ViewModels.Twitter
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private bool _IsLoadingPrevious;
-
-		public event EventHandler ScrollRequested;
 	}
 }

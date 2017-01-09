@@ -1,4 +1,3 @@
-using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -17,9 +16,19 @@ namespace Twice.ViewModels.Dialogs.Data
 			Data.Clear();
 		}
 
-		public void Push( DialogData data )
+		public bool Push( DialogData data )
 		{
+			if( Data.Count > 0 )
+			{
+				var topData = Data.Peek();
+				if( topData.Equals( data ) )
+				{
+					return false;
+				}
+			}
+
 			Data.Push( data );
+			return true;
 		}
 
 		public void Remove()
@@ -38,7 +47,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			var topData = Data.Peek();
 			var content = Activator.CreateInstance( topData.ControlType ) as UserControl;
 			contentChanger.ChangeContent( content );
-			
+
 			topData.Setup( content.DataContext );
 		}
 

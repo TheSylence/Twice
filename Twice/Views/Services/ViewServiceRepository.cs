@@ -39,14 +39,21 @@ namespace Twice.Views.Services
 
 		public async Task ComposeMessage()
 		{
-			DialogStack.Push( new ComposeMessageData() );
+			if( !DialogStack.Push( new ComposeMessageData() ) )
+			{
+				return;
+			}
 
 			await ShowHostedDialog<MessageDialog, IComposeMessageViewModel>();
 		}
 
 		public async Task ComposeTweet()
 		{
-			DialogStack.Push( new ComposeTweetData() );
+			if( !DialogStack.Push( new ComposeTweetData() ) )
+			{
+				return;
+			}
+
 			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
@@ -101,27 +108,41 @@ namespace Twice.Views.Services
 
 		public async Task OpenSearch( string query = null )
 		{
-			DialogStack.Push( new SearchDialogData( query ) );
+			if( !DialogStack.Push( new SearchDialogData( query ) ) )
+			{
+				return;
+			}
 
 			await ShowHostedDialog<SearchDialog, ISearchDialogViewModel, object>();
 		}
 
 		public async Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null )
 		{
-			DialogStack.Push( new QuoteTweetData( status, preSelectedAccounts?.ToArray() ?? new ulong[0] ) );
+			if( !DialogStack.Push( new QuoteTweetData( status, preSelectedAccounts?.ToArray() ?? new ulong[0] ) ) )
+			{
+				return;
+			}
+
 			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
 		public async Task ReplyToMessage( MessageViewModel message )
 		{
-			DialogStack.Push( new ComposeMessageData( message.Partner.ScreenName, message ) );
+			if( !DialogStack.Push( new ComposeMessageData( message.Partner.ScreenName, message ) ) )
+			{
+				return;
+			}
 
 			await ShowHostedDialog<MessageDialog, IComposeMessageViewModel>();
 		}
 
 		public async Task ReplyToTweet( StatusViewModel status, bool toAll )
 		{
-			DialogStack.Push( new ComposeTweetData( status, toAll ) );
+			if( !DialogStack.Push( new ComposeTweetData( status, toAll ) ) )
+			{
+				return;
+			}
+
 			await ShowHostedDialog<TweetComposer, IComposeTweetViewModel>();
 		}
 
@@ -193,44 +214,51 @@ namespace Twice.Views.Services
 
 		public async Task ViewDirectMessage( MessageViewModel msg )
 		{
-			Action<IMessageDetailsViewModel> vmSetup = vm => { vm.Message = msg; };
+			if( !DialogStack.Push( new MessageData( msg ) ) )
+			{
+				return;
+			}
 
-			await ShowWindow<MessageDetailsDialog, IMessageDetailsViewModel>( vmSetup );
+			await ShowHostedDialog<MessageDetailsDialog, IMessageDetailsViewModel>();
 		}
 
 		public async Task ViewImage( IList<StatusMediaViewModel> imageSet, StatusMediaViewModel selectedImage )
 		{
-			Action<IImageDialogViewModel> setup = vm =>
+			if( !DialogStack.Push( new ImageData( imageSet, selectedImage ) ) )
 			{
-				vm.SetImages( imageSet );
-				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage.Url )
-								   ?? vm.Images.FirstOrDefault();
-			};
+				return;
+			}
 
-			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
+			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>(  );
 		}
 
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
 		{
-			Action<IImageDialogViewModel> setup = vm =>
+			if( !DialogStack.Push( new ImageData( imageSet, selectedImage ) ) )
 			{
-				vm.SetImages( imageSet );
-				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == selectedImage )
-								   ?? vm.Images.FirstOrDefault();
-			};
+				return;
+			}
 
-			await ShowWindow<ImageDialog, IImageDialogViewModel, object>( null, setup );
+			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>(  );
 		}
 
 		public async Task ViewProfile( ulong userId )
 		{
-			DialogStack.Push( new ProfileDialogData( userId ) );
+			if( !DialogStack.Push( new ProfileDialogData( userId ) ) )
+			{
+				return;
+			}
+
 			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>();
 		}
 
 		public async Task ViewProfile( string screenName )
 		{
-			DialogStack.Push( new ProfileDialogData( screenName ) );
+			if( !DialogStack.Push( new ProfileDialogData( screenName ) ) )
+			{
+				return;
+			}
+
 			await ShowHostedDialog<ProfileDialog, IProfileDialogViewModel, object>();
 		}
 
@@ -239,13 +267,12 @@ namespace Twice.Views.Services
 			if( status == null )
 				return;
 
-			Action<ITweetDetailsViewModel> vmSetup = vm =>
+			if( !DialogStack.Push( new StatusData( status ) ) )
 			{
-				vm.Context = status.Context;
-				vm.DisplayTweet = status;
-			};
+				return;
+			}
 
-			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
+			await ShowHostedDialog<TweetDetailsDialog, ITweetDetailsViewModel>();
 		}
 
 		private Task<object> ShowHostedDialog<TControl, TViewModel>()

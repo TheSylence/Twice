@@ -6,7 +6,7 @@ namespace Twice.ViewModels.Dialogs.Data
 
 		void Clear();
 
-		void Push( DialogData data );
+		bool Push( DialogData data );
 
 		void Remove();
 
