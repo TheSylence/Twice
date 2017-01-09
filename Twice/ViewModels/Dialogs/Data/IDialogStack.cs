@@ -4,12 +4,16 @@ namespace Twice.ViewModels.Dialogs.Data
 	{
 		bool CanGoBack();
 
-		DialogData Pop();
+		void Clear();
 
 		void Push( DialogData data );
+
+		void Remove();
 
 		TResult ResultSetup<TViewModel, TResult>( TViewModel vm ) where TViewModel : class;
 
 		void Setup<TViewModel>( TViewModel vm ) where TViewModel : class;
+
+		void Setup( IContentChanger contextChanger );
 	}
 }

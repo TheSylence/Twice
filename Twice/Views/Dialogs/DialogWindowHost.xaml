@@ -14,10 +14,11 @@
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
+		<behaviors:ContentChanger ContextChanger="{Binding}" />
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.LeftWindowCommands>
 		<controls:WindowCommands>
-				<Button ToolTip="{lex:Loc Back}" Command="{Binding BackCommand}">
+				<Button ToolTip="{lex:Loc NavigateBack}" Command="{Binding BackCommand}">
 					<materialDesign:PackIcon Kind="ChevronLeft" />
 				</Button>
 		</controls:WindowCommands>

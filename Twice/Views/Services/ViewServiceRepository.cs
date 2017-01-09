@@ -255,7 +255,7 @@ namespace Twice.Views.Services
 
 			await ShowWindow<TweetDetailsDialog, ITweetDetailsViewModel>( vmSetup );
 		}
-		
+
 		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>()
 			where TViewModel : class
 			where TResult : class
@@ -264,23 +264,44 @@ namespace Twice.Views.Services
 			var ctrl = new TControl();
 			var vm = ctrl.DataContext as TViewModel;
 
-			var host = new DialogWindowHost
+			bool newHost = false;
+			DialogWindowHost host = CurrentDialogHost;
+			if( host == null )
 			{
-				Owner = Window,
-				Content = ctrl
-			};
+				host = new DialogWindowHost
+				{
+					Owner = Window,
+					Content = ctrl
+				};
 
-			// Setup must be called before VM is loaded
-			DialogStack.Setup( vm );
-			if( vm is ILoadCallback loadVm )
+				host.Closed += ( s, e ) =>
+				{
+					DialogStack.Clear();
+					CurrentDialogHost = null;
+				};
+
+				CurrentDialogHost = host;
+				newHost = true;
+			}
+			else
 			{
-				await loadVm.OnLoad( null );
+				host.Content = ctrl;
 			}
 
+			var hostVm = host.DataContext as IDialogHostViewModel;
+			await hostVm.Setup( vm );
+			
 			TResult result = null;
 			await Dispatcher.RunAsync( () =>
 			{
-				if( host.ShowDialog() == true )
+				bool shouldSetupResult = false;
+
+				if( newHost )
+				{
+					shouldSetupResult = host.ShowDialog() == true;
+				}
+
+				if( shouldSetupResult )
 				{
 					result = DialogStack.ResultSetup<TViewModel, TResult>( vm );
 				}
@@ -352,7 +373,7 @@ namespace Twice.Views.Services
 			=> Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault( x => x.IsActive );
 
 		private readonly IDialogStack DialogStack;
-
+		private DialogWindowHost CurrentDialogHost;
 		private Flyout CurrentlyOpenNotification;
 	}
 }

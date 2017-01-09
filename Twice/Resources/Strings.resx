@@ -750,4 +750,7 @@
   <data name="ProfileOfUser" xml:space="preserve">
     <value>Profile of {0}</value>
   </data>
+  <data name="NavigateBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>
