@@ -7,7 +7,8 @@
         "Changes": [],
         "Fixes": [
             "Fixed possible crash when caching user's friends",
-            "Fixed possible crashes in local cache"
+            "Fixed possible crashes in local cache",
+            "Removing a quote from the compose dialog now updates the character count"
         ],
         "Issues": []
     },

@@ -627,6 +627,8 @@ namespace Twice.ViewModels.Twitter
 
 				_QuotedTweet = value;
 				RaisePropertyChanged();
+
+				UpdateTextLength();
 			}
 		}
 
@@ -708,14 +710,19 @@ namespace Twice.ViewModels.Twitter
 				_Text = value;
 				RaisePropertyChanged();
 
-				var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
-				if( QuotedTweet != null )
-				{
-					// Keep the space in mind that separates the tweet text and the status URL
-					len += TwitterConfig.UrlLengthHttps + 1;
-				}
-				TextLength = len;
+				UpdateTextLength();
 			}
+		}
+
+		private void UpdateTextLength()
+		{
+			var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
+			if( QuotedTweet != null )
+			{
+				// Keep the space in mind that separates the tweet text and the status URL
+				len += TwitterConfig.UrlLengthHttps + 1;
+			}
+			TextLength = len;
 		}
 
 		public int TextLength
