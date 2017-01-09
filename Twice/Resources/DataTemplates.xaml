@@ -21,7 +21,7 @@
 					</i:Interaction.Behaviors>
 
 					<DockPanel LastChildFill="True">
-						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
+						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}"
 							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
@@ -43,7 +43,7 @@
 					</i:Interaction.Behaviors>
 
 					<DockPanel LastChildFill="True">
-						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}" 
+						<Image Source="{Binding Card.Image}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}"
 							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
@@ -552,72 +552,74 @@
 
 							<Grid>
 								<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
+									<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
 															FontSize="{DynamicResource GlobalFontSize}"
 															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
 															Foreground="{DynamicResource MaterialDesignBody}" />
 
-								<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
+									<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
 											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
 
-								<ContentControl Content="{Binding Card}" Visibility="{Binding HasCard, Converter={StaticResource BoolToVisibleConv}}"
+									<ContentControl Content="{Binding Card}" Visibility="{Binding HasCard, Converter={StaticResource BoolToVisibleConv}}"
 												ContentTemplateSelector="{StaticResource CardSelector}" />
 
-								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
-									<controls1:FlipView.ItemTemplate>
-										<DataTemplate>
-											<Grid>
-												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
-													<i:Interaction.Behaviors>
-														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
-														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
+									<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" HorizontalAlignment="Center">
+										<controls1:FlipView.ItemTemplate>
+											<DataTemplate>
+												<Grid>
+													<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual"
+																  Source="{Binding Url, IsAsync=True}" Stretch="Uniform"
+															  MaxHeight="250" MinHeight="250" MaxWidth="300" MinWidth="150">
+														<i:Interaction.Behaviors>
+															<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+															<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
 																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-													</i:Interaction.Behaviors>
-												</MediaElement>
+														</i:Interaction.Behaviors>
+													</MediaElement>
 
-												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
-													<StackPanel.Resources>
-														<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
-															<Style.Triggers>
-																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
+													<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
+														<StackPanel.Resources>
+															<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
 																			Value="False">
-																	<Setter Property="Visibility" Value="Hidden" />
-																</DataTrigger>
-															</Style.Triggers>
-															<Setter Property="Margin" Value="5" />
-														</Style>
-													</StackPanel.Resources>
+																		<Setter Property="Visibility" Value="Hidden" />
+																	</DataTrigger>
+																</Style.Triggers>
+																<Setter Property="Margin" Value="5" />
+															</Style>
+														</StackPanel.Resources>
 
-													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="Repeat" />
+														<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+															<materialDesign:PackIcon Kind="Repeat" />
 
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="RepeatOff" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
+															<materialDesign:ToggleButtonAssist.OnContent>
+																<materialDesign:PackIcon Kind="RepeatOff" />
+															</materialDesign:ToggleButtonAssist.OnContent>
+														</ToggleButton>
 
-													<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="Play" />
+														<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+															<materialDesign:PackIcon Kind="Play" />
 
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="Pause" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
+															<materialDesign:ToggleButtonAssist.OnContent>
+																<materialDesign:PackIcon Kind="Pause" />
+															</materialDesign:ToggleButtonAssist.OnContent>
+														</ToggleButton>
 
-													<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="VolumeOff" />
+														<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+															<materialDesign:PackIcon Kind="VolumeOff" />
 
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="VolumeHigh" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
-												</StackPanel>
-											</Grid>
-										</DataTemplate>
-									</controls1:FlipView.ItemTemplate>
-								</controls1:FlipView>
-							</StackPanel>
+															<materialDesign:ToggleButtonAssist.OnContent>
+																<materialDesign:PackIcon Kind="VolumeHigh" />
+															</materialDesign:ToggleButtonAssist.OnContent>
+														</ToggleButton>
+													</StackPanel>
+												</Grid>
+											</DataTemplate>
+										</controls1:FlipView.ItemTemplate>
+									</controls1:FlipView>
+								</StackPanel>
 								<Grid Visibility="{Binding HasSensibleContent, Converter={StaticResource BoolToVisibleConv}}" Background="{DynamicResource PrimaryHueLightBrush}">
 									<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
 										<TextBlock Text="{lex:Loc TweetContainsSensibleContent}" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="5" TextAlignment="Center" />
@@ -629,7 +631,7 @@
 									</StackPanel>
 								</Grid>
 							</Grid>
-							
+
 							<StackPanel Margin="5" Orientation="Horizontal" Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 								<ContentControl>
 									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
@@ -653,7 +655,7 @@
 
 					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 				</Grid>
-				
+
 				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
 						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<Grid.ColumnDefinitions>
@@ -692,7 +694,7 @@
 					</ItemsControl>
 				</Grid>
 			</StackPanel>
-			
+
 			<materialDesign:Card.ContextMenu>
 				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
 					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
