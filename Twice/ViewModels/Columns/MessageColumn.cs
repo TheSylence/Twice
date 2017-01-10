@@ -21,8 +21,8 @@ namespace Twice.ViewModels.Columns
 	internal class MessageColumn : ColumnViewModelBase
 	{
 		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
-			IMessenger messenger = null )
-			: base( context, definition, config, parser, messenger )
+			IMessenger messenger = null, IColumnActionDispatcher actionDispatcher = null )
+			: base( context, definition, config, parser, messenger, actionDispatcher )
 		{
 			MessengerInstance.Register<DmMessage>( this, OnDirectMessage );
 		}
@@ -126,6 +126,6 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public override Icon Icon => Icon.Messages;
-		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => false;
+		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Type == StatusType.User;
 	}
 }

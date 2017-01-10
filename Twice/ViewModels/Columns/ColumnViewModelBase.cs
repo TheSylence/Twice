@@ -29,7 +29,7 @@ namespace Twice.ViewModels.Columns
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
 		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
-			IStreamParser parser, IMessenger messenger = null )
+			IStreamParser parser, IMessenger messenger = null, IColumnActionDispatcher actionDispatcher = null )
 			: base( messenger )
 		{
 			Configuration = config;
@@ -53,7 +53,7 @@ namespace Twice.ViewModels.Columns
 				Parser.FavoriteEventReceived += Parser_FavoriteEventReceived;
 			}
 
-			ActionDispatcher = new ColumnActionDispatcher();
+			ActionDispatcher = actionDispatcher ?? new ColumnActionDispatcher();
 			ActionDispatcher.HeaderClicked += ActionDispatcher_HeaderClicked;
 			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
 
