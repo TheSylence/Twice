@@ -54,6 +54,7 @@ namespace Twice.ViewModels.Dialogs
 				break;
 			}
 
+			Center();
 			IsSearching = false;
 		}
 

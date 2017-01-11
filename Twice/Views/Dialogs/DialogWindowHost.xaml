@@ -7,8 +7,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors" Style="{StaticResource DialogStyle}"
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com" SizeToContent="Width"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" DataContext="{Binding DialogWindowHost, Source={StaticResource Locator}}"
         Title="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="500">
 	<i:Interaction.Behaviors>
@@ -18,13 +18,18 @@
 	</i:Interaction.Behaviors>
 	<controls:MetroWindow.LeftWindowCommands>
 		<controls:WindowCommands>
-				<Button ToolTip="{lex:Loc NavigateBack}" Command="{Binding BackCommand}">
-					<materialDesign:PackIcon Kind="ChevronLeft" />
-				</Button>
+			<Button ToolTip="{lex:Loc NavigateBack}" Command="{Binding BackCommand}">
+				<materialDesign:PackIcon Kind="ChevronLeft" />
+			</Button>
 		</controls:WindowCommands>
 	</controls:MetroWindow.LeftWindowCommands>
-    <Grid>
-        
-    </Grid>
+	<controls:MetroWindow.RightWindowCommands>
+		<controls:WindowCommands>
+			<Button ToolTip="{lex:Loc CenterWindow}" Click="CenterButton_Click">
+				<materialDesign:PackIcon Kind="FormatAlignCenter" />
+			</Button>
+		</controls:WindowCommands>
+	</controls:MetroWindow.RightWindowCommands>
+	<Grid>
+	</Grid>
 </controls:MetroWindow>
-

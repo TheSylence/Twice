@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Twitter;
 
@@ -48,10 +48,36 @@ namespace Twice.ViewModels.Flyouts
 			CloseDelay = TimeSpan.FromSeconds( 10 );
 		}
 
+		public event EventHandler CenterRequested;
+
+		public event EventHandler<CloseEventArgs> CloseRequested;
+
 		public void OnClosed()
 		{
 			CloseTimer.Stop();
 			AutoCloseWatch.Stop();
+		}
+
+		public Task Reset()
+		{
+			CloseTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromMilliseconds( 100 )
+			};
+
+			AutoCloseWatch = new Stopwatch();
+			AutoCloseWatch.Start();
+
+			AutoCloseProgress = 100;
+			CloseTimer.Tick += CloseTimer_Tick;
+			CloseTimer.Start();
+
+			return Task.CompletedTask;
+		}
+
+		private void Center()
+		{
+			CenterRequested?.Invoke( this, EventArgs.Empty );
 		}
 
 		private void Close( bool result = true )
@@ -82,28 +108,10 @@ namespace Twice.ViewModels.Flyouts
 			Text = text;
 		}
 
-		public Task Reset()
-		{
-			CloseTimer = new DispatcherTimer
-			{
-				Interval = TimeSpan.FromMilliseconds( 100 )
-			};
-
-			AutoCloseWatch = new Stopwatch();
-			AutoCloseWatch.Start();
-
-			AutoCloseProgress = 100;
-			CloseTimer.Tick += CloseTimer_Tick;
-			CloseTimer.Start();
-
-			return Task.CompletedTask;
-		}
-
-		public event EventHandler<CloseEventArgs> CloseRequested;
-
 		public int AutoCloseProgress
 		{
-			[DebuggerStepThrough] get { return _AutoCloseProgress; }
+			[DebuggerStepThrough]
+			get { return _AutoCloseProgress; }
 			set
 			{
 				if( _AutoCloseProgress == value )
@@ -124,7 +132,8 @@ namespace Twice.ViewModels.Flyouts
 
 		public Position FlyoutPosition
 		{
-			[DebuggerStepThrough] get { return _FlyoutPosition; }
+			[DebuggerStepThrough]
+			get { return _FlyoutPosition; }
 			set
 			{
 				if( _FlyoutPosition == value )
@@ -141,7 +150,8 @@ namespace Twice.ViewModels.Flyouts
 
 		public string Text
 		{
-			[DebuggerStepThrough] get { return _Text; }
+			[DebuggerStepThrough]
+			get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -156,7 +166,8 @@ namespace Twice.ViewModels.Flyouts
 
 		public NotificationType Type
 		{
-			[DebuggerStepThrough] get { return _Type; }
+			[DebuggerStepThrough]
+			get { return _Type; }
 			set
 			{
 				if( _Type == value )

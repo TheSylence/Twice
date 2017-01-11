@@ -753,4 +753,7 @@
   <data name="NavigateBack" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="CenterWindow" xml:space="preserve">
+    <value>Center window</value>
+  </data>
 </root>

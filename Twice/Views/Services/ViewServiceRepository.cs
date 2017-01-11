@@ -229,7 +229,7 @@ namespace Twice.Views.Services
 				return;
 			}
 
-			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>(  );
+			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>();
 		}
 
 		public async Task ViewImage( IList<Uri> imageSet, Uri selectedImage )
@@ -239,7 +239,7 @@ namespace Twice.Views.Services
 				return;
 			}
 
-			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>(  );
+			await ShowHostedDialog<ImageDialog, IImageDialogViewModel>();
 		}
 
 		public async Task ViewProfile( ulong userId )
@@ -321,7 +321,7 @@ namespace Twice.Views.Services
 			await Dispatcher.RunAsync( () =>
 			{
 				bool shouldSetupResult = false;
-
+				
 				if( newHost )
 				{
 					shouldSetupResult = host.ShowDialog() == true;

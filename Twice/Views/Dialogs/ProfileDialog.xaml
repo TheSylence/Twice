@@ -15,7 +15,7 @@
 			 mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="3*" />
+			<ColumnDefinition Width="3*" MaxWidth="400" />
 			<ColumnDefinition Width="4*" />
 		</Grid.ColumnDefinitions>
 

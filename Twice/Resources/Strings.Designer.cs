@@ -286,6 +286,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center window.
+        /// </summary>
+        public static string CenterWindow {
+            get {
+                return ResourceManager.GetString("CenterWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string Change {

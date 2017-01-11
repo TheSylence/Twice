@@ -77,6 +77,7 @@ namespace Twice.ViewModels.Profile
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 
+			await Dispatcher.RunAsync( () => Center() );
 			IsBusy = false;
 		}
 

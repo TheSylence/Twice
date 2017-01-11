@@ -313,7 +313,7 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
-		<materialDesign:Card Margin="2" Padding="0,0,0,5">
+		<materialDesign:Card Margin="2" Padding="0,0,0,5" MinWidth="200" MaxWidth="600">
 			<materialDesign:Card.Style>
 				<Style TargetType="materialDesign:Card">
 					<Style.Triggers>
