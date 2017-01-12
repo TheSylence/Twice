@@ -11,7 +11,7 @@ namespace Twice.Views.Services
 	{
 		Task ComposeMessage();
 
-		Task ComposeTweet();
+		Task ComposeTweet( string text = null );
 
 		Task<bool> Confirm( ConfirmServiceArgs args );
 

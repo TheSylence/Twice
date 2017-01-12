@@ -10,6 +10,8 @@ namespace Twice.ViewModels.Twitter
 	{
 		void PreSelectAccounts( IEnumerable<ulong> accounts );
 
+		void SetInitialText( string text );
+
 		void SetReply( StatusViewModel status, bool toAll );
 
 		ICollection<AccountEntry> Accounts { get; }

@@ -4,7 +4,8 @@
         "Date": "9999-12-31",
         "Description": "",
         "NewFeatures": [
-            "Reworked dialog system. You can now navigate back to previously opened dialogs."
+            "Reworked dialog system. You can now navigate back to previously opened dialogs.",
+            "Tweets can be edited (i.e. they will be deleted and a new compose dialog with the previous text will open)"
         ],
         "Changes": [
             "The dark theme now uses a dark background in compliance with material design guidelines"

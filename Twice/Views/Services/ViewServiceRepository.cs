@@ -47,9 +47,9 @@ namespace Twice.Views.Services
 			await ShowHostedDialog<MessageDialog, IComposeMessageViewModel>();
 		}
 
-		public async Task ComposeTweet()
+		public async Task ComposeTweet( string text = null )
 		{
-			if( !DialogStack.Push( new ComposeTweetData() ) )
+			if( !DialogStack.Push( new ComposeTweetData( null, false, text ) ) )
 			{
 				return;
 			}

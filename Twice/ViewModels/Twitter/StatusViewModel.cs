@@ -383,6 +383,24 @@ namespace Twice.ViewModels.Twitter
 
 		public override DateTime CreatedAt => Model.CreatedAt;
 
+		private RelayCommand _EditStatusCommand;
+
+		public ICommand EditStatusCommand => _EditStatusCommand
+			?? ( _EditStatusCommand = new RelayCommand( ExecuteEditStatusCommand, CanEditStatusCommand ) );
+
+		private bool CanEditStatusCommand()
+		{
+			return OriginalStatus.GetUserId() == Context.UserId;
+		}
+
+		private async void ExecuteEditStatusCommand()
+		{
+			var text = Text;
+
+			await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID );
+			await ViewServiceRepository.ComposeTweet( text );
+		}
+
 		public ICommand DeleteStatusCommand
 			=>
 				_DeleteStatusCommand

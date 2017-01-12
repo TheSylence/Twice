@@ -215,6 +215,11 @@ namespace Twice.ViewModels.Twitter
 			PreSelectedAccounts = accounts.ToArray();
 		}
 
+		public void SetInitialText( string text )
+		{
+			InitialText = text;
+		}
+
 		public void SetReply( StatusViewModel status, bool toAll )
 		{
 			InReplyTo = status;
@@ -349,7 +354,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			if( InReplyTo == null )
 			{
-				Text = string.Empty;
+				Text = InitialText;
 				return;
 			}
 
@@ -451,7 +456,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
-
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -588,7 +592,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
-
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -746,9 +749,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private const int LowWarnThreshold = 135;
-
 		private const int MediumWarnThreshold = 125;
-
 		private readonly List<Media> Medias = new List<Media>();
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
@@ -809,6 +810,7 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private int _TextLength;
 
+		private string InitialText = string.Empty;
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
 	}

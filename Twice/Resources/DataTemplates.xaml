@@ -705,6 +705,8 @@
 					<MenuItem Header="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
 					<MenuItem Header="{lex:Loc FavoriteTweet}" Command="{Binding FavoriteStatusCommand}" />
 					<Separator />
+					<MenuItem Header="{lex:Loc Edit}" Command="{Binding EditStatusCommand}" />
+					<Separator />
 					<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteStatusCommand}" />
 					<Separator />
 					<MenuItem Header="{lex:Loc Block}" Command="{Binding BlockUserCommand}" />
