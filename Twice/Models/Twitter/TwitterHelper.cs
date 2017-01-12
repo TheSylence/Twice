@@ -58,11 +58,11 @@ namespace Twice.Models.Twitter
 
 			var lookup = new Dictionary<string, string>
 			{
-				{".png", "image/png"},
-				{".gif", "image/gif"},
-				{".bmp", "image/bmp"},
-				{".jpg", "image/jpg"},
-				{".jpeg", "image/jpg"}
+				[".png"] = "image/png",
+				[".gif"] = "image/gif",
+				[".bmp"] = "image/bmp",
+				[".jpg"] = "image/jpg",
+				[".jpeg"] = "image/jpg"
 			};
 
 			if( ext != null && lookup.ContainsKey( ext ) )

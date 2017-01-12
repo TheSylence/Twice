@@ -167,9 +167,7 @@ namespace Twice.Converters
 			}
 
 			var urlEntity = entity as UrlEntity;
-			return urlEntity != null
-				? urlEntity.Url
-				: string.Empty;
+			return urlEntity?.Url;
 		}
 
 		/// <summary>
@@ -394,8 +392,8 @@ namespace Twice.Converters
 							UrlEntity urlEntity = entity as UrlEntity;
 							var url = urlEntity.ExpandedUrl;
 
-							if( !TwitterHelper.IsTweetUrl( url ) &&
-								( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
+							if( !TwitterHelper.IsTweetUrl( url )
+								&& ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
 							{
 								yield return GenerateLink( urlEntity );
 							}
