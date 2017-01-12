@@ -206,8 +206,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Windows" />
-    <Reference Include="Windows.Data" />
-    <Reference Include="Windows.UI" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -239,6 +237,7 @@
     <Compile Include="Behaviors\CommandOnReturn.cs" />
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\CursorMovement.cs" />
+    <Compile Include="Behaviors\ContentChanger.cs" />
     <Compile Include="Behaviors\ImageDataHandler.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\MediaController.cs" />
@@ -372,12 +371,30 @@
     <Compile Include="ViewModels\Columns\FavoritesColumn.cs" />
     <Compile Include="ViewModels\Columns\ScheduleColumn.cs" />
     <Compile Include="ViewModels\Columns\StaticColumn.cs" />
+    <Compile Include="ViewModels\Dialogs\ContentChangeEventArgs.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ComposeMessageData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ComposeTweetData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\DialogData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\DialogStack.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\IDialogStack.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ImageData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\MessageData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\ProfileDialogData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\QuoteTweetData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\SearchDialogData.cs" />
+    <Compile Include="ViewModels\Dialogs\Data\StatusData.cs" />
+    <Compile Include="ViewModels\Dialogs\DialogHostViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\IContentChanger.cs" />
+    <Compile Include="ViewModels\Dialogs\IDialogHostViewModel.cs" />
     <Compile Include="ViewModels\ICursorController.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="ViewModels\LogMessageCommand.cs" />
     <Compile Include="ViewModels\Twitter\CardViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
     <Compile Include="Views\CardTemplateSelector.cs" />
+    <Compile Include="Views\Dialogs\DialogWindowHost.xaml.cs">
+      <DependentUpon>DialogWindowHost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />
@@ -608,6 +625,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\DialogWindowHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

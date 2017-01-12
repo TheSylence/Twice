@@ -1,4 +1,4 @@
-﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.ProfileDialog"
+﻿<UserControl x:Class="Twice.Views.Dialogs.ProfileDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,24 +7,15 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Twice.Behaviors"
-             xmlns:views="clr-namespace:Twice.Views" Style="{StaticResource DialogStyle}"
+             xmlns:views="clr-namespace:Twice.Views"
              xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
              xmlns:profile="clr-namespace:Twice.ViewModels.Profile"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs" xmlns:vm="clr-namespace:Twice.ViewModels"
-					xmlns:controls1="clr-namespace:Twice.Controls"
-					mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}"
-             d:DesignHeight="300" d:DesignWidth="300" Padding="30" Width="1000" Height="700"
-			WindowStartupLocation="CenterOwner" Title="{Binding User.Model.ScreenNameResponse, StringFormat={lex:Loc ProfileOfUser}}">
-	<i:Interaction.Behaviors>
-		<behaviors:CallbackOnLoad Callback="{Binding}" />
-		<behaviors:CloseableView />
-		<behaviours:BorderlessWindowBehavior />
-	</i:Interaction.Behaviors>
+             xmlns:vm="clr-namespace:Twice.ViewModels" xmlns:controls1="clr-namespace:Twice.Controls"
+			 mc:Ignorable="d" DataContext="{Binding Profile, Source={StaticResource Locator}}">
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="3*" />
+			<ColumnDefinition Width="3*" MaxWidth="400" />
 			<ColumnDefinition Width="4*" />
 		</Grid.ColumnDefinitions>
 
@@ -137,4 +128,4 @@
 
 		<controls:ProgressRing IsActive="{Binding IsBusy}" Grid.ColumnSpan="2" Grid.Column="0" />
 	</Grid>
-</dialogs:DialogWindow>
+</UserControl>

@@ -28,6 +28,7 @@ namespace Twice.ViewModels.Twitter
 		public ComposeTweetViewModel()
 		{
 			Accounts = new List<AccountEntry>();
+			Title = Strings.ComposeTweet;
 
 			Validate( () => ScheduleDate )
 				.If( () => IsTweetScheduled )

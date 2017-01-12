@@ -747,4 +747,13 @@
   <data name="ConfirmReportSpam" xml:space="preserve">
     <value>Do you really want to report this user for spamming?</value>
   </data>
+  <data name="ProfileOfUser" xml:space="preserve">
+    <value>Profile of {0}</value>
+  </data>
+  <data name="NavigateBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="CenterWindow" xml:space="preserve">
+    <value>Center window</value>
+  </data>
 </root>

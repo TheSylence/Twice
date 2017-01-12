@@ -286,6 +286,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center window.
+        /// </summary>
+        public static string CenterWindow {
+            get {
+                return ResourceManager.GetString("CenterWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string Change {
@@ -1141,6 +1150,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string NavigateBack {
+            get {
+                return ResourceManager.GetString("NavigateBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New feature.
         /// </summary>
         public static string NewFeature {
@@ -1281,6 +1299,15 @@ namespace Twice.Resources {
         public static string PrimaryColor {
             get {
                 return ResourceManager.GetString("PrimaryColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile of {0}.
+        /// </summary>
+        public static string ProfileOfUser {
+            get {
+                return ResourceManager.GetString("ProfileOfUser", resourceCulture);
             }
         }
         

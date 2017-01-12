@@ -1,0 +1,35 @@
+﻿<controls:MetroWindow x:Class="Twice.Views.Dialogs.DialogWindowHost"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors" Style="{StaticResource DialogStyle}"
+        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com" SizeToContent="Width"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" ResizeMode="CanResizeWithGrip"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" DataContext="{Binding DialogWindowHost, Source={StaticResource Locator}}"
+        Title="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="500">
+	<i:Interaction.Behaviors>
+		<behaviors:CloseableView />
+		<behaviours:BorderlessWindowBehavior />
+		<behaviors:ContentChanger ContextChanger="{Binding}" />
+	</i:Interaction.Behaviors>
+	<controls:MetroWindow.LeftWindowCommands>
+		<controls:WindowCommands>
+			<Button ToolTip="{lex:Loc NavigateBack}" Command="{Binding BackCommand}">
+				<materialDesign:PackIcon Kind="ChevronLeft" />
+			</Button>
+		</controls:WindowCommands>
+	</controls:MetroWindow.LeftWindowCommands>
+	<controls:MetroWindow.RightWindowCommands>
+		<controls:WindowCommands>
+			<Button ToolTip="{lex:Loc CenterWindow}" Click="CenterButton_Click">
+				<materialDesign:PackIcon Kind="FormatAlignCenter" />
+			</Button>
+		</controls:WindowCommands>
+	</controls:MetroWindow.RightWindowCommands>
+	<Grid>
+	</Grid>
+</controls:MetroWindow>

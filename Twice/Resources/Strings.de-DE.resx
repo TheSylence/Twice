@@ -747,4 +747,10 @@
   <data name="ConfirmReportSpam" xml:space="preserve">
     <value>Soll dieser Benutzer wirklich wegen Spam gemeldet werden?</value>
   </data>
+  <data name="ProfileOfUser" xml:space="preserve">
+    <value>Profil von {0}</value>
+  </data>
+  <data name="NavigateBack" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
 </root>

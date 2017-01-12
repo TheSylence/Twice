@@ -1,23 +1,15 @@
-﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.TweetDetailsDialog"
+﻿<UserControl x:Class="Twice.Views.Dialogs.TweetDetailsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Twice.Behaviors" Style="{StaticResource DialogStyle}"
-        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:views="clr-namespace:Twice.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
-        mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource Locator}}"
-        Title="{lex:Loc Tweet}" Height="600" Width="450">
-	<i:Interaction.Behaviors>
-		<behaviors:CallbackOnLoad Callback="{Binding}" />
-		<behaviors:CloseableView />
-		<behaviours:BorderlessWindowBehavior />
-	</i:Interaction.Behaviors>
+        mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource Locator}}">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -72,4 +64,4 @@
 			</Grid>
 		</StackPanel>
 	</Grid>
-</dialogs:DialogWindow>
+</UserControl>

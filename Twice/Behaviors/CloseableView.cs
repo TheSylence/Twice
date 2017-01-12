@@ -21,7 +21,13 @@ namespace Twice.Behaviors
 			if( controller != null )
 			{
 				controller.CloseRequested += Controller_CloseRequested;
+				controller.CenterRequested += Controller_CenterRequested;
 			}
+		}
+
+		private void Controller_CenterRequested( object sender, System.EventArgs e )
+		{
+			WindowHelper.Center( AssociatedObject );
 		}
 
 		private void AssociatedObject_PreviewKeyDown( object sender, KeyEventArgs e )

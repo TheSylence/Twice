@@ -8,6 +8,7 @@ using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
 using Twice.Models.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -16,6 +17,7 @@ namespace Twice.ViewModels.Twitter
 		public MessageDetailsViewModel()
 		{
 			PreviousMessages = new ObservableCollection<MessageViewModel>();
+			Title = Strings.Message;
 		}
 
 		public event EventHandler ScrollRequested;

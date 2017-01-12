@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
 using Twice.Models.Cache;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Validation;
@@ -12,11 +12,18 @@ namespace Twice.ViewModels
 {
 	internal class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
+		public event EventHandler CenterRequested;
+
 		public event EventHandler<CloseEventArgs> CloseRequested;
 
 		protected virtual bool CanExecuteOkCommand()
 		{
 			return !HasErrors;
+		}
+
+		protected void Center()
+		{
+			CenterRequested?.Invoke( this, EventArgs.Empty );
 		}
 
 		protected void Close( bool result )
@@ -58,9 +65,10 @@ namespace Twice.ViewModels
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
-		public string Title
+		public virtual string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )

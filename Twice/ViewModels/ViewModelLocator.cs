@@ -19,6 +19,7 @@ namespace Twice.ViewModels
 			Kernel = App.Kernel;
 		}
 
+		public IDialogHostViewModel DialogWindowHost => Kernel.Get<IDialogHostViewModel>();
 		public IColumnTypeSelectionDialogViewModel AccountColumns => Kernel.Get<IColumnTypeSelectionDialogViewModel>();
 		public IAccountsDialogViewModel Accounts => Kernel.Get<IAccountsDialogViewModel>();
 		public IAddColumnDialogViewModel AddColumn => Kernel.Get<IAddColumnDialogViewModel>();

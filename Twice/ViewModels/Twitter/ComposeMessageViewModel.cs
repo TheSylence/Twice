@@ -6,6 +6,7 @@ using Ninject;
 using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Validation;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -13,6 +14,8 @@ namespace Twice.ViewModels.Twitter
 	{
 		public ComposeMessageViewModel()
 		{
+			Title = Strings.ComposeMessage;
+
 			Validate( () => Recipient ).NotEmpty();
 			Validate( () => Text ).NotEmpty();
 
