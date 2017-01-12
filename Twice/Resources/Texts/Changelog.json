@@ -6,7 +6,9 @@
         "NewFeatures": [
             "Reworked dialog system. You can now navigate back to previously opened dialogs."
         ],
-        "Changes": [],
+        "Changes": [
+            "The dark theme now uses a dark background in compliance with material design guidelines"
+        ],
         "Fixes": [
             "Fixed possible crash when caching user's friends",
             "Fixed possible crashes in local cache",
