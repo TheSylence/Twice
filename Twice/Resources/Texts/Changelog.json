@@ -3,12 +3,17 @@
         "Version": "0.x.x",
         "Date": "9999-12-31",
         "Description": "",
-        "NewFeatures": [],
+        "NewFeatures": [
+            "Reworked dialog system. You can now navigate back to previously opened dialogs."
+        ],
         "Changes": [],
         "Fixes": [
             "Fixed possible crash when caching user's friends",
             "Fixed possible crashes in local cache",
-            "Removing a quote from the compose dialog now updates the character count"
+            "Removing a quote from the compose dialog now updates the character count",
+            "Details of the same tweet no longer open mulitple times when click it",
+            "Images no longer flounce when scrolling through multiple medias",
+            "Scrolling down in the message column no longer displays an error"
         ],
         "Issues": []
     },
