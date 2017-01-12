@@ -10,7 +10,8 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com" SizeToContent="Width"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" DataContext="{Binding DialogWindowHost, Source={StaticResource Locator}}"
-        Title="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="500">
+        Title="{Binding Content.DataContext.Title, RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="500"
+		FocusManager.IsFocusScope="True">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />

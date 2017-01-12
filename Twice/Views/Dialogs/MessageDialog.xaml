@@ -8,12 +8,14 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
-        FocusManager.FocusedElement="{Binding ElementName=txtRecipient}"
 		DataContext="{Binding ComposeMessage, Source={StaticResource Locator}}"
         mc:Ignorable="d">
 	<UserControl.InputBindings>
 		<KeyBinding Modifiers="Control" Key="Return" Command="{Binding OkCommand}" />
 	</UserControl.InputBindings>
+	<i:Interaction.Behaviors>
+		<behaviors:LoadFocus FocusElement="{Binding Source={x:Reference txtRecipient}}" />
+	</i:Interaction.Behaviors>
 	<DockPanel>
 		<Grid HorizontalAlignment="Right" DockPanel.Dock="Bottom">
 			<Button Command="{Binding OkCommand}" Margin="5" Content="{lex:Loc Send}"

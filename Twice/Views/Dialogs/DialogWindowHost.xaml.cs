@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using Twice.Behaviors;
 using Twice.ViewModels;
 
@@ -25,15 +26,19 @@ namespace Twice.Views.Dialogs
 			if( ViewController != null )
 			{
 				ViewController.CenterRequested -= ViewController_CenterRequested;
+				ViewController.CloseRequested -= ViewController_CloseRequested;
 			}
 
 			base.OnContentChanged( oldContent, newContent );
 
-			var dataContext = ( newContent as FrameworkElement )?.DataContext;
+			var frameworkContent = newContent as FrameworkElement;
+
+			var dataContext = frameworkContent?.DataContext;
 			ViewController = dataContext as IViewController;
 			if( ViewController != null )
 			{
 				ViewController.CenterRequested += ViewController_CenterRequested;
+				ViewController.CloseRequested += ViewController_CloseRequested;
 			}
 		}
 
@@ -46,12 +51,17 @@ namespace Twice.Views.Dialogs
 
 		private void CenterButton_Click( object sender, RoutedEventArgs e )
 		{
-			WindowHelper.Center( this );
+			Center();
 		}
 
 		private void ViewController_CenterRequested( object sender, EventArgs e )
 		{
 			Center();
+		}
+
+		private void ViewController_CloseRequested( object sender, CloseEventArgs e )
+		{
+			Close();
 		}
 
 		private IViewController ViewController;

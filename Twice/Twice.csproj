@@ -230,6 +230,7 @@
     <Compile Include="Behaviors\ContextMenuOpener.cs" />
     <Compile Include="Behaviors\CursorMovement.cs" />
     <Compile Include="Behaviors\ContentChanger.cs" />
+    <Compile Include="Behaviors\LoadFocus.cs" />
     <Compile Include="Behaviors\ImageDataHandler.cs" />
     <Compile Include="Behaviors\ManualToggleButton.cs" />
     <Compile Include="Behaviors\MediaController.cs" />

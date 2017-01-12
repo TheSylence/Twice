@@ -347,14 +347,14 @@ namespace Twice.Tests.ViewModels.Main
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 
 			var viewServices = new Mock<IViewServiceRepository>();
-			viewServices.Setup( v => v.ComposeTweet() ).Returns( Task.CompletedTask ).Verifiable();
+			viewServices.Setup( v => v.ComposeTweet( null ) ).Returns( Task.CompletedTask ).Verifiable();
 			vm.ViewServiceRepository = viewServices.Object;
 
 			// Act
 			vm.NewTweetCommand.Execute( null );
 
 			// Assert
-			viewServices.Verify( v => v.ComposeTweet(), Times.Once() );
+			viewServices.Verify( v => v.ComposeTweet( null ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]

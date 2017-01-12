@@ -6,8 +6,11 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com" DataContext="{Binding Search, Source={StaticResource Locator}}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:views="clr-namespace:Twice.Views" FocusManager.FocusedElement="{Binding ElementName=InputBox}"
+        xmlns:views="clr-namespace:Twice.Views"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter">
+	<i:Interaction.Behaviors>
+		<behaviors:LoadFocus FocusElement="{Binding Source={x:Reference InputBox}}" />
+	</i:Interaction.Behaviors>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" MinWidth="250" />

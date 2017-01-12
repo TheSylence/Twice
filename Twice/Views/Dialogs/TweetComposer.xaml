@@ -12,13 +12,15 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-             FocusManager.FocusedElement="{Binding ElementName=txtInput}" AllowDrop="True"
-             DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
+			 AllowDrop="True" DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
 			 dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
              mc:Ignorable="d">
 	<UserControl.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</UserControl.Resources>
+	<i:Interaction.Behaviors>
+		<behaviors:LoadFocus FocusElement="{Binding Source={x:Reference txtInput}}" />
+	</i:Interaction.Behaviors>
 
 	<DockPanel LastChildFill="True">
 		<Grid DockPanel.Dock="Bottom">
