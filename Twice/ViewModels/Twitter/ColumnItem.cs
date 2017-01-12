@@ -1,12 +1,12 @@
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter.Entities;
@@ -17,7 +17,7 @@ namespace Twice.ViewModels.Twitter
 	internal abstract class ColumnItem : ObservableObject, IHighlightable
 	{
 		/// <summary>
-		/// For testing purposes only!
+		///  For testing purposes only! 
 		/// </summary>
 		// ReSharper disable once UnusedMember.Global
 		protected ColumnItem()
@@ -41,13 +41,6 @@ namespace Twice.ViewModels.Twitter
 			RaisePropertyChanged( nameof( CreatedAt ) );
 		}
 
-		protected abstract Task LoadInlineMedias();
-
-		private void ExecuteDismissSensibleWarningCommand()
-		{
-			HasSensibleContent = false;
-		}
-
 		protected async void Image_OpenRequested( object sender, EventArgs args )
 		{
 			var selected = sender as StatusMediaViewModel;
@@ -59,17 +52,26 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ViewImage( allUris, selectedUri );
 		}
 
+		protected abstract Task LoadInlineMedias();
+
+		private void ExecuteDismissSensibleWarningCommand()
+		{
+			HasSensibleContent = false;
+		}
+
+		public abstract ICommand BlockUserCommand { get; }
 		public abstract DateTime CreatedAt { get; }
 
 		public ICommand DismissSensibleWarningCommand => _DismissSensibleWarningCommand ?? ( _DismissSensibleWarningCommand = new RelayCommand(
-			                                                 ExecuteDismissSensibleWarningCommand ) );
+															 ExecuteDismissSensibleWarningCommand ) );
 
 		public bool DisplayMedia => InlineMedias.Any();
 		public abstract Entities Entities { get; }
 
 		public bool HasSensibleContent
 		{
-			[DebuggerStepThrough] get { return _HasSensibleContent; }
+			[DebuggerStepThrough]
+			get { return _HasSensibleContent; }
 			protected set
 			{
 				if( _HasSensibleContent == value )
@@ -87,7 +89,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 			set
 			{
 				if( _IsLoading == value )
@@ -107,12 +110,13 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public abstract ulong OrderId { get; }
+		public abstract ICommand ReportSpamCommand { get; }
 		public abstract string Text { get; }
 		public UserViewModel User { get; protected set; }
+		protected readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
 		protected readonly IConfig Config;
 		protected readonly IViewServiceRepository ViewServiceRepository;
 		private static readonly IMediaExtractorRepository DefaultMediaExtractor = MediaExtractorRepository.Default;
-		protected readonly List<StatusMediaViewModel> _InlineMedias = new List<StatusMediaViewModel>();
 		private RelayCommand _DismissSensibleWarningCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasSensibleContent;
@@ -120,7 +124,5 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
 		private IMediaExtractorRepository _MediaExtractor;
-		public abstract ICommand BlockUserCommand { get; }
-		public abstract ICommand ReportSpamCommand { get; }
 	}
 }

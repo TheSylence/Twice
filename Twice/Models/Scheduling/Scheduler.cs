@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Anotar.NLog;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Anotar.NLog;
-using Newtonsoft.Json;
 using Twice.Models.Scheduling.Processors;
 using Twice.Models.Twitter;
 
@@ -39,14 +39,67 @@ namespace Twice.Models.Scheduling
 			SleepTime = 1000;
 		}
 
-		private readonly int SleepTime;
-
 		internal Scheduler( string fileName, ITwitterContextList contextList, ITwitterConfiguration twitterConfig,
 			IJobProcessor testProcessor, int sleepTime = 1000 )
 			: this( fileName, contextList, twitterConfig )
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
 			SleepTime = sleepTime;
+		}
+
+		public event EventHandler JobListUpdated;
+
+		public void AddJob( SchedulerJob job )
+		{
+			Debug.Assert( job.AccountIds.Any() );
+			Debug.Assert( !string.IsNullOrEmpty( job.Text ) );
+
+			lock( JobListLock )
+			{
+				job.JobId = JobIdCounter++;
+
+				Jobs.Add( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
+
+		public void DeleteJob( SchedulerJob job )
+		{
+			lock( JobListLock )
+			{
+				Jobs.Remove( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
+
+		public void Start()
+		{
+			LogTo.Info( "Starting scheduler thread" );
+
+			IsRunning = true;
+			ThreadObject = new Thread( RunThreaded )
+			{
+				Name = "SchedulerThread"
+			};
+			ThreadObject.Start();
+		}
+
+		public void Stop()
+		{
+			LogTo.Info( "Stopping scheduler thread" );
+
+			IsRunning = false;
+			ThreadObject?.Join();
 		}
 
 		internal bool ProcessJob( SchedulerJob job )
@@ -104,60 +157,6 @@ namespace Twice.Models.Scheduling
 			File.WriteAllText( FileName, json );
 		}
 
-		public event EventHandler JobListUpdated;
-
-		public void AddJob( SchedulerJob job )
-		{
-			Debug.Assert( job.AccountIds.Any() );
-			Debug.Assert( !string.IsNullOrEmpty( job.Text ) );
-
-			lock( JobListLock )
-			{
-				job.JobId = JobIdCounter++;
-
-				Jobs.Add( job );
-				UpdateJobList();
-			}
-
-			lock( JobListLock )
-			{
-				JobListUpdated?.Invoke( this, EventArgs.Empty );
-			}
-		}
-		public void DeleteJob( SchedulerJob job )
-		{
-			lock( JobListLock )
-			{
-				Jobs.Remove( job );
-				UpdateJobList();
-			}
-
-			lock( JobListLock )
-			{
-				JobListUpdated?.Invoke( this, EventArgs.Empty );
-			}
-		}
-
-		public void Start()
-		{
-			LogTo.Info( "Starting scheduler thread" );
-
-			IsRunning = true;
-			ThreadObject = new Thread( RunThreaded )
-			{
-				Name = "SchedulerThread"
-			};
-			ThreadObject.Start();
-		}
-
-		public void Stop()
-		{
-			LogTo.Info( "Stopping scheduler thread" );
-
-			IsRunning = false;
-			ThreadObject?.Join();
-		}
-
 		public IEnumerable<SchedulerJob> JobList => Jobs;
 		private readonly string FileName;
 		private readonly object JobListLock = new object();
@@ -166,6 +165,7 @@ namespace Twice.Models.Scheduling
 			new Dictionary<SchedulerJobType, IJobProcessor>();
 
 		private readonly List<SchedulerJob> Jobs = new List<SchedulerJob>();
+		private readonly int SleepTime;
 		private bool IsRunning;
 		private ulong JobIdCounter;
 		private Thread ThreadObject;

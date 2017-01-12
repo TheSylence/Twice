@@ -22,7 +22,7 @@ namespace Twice.ViewModels.Dialogs
 			ContentChange?.Invoke( this, new ContentChangeEventArgs( newContent ) );
 
 			// FIXME: This is one hell of an ugly hack...
-			CurrentContent = ( (UserControl)newContent ).DataContext;
+			CurrentDataContext = ( (UserControl)newContent ).DataContext;
 		}
 
 		public async Task Setup<TViewModel>( TViewModel vm ) where TViewModel : class
@@ -47,7 +47,7 @@ namespace Twice.ViewModels.Dialogs
 			Stack.Remove();
 			Stack.Setup( (IContentChanger)this );
 
-			var loadVm = CurrentContent as ILoadCallback;
+			var loadVm = CurrentDataContext as ILoadCallback;
 			if( loadVm != null )
 			{
 				await loadVm.OnLoad( null );
@@ -59,6 +59,6 @@ namespace Twice.ViewModels.Dialogs
 
 		private readonly IDialogStack Stack;
 		private RelayCommand _BackCommand;
-		private object CurrentContent;
+		private object CurrentDataContext;
 	}
 }

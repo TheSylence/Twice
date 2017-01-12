@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Fody;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
-using Newtonsoft.Json;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 
@@ -221,7 +221,45 @@ namespace Twice.Models.Cache
 			}
 		}
 
-		
+		public async Task Clear()
+		{
+			string[] tables =
+			{
+				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
+			};
+
+			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
+			{
+				return;
+			}
+
+			try
+			{
+				using( var tx = new Transaction( Connection ) )
+				{
+					foreach( var table in tables )
+					{
+						using( var cmd = Connection.CreateCommand() )
+						{
+							cmd.CommandText = $"DELETE FROM {table};";
+							await cmd.ExecuteNonQueryAsync();
+						}
+					}
+
+					using( var cmd = Connection.CreateCommand() )
+					{
+						cmd.CommandText = "DELETE FROM ColumnStatuses";
+						await cmd.ExecuteNonQueryAsync();
+					}
+
+					tx.Commit();
+				}
+			}
+			finally
+			{
+				Semaphore.Release();
+			}
+		}
 
 		public void Dispose()
 		{
@@ -615,46 +653,6 @@ namespace Twice.Models.Cache
 					using( var cmd = Connection.CreateCommand() )
 					{
 						cmd.CommandText = "DELETE FROM ColumnStatuses WHERE NOT EXISTS (Select s.Id FROM Statuses s WHERE s.Id = ColumnStatuses.StatusId);";
-						await cmd.ExecuteNonQueryAsync();
-					}
-
-					tx.Commit();
-				}
-			}
-			finally
-			{
-				Semaphore.Release();
-			}
-		}
-
-		public async Task Clear()
-		{
-			string[] tables =
-			{
-				"Users", "TwitterConfig", "Hashtags", "Statuses", "Messages"
-			};
-
-			if( !await Semaphore.WaitAsync( SemaphoreWait ) )
-			{
-				return;
-			}
-
-			try
-			{
-				using( var tx = new Transaction( Connection ) )
-				{
-					foreach( var table in tables )
-					{
-						using( var cmd = Connection.CreateCommand() )
-						{
-							cmd.CommandText = $"DELETE FROM {table};";
-							await cmd.ExecuteNonQueryAsync();
-						}
-					}
-
-					using( var cmd = Connection.CreateCommand() )
-					{
-						cmd.CommandText = "DELETE FROM ColumnStatuses";
 						await cmd.ExecuteNonQueryAsync();
 					}
 

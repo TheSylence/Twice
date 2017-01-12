@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///     Interaction logic for ImageDialog.xaml
+	///  Interaction logic for ImageDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class ImageDialog

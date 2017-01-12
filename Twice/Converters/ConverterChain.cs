@@ -7,8 +7,8 @@ using System.Windows.Data;
 namespace Twice.Converters
 {
 	/// <summary>
-	///     Convert that is able to "chain" multiple converters together and call them in sequence to use
-	///     more than one converter on a value.
+	///  Convert that is able to "chain" multiple converters together and call them in sequence to
+	///  use more than one converter on a value.
 	/// </summary>
 	internal class ConverterChain : List<IValueConverter>, IValueConverter
 	{

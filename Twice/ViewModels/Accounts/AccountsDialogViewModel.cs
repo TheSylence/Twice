@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -119,13 +119,13 @@ namespace Twice.ViewModels.Accounts
 
 		public ICollection<AccountEntry> AddedAccounts { get; }
 
-		public ICommand MakeDefaultAccountCommand
-			=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
-				ExecuteMakeDefaultAccountCommand ) );
-
 		public ICommand DeleteAccountCommand
 			=> _DeleteAccountCommand ?? ( _DeleteAccountCommand = new RelayCommand<AccountEntry>( ExecuteDeleteAccountCommand ) )
 			;
+
+		public ICommand MakeDefaultAccountCommand
+					=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
+				ExecuteMakeDefaultAccountCommand ) );
 
 		private readonly ITwitterAuthorizer Authorizer;
 

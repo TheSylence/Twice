@@ -6,7 +6,8 @@ namespace Twice.ViewModels.Dialogs
 	{
 		public string Label
 		{
-			[DebuggerStepThrough] get { return _Label; }
+			[DebuggerStepThrough]
+			get { return _Label; }
 			set
 			{
 				if( _Label == value )

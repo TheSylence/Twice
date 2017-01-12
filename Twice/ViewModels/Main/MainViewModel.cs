@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,11 +13,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using Ninject;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -198,7 +198,7 @@ namespace Twice.ViewModels.Main
 			var col = sender as IColumnViewModel;
 			Debug.Assert( col != null, "col != null" );
 
-			ColumnList.Remove( new[] {col.Definition} );
+			ColumnList.Remove( new[] { col.Definition } );
 		}
 
 		private void Col_NewItem( object sender, ColumnItemEventArgs e )
@@ -351,7 +351,8 @@ namespace Twice.ViewModels.Main
 
 		public bool ColumnsLocked
 		{
-			[DebuggerStepThrough] get { return _ColumnsLocked; }
+			[DebuggerStepThrough]
+			get { return _ColumnsLocked; }
 			set
 			{
 				if( _ColumnsLocked == value )
@@ -382,7 +383,7 @@ namespace Twice.ViewModels.Main
 			=> _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
 
 		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand(
-			                                 ExecuteSearchCommand ) );
+											 ExecuteSearchCommand ) );
 
 		public ICommand SettingsCommand
 			=> _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );

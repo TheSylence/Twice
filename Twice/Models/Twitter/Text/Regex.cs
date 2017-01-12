@@ -9,7 +9,7 @@ namespace Twice.Models.Twitter.Text
 #pragma warning restore 1
 
 	/// <summary>
-	///     Patterns and regular expressions used by the twitter text methods.
+	///  Patterns and regular expressions used by the twitter text methods. 
 	/// </summary>
 	internal static class Regex
 	{

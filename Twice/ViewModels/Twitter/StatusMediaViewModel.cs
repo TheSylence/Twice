@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Input;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
+using System;
+using System.Diagnostics;
+using System.Windows.Input;
 using Twice.Models.Proxy;
 
 namespace Twice.ViewModels.Twitter
@@ -52,7 +52,8 @@ namespace Twice.ViewModels.Twitter
 
 		public Uri DisplayUrl
 		{
-			[DebuggerStepThrough] get { return _DisplayUrl; }
+			[DebuggerStepThrough]
+			get { return _DisplayUrl; }
 			set
 			{
 				if( _DisplayUrl == value )
@@ -69,7 +70,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsMuted
 		{
-			[DebuggerStepThrough] get { return _IsMuted; }
+			[DebuggerStepThrough]
+			get { return _IsMuted; }
 			set
 			{
 				if( _IsMuted == value )
@@ -84,7 +86,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsPlaying
 		{
-			[DebuggerStepThrough] get { return _IsPlaying; }
+			[DebuggerStepThrough]
+			get { return _IsPlaying; }
 			set
 			{
 				if( _IsPlaying == value )
@@ -99,7 +102,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool Loop
 		{
-			[DebuggerStepThrough] get { return _Loop; }
+			[DebuggerStepThrough]
+			get { return _Loop; }
 			set
 			{
 				if( _Loop == value )
@@ -113,7 +117,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand(
-			                                    ExecuteOpenImageCommand ) );
+												ExecuteOpenImageCommand ) );
 
 		public Uri Url { get; }
 

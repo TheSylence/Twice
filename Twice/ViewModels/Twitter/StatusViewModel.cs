@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
@@ -89,7 +89,7 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			var videos = ( Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-			               Enumerable.Empty<MediaEntity>() ).ToArray();
+						   Enumerable.Empty<MediaEntity>() ).ToArray();
 
 			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
 			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
@@ -340,39 +340,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
-
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
-		private readonly Status OriginalStatus;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _BlockUserCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
-
-		private ITwitterCardExtractor _CardExtractor;
-
-		private IClipboard _Clipboard;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _ReportSpamCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
-
 		public override ICommand BlockUserCommand
 			=>
 				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand<ulong>( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
@@ -380,7 +347,8 @@ namespace Twice.ViewModels.Twitter
 
 		public CardViewModel Card
 		{
-			[DebuggerStepThrough] get { return _Card; }
+			[DebuggerStepThrough]
+			get { return _Card; }
 			set
 			{
 				if( _Card == value )
@@ -457,7 +425,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool HasCard
 		{
-			[DebuggerStepThrough] get { return _HasCard; }
+			[DebuggerStepThrough]
+			get { return _HasCard; }
 			private set
 			{
 				if( _HasCard == value )
@@ -477,19 +446,12 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public bool HasQuotedTweet => ExtractQuotedTweetUrl() != 0;
-
 		public override ulong Id => Model.StatusID;
-
 		public bool IsFavorited => Model.Favorited;
-
 		public bool IsReply => Model.InReplyToStatusID != 0;
-
 		public bool IsRetweeted => Model.Retweeted;
-
 		public Status Model { get; }
-
 		public override ulong OrderId => OriginalStatus.GetStatusId();
-
 		public StatusViewModel QuotedTweet { get; set; }
 
 		public ICommand QuoteStatusCommand
@@ -517,7 +479,38 @@ namespace Twice.ViewModels.Twitter
 				?? ( _RetweetStatusCommand = new RelayCommand( ExecuteRetweetStatusCommand ) );
 
 		public UserViewModel SourceUser { get; }
-
 		public override string Text => Model.Text;
+		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
+
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+		private readonly Status OriginalStatus;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _BlockUserCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
+
+		private ITwitterCardExtractor _CardExtractor;
+
+		private IClipboard _Clipboard;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasCard;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _QuoteStatusCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyToAllCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _ReportSpamCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RetweetStatusCommand;
 	}
 }

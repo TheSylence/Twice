@@ -14,7 +14,7 @@ namespace Twice.Injections
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		/// Loads the module into the kernel.
+		///  Loads the module into the kernel. 
 		/// </summary>
 		public override void Load()
 		{

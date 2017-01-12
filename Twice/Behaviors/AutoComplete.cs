@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -9,12 +10,11 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using MaterialDesignThemes.Wpf;
 
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///     Behavior that can be attached to a TextBox to allow autocomplete functionality.
+	///  Behavior that can be attached to a TextBox to allow autocomplete functionality. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class AutoComplete : BehaviorBase<TextBox>
@@ -118,14 +118,6 @@ namespace Twice.Behaviors
 			}
 		}
 
-		private void CloseAutoCompleteBox()
-		{
-			FilterText = string.Empty;
-			AutoCompletePopup.IsOpen = false;
-			Mode = SourceMode.None;
-			AssociatedObject.Focus();
-		}
-
 		private void AssociatedObject_TextInput( object sender, TextCompositionEventArgs e )
 		{
 			var text = e.Text;
@@ -185,6 +177,14 @@ namespace Twice.Behaviors
 		private void AutoCompletePopup_Closed( object sender, EventArgs e )
 		{
 			FilterText = string.Empty;
+		}
+
+		private void CloseAutoCompleteBox()
+		{
+			FilterText = string.Empty;
+			AutoCompletePopup.IsOpen = false;
+			Mode = SourceMode.None;
+			AssociatedObject.Focus();
 		}
 
 		private void InsertText()
@@ -248,10 +248,10 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty ItemsSourceProperty =
 			DependencyProperty.Register( "Hashtags", typeof( IEnumerable<string> ), typeof( AutoComplete ),
-				new PropertyMetadata( new string[] {} ) );
+				new PropertyMetadata( new string[] { } ) );
 
 		public static readonly DependencyProperty UsersProperty =
-			DependencyProperty.Register( "Users", typeof( IEnumerable<string> ), typeof( AutoComplete ), new PropertyMetadata( new string[] {} ) );
+			DependencyProperty.Register( "Users", typeof( IEnumerable<string> ), typeof( AutoComplete ), new PropertyMetadata( new string[] { } ) );
 
 		private readonly ListView AutoCompleteBox;
 		private readonly Popup AutoCompletePopup;

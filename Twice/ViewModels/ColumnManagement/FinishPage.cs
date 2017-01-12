@@ -20,7 +20,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public string ColumnTypeDescription
 		{
-			[DebuggerStepThrough] get { return _ColumnTypeDescription; }
+			[DebuggerStepThrough]
+			get { return _ColumnTypeDescription; }
 			set
 			{
 				if( _ColumnTypeDescription == value )
@@ -35,7 +36,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public string SourceAccount
 		{
-			[DebuggerStepThrough] get { return _SourceAccount; }
+			[DebuggerStepThrough]
+			get { return _SourceAccount; }
 			set
 			{
 				if( _SourceAccount == value )

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Ninject;
 using Twice.Utilities.Ui;
 using Twice.Views;
 
@@ -84,7 +84,7 @@ namespace Twice.Behaviors
 
 			var resDictionaryName =
 				$"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.{( newValue ? "Dark" : "Light" )}.xaml";
-			var dict = new ResourceDictionary {Source = new Uri( resDictionaryName )};
+			var dict = new ResourceDictionary { Source = new Uri( resDictionaryName ) };
 
 			var keys = new[]
 			{
@@ -155,38 +155,6 @@ namespace Twice.Behaviors
 			// TODO: Update Resouce Dictionaries
 		}
 
-		public static readonly DependencyProperty AccentColorNameProperty =
-			DependencyProperty.Register( "AccentColorName", typeof(string), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null, OnAccentColorChanged ) );
-
-		public static readonly DependencyProperty DarkThemeProperty =
-			DependencyProperty.Register( "DarkTheme", typeof(bool), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( true, OnDarkThemeChanged ) );
-
-		public static readonly DependencyProperty DictionaryProperty =
-			DependencyProperty.Register( "Dictionary", typeof(ResourceDictionary), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null ) );
-
-		public static readonly DependencyProperty FontSizeProperty =
-			DependencyProperty.Register( "FontSize", typeof(double), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( 0.0, OnFontSizeChanged ) );
-
-		public static readonly DependencyProperty HashtagColorProperty =
-			DependencyProperty.Register( "HashtagColor", typeof(Brush), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null, OnHashtagColorChanged ) );
-
-		public static readonly DependencyProperty LinkColorProperty =
-			DependencyProperty.Register( "LinkColor", typeof(Brush), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null, OnLinkColorChanged ) );
-
-		public static readonly DependencyProperty MentionColorProperty =
-			DependencyProperty.Register( "MentionColor", typeof(Brush), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null, OnMentionColorChanged ) );
-
-		public static readonly DependencyProperty PrimaryColorNameProperty =
-			DependencyProperty.Register( "PrimaryColorName", typeof(string), typeof(PreviewResourceManipulator),
-				new PropertyMetadata( null, OnPrimaryColorChanged ) );
-
 		public string AccentColorName
 		{
 			get { return (string)GetValue( AccentColorNameProperty ); }
@@ -234,6 +202,38 @@ namespace Twice.Behaviors
 			get { return (string)GetValue( PrimaryColorNameProperty ); }
 			set { SetValue( PrimaryColorNameProperty, value ); }
 		}
+
+		public static readonly DependencyProperty AccentColorNameProperty =
+																			DependencyProperty.Register( "AccentColorName", typeof( string ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null, OnAccentColorChanged ) );
+
+		public static readonly DependencyProperty DarkThemeProperty =
+			DependencyProperty.Register( "DarkTheme", typeof( bool ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( true, OnDarkThemeChanged ) );
+
+		public static readonly DependencyProperty DictionaryProperty =
+			DependencyProperty.Register( "Dictionary", typeof( ResourceDictionary ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null ) );
+
+		public static readonly DependencyProperty FontSizeProperty =
+			DependencyProperty.Register( "FontSize", typeof( double ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( 0.0, OnFontSizeChanged ) );
+
+		public static readonly DependencyProperty HashtagColorProperty =
+			DependencyProperty.Register( "HashtagColor", typeof( Brush ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null, OnHashtagColorChanged ) );
+
+		public static readonly DependencyProperty LinkColorProperty =
+			DependencyProperty.Register( "LinkColor", typeof( Brush ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null, OnLinkColorChanged ) );
+
+		public static readonly DependencyProperty MentionColorProperty =
+			DependencyProperty.Register( "MentionColor", typeof( Brush ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null, OnMentionColorChanged ) );
+
+		public static readonly DependencyProperty PrimaryColorNameProperty =
+			DependencyProperty.Register( "PrimaryColorName", typeof( string ), typeof( PreviewResourceManipulator ),
+				new PropertyMetadata( null, OnPrimaryColorChanged ) );
 
 		private readonly IColorProvider ColorProvider;
 	}

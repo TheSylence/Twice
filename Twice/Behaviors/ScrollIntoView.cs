@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Scrolls an item into view, when a button is button is pressed. 
+	///  Scrolls an item into view, when a button is button is pressed. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ScrollIntoView : BehaviorBase<Button>
@@ -32,14 +32,8 @@ namespace Twice.Behaviors
 			e.Handled = true;
 		}
 
-		public static readonly DependencyProperty ControlProperty =
-			DependencyProperty.Register( "Control", typeof(ItemsControl), typeof(ScrollIntoView), new PropertyMetadata( null ) );
-
-		public static readonly DependencyProperty ItemProperty =
-			DependencyProperty.Register( "Item", typeof(object), typeof(ScrollIntoView), new PropertyMetadata( null ) );
-
 		/// <summary>
-		/// ItemControl that contains the item.
+		///  ItemControl that contains the item. 
 		/// </summary>
 		public ItemsControl Control
 		{
@@ -48,12 +42,18 @@ namespace Twice.Behaviors
 		}
 
 		/// <summary>
-		/// The item that should be visible after the button press
+		///  The item that should be visible after the button press 
 		/// </summary>
 		public object Item
 		{
 			get { return GetValue( ItemProperty ); }
 			set { SetValue( ItemProperty, value ); }
 		}
+
+		public static readonly DependencyProperty ControlProperty =
+							DependencyProperty.Register( "Control", typeof( ItemsControl ), typeof( ScrollIntoView ), new PropertyMetadata( null ) );
+
+		public static readonly DependencyProperty ItemProperty =
+			DependencyProperty.Register( "Item", typeof( object ), typeof( ScrollIntoView ), new PropertyMetadata( null ) );
 	}
 }

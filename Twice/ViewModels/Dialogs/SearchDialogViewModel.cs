@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using Twice.ViewModels.Twitter;
 using Twice.Resources;
+using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Dialogs
 {
@@ -34,7 +34,7 @@ namespace Twice.ViewModels.Dialogs
 
 			switch( Mode )
 			{
-				case SearchMode.Users:
+			case SearchMode.Users:
 				{
 					var result = await context.Twitter.Search.SearchUsers( SearchQuery );
 					var users = result.Select( u => new UserViewModel( u ) );
@@ -43,7 +43,7 @@ namespace Twice.ViewModels.Dialogs
 				}
 				break;
 
-				case SearchMode.Statuses:
+			case SearchMode.Statuses:
 				{
 					var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
 					var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) ).ToArray();
@@ -60,7 +60,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public bool IsSearching
 		{
-			[DebuggerStepThrough] get { return _IsSearching; }
+			[DebuggerStepThrough]
+			get { return _IsSearching; }
 			set
 			{
 				if( _IsSearching == value )
@@ -75,7 +76,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public SearchMode Mode
 		{
-			[DebuggerStepThrough] get { return _Mode; }
+			[DebuggerStepThrough]
+			get { return _Mode; }
 			set
 			{
 				if( _Mode == value )
@@ -94,7 +96,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public string SearchQuery
 		{
-			[DebuggerStepThrough] get { return _SearchQuery; }
+			[DebuggerStepThrough]
+			get { return _SearchQuery; }
 			set
 			{
 				if( _SearchQuery == value )

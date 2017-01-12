@@ -47,7 +47,8 @@ namespace Twice.ViewModels.Settings
 
 		public Corner SelectedCorner
 		{
-			[DebuggerStepThrough] get { return _SelectedCorner; }
+			[DebuggerStepThrough]
+			get { return _SelectedCorner; }
 			set
 			{
 				if( _SelectedCorner == value )
@@ -62,7 +63,8 @@ namespace Twice.ViewModels.Settings
 
 		public string SelectedDisplay
 		{
-			[DebuggerStepThrough] get { return _SelectedDisplay; }
+			[DebuggerStepThrough]
+			get { return _SelectedDisplay; }
 			set
 			{
 				if( _SelectedDisplay == value )
@@ -79,7 +81,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool Win10Enabled
 		{
-			[DebuggerStepThrough] get { return _Win10Enabled; }
+			[DebuggerStepThrough]
+			get { return _Win10Enabled; }
 			set
 			{
 				if( _Win10Enabled == value )

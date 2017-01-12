@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Windows;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using Newtonsoft.Json;
+using System.IO;
+using System.Windows;
 using Twice.Views;
 
 namespace Twice.Utilities.Ui
@@ -20,9 +20,9 @@ namespace Twice.Utilities.Ui
 		}
 
 		/// <summary>
-		///     Applies the saved settings to a window.
+		///  Applies the saved settings to a window. 
 		/// </summary>
-		/// <param name="window">The window</param>
+		/// <param name="window"> The window </param>
 		public void Apply( IWindowAdapter window )
 		{
 			Point size = EnsureWindowSize();
@@ -36,11 +36,11 @@ namespace Twice.Utilities.Ui
 		}
 
 		/// <summary>
-		///     Saves the current state of a window to a file.
+		///  Saves the current state of a window to a file. 
 		/// </summary>
-		/// <param name="window">The window.</param>
+		/// <param name="window"> The window. </param>
 		/// <returns>
-		///     <c>true</c> if save was successful; otherwise (when window is minimized) <c>false</c>
+		///  <c> true </c> if save was successful; otherwise (when window is minimized) <c> false </c>
 		/// </returns>
 		public bool Save( IWindowAdapter window )
 		{

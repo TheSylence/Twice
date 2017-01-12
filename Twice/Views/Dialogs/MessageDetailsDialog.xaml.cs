@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	/// Interaction logic for MessageDetailsDialog.xaml
+	///  Interaction logic for MessageDetailsDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class MessageDetailsDialog

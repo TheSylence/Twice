@@ -48,7 +48,7 @@
 					 VerticalAlignment="Top" Margin="5"
 				 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 				<i:Interaction.Behaviors>
-					<behaviors:CommandOnReturn Command="{Binding OkCommand}"/>
+					<behaviors:CommandOnReturn Command="{Binding OkCommand}" />
 				</i:Interaction.Behaviors>
 			</TextBox>
 		</ScrollViewer>

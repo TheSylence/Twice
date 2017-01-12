@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -19,8 +19,8 @@ namespace Twice.Tests.ViewModels.Columns
 			// Arrange
 			var column = new TestUserColumn();
 
-			var s1 = new Status {UserID = 123};
-			var s2 = new Status {UserID = 222};
+			var s1 = new Status { UserID = 123 };
+			var s2 = new Status { UserID = 222 };
 
 			// Act
 			bool b1 = column.FilterExpression( s1 );
@@ -118,7 +118,7 @@ namespace Twice.Tests.ViewModels.Columns
 			{
 				return new ColumnDefinition( ColumnType.User )
 				{
-					TargetAccounts = new ulong[] {123}
+					TargetAccounts = new ulong[] { 123 }
 				};
 			}
 

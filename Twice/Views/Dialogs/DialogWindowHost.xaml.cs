@@ -15,7 +15,10 @@ namespace Twice.Views.Dialogs
 			InitializeComponent();
 		}
 
-		private IViewController ViewController;
+		public void Center()
+		{
+			WindowHelper.Center( this );
+		}
 
 		protected override void OnContentChanged( object oldContent, object newContent )
 		{
@@ -34,16 +37,6 @@ namespace Twice.Views.Dialogs
 			}
 		}
 
-		private void ViewController_CenterRequested( object sender, EventArgs e )
-		{
-			Center();
-		}
-
-		public void Center()
-		{
-			WindowHelper.Center( this );
-		}
-
 		protected override void OnInitialized( EventArgs e )
 		{
 			base.OnInitialized( e );
@@ -55,5 +48,12 @@ namespace Twice.Views.Dialogs
 		{
 			WindowHelper.Center( this );
 		}
+
+		private void ViewController_CenterRequested( object sender, EventArgs e )
+		{
+			Center();
+		}
+
+		private IViewController ViewController;
 	}
 }

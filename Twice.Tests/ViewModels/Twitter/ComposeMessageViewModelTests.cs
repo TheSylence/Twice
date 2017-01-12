@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Twitter;
 using Twice.ViewModels.Twitter;
 
@@ -20,7 +20,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.Friendships.GetFriendshipWith( 123, "the_username" ) ).Returns( Task.FromResult( new LinqToTwitter.Friendship() ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var vm = new ComposeMessageViewModel
 			{
@@ -103,7 +103,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.Messages.SendMessage( "the_user", "the_message" ) ).Returns( Task.FromResult( new LinqToTwitter.DirectMessage() ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var vm = new ComposeMessageViewModel
 			{

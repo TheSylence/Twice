@@ -1,9 +1,9 @@
 ﻿using LinqToTwitter;
+using Seal.Fody;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Seal.Fody;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;

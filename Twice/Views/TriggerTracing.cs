@@ -8,8 +8,8 @@ using System.Windows.Media.Animation;
 namespace Twice.Views
 {
 	/// <summary>
-	///     Contains attached properties to activate Trigger Tracing on the specified Triggers. This file
-	///     alone should be dropped into your app.
+	///  Contains attached properties to activate Trigger Tracing on the specified Triggers. This
+	///  file alone should be dropped into your app.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public static class TriggerTracing
@@ -23,10 +23,16 @@ namespace Twice.Views
 			PresentationTraceSources.AnimationSource.Switch.Level = SourceLevels.All;
 		}
 
+		private enum TriggerTraceStoryboardType
+		{
+			Enter,
+			Exit
+		}
+
 		/// <summary>
-		///     Gets a value indication whether trace is enabled for the specified trigger.
+		///  Gets a value indication whether trace is enabled for the specified trigger. 
 		/// </summary>
-		/// <param name="trigger">The trigger.</param>
+		/// <param name="trigger"> The trigger. </param>
 		/// <returns></returns>
 		public static bool GetTraceEnabled( TriggerBase trigger )
 		{
@@ -34,10 +40,10 @@ namespace Twice.Views
 		}
 
 		/// <summary>
-		///     Gets the trigger name for the specified trigger. This will be used to identify the
-		///     trigger in the debug output.
+		///  Gets the trigger name for the specified trigger. This will be used to identify the
+		///  trigger in the debug output.
 		/// </summary>
-		/// <param name="trigger">The trigger.</param>
+		/// <param name="trigger"> The trigger. </param>
 		/// <returns></returns>
 		public static string GetTriggerName( TriggerBase trigger )
 		{
@@ -45,7 +51,7 @@ namespace Twice.Views
 		}
 
 		/// <summary>
-		///     Sets a value specifying whether trace is enabled for the specified trigger
+		///  Sets a value specifying whether trace is enabled for the specified trigger 
 		/// </summary>
 		/// <param name="trigger"></param>
 		/// <param name="value"></param>
@@ -55,11 +61,11 @@ namespace Twice.Views
 		}
 
 		/// <summary>
-		///     Sets the trigger name for the specified trigger. This will be used to identify the
-		///     trigger in the debug output.
+		///  Sets the trigger name for the specified trigger. This will be used to identify the
+		///  trigger in the debug output.
 		/// </summary>
-		/// <param name="trigger">The trigger.</param>
-		/// <param name="value">Name of the trigger.</param>
+		/// <param name="trigger"> The trigger. </param>
+		/// <param name="value"> Name of the trigger. </param>
 		/// <returns></returns>
 		public static void SetTriggerName( TriggerBase trigger, string value )
 		{
@@ -81,16 +87,16 @@ namespace Twice.Views
 				// insert dummy story-boards which can later be traced using WPF animation tracing
 
 				var storyboard = new TriggerTraceStoryboard( triggerBase, TriggerTraceStoryboardType.Enter );
-				triggerBase.EnterActions.Insert( 0, new BeginStoryboard {Storyboard = storyboard} );
+				triggerBase.EnterActions.Insert( 0, new BeginStoryboard { Storyboard = storyboard } );
 
 				storyboard = new TriggerTraceStoryboard( triggerBase, TriggerTraceStoryboardType.Exit );
-				triggerBase.ExitActions.Insert( 0, new BeginStoryboard {Storyboard = storyboard} );
+				triggerBase.ExitActions.Insert( 0, new BeginStoryboard { Storyboard = storyboard } );
 			}
 			else
 			{
 				// remove the dummy storyboards
 
-				foreach( TriggerActionCollection actionCollection in new[] {triggerBase.EnterActions, triggerBase.ExitActions} )
+				foreach( TriggerActionCollection actionCollection in new[] { triggerBase.EnterActions, triggerBase.ExitActions } )
 				{
 					foreach( TriggerAction triggerAction in actionCollection )
 					{
@@ -109,25 +115,19 @@ namespace Twice.Views
 		public static readonly DependencyProperty TraceEnabledProperty =
 			DependencyProperty.RegisterAttached(
 				"TraceEnabled",
-				typeof(bool),
-				typeof(TriggerTracing),
+				typeof( bool ),
+				typeof( TriggerTracing ),
 				new UIPropertyMetadata( false, OnTraceEnabledChanged ) );
 
 		public static readonly DependencyProperty TriggerNameProperty =
 			DependencyProperty.RegisterAttached(
 				"TriggerName",
-				typeof(string),
-				typeof(TriggerTracing),
+				typeof( string ),
+				typeof( TriggerTracing ),
 				new UIPropertyMetadata( string.Empty ) );
 
-		private enum TriggerTraceStoryboardType
-		{
-			Enter,
-			Exit
-		}
-
 		/// <summary>
-		///     A custom tracelistener.
+		///  A custom tracelistener. 
 		/// </summary>
 		private class TriggerTraceListener : TraceListener
 		{
@@ -168,7 +168,7 @@ namespace Twice.Views
 		}
 
 		/// <summary>
-		///     A dummy storyboard for tracing purposes
+		///  A dummy storyboard for tracing purposes 
 		/// </summary>
 		private class TriggerTraceStoryboard : Storyboard
 		{

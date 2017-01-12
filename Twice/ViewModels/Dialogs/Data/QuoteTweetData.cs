@@ -3,7 +3,6 @@ using Twice.Views.Dialogs;
 
 namespace Twice.ViewModels.Dialogs.Data
 {
-
 	internal class QuoteTweetData : DialogData
 	{
 		public QuoteTweetData( StatusViewModel status, ulong[] preselectedAccounts )
@@ -21,7 +20,7 @@ namespace Twice.ViewModels.Dialogs.Data
 				return false;
 			}
 
-			return Status.Equals( other.Status ) 
+			return Status.Equals( other.Status )
 				&& PreSelectedAccounts.Compare( other.PreSelectedAccounts );
 		}
 

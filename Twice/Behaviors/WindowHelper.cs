@@ -11,9 +11,9 @@ namespace Twice.Behaviors
 	internal static class WindowHelper
 	{
 		/// <summary>
-		/// Centers the specified window at its parent or, if it has no parent, at the screen.
+		///  Centers the specified window at its parent or, if it has no parent, at the screen. 
 		/// </summary>
-		/// <param name="window">The window to center</param>
+		/// <param name="window"> The window to center </param>
 		public static void Center( Window window )
 		{
 			var parentWidth = window.Owner?.ActualWidth ?? SystemParameters.WorkArea.Width;
@@ -24,8 +24,8 @@ namespace Twice.Behaviors
 			var width = window.ActualWidth;
 			var height = window.ActualHeight;
 
-			window.Top = parentTop + ( parentHeight / 2 - height / 2 ) ;
-			window.Left = parentLeft + ( parentWidth / 2 - width / 2 ) ;
+			window.Top = parentTop + ( parentHeight / 2 - height / 2 );
+			window.Left = parentLeft + ( parentWidth / 2 - width / 2 );
 		}
 
 		/// <summary>

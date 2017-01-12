@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -67,7 +67,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			var vm = new TestColumn( context.Object );
 			var status = DummyGenerator.CreateDummyStatus();
-			status.Entities.UserMentionEntities.Add( new UserMentionEntity {Id = 123} );
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity { Id = 123 } );
 
 			// Act
 			bool suitable = vm.Suitable( status );

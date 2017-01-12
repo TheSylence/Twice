@@ -1,6 +1,6 @@
+using Anotar.NLog;
 using System;
 using System.Windows.Input;
-using Anotar.NLog;
 
 namespace Twice.ViewModels
 {
@@ -28,8 +28,11 @@ namespace Twice.ViewModels
 				LogTo.Debug( Message );
 			}
 		}
+
 #pragma warning disable 67 // Event is never used
+
 		public event EventHandler CanExecuteChanged;
+
 #pragma warning restore
 
 		private readonly NLog.LogLevel Level;

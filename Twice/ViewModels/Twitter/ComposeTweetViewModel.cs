@@ -1,4 +1,5 @@
-﻿using Fody;
+﻿using Anotar.NLog;
+using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GongSolutions.Wpf.DragDrop;
 using LinqToTwitter;
@@ -12,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Anotar.NLog;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -62,6 +62,46 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public event EventHandler ScrollToEnd;
+
+		public async Task AttachImage( string fileName )
+		{
+			IsSending = true;
+
+			if( Path.GetExtension( fileName ) == ".gif" )
+			{
+				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
+				{
+					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+					IsSending = false;
+					return;
+				}
+			}
+
+			byte[] mediaData = File.ReadAllBytes( fileName );
+			if( mediaData.Length > TwitterConfig.MaxImageSize )
+			{
+				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+				IsSending = false;
+				return;
+			}
+
+			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
+			var acc = usedAccounts.First();
+			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
+
+			string mediaType = TwitterHelper.GetMimeType( fileName );
+			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
+			{
+				IsSending = false;
+				return t.Result;
+			} );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				Medias.Add( media );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
+			} );
+		}
 
 		public void DragOver( IDropInfo dropInfo )
 		{
@@ -184,46 +224,6 @@ namespace Twice.ViewModels.Twitter
 		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
-		}
-
-		public async Task AttachImage( string fileName )
-		{
-			IsSending = true;
-
-			if( Path.GetExtension( fileName ) == ".gif" )
-			{
-				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
-				{
-					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-					IsSending = false;
-					return;
-				}
-			}
-
-			byte[] mediaData = File.ReadAllBytes( fileName );
-			if( mediaData.Length > TwitterConfig.MaxImageSize )
-			{
-				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-				IsSending = false;
-				return;
-			}
-
-			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
-			var acc = usedAccounts.First();
-			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
-
-			string mediaType = TwitterHelper.GetMimeType( fileName );
-			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
-			{
-				IsSending = false;
-				return t.Result;
-			} );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				Medias.Add( media );
-				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
-			} );
 		}
 
 		private bool CanExecuteRemoveQuoteCommand()
@@ -437,6 +437,17 @@ namespace Twice.ViewModels.Twitter
 			} ).ContinueWith( t => { IsSending = false; } );
 
 			return result;
+		}
+
+		private void UpdateTextLength()
+		{
+			var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
+			if( QuotedTweet != null )
+			{
+				// Keep the space in mind that separates the tweet text and the status URL
+				len += TwitterConfig.UrlLengthHttps + 1;
+			}
+			TextLength = len;
 		}
 
 		public ICollection<AccountEntry> Accounts { get; private set; }
@@ -713,17 +724,6 @@ namespace Twice.ViewModels.Twitter
 
 				UpdateTextLength();
 			}
-		}
-
-		private void UpdateTextLength()
-		{
-			var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
-			if( QuotedTweet != null )
-			{
-				// Keep the space in mind that separates the tweet text and the status URL
-				len += TwitterConfig.UrlLengthHttps + 1;
-			}
-			TextLength = len;
 		}
 
 		public int TextLength

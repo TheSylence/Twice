@@ -1,13 +1,13 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -115,46 +115,6 @@ namespace Twice.Tests.ViewModels.Columns
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
-		public void ExceptionInTopDataLoadingIsNotified()
-		{
-			// Arrange
-			var context = new Mock<IContextEntry>();
-			context.Setup( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ) ).ThrowsAsync( new Exception( "test error" ) );
-
-			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( "test error", NotificationType.Error ) ).Verifiable();
-
-			context.SetupGet( c => c.Notifier ).Returns( notifier.Object );
-
-			var definition = new ColumnDefinition( ColumnType.User );
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
-			var parser = new Mock<IStreamParser>();
-
-			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
-
-			var waitHandle = new ManualResetEventSlim( false );
-			vm.PropertyChanged += ( s, e ) =>
-			{
-				if( nameof( ColumnViewModelBase.IsLoading ).Equals( e.PropertyName ) && vm.IsLoading == false )
-				{
-					waitHandle.Set();
-				}
-			};
-
-			// Act
-			vm.ActionDispatcher.OnHeaderClicked();
-
-			bool handleSet = waitHandle.Wait( 1000 );
-
-			// Assert
-			Assert.IsTrue( handleSet );
-
-			context.Verify( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ), Times.Once() );
-			notifier.Verify( n => n.DisplayMessage( "test error", NotificationType.Error ), Times.Once() );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Columns" )]
 		public void ExceptionInMoreDataLoadingIsNotified()
 		{
 			// Arrange
@@ -184,6 +144,46 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Act
 			vm.ActionDispatcher.OnBottomReached();
+
+			bool handleSet = waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsTrue( handleSet );
+
+			context.Verify( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( "test error", NotificationType.Error ), Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Columns" )]
+		public void ExceptionInTopDataLoadingIsNotified()
+		{
+			// Arrange
+			var context = new Mock<IContextEntry>();
+			context.Setup( c => c.Twitter.Statuses.Filter( It.IsAny<Expression<Func<Status, bool>>[]>() ) ).ThrowsAsync( new Exception( "test error" ) );
+
+			var notifier = new Mock<INotifier>();
+			notifier.Setup( n => n.DisplayMessage( "test error", NotificationType.Error ) ).Verifiable();
+
+			context.SetupGet( c => c.Notifier ).Returns( notifier.Object );
+
+			var definition = new ColumnDefinition( ColumnType.User );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
+			var parser = new Mock<IStreamParser>();
+
+			var vm = new TestColumn( context.Object, definition, config.Object, parser.Object );
+
+			var waitHandle = new ManualResetEventSlim( false );
+			vm.PropertyChanged += ( s, e ) =>
+			{
+				if( nameof( ColumnViewModelBase.IsLoading ).Equals( e.PropertyName ) && vm.IsLoading == false )
+				{
+					waitHandle.Set();
+				}
+			};
+
+			// Act
+			vm.ActionDispatcher.OnHeaderClicked();
 
 			bool handleSet = waitHandle.Wait( 1000 );
 
@@ -286,7 +286,7 @@ namespace Twice.Tests.ViewModels.Columns
 			Assert.IsTrue( set3 );
 
 			var ids = column.Items.Select( it => it.Id ).ToArray();
-			CollectionAssert.AreEqual( new ulong[] {3, 2, 1}, ids );
+			CollectionAssert.AreEqual( new ulong[] { 3, 2, 1 }, ids );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -296,7 +296,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var context = new Mock<IContextEntry>();
 			var definition = new ColumnDefinition( ColumnType.User );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
 			var parser = new Mock<IStreamParser>();
 
 			var statuses = new List<Status>
@@ -547,7 +547,7 @@ namespace Twice.Tests.ViewModels.Columns
 			cache.Setup( c => c.AddUsers( It.Is<IList<UserCacheEntry>>( ca => ca[0].UserId == 123 ) ) ).Returns(
 					Task.CompletedTask )
 				.Verifiable();
-			cache.Setup( c => c.AddHashtags( new[] {"hashtag"} ) ).Returns( Task.CompletedTask ).Verifiable();
+			cache.Setup( c => c.AddHashtags( new[] { "hashtag" } ) ).Returns( Task.CompletedTask ).Verifiable();
 
 			vm.Cache = cache.Object;
 
@@ -556,7 +556,7 @@ namespace Twice.Tests.ViewModels.Columns
 
 			// Assert
 			cache.Verify( c => c.AddUsers( It.Is<IList<UserCacheEntry>>( ca => ca[0].UserId == 123 ) ), Times.Once() );
-			cache.Verify( c => c.AddHashtags( new[] {"hashtag"} ), Times.Once() );
+			cache.Verify( c => c.AddHashtags( new[] { "hashtag" } ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]
@@ -621,7 +621,7 @@ namespace Twice.Tests.ViewModels.Columns
 			var context = new Mock<IContextEntry>();
 			var definition = new ColumnDefinition( ColumnType.User );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = false} );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = false } );
 			var parser = new Mock<IStreamParser>();
 
 			var statuses = new List<Status>

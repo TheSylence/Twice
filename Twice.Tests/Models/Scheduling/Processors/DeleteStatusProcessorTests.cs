@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Scheduling;
 using Twice.Models.Scheduling.Processors;
 using Twice.Models.Twitter;
@@ -19,8 +19,8 @@ namespace Twice.Tests.Models.Scheduling.Processors
 			var job = new SchedulerJob
 			{
 				JobType = SchedulerJobType.DeleteStatus,
-				IdsToDelete = new List<ulong> {1001, 2001},
-				AccountIds = new List<ulong> {100, 200}
+				IdsToDelete = new List<ulong> { 1001, 2001 },
+				AccountIds = new List<ulong> { 100, 200 }
 			};
 
 			var ctx1 = new Mock<IContextEntry>();
@@ -32,7 +32,7 @@ namespace Twice.Tests.Models.Scheduling.Processors
 			ctx2.Setup( c => c.Twitter.Statuses.DeleteTweetAsync( It.IsAny<ulong>() ) ).Returns( Task.FromResult( DummyGenerator.CreateDummyStatus() ) ).Verifiable();
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.Setup( c => c.Contexts ).Returns( new[] {ctx1.Object, ctx2.Object} );
+			contextList.Setup( c => c.Contexts ).Returns( new[] { ctx1.Object, ctx2.Object } );
 
 			var proc = new DeleteStatusProcessor( contextList.Object );
 
@@ -51,8 +51,8 @@ namespace Twice.Tests.Models.Scheduling.Processors
 			var job = new SchedulerJob
 			{
 				JobType = SchedulerJobType.DeleteStatus,
-				IdsToDelete = new List<ulong> {1001, 2001},
-				AccountIds = new List<ulong> {1, 2}
+				IdsToDelete = new List<ulong> { 1001, 2001 },
+				AccountIds = new List<ulong> { 1, 2 }
 			};
 
 			var ctx1 = new Mock<IContextEntry>();
@@ -64,7 +64,7 @@ namespace Twice.Tests.Models.Scheduling.Processors
 			ctx2.Setup( c => c.Twitter.Statuses.DeleteTweetAsync( 2001 ) ).Returns( Task.FromResult( DummyGenerator.CreateDummyStatus() ) ).Verifiable();
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.Setup( c => c.Contexts ).Returns( new[] {ctx1.Object, ctx2.Object} );
+			contextList.Setup( c => c.Contexts ).Returns( new[] { ctx1.Object, ctx2.Object } );
 
 			var proc = new DeleteStatusProcessor( contextList.Object );
 

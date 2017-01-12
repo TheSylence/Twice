@@ -1,7 +1,7 @@
+using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using GongSolutions.Wpf.DragDrop;
 using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter

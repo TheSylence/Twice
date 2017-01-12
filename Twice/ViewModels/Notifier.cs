@@ -1,12 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using NotificationsExtensions;
+using NotificationsExtensions.Toasts;
+using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-using GalaSoft.MvvmLight.Messaging;
-using NotificationsExtensions;
-using NotificationsExtensions.Toasts;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Utilities;
@@ -14,6 +12,8 @@ using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
 namespace Twice.ViewModels
 {
@@ -42,45 +42,6 @@ namespace Twice.ViewModels
 			}
 		}
 
-		private void NotifyPopup( ColumnItem item, bool win10 )
-		{
-			if( win10 )
-			{
-				DisplayWin10Message( item.Text );
-			}
-		}
-
-		private void NotifySound( ColumnItem item )
-		{
-			Dispatcher.CheckBeginInvokeOnUI( () =>
-			{
-				if( Player != null )
-				{
-					Player.Stop();
-					Player.Position = TimeSpan.Zero;
-					Player.Play();
-				}
-			} );
-		}
-
-		private void NotifyToast( ColumnItem item )
-		{
-			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop )
-			{
-				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
-			};
-
-			NotifyToast( context );
-		}
-
-		private void NotifyToast( NotificationViewModel vm )
-		{
-			vm.Dispatcher = Dispatcher;
-			vm.MessengerInstance = MessengerInstance;
-
-			ViewServices.OpenNotificationFlyout( vm );
-		}
-
 		public void DisplayMessage( string message, NotificationType type )
 		{
 			if( !Config.Notifications.ToastsEnabled )
@@ -99,7 +60,7 @@ namespace Twice.ViewModels
 		public void DisplayWin10Message( string message )
 		{
 			var binding = new ToastBindingGeneric();
-			binding.Children.Add( new AdaptiveText {Text = message, HintWrap = true} );
+			binding.Children.Add( new AdaptiveText { Text = message, HintWrap = true } );
 
 			ToastContent content = new ToastContent
 			{
@@ -152,6 +113,45 @@ namespace Twice.ViewModels
 			{
 				DisplayWin10Message( message );
 			}
+		}
+
+		private void NotifyPopup( ColumnItem item, bool win10 )
+		{
+			if( win10 )
+			{
+				DisplayWin10Message( item.Text );
+			}
+		}
+
+		private void NotifySound( ColumnItem item )
+		{
+			Dispatcher.CheckBeginInvokeOnUI( () =>
+			{
+				if( Player != null )
+				{
+					Player.Stop();
+					Player.Position = TimeSpan.Zero;
+					Player.Play();
+				}
+			} );
+		}
+
+		private void NotifyToast( ColumnItem item )
+		{
+			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop )
+			{
+				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
+			};
+
+			NotifyToast( context );
+		}
+
+		private void NotifyToast( NotificationViewModel vm )
+		{
+			vm.Dispatcher = Dispatcher;
+			vm.MessengerInstance = MessengerInstance;
+
+			ViewServices.OpenNotificationFlyout( vm );
 		}
 
 		private readonly IConfig Config;

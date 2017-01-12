@@ -321,7 +321,7 @@ namespace Twice.Views.Services
 			await Dispatcher.RunAsync( () =>
 			{
 				bool shouldSetupResult = false;
-				
+
 				if( newHost )
 				{
 					shouldSetupResult = host.ShowDialog() == true;

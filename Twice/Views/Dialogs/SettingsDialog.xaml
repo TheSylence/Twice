@@ -72,9 +72,9 @@
 						<CheckBox Content="{lex:Loc StreamContentInRealtime}"
 								  IsChecked="{Binding RealtimeStreaming,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc FilterSensitiveTweets}" Margin="{StaticResource Spacing}"
-								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-						
-						<CheckBox Content="{lex:Loc SendVersionStats}" IsChecked="{Binding SendVersionStats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+						<CheckBox Content="{lex:Loc SendVersionStats}" IsChecked="{Binding SendVersionStats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"
@@ -86,7 +86,7 @@
 						</StackPanel>
 						<ComboBox ItemsSource="{Binding AvailableFetchCounts}" Margin="{StaticResource Spacing}"
 								  SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						
+
 						<Button Content="{lex:Loc ClearCache}" Command="{Binding ClearCacheCommand}" Margin="{StaticResource Spacing}" />
 					</StackPanel>
 				</Grid>
@@ -235,7 +235,7 @@
 						</StackPanel>
 					</StackPanel>
 
-					<FlowDocumentScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" 
+					<FlowDocumentScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
 											  Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
 				</Grid>
 			</TabItem>

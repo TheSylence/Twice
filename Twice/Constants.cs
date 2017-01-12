@@ -5,7 +5,7 @@ using System.IO;
 namespace Twice
 {
 	/// <summary>
-	/// Class containing constants that are used throughout the application.
+	///  Class containing constants that are used throughout the application. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal static partial class Constants
@@ -13,7 +13,7 @@ namespace Twice
 		public static class Gui
 		{
 			/// <summary>
-			/// Number of user pictures for retweets to display in the detail dialog
+			///  Number of user pictures for retweets to display in the detail dialog 
 			/// </summary>
 			internal const int MaxRetweets = 10;
 		}
@@ -79,22 +79,22 @@ namespace Twice
 		}
 
 		/// <summary>
-		/// Constants associated with twitter.
+		///  Constants associated with twitter. 
 		/// </summary>
 		public static class Twitter
 		{
 			/// <summary>
-			/// Prefix for a hashtag.
+			///  Prefix for a hashtag. 
 			/// </summary>
 			internal const string HashTag = "#";
 
 			/// <summary>
-			/// Maximum characters allowed in a tweet.
+			///  Maximum characters allowed in a tweet. 
 			/// </summary>
 			internal const int MaxTweetLength = 140;
 
 			/// <summary>
-			/// Prefix for a user mention.
+			///  Prefix for a user mention. 
 			/// </summary>
 			internal const string Mention = "@";
 

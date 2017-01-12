@@ -1,11 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using NLog;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
@@ -75,28 +75,23 @@ namespace Twice.ViewModels.Twitter
 			await ViewServiceRepository.ReplyToMessage( this );
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
-
+		public override ICommand BlockUserCommand { get; }
 		public IContextEntry Context { get; }
 		public override DateTime CreatedAt => Model.CreatedAt;
-
 		public override Entities Entities => Model.Entities;
-
 		public override ulong Id => Model.GetMessageId();
 		public bool IsIncoming { get; }
 		public DirectMessage Model { get; }
 		public override ulong OrderId => Id;
 		public UserViewModel Partner { get; }
-
 		public ICommand ReplyCommand => _ReplyCommand ?? ( _ReplyCommand = new RelayCommand( ExecuteReplyCommand ) );
-
+		public override ICommand ReportSpamCommand { get; }
 		public override string Text => Model.Text;
 
 		public bool WasRead
 		{
-			[DebuggerStepThrough] get { return _WasRead; }
+			[DebuggerStepThrough]
+			get { return _WasRead; }
 			set
 			{
 				if( _WasRead == value )
@@ -109,7 +104,8 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public override ICommand BlockUserCommand { get; }
-		public override ICommand ReportSpamCommand { get; }
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
 	}
 }

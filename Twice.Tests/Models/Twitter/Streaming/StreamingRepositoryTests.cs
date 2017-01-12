@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -29,7 +29,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			repo.InjectStream( 123, parser.Object );
 
 			// Act
-			var second = repo.GetParser( new ColumnDefinition( ColumnType.User ) {SourceAccounts = new ulong[] {123}} );
+			var second = repo.GetParser( new ColumnDefinition( ColumnType.User ) { SourceAccounts = new ulong[] { 123 } } );
 
 			// Assert
 			Assert.AreSame( parser.Object, second );

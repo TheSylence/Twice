@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Opens the associated context menu when pressing the button.
+	///  Opens the associated context menu when pressing the button. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ContextMenuOpener : BehaviorBase<Button>
@@ -26,14 +26,14 @@ namespace Twice.Behaviors
 			Element.ContextMenu.DataContext = Element.DataContext;
 		}
 
-		public static readonly DependencyProperty ElementProperty =
-			DependencyProperty.Register( "Element", typeof(FrameworkElement), typeof(ContextMenuOpener),
-				new PropertyMetadata( null ) );
-
 		public FrameworkElement Element
 		{
 			get { return (FrameworkElement)GetValue( ElementProperty ); }
 			set { SetValue( ElementProperty, value ); }
 		}
+
+		public static readonly DependencyProperty ElementProperty =
+					DependencyProperty.Register( "Element", typeof( FrameworkElement ), typeof( ContextMenuOpener ),
+				new PropertyMetadata( null ) );
 	}
 }

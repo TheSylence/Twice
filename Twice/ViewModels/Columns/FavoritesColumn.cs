@@ -1,11 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
+using Seal.Fody;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using Seal.Fody;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;

@@ -12,7 +12,7 @@ namespace Twice.Converters
 	{
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
-			var kind = typeof(Icon).GetField( value.ToString() ).GetCustomAttribute<IconAttribute>()?.Kind;
+			var kind = typeof( Icon ).GetField( value.ToString() ).GetCustomAttribute<IconAttribute>()?.Kind;
 			Debug.Assert( kind != null, "kind != null" );
 
 			return kind;

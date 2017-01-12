@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 
@@ -51,9 +51,9 @@ namespace Twice.Tests.Models.Scheduling
 				var job = new SchedulerJob
 				{
 					JobType = SchedulerJobType.Test,
-					AccountIds = new List<ulong> {123},
-					FilesToAttach = new List<string> {"1", "2", "3"},
-					IdsToDelete = new List<ulong> {456},
+					AccountIds = new List<ulong> { 123 },
+					FilesToAttach = new List<string> { "1", "2", "3" },
+					IdsToDelete = new List<ulong> { 456 },
 					InReplyToStatus = 678,
 					TargetTime = new DateTime( 1, 2, 3, 4, 5, 6 ),
 					Text = "hello world"
@@ -106,14 +106,13 @@ namespace Twice.Tests.Models.Scheduling
 				{
 					JobType = SchedulerJobType.Test,
 					TargetTime = DateTime.Now.AddMilliseconds( -1 ),
-					AccountIds = new List<ulong> {1},
+					AccountIds = new List<ulong> { 1 },
 					Text = "test"
 				};
 				scheduler.AddJob( job );
 
 				// Act
 				set = waitHandle.Wait( 2000 );
-
 			}
 			finally
 			{

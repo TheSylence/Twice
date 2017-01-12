@@ -1,13 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -17,6 +8,15 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
 using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
@@ -30,7 +30,7 @@ using WPFLocalizeExtension.Engine;
 namespace Twice
 {
 	/// <summary>
-	///     Interaction logic for App.xaml
+	///  Interaction logic for App.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class App

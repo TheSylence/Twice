@@ -2,7 +2,6 @@
 
 namespace Twice.ViewModels.Dialogs
 {
-
 	internal class ContentChangeEventArgs : EventArgs
 	{
 		public ContentChangeEventArgs( object newContent )

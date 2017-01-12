@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Anotar.NLog;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Anotar.NLog;
-using Newtonsoft.Json;
 using Twice.Models.Cache;
 using Twice.Utilities;
 using Twice.ViewModels;
@@ -50,39 +50,6 @@ namespace Twice.Models.Twitter
 			} ).ToList();
 		}
 
-		private void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				foreach( var context in Contexts )
-				{
-					context.Dispose();
-				}
-			}
-		}
-
-		private void SaveToFile()
-		{
-			var json = Serializer.Serialize( Contexts.Select( ctx =>
-			{
-				var result = new TwitterAccountData
-				{
-					AccountName = ctx.AccountName,
-					ImageUrl = ctx.ProfileImageUrl.AbsoluteUri,
-					OAuthToken = ctx.Twitter.Authorizer.CredentialStore.OAuthToken,
-					OAuthTokenSecret = ctx.Twitter.Authorizer.CredentialStore.OAuthTokenSecret,
-					UserId = ctx.UserId,
-					IsDefault = ctx.IsDefault,
-					RequiresConfirm = ctx.RequiresConfirmation
-				};
-
-				result.Encrypt();
-				return result;
-			} ).ToList() );
-
-			File.WriteAllText( FileName, json );
-		}
-
 		public event EventHandler ContextsChanged;
 
 		public void AddContext( TwitterAccountData data )
@@ -116,7 +83,7 @@ namespace Twice.Models.Twitter
 		}
 
 		/// <summary>
-		///     Only pass decrypted data to this method.
+		///  Only pass decrypted data to this method. 
 		/// </summary>
 		/// <param name="data"></param>
 		public void UpdateAccount( TwitterAccountData data )
@@ -132,6 +99,39 @@ namespace Twice.Models.Twitter
 		public void UpdateAllAccounts()
 		{
 			SaveToFile();
+		}
+
+		private void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				foreach( var context in Contexts )
+				{
+					context.Dispose();
+				}
+			}
+		}
+
+		private void SaveToFile()
+		{
+			var json = Serializer.Serialize( Contexts.Select( ctx =>
+			{
+				var result = new TwitterAccountData
+				{
+					AccountName = ctx.AccountName,
+					ImageUrl = ctx.ProfileImageUrl.AbsoluteUri,
+					OAuthToken = ctx.Twitter.Authorizer.CredentialStore.OAuthToken,
+					OAuthTokenSecret = ctx.Twitter.Authorizer.CredentialStore.OAuthTokenSecret,
+					UserId = ctx.UserId,
+					IsDefault = ctx.IsDefault,
+					RequiresConfirm = ctx.RequiresConfirmation
+				};
+
+				result.Encrypt();
+				return result;
+			} ).ToList() );
+
+			File.WriteAllText( FileName, json );
 		}
 
 		public ICollection<IContextEntry> Contexts { get; }

@@ -12,6 +12,18 @@ namespace Twice.ViewModels.Validation
 	{
 		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
+		void IPropertyValidatorContainer.AddValidator<TProperty>( string propertyName, PropertyValidator<TProperty> validator )
+		{
+			List<PropertyValidatorBase> validatorList;
+			if( !ValidationMap.TryGetValue( propertyName, out validatorList ) )
+			{
+				validatorList = new List<PropertyValidatorBase>();
+				ValidationMap.Add( propertyName, validatorList );
+			}
+
+			validatorList.Add( validator );
+		}
+
 		public void ClearValidationErrors()
 		{
 			foreach( var kvp in ValidationMap )
@@ -40,18 +52,6 @@ namespace Twice.ViewModels.Validation
 			}
 
 			return ValidationMap[propertyName].Where( p => p.HasError ).Select( p => p.Error );
-		}
-
-		void IPropertyValidatorContainer.AddValidator<TProperty>( string propertyName, PropertyValidator<TProperty> validator )
-		{
-			List<PropertyValidatorBase> validatorList;
-			if( !ValidationMap.TryGetValue( propertyName, out validatorList ) )
-			{
-				validatorList = new List<PropertyValidatorBase>();
-				ValidationMap.Add( propertyName, validatorList );
-			}
-
-			validatorList.Add( validator );
 		}
 
 		public IValidationSetup<TProperty> ManualValidate<TProperty>( Expression<Func<TProperty>> propertyExpression )

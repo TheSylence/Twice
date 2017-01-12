@@ -42,8 +42,7 @@ namespace Twice.Tests.Models.Twitter
 			// Arrange
 			const string url = "this is a test";
 
-			// Act
-			// ReSharper disable once ObjectCreationAsStatement
+			// Act ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<ArgumentException>( () => new TweetSource( url ) );
 
 			// Assert
@@ -53,8 +52,7 @@ namespace Twice.Tests.Models.Twitter
 		[TestMethod, TestCategory( "Models.Twitter" )]
 		public void NullSourceThrowsException()
 		{
-			// Arrange Act
-			// ReSharper disable once ObjectCreationAsStatement
+			// Arrange Act ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<ArgumentNullException>( () => new TweetSource( null ) );
 
 			// Assert

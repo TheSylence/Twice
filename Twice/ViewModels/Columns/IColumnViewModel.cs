@@ -17,6 +17,8 @@ namespace Twice.ViewModels.Columns
 
 		Task Load();
 
+		void UpdateRelativeTimes();
+
 		IColumnActionDispatcher ActionDispatcher { get; }
 		ICommand ClearCommand { get; }
 		IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -28,6 +30,5 @@ namespace Twice.ViewModels.Columns
 		string SubTitle { get; set; }
 		string Title { get; set; }
 		double Width { get; set; }
-		void UpdateRelativeTimes();
 	}
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.ViewModels.Twitter;
@@ -36,7 +36,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		{
 			// Arrange
 			var typeResolver = new Mock<ITypeResolver>();
-			typeResolver.Setup( t => t.Resolve( typeof(StatusViewModel) ) ).Returns(
+			typeResolver.Setup( t => t.Resolve( typeof( StatusViewModel ) ) ).Returns(
 				new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null ) );
 
 			var vm = new TweetDetailsViewModel();

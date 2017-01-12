@@ -3,7 +3,7 @@
 namespace Twice.Views.Wizards
 {
 	/// <summary>
-	///     Interaction logic for AccountColumnsDialog.xaml
+	///  Interaction logic for AccountColumnsDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class AccountColumnsDialog

@@ -83,7 +83,7 @@
 			<!-- Media Attachment End -->
 
 			<StackPanel Orientation="Vertical" Grid.Column="1">
-				<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}" 
+				<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}"
 						  VerticalAlignment="Bottom" Margin="5,3" HorizontalAlignment="Right" />
 
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

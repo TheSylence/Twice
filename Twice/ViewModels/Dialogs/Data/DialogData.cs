@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			}
 			return hash;
 		}
-		
+
 		public abstract object GetResult( object viewModel );
 
 		public abstract void Setup( object viewModel );

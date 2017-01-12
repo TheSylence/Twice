@@ -1,13 +1,13 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using Resourcer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using Resourcer;
 using Twice.Messages;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -23,6 +23,29 @@ namespace Twice.ViewModels.Settings
 
 			string languageCode = CultureInfo.CreateSpecificCulture( config.General.Language ).TwoLetterISOLanguageName;
 			HelpDocument = Resource.AsStringUnChecked( $"Twice.Resources.Documentation.Mute_{languageCode}.md" );
+		}
+
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
+		}
+
+		public void SaveTo( IConfig config )
+		{
+			config.Mute.Entries.Clear();
+			config.Mute.Entries.AddRange( Entries );
+
+			if( Changed )
+			{
+				var msg = new FilterUpdateMessage();
+				MessengerInstance.Send( msg );
+
+				if( msg.RemoveCount > 0 )
+				{
+					var str = string.Format( Strings.StatusesMuted, msg.RemoveCount );
+					Notifier.DisplayMessage( str, NotificationType.Information );
+				}
+			}
 		}
 
 		private bool CanExecuteEditCommand()
@@ -41,8 +64,6 @@ namespace Twice.ViewModels.Settings
 			EditData.Saved -= EditData_Saved;
 			EditData = null;
 		}
-
-		bool Changed;
 
 		private void EditData_Saved( object sender, MuteEditArgs e )
 		{
@@ -105,29 +126,6 @@ namespace Twice.ViewModels.Settings
 			Changed = true;
 		}
 
-		public Task OnLoad( object data )
-		{
-			return Task.CompletedTask;
-		}
-
-		public void SaveTo( IConfig config )
-		{
-			config.Mute.Entries.Clear();
-			config.Mute.Entries.AddRange( Entries );
-			
-			if( Changed )
-			{
-				var msg = new FilterUpdateMessage();
-				MessengerInstance.Send( msg );
-
-				if( msg.RemoveCount > 0 )
-				{
-					var str = string.Format( Strings.StatusesMuted, msg.RemoveCount );
-					Notifier.DisplayMessage( str, NotificationType.Information );
-				}
-			}
-		}
-
 		public ICommand AddCommand => _AddCommand ?? ( _AddCommand = new RelayCommand( ExecuteAddCommand ) );
 
 		public ICommand EditCommand
@@ -135,7 +133,8 @@ namespace Twice.ViewModels.Settings
 
 		public IMuteEditViewModel EditData
 		{
-			[DebuggerStepThrough] get { return _EditData; }
+			[DebuggerStepThrough]
+			get { return _EditData; }
 			set
 			{
 				if( _EditData == value )
@@ -148,19 +147,19 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public ICollection<MuteEntry> Entries { get; }
+		public string HelpDocument { get; }
+
 		[Inject]
 		public INotifier Notifier { get; set; }
-
-		public ICollection<MuteEntry> Entries { get; }
-
-		public string HelpDocument { get; }
 
 		public ICommand RemoveCommand
 			=> _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
 
 		public MuteEntry SelectedEntry
 		{
-			[DebuggerStepThrough] get { return _SelectedEntry; }
+			[DebuggerStepThrough]
+			get { return _SelectedEntry; }
 			set
 			{
 				if( _SelectedEntry == value )
@@ -187,5 +186,7 @@ namespace Twice.ViewModels.Settings
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private MuteEntry _SelectedEntry;
+
+		private bool Changed;
 	}
 }

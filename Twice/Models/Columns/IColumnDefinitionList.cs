@@ -17,13 +17,13 @@ namespace Twice.Models.Columns
 
 		void Save( IEnumerable<ColumnDefinition> definitions );
 
-		void Update( IEnumerable<ColumnDefinition> definitions );
-
 		/// <summary>
-		/// Informs the list about existing contexts.
-		/// All definitions that belong to not existing users will be removed.
+		///  Informs the list about existing contexts. All definitions that belong to not existing
+		///  users will be removed.
 		/// </summary>
 		/// <param name="ids"></param>
 		void SetExistingContexts( IEnumerable<ulong> ids );
+
+		void Update( IEnumerable<ColumnDefinition> definitions );
 	}
 }

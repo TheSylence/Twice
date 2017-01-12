@@ -10,6 +10,8 @@ namespace Twice.Models.Twitter
 	{
 		Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus );
 
+		string GetAuthorizationString( string requestUrl, string method = "GET" );
+
 		Task<LinqToTwitter.Configuration> GetConfig();
 
 		Task LogCurrentRateLimits();
@@ -28,6 +30,5 @@ namespace Twice.Models.Twitter
 		ITwitterStatusRepository Statuses { get; }
 		ITwitterStreamingRepository Streaming { get; }
 		ITwitterUserRepository Users { get; }
-		string GetAuthorizationString( string requestUrl, string method = "GET" );
 	}
 }

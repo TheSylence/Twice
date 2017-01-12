@@ -1,3 +1,6 @@
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,9 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Comparers;
 
@@ -72,7 +72,7 @@ namespace Twice.Models.Twitter.Repositories
 				var status = await Queryable.Where( s => s.Type == StatusType.Show && s.ID == statusId
 														&& s.IncludeEntities == includeEntities ).FirstOrDefaultAsync();
 
-				await Cache.AddStatuses( new[] {status} );
+				await Cache.AddStatuses( new[] { status } );
 				return status;
 			}
 			catch( Exception ex )

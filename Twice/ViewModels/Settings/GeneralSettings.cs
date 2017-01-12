@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Settings
 
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
-			AvailableFetchCounts = new[] {20, 50, 100, 200};
+			AvailableFetchCounts = new[] { 20, 50, 100, 200 };
 
 			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
 
@@ -89,7 +89,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool CheckForUpdates
 		{
-			[DebuggerStepThrough] get { return _CheckForUpdates; }
+			[DebuggerStepThrough]
+			get { return _CheckForUpdates; }
 			set
 			{
 				if( _CheckForUpdates == value )
@@ -106,7 +107,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool FilterSensitiveTweets
 		{
-			[DebuggerStepThrough] get { return _FilterSensitiveTweets; }
+			[DebuggerStepThrough]
+			get { return _FilterSensitiveTweets; }
 			set
 			{
 				if( _FilterSensitiveTweets == value )
@@ -121,7 +123,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool IncludePrereleaseUpdates
 		{
-			[DebuggerStepThrough] get { return _IncludePrereleaseUpdates; }
+			[DebuggerStepThrough]
+			get { return _IncludePrereleaseUpdates; }
 			set
 			{
 				if( _IncludePrereleaseUpdates == value )
@@ -141,7 +144,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool RealtimeStreaming
 		{
-			[DebuggerStepThrough] get { return _RealtimeStreaming; }
+			[DebuggerStepThrough]
+			get { return _RealtimeStreaming; }
 			set
 			{
 				if( _RealtimeStreaming == value )
@@ -156,7 +160,8 @@ namespace Twice.ViewModels.Settings
 
 		public CultureInfo SelectedLanguage
 		{
-			[DebuggerStepThrough] get { return _SelectedLanguage; }
+			[DebuggerStepThrough]
+			get { return _SelectedLanguage; }
 			set
 			{
 				if( _SelectedLanguage?.Name == value?.Name )
@@ -171,7 +176,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool SendVersionStats
 		{
-			[DebuggerStepThrough] get { return _SendVersionStats; }
+			[DebuggerStepThrough]
+			get { return _SendVersionStats; }
 			set
 			{
 				if( _SendVersionStats == value )
@@ -186,7 +192,8 @@ namespace Twice.ViewModels.Settings
 
 		public int TweetFetchCount
 		{
-			[DebuggerStepThrough] get { return _TweetFetchCount; }
+			[DebuggerStepThrough]
+			get { return _TweetFetchCount; }
 			set
 			{
 				if( _TweetFetchCount == value )

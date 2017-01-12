@@ -5,7 +5,7 @@ using Twice.ViewModels.Main;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///     Offers the ability to execute async code when a FrameworkElement has been loaded.
+	///  Offers the ability to execute async code when a FrameworkElement has been loaded. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CallbackOnLoad : BehaviorBase<FrameworkElement>
@@ -24,7 +24,7 @@ namespace Twice.Behaviors
 		}
 
 		/// <summary>
-		///     Handler to call when the element was loaded
+		///  Handler to call when the element was loaded 
 		/// </summary>
 		public ILoadCallback Callback
 		{
@@ -33,7 +33,7 @@ namespace Twice.Behaviors
 		}
 
 		/// <summary>
-		///     Data to pass to <see cref="ILoadCallback.OnLoad(object)" />
+		///  Data to pass to <see cref="ILoadCallback.OnLoad(object)" /> 
 		/// </summary>
 		public object Data
 		{

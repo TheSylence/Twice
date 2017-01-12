@@ -3,7 +3,7 @@
 namespace Twice.Utilities.Ui
 {
 	[ExcludeFromCodeCoverage]
-	class VirtualScreen : IVirtualScreen
+	internal class VirtualScreen : IVirtualScreen
 	{
 		public VirtualScreen( double left, double top, double width, double height )
 		{

@@ -34,7 +34,7 @@ namespace Twice.ViewModels.ColumnManagement
 
 			var newCol = ColumnDefinitionFactory.Construct( type, sourceAccounts, targetAccounts );
 
-			ColumnList.AddColumns( new[] {newCol} );
+			ColumnList.AddColumns( new[] { newCol } );
 
 			base.ExecuteFinishCommand();
 		}

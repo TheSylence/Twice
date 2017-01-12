@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Twice.Models.Media;
 
 namespace Twice.Tests.Models.Media

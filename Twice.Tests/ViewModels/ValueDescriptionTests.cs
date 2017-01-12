@@ -10,6 +10,12 @@ namespace Twice.Tests.ViewModels
 	[TestClass, ExcludeFromCodeCoverage]
 	public class ValueDescriptionTests
 	{
+		private enum TestEnum
+		{
+			[LocalizeKey( "Cancel" )]
+			Test
+		}
+
 		[TestMethod, TestCategory( "ViewModels" )]
 		public void CorrectNameIsConstructedForEnum()
 		{
@@ -164,12 +170,6 @@ namespace Twice.Tests.ViewModels
 			// Assert
 			Assert.AreEqual( value, vd.Value );
 			Assert.AreEqual( desc, vd.Name );
-		}
-
-		private enum TestEnum
-		{
-			[LocalizeKey( "Cancel" )]
-			Test
 		}
 	}
 }

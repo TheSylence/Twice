@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Columns;
 using Twice.ViewModels.ColumnManagement;
 
@@ -54,7 +54,7 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			var types = vm.AvailableColumnTypes.Select( c => c.Content.Type ).ToArray();
 
 			// Assert
-			var expected = new[] {ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages};
+			var expected = new[] { ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages };
 			CollectionAssert.AreEquivalent( expected, types );
 		}
 

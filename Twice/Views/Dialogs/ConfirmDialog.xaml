@@ -10,12 +10,12 @@
         xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
         WindowStartupLocation="CenterOwner" DataContext="{Binding Confirm, Source={StaticResource Locator}}"
         mc:Ignorable="d" Style="{StaticResource DialogStyle}" SizeToContent="Height"
-        Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300" >
+        Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
 	</i:Interaction.Behaviors>
-    <DockPanel>
+	<DockPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
 			<Button Content="{lex:Loc Yes}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
 										Style="{DynamicResource MaterialDesignRaisedButton}" />
@@ -24,6 +24,5 @@
 		</StackPanel>
 
 		<TextBlock Text="{Binding Label}" Margin="5" TextWrapping="Wrap" />
-    </DockPanel>
+	</DockPanel>
 </controls:MetroWindow>
-

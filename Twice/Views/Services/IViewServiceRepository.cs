@@ -44,6 +44,7 @@ namespace Twice.Views.Services
 		Task ViewDirectMessage( MessageViewModel vm );
 
 		Task ViewImage( IList<StatusMediaViewModel> imageSet, StatusMediaViewModel selectedImage );
+
 		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );

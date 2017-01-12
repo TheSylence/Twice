@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -19,7 +19,7 @@ namespace Twice.Tests.ViewModels
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
@@ -37,7 +37,7 @@ namespace Twice.Tests.ViewModels
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = false} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = false } );
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
@@ -56,7 +56,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
@@ -65,7 +65,7 @@ namespace Twice.Tests.ViewModels
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
 			// Act
-			notifier.OnItem( status, new ColumnNotifications {Toast = false} );
+			notifier.OnItem( status, new ColumnNotifications { Toast = false } );
 
 			// Assert
 			viewServices.Verify( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ), Times.Never() );
@@ -77,7 +77,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = false} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = false } );
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
@@ -86,7 +86,7 @@ namespace Twice.Tests.ViewModels
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
 			// Act
-			notifier.OnItem( status, new ColumnNotifications {Toast = true} );
+			notifier.OnItem( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			viewServices.Verify( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ), Times.Never() );
@@ -98,7 +98,7 @@ namespace Twice.Tests.ViewModels
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig {ToastsEnabled = true} );
+			config.SetupGet( c => c.Notifications ).Returns( new NotificationConfig { ToastsEnabled = true } );
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
@@ -106,7 +106,7 @@ namespace Twice.Tests.ViewModels
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
 			// Act
-			notifier.OnItem( status, new ColumnNotifications {Toast = true} );
+			notifier.OnItem( status, new ColumnNotifications { Toast = true } );
 
 			// Assert
 			viewServices.Verify( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ), Times.Once() );

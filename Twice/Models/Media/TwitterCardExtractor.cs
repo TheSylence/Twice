@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Media
@@ -13,7 +13,7 @@ namespace Twice.Models.Media
 		public async Task<TwitterCard> ExtractCard( Uri url )
 		{
 			if( url.Host.Equals( "twitter.com", StringComparison.OrdinalIgnoreCase ) ||
-			    url.Host.Equals( "www.twitter.com", StringComparison.OrdinalIgnoreCase ) )
+				url.Host.Equals( "www.twitter.com", StringComparison.OrdinalIgnoreCase ) )
 			{
 				if( TwitterHelper.IsExtendedTweetUrl( url.AbsolutePath ) )
 				{

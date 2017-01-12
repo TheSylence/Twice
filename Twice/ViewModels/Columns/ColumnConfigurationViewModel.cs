@@ -14,6 +14,8 @@ namespace Twice.ViewModels.Columns
 			Definition = definition;
 		}
 
+		public event EventHandler Saved;
+
 		private bool CanExecuteSaveCommand()
 		{
 			return Changed;
@@ -30,13 +32,28 @@ namespace Twice.ViewModels.Columns
 			IsExpanded = false;
 		}
 
-		public event EventHandler Saved;
+		public bool Changed
+		{
+			[DebuggerStepThrough]
+			get { return _Changed; }
+			set
+			{
+				if( _Changed == value )
+				{
+					return;
+				}
+
+				_Changed = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public ColumnDefinition Definition { get; }
 
 		public bool IsExpanded
 		{
-			[DebuggerStepThrough] get { return _IsExpanded; }
+			[DebuggerStepThrough]
+			get { return _IsExpanded; }
 			set
 			{
 				if( _IsExpanded == value )
@@ -59,7 +76,8 @@ namespace Twice.ViewModels.Columns
 
 		public bool PopupEnabled
 		{
-			[DebuggerStepThrough] get { return _PopupEnabled; }
+			[DebuggerStepThrough]
+			get { return _PopupEnabled; }
 			set
 			{
 				if( _PopupEnabled == value )
@@ -78,7 +96,8 @@ namespace Twice.ViewModels.Columns
 
 		public bool SoundEnabled
 		{
-			[DebuggerStepThrough] get { return _SoundEnabled; }
+			[DebuggerStepThrough]
+			get { return _SoundEnabled; }
 			set
 			{
 				if( _SoundEnabled == value )
@@ -94,7 +113,8 @@ namespace Twice.ViewModels.Columns
 
 		public bool ToastsEnabled
 		{
-			[DebuggerStepThrough] get { return _ToastsEnabled; }
+			[DebuggerStepThrough]
+			get { return _ToastsEnabled; }
 			set
 			{
 				if( _ToastsEnabled == value )
@@ -104,21 +124,6 @@ namespace Twice.ViewModels.Columns
 
 				Changed = true;
 				_ToastsEnabled = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool Changed
-		{
-			[DebuggerStepThrough] get { return _Changed; }
-			set
-			{
-				if( _Changed == value )
-				{
-					return;
-				}
-
-				_Changed = value;
 				RaisePropertyChanged();
 			}
 		}

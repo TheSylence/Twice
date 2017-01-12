@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LinqToTwitter;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using LinqToTwitter;
 using Regex = Twice.Models.Twitter.Text.Regex;
 
 namespace Twice.Models.Twitter.Entities

@@ -4,8 +4,7 @@ using Twice.Views.Dialogs;
 
 namespace Twice.ViewModels.Dialogs.Data
 {
-
-	class ComposeTweetData : DialogData
+	internal class ComposeTweetData : DialogData
 	{
 		public ComposeTweetData( StatusViewModel status = null, bool replyToAll = false )
 			: base( typeof( MessageDialog ), typeof( IComposeTweetViewModel ) )
@@ -13,9 +12,6 @@ namespace Twice.ViewModels.Dialogs.Data
 			Status = status;
 			ReplyToAll = replyToAll;
 		}
-
-		private bool ReplyToAll;
-		private StatusViewModel Status;
 
 		public override bool Equals( DialogData obj )
 		{
@@ -29,8 +25,11 @@ namespace Twice.ViewModels.Dialogs.Data
 
 		public override void Setup( object viewModel )
 		{
-			var vm = CastViewModel<IComposeTweetViewModel>(viewModel);
+			var vm = CastViewModel<IComposeTweetViewModel>( viewModel );
 			vm.SetReply( Status, ReplyToAll );
 		}
+
+		private bool ReplyToAll;
+		private StatusViewModel Status;
 	}
 }

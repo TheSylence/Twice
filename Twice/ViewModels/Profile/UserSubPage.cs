@@ -1,10 +1,10 @@
+using Fody;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Fody;
-using GalaSoft.MvvmLight;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 
@@ -55,7 +55,8 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 
 			set
 			{

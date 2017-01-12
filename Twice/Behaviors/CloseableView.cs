@@ -6,7 +6,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Allows a window to be closed from the window's DataContext
+	///  Allows a window to be closed from the window's DataContext 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CloseableView : BehaviorBase<Window>
@@ -25,11 +25,6 @@ namespace Twice.Behaviors
 			}
 		}
 
-		private void Controller_CenterRequested( object sender, System.EventArgs e )
-		{
-			WindowHelper.Center( AssociatedObject );
-		}
-
 		private void AssociatedObject_PreviewKeyDown( object sender, KeyEventArgs e )
 		{
 			if( e.Key == Key.Escape )
@@ -42,6 +37,11 @@ namespace Twice.Behaviors
 		private void CloseWindow()
 		{
 			AssociatedObject.Close();
+		}
+
+		private void Controller_CenterRequested( object sender, System.EventArgs e )
+		{
+			WindowHelper.Center( AssociatedObject );
 		}
 
 		private void Controller_CloseRequested( object sender, CloseEventArgs e )

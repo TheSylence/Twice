@@ -1,8 +1,8 @@
+using Anotar.NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Anotar.NLog;
 using Twice.Utilities;
 
 namespace Twice.Models.Columns
@@ -58,8 +58,8 @@ namespace Twice.Models.Columns
 		}
 
 		/// <summary>
-		///     Informs the list about existing contexts.
-		///     All definitions that belong to not existing users will be removed.
+		///  Informs the list about existing contexts. All definitions that belong to not existing
+		///  users will be removed.
 		/// </summary>
 		/// <param name="ids"></param>
 		public void SetExistingContexts( IEnumerable<ulong> ids )
