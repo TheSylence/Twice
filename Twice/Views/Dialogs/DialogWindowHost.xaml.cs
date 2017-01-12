@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Twice.Behaviors;
+using Twice.ViewModels;
 
 namespace Twice.Views.Dialogs
 {
@@ -12,6 +13,30 @@ namespace Twice.Views.Dialogs
 		public DialogWindowHost()
 		{
 			InitializeComponent();
+		}
+
+		private IViewController ViewController;
+
+		protected override void OnContentChanged( object oldContent, object newContent )
+		{
+			if( ViewController != null )
+			{
+				ViewController.CenterRequested -= ViewController_CenterRequested;
+			}
+
+			base.OnContentChanged( oldContent, newContent );
+
+			var dataContext = ( newContent as FrameworkElement )?.DataContext;
+			ViewController = dataContext as IViewController;
+			if( ViewController != null )
+			{
+				ViewController.CenterRequested += ViewController_CenterRequested;
+			}
+		}
+
+		private void ViewController_CenterRequested( object sender, EventArgs e )
+		{
+			Center();
 		}
 
 		public void Center()

@@ -36,7 +36,10 @@ namespace Twice.ViewModels.Twitter
 
 			await
 				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
-					DisplayTweet.LoadDataAsync() );
+					DisplayTweet.LoadDataAsync() ).ContinueWith( async t =>
+					{
+						await Dispatcher.RunAsync( () => Center() );
+					} );
 		}
 
 		private async Task StartLoadingPrevTweets()

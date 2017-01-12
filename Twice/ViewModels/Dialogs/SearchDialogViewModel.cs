@@ -54,7 +54,7 @@ namespace Twice.ViewModels.Dialogs
 				break;
 			}
 
-			Center();
+			await Dispatcher.RunAsync( () => Center() );
 			IsSearching = false;
 		}
 
