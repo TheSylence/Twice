@@ -756,4 +756,7 @@
   <data name="CenterWindow" xml:space="preserve">
     <value>Center window</value>
   </data>
+  <data name="__Language_Code__" xml:space="preserve">
+    <value>en</value>
+  </data>
 </root>

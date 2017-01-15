@@ -753,4 +753,10 @@
   <data name="NavigateBack" xml:space="preserve">
     <value>Zurück</value>
   </data>
+  <data name="CenterWindow" xml:space="preserve">
+    <value>Fenster zentrieren</value>
+  </data>
+  <data name="__Language_Code__" xml:space="preserve">
+    <value>de-DE</value>
+  </data>
 </root>

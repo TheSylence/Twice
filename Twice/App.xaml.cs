@@ -22,6 +22,7 @@ using Twice.Models.Configuration;
 using Twice.Models.Proxy;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
+using Twice.Resources;
 using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.Views;
@@ -133,15 +134,37 @@ namespace Twice
 			resDict.EndInit();
 
 			Resources.MergedDictionaries.Add( resDict );
-			ChangeLanguage( conf.General.Language );
+			ChangeLanguage( conf );
 		}
 
-		private static void ChangeLanguage( string language )
+		private static void ChangeLanguage( IConfig config )
 		{
+			var language = config.General.Language;
+
 			LocalizeDictionary dict = LocalizeDictionary.Instance;
 			dict.IncludeInvariantCulture = true;
 			dict.SetCurrentThreadCulture = true;
-			dict.Culture = CultureInfo.GetCultureInfo( language );
+
+			if( string.IsNullOrWhiteSpace( language ) )
+			{
+				// User has not decided for a language yet. Try to use current UI language
+				LogTo.Info( $"User has not set language. Trying to use {CultureInfo.CurrentUICulture}" );
+
+				string localizedCode = Strings.ResourceManager.GetString( "__Language_Code__", CultureInfo.CurrentUICulture );
+
+				var culture = CultureInfo.CreateSpecificCulture( localizedCode );
+
+				if( !CultureInfo.InvariantCulture.Equals( culture ) )
+				{
+					dict.Culture = culture;
+					config.General.Language = culture.Name;
+					config.Save();
+				}
+			}
+			else
+			{
+				dict.Culture = CultureInfo.GetCultureInfo( language );
+			}
 
 			// This is done so DateTime's in XAML are parsed based on the user language instead of
 			// en-US which is the default language for XAML.
