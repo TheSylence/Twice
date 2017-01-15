@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Settings
 		{
 			Entries = new ObservableCollection<MuteEntry>( config.Mute.Entries );
 
-			string languageCode = CultureInfo.CreateSpecificCulture( config.General.Language ).TwoLetterISOLanguageName;
+			string languageCode = CultureInfo.CreateSpecificCulture( config.General.Language ?? "en-US" ).TwoLetterISOLanguageName;
 			HelpDocument = Resource.AsStringUnChecked( $"Twice.Resources.Documentation.Mute_{languageCode}.md" );
 		}
 
