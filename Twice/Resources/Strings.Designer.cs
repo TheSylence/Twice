@@ -1681,6 +1681,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supported audio files.
+        /// </summary>
+        public static string SupportedMediaTypes {
+            get {
+                return ResourceManager.GetString("SupportedMediaTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is a test notification.
         /// </summary>
         public static string TestNotification {

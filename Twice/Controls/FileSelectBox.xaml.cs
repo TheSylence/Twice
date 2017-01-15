@@ -34,7 +34,8 @@ namespace Twice.Controls
 			var dlg = new OpenFileDialog
 			{
 				CheckFileExists = true,
-				FileName = Value
+				FileName = Value,
+				Filter = Filter
 			};
 
 			if( dlg.ShowDialog() == true )
@@ -56,6 +57,12 @@ namespace Twice.Controls
 			}
 		}
 
+		public string Filter
+		{
+			get { return (string)GetValue( FilterProperty ); }
+			set { SetValue( FilterProperty, value ); }
+		}
+
 		public FileSelectMode Mode
 		{
 			get { return (FileSelectMode)GetValue( ModeProperty ); }
@@ -68,8 +75,11 @@ namespace Twice.Controls
 			set { SetValue( ValueProperty, value ); }
 		}
 
+		public static readonly DependencyProperty FilterProperty =
+			DependencyProperty.Register( "Filter", typeof( string ), typeof( FileSelectBox ), new PropertyMetadata( string.Empty ) );
+
 		public static readonly DependencyProperty ModeProperty =
-							DependencyProperty.Register( "Mode", typeof( FileSelectMode ), typeof( FileSelectBox ),
+									DependencyProperty.Register( "Mode", typeof( FileSelectMode ), typeof( FileSelectBox ),
 				new PropertyMetadata( FileSelectMode.Open ) );
 
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof( string ),

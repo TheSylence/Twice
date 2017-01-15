@@ -8,7 +8,8 @@
             "Tweets can be edited (i.e. they will be deleted and a new compose dialog with the previous text will open)"
         ],
         "Changes": [
-            "The dark theme now uses a dark background in compliance with material design guidelines"
+            "The dark theme now uses a dark background in compliance with material design guidelines",
+            "When selecting a notification sound you can only select supported file types"
         ],
         "Fixes": [
             "Fixed possible crash when caching user's friends",

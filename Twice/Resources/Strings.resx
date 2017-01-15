@@ -759,4 +759,7 @@
   <data name="__Language_Code__" xml:space="preserve">
     <value>en</value>
   </data>
+  <data name="SupportedMediaTypes" xml:space="preserve">
+    <value>Supported audio files</value>
+  </data>
 </root>

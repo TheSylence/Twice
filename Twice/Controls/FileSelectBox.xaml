@@ -7,10 +7,10 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              mc:Ignorable="d"  x:Name="This" d:DesignHeight="300" d:DesignWidth="300">
 	<DockPanel Margin="{Binding Padding, ElementName=This}">
-		<Button MaxWidth="25" MinWidth="25" Margin="5" MaxHeight="25" MinHeight="25" DockPanel.Dock="Right" Click="BrowseButton_OnClick"
+		<Button MaxWidth="48" MinWidth="48" Margin="5" MaxHeight="25" MinHeight="25" DockPanel.Dock="Right" Click="BrowseButton_OnClick"
 				VerticalAlignment="Center" Style="{DynamicResource MaterialDesignRaisedButton}">
 			<materialDesign:PackIcon Kind="DotsHorizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
-									 Width="24" Height="24" ToolTip="{lex:Loc Browse}" />
+									 Width="24" Height="24" ToolTip="{lex:Loc Browse}" Margin="0,2" />
 		</Button>
 
 		<TextBox Text="{Binding Value, ElementName=This, Mode=TwoWay}" VerticalAlignment="Center" />
