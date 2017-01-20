@@ -80,6 +80,11 @@ namespace Twice.Models.Twitter
 
 		public static ulong GetStatusId( this Status status )
 		{
+			if( status == null )
+			{
+				return 0;
+			}
+
 			return status.ID != 0
 				? status.ID
 				: status.StatusID;

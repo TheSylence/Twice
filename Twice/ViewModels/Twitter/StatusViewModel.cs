@@ -72,6 +72,12 @@ namespace Twice.ViewModels.Twitter
 
 		public void RetweetStatus( ITwitterContext context )
 		{
+			if( context == null )
+			{
+				LogTo.Warn( "Tried to retweet status with null context" );
+				return;
+			}
+
 			ExecAsync( async () =>
 			{
 				await context.Statuses.RetweetAsync( Model.GetStatusId() );
