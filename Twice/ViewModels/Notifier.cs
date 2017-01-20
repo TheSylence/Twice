@@ -62,7 +62,7 @@ namespace Twice.ViewModels
 			var binding = new ToastBindingGeneric();
 			binding.Children.Add( new AdaptiveText { Text = message, HintWrap = true } );
 
-			ToastContent content = new ToastContent
+			var content = new ToastContent
 			{
 				Launch = "",
 				Visual = new ToastVisual
@@ -113,6 +113,16 @@ namespace Twice.ViewModels
 			{
 				DisplayWin10Message( message );
 			}
+			else
+			{
+				DisplayPopup( message, display, displayCorner );
+			}
+		}
+
+		void DisplayPopup( string message, string display = null, Corner? displayCorner = null )
+		{
+			display = display ?? Config.Notifications.PopupDisplay;
+			displayCorner = displayCorner ?? Config.Notifications.PopupDisplayCorner;
 		}
 
 		private void NotifyPopup( ColumnItem item, bool win10 )
@@ -120,6 +130,10 @@ namespace Twice.ViewModels
 			if( win10 )
 			{
 				DisplayWin10Message( item.Text );
+			}
+			else
+			{
+				DisplayPopup( item.Text );
 			}
 		}
 
