@@ -762,4 +762,7 @@
   <data name="SupportedMediaTypes" xml:space="preserve">
     <value>Supported audio files</value>
   </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
 </root>
