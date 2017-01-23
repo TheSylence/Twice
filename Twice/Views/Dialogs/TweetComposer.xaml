@@ -14,7 +14,7 @@
              xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 			 AllowDrop="True" DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
 			 dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
-             mc:Ignorable="d">
+             mc:Ignorable="d" MaxWidth="500">
 	<UserControl.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</UserControl.Resources>
