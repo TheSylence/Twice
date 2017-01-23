@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Twice.Utilities
 {
 	/// <summary>
-	/// Wrapper for an UpdateManager
+	///  Wrapper for an UpdateManager 
 	/// </summary>
 	[ConfigureAwait( false )]
 	internal class AppUpdater : IAppUpdater

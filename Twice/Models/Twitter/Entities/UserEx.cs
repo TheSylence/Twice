@@ -1,15 +1,15 @@
-﻿using System.Linq;
-using System.Windows.Input;
-using LinqToTwitter;
+﻿using LinqToTwitter;
 using LinqToTwitter.Common;
 using LitJson;
 using NLog;
+using System.Linq;
+using System.Windows.Input;
 using Twice.ViewModels;
 
 namespace Twice.Models.Twitter.Entities
 {
 	/// <summary>
-	///     Extended user entity that includes some data that Linq2Twitter doesn't offer
+	///  Extended user entity that includes some data that Linq2Twitter doesn't offer 
 	/// </summary>
 	internal class UserEx : User, IHighlightable
 	{
@@ -41,13 +41,12 @@ namespace Twice.Models.Twitter.Entities
 			}
 		}
 
-		public LinqToTwitter.Entities Entities => BioEntities;
-		public string Text => Description;
-
 		public LinqToTwitter.Entities BioEntities { get; }
+		public ICommand BlockUserCommand { get; }
+		public LinqToTwitter.Entities Entities => BioEntities;
+		public ICommand ReportSpamCommand { get; }
+		public string Text => Description;
 		public string UrlDisplay { get; set; }
 		public LinqToTwitter.Entities UrlEntities { get; }
-		public ICommand BlockUserCommand { get; }
-		public ICommand ReportSpamCommand { get; }
 	}
 }

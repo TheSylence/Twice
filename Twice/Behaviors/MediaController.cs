@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Anotar.NLog;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using Anotar.NLog;
 
 namespace Twice.Behaviors
 {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -27,41 +27,6 @@ namespace Twice.ViewModels.Columns
 				{ColumnType.Schedule, ScheduleColumn},
 				{ColumnType.DebugOrTest, StaticColumn}
 			};
-		}
-
-		private ColumnViewModelBase FavoritesColumn( ColumnArgumentsData args )
-		{
-			return new FavoritesColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )
-		{
-			return new MentionsColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase MessageColumn( ColumnArgumentsData args )
-		{
-			return new MessageColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase ScheduleColumn( ColumnArgumentsData args )
-		{
-			return new ScheduleColumn( args.Context, args.Definition, args.Configuration, args.Parser, args.Scheduler );
-		}
-
-		private ColumnViewModelBase StaticColumn( ColumnArgumentsData args )
-		{
-			return new StaticColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase TimelineColumn( ColumnArgumentsData args )
-		{
-			return new TimelineColumn( args.Context, args.Definition, args.Configuration, args.Parser );
-		}
-
-		private ColumnViewModelBase UserColumn( ColumnArgumentsData args )
-		{
-			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		public ColumnViewModelBase Construct( ColumnDefinition def )
@@ -98,6 +63,41 @@ namespace Twice.ViewModels.Columns
 			}
 
 			return null;
+		}
+
+		private ColumnViewModelBase FavoritesColumn( ColumnArgumentsData args )
+		{
+			return new FavoritesColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase MentionsColumn( ColumnArgumentsData args )
+		{
+			return new MentionsColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase MessageColumn( ColumnArgumentsData args )
+		{
+			return new MessageColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase ScheduleColumn( ColumnArgumentsData args )
+		{
+			return new ScheduleColumn( args.Context, args.Definition, args.Configuration, args.Parser, args.Scheduler );
+		}
+
+		private ColumnViewModelBase StaticColumn( ColumnArgumentsData args )
+		{
+			return new StaticColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase TimelineColumn( ColumnArgumentsData args )
+		{
+			return new TimelineColumn( args.Context, args.Definition, args.Configuration, args.Parser );
+		}
+
+		private ColumnViewModelBase UserColumn( ColumnArgumentsData args )
+		{
+			return new UserColumn( args.Context, args.Definition, args.Configuration, args.Parser );
 		}
 
 		[Inject]

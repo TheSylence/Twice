@@ -1,9 +1,9 @@
+using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 using Twice.ViewModels.Twitter;
@@ -58,7 +58,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 			set
 			{
 				if( _IsLoading == value )
@@ -75,7 +76,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		public string SearchText
 		{
-			[DebuggerStepThrough] get { return _SearchText; }
+			[DebuggerStepThrough]
+			get { return _SearchText; }
 			set
 			{
 				if( _SearchText == value )

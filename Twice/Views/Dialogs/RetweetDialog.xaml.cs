@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///     Interaction logic for RetweetDialog.xaml
+	///  Interaction logic for RetweetDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class RetweetDialog

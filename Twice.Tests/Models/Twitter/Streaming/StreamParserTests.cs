@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
 
@@ -54,6 +54,31 @@ namespace Twice.Tests.Models.Twitter.Streaming
 			await parser.StreamingTask;
 
 			// Assert
+		}
+
+		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
+		public void ReceivingExtendedTweetRaisesEventWithCorrectData()
+		{
+			// Arrange
+			const string strContent = "{\"created_at\":\"Thu Dec 08 17:28:54 +0000 2016\",\"id\":806913456204955648,\"id_str\":\"806913456204955648\",\"text\":\"Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie\\u2026 https:\\/\\/t.co\\/C5faezUuJ5\",\"display_text_range\":[0,140],\"source\":\"\\u003ca href=\\\"http:\\/\\/twitter.com\\\" rel=\\\"nofollow\\\"\\u003eTwitter Web Client\\u003c\\/a\\u003e\",\"truncated\":true,\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":333290820,\"id_str\":\"333290820\",\"name\":\"Sylence\",\"screen_name\":\"TheSylence\",\"location\":\"Zweiter Stern von rechts\",\"url\":\"http:\\/\\/btbsoft.org\",\"description\":\"Koffeinjunkie, Coda, Gamer, Nerd, #foreveralone mit @FemmeNoireOnYT \\u2665\\u2665\\u2665 Ach und hab ich erw\\u00e4hnt das ich einen Gottkomplex hab? ^^\",\"protected\":false,\"verified\":false,\"followers_count\":249,\"friends_count\":155,\"listed_count\":9,\"favourites_count\":310,\"statuses_count\":14223,\"created_at\":\"Mon Jul 11 09:13:20 +0000 2011\",\"utc_offset\":3600,\"time_zone\":\"Amsterdam\",\"geo_enabled\":false,\"lang\":\"de\",\"contributors_enabled\":false,\"is_translator\":false,\"profile_background_color\":\"C0DEED\",\"profile_background_image_url\":\"http:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_image_url_https\":\"https:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_tile\":false,\"profile_link_color\":\"1DA1F2\",\"profile_sidebar_border_color\":\"C0DEED\",\"profile_sidebar_fill_color\":\"DDEEF6\",\"profile_text_color\":\"333333\",\"profile_use_background_image\":true,\"profile_image_url\":\"http:\\/\\/pbs.twimg.com\\/profile_images\\/3486265195\\/7d5cc9fb1c7423677ae0fdfaa8b9b998_normal.png\",\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/3486265195\\/7d5cc9fb1c7423677ae0fdfaa8b9b998_normal.png\",\"default_profile\":true,\"default_profile_image\":false,\"following\":null,\"follow_request_sent\":null,\"notifications\":null},\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"extended_tweet\":{\"full_text\":\"Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o https:\\/\\/t.co\\/huX4AXpa5f\",\"display_text_range\":[0,140],\"entities\":{\"hashtags\":[{\"text\":\"Test\",\"indices\":[23,28]},{\"text\":\"test\",\"indices\":[124,129]}],\"urls\":[],\"user_mentions\":[],\"symbols\":[],\"media\":[{\"id\":806913424777166852,\"id_str\":\"806913424777166852\",\"indices\":[141,164],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"url\":\"https:\\/\\/t.co\\/huX4AXpa5f\",\"display_url\":\"pic.twitter.com\\/huX4AXpa5f\",\"expanded_url\":\"https:\\/\\/twitter.com\\/TheSylence\\/status\\/806913456204955648\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"thumb\":{\"w\":34,\"h\":34,\"resize\":\"crop\"},\"small\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"large\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"medium\":{\"w\":59,\"h\":34,\"resize\":\"fit\"}}}]},\"extended_entities\":{\"media\":[{\"id\":806913424777166852,\"id_str\":\"806913424777166852\",\"indices\":[141,164],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"url\":\"https:\\/\\/t.co\\/huX4AXpa5f\",\"display_url\":\"pic.twitter.com\\/huX4AXpa5f\",\"expanded_url\":\"https:\\/\\/twitter.com\\/TheSylence\\/status\\/806913456204955648\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"thumb\":{\"w\":34,\"h\":34,\"resize\":\"crop\"},\"small\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"large\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"medium\":{\"w\":59,\"h\":34,\"resize\":\"fit\"}}}]}},\"retweet_count\":0,\"favorite_count\":0,\"entities\":{\"hashtags\":[{\"text\":\"Test\",\"indices\":[23,28]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/C5faezUuJ5\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/806913456204955648\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/8\\u2026\",\"indices\":[116,139]}],\"user_mentions\":[],\"symbols\":[]},\"favorited\":false,\"retweeted\":false,\"possibly_sensitive\":false,\"filter_level\":\"low\",\"lang\":\"de\",\"timestamp_ms\":\"1481218134343\"}";
+
+			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
+			var parser = SetupParser( strContent );
+			StatusStreamEventArgs receivedData = null;
+
+			parser.StatusReceived += ( s, e ) =>
+			{
+				receivedData = e;
+				waitHandle.Set();
+			};
+
+			// Act
+			parser.StartStreaming();
+			waitHandle.Wait( 1000 );
+
+			// Assert
+			Assert.IsNotNull( receivedData );
+			Assert.IsTrue( receivedData.Status.Text.StartsWith( "Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o" ) );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -106,7 +131,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-			CollectionAssert.AreEqual( new ulong[] {123, 456, 789}, receivedData.Friends );
+			CollectionAssert.AreEqual( new ulong[] { 123, 456, 789 }, receivedData.Friends );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
@@ -260,31 +285,6 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-		}
-
-		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]
-		public void ReceivingExtendedTweetRaisesEventWithCorrectData()
-		{
-			// Arrange
-			const string strContent = "{\"created_at\":\"Thu Dec 08 17:28:54 +0000 2016\",\"id\":806913456204955648,\"id_str\":\"806913456204955648\",\"text\":\"Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie\\u2026 https:\\/\\/t.co\\/C5faezUuJ5\",\"display_text_range\":[0,140],\"source\":\"\\u003ca href=\\\"http:\\/\\/twitter.com\\\" rel=\\\"nofollow\\\"\\u003eTwitter Web Client\\u003c\\/a\\u003e\",\"truncated\":true,\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"user\":{\"id\":333290820,\"id_str\":\"333290820\",\"name\":\"Sylence\",\"screen_name\":\"TheSylence\",\"location\":\"Zweiter Stern von rechts\",\"url\":\"http:\\/\\/btbsoft.org\",\"description\":\"Koffeinjunkie, Coda, Gamer, Nerd, #foreveralone mit @FemmeNoireOnYT \\u2665\\u2665\\u2665 Ach und hab ich erw\\u00e4hnt das ich einen Gottkomplex hab? ^^\",\"protected\":false,\"verified\":false,\"followers_count\":249,\"friends_count\":155,\"listed_count\":9,\"favourites_count\":310,\"statuses_count\":14223,\"created_at\":\"Mon Jul 11 09:13:20 +0000 2011\",\"utc_offset\":3600,\"time_zone\":\"Amsterdam\",\"geo_enabled\":false,\"lang\":\"de\",\"contributors_enabled\":false,\"is_translator\":false,\"profile_background_color\":\"C0DEED\",\"profile_background_image_url\":\"http:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_image_url_https\":\"https:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_tile\":false,\"profile_link_color\":\"1DA1F2\",\"profile_sidebar_border_color\":\"C0DEED\",\"profile_sidebar_fill_color\":\"DDEEF6\",\"profile_text_color\":\"333333\",\"profile_use_background_image\":true,\"profile_image_url\":\"http:\\/\\/pbs.twimg.com\\/profile_images\\/3486265195\\/7d5cc9fb1c7423677ae0fdfaa8b9b998_normal.png\",\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/3486265195\\/7d5cc9fb1c7423677ae0fdfaa8b9b998_normal.png\",\"default_profile\":true,\"default_profile_image\":false,\"following\":null,\"follow_request_sent\":null,\"notifications\":null},\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"extended_tweet\":{\"full_text\":\"Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o https:\\/\\/t.co\\/huX4AXpa5f\",\"display_text_range\":[0,140],\"entities\":{\"hashtags\":[{\"text\":\"Test\",\"indices\":[23,28]},{\"text\":\"test\",\"indices\":[124,129]}],\"urls\":[],\"user_mentions\":[],\"symbols\":[],\"media\":[{\"id\":806913424777166852,\"id_str\":\"806913424777166852\",\"indices\":[141,164],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"url\":\"https:\\/\\/t.co\\/huX4AXpa5f\",\"display_url\":\"pic.twitter.com\\/huX4AXpa5f\",\"expanded_url\":\"https:\\/\\/twitter.com\\/TheSylence\\/status\\/806913456204955648\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"thumb\":{\"w\":34,\"h\":34,\"resize\":\"crop\"},\"small\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"large\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"medium\":{\"w\":59,\"h\":34,\"resize\":\"fit\"}}}]},\"extended_entities\":{\"media\":[{\"id\":806913424777166852,\"id_str\":\"806913424777166852\",\"indices\":[141,164],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/CzK7fBBWQAQpcbQ.jpg\",\"url\":\"https:\\/\\/t.co\\/huX4AXpa5f\",\"display_url\":\"pic.twitter.com\\/huX4AXpa5f\",\"expanded_url\":\"https:\\/\\/twitter.com\\/TheSylence\\/status\\/806913456204955648\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"thumb\":{\"w\":34,\"h\":34,\"resize\":\"crop\"},\"small\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"large\":{\"w\":59,\"h\":34,\"resize\":\"fit\"},\"medium\":{\"w\":59,\"h\":34,\"resize\":\"fit\"}}}]}},\"retweet_count\":0,\"favorite_count\":0,\"entities\":{\"hashtags\":[{\"text\":\"Test\",\"indices\":[23,28]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/C5faezUuJ5\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/806913456204955648\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/8\\u2026\",\"indices\":[116,139]}],\"user_mentions\":[],\"symbols\":[]},\"favorited\":false,\"retweeted\":false,\"possibly_sensitive\":false,\"filter_level\":\"low\",\"lang\":\"de\",\"timestamp_ms\":\"1481218134343\"}";
-
-			ManualResetEventSlim waitHandle = new ManualResetEventSlim( false );
-			var parser = SetupParser( strContent );
-			StatusStreamEventArgs receivedData = null;
-
-			parser.StatusReceived += ( s, e ) =>
-			{
-				receivedData = e;
-				waitHandle.Set();
-			};
-
-			// Act 
-			parser.StartStreaming();
-			waitHandle.Wait( 1000 );
-
-			// Assert
-			Assert.IsNotNull( receivedData );
-			Assert.IsTrue( receivedData.Status.Text.StartsWith( "Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o" ) );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

@@ -1,3 +1,9 @@
+using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,12 +11,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using Ninject;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -29,7 +29,7 @@ namespace Twice.ViewModels.Columns
 	internal abstract class ColumnViewModelBase : ViewModelBaseEx, IColumnViewModel
 	{
 		protected ColumnViewModelBase( IContextEntry context, ColumnDefinition definition, IConfig config,
-			IStreamParser parser, IMessenger messenger = null )
+			IStreamParser parser, IMessenger messenger = null, IColumnActionDispatcher actionDispatcher = null )
 			: base( messenger )
 		{
 			Configuration = config;
@@ -53,7 +53,7 @@ namespace Twice.ViewModels.Columns
 				Parser.FavoriteEventReceived += Parser_FavoriteEventReceived;
 			}
 
-			ActionDispatcher = new ColumnActionDispatcher();
+			ActionDispatcher = actionDispatcher ?? new ColumnActionDispatcher();
 			ActionDispatcher.HeaderClicked += ActionDispatcher_HeaderClicked;
 			ActionDispatcher.BottomReached += ActionDispatcher_BottomReached;
 
@@ -477,7 +477,8 @@ namespace Twice.ViewModels.Columns
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough] get { return _IsLoading; }
+			[DebuggerStepThrough]
+			get { return _IsLoading; }
 			protected set
 			{
 				if( _IsLoading == value )
@@ -496,7 +497,8 @@ namespace Twice.ViewModels.Columns
 
 		public string SubTitle
 		{
-			[DebuggerStepThrough] get { return _SubTitle; }
+			[DebuggerStepThrough]
+			get { return _SubTitle; }
 			set
 			{
 				if( _SubTitle == value )
@@ -511,7 +513,8 @@ namespace Twice.ViewModels.Columns
 
 		public string Title
 		{
-			[DebuggerStepThrough] get { return _Title; }
+			[DebuggerStepThrough]
+			get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -526,7 +529,8 @@ namespace Twice.ViewModels.Columns
 
 		public double Width
 		{
-			[DebuggerStepThrough] get { return _Width; }
+			[DebuggerStepThrough]
+			get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator

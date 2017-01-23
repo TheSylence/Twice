@@ -41,7 +41,7 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			var userIds = vm.Accounts.Select( c => c.Context.UserId ).ToArray();
 
 			// Assert
-			CollectionAssert.AreEquivalent( new ulong[] {123, 456}, userIds );
+			CollectionAssert.AreEquivalent( new ulong[] { 123, 456 }, userIds );
 		}
 	}
 }

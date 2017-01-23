@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Anotar.NLog;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Anotar.NLog;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 
@@ -105,7 +105,7 @@ namespace Twice.Models.Proxy
 					var context = GetContext( userId );
 					if( context != null )
 					{
-						authHeader = context.Twitter.GetAuthorizationString(requestUrl );
+						authHeader = context.Twitter.GetAuthorizationString( requestUrl );
 					}
 					else
 					{

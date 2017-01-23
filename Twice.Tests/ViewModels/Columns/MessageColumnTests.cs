@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -45,9 +45,9 @@ namespace Twice.Tests.ViewModels.Columns
 			dm3.SenderID = 1;
 			dm3.RecipientID = 3;
 
-			var cachedMessages = new List<MessageCacheEntry> {new MessageCacheEntry( dm1 ), new MessageCacheEntry( dm2 )};
-			var incomingMessages = new List<DirectMessage> {dm1};
-			var outgoingMessages = new List<DirectMessage> {dm2, dm3};
+			var cachedMessages = new List<MessageCacheEntry> { new MessageCacheEntry( dm1 ), new MessageCacheEntry( dm2 ) };
+			var incomingMessages = new List<DirectMessage> { dm1 };
+			var outgoingMessages = new List<DirectMessage> { dm2, dm3 };
 
 			var cache = new Mock<ICache>();
 			cache.Setup( c => c.AddMessages( It.IsAny<IList<MessageCacheEntry>>() ) ).Returns( Task.CompletedTask ).Verifiable();
@@ -78,7 +78,7 @@ namespace Twice.Tests.ViewModels.Columns
 			Assert.AreEqual( 2, vm.Items.Count );
 
 			var partners = vm.Items.OfType<MessageViewModel>().Select( i => i.Partner.UserId ).Distinct().ToArray();
-			CollectionAssert.AreEquivalent( new ulong[] {2, 3}, partners );
+			CollectionAssert.AreEquivalent( new ulong[] { 2, 3 }, partners );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Columns" )]

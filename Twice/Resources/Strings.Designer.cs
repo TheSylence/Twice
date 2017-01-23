@@ -61,6 +61,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to en.
+        /// </summary>
+        public static string @__Language_Code__ {
+            get {
+                return ResourceManager.GetString("__Language_Code__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string About {
@@ -282,6 +291,15 @@ namespace Twice.Resources {
         public static string CaseSensitive {
             get {
                 return ResourceManager.GetString("CaseSensitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Center window.
+        /// </summary>
+        public static string CenterWindow {
+            get {
+                return ResourceManager.GetString("CenterWindow", resourceCulture);
             }
         }
         
@@ -1141,6 +1159,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string NavigateBack {
+            get {
+                return ResourceManager.GetString("NavigateBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New feature.
         /// </summary>
         public static string NewFeature {
@@ -1182,6 +1209,15 @@ namespace Twice.Resources {
         public static string NoFurtherSettingsForThisNotificationType {
             get {
                 return ResourceManager.GetString("NoFurtherSettingsForThisNotificationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification.
+        /// </summary>
+        public static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
             }
         }
         
@@ -1281,6 +1317,15 @@ namespace Twice.Resources {
         public static string PrimaryColor {
             get {
                 return ResourceManager.GetString("PrimaryColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile of {0}.
+        /// </summary>
+        public static string ProfileOfUser {
+            get {
+                return ResourceManager.GetString("ProfileOfUser", resourceCulture);
             }
         }
         
@@ -1641,6 +1686,15 @@ namespace Twice.Resources {
         public static string StreamContentInRealtime {
             get {
                 return ResourceManager.GetString("StreamContentInRealtime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supported audio files.
+        /// </summary>
+        public static string SupportedMediaTypes {
+            get {
+                return ResourceManager.GetString("SupportedMediaTypes", resourceCulture);
             }
         }
         

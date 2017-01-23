@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Dialogs
@@ -92,7 +92,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public bool ConfirmationSet
 		{
-			[DebuggerStepThrough] get { return _ConfirmationSet; }
+			[DebuggerStepThrough]
+			get { return _ConfirmationSet; }
 			set
 			{
 				if( _ConfirmationSet == value )
@@ -113,7 +114,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public StatusViewModel Status
 		{
-			[DebuggerStepThrough] get { return _Status; }
+			[DebuggerStepThrough]
+			get { return _Status; }
 			set
 			{
 				if( _Status == value )

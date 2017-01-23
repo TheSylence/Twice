@@ -41,6 +41,12 @@ namespace Twice.Models.Configuration
 			}
 		}
 
+		public void Save()
+		{
+			string json = Serializer.Serialize( this );
+			File.WriteAllText( FileName, json );
+		}
+
 		private void DefaultConfig()
 		{
 			LogTo.Info( "No configuration saved. Loading default values" );
@@ -48,12 +54,6 @@ namespace Twice.Models.Configuration
 			Visual = new VisualConfig();
 			Mute = new MuteConfig();
 			Notifications = new NotificationConfig();
-		}
-
-		public void Save()
-		{
-			string json = Serializer.Serialize( this );
-			File.WriteAllText( FileName, json );
 		}
 
 		public GeneralConfig General { get; set; }

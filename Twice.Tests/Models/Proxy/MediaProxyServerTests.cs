@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Proxy;
 
 namespace Twice.Tests.Models.Proxy
@@ -19,7 +19,7 @@ namespace Twice.Tests.Models.Proxy
 			// Arrange
 			var responseMsg = new HttpResponseMessage( HttpStatusCode.OK )
 			{
-				Content = new ByteArrayContent( new byte[] {1, 2, 3, 4} )
+				Content = new ByteArrayContent( new byte[] { 1, 2, 3, 4 } )
 			};
 			responseMsg.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue( "video/mp4" );
 			responseMsg.Content.Headers.ContentLength = 4;
@@ -39,7 +39,7 @@ namespace Twice.Tests.Models.Proxy
 			await proxy.HandleRequest( request.Object, response.Object );
 
 			// Assert
-			CollectionAssert.AreEqual( new byte[] {1, 2, 3, 4}, responseStream.ToArray() );
+			CollectionAssert.AreEqual( new byte[] { 1, 2, 3, 4 }, responseStream.ToArray() );
 			response.Verify( c => c.SetContentInfo( 4, "video/mp4", It.IsAny<byte[]>() ), Times.Once() );
 		}
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,9 +9,6 @@ using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
@@ -20,7 +19,7 @@ using Twice.ViewModels;
 namespace Twice.Converters
 {
 	/// <summary>
-	///     Converts a Status to an InlineCollection.
+	///  Converts a Status to an InlineCollection. 
 	/// </summary>
 	internal class StatusHighlighter : IValueConverter, IEqualityComparer<EntityBase>
 	{
@@ -35,14 +34,14 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Converts a value.
+		///  Converts a value. 
 		/// </summary>
-		/// <param name="value">The value produced by the binding source.</param>
-		/// <param name="targetType">The type of the binding target property.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
+		/// <param name="value"> The value produced by the binding source. </param>
+		/// <param name="targetType"> The type of the binding target property. </param>
+		/// <param name="parameter"> The converter parameter to use. </param>
+		/// <param name="culture"> The culture to use in the converter. </param>
 		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
+		///  A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
@@ -65,14 +64,14 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Converts a value.
+		///  Converts a value. 
 		/// </summary>
-		/// <param name="value">The value that is produced by the binding target.</param>
-		/// <param name="targetType">The type to convert to.</param>
-		/// <param name="parameter">The converter parameter to use.</param>
-		/// <param name="culture">The culture to use in the converter.</param>
+		/// <param name="value"> The value that is produced by the binding target. </param>
+		/// <param name="targetType"> The type to convert to. </param>
+		/// <param name="parameter"> The converter parameter to use. </param>
+		/// <param name="culture"> The culture to use in the converter. </param>
 		/// <returns>
-		///     A converted value. If the method returns null, the valid null value is used.
+		///  A converted value. If the method returns null, the valid null value is used.
 		/// </returns>
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
@@ -135,7 +134,7 @@ namespace Twice.Converters
 			} );
 
 			menu.Items.Add( new Separator() );
-			
+
 			menu.Items.Add( new MenuItem
 			{
 				Header = Strings.Block,
@@ -168,16 +167,14 @@ namespace Twice.Converters
 			}
 
 			var urlEntity = entity as UrlEntity;
-			return urlEntity != null
-				? urlEntity.Url
-				: string.Empty;
+			return urlEntity?.Url;
 		}
 
 		/// <summary>
-		///     Generates an inline from a hashtag entity.
+		///  Generates an inline from a hashtag entity. 
 		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
+		/// <param name="entity"> The entity to generate the inline from. </param>
+		/// <returns> The generated inline. </returns>
 		private static Inline GenerateHashTag( HashTagEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
@@ -192,10 +189,10 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Generates an inline from a link entity.
+		///  Generates an inline from a link entity. 
 		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
+		/// <param name="entity"> The entity to generate the inline from. </param>
+		/// <returns> The generated inline. </returns>
 		private static Inline GenerateLink( UrlEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
@@ -210,10 +207,10 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Generates an inline from a media entity.
+		///  Generates an inline from a media entity. 
 		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
-		/// <returns>The generated inline.</returns>
+		/// <param name="entity"> The entity to generate the inline from. </param>
+		/// <returns> The generated inline. </returns>
 		private static Inline GenerateMedia( MediaEntity entity )
 		{
 			Hyperlink link = new Hyperlink();
@@ -228,11 +225,11 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Generates an inline from a mention entity.
+		///  Generates an inline from a mention entity. 
 		/// </summary>
-		/// <param name="entity">The entity to generate the inline from.</param>
+		/// <param name="entity"> The entity to generate the inline from. </param>
 		/// <param name="item"></param>
-		/// <returns>The generated inline.</returns>
+		/// <returns> The generated inline. </returns>
 		private static Inline GenerateMention( UserMentionEntity entity, IHighlightable item )
 		{
 			Hyperlink link = new Hyperlink();
@@ -355,10 +352,10 @@ namespace Twice.Converters
 		}
 
 		/// <summary>
-		///     Generates a collection of inlines from a tweet.
+		///  Generates a collection of inlines from a tweet. 
 		/// </summary>
-		/// <param name="item">The tweet to generate inlines from.</param>
-		/// <returns>The generated inlines.</returns>
+		/// <param name="item"> The tweet to generate inlines from. </param>
+		/// <returns> The generated inlines. </returns>
 		private IEnumerable<Inline> GenerateInlines( IHighlightable item )
 		{
 			var allEntities = ExtractEntities( item ).ToArray();
@@ -395,8 +392,8 @@ namespace Twice.Converters
 							UrlEntity urlEntity = entity as UrlEntity;
 							var url = urlEntity.ExpandedUrl;
 
-							if( !TwitterHelper.IsTweetUrl( url ) &&
-							    ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
+							if( !TwitterHelper.IsTweetUrl( url )
+								&& ( !Config.Visual.InlineMedia || !ExtractorRepo.CanExtract( url ) ) )
 							{
 								yield return GenerateLink( urlEntity );
 							}
@@ -421,12 +418,11 @@ namespace Twice.Converters
 			}
 		}
 
+		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
+		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 		private const string AlternativeAtSign = "\uFF20";
 		private const string AlternativeHashtagSign = "\uFF03";
 		private static IConfig OverrideConfig;
 		private static IMediaExtractorRepository OverrideExtractorRepo;
-
-		private static IConfig Config => OverrideConfig ?? App.Kernel.Get<IConfig>();
-		private static IMediaExtractorRepository ExtractorRepo => OverrideExtractorRepo ?? App.Kernel.Get<IMediaExtractorRepository>();
 	}
 }

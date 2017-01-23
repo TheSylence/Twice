@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///     Interaction logic for SearchDialog.xaml
+	///  Interaction logic for SearchDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class SearchDialog

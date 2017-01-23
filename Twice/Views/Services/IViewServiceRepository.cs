@@ -11,13 +11,15 @@ namespace Twice.Views.Services
 	{
 		Task ComposeMessage();
 
-		Task ComposeTweet();
+		Task ComposeTweet( string text = null );
 
 		Task<bool> Confirm( ConfirmServiceArgs args );
 
 		Task<string> OpenFile( FileServiceArgs args = null );
 
 		void OpenNotificationFlyout( NotificationViewModel vm );
+
+		void OpenNotificationPopup( NotificationViewModel vm );
 
 		Task OpenSearch( string query = null );
 
@@ -44,6 +46,7 @@ namespace Twice.Views.Services
 		Task ViewDirectMessage( MessageViewModel vm );
 
 		Task ViewImage( IList<StatusMediaViewModel> imageSet, StatusMediaViewModel selectedImage );
+
 		Task ViewImage( IList<Uri> imageSet, Uri selectedImage );
 
 		Task ViewProfile( ulong userId );

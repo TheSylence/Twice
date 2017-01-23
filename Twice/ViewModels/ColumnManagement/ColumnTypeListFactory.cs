@@ -11,7 +11,7 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		internal static IEnumerable<ColumnTypeItem> GetItems()
 		{
-			return GetItems( Enum.GetValues( typeof(ColumnType) ).Cast<ColumnType>() );
+			return GetItems( Enum.GetValues( typeof( ColumnType ) ).Cast<ColumnType>() );
 		}
 
 		internal static IEnumerable<ColumnTypeItem> GetItems( IEnumerable<ColumnType> types )

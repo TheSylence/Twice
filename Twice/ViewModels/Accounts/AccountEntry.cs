@@ -34,7 +34,8 @@ namespace Twice.ViewModels.Accounts
 
 		public bool RequiresConfirmation
 		{
-			[DebuggerStepThrough] get { return _RequiresConfirmation; }
+			[DebuggerStepThrough]
+			get { return _RequiresConfirmation; }
 			set
 			{
 				if( _RequiresConfirmation == value )

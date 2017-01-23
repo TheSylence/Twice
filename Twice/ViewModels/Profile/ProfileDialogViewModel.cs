@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
@@ -77,6 +77,7 @@ namespace Twice.ViewModels.Profile
 			};
 			RaisePropertyChanged( nameof( UserPages ) );
 
+			await Dispatcher.RunAsync( () => Center() );
 			IsBusy = false;
 		}
 
@@ -161,11 +162,22 @@ namespace Twice.ViewModels.Profile
 			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
 				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
 
+			if( maxId == null )
+			{
+				await Dispatcher.RunAsync( () => Center() );
+			}
+
 			if( statuses.Any() )
 			{
 				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
 				// ReSharper disable once UnusedVariable
-				var dontWait = Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) );
+				var dontWait = Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) ).ContinueWith( async t =>
+				{
+					if( maxId == null )
+					{
+						await Dispatcher.RunAsync( () => Center() );
+					}
+				} );
 			}
 			return statuses;
 		}
@@ -180,7 +192,8 @@ namespace Twice.ViewModels.Profile
 
 		public Friendship Friendship
 		{
-			[DebuggerStepThrough] get { return _Friendship; }
+			[DebuggerStepThrough]
+			get { return _Friendship; }
 			set
 			{
 				if( _Friendship == value )
@@ -195,7 +208,8 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsBusy
 		{
-			[DebuggerStepThrough] get { return _IsBusy; }
+			[DebuggerStepThrough]
+			get { return _IsBusy; }
 			set
 			{
 				if( _IsBusy == value )
@@ -211,12 +225,21 @@ namespace Twice.ViewModels.Profile
 		[Inject]
 		public INotifier Notifier { get; set; }
 
+		public override string Title
+		{
+			get
+			{
+				return string.Format( Strings.ProfileOfUser, User?.Model?.ScreenNameResponse );
+			}
+		}
+
 		public ICommand UnfollowUserCommand => _UnfollowUserCommand ?? ( _UnfollowUserCommand = new RelayCommand(
 			ExecuteUnfollowUserCommand ) );
 
 		public UserViewModel User
 		{
-			[DebuggerStepThrough] get { return _User; }
+			[DebuggerStepThrough]
+			get { return _User; }
 			set
 			{
 				if( _User == value )
@@ -226,6 +249,7 @@ namespace Twice.ViewModels.Profile
 
 				_User = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged( nameof( Title ) );
 			}
 		}
 

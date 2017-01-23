@@ -1,11 +1,11 @@
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter.Entities;
@@ -53,6 +53,7 @@ namespace Twice.ViewModels.Twitter
 			Scheduler.DeleteJob( Job );
 		}
 
+		public override ICommand BlockUserCommand { get; }
 		public override DateTime CreatedAt => Job.TargetTime;
 
 		public ICommand DeleteScheduleCommand
@@ -61,6 +62,7 @@ namespace Twice.ViewModels.Twitter
 		public override Entities Entities { get; }
 		public override ulong Id => Job.JobId;
 		public override ulong OrderId => Id;
+		public override ICommand ReportSpamCommand { get; }
 		public DateTime TargetDate => Job.TargetTime;
 		public override string Text => Job.Text;
 		public SchedulerJobType Type => Job.JobType;
@@ -69,7 +71,5 @@ namespace Twice.ViewModels.Twitter
 		private readonly IViewServiceRepository ViewServices;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteScheduleCommand;
-		public override ICommand BlockUserCommand { get; }
-		public override ICommand ReportSpamCommand { get; }
 	}
 }

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Ninject;
+﻿using Ninject;
+using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
 using Twice.ViewModels.Dialogs;
@@ -25,6 +25,7 @@ namespace Twice.ViewModels
 		public IComposeMessageViewModel ComposeMessage => Kernel.Get<IComposeMessageViewModel>();
 		public IComposeTweetViewModel ComposeTweet => Kernel.Get<IComposeTweetViewModel>();
 		public IConfirmDialogViewModel Confirm => Kernel.Get<IConfirmDialogViewModel>();
+		public IDialogHostViewModel DialogWindowHost => Kernel.Get<IDialogHostViewModel>();
 		public IImageDialogViewModel Image => Kernel.Get<IImageDialogViewModel>();
 		public IInfoDialogViewModel Info => Kernel.Get<IInfoDialogViewModel>();
 		public IMainViewModel Main => Kernel.Get<IMainViewModel>();

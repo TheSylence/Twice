@@ -40,8 +40,7 @@ namespace Twice.Tests.Models.Twitter
 			var notifier = new Mock<INotifier>();
 			var serializer = new Mock<ISerializer>( MockBehavior.Strict );
 
-			// Act
-			// ReSharper disable once ObjectCreationAsStatement
+			// Act ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new TwitterContextList( notifier.Object, fileName, serializer.Object, null ) );
 
 			// Assert

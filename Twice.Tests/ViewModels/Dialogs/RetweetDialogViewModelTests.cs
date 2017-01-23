@@ -65,7 +65,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			vm.Accounts.First().Use = true;
 			bool oneAccount = vm.ConfirmationRequired;
 
-			vm.Accounts.Add( new AccountEntry( context2.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context2.Object, false ) { Use = true } );
 			bool requiredAccount = vm.ConfirmationRequired;
 
 			// Assert
@@ -178,7 +178,7 @@ namespace Twice.Tests.ViewModels.Dialogs
 			context.SetupGet( c => c.Notifier ).Returns( new Mock<INotifier>().Object );
 			context.Setup( c => c.Twitter.Statuses.RetweetAsync( 123ul ) ).Returns( Task.FromResult( new LinqToTwitter.Status() ) ).Verifiable();
 			context.Setup( c => c.ProfileImageUrl ).Returns( new System.Uri( "http://example.com/image.png" ) );
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var notifyHandle = new ManualResetEventSlim( false );
 			var notifier = new Mock<INotifier>();

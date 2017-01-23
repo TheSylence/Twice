@@ -9,10 +9,11 @@ namespace Twice.ViewModels.Dialogs
 	{
 		void SetImages( IEnumerable<StatusMediaViewModel> images );
 
+		void SetImages( IEnumerable<Uri> images );
+
 		ICommand CopyToClipboardCommand { get; }
 		ICollection<ImageEntry> Images { get; }
 		ICommand OpenImageCommand { get; }
 		ImageEntry SelectedImage { get; set; }
-		void SetImages( IEnumerable<Uri> images );
 	}
 }

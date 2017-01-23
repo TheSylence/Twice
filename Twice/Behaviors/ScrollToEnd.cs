@@ -7,7 +7,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Scrolls to the last element in an ItemsControl when requested.
+	///  Scrolls to the last element in an ItemsControl when requested. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ScrollToEnd : BehaviorBase<ItemsControl>
@@ -41,13 +41,6 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public static readonly DependencyProperty ControllerProperty =
-			DependencyProperty.Register( "Controller", typeof(IScrollController), typeof(ScrollToEnd),
-				new PropertyMetadata( null, OnControllerChanged ) );
-
-		public static readonly DependencyProperty ScrollBottomProperty =
-			DependencyProperty.Register( "ScrollBottom", typeof(bool), typeof(ScrollToEnd), new PropertyMetadata( true ) );
-
 		public IScrollController Controller
 		{
 			get { return (IScrollController)GetValue( ControllerProperty ); }
@@ -59,5 +52,12 @@ namespace Twice.Behaviors
 			get { return (bool)GetValue( ScrollBottomProperty ); }
 			set { SetValue( ScrollBottomProperty, value ); }
 		}
+
+		public static readonly DependencyProperty ControllerProperty =
+							DependencyProperty.Register( "Controller", typeof( IScrollController ), typeof( ScrollToEnd ),
+				new PropertyMetadata( null, OnControllerChanged ) );
+
+		public static readonly DependencyProperty ScrollBottomProperty =
+			DependencyProperty.Register( "ScrollBottom", typeof( bool ), typeof( ScrollToEnd ), new PropertyMetadata( true ) );
 	}
 }

@@ -1,8 +1,8 @@
-using System.Data.Common;
-using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
+using System.Data.Common;
+using System.Threading.Tasks;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Cache
@@ -42,7 +42,7 @@ namespace Twice.Models.Cache
 		}
 
 		public string Data { get; }
-		public ulong Id { get;}
+		public ulong Id { get; }
 		public ulong Recipient { get; }
 		public ulong Sender { get; }
 	}

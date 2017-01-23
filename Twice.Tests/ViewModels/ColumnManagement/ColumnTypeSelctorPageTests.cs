@@ -36,9 +36,9 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			// Arrange
 			var wizard = new Mock<IWizardViewModel>();
 			wizard.Setup( w => w.GotoPage( 3 ) ).Verifiable();
-			wizard.Setup( w => w.GetProperty<ulong[]>( AddColumnDialogViewModel.SourceAccountsKey ) ).Returns( new ulong[] {123} );
-			wizard.Setup( w => w.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ) ).Returns( new ulong[] {222} );
-			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] {222, 123} ) ).Verifiable();
+			wizard.Setup( w => w.GetProperty<ulong[]>( AddColumnDialogViewModel.SourceAccountsKey ) ).Returns( new ulong[] { 123 } );
+			wizard.Setup( w => w.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ) ).Returns( new ulong[] { 222 } );
+			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] { 222, 123 } ) ).Verifiable();
 			var page = new ColumnTypeSelctorPage( wizard.Object );
 
 			// Act
@@ -46,7 +46,7 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 
 			// Assert
 			wizard.Verify( w => w.GotoPage( 3 ), Times.Once() );
-			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] {222, 123} ), Times.Once() );
+			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] { 222, 123 } ), Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.ColumnManagement" )]

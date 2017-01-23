@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using MaterialDesignColors;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using MaterialDesignColors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Utilities.Ui;
@@ -28,7 +28,7 @@ namespace Twice.Tests.ViewModels.Settings
 
 			var context = new Mock<IContextEntry>();
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var vm = new VisualSettings( cfg.Object, colors.Object, lang.Object )
 			{
@@ -166,8 +166,8 @@ namespace Twice.Tests.ViewModels.Settings
 
 		private static Swatch CreateSwatch( string name )
 		{
-			var primaryHues = new[] {new Hue( "p", Colors.Red, Colors.Blue )};
-			var accentHues = new[] {new Hue( "a", Colors.Green, Colors.Yellow )};
+			var primaryHues = new[] { new Hue( "p", Colors.Red, Colors.Blue ) };
+			var accentHues = new[] { new Hue( "a", Colors.Green, Colors.Yellow ) };
 
 			return new Swatch( name, primaryHues, accentHues );
 		}

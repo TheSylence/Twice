@@ -1,11 +1,11 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Utilities.Os;
@@ -81,10 +81,10 @@ namespace Twice.Tests.ViewModels.Accounts
 
 			var columnList = new Mock<IColumnDefinitionList>();
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 			contextList.Setup( c => c.AddContext( It.IsAny<TwitterAccountData>() ) ).Verifiable();
 
-			var data = new TwitterAccountData {UserId = 123};
+			var data = new TwitterAccountData { UserId = 123 };
 			var authResult = new AuthorizeResult( data, new Mock<IAuthorizer>().Object );
 
 			var auth = new Mock<ITwitterAuthorizer>();

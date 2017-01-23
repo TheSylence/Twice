@@ -1,6 +1,6 @@
 ﻿namespace Twice.Models.Media
 {
-	enum CardType
+	internal enum CardType
 	{
 		Unknown,
 		Summary,

@@ -8,9 +8,11 @@ namespace Twice.Injections
 	[ExcludeFromCodeCoverage]
 	internal class CacheProvider : Provider<ICache>
 	{
-		/// <summary>Creates an instance within the specified context.</summary>
-		/// <param name="context">The context.</param>
-		/// <returns>The created instance.</returns>
+		/// <summary>
+		///  Creates an instance within the specified context. 
+		/// </summary>
+		/// <param name="context"> The context. </param>
+		/// <returns> The created instance. </returns>
 		protected override ICache CreateInstance( IContext context )
 		{
 			var sb = new SQLiteConnectionStringBuilder

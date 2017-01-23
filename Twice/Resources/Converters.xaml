@@ -18,7 +18,7 @@
 	<converters:MathConverter x:Key="MathDivConv" Operation="Divide" />
 	<converters:MathConverter x:Key="MathMulConv" Operation="Multiply" />
 	<converters:EnumToBool x:Key="EnumToBoolConv" />
-	<converters:MnemonicsRemover x:Key="MnemonicsConv"/>
+	<converters:MnemonicsRemover x:Key="MnemonicsConv" />
 
 	<converters:ConverterChain x:Key="RelativeDateConv">
 		<converters:UtcToLocal />

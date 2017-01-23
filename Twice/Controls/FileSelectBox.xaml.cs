@@ -5,7 +5,7 @@ using System.Windows;
 namespace Twice.Controls
 {
 	/// <summary>
-	///     Interaction logic for FileSelectBox.xaml
+	///  Interaction logic for FileSelectBox.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal partial class FileSelectBox
@@ -34,7 +34,8 @@ namespace Twice.Controls
 			var dlg = new OpenFileDialog
 			{
 				CheckFileExists = true,
-				FileName = Value
+				FileName = Value,
+				Filter = Filter
 			};
 
 			if( dlg.ShowDialog() == true )
@@ -56,13 +57,11 @@ namespace Twice.Controls
 			}
 		}
 
-		public static readonly DependencyProperty ModeProperty =
-			DependencyProperty.Register( "Mode", typeof(FileSelectMode), typeof(FileSelectBox),
-				new PropertyMetadata( FileSelectMode.Open ) );
-
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof(string),
-			typeof(FileSelectBox),
-			new PropertyMetadata( null ) );
+		public string Filter
+		{
+			get { return (string)GetValue( FilterProperty ); }
+			set { SetValue( FilterProperty, value ); }
+		}
 
 		public FileSelectMode Mode
 		{
@@ -75,5 +74,16 @@ namespace Twice.Controls
 			get { return (string)GetValue( ValueProperty ); }
 			set { SetValue( ValueProperty, value ); }
 		}
+
+		public static readonly DependencyProperty FilterProperty =
+			DependencyProperty.Register( "Filter", typeof( string ), typeof( FileSelectBox ), new PropertyMetadata( string.Empty ) );
+
+		public static readonly DependencyProperty ModeProperty =
+									DependencyProperty.Register( "Mode", typeof( FileSelectMode ), typeof( FileSelectBox ),
+				new PropertyMetadata( FileSelectMode.Open ) );
+
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof( string ),
+			typeof( FileSelectBox ),
+			new PropertyMetadata( null ) );
 	}
 }

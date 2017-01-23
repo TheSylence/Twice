@@ -9,25 +9,24 @@ namespace Twice.Models.Cache
 		public Transaction( SQLiteConnection connection )
 		{
 			Connection = connection;
+			SqliteHelper.ExecuteNonQuerySafe( "BEGIN EXCLUSIVE TRANSACTION;", Connection );
 
-			using( var cmd = Connection.CreateCommand() )
-			{
-				cmd.CommandText = "BEGIN EXCLUSIVE TRANSACTION;";
-				cmd.ExecuteNonQuery();
-			}
-
-			// Capture current stack trace in debug so we know
-			// where a transaction was started but not stopped
+			// Capture current stack trace in debug so we know where a transaction was started but
+			// not stopped
 			CaptureStackTrace();
 		}
 
 		public void Commit()
 		{
 			Done = true;
-			using( var cmd = Connection.CreateCommand() )
+			SqliteHelper.ExecuteNonQuerySafe( "COMMIT TRANSACTION;", Connection );
+		}
+
+		public void Dispose()
+		{
+			if( !Done )
 			{
-				cmd.CommandText = "COMMIT TRANSACTION;";
-				cmd.ExecuteNonQuery();
+				SqliteHelper.ExecuteNonQuerySafe( "ROLLBACK TRANSACTION;", Connection );
 			}
 		}
 
@@ -37,20 +36,9 @@ namespace Twice.Models.Cache
 			LastCreationTrace = new StackTrace();
 		}
 
-		public void Dispose()
-		{
-			if( !Done )
-			{
-				using( var cmd = Connection.CreateCommand() )
-				{
-					cmd.CommandText = "ROLLBACK TRANSACTION;";
-					cmd.ExecuteNonQuery();
-				}
-			}
-		}
-
 		// ReSharper disable once NotAccessedField.Local => Used for debugging
 		private static StackTrace LastCreationTrace;
+
 		private readonly SQLiteConnection Connection;
 		private bool Done;
 	}

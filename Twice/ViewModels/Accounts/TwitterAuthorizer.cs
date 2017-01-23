@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Anotar.NLog;
+using LinqToTwitter;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using Anotar.NLog;
-using LinqToTwitter;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Accounts

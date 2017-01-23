@@ -62,9 +62,9 @@ namespace Twice.Models.Media
 		public string ImageAlt { get; }
 
 		public bool IsValid => !string.IsNullOrWhiteSpace( Title )
-		                       && !string.IsNullOrWhiteSpace( Description )
-		                       && !string.IsNullOrWhiteSpace( Site )
-		                       && Type != CardType.Unknown;
+							   && !string.IsNullOrWhiteSpace( Description )
+							   && !string.IsNullOrWhiteSpace( Site )
+							   && Type != CardType.Unknown;
 
 		public string Site { get; }
 		public string Title { get; }

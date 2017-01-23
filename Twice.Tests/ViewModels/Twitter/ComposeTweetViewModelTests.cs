@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GongSolutions.Wpf.DragDrop;
+using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -6,10 +10,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using GongSolutions.Wpf.DragDrop;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Models.Scheduling;
@@ -44,7 +44,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				TwitterConfig = twitterConfig.Object
 			};
 
-			var media = new Media {MediaID = 123456, Type = MediaType.Status};
+			var media = new Media { MediaID = 123456, Type = MediaType.Status };
 
 			const string mimeType = "image/png";
 
@@ -53,7 +53,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.Setup( c => c.Twitter.UploadMediaAsync( It.IsAny<byte[]>(), mimeType, new ulong[0] ) ).Returns(
 				Task.FromResult( media ) ).Verifiable();
 
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 			vm.Dispatcher = new SyncDispatcher();
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -99,7 +99,7 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 
 			vm.PropertyChanged += ( s, e ) =>
 			{
@@ -150,7 +150,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			otherAcc.SetupGet( a => a.ProfileImageUrl ).Returns( new Uri( "http://example.com" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {otherAcc.Object, defAcc.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { otherAcc.Object, defAcc.Object } );
 
 			var cache = new Mock<ICache>();
 
@@ -256,6 +256,23 @@ namespace Twice.Tests.ViewModels.Twitter
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DraggingImageFilesSetEffect()
+		{
+			// Arrange
+			var vm = new ComposeTweetViewModel();
+			var dropInfo = new Mock<IDropInfo>();
+			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] { "file1.png", "file2.exe" } ) );
+			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
+
+			// Act
+			vm.DragOver( dropInfo.Object );
+
+			// Assert
+			dropInfo.VerifyGet( d => d.Data, Times.Once() );
+			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Once() );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void DraggingNonFileContentDoesNothing()
 		{
 			// Arrange
@@ -278,7 +295,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			var vm = new ComposeTweetViewModel();
 			var dropInfo = new Mock<IDropInfo>();
-			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] {"file1.txt", "file2.exe"} ) );
+			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] { "file1.txt", "file2.exe" } ) );
 			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
 
 			// Act
@@ -287,23 +304,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Assert
 			dropInfo.VerifyGet( d => d.Data, Times.Once() );
 			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Never() );
-		}
-
-		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void DraggingImageFilesSetEffect()
-		{
-			// Arrange
-			var vm = new ComposeTweetViewModel();
-			var dropInfo = new Mock<IDropInfo>();
-			dropInfo.SetupGet( d => d.Data ).Returns( new DataObject( DataFormats.FileDrop, new[] { "file1.png", "file2.exe" } ) );
-			dropInfo.SetupSet( d => d.Effects = DragDropEffects.Copy ).Verifiable();
-
-			// Act
-			vm.DragOver( dropInfo.Object );
-
-			// Assert
-			dropInfo.VerifyGet( d => d.Data, Times.Once() );
-			dropInfo.VerifySet( d => d.Effects = DragDropEffects.Copy, Times.Once() );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -319,7 +319,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var vm = new ComposeTweetViewModel
 			{
@@ -329,7 +329,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Text = "the_text"
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 
 			var waitHandle = new ManualResetEventSlim( false );
 			vm.PropertyChanged += ( s, e ) =>
@@ -357,7 +357,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			viewServices.Setup( v => v.Confirm( It.IsAny<ConfirmServiceArgs>() ) ).Returns( Task.FromResult( true ) );
 
 			var vm = new ComposeTweetViewModel();
-			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] {}, "test.png" ) );
+			vm.AttachedMedias.Add( new MediaItem( 123, new byte[] { }, "test.png" ) );
 			vm.ViewServiceRepository = viewServices.Object;
 			vm.Dispatcher = new SyncDispatcher();
 
@@ -379,15 +379,15 @@ namespace Twice.Tests.ViewModels.Twitter
 			var user = DummyGenerator.CreateDummyUser();
 			user.ScreenName = "you";
 			var status = DummyGenerator.CreateDummyStatus( user );
-			status.Entities.UserMentionEntities.Add( new UserMentionEntity {ScreenName = "me"} );
-			status.Entities.UserMentionEntities.Add( new UserMentionEntity {ScreenName = "them"} );
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity { ScreenName = "me" } );
+			status.Entities.UserMentionEntities.Add( new UserMentionEntity { ScreenName = "them" } );
 
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.AccountName ).Returns( "me" );
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/file.name" ) );
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
 
 			var reply = new StatusViewModel( status, context.Object, null, null );
 
@@ -435,7 +435,14 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void QuoteCanBeRemoved()
 		{
 			// Arrange
-			var vm = new ComposeTweetViewModel();
+			var config = new Mock<ITwitterConfiguration>();
+			config.SetupGet( c => c.UrlLength ).Returns( 1 );
+			config.SetupGet( c => c.UrlLengthHttps ).Returns( 2 );
+
+			var vm = new ComposeTweetViewModel()
+			{
+				TwitterConfig = config.Object
+			};
 
 			// Act
 			bool without = vm.RemoveQuoteCommand.CanExecute( null );
@@ -472,7 +479,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				QuotedTweet = new StatusViewModel( quotedTweet, context.Object, config.Object, viewServiceRepo.Object )
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )
@@ -494,8 +501,13 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void RemoveQuoteRemoves()
 		{
 			// Arrange
+			var config = new Mock<ITwitterConfiguration>();
+			config.SetupGet( c => c.UrlLength ).Returns( 1 );
+			config.SetupGet( c => c.UrlLengthHttps ).Returns( 2 );
+
 			var vm = new ComposeTweetViewModel
 			{
+				TwitterConfig = config.Object,
 				QuotedTweet = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null )
 			};
 
@@ -521,6 +533,32 @@ namespace Twice.Tests.ViewModels.Twitter
 
 			// Assert
 			Assert.IsNull( vm.InReplyTo );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void RemovingQuoteUpdatesTextLength()
+		{
+			// Arrange
+			var config = new Mock<ITwitterConfiguration>();
+			config.SetupGet( c => c.UrlLength ).Returns( 1 );
+			config.SetupGet( c => c.UrlLengthHttps ).Returns( 2 );
+
+			var vm = new ComposeTweetViewModel()
+			{
+				TwitterConfig = config.Object
+			};
+
+			// Act
+			var lengthBefore = vm.TextLength;
+			vm.QuotedTweet = new StatusViewModel( DummyGenerator.CreateDummyStatus(), null, null, null );
+			var lengthWithQuote = vm.TextLength;
+			vm.RemoveQuoteCommand.Execute( null );
+			var lengthAfterRemove = vm.TextLength;
+
+			// Assert
+			Assert.AreEqual( 0, lengthBefore );
+			Assert.AreNotEqual( 0, lengthWithQuote );
+			Assert.AreEqual( 0, lengthAfterRemove );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
@@ -595,7 +633,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Arrange
 			Expression<Func<SchedulerJob, bool>> jobVerifier =
 				job => job.JobType == SchedulerJobType.CreateStatus
-				       && job.Text == "Hello World";
+					   && job.Text == "Hello World";
 
 			var scheduler = new Mock<IScheduler>();
 			scheduler.Setup( s => s.AddJob( It.Is( jobVerifier ) ) ).Verifiable();
@@ -614,7 +652,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Text = "Hello World"
 			};
 
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 
 			var waitHandle = new ManualResetEventSlim( false );
 			vm.PropertyChanged += ( s, e ) =>
@@ -650,7 +688,7 @@ namespace Twice.Tests.ViewModels.Twitter
 				Task.FromResult( status ) ).Verifiable();
 			context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
 
-			vm.Accounts.Add( new AccountEntry( context.Object, false ) {Use = true} );
+			vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
 			vm.PropertyChanged += ( s, e ) =>
 			{
 				if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && vm.IsSending == false )

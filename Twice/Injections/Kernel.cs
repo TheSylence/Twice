@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Anotar.NLog;
+using Ninject;
+using Ninject.Modules;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Anotar.NLog;
-using Ninject;
-using Ninject.Modules;
 using Twice.Models.Media;
 
 namespace Twice.Injections

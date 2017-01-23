@@ -29,7 +29,8 @@ namespace Twice.ViewModels.Settings
 
 		public int CloseTime
 		{
-			[DebuggerStepThrough] get { return _CloseTime; }
+			[DebuggerStepThrough]
+			get { return _CloseTime; }
 			set
 			{
 				if( _CloseTime == value )
@@ -46,7 +47,8 @@ namespace Twice.ViewModels.Settings
 
 		public bool Top
 		{
-			[DebuggerStepThrough] get { return _Top; }
+			[DebuggerStepThrough]
+			get { return _Top; }
 			set
 			{
 				if( _Top == value )

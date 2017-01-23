@@ -1,7 +1,7 @@
+using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using GongSolutions.Wpf.DragDrop;
 using Twice.ViewModels.Main;
 
 namespace Twice.ViewModels.Twitter
@@ -9,6 +9,8 @@ namespace Twice.ViewModels.Twitter
 	internal interface IComposeTweetViewModel : ILoadCallback, IDialogViewModel, ICursorController, IDropTarget
 	{
 		void PreSelectAccounts( IEnumerable<ulong> accounts );
+
+		void SetInitialText( string text );
 
 		void SetReply( StatusViewModel status, bool toAll );
 

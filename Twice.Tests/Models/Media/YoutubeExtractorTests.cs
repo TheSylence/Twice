@@ -10,6 +10,35 @@ namespace Twice.Tests.Models.Media
 	public class YoutubeExtractorTests
 	{
 		[TestMethod, TestCategory( "Models.Media" )]
+		public void CorrectIdIsExtracted()
+		{
+			// Arrange
+			var extractor = new YoutubeExtractor();
+			var testCases = new Dictionary<string, string>
+			{
+				{"https://www.youtube.com/watch?v=IJhgZBn-LHg", "IJhgZBn-LHg"},
+				{"https://www.youtube.com/watch?v=JQVmkDUkZT4", "JQVmkDUkZT4"},
+				{"https://youtu.be/JQVmkDUkZT4", "JQVmkDUkZT4"},
+				{"https://youtu.be/JQVmkDUkZT4?t=22s", "JQVmkDUkZT4"},
+				{"https://www.youtube.com/watch?v=y0opgc1WoS4&list=PLFs4vir_WsTyXrrpFstD64Qj95vpy-yo1&index=3", "y0opgc1WoS4"}
+			};
+
+			// Act
+			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => extractor.GetMediaUrl( kvp.Key ) );
+
+			// Assert
+			foreach( var kvp in results )
+			{
+				var expectedId = testCases[kvp.Key];
+
+				kvp.Value.Wait();
+				var uri = kvp.Value.Result;
+
+				Assert.IsTrue( uri.AbsoluteUri.Contains( expectedId ), kvp.Key );
+			}
+		}
+
+		[TestMethod, TestCategory( "Models.Media" )]
 		public void SimpleUrlIsMatched()
 		{
 			// Arrange
@@ -36,35 +65,6 @@ namespace Twice.Tests.Models.Media
 			foreach( var kvp in results )
 			{
 				Assert.AreEqual( testCases[kvp.Key], kvp.Value, kvp.Key );
-			}
-		}
-
-		[TestMethod, TestCategory( "Models.Media" )]
-		public void CorrectIdIsExtracted()
-		{
-			// Arrange
-			var extractor = new YoutubeExtractor();
-			var testCases = new Dictionary<string, string>
-			{
-				{"https://www.youtube.com/watch?v=IJhgZBn-LHg", "IJhgZBn-LHg"},
-				{"https://www.youtube.com/watch?v=JQVmkDUkZT4", "JQVmkDUkZT4"},
-				{"https://youtu.be/JQVmkDUkZT4", "JQVmkDUkZT4"},
-				{"https://youtu.be/JQVmkDUkZT4?t=22s", "JQVmkDUkZT4"},
-				{"https://www.youtube.com/watch?v=y0opgc1WoS4&list=PLFs4vir_WsTyXrrpFstD64Qj95vpy-yo1&index=3", "y0opgc1WoS4"}
-			};
-
-			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp => extractor.GetMediaUrl( kvp.Key ) );
-
-			// Assert
-			foreach( var kvp in results )
-			{
-				var expectedId = testCases[kvp.Key];
-
-				kvp.Value.Wait();
-				var uri = kvp.Value.Result;
-
-				Assert.IsTrue( uri.AbsoluteUri.Contains( expectedId ), kvp.Key );
 			}
 		}
 	}

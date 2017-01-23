@@ -4,14 +4,14 @@ using LitJson;
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
-	///     Arugments for a streaming event involing a favorite.
+	///  Arugments for a streaming event involing a favorite. 
 	/// </summary>
 	internal class FavoriteStreamEventArgs : EventStreamEventArgs
 	{
 		/// <summary>
-		///     Initializes a new instance of the <see cref="FavoriteStreamEventArgs" /> class.
+		///  Initializes a new instance of the <see cref="FavoriteStreamEventArgs" /> class. 
 		/// </summary>
-		/// <param name="json">The json encoded data.</param>
+		/// <param name="json"> The json encoded data. </param>
 		public FavoriteStreamEventArgs( string json )
 			: base( json )
 		{
@@ -30,7 +30,7 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///     The target status.
+		///  The target status. 
 		/// </summary>
 		public Status TargetStatus { get; private set; }
 	}

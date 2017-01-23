@@ -1,12 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Threading;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Twitter;
 
@@ -32,11 +33,41 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
+		public NotificationViewModel( ColumnItem item, Rect rect )
+			: this( rect )
+		{
+			Type = NotificationType.Information;
+
+			var status = item as StatusViewModel;
+			if( status != null )
+			{
+				SetText( status.Model.Text );
+			}
+
+			var message = item as MessageViewModel;
+			if( message != null )
+			{
+				SetText( message.Model.Text );
+			}
+		}
+
 		public NotificationViewModel( string message, NotificationType type, bool top )
 			: this( top )
 		{
 			SetText( message );
 			Type = type;
+		}
+
+		public NotificationViewModel( string message, NotificationType type, Rect rect )
+			: this( rect )
+		{
+			SetText( message );
+			Type = type;
+		}
+
+		private NotificationViewModel( Rect rect )
+		{
+			WindowRect = rect;
 		}
 
 		private NotificationViewModel( bool top )
@@ -48,10 +79,36 @@ namespace Twice.ViewModels.Flyouts
 			CloseDelay = TimeSpan.FromSeconds( 10 );
 		}
 
+		public event EventHandler CenterRequested;
+
+		public event EventHandler<CloseEventArgs> CloseRequested;
+
 		public void OnClosed()
 		{
 			CloseTimer.Stop();
 			AutoCloseWatch.Stop();
+		}
+
+		public Task Reset()
+		{
+			CloseTimer = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromMilliseconds( 100 )
+			};
+
+			AutoCloseWatch = new Stopwatch();
+			AutoCloseWatch.Start();
+
+			AutoCloseProgress = 100;
+			CloseTimer.Tick += CloseTimer_Tick;
+			CloseTimer.Start();
+
+			return Task.CompletedTask;
+		}
+
+		private void Center()
+		{
+			CenterRequested?.Invoke( this, EventArgs.Empty );
 		}
 
 		private void Close( bool result = true )
@@ -82,28 +139,10 @@ namespace Twice.ViewModels.Flyouts
 			Text = text;
 		}
 
-		public Task Reset()
-		{
-			CloseTimer = new DispatcherTimer
-			{
-				Interval = TimeSpan.FromMilliseconds( 100 )
-			};
-
-			AutoCloseWatch = new Stopwatch();
-			AutoCloseWatch.Start();
-
-			AutoCloseProgress = 100;
-			CloseTimer.Tick += CloseTimer_Tick;
-			CloseTimer.Start();
-
-			return Task.CompletedTask;
-		}
-
-		public event EventHandler<CloseEventArgs> CloseRequested;
-
 		public int AutoCloseProgress
 		{
-			[DebuggerStepThrough] get { return _AutoCloseProgress; }
+			[DebuggerStepThrough]
+			get { return _AutoCloseProgress; }
 			set
 			{
 				if( _AutoCloseProgress == value )
@@ -117,14 +156,13 @@ namespace Twice.ViewModels.Flyouts
 		}
 
 		public TimeSpan CloseDelay { private get; set; }
-
 		public ICommand DismissCommand => _DismissCommand ?? ( _DismissCommand = new RelayCommand( ExecuteDismissCommand ) );
-
 		public IDispatcher Dispatcher { private get; set; }
 
 		public Position FlyoutPosition
 		{
-			[DebuggerStepThrough] get { return _FlyoutPosition; }
+			[DebuggerStepThrough]
+			get { return _FlyoutPosition; }
 			set
 			{
 				if( _FlyoutPosition == value )
@@ -141,7 +179,8 @@ namespace Twice.ViewModels.Flyouts
 
 		public string Text
 		{
-			[DebuggerStepThrough] get { return _Text; }
+			[DebuggerStepThrough]
+			get { return _Text; }
 			set
 			{
 				if( _Text == value )
@@ -156,7 +195,8 @@ namespace Twice.ViewModels.Flyouts
 
 		public NotificationType Type
 		{
-			[DebuggerStepThrough] get { return _Type; }
+			[DebuggerStepThrough]
+			get { return _Type; }
 			set
 			{
 				if( _Type == value )
@@ -168,6 +208,8 @@ namespace Twice.ViewModels.Flyouts
 				RaisePropertyChanged();
 			}
 		}
+
+		public Rect WindowRect { get; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private int _AutoCloseProgress;

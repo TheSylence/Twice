@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Media;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -16,6 +17,8 @@ namespace Twice.ViewModels.Settings
 			SoundFile = config.Notifications.SoundFileName;
 
 			Player = new MediaPlayer();
+
+			FileTypeFilter = GetSupportedFileTypes();
 		}
 
 		public override void SaveTo( IConfig config )
@@ -32,9 +35,26 @@ namespace Twice.ViewModels.Settings
 			Player.Play();
 		}
 
+		private string GetSupportedFileTypes()
+		{ 
+			var extensions = new[]
+			{
+				"asf","wma","m4a","aac","adt","adts",
+				"cda","mp2","mp3","mid","midi","aif",
+				"aifc","aiff","wav","au","snd"
+			};
+
+			var display = Strings.SupportedMediaTypes;
+			var joined = string.Join( ";", extensions.OrderBy( x => x ).Select( e => $"*.{e}" ) );
+			return $"{display}|{joined}";
+		}
+
+		public string FileTypeFilter { get; }
+
 		public string SoundFile
 		{
-			[DebuggerStepThrough] get { return _SoundFile; }
+			[DebuggerStepThrough]
+			get { return _SoundFile; }
 			set
 			{
 				if( _SoundFile == value )

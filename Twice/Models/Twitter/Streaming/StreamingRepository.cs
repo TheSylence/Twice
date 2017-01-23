@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Anotar.NLog;
+﻿using Anotar.NLog;
 using LinqToTwitter;
 using Seal.Fody;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Twitter.Entities;
@@ -18,6 +18,31 @@ namespace Twice.Models.Twitter.Streaming
 		{
 			ContextList = contextList;
 			Cache = cache;
+		}
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		public IStreamParser GetParser( ColumnDefinition column )
+		{
+			var userId = column.SourceAccounts.First();
+
+			var key = new ParserKey( userId, StreamingType.User );
+			IStreamParser parser;
+
+			if( !LoadedParsers.TryGetValue( key, out parser ) )
+			{
+				var context = ContextList.Contexts.First( c => c.UserId == userId );
+
+				parser =
+					StreamParser.Create( new StreamingConnection( context.Twitter.Streaming.GetUserStream() ), context );
+
+				AddParser( parser, key );
+			}
+			return parser;
 		}
 
 		protected void AddParser( IStreamParser parser, ParserKey key )
@@ -73,35 +98,9 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		public IStreamParser GetParser( ColumnDefinition column )
-		{
-			var userId = column.SourceAccounts.First();
-
-			var key = new ParserKey( userId, StreamingType.User );
-			IStreamParser parser;
-
-			if( !LoadedParsers.TryGetValue( key, out parser ) )
-			{
-				var context = ContextList.Contexts.First( c => c.UserId == userId );
-
-				parser =
-					StreamParser.Create( new StreamingConnection( context.Twitter.Streaming.GetUserStream() ), context );
-
-				AddParser( parser, key );
-			}
-			return parser;
-		}
-
+		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 		private readonly ICache Cache;
 		private readonly ITwitterContextList ContextList;
-
-		protected readonly Dictionary<ParserKey, IStreamParser> LoadedParsers = new Dictionary<ParserKey, IStreamParser>();
 
 		protected class ParserKey
 		{

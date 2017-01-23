@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 using TestCaseKey = System.Tuple<object, object, Twice.Converters.CompareOperation>;
 
@@ -12,35 +12,6 @@ namespace Twice.Tests.Converters
 	[TestClass, ExcludeFromCodeCoverage]
 	public class CompareTests
 	{
-		[TestMethod, TestCategory( "Converters" )]
-		public void ExoticCompareTestCases()
-		{
-			// Arrange
-			var conv = new Compare();
-
-			var testCases = new Dictionary<TestCaseKey, object>
-			{
-				{new TestCaseKey( 1.0, 1.0, CompareOperation.Equal ), true},
-				{new TestCaseKey( 1.1, "test", CompareOperation.Greater ), DependencyProperty.UnsetValue},
-				{new TestCaseKey( 0, 0, (CompareOperation)int.MaxValue ), DependencyProperty.UnsetValue}
-			};
-
-			// Act
-			var results = testCases.ToDictionary( kvp => kvp.Key, kvp =>
-			{
-				conv.Operation = kvp.Key.Item3;
-				return conv.Convert( kvp.Key.Item1, null, kvp.Key.Item2, null );
-			} );
-
-			// Assert
-			foreach( var kvp in results )
-			{
-				var exp = testCases[kvp.Key];
-
-				Assert.AreEqual( exp, kvp.Value );
-			}
-		}
-
 		[TestMethod, TestCategory( "Converters" )]
 		public void ConvertBackThrowsException()
 		{
@@ -86,6 +57,35 @@ namespace Twice.Tests.Converters
 
 			// Assert
 			Assert.AreEqual( true, res );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void ExoticCompareTestCases()
+		{
+			// Arrange
+			var conv = new Compare();
+
+			var testCases = new Dictionary<TestCaseKey, object>
+			{
+				{new TestCaseKey( 1.0, 1.0, CompareOperation.Equal ), true},
+				{new TestCaseKey( 1.1, "test", CompareOperation.Greater ), DependencyProperty.UnsetValue},
+				{new TestCaseKey( 0, 0, (CompareOperation)int.MaxValue ), DependencyProperty.UnsetValue}
+			};
+
+			// Act
+			var results = testCases.ToDictionary( kvp => kvp.Key, kvp =>
+			{
+				conv.Operation = kvp.Key.Item3;
+				return conv.Convert( kvp.Key.Item1, null, kvp.Key.Item2, null );
+			} );
+
+			// Assert
+			foreach( var kvp in results )
+			{
+				var exp = testCases[kvp.Key];
+
+				Assert.AreEqual( exp, kvp.Value );
+			}
 		}
 
 		[TestMethod, TestCategory( "Converters" )]

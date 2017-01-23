@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///     Interaction logic for TweetComposer.xaml
+	///  Interaction logic for TweetComposer.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class TweetComposer

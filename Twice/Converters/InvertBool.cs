@@ -7,16 +7,6 @@ namespace Twice.Converters
 {
 	internal class InvertBool : IValueConverter
 	{
-		private static object ConvertInternal( object value )
-		{
-			if( !( value is bool ) )
-			{
-				return DependencyProperty.UnsetValue;
-			}
-
-			return !(bool)value;
-		}
-
 		public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			return ConvertInternal( value );
@@ -25,6 +15,16 @@ namespace Twice.Converters
 		public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
 		{
 			return ConvertInternal( value );
+		}
+
+		private static object ConvertInternal( object value )
+		{
+			if( !( value is bool ) )
+			{
+				return DependencyProperty.UnsetValue;
+			}
+
+			return !(bool)value;
 		}
 	}
 }

@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Anotar.NLog;
+using LinqToTwitter;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using Anotar.NLog;
-using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
 	internal static class TwitterHelper
 	{
 		/// <summary>
-		///     Applies Unicode Normalization to a text and then counts characters.
+		///  Applies Unicode Normalization to a text and then counts characters. 
 		/// </summary>
 		/// <remarks>
-		///     See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.
+		///  See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.
 		/// </remarks>
 		/// <param name="text"></param>
 		/// <param name="twitterConfig"></param>
@@ -58,11 +58,11 @@ namespace Twice.Models.Twitter
 
 			var lookup = new Dictionary<string, string>
 			{
-				{".png", "image/png"},
-				{".gif", "image/gif"},
-				{".bmp", "image/bmp"},
-				{".jpg", "image/jpg"},
-				{".jpeg", "image/jpg"}
+				[".png"] = "image/png",
+				[".gif"] = "image/gif",
+				[".bmp"] = "image/bmp",
+				[".jpg"] = "image/jpg",
+				[".jpeg"] = "image/jpg"
 			};
 
 			if( ext != null && lookup.ContainsKey( ext ) )
@@ -80,6 +80,11 @@ namespace Twice.Models.Twitter
 
 		public static ulong GetStatusId( this Status status )
 		{
+			if( status == null )
+			{
+				return 0;
+			}
+
 			return status.ID != 0
 				? status.ID
 				: status.StatusID;
@@ -172,6 +177,11 @@ namespace Twice.Models.Twitter
 
 		private static string ReplaceUrls( string text, int httpLength, int httpsLength )
 		{
+			if( string.IsNullOrEmpty( text ) )
+			{
+				return string.Empty;
+			}
+
 			string httpsString = new string( 'x', httpsLength );
 
 			if( !text.Contains( "." ) && !text.Contains( ":" ) )

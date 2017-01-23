@@ -56,8 +56,8 @@ namespace Twice.Tests.ViewModels.Columns
 			{
 				var constructed = factory.Construct( new ColumnDefinition( kvp.Key )
 				{
-					SourceAccounts = new ulong[] {1},
-					TargetAccounts = new ulong[] {1}
+					SourceAccounts = new ulong[] { 1 },
+					TargetAccounts = new ulong[] { 1 }
 				} );
 				Assert.IsNotNull( constructed );
 
@@ -94,8 +94,8 @@ namespace Twice.Tests.ViewModels.Columns
 			// Act
 			var constructed = factory.Construct( new ColumnDefinition( ColumnType.User )
 			{
-				SourceAccounts = new ulong[] {1},
-				TargetAccounts = new ulong[] {1}
+				SourceAccounts = new ulong[] { 1 },
+				TargetAccounts = new ulong[] { 1 }
 			} );
 
 			// Assert
@@ -134,8 +134,8 @@ namespace Twice.Tests.ViewModels.Columns
 			// Act
 			var constructed = factory.Construct( new ColumnDefinition( ColumnType.Unknown )
 			{
-				SourceAccounts = new ulong[] {1},
-				TargetAccounts = new ulong[] {1}
+				SourceAccounts = new ulong[] { 1 },
+				TargetAccounts = new ulong[] { 1 }
 			} );
 
 			// Assert

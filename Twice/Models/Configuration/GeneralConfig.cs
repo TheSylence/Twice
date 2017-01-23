@@ -4,7 +4,7 @@
 	{
 		public GeneralConfig()
 		{
-			Language = "en-US";
+			Language = null;
 			RealtimeStreaming = true;
 			CheckForUpdates = true;
 			IncludePrereleaseUpdates = false;

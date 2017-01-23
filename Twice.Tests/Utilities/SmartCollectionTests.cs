@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Utilities;
 
 namespace Twice.Tests.Utilities
@@ -23,26 +23,10 @@ namespace Twice.Tests.Utilities
 		}
 
 		[TestMethod, TestCategory( "Utilities" )]
-		public void ResetReplacesContent()
-		{
-			// Arrange
-			var collection = new SmartCollection<int>
-			{
-				1,2,3
-			};
-
-			// Act
-			collection.Reset( new[] { 4, 5, 6 } );
-
-			// Assert
-			CollectionAssert.AreEqual( new[] { 4, 5, 6 }, collection.ToArray() );
-		}
-
-		[TestMethod, TestCategory( "Utilities" )]
 		public void CollectionCanBeConstructedFromList()
 		{
 			// Arrange
-			var list = new List<int> {3, 6, 3, 2};
+			var list = new List<int> { 3, 6, 3, 2 };
 
 			// Act
 			var collection = new SmartCollection<int>( list );
@@ -59,6 +43,22 @@ namespace Twice.Tests.Utilities
 
 			// Assert
 			Assert.AreEqual( 0, collection.Count );
+		}
+
+		[TestMethod, TestCategory( "Utilities" )]
+		public void ResetReplacesContent()
+		{
+			// Arrange
+			var collection = new SmartCollection<int>
+			{
+				1,2,3
+			};
+
+			// Act
+			collection.Reset( new[] { 4, 5, 6 } );
+
+			// Assert
+			CollectionAssert.AreEqual( new[] { 4, 5, 6 }, collection.ToArray() );
 		}
 	}
 }

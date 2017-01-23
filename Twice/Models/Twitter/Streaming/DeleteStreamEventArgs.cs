@@ -3,14 +3,14 @@ using LitJson;
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
-	///     Arguments for a streaming event involding a deletion.
+	///  Arguments for a streaming event involding a deletion. 
 	/// </summary>
 	internal class DeleteStreamEventArgs : StreamEventArgs
 	{
 		/// <summary>
-		///     Initializes a new instance of the <see cref="DeleteStreamEventArgs" /> class.
+		///  Initializes a new instance of the <see cref="DeleteStreamEventArgs" /> class. 
 		/// </summary>
-		/// <param name="json">The content.</param>
+		/// <param name="json"> The content. </param>
 		public DeleteStreamEventArgs( string json )
 			: base( json )
 		{
@@ -20,12 +20,12 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///     ID of the deleted status.
+		///  ID of the deleted status. 
 		/// </summary>
 		public ulong Id { get; private set; }
 
 		/// <summary>
-		///     ID of the user.
+		///  ID of the user. 
 		/// </summary>
 		public ulong UserId { get; private set; }
 	}

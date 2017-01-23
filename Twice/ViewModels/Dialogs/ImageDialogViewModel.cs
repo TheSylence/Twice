@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
+using Twice.Resources;
 using Twice.Utilities.Os;
 using Twice.ViewModels.Twitter;
 
@@ -15,6 +16,7 @@ namespace Twice.ViewModels.Dialogs
 		public ImageDialogViewModel()
 		{
 			Images = new ObservableCollection<ImageEntry>();
+			Title = Strings.ImageViewer;
 		}
 
 		public void SetImages( IEnumerable<Uri> images )
@@ -23,6 +25,15 @@ namespace Twice.ViewModels.Dialogs
 			foreach( var url in images )
 			{
 				Images.Add( new ImageEntry( url, false ) );
+			}
+		}
+
+		public void SetImages( IEnumerable<StatusMediaViewModel> images )
+		{
+			Images.Clear();
+			foreach( var url in images )
+			{
+				Images.Add( new ImageEntry( url ) );
 			}
 		}
 
@@ -36,17 +47,11 @@ namespace Twice.ViewModels.Dialogs
 			ProcessStarter.Start( SelectedImage.DisplayUrl.AbsoluteUri );
 		}
 
-		public void SetImages( IEnumerable<StatusMediaViewModel> images )
-		{
-			Images.Clear();
-			foreach( var url in images )
-			{
-				Images.Add( new ImageEntry( url ) );
-			}
-		}
+		[Inject]
+		public IClipboard Clipboard { get; set; }
 
 		public ICommand CopyToClipboardCommand
-			=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand( ExecuteCopyToClipboardCommand ) );
+					=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand( ExecuteCopyToClipboardCommand ) );
 
 		public ICollection<ImageEntry> Images { get; }
 
@@ -55,7 +60,8 @@ namespace Twice.ViewModels.Dialogs
 
 		public ImageEntry SelectedImage
 		{
-			[DebuggerStepThrough] get { return _SelectedImage; }
+			[DebuggerStepThrough]
+			get { return _SelectedImage; }
 			set
 			{
 				if( _SelectedImage == value )
@@ -67,9 +73,6 @@ namespace Twice.ViewModels.Dialogs
 				RaisePropertyChanged();
 			}
 		}
-
-		[Inject]
-		public IClipboard Clipboard { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _CopyToClipboardCommand;

@@ -16,7 +16,7 @@
 			xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
 			mc:Ignorable="d" Title="{lex:Loc Settings}" Style="{StaticResource DialogStyle}"
              DataContext="{Binding Settings, Source={StaticResource Locator}}"
-             d:DesignHeight="300" d:DesignWidth="300" Width="800" Height="650">
+             d:DesignHeight="300" d:DesignWidth="300" Width="850" Height="700">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
@@ -72,9 +72,9 @@
 						<CheckBox Content="{lex:Loc StreamContentInRealtime}"
 								  IsChecked="{Binding RealtimeStreaming,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc FilterSensitiveTweets}" Margin="{StaticResource Spacing}"
-								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-						
-						<CheckBox Content="{lex:Loc SendVersionStats}" IsChecked="{Binding SendVersionStats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+								  IsChecked="{Binding FilterSensitiveTweets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+						<CheckBox Content="{lex:Loc SendVersionStats}" IsChecked="{Binding SendVersionStats, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc AutomaticallyCheckForUpdates}" IsChecked="{Binding CheckForUpdates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 						<CheckBox Content="{lex:Loc IncludePrereleases}" Margin="{StaticResource Spacing}"
 								  IsEnabled="{Binding CheckForUpdates}"
@@ -86,7 +86,7 @@
 						</StackPanel>
 						<ComboBox ItemsSource="{Binding AvailableFetchCounts}" Margin="{StaticResource Spacing}"
 								  SelectedValue="{Binding TweetFetchCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-						
+
 						<Button Content="{lex:Loc ClearCache}" Command="{Binding ClearCacheCommand}" Margin="{StaticResource Spacing}" />
 					</StackPanel>
 				</Grid>
@@ -235,14 +235,14 @@
 						</StackPanel>
 					</StackPanel>
 
-					<FlowDocumentScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" 
+					<FlowDocumentScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
 											  Grid.Column="2" Document="{Binding HelpDocument, Converter={StaticResource FlowDocConv}}" />
 				</Grid>
 			</TabItem>
 			<TabItem Header="{lex:Loc Notifications}" DataContext="{Binding Notifications}">
 				<Grid Margin="5">
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition />
+						<ColumnDefinition Width="Auto" MinWidth="150" />
 						<ColumnDefinition />
 					</Grid.ColumnDefinitions>
 
@@ -279,7 +279,8 @@
 																<TextBlock Text="{lex:Loc SoundFile}" Margin="5" VerticalAlignment="Center" />
 																<materialDesign:PackIcon Kind="HelpCircle" ToolTip="{lex:Loc LeaveEmptyForDefaultSound}" VerticalAlignment="Center" />
 															</StackPanel>
-															<controls1:FileSelectBox Grid.Column="1" Value="{Binding SoundFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+															<controls1:FileSelectBox Grid.Column="1" Value="{Binding SoundFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+																					 Filter="{Binding FileTypeFilter}" />
 
 															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
 																	Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5">
@@ -334,20 +335,23 @@
 																<ColumnDefinition />
 															</Grid.ColumnDefinitions>
 
-															<CheckBox Content="{lex:Loc Windows10ActionCenterNotification}" IsChecked="{Binding Win10Enabled, Mode=TwoWay}" Grid.ColumnSpan="2" Margin="5" />
-
-															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" Grid.Row="1" />
-															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name" Grid.Row="1"
+															<TextBlock Text="{lex:Loc DisplayToShowPopupsAt}" VerticalAlignment="Center" Margin="5" Grid.Row="0" />
+															<ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" DisplayMemberPath="Name" Grid.Row="0"
 																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedDisplay, Mode=TwoWay}"
 																	  ItemsSource="{Binding AvailableDisplays}" IsEnabled="{Binding Win10Enabled, Converter={StaticResource InvertBoolConv}}" />
 
-															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="2" VerticalAlignment="Center" Margin="5" />
+															<TextBlock Text="{lex:Loc CornerToShowPopupsIn}" Grid.Row="1" VerticalAlignment="Center" Margin="5" />
 															<ComboBox ItemsSource="{Binding AvailableCorners}" DisplayMemberPath="Name" Grid.Column="1"
 																	  SelectedValuePath="Value" SelectedValue="{Binding SelectedCorner, Mode=TwoWay}"
-																	  Grid.Row="2" VerticalAlignment="Center" Margin="5,0" IsEnabled="{Binding Win10Enabled, Converter={StaticResource InvertBoolConv}}" />
+																	  Grid.Row="1" VerticalAlignment="Center" Margin="5,0" IsEnabled="{Binding Win10Enabled, Converter={StaticResource InvertBoolConv}}" />
 
-															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}"
-																	Grid.Row="3" HorizontalAlignment="Right" Margin="5" Grid.ColumnSpan="2">
+															<TextBlock Text="{lex:Loc CloseNotificationDelay}" VerticalAlignment="Center" Grid.Row="2" Margin="5,0" />
+															<TextBox Text="{Binding CloseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" Margin="5,0" VerticalAlignment="Center" MinWidth="100" />
+
+															<CheckBox Content="{lex:Loc Windows10ActionCenterNotification}" Grid.Row="3" IsChecked="{Binding Win10Enabled, Mode=TwoWay}" DockPanel.Dock="Left" Margin="5" />
+
+															<Button Style="{StaticResource MaterialDesignRaisedButton}" Command="{Binding PreviewCommand}" DockPanel.Dock="Right"
+																	HorizontalAlignment="Right" Margin="5" Grid.Row="3" Grid.Column="1">
 																<DockPanel>
 																	<materialDesign:PackIcon Kind="Play" DockPanel.Dock="Left" />
 																	<TextBlock Text="{lex:Loc Preview}" Margin="5,0" VerticalAlignment="Center" />

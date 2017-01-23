@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Ninject;
 using Twice.Messages;
 using Twice.Models.Twitter;
+using Twice.Resources;
 using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels.Twitter
@@ -13,6 +14,8 @@ namespace Twice.ViewModels.Twitter
 	{
 		public ComposeMessageViewModel()
 		{
+			Title = Strings.ComposeMessage;
+
 			Validate( () => Recipient ).NotEmpty();
 			Validate( () => Text ).NotEmpty();
 
@@ -71,7 +74,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool? CanSend
 		{
-			[DebuggerStepThrough] get { return _CanSend; }
+			[DebuggerStepThrough]
+			get { return _CanSend; }
 			set
 			{
 				if( _CanSend == value )
@@ -88,7 +92,8 @@ namespace Twice.ViewModels.Twitter
 
 		public MessageViewModel InReplyTo
 		{
-			[DebuggerStepThrough] get { return _InReplyTo; }
+			[DebuggerStepThrough]
+			get { return _InReplyTo; }
 			set
 			{
 				if( _InReplyTo == value )
@@ -103,7 +108,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsCheckingRelationship
 		{
-			[DebuggerStepThrough] get { return _IsCheckingRelationship; }
+			[DebuggerStepThrough]
+			get { return _IsCheckingRelationship; }
 			set
 			{
 				if( _IsCheckingRelationship == value )
@@ -118,7 +124,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsSending
 		{
-			[DebuggerStepThrough] get { return _IsSending; }
+			[DebuggerStepThrough]
+			get { return _IsSending; }
 			set
 			{
 				if( _IsSending == value )
@@ -137,7 +144,8 @@ namespace Twice.ViewModels.Twitter
 
 		public string Recipient
 		{
-			[DebuggerStepThrough] get { return _Recipient; }
+			[DebuggerStepThrough]
+			get { return _Recipient; }
 			set
 			{
 				if( _Recipient == value )
@@ -153,7 +161,8 @@ namespace Twice.ViewModels.Twitter
 
 		public string Text
 		{
-			[DebuggerStepThrough] get { return _Text; }
+			[DebuggerStepThrough]
+			get { return _Text; }
 			set
 			{
 				if( _Text == value )

@@ -17,9 +17,9 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			// Arrange
 			var wizard = new Mock<IWizardViewModel>();
 			wizard.Setup( w => w.GetProperty<ulong[]>( AddColumnDialogViewModel.TargetAccountsKey ) ).Returns( new ulong[0] );
-			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] {123} ) ).Verifiable();
+			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] { 123 } ) ).Verifiable();
 			wizard.Setup( w => w.GetProperty<string[]>( AddColumnDialogViewModel.TargetAccountNamesKey ) ).Returns( new string[0] );
-			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, new[] {"Dummy"} ) ).Verifiable();
+			wizard.Setup( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, new[] { "Dummy" } ) ).Verifiable();
 			wizard.Setup( w => w.GotoPage( 3 ) ).Verifiable();
 
 			var timerFactory = new Mock<ITimerFactory>();
@@ -36,8 +36,8 @@ namespace Twice.Tests.ViewModels.ColumnManagement
 			vm.GotoNextPageCommand.Execute( 123ul );
 
 			// Assert
-			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] {123} ), Times.Once() );
-			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, new[] {"Dummy"} ), Times.Once() );
+			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountsKey, new ulong[] { 123 } ), Times.Once() );
+			wizard.Verify( w => w.SetProperty( AddColumnDialogViewModel.TargetAccountNamesKey, new[] { "Dummy" } ), Times.Once() );
 			wizard.Verify( w => w.GotoPage( 3 ), Times.Once() );
 		}
 

@@ -1,4 +1,5 @@
-﻿using Fody;
+﻿using Anotar.NLog;
+using Fody;
 using GalaSoft.MvvmLight.CommandWpf;
 using GongSolutions.Wpf.DragDrop;
 using LinqToTwitter;
@@ -12,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Anotar.NLog;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -28,6 +28,7 @@ namespace Twice.ViewModels.Twitter
 		public ComposeTweetViewModel()
 		{
 			Accounts = new List<AccountEntry>();
+			Title = Strings.ComposeTweet;
 
 			Validate( () => ScheduleDate )
 				.If( () => IsTweetScheduled )
@@ -61,6 +62,46 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public event EventHandler ScrollToEnd;
+
+		public async Task AttachImage( string fileName )
+		{
+			IsSending = true;
+
+			if( Path.GetExtension( fileName ) == ".gif" )
+			{
+				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
+				{
+					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+					IsSending = false;
+					return;
+				}
+			}
+
+			byte[] mediaData = File.ReadAllBytes( fileName );
+			if( mediaData.Length > TwitterConfig.MaxImageSize )
+			{
+				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
+				IsSending = false;
+				return;
+			}
+
+			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
+			var acc = usedAccounts.First();
+			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
+
+			string mediaType = TwitterHelper.GetMimeType( fileName );
+			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
+			{
+				IsSending = false;
+				return t.Result;
+			} );
+
+			await Dispatcher.RunAsync( () =>
+			{
+				Medias.Add( media );
+				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
+			} );
+		}
 
 		public void DragOver( IDropInfo dropInfo )
 		{
@@ -174,6 +215,11 @@ namespace Twice.ViewModels.Twitter
 			PreSelectedAccounts = accounts.ToArray();
 		}
 
+		public void SetInitialText( string text )
+		{
+			InitialText = text;
+		}
+
 		public void SetReply( StatusViewModel status, bool toAll )
 		{
 			InReplyTo = status;
@@ -183,46 +229,6 @@ namespace Twice.ViewModels.Twitter
 		private void Acc_UseChanged( object sender, EventArgs e )
 		{
 			RaisePropertyChanged( nameof( ConfirmationRequired ) );
-		}
-
-		public async Task AttachImage( string fileName )
-		{
-			IsSending = true;
-
-			if( Path.GetExtension( fileName ) == ".gif" )
-			{
-				if( GifValidator.Validate( fileName ) != GifValidator.ValidationResult.Ok )
-				{
-					Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-					IsSending = false;
-					return;
-				}
-			}
-
-			byte[] mediaData = File.ReadAllBytes( fileName );
-			if( mediaData.Length > TwitterConfig.MaxImageSize )
-			{
-				Notifier.DisplayMessage( Strings.ImageSizeTooBig, NotificationType.Error );
-				IsSending = false;
-				return;
-			}
-
-			var usedAccounts = Accounts.Where( a => a.Use ).ToArray();
-			var acc = usedAccounts.First();
-			var additionalOwners = usedAccounts.Skip( 1 ).Select( a => a.Context.UserId );
-
-			string mediaType = TwitterHelper.GetMimeType( fileName );
-			var media = await acc.Context.Twitter.UploadMediaAsync( mediaData, mediaType, additionalOwners ).ContinueWith( t =>
-			{
-				IsSending = false;
-				return t.Result;
-			} );
-
-			await Dispatcher.RunAsync( () =>
-			{
-				Medias.Add( media );
-				AttachedMedias.Add( new MediaItem( media.MediaID, mediaData, fileName ) );
-			} );
 		}
 
 		private bool CanExecuteRemoveQuoteCommand()
@@ -348,7 +354,7 @@ namespace Twice.ViewModels.Twitter
 		{
 			if( InReplyTo == null )
 			{
-				Text = string.Empty;
+				Text = InitialText;
 				return;
 			}
 
@@ -438,8 +444,18 @@ namespace Twice.ViewModels.Twitter
 			return result;
 		}
 
-		public ICollection<AccountEntry> Accounts { get; private set; }
+		private void UpdateTextLength()
+		{
+			var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
+			if( QuotedTweet != null )
+			{
+				// Keep the space in mind that separates the tweet text and the status URL
+				len += TwitterConfig.UrlLengthHttps + 1;
+			}
+			TextLength = len;
+		}
 
+		public ICollection<AccountEntry> Accounts { get; private set; }
 		public IList<MediaItem> AttachedMedias { get; } = new ObservableCollection<MediaItem>();
 
 		public ICommand AttachImageCommand
@@ -576,7 +592,6 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICollection<string> KnownHashtags { get; private set; }
-
 		public ICollection<string> KnownUserNames { get; private set; }
 
 		public bool LowCharsLeft
@@ -627,6 +642,8 @@ namespace Twice.ViewModels.Twitter
 
 				_QuotedTweet = value;
 				RaisePropertyChanged();
+
+				UpdateTextLength();
 			}
 		}
 
@@ -708,13 +725,7 @@ namespace Twice.ViewModels.Twitter
 				_Text = value;
 				RaisePropertyChanged();
 
-				var len = TwitterHelper.CountCharacters( Text, TwitterConfig );
-				if( QuotedTweet != null )
-				{
-					// Keep the space in mind that separates the tweet text and the status URL
-					len += TwitterConfig.UrlLengthHttps + 1;
-				}
-				TextLength = len;
+				UpdateTextLength();
 			}
 		}
 
@@ -738,9 +749,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		private const int LowWarnThreshold = 135;
-
 		private const int MediumWarnThreshold = 125;
-
 		private readonly List<Media> Medias = new List<Media>();
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
@@ -801,6 +810,7 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private int _TextLength;
 
+		private string InitialText = string.Empty;
 		private ulong[] PreSelectedAccounts = new ulong[0];
 		private bool ReplyToAll;
 	}

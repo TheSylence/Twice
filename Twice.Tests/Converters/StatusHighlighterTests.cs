@@ -1,14 +1,14 @@
-﻿using System;
+﻿using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Documents;
-using LinqToTwitter;
-using LitJson;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Converters;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Twitter;
@@ -29,6 +29,32 @@ namespace Twice.Tests.Converters
 
 			// Assert
 			Assert.IsNotNull( ex );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void DifferentCasingInEntitiesIsHandledCorrectly()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			// Assert
+			Assert.AreEqual( 5, links.Length );
+
+			Assert.AreEqual( "@spurs", ( (Run)links[0].Inlines.First() ).Text );
+			Assert.AreEqual( "@okcthunder", ( (Run)links[1].Inlines.First() ).Text );
+			Assert.AreEqual( "#PhantomCam", ( (Run)links[2].Inlines.First() ).Text );
+			Assert.AreEqual( "#SPURSvTHUNDER", ( (Run)links[3].Inlines.First() ).Text );
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
@@ -63,32 +89,6 @@ namespace Twice.Tests.Converters
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
-		public void DifferentCasingInEntitiesIsHandledCorrectly()
-		{
-			// Arrange
-			var json = File.ReadAllText( "Data/tweet_casedentities.json" );
-			var data = JsonMapper.ToObject( json );
-			var status = new Status( data );
-			var vm = new StatusViewModel( status, null, null, null );
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = false} );
-
-			var conv = new StatusHighlighter( config.Object );
-
-			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
-			var links = inlines.OfType<Hyperlink>().ToArray();
-
-			// Assert
-			Assert.AreEqual( 5, links.Length );
-
-			Assert.AreEqual( "@spurs", ( (Run)links[0].Inlines.First() ).Text );
-			Assert.AreEqual( "@okcthunder", ( (Run)links[1].Inlines.First() ).Text );
-			Assert.AreEqual( "#PhantomCam", ( (Run)links[2].Inlines.First() ).Text );
-			Assert.AreEqual( "#SPURSvTHUNDER", ( (Run)links[3].Inlines.First() ).Text );
-		}
-
-		[TestMethod, TestCategory( "Converters" )]
 		public void EmojiDoesNotBreakEntities()
 		{
 			// Arrange
@@ -97,7 +97,7 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = false} );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
 
 			var conv = new StatusHighlighter( config.Object );
 
@@ -105,38 +105,38 @@ namespace Twice.Tests.Converters
 			var inlines = (Inline[])conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.IsInstanceOfType( inlines[0], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( "Jetzt seid Ihr gefragt: Stimmt für Euren Pokalhelden ab! 🏆⚽ ", ( (Run)inlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[1], typeof(Hyperlink) ); // #FCB
+			Assert.IsInstanceOfType( inlines[1], typeof( Hyperlink ) ); // #FCB
 			var linkInlines = ( (Hyperlink)inlines[1] ).Inlines.ToArray();
 			Assert.AreEqual( "#FCB", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[2], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[2], typeof( Run ) );
 			Assert.AreEqual( " ", ( (Run)inlines[2] ).Text );
 
-			Assert.IsInstanceOfType( inlines[3], typeof(Hyperlink) ); // #BVB
+			Assert.IsInstanceOfType( inlines[3], typeof( Hyperlink ) ); // #BVB
 			linkInlines = ( (Hyperlink)inlines[3] ).Inlines.ToArray();
 			Assert.AreEqual( "#BVB", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[4], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[4], typeof( Run ) );
 			Assert.AreEqual( " ", ( (Run)inlines[4] ).Text );
 
-			Assert.IsInstanceOfType( inlines[5], typeof(Hyperlink) ); // #WalkofFame
+			Assert.IsInstanceOfType( inlines[5], typeof( Hyperlink ) ); // #WalkofFame
 			linkInlines = ( (Hyperlink)inlines[5] ).Inlines.ToArray();
 			Assert.AreEqual( "#WalkofFame", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[6], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[6], typeof( Run ) );
 			Assert.AreEqual( " ", ( (Run)inlines[6] ).Text );
 
-			Assert.IsInstanceOfType( inlines[7], typeof(Hyperlink) ); // Link
+			Assert.IsInstanceOfType( inlines[7], typeof( Hyperlink ) ); // Link
 			linkInlines = ( (Hyperlink)inlines[7] ).Inlines.ToArray();
 			Assert.AreEqual( "on.sport1.de/20ZXKa8", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[8], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[8], typeof( Run ) );
 			Assert.AreEqual( " ", ( (Run)inlines[8] ).Text );
 
-			Assert.IsInstanceOfType( inlines[9], typeof(Hyperlink) ); // Image
+			Assert.IsInstanceOfType( inlines[9], typeof( Hyperlink ) ); // Image
 			linkInlines = ( (Hyperlink)inlines[9] ).Inlines.ToArray();
 			Assert.AreEqual( "pic.twitter.com/JPRZdM31ha", ( (Run)linkInlines[0] ).Text );
 
@@ -165,39 +165,12 @@ namespace Twice.Tests.Converters
 			// Assert
 			Assert.AreEqual( 2, inlines.Length );
 
-			Assert.IsInstanceOfType( inlines[1], typeof(Hyperlink) );
+			Assert.IsInstanceOfType( inlines[1], typeof( Hyperlink ) );
 			var linkInlines = ( (Hyperlink)inlines[1] ).Inlines.ToArray();
 			Assert.AreEqual( "@Testi", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[0], typeof(Run) );
-			Assert.AreEqual( "This is a test ", ( (Run)inlines[0] ).Text );
-		}
-
-		[TestMethod, TestCategory( "Converters" )]
-		public void TextOfExtendedTweetIsCorrect()
-		{
-			// Arrange
-			var json = File.ReadAllText( "Data/tweet_extended.json" );
-			var data = JsonMapper.ToObject( json );
-			var status = new Status( data );
-			var vm = new StatusViewModel( status, null, null, null );
-			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
-
-			var conv = new StatusHighlighter( config.Object );
-
-			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
-
-			// Assert
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
-			Assert.AreEqual( "Das ist mal wieder ein ", ( (Run)inlines[0] ).Text );
-
-			Assert.IsInstanceOfType( inlines[2], typeof( Run ) );
-			Assert.AreEqual( ". Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem ", ( (Run)inlines[2] ).Text );
-
-			Assert.IsInstanceOfType( inlines[4], typeof( Run ) );
-			Assert.AreEqual( "? Fragen :o ", ( (Run)inlines[4] ).Text );
+			Assert.AreEqual( "This is a test ", ( (Run)inlines[0] ).Text );
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
@@ -222,11 +195,11 @@ namespace Twice.Tests.Converters
 			// Assert
 			Assert.AreEqual( 2, inlines.Length );
 
-			Assert.IsInstanceOfType( inlines[0], typeof(Hyperlink) );
+			Assert.IsInstanceOfType( inlines[0], typeof( Hyperlink ) );
 			var linkInlines = ( (Hyperlink)inlines[0] ).Inlines.ToArray();
 			Assert.AreEqual( "@Testi", ( (Run)linkInlines[0] ).Text );
 
-			Assert.IsInstanceOfType( inlines[1], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[1], typeof( Run ) );
 			Assert.AreEqual( " This is a test", ( (Run)inlines[1] ).Text );
 		}
 
@@ -245,7 +218,7 @@ namespace Twice.Tests.Converters
 
 			// Assert
 			Assert.AreEqual( 1, inlines.Length );
-			Assert.IsInstanceOfType( inlines[0], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( content, ( (Run)inlines[0] ).Text );
 		}
 
@@ -289,7 +262,7 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = true} );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = true } );
 
 			var conv = new StatusHighlighter( config.Object );
 
@@ -331,8 +304,35 @@ namespace Twice.Tests.Converters
 
 			// Assert
 			Assert.AreEqual( 1, inlines.Length );
-			Assert.IsInstanceOfType( inlines[0], typeof(Run) );
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( status.Text, ( (Run)inlines[0] ).Text );
+		}
+
+		[TestMethod, TestCategory( "Converters" )]
+		public void TextOfExtendedTweetIsCorrect()
+		{
+			// Arrange
+			var json = File.ReadAllText( "Data/tweet_extended.json" );
+			var data = JsonMapper.ToObject( json );
+			var status = new Status( data );
+			var vm = new StatusViewModel( status, null, null, null );
+			var config = new Mock<IConfig>();
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+
+			var conv = new StatusHighlighter( config.Object );
+
+			// Act
+			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+
+			// Assert
+			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
+			Assert.AreEqual( "Das ist mal wieder ein ", ( (Run)inlines[0] ).Text );
+
+			Assert.IsInstanceOfType( inlines[2], typeof( Run ) );
+			Assert.AreEqual( ". Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem ", ( (Run)inlines[2] ).Text );
+
+			Assert.IsInstanceOfType( inlines[4], typeof( Run ) );
+			Assert.AreEqual( "? Fragen :o ", ( (Run)inlines[4] ).Text );
 		}
 	}
 }

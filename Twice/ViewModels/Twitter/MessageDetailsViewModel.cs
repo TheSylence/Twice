@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Fody;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Fody;
-using LinqToTwitter;
-using Newtonsoft.Json;
 using Twice.Models.Twitter;
+using Twice.Resources;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -16,6 +17,7 @@ namespace Twice.ViewModels.Twitter
 		public MessageDetailsViewModel()
 		{
 			PreviousMessages = new ObservableCollection<MessageViewModel>();
+			Title = Strings.Message;
 		}
 
 		public event EventHandler ScrollRequested;
@@ -49,7 +51,8 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsLoadingPrevious
 		{
-			[DebuggerStepThrough] get { return _IsLoadingPrevious; }
+			[DebuggerStepThrough]
+			get { return _IsLoadingPrevious; }
 			private set
 			{
 				if( _IsLoadingPrevious == value )
@@ -64,7 +67,8 @@ namespace Twice.ViewModels.Twitter
 
 		public MessageViewModel Message
 		{
-			[DebuggerStepThrough] get { return _Message; }
+			[DebuggerStepThrough]
+			get { return _Message; }
 			set
 			{
 				if( _Message == value )

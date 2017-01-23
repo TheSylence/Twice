@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global ReSharper disable MemberCanBePrivate.Global
 
 namespace Twice.Models.Configuration
 {

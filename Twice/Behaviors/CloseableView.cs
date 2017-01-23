@@ -6,7 +6,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	/// Allows a window to be closed from the window's DataContext
+	///  Allows a window to be closed from the window's DataContext 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CloseableView : BehaviorBase<Window>
@@ -17,10 +17,29 @@ namespace Twice.Behaviors
 
 			AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
 
-			var controller = AssociatedObject.DataContext as IViewController;
-			if( controller != null )
+			CurrentController = AssociatedObject.DataContext as IViewController;
+			if( CurrentController != null )
 			{
-				controller.CloseRequested += Controller_CloseRequested;
+				CurrentController.CloseRequested += Controller_CloseRequested;
+				CurrentController.CenterRequested += Controller_CenterRequested;
+			}
+
+			AssociatedObject.DataContextChanged += AssociatedObject_DataContextChanged;
+		}
+
+		private void AssociatedObject_DataContextChanged( object sender, DependencyPropertyChangedEventArgs e )
+		{
+			if( CurrentController != null )
+			{
+				CurrentController.CloseRequested -= Controller_CloseRequested;
+				CurrentController.CenterRequested -= Controller_CenterRequested;
+			}
+
+			CurrentController = AssociatedObject.DataContext as IViewController;
+			if( CurrentController != null )
+			{
+				CurrentController.CloseRequested += Controller_CloseRequested;
+				CurrentController.CenterRequested += Controller_CenterRequested;
 			}
 		}
 
@@ -38,10 +57,17 @@ namespace Twice.Behaviors
 			AssociatedObject.Close();
 		}
 
+		private void Controller_CenterRequested( object sender, System.EventArgs e )
+		{
+			WindowHelper.Center( AssociatedObject );
+		}
+
 		private void Controller_CloseRequested( object sender, CloseEventArgs e )
 		{
 			WindowHelper.SetResult( AssociatedObject, e.Result );
 			CloseWindow();
 		}
+
+		private IViewController CurrentController;
 	}
 }

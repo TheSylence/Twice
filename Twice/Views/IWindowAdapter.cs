@@ -2,12 +2,12 @@ using System.Windows;
 
 namespace Twice.Views
 {
-	interface IWindowAdapter
+	internal interface IWindowAdapter
 	{
-		double Width { get; set; }
 		double Height { get; set; }
-		double Top { get; set; }
 		double Left { get; set; }
+		double Top { get; set; }
+		double Width { get; set; }
 		WindowState WindowState { get; set; }
 	}
 }

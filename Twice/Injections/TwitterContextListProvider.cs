@@ -12,10 +12,10 @@ namespace Twice.Injections
 	internal class TwitterContextListProvider : Provider<ITwitterContextList>
 	{
 		/// <summary>
-		///     Creates an instance within the specified context.
+		///  Creates an instance within the specified context. 
 		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <returns>The created instance.</returns>
+		/// <param name="context"> The context. </param>
+		/// <returns> The created instance. </returns>
 		protected override ITwitterContextList CreateInstance( IContext context )
 		{
 			var notifier = context.Kernel.Get<INotifier>();

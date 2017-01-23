@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -22,7 +22,7 @@ namespace Twice.Tests.ViewModels.Columns
 		{
 			// Arrange
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.General ).Returns( new GeneralConfig {RealtimeStreaming = true} );
+			config.SetupGet( c => c.General ).Returns( new GeneralConfig { RealtimeStreaming = true } );
 			var parser = new Mock<IStreamParser>();
 			var context = new Mock<IContextEntry>();
 			context.SetupGet( c => c.UserId ).Returns( 456 );

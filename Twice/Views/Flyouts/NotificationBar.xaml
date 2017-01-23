@@ -23,7 +23,7 @@
 			<Button Style="{DynamicResource MaterialDesignToolForegroundButton}" Margin="20,10"
 					ToolTip="{lex:Loc Dismiss}" DockPanel.Dock="Left" VerticalAlignment="Center"
 					Command="{Binding DismissCommand}" Foreground="{DynamicResource SecondaryAccentBrush}">
-				<materialDesign:PackIcon Kind="Close"/>
+				<materialDesign:PackIcon Kind="Close" />
 			</Button>
 
 			<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />

@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
@@ -21,7 +21,7 @@ namespace Twice.Tests.Converters
 			var conv = new EnumToBool();
 
 			// Act
-			var value = conv.ConvertBack( true, typeof(TestEnum), "First", null );
+			var value = conv.ConvertBack( true, typeof( TestEnum ), "First", null );
 
 			// Assert
 			Assert.AreEqual( TestEnum.First, value );

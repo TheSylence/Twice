@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///     Interaction logic for TextInputDialog.xaml
+	///  Interaction logic for TextInputDialog.xaml 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class TextInputDialog

@@ -39,6 +39,12 @@ namespace Twice.Models.Twitter
 			Twitter = context;
 		}
 
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
 		public override bool Equals( object obj )
 		{
 			var other = obj as ContextEntry;
@@ -56,12 +62,6 @@ namespace Twice.Models.Twitter
 			{
 				Twitter?.Dispose();
 			}
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
 		}
 
 		public string AccountName { get; }

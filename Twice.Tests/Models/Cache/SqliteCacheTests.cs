@@ -1,12 +1,12 @@
-﻿using System;
+﻿using LinqToTwitter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using LinqToTwitter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Entities;
 
@@ -26,11 +26,11 @@ namespace Twice.Tests.Models.Cache
 				user.UserID = 123;
 				user.ScreenName = "test";
 
-				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] { new UserCacheEntry( user ) } );
 
 				// Act
 				user.ScreenName = "testi";
-				await cache.AddUsers( new[] {new UserCacheEntry( user )} );
+				await cache.AddUsers( new[] { new UserCacheEntry( user ) } );
 
 				// Assert
 				var fromDb = ( await cache.GetKnownUsers() ).First();
@@ -56,7 +56,7 @@ namespace Twice.Tests.Models.Cache
 				var tags = ( await cache.GetKnownHashtags() ).ToArray();
 
 				// Assert
-				CollectionAssert.AreEquivalent( new[] {"test", "abc"}, tags );
+				CollectionAssert.AreEquivalent( new[] { "test", "abc" }, tags );
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace Twice.Tests.Models.Cache
 				using( var cmd = con.CreateCommand() )
 				{
 					cmd.CommandText = "INSERT INTO Users (Id, UserName, UserData) VALUES (@id1, @name1, @data1), "
-					                  + "(@id2, @name2, @data2);";
+									  + "(@id2, @name2, @data2);";
 
 					cmd.AddParameter( "id1", 111 );
 					cmd.AddParameter( "id2", 222 );
@@ -117,8 +117,7 @@ namespace Twice.Tests.Models.Cache
 			using( var con = OpenConnection() )
 			using( var cache = new SqliteCache( con ) )
 			{
-				// Act
-				// ReSharper disable once AccessToDisposedClosure
+				// Act ReSharper disable once AccessToDisposedClosure
 				var ex = await ExceptionAssert.CatchAsync<Exception>( () => cache.AddHashtags( new List<string>() ) );
 
 				// Assert
@@ -138,7 +137,7 @@ namespace Twice.Tests.Models.Cache
 
 				var colId = Guid.NewGuid();
 
-				await cache.MapStatusesToColumn( new[] {status}, colId );
+				await cache.MapStatusesToColumn( new[] { status }, colId );
 
 				// Act
 				var statuses = await cache.GetStatusesForColumn( colId, 1 );
@@ -155,13 +154,13 @@ namespace Twice.Tests.Models.Cache
 			using( var con = OpenConnection() )
 			using( var cache = new SqliteCache( con ) )
 			{
-				await cache.AddHashtags( new[] {"one", "two", "three"} );
-				await cache.AddMessages( new[] {new MessageCacheEntry( DummyGenerator.CreateDummyMessage() )} );
-				await cache.AddStatuses( new[] {DummyGenerator.CreateDummyStatus()} );
+				await cache.AddHashtags( new[] { "one", "two", "three" } );
+				await cache.AddMessages( new[] { new MessageCacheEntry( DummyGenerator.CreateDummyMessage() ) } );
+				await cache.AddStatuses( new[] { DummyGenerator.CreateDummyStatus() } );
 
 				var userToCache = DummyGenerator.CreateDummyUserEx( 1 );
 				userToCache.Name = userToCache.ScreenName = "test";
-				await cache.AddUsers( new[] {new UserCacheEntry( userToCache )} );
+				await cache.AddUsers( new[] { new UserCacheEntry( userToCache ) } );
 
 				// Act
 				await cache.Clear();
@@ -340,7 +339,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
-				await cache.AddHashtags( new[] {"test"} );
+				await cache.AddHashtags( new[] { "test" } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -369,7 +368,7 @@ namespace Twice.Tests.Models.Cache
 				var entry = new MessageCacheEntry( message );
 
 				// Act
-				await cache.AddMessages( new[] {entry} );
+				await cache.AddMessages( new[] { entry } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -437,8 +436,8 @@ namespace Twice.Tests.Models.Cache
 				status.ID = 123;
 				var colId = Guid.NewGuid();
 
-				await cache.AddStatuses( new[] {status} );
-				await cache.MapStatusesToColumn( new[] {status}, colId );
+				await cache.AddStatuses( new[] { status } );
+				await cache.MapStatusesToColumn( new[] { status }, colId );
 
 				// Act
 				var beforeDelete = await cache.GetStatusesForColumn( colId, 1 );
@@ -465,7 +464,7 @@ namespace Twice.Tests.Models.Cache
 				}
 
 				// Act
-				await cache.SetUserFriends( 123, new ulong[] {4, 5, 6} );
+				await cache.SetUserFriends( 123, new ulong[] { 4, 5, 6 } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -517,7 +516,7 @@ namespace Twice.Tests.Models.Cache
 				status.ID = 111;
 
 				// Act
-				await cache.AddStatuses( new[] {status} );
+				await cache.AddStatuses( new[] { status } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -669,7 +668,7 @@ namespace Twice.Tests.Models.Cache
 				var s3 = DummyGenerator.CreateDummyStatus( user );
 				s3.ID = 3;
 
-				await cache.AddStatuses( new[] {s1, s2, s3} );
+				await cache.AddStatuses( new[] { s1, s2, s3 } );
 
 				var c1 = Guid.NewGuid();
 				var c2 = Guid.NewGuid();
@@ -712,7 +711,7 @@ namespace Twice.Tests.Models.Cache
 				var s3 = DummyGenerator.CreateDummyStatus( user );
 				s3.ID = 3;
 
-				await cache.AddStatuses( new[] {s1, s2, s3} );
+				await cache.AddStatuses( new[] { s1, s2, s3 } );
 
 				// Act
 				var statuses = ( await cache.GetStatusesForUser( 123 ) ).ToArray();
@@ -797,7 +796,7 @@ namespace Twice.Tests.Models.Cache
 				var entry = new UserCacheEntry( user );
 
 				// Act
-				await cache.AddUsers( new[] {entry} );
+				await cache.AddUsers( new[] { entry } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -827,7 +826,7 @@ namespace Twice.Tests.Models.Cache
 			using( var cache = new SqliteCache( con ) )
 			{
 				// Act
-				await cache.SetUserFriends( 123, new ulong[] {1, 2, 3} );
+				await cache.SetUserFriends( 123, new ulong[] { 1, 2, 3 } );
 
 				// Assert
 				using( var cmd = con.CreateCommand() )
@@ -868,7 +867,7 @@ namespace Twice.Tests.Models.Cache
 				var friends = ( await cache.GetUserFriends( 123 ) ).ToArray();
 
 				// Assert
-				CollectionAssert.AreEquivalent( new ulong[] {1, 2, 3}, friends );
+				CollectionAssert.AreEquivalent( new ulong[] { 1, 2, 3 }, friends );
 			}
 		}
 
