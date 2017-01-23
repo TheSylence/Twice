@@ -19,6 +19,7 @@ namespace Twice.ViewModels.Settings
 			SelectedCorner = config.Notifications.PopupDisplayCorner;
 			SelectedDisplay = config.Notifications.PopupDisplay;
 			Win10Enabled = config.Notifications.Win10Enabled;
+			CloseTime = config.Notifications.ToastsCloseTime;
 		}
 
 		public override void SaveTo( IConfig config )
@@ -27,14 +28,12 @@ namespace Twice.ViewModels.Settings
 			config.Notifications.PopupDisplayCorner = SelectedCorner;
 			config.Notifications.PopupDisplay = SelectedDisplay;
 			config.Notifications.Win10Enabled = Win10Enabled;
+			config.Notifications.PopupCloseTime = CloseTime;
 		}
 
 		protected override void ExecutePreviewCommand()
 		{
-			if( Win10Enabled )
-			{
-				Notifier.DisplayWin10Message( Strings.TestNotification );
-			}
+			Notifier.PreviewPopupNotification( Strings.TestNotification, CloseTime, Win10Enabled, SelectedDisplay, SelectedCorner );
 		}
 
 		private static IEnumerable<ValueDescription<string>> ListDisplays()
@@ -43,7 +42,24 @@ namespace Twice.ViewModels.Settings
 		}
 
 		public ICollection<ValueDescription<Corner>> AvailableCorners { get; }
+
 		public ICollection<ValueDescription<string>> AvailableDisplays { get; }
+
+		public int CloseTime
+		{
+			[DebuggerStepThrough]
+			get { return _CloseTime; }
+			set
+			{
+				if( _CloseTime == value )
+				{
+					return;
+				}
+
+				_CloseTime = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public Corner SelectedCorner
 		{
@@ -96,6 +112,9 @@ namespace Twice.ViewModels.Settings
 		}
 
 		private readonly INotifier Notifier;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
+		private int _CloseTime;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private Corner _SelectedCorner;

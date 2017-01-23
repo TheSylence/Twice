@@ -17,11 +17,29 @@ namespace Twice.Behaviors
 
 			AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
 
-			var controller = AssociatedObject.DataContext as IViewController;
-			if( controller != null )
+			CurrentController = AssociatedObject.DataContext as IViewController;
+			if( CurrentController != null )
 			{
-				controller.CloseRequested += Controller_CloseRequested;
-				controller.CenterRequested += Controller_CenterRequested;
+				CurrentController.CloseRequested += Controller_CloseRequested;
+				CurrentController.CenterRequested += Controller_CenterRequested;
+			}
+
+			AssociatedObject.DataContextChanged += AssociatedObject_DataContextChanged;
+		}
+
+		private void AssociatedObject_DataContextChanged( object sender, DependencyPropertyChangedEventArgs e )
+		{
+			if( CurrentController != null )
+			{
+				CurrentController.CloseRequested -= Controller_CloseRequested;
+				CurrentController.CenterRequested -= Controller_CenterRequested;
+			}
+
+			CurrentController = AssociatedObject.DataContext as IViewController;
+			if( CurrentController != null )
+			{
+				CurrentController.CloseRequested += Controller_CloseRequested;
+				CurrentController.CenterRequested += Controller_CenterRequested;
 			}
 		}
 
@@ -49,5 +67,7 @@ namespace Twice.Behaviors
 			WindowHelper.SetResult( AssociatedObject, e.Result );
 			CloseWindow();
 		}
+
+		private IViewController CurrentController;
 	}
 }

@@ -3,11 +3,13 @@ using NotificationsExtensions;
 using NotificationsExtensions.Toasts;
 using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Utilities;
+using Twice.Utilities.Os;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Flyouts;
 using Twice.ViewModels.Twitter;
@@ -62,7 +64,7 @@ namespace Twice.ViewModels
 			var binding = new ToastBindingGeneric();
 			binding.Children.Add( new AdaptiveText { Text = message, HintWrap = true } );
 
-			ToastContent content = new ToastContent
+			var content = new ToastContent
 			{
 				Launch = "",
 				Visual = new ToastVisual
@@ -107,12 +109,60 @@ namespace Twice.ViewModels
 			NotifyToast( context );
 		}
 
-		public void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner )
+		public void PreviewPopupNotification( string message, int closeTime, bool win10, string display, Corner displayCorner )
 		{
 			if( win10 )
 			{
 				DisplayWin10Message( message );
 			}
+			else
+			{
+				DisplayPopup( message, closeTime, display, displayCorner );
+			}
+		}
+
+		void DisplayPopup( string message, int closeTime, string display = null, Corner? displayCorner = null )
+		{
+			display = display ?? Config.Notifications.PopupDisplay;
+			displayCorner = displayCorner ?? Config.Notifications.PopupDisplayCorner;
+
+			var displayPosition = DisplayHelper.GetDisplayPosition( display );
+
+			var size = new Size( 300, 200 );
+			const int margin = 10;
+
+			var position = new Rect(size);
+			switch( displayCorner )
+			{
+			case Corner.TopLeft:
+				position.X = displayPosition.Left + margin;
+				position.Y = displayPosition.Top + margin;
+				break;
+
+			case Corner.BottomLeft:
+				position.X = displayPosition.Left + margin;
+				position.Y = displayPosition.Bottom - margin - size.Height;
+				break;
+
+			case Corner.BottomRight:
+				position.X = displayPosition.Right - margin - size.Width;
+				position.Y = displayPosition.Bottom - margin - size.Height;
+				break;
+
+			case Corner.TopRight:
+				position.X = displayPosition.Right - margin - size.Width;
+				position.Y = displayPosition.Top + margin;
+				break;
+			}
+
+			var context = new NotificationViewModel( message, NotificationType.Information, position )
+			{
+				CloseDelay = TimeSpan.FromSeconds( closeTime ),
+				Dispatcher = Dispatcher,
+				MessengerInstance = MessengerInstance
+			};
+
+			ViewServices.OpenNotificationPopup( context );
 		}
 
 		private void NotifyPopup( ColumnItem item, bool win10 )
@@ -120,6 +170,10 @@ namespace Twice.ViewModels
 			if( win10 )
 			{
 				DisplayWin10Message( item.Text );
+			}
+			else
+			{
+				DisplayPopup( item.Text, Config.Notifications.PopupCloseTime );
 			}
 		}
 

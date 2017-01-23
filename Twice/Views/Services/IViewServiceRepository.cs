@@ -19,6 +19,8 @@ namespace Twice.Views.Services
 
 		void OpenNotificationFlyout( NotificationViewModel vm );
 
+		void OpenNotificationPopup( NotificationViewModel vm );
+
 		Task OpenSearch( string query = null );
 
 		Task QuoteTweet( StatusViewModel status, IEnumerable<ulong> preSelectedAccounts = null );

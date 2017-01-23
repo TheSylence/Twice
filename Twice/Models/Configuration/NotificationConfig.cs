@@ -7,12 +7,14 @@
 			ToastsEnabled = true;
 			ToastsTop = true;
 			ToastsCloseTime = 5;
+			PopupCloseTime = 5;
 			SoundEnabled = false;
 			PopupEnabled = false;
 			PopupDisplay = string.Empty;
 			PopupDisplayCorner = Corner.BottomRight;
 		}
 
+		public int PopupCloseTime { get; set; }
 		public string PopupDisplay { get; set; }
 		public Corner PopupDisplayCorner { get; set; }
 		public bool PopupEnabled { get; set; }
