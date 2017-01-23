@@ -14,6 +14,6 @@ namespace Twice.ViewModels
 
 		void PreviewInAppNotification( string message, bool top, int closeTime );
 
-		void PreviewPopupNotification( string message, bool win10, string display, Corner displayCorner );
+		void PreviewPopupNotification( string message, int closeTime, bool win10, string display, Corner displayCorner );
 	}
 }

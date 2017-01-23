@@ -44,15 +44,18 @@ namespace Twice.Utilities.Os
 			{
 				var displayModes = GetDisplayModes();
 
-				for( int i = 0; i < displayModes.Length; i++ )
+				bool next = false;
+				for( int i=0; i<displayModes.Length; ++i )
 				{
+					if( next )
+					{
+						var mode = displayModes[i].modeInfo.sourceMode;
+						return new Rect( mode.position.x, mode.position.y, mode.width, mode.height );
+					}
+
 					if( displayModes[i].id.ToString() == displayName )
 					{
-						var adapterId = displayModes[i].adapterId;
-						var source = displayModes.FirstOrDefault( x => Equals( x.adapterId, adapterId ) && x.infoType == NativeMethods.DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_SOURCE );
-
-						var mode = source.modeInfo.sourceMode;
-						return new Rect( mode.position.x, mode.position.y, mode.width, mode.height );
+						next = true;
 					}
 				}
 			}
@@ -62,6 +65,11 @@ namespace Twice.Utilities.Os
 			}
 
 			return result;
+		}
+
+		static bool Equals( NativeMethods.LUID a, NativeMethods.LUID b )
+		{
+			return a.HighPart == b.HighPart && a.LowPart == b.LowPart;
 		}
 
 		private static NativeMethods.DISPLAYCONFIG_MODE_INFO[] GetDisplayModes()

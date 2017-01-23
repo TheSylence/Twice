@@ -5,6 +5,7 @@ using MahApps.Metro.Controls;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Twice.Utilities.Ui;
@@ -32,11 +33,41 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
+		public NotificationViewModel( ColumnItem item, Rect rect )
+			: this( rect )
+		{
+			Type = NotificationType.Information;
+
+			var status = item as StatusViewModel;
+			if( status != null )
+			{
+				SetText( status.Model.Text );
+			}
+
+			var message = item as MessageViewModel;
+			if( message != null )
+			{
+				SetText( message.Model.Text );
+			}
+		}
+
 		public NotificationViewModel( string message, NotificationType type, bool top )
 			: this( top )
 		{
 			SetText( message );
 			Type = type;
+		}
+
+		public NotificationViewModel( string message, NotificationType type, Rect rect )
+			: this( rect )
+		{
+			SetText( message );
+			Type = type;
+		}
+
+		private NotificationViewModel( Rect rect )
+		{
+			WindowRect = rect;
 		}
 
 		private NotificationViewModel( bool top )
@@ -125,9 +156,7 @@ namespace Twice.ViewModels.Flyouts
 		}
 
 		public TimeSpan CloseDelay { private get; set; }
-
 		public ICommand DismissCommand => _DismissCommand ?? ( _DismissCommand = new RelayCommand( ExecuteDismissCommand ) );
-
 		public IDispatcher Dispatcher { private get; set; }
 
 		public Position FlyoutPosition
@@ -179,6 +208,8 @@ namespace Twice.ViewModels.Flyouts
 				RaisePropertyChanged();
 			}
 		}
+
+		public Rect WindowRect { get; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private int _AutoCloseProgress;

@@ -390,6 +390,20 @@ namespace Twice.Views.Services
 			return result;
 		}
 
+		public void OpenNotificationPopup( NotificationViewModel vm )
+		{
+			var window = new NotifyPopup()
+			{
+				DataContext = vm
+			};
+
+			window.Top = vm.WindowRect.Top;
+			window.Left = vm.WindowRect.Left;
+
+			vm.Reset();
+			window.Show();
+		}
+
 		[Inject]
 
 		// ReSharper disable once MemberCanBePrivate.Global

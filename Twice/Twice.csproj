@@ -389,6 +389,9 @@
     <Compile Include="Views\Dialogs\DialogWindowHost.xaml.cs">
       <DependentUpon>DialogWindowHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\NotifyPopup.xaml.cs">
+      <DependentUpon>NotifyPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Services\ConfirmServiceArgs.cs" />
     <Compile Include="Views\Services\FileServiceArgs.cs" />
     <Compile Include="Utilities\AppRelease.cs" />
@@ -635,6 +638,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\NotifyPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
