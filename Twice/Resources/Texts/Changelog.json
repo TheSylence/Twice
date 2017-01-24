@@ -8,7 +8,8 @@
         "Fixes": [
             "Text field in tweet composer does not grow anymore",
             "Media control buttons are usable no matter which format the media has",
-            "Search dialog now has correct size restraints"
+            "Search dialog now has correct size restraints",
+            "Fixed possible crash when opening profile of non existing user"
         ],
         "Issues": []
     },
