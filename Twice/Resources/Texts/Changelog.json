@@ -7,6 +7,7 @@
         "Changes": [],
         "Fixes": [
             "Text field in tweet composer does not grow anymore",
+            "Media control buttons are usable no matter which format the media has"
         ],
         "Issues": []
     },
