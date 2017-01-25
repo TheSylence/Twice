@@ -10,7 +10,8 @@
             "Media control buttons are usable no matter which format the media has",
             "Search dialog now has correct size restraints",
             "Image viewer now has correct size restraints",
-            "Fixed possible crash when opening profile of non existing user"
+            "Fixed possible crash when opening profile of non existing user",
+            "Fixed wrong manual centering of dialog windows"
         ],
         "Issues": []
     },

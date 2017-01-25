@@ -18,8 +18,8 @@ namespace Twice.Behaviors
 		{
 			var parentWidth = window.Owner?.ActualWidth ?? SystemParameters.WorkArea.Width;
 			var parentHeight = window.Owner?.ActualHeight ?? SystemParameters.WorkArea.Height;
-			var parentLeft = window.Owner?.Left ?? 0;
-			var parentTop = window.Owner?.Top ?? 0;
+			var parentLeft = window.Owner?.WindowState == WindowState.Maximized ? 0 : window.Owner?.Left ?? 0;
+			var parentTop = window.Owner?.WindowState == WindowState.Maximized ? 0 : window.Owner?.Top ?? 0;
 
 			var width = window.ActualWidth;
 			var height = window.ActualHeight;
