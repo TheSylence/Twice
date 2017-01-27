@@ -1,4 +1,20 @@
 ﻿[
+{
+        "Version": "0.10.1",
+        "Date": "2017-01-28",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Text field in tweet composer does not grow anymore",
+            "Media control buttons are usable no matter which format the media has",
+            "Search dialog now has correct size restraints",
+            "Image viewer now has correct size restraints",
+            "Fixed possible crash when opening profile of non existing user",
+            "Fixed wrong manual centering of dialog windows"
+        ],
+        "Issues": []
+    },
     {
         "Version": "0.10.0",
         "Date": "2017-01-23",

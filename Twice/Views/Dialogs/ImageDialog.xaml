@@ -9,7 +9,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Twice.Behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" DataContext="{Binding Image, Source={StaticResource Locator}}">
+        mc:Ignorable="d" DataContext="{Binding Image, Source={StaticResource Locator}}"
+		MinWidth="400" MinHeight="300" MaxWidth="1280" MaxHeight="800">
 	<DockPanel>
 		<StackPanel Orientation="Horizontal" Margin="5" DockPanel.Dock="Bottom">
 			<Button ToolTip="{lex:Loc CopyToClipboard}" Style="{StaticResource MaterialDesignToolForegroundButton}"

@@ -26,6 +26,8 @@ namespace Twice.ViewModels.Dialogs
 			{
 				Images.Add( new ImageEntry( url, false ) );
 			}
+
+			Center();
 		}
 
 		public void SetImages( IEnumerable<StatusMediaViewModel> images )
@@ -35,6 +37,8 @@ namespace Twice.ViewModels.Dialogs
 			{
 				Images.Add( new ImageEntry( url ) );
 			}
+
+			Center();
 		}
 
 		private void ExecuteCopyToClipboardCommand()

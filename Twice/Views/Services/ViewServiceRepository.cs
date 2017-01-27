@@ -324,7 +324,14 @@ namespace Twice.Views.Services
 
 				if( newHost )
 				{
-					shouldSetupResult = host.ShowDialog() == true;
+					try
+					{
+						shouldSetupResult = host.ShowDialog() == true;
+					}
+					catch( InvalidOperationException )
+					{
+						// Window was closed during setup
+					}
 				}
 
 				if( shouldSetupResult )

@@ -216,7 +216,7 @@
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 
 								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" Background="Transparent">
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
@@ -232,7 +232,7 @@
 													<StackPanel.Resources>
 														<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
 															<Style.Triggers>
-																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
+																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
 																			Value="False">
 																	<Setter Property="Visibility" Value="Hidden" />
 																</DataTrigger>
@@ -297,7 +297,8 @@
 					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 
 					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3">
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3"
+										Background="Transparent">
 						<controls1:FlipView.ItemTemplate>
 							<DataTemplate>
 								<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
@@ -564,7 +565,8 @@
 												ContentTemplateSelector="{StaticResource CardSelector}" />
 
 									<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" HorizontalAlignment="Center">
+												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" HorizontalAlignment="Center"
+												Background="Transparent">
 										<controls1:FlipView.ItemTemplate>
 											<DataTemplate>
 												<Grid>
@@ -582,7 +584,7 @@
 														<StackPanel.Resources>
 															<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
 																<Style.Triggers>
-																	<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"
+																	<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
 																			Value="False">
 																		<Setter Property="Visibility" Value="Hidden" />
 																	</DataTrigger>
