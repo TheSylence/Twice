@@ -1,9 +1,9 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Anotar.NLog;
 
 [assembly: AssemblyTitle( "Twice" )]
 [assembly: AssemblyDescription( "Twitter Client for Windows" )]
