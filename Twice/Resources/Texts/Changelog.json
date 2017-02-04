@@ -1,5 +1,16 @@
 ﻿[
-{
+    {
+        "Version": "0.10.2",
+        "Date": "2017-02-04",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
+            "Fixed crash after update"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.10.1",
         "Date": "2017-01-28",
         "Description": "",

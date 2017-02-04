@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Twice</id>
-        <version>0.0.0.0</version>
+        <version>0.0.0</version>
         <title>Twice</title>
         <authors>Matthias Specht</authors>
         <projectUrl>http://btbsoft.org</projectUrl>

@@ -1,9 +1,9 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Anotar.NLog;
 
 [assembly: AssemblyTitle( "Twice" )]
 [assembly: AssemblyDescription( "Twitter Client for Windows" )]
@@ -17,7 +17,7 @@ using System.Windows;
 [assembly: ComVisible( false )]
 [assembly: ThemeInfo( ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly )]
 [assembly: LogMinimalMessage]
-[assembly: AssemblyVersion( "0.10.1.0" )]
-[assembly: AssemblyFileVersion( "0.10.1.0" )]
+[assembly: AssemblyVersion( "0.10.2" )]
+[assembly: AssemblyFileVersion( "0.10.2" )]
 [assembly: InternalsVisibleTo( "Twice.Tests" )]
 [assembly: InternalsVisibleTo( "DynamicProxyGenAssembly2" )]
