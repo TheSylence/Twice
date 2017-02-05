@@ -174,7 +174,7 @@ namespace Twice.ViewModels.Twitter
 			IsSending = true;
 			List<Tuple<ulong, ulong>> statusIds = new List<Tuple<ulong, ulong>>();
 
-			if( ScheduleInformation.IsTweetScheduled )
+			if( ScheduleInformation?.IsTweetScheduled == true )
 			{
 				var accountIds = Accounts.Where( a => a.Use ).Select( a => a.Context.UserId );
 				var fileNames = AttachedMedias.Select( m => m.FileName );
@@ -186,12 +186,12 @@ namespace Twice.ViewModels.Twitter
 				statusIds.AddRange( statuses );
 			}
 
-			if( ScheduleInformation.IsDeletionScheduled )
+			if( ScheduleInformation?.IsDeletionScheduled == true )
 			{
 				ScheduleInformation.ScheduleDeletion( statusIds, Text );
 			}
 
-			if( ScheduleInformation.IsTweetScheduled )
+			if( ScheduleInformation?.IsTweetScheduled == true )
 			{
 				await CloseOrReload();
 			}
@@ -566,7 +566,7 @@ namespace Twice.ViewModels.Twitter
 			KnownHashtags = ( await Cache.GetKnownHashtags().ConfigureAwait( false ) ).ToList();
 			RaisePropertyChanged( nameof( KnownHashtags ) );
 
-			ScheduleInformation.ResetSchedule();
+			ScheduleInformation?.ResetSchedule();
 		}
 
 		private const int LowWarnThreshold = 135;
