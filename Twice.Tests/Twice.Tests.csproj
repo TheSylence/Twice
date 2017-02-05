@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\Twitter\MediaItemTests.cs" />
     <Compile Include="ViewModels\Twitter\MessageDetailsViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\MessageViewModelTests.cs" />
+    <Compile Include="ViewModels\Twitter\ScheduleInformationViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\StatusViewModelTests.cs" />
     <Compile Include="ViewModels\Twitter\TweetDetailsViewModelTests.cs" />
     <Compile Include="ViewModels\Validation\CommonValidationsTests.cs" />

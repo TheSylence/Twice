@@ -116,25 +116,25 @@
 			</DockPanel>
 
 			<StackPanel Orientation="Vertical" Grid.Row="1">
-				<CheckBox Content="{lex:Loc ScheduleTweet}" Margin="5,10" IsChecked="{Binding IsTweetScheduled}" />
-				<DockPanel LastChildFill="False" IsEnabled="{Binding IsTweetScheduled}">
+				<CheckBox Content="{lex:Loc ScheduleTweet}" Margin="5,10" IsChecked="{Binding ScheduleInformation.IsTweetScheduled}" />
+				<DockPanel LastChildFill="False" IsEnabled="{Binding ScheduleInformation.IsTweetScheduled}">
 					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
 											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
-											SelectedDate="{Binding ScheduleDate}" />
+											SelectedDate="{Binding ScheduleInformation.ScheduleDate}" />
 					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
-														   SelectedTime="{Binding ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+														   SelectedTime="{Binding ScheduleInformation.ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
 				</DockPanel>
 			</StackPanel>
 
 			<StackPanel Orientation="Vertical" Grid.Row="2">
-				<CheckBox Content="{lex:Loc ScheduleTweetDeletion}" Margin="5,10" IsChecked="{Binding IsDeletionScheduled}" />
-				<DockPanel LastChildFill="False" IsEnabled="{Binding IsDeletionScheduled}">
+				<CheckBox Content="{lex:Loc ScheduleTweetDeletion}" Margin="5,10" IsChecked="{Binding ScheduleInformation.IsDeletionScheduled}" />
+				<DockPanel LastChildFill="False" IsEnabled="{Binding ScheduleInformation.IsDeletionScheduled}">
 					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
 											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
-											SelectedDate="{Binding DeletionDate}" />
+											SelectedDate="{Binding ScheduleInformation.DeletionDate}" />
 					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
-														   SelectedTime="{Binding DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+														   SelectedTime="{Binding ScheduleInformation.DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
 				</DockPanel>
 			</StackPanel>

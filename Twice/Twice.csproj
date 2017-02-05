@@ -384,6 +384,8 @@
     <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="ViewModels\LogMessageCommand.cs" />
     <Compile Include="ViewModels\Twitter\CardViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\IScheduleInformationViewModel.cs" />
+    <Compile Include="ViewModels\Twitter\ScheduleInformationViewModel.cs" />
     <Compile Include="ViewModels\Twitter\ScheduleItem.cs" />
     <Compile Include="Views\CardTemplateSelector.cs" />
     <Compile Include="Views\Dialogs\DialogWindowHost.xaml.cs">
