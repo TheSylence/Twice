@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Twice.Models.Scheduling;
+using Twice.Utilities;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.Tests.ViewModels.Twitter
@@ -15,7 +16,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void DeletionDateMustBeInFutureWhenEnabled()
 		{
 			// Arrange
-			var vm = new ScheduleInformationViewModel( null );
+			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
 
 			var pastDate = DateTime.Now.AddDays( -1 );
 			var futureDate = DateTime.Now.AddDays( 1 );
@@ -43,12 +44,11 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( enabledDateInPast );
 			Assert.IsFalse( enabledDateInFuture );
 		}
-
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void DeletionTimeMustBeInFutureWhenEnabled()
 		{
 			// Arrange
-			var vm = new ScheduleInformationViewModel( null );
+			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
 
 			var pastDate = DateTime.Now.AddHours( -1 );
 			var futureDate = DateTime.Now.AddHours( 1 );
@@ -56,18 +56,22 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Act
 			vm.IsDeletionScheduled = false;
 			vm.DeletionTime = pastDate;
+			vm.DeletionDate = pastDate.Date;
 			bool disabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
 
 			vm.IsDeletionScheduled = false;
 			vm.DeletionTime = futureDate;
+			vm.DeletionDate = futureDate.Date;
 			bool disabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
 
 			vm.IsDeletionScheduled = true;
 			vm.DeletionTime = pastDate;
+			vm.DeletionDate = pastDate.Date;
 			bool enabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
 
 			vm.IsDeletionScheduled = true;
 			vm.DeletionTime = futureDate;
+			vm.DeletionDate = futureDate.Date;
 			bool enabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
 
 			// Assert
@@ -81,7 +85,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void ScheduleDateMustBeInFutureWhenEnabled()
 		{
 			// Arrange
-			var vm = new ScheduleInformationViewModel( null );
+			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
 
 			var pastDate = DateTime.Now.AddDays( -1 );
 			var futureDate = DateTime.Now.AddDays( 1 );
@@ -114,7 +118,7 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void ScheduledTimeMustBeInFutureWhenEnabled()
 		{
 			// Arrange
-			var vm = new ScheduleInformationViewModel( null );
+			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
 
 			var pastDate = DateTime.Now.AddHours( -1 );
 			var futureDate = DateTime.Now.AddHours( 1 );
@@ -122,18 +126,22 @@ namespace Twice.Tests.ViewModels.Twitter
 			// Act
 			vm.IsTweetScheduled = false;
 			vm.ScheduleTime = pastDate;
+			vm.ScheduleDate = pastDate.Date;
 			bool disabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleTime ) ).Cast<object>().Any();
 
 			vm.IsTweetScheduled = false;
 			vm.ScheduleTime = futureDate;
+			vm.ScheduleDate = futureDate.Date;
 			bool disabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleTime ) ).Cast<object>().Any();
 
 			vm.IsTweetScheduled = true;
 			vm.ScheduleTime = pastDate;
+			vm.ScheduleDate = pastDate.Date;
 			bool enabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleTime ) ).Cast<object>().Any();
 
 			vm.IsTweetScheduled = true;
 			vm.ScheduleTime = futureDate;
+			vm.ScheduleDate = futureDate.Date;
 			bool enabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleTime ) ).Cast<object>().Any();
 
 			// Assert
@@ -154,33 +162,17 @@ namespace Twice.Tests.ViewModels.Twitter
 			var scheduler = new Mock<IScheduler>();
 			scheduler.Setup( s => s.AddJob( It.Is( jobVerifier ) ) ).Verifiable();
 
-			//var context = new Mock<IContextEntry>();
-			//context.SetupGet( c => c.ProfileImageUrl ).Returns( new Uri( "http://example.com/image.png" ) );
-
-			var vm = new ScheduleInformationViewModel( scheduler.Object )
+			var vm = new ScheduleInformationViewModel( scheduler.Object, new DateProvider() )
 			{
-				//TwitterConfig = new Mock<ITwitterConfiguration>().Object,
 				IsTweetScheduled = true,
 				ScheduleDate = DateTime.Now.AddDays( 10 ),
 				ScheduleTime = DateTime.Now.AddMinutes( 1 )
 			};
 
-			//vm.Accounts.Add( new AccountEntry( context.Object, false ) { Use = true } );
-
-			//var waitHandle = new ManualResetEventSlim( false );
-			//vm.PropertyChanged += ( s, e ) =>
-			//{
-			//	if( e.PropertyName == nameof( ComposeTweetViewModel.IsSending ) && !vm.IsSending )
-			//	{
-			//		waitHandle.Set();
-			//	}
-			//};
-
 			// Act
 			vm.ScheduleTweet( "Hello World", null, Enumerable.Empty<ulong>(), Enumerable.Empty<string>() );
 
 			// Assert
-			//Assert.IsTrue( waitHandle.Wait( 1000 ) );
 			scheduler.Verify( s => s.AddJob( It.Is( jobVerifier ) ), Times.Once() );
 		}
 	}

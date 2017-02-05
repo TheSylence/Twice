@@ -4,34 +4,35 @@ using System.Diagnostics;
 using System.Linq;
 using Twice.Models.Scheduling;
 using Twice.Resources;
+using Twice.Utilities;
 using Twice.ViewModels.Validation;
 
 namespace Twice.ViewModels.Twitter
 {
 	class ScheduleInformationViewModel : ValidationViewModel, IScheduleInformationViewModel
 	{
-		public ScheduleInformationViewModel( IScheduler scheduler )
+		public ScheduleInformationViewModel( IScheduler scheduler, IDateProvider dateProvider )
 		{
 			Scheduler = scheduler;
 
 			Validate( () => ScheduleDate )
 				.If( () => IsTweetScheduled )
-				.Check( dt => dt.Date >= DateTime.Now.Date )
+				.Check( dt => dt.Date >= dateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => ScheduleTime )
 				.If( () => IsTweetScheduled )
-				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || ScheduleDate.Date > DateTime.Now.Date )
+				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || ScheduleDate.Date > dateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )
 				.If( () => IsDeletionScheduled )
-				.Check( dt => dt.Date >= DateTime.Now.Date )
+				.Check( dt => dt.Date >= dateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionTime )
 				.If( () => IsDeletionScheduled )
-				.Check( dt => dt.TimeOfDay >= DateTime.Now.TimeOfDay || DeletionDate.Date > DateTime.Now.Date )
+				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || DeletionDate.Date > dateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )

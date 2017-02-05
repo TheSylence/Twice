@@ -43,6 +43,7 @@ namespace Twice.Injections
 			Bind<INotifier>().To<Notifier>();
 			Bind<IProfileDialogViewModel>().To<ProfileDialogViewModel>();
 			Bind<IRetweetDialogViewModel>().To<RetweetDialogViewModel>();
+			Bind<IScheduleInformationViewModel>().To<ScheduleInformationViewModel>();
 			Bind<ISearchDialogViewModel>().To<SearchDialogViewModel>();
 			Bind<ISettingsDialogViewModel>().To<SettingsDialogViewModel>();
 			Bind<ITextInputDialogViewModel>().To<TextInputDialogViewModel>();

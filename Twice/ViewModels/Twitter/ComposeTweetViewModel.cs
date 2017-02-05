@@ -25,12 +25,12 @@ namespace Twice.ViewModels.Twitter
 	[ConfigureAwait( false )]
 	internal class ComposeTweetViewModel : DialogViewModel, IComposeTweetViewModel
 	{
-		public ComposeTweetViewModel( IScheduler scheduler )
+		public ComposeTweetViewModel( IScheduleInformationViewModel scheduler )
 		{
 			Accounts = new List<AccountEntry>();
 			Title = Strings.ComposeTweet;
 
-			ScheduleInformation = new ScheduleInformationViewModel( scheduler );
+			ScheduleInformation = scheduler;
 		}
 
 		private void Acc_UseChanged( object sender, EventArgs e )
