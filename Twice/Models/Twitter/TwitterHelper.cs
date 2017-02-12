@@ -1,21 +1,21 @@
-﻿using Anotar.NLog;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Anotar.NLog;
+using LinqToTwitter;
 
 namespace Twice.Models.Twitter
 {
 	internal static class TwitterHelper
 	{
 		/// <summary>
-		///  Applies Unicode Normalization to a text and then counts characters. 
+		///     Applies Unicode Normalization to a text and then counts characters.
 		/// </summary>
 		/// <remarks>
-		///  See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.
+		///     See https://dev.twitter.com/basics/counting-characters for details on how twitter counts characters.
 		/// </remarks>
 		/// <param name="text"></param>
 		/// <param name="twitterConfig"></param>
@@ -54,20 +54,23 @@ namespace Twice.Models.Twitter
 
 		public static string GetMimeType( string fileName )
 		{
-			var ext = Path.GetExtension( fileName );
-
-			var lookup = new Dictionary<string, string>
+			if( fileName.IndexOfAny( Path.GetInvalidPathChars() ) == -1 )
 			{
-				[".png"] = "image/png",
-				[".gif"] = "image/gif",
-				[".bmp"] = "image/bmp",
-				[".jpg"] = "image/jpg",
-				[".jpeg"] = "image/jpg"
-			};
+				var ext = Path.GetExtension( fileName );
 
-			if( ext != null && lookup.ContainsKey( ext ) )
-			{
-				return lookup[ext];
+				var lookup = new Dictionary<string, string>
+				{
+					[".png"] = "image/png",
+					[".gif"] = "image/gif",
+					[".bmp"] = "image/bmp",
+					[".jpg"] = "image/jpg",
+					[".jpeg"] = "image/jpg"
+				};
+
+				if( !string.IsNullOrEmpty( ext ) && lookup.ContainsKey( ext ) )
+				{
+					return lookup[ext];
+				}
 			}
 
 			return "application/octet-stream";
