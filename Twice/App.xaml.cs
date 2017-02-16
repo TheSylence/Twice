@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
@@ -54,6 +55,8 @@ namespace Twice
 			Current.DispatcherUnhandledException += Handler.DispatcherUnhandledException;
 
 			ProxyServer = new MediaProxyServer();
+
+			Timeline.DesiredFrameRateProperty.OverrideMetadata( typeof( Timeline ), new FrameworkPropertyMetadata { DefaultValue = 30 } );
 		}
 
 		internal static void ApplyWindowSettings( Window window )
