@@ -1,6 +1,8 @@
+using GalaSoft.MvvmLight;
+
 namespace Twice.ViewModels.Info
 {
-	internal class LicenseItem
+	internal class LicenseItem : ObservableObject
 	{
 		public LicenseItem( string name, string content )
 		{

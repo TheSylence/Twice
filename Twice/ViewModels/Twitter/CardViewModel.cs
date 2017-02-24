@@ -1,8 +1,9 @@
-﻿using Twice.Models.Media;
+﻿using GalaSoft.MvvmLight;
+using Twice.Models.Media;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal class CardViewModel
+	internal class CardViewModel : ObservableObject
 	{
 		public CardViewModel( TwitterCard card )
 		{

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GalaSoft.MvvmLight;
 
 namespace Twice.ViewModels.Info
 {
-	internal class ChangelogItem
+	internal class ChangelogItem : ObservableObject
 	{
 		public List<string> Changes { get; set; }
 		public DateTime Date { get; set; }
