@@ -6,6 +6,17 @@
         "NewFeatures": [],
         "Changes": [],
         "Fixes": [
+            "Opening a user's profile picture now uses the best available quality"
+        ],
+        "Issues": []
+    },
+    {
+        "Version": "0.10.2",
+        "Date": "2017-02-04",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [],
+        "Fixes": [
             "Fixed crash after update"
         ],
         "Issues": []
