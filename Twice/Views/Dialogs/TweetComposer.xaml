@@ -39,7 +39,7 @@
 				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 					<StackPanel.Resources>
 						<!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-						<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
+						<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
 							<Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
 							<Setter Property="Margin" Value="5" />
 						</Style>
@@ -68,7 +68,7 @@
 										</i:EventTrigger>
 									</i:Interaction.Triggers>
 									<Image.Style>
-										<Style TargetType="Image">
+										<Style TargetType="{x:Type Image}">
 											<Style.Triggers>
 												<Trigger Property="IsMouseOver" Value="True">
 													<Setter Property="Cursor" Value="Hand" />
@@ -205,7 +205,7 @@
 				<TextBlock Text="{Binding TextLength, StringFormat={lex:Loc CharacterCounter}}" Grid.Row="1" Margin="5"
 						   Grid.Column="1" HorizontalAlignment="Right">
 					<TextBlock.Style>
-						<Style TargetType="TextBlock">
+						<Style TargetType="{x:Type TextBlock}">
 							<Style.Triggers>
 								<DataTrigger Binding="{Binding MediumCharsLeft}" Value="True">
 									<Setter Property="Foreground" Value="Orange" />

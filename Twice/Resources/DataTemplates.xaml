@@ -119,7 +119,7 @@
 	<DataTemplate x:Key="MessageViewTemplate" DataType="twitter:MessageViewModel">
 		<materialDesign:Card Margin="3" Padding="0,0,0,5">
 			<materialDesign:Card.Style>
-				<Style TargetType="materialDesign:Card">
+				<Style TargetType="{x:Type materialDesign:Card}">
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding WasRead}" Value="False">
 							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
@@ -195,7 +195,7 @@
 
 								<Button Width="28" Height="28" Command="{Binding ReplyCommand}" ToolTip="{lex:Loc Reply}" Grid.Column="0">
 									<Button.Style>
-										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
 												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
 														 Value="False">
@@ -230,7 +230,7 @@
 
 												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
 													<StackPanel.Resources>
-														<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+														<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
 															<Style.Triggers>
 																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
 																			Value="False">
@@ -316,7 +316,7 @@
 	<DataTemplate x:Key="StatusViewTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="2" Padding="0,0,0,5" MinWidth="200" MaxWidth="600">
 			<materialDesign:Card.Style>
-				<Style TargetType="materialDesign:Card">
+				<Style TargetType="{x:Type materialDesign:Card}">
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding HightlightStatus ,RelativeSource={RelativeSource AncestorType=views:StatusContainer}}" Value="True">
 							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
@@ -408,7 +408,7 @@
 									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
 									Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
 									<Button.Style>
-										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
 												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
 														 Value="False">
@@ -432,7 +432,7 @@
 
 								<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True" HorizontalAlignment="Center">
 									<materialDesign:PopupBox.Style>
-										<Style TargetType="materialDesign:PopupBox">
+										<Style TargetType="{x:Type materialDesign:PopupBox}">
 											<Style.Triggers>
 												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
 														 Value="False">
@@ -477,7 +477,7 @@
 										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
 										HorizontalAlignment="Center">
 									<Button.Style>
-										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
 												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
 														 Value="False">
@@ -493,7 +493,7 @@
 								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
 										HorizontalAlignment="Center">
 									<Button.Style>
-										<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 											<Style.Triggers>
 												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
 														 Value="False">
@@ -582,7 +582,7 @@
 
 													<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
 														<StackPanel.Resources>
-															<Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+															<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
 																<Style.Triggers>
 																	<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
 																			Value="False">

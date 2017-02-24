@@ -33,7 +33,7 @@
 													CommandParameter="{Binding User.BigProfileImageUrl}" />
 						</i:Interaction.Behaviors>
 						<Image.Style>
-							<Style TargetType="Image">
+							<Style TargetType="{x:Type Image}">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
 												   Path=IsMouseOver}" Value="True">

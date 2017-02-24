@@ -59,7 +59,7 @@
 
 		<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
 			<DockPanel.Resources>
-				<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 					<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 				</Style>
 			</DockPanel.Resources>
@@ -164,9 +164,9 @@
 											  FocusVisualStyle="{x:Null}">
 									<ItemsControl.ItemTemplateSelector>
 										<views:GenericTemplateSelector>
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:ScheduleItem" Template="{StaticResource ScheduleViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:StatusViewModel}" Template="{StaticResource StatusViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:MessageViewModel}" Template="{StaticResource MessageViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:ScheduleItem}" Template="{StaticResource ScheduleViewTemplate}" />
 										</views:GenericTemplateSelector>
 									</ItemsControl.ItemTemplateSelector>
 									<ItemsControl.ItemsPanel>
