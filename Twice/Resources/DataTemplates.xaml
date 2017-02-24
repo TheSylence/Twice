@@ -220,7 +220,7 @@
 									<controls1:FlipView.ItemTemplate>
 										<DataTemplate>
 											<Grid>
-												<MediaElement Source="{Binding Url, IsAsync=True}" Stretch="Uniform" LoadedBehavior="Manual" UnloadedBehavior="Manual">
+												<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual" Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
 													<i:Interaction.Behaviors>
 														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
 														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"

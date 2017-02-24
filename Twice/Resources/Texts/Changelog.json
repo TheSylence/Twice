@@ -7,7 +7,8 @@
         "Changes": [
             "Message column now display a title",
             "Improved rendering performance",
-            "App no longer prefers 32bit"
+            "App no longer prefers 32bit",
+            "Improved performance of profile dialog"
         ],
         "Fixes": [
             "Opening a user's profile picture now uses the best available quality"

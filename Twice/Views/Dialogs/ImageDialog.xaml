@@ -36,7 +36,7 @@
 			<controls:FlipView.ItemTemplate>
 				<DataTemplate DataType="dialogs:ImageEntry">
 					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-						<MediaElement Source="{Binding ImageUrl}" Stretch="Uniform" LoadedBehavior="Play" UnloadedBehavior="Manual">
+						<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual" Source="{Binding ImageUrl}" Stretch="Uniform">
 							<i:Interaction.Behaviors>
 								<behaviors:MediaController IsAnimated="{Binding IsAnimated}" />
 							</i:Interaction.Behaviors>
