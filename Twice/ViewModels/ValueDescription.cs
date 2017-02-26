@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using GalaSoft.MvvmLight;
 using Twice.Attributes;
 using Twice.Resources;
 
 namespace Twice.ViewModels
 {
-	internal class ValueDescription<TValue>
+	internal class ValueDescription<TValue> : ObservableObject
 	{
 		public ValueDescription( TValue value, string description )
 		{

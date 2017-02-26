@@ -15,7 +15,8 @@
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts" WindowButtonCommandsOverlayBehavior="Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-        xmlns:views="clr-namespace:Twice.Views"
+        xmlns:views="clr-namespace:Twice.Views" SnapsToDevicePixels="False" RenderOptions.EdgeMode="Aliased"
+		RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.ClearTypeHint="Auto"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -58,7 +59,7 @@
 
 		<DockPanel VerticalAlignment="Stretch" Margin="0,0,5,0">
 			<DockPanel.Resources>
-				<Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
 					<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 				</Style>
 			</DockPanel.Resources>
@@ -141,7 +142,7 @@
 			</ItemsControl.Template>
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal" FocusVisualStyle="{x:Null}" />
+					<VirtualizingStackPanel Orientation="Horizontal" FocusVisualStyle="{x:Null}" />
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
@@ -163,9 +164,9 @@
 											  FocusVisualStyle="{x:Null}">
 									<ItemsControl.ItemTemplateSelector>
 										<views:GenericTemplateSelector>
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:MessageViewModel" Template="{StaticResource MessageViewTemplate}" />
-											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:ScheduleItem" Template="{StaticResource ScheduleViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:StatusViewModel}" Template="{StaticResource StatusViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:MessageViewModel}" Template="{StaticResource MessageViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="{x:Type twitter:ScheduleItem}" Template="{StaticResource ScheduleViewTemplate}" />
 										</views:GenericTemplateSelector>
 									</ItemsControl.ItemTemplateSelector>
 									<ItemsControl.ItemsPanel>
@@ -175,20 +176,14 @@
 									</ItemsControl.ItemsPanel>
 									<ItemsControl.Template>
 										<ControlTemplate>
-											<Border BorderThickness="{TemplateBinding Border.BorderThickness}"
-													Padding="{TemplateBinding Control.Padding}"
-													BorderBrush="{TemplateBinding Border.BorderBrush}"
-													Background="{TemplateBinding Panel.Background}"
-													SnapsToDevicePixels="True">
-												<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
-														  VerticalScrollBarVisibility="Auto" Focusable="False" FocusVisualStyle="{x:Null}">
-													<i:Interaction.Behaviors>
-														<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
-													</i:Interaction.Behaviors>
+											<ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Disabled"
+														VerticalScrollBarVisibility="Auto" Focusable="False" FocusVisualStyle="{x:Null}">
+												<i:Interaction.Behaviors>
+													<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+												</i:Interaction.Behaviors>
 
-													<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-												</ScrollViewer>
-											</Border>
+												<ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+											</ScrollViewer>
 										</ControlTemplate>
 									</ItemsControl.Template>
 								</ItemsControl>

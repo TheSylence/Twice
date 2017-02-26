@@ -13,6 +13,7 @@ using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Streaming;
+using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
@@ -24,6 +25,7 @@ namespace Twice.ViewModels.Columns
 			IMessenger messenger = null, IColumnActionDispatcher actionDispatcher = null )
 			: base( context, definition, config, parser, messenger, actionDispatcher )
 		{
+			Title = Strings.Messages;
 			MessengerInstance.Register<DmMessage>( this, OnDirectMessage );
 		}
 

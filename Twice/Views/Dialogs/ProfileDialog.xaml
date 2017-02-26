@@ -27,13 +27,13 @@
 				</Grid.ColumnDefinitions>
 
 				<StackPanel Margin="5">
-					<Image Source="{Binding User.ProfileImageUrlHttpsOrig}" Width="96" Height="96" VerticalAlignment="Top" Margin="5">
+					<Image Source="{Binding User.ProfileImageUrlHttpsOrig, IsAsync=True}" Width="96" Height="96" VerticalAlignment="Top" Margin="5">
 						<i:Interaction.Behaviors>
 							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenImageCommand}}"
 													CommandParameter="{Binding User.BigProfileImageUrl}" />
 						</i:Interaction.Behaviors>
 						<Image.Style>
-							<Style TargetType="Image">
+							<Style TargetType="{x:Type Image}">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
 												   Path=IsMouseOver}" Value="True">
@@ -87,28 +87,33 @@
 					<DataTemplate DataType="profile:UserSubPage">
 						<Grid>
 							<views:StatusContainer>
-								<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-									<i:Interaction.Behaviors>
-										<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
-									</i:Interaction.Behaviors>
-									<ItemsControl ItemsSource="{Binding Items, IsAsync=True}" HorizontalContentAlignment="Stretch"
+								<ItemsControl ItemsSource="{Binding Items, IsAsync=True}" HorizontalContentAlignment="Stretch"
 												  ScrollViewer.CanContentScroll="True"
 												  VirtualizingStackPanel.IsVirtualizing="True"
 												  VirtualizingStackPanel.ScrollUnit="Pixel"
 												  VirtualizingStackPanel.VirtualizationMode="Recycling">
-										<ItemsControl.ItemsPanel>
-											<ItemsPanelTemplate>
-												<VirtualizingStackPanel />
-											</ItemsPanelTemplate>
-										</ItemsControl.ItemsPanel>
-										<ItemsControl.ItemTemplateSelector>
-											<views:GenericTemplateSelector>
-												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
-												<views:GenericDataTemplateSelectorItem TemplatedType="twitter:UserViewModel" Template="{StaticResource UserViewTemplate}" />
-											</views:GenericTemplateSelector>
-										</ItemsControl.ItemTemplateSelector>
-									</ItemsControl>
-								</ScrollViewer>
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<VirtualizingStackPanel />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplateSelector>
+										<views:GenericTemplateSelector>
+											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:StatusViewModel" Template="{StaticResource StatusViewTemplate}" />
+											<views:GenericDataTemplateSelectorItem TemplatedType="twitter:UserViewModel" Template="{StaticResource UserViewTemplate}" />
+										</views:GenericTemplateSelector>
+									</ItemsControl.ItemTemplateSelector>
+									<ItemsControl.Template>
+										<ControlTemplate>
+											<ScrollViewer Focusable="False">
+												<i:Interaction.Behaviors>
+													<behaviors:ColumnScrollHandler ActionDispatcher="{Binding ActionDispatcher}" />
+												</i:Interaction.Behaviors>
+												<ItemsPresenter />
+											</ScrollViewer>
+										</ControlTemplate>
+									</ItemsControl.Template>
+								</ItemsControl>
 							</views:StatusContainer>
 
 							<controls:ProgressRing IsActive="{Binding IsLoading, Mode=OneWay}" />

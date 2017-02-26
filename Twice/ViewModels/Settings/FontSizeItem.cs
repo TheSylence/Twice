@@ -1,6 +1,8 @@
-﻿namespace Twice.ViewModels.Settings
+﻿using GalaSoft.MvvmLight;
+
+namespace Twice.ViewModels.Settings
 {
-	internal class FontSizeItem
+	internal class FontSizeItem : ObservableObject
 	{
 		public string DisplayName { get; set; }
 

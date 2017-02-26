@@ -25,13 +25,13 @@
 	<controls:MetroWindow.Resources>
 		<xaml:Markdown x:Key="Markdown">
 			<xaml:Markdown.DocumentStyle>
-				<Style TargetType="FlowDocument">
+				<Style TargetType="{x:Type FlowDocument}">
 					<Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
 					<Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
 				</Style>
 			</xaml:Markdown.DocumentStyle>
 			<xaml:Markdown.Heading1Style>
-				<Style TargetType="Paragraph">
+				<Style TargetType="{x:Type Paragraph}">
 					<Setter Property="FontWeight" Value="Bold" />
 					<Setter Property="TextDecorations" Value="Underline" />
 				</Style>

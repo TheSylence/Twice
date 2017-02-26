@@ -2,10 +2,11 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight;
 
 namespace Twice.ViewModels.Twitter
 {
-	internal class MediaItem
+	internal class MediaItem : ObservableObject
 	{
 		public MediaItem( ulong mediaId, byte[] mediaData, string fileName )
 		{

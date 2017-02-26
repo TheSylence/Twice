@@ -1,9 +1,10 @@
+using GalaSoft.MvvmLight;
 using MaterialDesignThemes.Wpf;
 using Twice.Models.Columns;
 
 namespace Twice.ViewModels.ColumnManagement
 {
-	internal class ColumnTypeItem
+	internal class ColumnTypeItem : ObservableObject
 	{
 		public ColumnTypeItem( ColumnType type, string name, string description, PackIconKind icon )
 		{

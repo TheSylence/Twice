@@ -45,7 +45,7 @@ namespace Twice.ViewModels.Profile
 					user = await Context.Twitter.Users.ShowUser( ProfileId, true );
 				}
 			}
-			catch( TwitterQueryException ex )
+			catch( Exception ex )
 			{
 				LogTo.WarnException( "Failed to load user profile", ex );
 				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
@@ -102,7 +102,7 @@ namespace Twice.ViewModels.Profile
 			{
 				await Context.Twitter.Users.FollowUser( User.UserId );
 			}
-			catch( TwitterQueryException ex )
+			catch( Exception ex )
 			{
 				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
 				return;
@@ -123,7 +123,7 @@ namespace Twice.ViewModels.Profile
 			{
 				await Context.Twitter.Users.UnfollowUser( User.UserId );
 			}
-			catch( TwitterQueryException ex )
+			catch( Exception ex )
 			{
 				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
 				return;

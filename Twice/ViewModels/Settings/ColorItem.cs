@@ -1,8 +1,9 @@
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
 
 namespace Twice.ViewModels.Settings
 {
-	internal class ColorItem
+	internal class ColorItem : ObservableObject
 	{
 		public Brush BorderBrush { get; set; }
 

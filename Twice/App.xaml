@@ -59,7 +59,7 @@
 			<SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}" />
 			<SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4" />
 
-			<Style TargetType="controls:MetroWindow" x:Key="WindowStyle">
+			<Style TargetType="{x:Type controls:MetroWindow}" x:Key="WindowStyle">
 				<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
 				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 				<Setter Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}" />
@@ -71,7 +71,7 @@
 				<Setter Property="BorderThickness" Value="1" />
 			</Style>
 
-			<Style TargetType="controls:MetroWindow" BasedOn="{StaticResource WindowStyle}" x:Key="DialogStyle">
+			<Style TargetType="{x:Type controls:MetroWindow}" BasedOn="{StaticResource WindowStyle}" x:Key="DialogStyle">
 				<Setter Property="WindowStyle" Value="ToolWindow" />
 				<Setter Property="ShowInTaskbar" Value="False" />
 				<Setter Property="ShowMaxRestoreButton" Value="False" />
@@ -79,7 +79,7 @@
 				<Setter Property="ResizeMode" Value="NoResize" />
 			</Style>
 
-			<Style TargetType="Hyperlink">
+			<Style TargetType="{x:Type Hyperlink}">
 				<Setter Property="TextDecorations" Value="{x:Null}" />
 				<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
 				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
