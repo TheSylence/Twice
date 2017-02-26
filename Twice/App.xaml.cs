@@ -40,7 +40,7 @@ namespace Twice
 		public App()
 		{
 			Settings.UIMode = UIMode.Full;
-			Settings.MiniDumpType = MiniDumpType.Tiny;
+			Settings.MiniDumpType = MiniDumpType.Normal;
 			Settings.StoragePath = StoragePath.CurrentDirectory;
 			Settings.UIProvider = UIProvider.WPF;
 			Settings.AdditionalReportFiles.Add( "log*.txt" );
