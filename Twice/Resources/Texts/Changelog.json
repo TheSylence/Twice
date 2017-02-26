@@ -11,7 +11,8 @@
             "Improved performance of profile dialog"
         ],
         "Fixes": [
-            "Opening a user's profile picture now uses the best available quality"
+            "Opening a user's profile picture now uses the best available quality",
+            "Fixed possible crash when trying to follow a user"
         ],
         "Issues": []
     },
