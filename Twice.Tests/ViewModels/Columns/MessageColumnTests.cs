@@ -71,7 +71,7 @@ namespace Twice.Tests.ViewModels.Columns
 			};
 
 			// Act
-			await vm.Load();
+			await vm.Load( AsyncLoadContext.Default );
 
 			// Assert
 			cache.Verify( c => c.AddMessages( It.IsAny<IList<MessageCacheEntry>>() ), Times.Once() );

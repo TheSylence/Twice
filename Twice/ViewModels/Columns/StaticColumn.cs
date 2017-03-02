@@ -32,13 +32,13 @@ namespace Twice.ViewModels.Columns
 			return false;
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			var statuses = await Context.Twitter.Statuses.List( Definition.TargetAccounts );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses )
 			{
-				list.Add( await CreateViewModel( s ) );
+				list.Add( await CreateViewModel( s, context ) );
 			}
 
 			await AddItems( list );

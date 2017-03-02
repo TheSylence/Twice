@@ -39,6 +39,8 @@ namespace Twice
 	{
 		public App()
 		{
+			Kernel = new Kernel();
+
 			Settings.UIMode = UIMode.Full;
 			Settings.MiniDumpType = MiniDumpType.Normal;
 			Settings.StoragePath = StoragePath.CurrentDirectory;
@@ -105,7 +107,6 @@ namespace Twice
 			LogEnvironmentInfo();
 
 			DispatcherHelper.Initialize();
-			Kernel = new Kernel();
 			ProxyServer.Start( Kernel.Get<ITwitterContextList>() );
 
 			Scheduler = Kernel.Get<IScheduler>();

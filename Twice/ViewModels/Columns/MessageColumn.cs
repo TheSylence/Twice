@@ -39,7 +39,7 @@ namespace Twice.ViewModels.Columns
 			return Context.UserId == message.SenderID || Context.UserId == message.RecipientID;
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			Dictionary<ulong, DirectMessage> userMap = new Dictionary<ulong, DirectMessage>();
 			var cachedMessages = await Cache.GetMessages();

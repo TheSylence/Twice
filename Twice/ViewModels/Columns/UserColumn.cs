@@ -31,12 +31,12 @@ namespace Twice.ViewModels.Columns
 			return false;
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			var userInfo = await Context.Twitter.Users.ShowUser( UserId, false );
 			Title = userInfo.ScreenNameResponse;
 
-			await base.OnLoad();
+			await base.OnLoad( context );
 		}
 
 		public override Icon Icon => Icon.User;

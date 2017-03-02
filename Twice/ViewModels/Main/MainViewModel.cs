@@ -79,13 +79,13 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			// ReSharper disable once UnusedVariable
-			var dontWait = CheckCredentials();
-
-			// ReSharper disable once RedundantAssignment
-			dontWait = ReportAppVersion();
-
-			await Task.WhenAll( Columns.Select( c => c.Load() ) );
+			Task.Run( async () =>
+			{
+				await CheckCredentials();
+				await ReportAppVersion();
+			} ).Forget();
+			
+			await Task.WhenAll( Columns.Select( c => c.Load( AsyncLoadContext.Ui ) ) );
 
 			// It's late and I didn't have enough coffee...
 			ColumnsLocked = !Configuration.General.ColumnsLocked;

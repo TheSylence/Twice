@@ -68,13 +68,13 @@ namespace Twice.ViewModels.Columns
 			await AddItem( vm );
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			var statuses = await Context.Twitter.Favorites.List( Context.UserId );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses )
 			{
-				list.Add( await CreateViewModel( s ) );
+				list.Add( await CreateViewModel( s, context ) );
 			}
 
 			await AddItems( list );

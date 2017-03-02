@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using Anotar.NLog;
 using Twice.Utilities;
 
 namespace Twice
@@ -43,8 +45,13 @@ namespace Twice
 			var a = value as T[] ?? value.ToArray();
 
 			return a.Length == b.Length
-				   && !a.Except( b ).Any()
-				   && !b.Except( a ).Any();
+			       && !a.Except( b ).Any()
+			       && !b.Except( a ).Any();
+		}
+
+		public static void Forget( this Task task )
+		{
+			task.ContinueWith( t => { LogTo.ErrorException( "Exception in forgotten task", t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
 		}
 
 		public static string GetReason( this Exception ex )

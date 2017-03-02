@@ -38,7 +38,7 @@ namespace Twice.ViewModels.Columns
 			return false;
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			await SetJobs();
 		}
