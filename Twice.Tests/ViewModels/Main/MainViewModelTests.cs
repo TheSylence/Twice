@@ -247,7 +247,7 @@ namespace Twice.Tests.ViewModels.Main
 			};
 
 			// Act
-			await vm.OnLoad( null );
+			await vm.CheckCredentials();
 
 			// Assert
 			context.Verify( c => c.Twitter.VerifyCredentials(), Times.AtLeastOnce() );

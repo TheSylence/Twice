@@ -118,7 +118,7 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
-		private async Task CheckCredentials()
+		internal async Task CheckCredentials()
 		{
 			foreach( var context in ContextList.Contexts )
 			{
