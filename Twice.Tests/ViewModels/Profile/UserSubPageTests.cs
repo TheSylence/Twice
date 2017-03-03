@@ -43,15 +43,16 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
-			var temp = page.Items;
+			var items = page.Items;
+			var firstCount = items.Count;
 			waitHandle.Wait( 1000 );
-			var items = page.Items.ToArray();
 
 			// Assert
-			Assert.IsNull( temp );
+			Assert.IsNotNull( items );
+			Assert.AreEqual( 0, firstCount );
 			Assert.IsTrue( called );
 			Assert.AreEqual( 2, loadChanges );
-			Assert.AreEqual( 2, items.Length );
+			Assert.AreEqual( 2, items.Count );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Profile" )]

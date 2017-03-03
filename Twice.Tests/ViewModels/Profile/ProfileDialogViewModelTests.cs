@@ -167,14 +167,14 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
-			var nullItems = page.Items;
+			var items = page.Items;
+			var firstCount = items.Count;
 
 			waitHandle.Wait( 1000 );
 
-			var items = page.Items;
-
 			// Assert
-			Assert.IsNull( nullItems );
+			Assert.AreEqual( 0, firstCount );
+			Assert.IsNotNull( items );
 			Assert.IsNotNull( items.SingleOrDefault() );
 
 			context.Verify( c => c.Twitter.Friendships.ListFriends( 123, 200, true ), Times.Once() );
@@ -233,18 +233,17 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
-			var nullItems = page.Items;
-
+			var items = page.Items;
+			var firstCount = items.Count;
 			waitHandle.Wait( 1000 );
 
 			waitHandle.Reset();
 			page.ActionDispatcher.OnBottomReached();
 			waitHandle.Wait( 1000 );
 
-			var items = page.Items;
-
 			// Assert
-			Assert.IsNull( nullItems );
+			Assert.AreEqual( 0, firstCount );
+			Assert.IsNotNull( items );
 			Assert.AreEqual( 2, items.Count );
 
 			context.Verify( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 456 ), Times.Once() );
@@ -401,14 +400,15 @@ namespace Twice.Tests.ViewModels.Profile
 			};
 
 			// Act
-			var nullItems = page.Items;
-
-			waitHandle.Wait( 1000 );
-
 			var items = page.Items;
+			int firstCount = items.Count;
+
+			var handleSet = waitHandle.Wait( 1000 );
 
 			// Assert
-			Assert.IsNull( nullItems );
+			Assert.IsTrue( handleSet );
+			Assert.IsNotNull( items );
+			Assert.AreEqual( 0, firstCount );
 			Assert.IsNotNull( items.SingleOrDefault() );
 
 			context.Verify( c => c.Twitter.Statuses.GetUserTweets( 123, 0, 0 ), Times.Once() );
