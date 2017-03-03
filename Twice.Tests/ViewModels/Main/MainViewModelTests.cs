@@ -212,7 +212,7 @@ namespace Twice.Tests.ViewModels.Main
 			};
 
 			var column = new Mock<IColumnViewModel>();
-			column.Setup( c => c.Load( AsyncLoadContext.Default ) ).Returns( Task.CompletedTask ).Verifiable();
+			column.Setup( c => c.Load( AsyncLoadContext.Ui ) ).Returns( Task.CompletedTask ).Verifiable();
 			vm.Columns.Add( column.Object );
 			vm.Columns.Add( column.Object );
 
@@ -220,7 +220,7 @@ namespace Twice.Tests.ViewModels.Main
 			await vm.OnLoad( null );
 
 			// Assert
-			column.Verify( c => c.Load( AsyncLoadContext.Default ), Times.Exactly( 2 ) );
+			column.Verify( c => c.Load( AsyncLoadContext.Ui ), Times.Exactly( 2 ) );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Main" )]
