@@ -1,5 +1,18 @@
 ﻿[
     {
+        "Version": "0.x.x",
+        "Date": "9999-12-31",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [
+            "More performance improvements"
+        ],
+        "Fixes": [
+            "Dialog centering is now always using the correct display"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.10.3",
         "Date": "2017-02-26",
         "Description": "",
