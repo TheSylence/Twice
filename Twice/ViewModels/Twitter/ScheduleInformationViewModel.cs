@@ -11,8 +11,11 @@ namespace Twice.ViewModels.Twitter
 {
 	class ScheduleInformationViewModel : ValidationViewModel, IScheduleInformationViewModel
 	{
+		private readonly IDateProvider DateProvider;
+
 		public ScheduleInformationViewModel( IScheduler scheduler, IDateProvider dateProvider )
 		{
+			DateProvider = dateProvider;
 			Scheduler = scheduler;
 
 			Validate( () => ScheduleDate )
@@ -22,7 +25,7 @@ namespace Twice.ViewModels.Twitter
 
 			Validate( () => ScheduleTime )
 				.If( () => IsTweetScheduled )
-				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || ScheduleDate.Date > dateProvider.Now.Date )
+				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || ScheduleDate.Date > DateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )
@@ -32,7 +35,7 @@ namespace Twice.ViewModels.Twitter
 
 			Validate( () => DeletionTime )
 				.If( () => IsDeletionScheduled )
-				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || DeletionDate.Date > dateProvider.Now.Date )
+				.Check( dt => dt.TimeOfDay >= dateProvider.Now.TimeOfDay || DeletionDate.Date > DateProvider.Now.Date )
 				.Message( Strings.DateMustBeInTheFuture );
 
 			Validate( () => DeletionDate )
@@ -48,10 +51,10 @@ namespace Twice.ViewModels.Twitter
 
 		public void ResetSchedule()
 		{
-			ScheduleDate = DateTime.Now;
-			ScheduleTime = DateTime.Now;
-			DeletionDate = DateTime.Now;
-			DeletionTime = DateTime.Now;
+			ScheduleDate = DateProvider.Now.Date;
+			ScheduleTime = DateProvider.Now.Date;
+			DeletionDate = DateProvider.Now.Date;
+			DeletionTime = DateProvider.Now.Date;
 			IsTweetScheduled = false;
 			IsDeletionScheduled = false;
 		}
@@ -97,6 +100,7 @@ namespace Twice.ViewModels.Twitter
 
 				_DeletionDate = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged( nameof( DeletionTime ) );
 			}
 		}
 
@@ -112,6 +116,7 @@ namespace Twice.ViewModels.Twitter
 
 				_DeletionTime = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged( nameof( DeletionDate ) );
 			}
 		}
 
@@ -167,6 +172,7 @@ namespace Twice.ViewModels.Twitter
 
 				_ScheduleDate = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged( nameof( ScheduleTime ) );
 			}
 		}
 
@@ -184,6 +190,7 @@ namespace Twice.ViewModels.Twitter
 
 				_ScheduleTime = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged( nameof( ScheduleDate ) );
 			}
 		}
 
