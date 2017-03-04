@@ -99,7 +99,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsFalse( enabledDateInFuture );
 		}
 
-		[TestMethod], TestCategory( "ViewModels.Twitter" )
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
 		public void ScheduleDateIsIgnoredWhenDisabled()
 		{
 			// Arrange
