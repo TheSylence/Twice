@@ -15,8 +15,7 @@
         xmlns:flyouts="clr-namespace:Twice.Views.Flyouts" WindowButtonCommandsOverlayBehavior="Flyouts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-        xmlns:views="clr-namespace:Twice.Views" SnapsToDevicePixels="False" RenderOptions.EdgeMode="Aliased"
-		RenderOptions.BitmapScalingMode="NearestNeighbor" RenderOptions.ClearTypeHint="Auto"
+        xmlns:views="clr-namespace:Twice.Views" SnapsToDevicePixels="False"
         xmlns:twitter="clr-namespace:Twice.ViewModels.Twitter"
         Style="{StaticResource WindowStyle}" Icon="../Resources/TwitterIcon.ico"
         mc:Ignorable="d" Title="Twice" DataContext="{Binding Main, Source={StaticResource Locator}}">

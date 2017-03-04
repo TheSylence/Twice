@@ -71,7 +71,7 @@ namespace Twice.ViewModels.Columns
 
 		public async Task Load( AsyncLoadContext context )
 		{
-			Parser.StartStreaming();
+			Task.Run(() => Parser.StartStreaming()).Forget();
 
 			await OnLoad(context).ContinueWith( t =>
 			{
