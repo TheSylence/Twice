@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LinqToTwitter;
 using Twice.Models.Proxy;
+using Twice.Models.Twitter.Comparers;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -44,7 +45,7 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public event EventHandler OpenRequested;
-
+		
 		public override bool Equals( object obj )
 		{
 			var other = obj as StatusMediaViewModel;
@@ -53,12 +54,7 @@ namespace Twice.ViewModels.Twitter
 				return false;
 			}
 
-			if( Entity.ID.Equals( other.Entity.ID ) )
-			{
-				return true;
-			}
-
-			return Entity.MediaUrlHttps.Equals( other.Entity.MediaUrlHttps );
+			return TwitterComparers.MediaEntityComparer.Equals(Entity, other.Entity);
 		}
 
 		public override int GetHashCode()
