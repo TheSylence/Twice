@@ -8,7 +8,8 @@
             "More performance improvements"
         ],
         "Fixes": [
-            "Dialog centering is now always using the correct display"
+            "Dialog centering is now always using the correct display",
+            "Fixed possible crash when loading broken config file"
         ],
         "Issues": []
     },
