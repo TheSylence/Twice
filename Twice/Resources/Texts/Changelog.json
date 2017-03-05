@@ -5,7 +5,8 @@
         "Description": "",
         "NewFeatures": [],
         "Changes": [
-            "More performance improvements"
+            "More performance improvements",
+            "Unfavorited status is immediately removed from favourites column"
         ],
         "Fixes": [
             "Dialog centering is now always using the correct display",
