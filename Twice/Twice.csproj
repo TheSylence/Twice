@@ -222,6 +222,7 @@
     <Compile Include="Behaviors\AutoComplete.cs" />
     <Compile Include="Behaviors\BehaviorBase.cs" />
     <Compile Include="Behaviors\CallbackOnLoad.cs" />
+    <Compile Include="Behaviors\CenterAfterRender.cs" />
     <Compile Include="Behaviors\ClickHandler.cs" />
     <Compile Include="Behaviors\CloseableFlyout.cs" />
     <Compile Include="Behaviors\CloseableView.cs" />
