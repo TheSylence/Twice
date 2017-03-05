@@ -11,7 +11,8 @@
         "Fixes": [
             "Dialog centering is now always using the correct display",
             "Dialog centering is now upated when dialog content is updated",
-            "Fixed possible crash when loading broken config file"
+            "Fixed possible crash when loading broken config file",
+            "Same media is no longer displayed multiple times on same status"
         ],
         "Issues": []
     },

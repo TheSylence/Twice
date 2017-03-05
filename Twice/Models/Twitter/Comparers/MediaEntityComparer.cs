@@ -14,7 +14,12 @@ namespace Twice.Models.Twitter.Comparers
 		/// <param name="y"> The second object of type <see cref="MediaEntity" /> to compare. </param>
 		public bool Equals( MediaEntity x, MediaEntity y )
 		{
-			return x.ID.Equals( y.ID );
+			if( x.ID.Equals( y.ID ) )
+			{
+				return true;
+			}
+
+			return x.MediaUrlHttps.Equals(y.MediaUrlHttps);
 		}
 
 		/// <summary>
