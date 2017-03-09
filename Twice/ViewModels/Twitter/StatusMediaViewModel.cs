@@ -59,7 +59,7 @@ namespace Twice.ViewModels.Twitter
 
 		public override int GetHashCode()
 		{
-			return Entity.GetHashCode();
+			return Entity?.GetHashCode() ?? 0;
 		}
 
 		private void ExecuteOpenImageCommand()
