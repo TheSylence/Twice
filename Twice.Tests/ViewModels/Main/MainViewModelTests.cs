@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using NuGet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NuGet;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -106,7 +106,7 @@ namespace Twice.Tests.ViewModels.Main
 		public void AddColumnCommandOpensDialog()
 		{
 			// Arrange
-			var contexts = new[] { new Mock<IContextEntry>().Object };
+			var contexts = new[] {new Mock<IContextEntry>().Object};
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
@@ -168,7 +168,7 @@ namespace Twice.Tests.ViewModels.Main
 			notifier.Setup( n => n.OnItem( It.IsAny<ColumnItem>(), It.IsAny<ColumnNotifications>() ) ).Verifiable();
 
 			var columnList = new Mock<IColumnDefinitionList>();
-			columnList.Setup( c => c.Load() ).Returns( new[] { new ColumnDefinition( ColumnType.DebugOrTest ) } );
+			columnList.Setup( c => c.Load() ).Returns( new[] {new ColumnDefinition( ColumnType.DebugOrTest )} );
 			columnList.Setup( c => c.Update( It.IsAny<IEnumerable<ColumnDefinition>>() ) ).Verifiable();
 			columnList.Setup( c => c.Remove( It.IsAny<IEnumerable<ColumnDefinition>>() ) ).Verifiable();
 
@@ -199,7 +199,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -229,14 +229,14 @@ namespace Twice.Tests.ViewModels.Main
 			// Arrange
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.VerifyCredentials() ).Throws(
-				new WebException( "The remote name could not be resolved: 'api.twitter.com'" ) )
+					new WebException( "The remote name could not be resolved: 'api.twitter.com'" ) )
 				.Verifiable();
 
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
 
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
@@ -282,11 +282,11 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object )
@@ -337,7 +337,7 @@ namespace Twice.Tests.ViewModels.Main
 		public void NewTweetCommandOpensWindow()
 		{
 			// Arrange
-			var contexts = new[] { new Mock<IContextEntry>().Object };
+			var contexts = new[] {new Mock<IContextEntry>().Object};
 			var contextList = new Mock<ITwitterContextList>();
 			contextList.SetupGet( c => c.Contexts ).Returns( contexts );
 			var notifier = new Mock<INotifier>();
@@ -392,7 +392,7 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
@@ -467,12 +467,12 @@ namespace Twice.Tests.ViewModels.Main
 			var context = new Mock<IContextEntry>();
 			context.Setup( c => c.Twitter.LogCurrentRateLimits() ).Returns( Task.CompletedTask );
 			var contextList = new Mock<ITwitterContextList>();
-			contextList.SetupGet( c => c.Contexts ).Returns( new[] { context.Object } );
+			contextList.SetupGet( c => c.Contexts ).Returns( new[] {context.Object} );
 			var notifier = new Mock<INotifier>();
-			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ) ).Verifiable();
+			notifier.Setup( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information | NotificationType.Restart ) ).Verifiable();
 			var columnList = new Mock<IColumnDefinitionList>();
 			var columnFactory = new Mock<IColumnFactory>();
-			var generalCfg = new GeneralConfig { CheckForUpdates = true };
+			var generalCfg = new GeneralConfig {CheckForUpdates = true};
 			var config = new Mock<IConfig>();
 			config.SetupGet( c => c.General ).Returns( generalCfg );
 			config.SetupGet( c => c.General ).Returns( new GeneralConfig() );
@@ -496,7 +496,7 @@ namespace Twice.Tests.ViewModels.Main
 			await vm.OnLoad( null );
 
 			// Assert
-			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information ), Times.Once() );
+			notifier.Verify( n => n.DisplayMessage( It.IsAny<string>(), NotificationType.Information | NotificationType.Restart ), Times.Once() );
 		}
 	}
 }
