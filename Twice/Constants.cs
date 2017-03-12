@@ -130,5 +130,7 @@ namespace Twice
 		}
 
 		internal const string ApplicationId = "com.squirrel.twice.Twice";
+
+		internal const string IgnoreMutexFlag = "forceIgnoreMutex";
 	}
 }

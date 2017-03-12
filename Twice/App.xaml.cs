@@ -94,11 +94,14 @@ namespace Twice
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			// Ensure that only one instance of the application can run at any time
-			if( !SingleInstance.Start() )
+			if( e.Args.Any( a => a == Constants.IgnoreMutexFlag ) )
 			{
-				SingleInstance.ShowFirstInstance();
-				Shutdown( 0 );
-				return;
+				if( !SingleInstance.Start() )
+				{
+					SingleInstance.ShowFirstInstance();
+					Shutdown( 0 );
+					return;
+				}
 			}
 
 			ConfigureLogging();

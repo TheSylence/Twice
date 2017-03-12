@@ -159,7 +159,7 @@ namespace Twice.ViewModels.Main
 						{
 							LogTo.Info( $"Updated app to {release.Version}" );
 							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
+								NotificationType.Information | NotificationType.Restart );
 						}
 						else
 						{

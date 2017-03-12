@@ -3,5 +3,6 @@
 	internal interface IProcessStarter
 	{
 		void Start( string proc );
+		void Restart();
 	}
 }

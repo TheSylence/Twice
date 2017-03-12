@@ -26,7 +26,16 @@
 				<materialDesign:PackIcon Kind="Close" />
 			</Button>
 
-			<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<TextBlock Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+				<TextBlock Text="{lex:Loc ClickToRestartApp}" Style="{StaticResource LinkStyle}" VerticalAlignment="Center" Margin="10,0"
+						   Visibility="{Binding DisplayRestartButton, Converter={StaticResource BoolToVisibleConv}}">
+					<i:Interaction.Behaviors>
+						<behaviors:ClickHandler Command="{Binding RestartAppCommand}" />
+					</i:Interaction.Behaviors>
+				</TextBlock>
+			</StackPanel>
 		</DockPanel>
 	</DockPanel>
 </controls:Flyout>
