@@ -380,6 +380,7 @@
     <Compile Include="ViewModels\Dialogs\IContentChanger.cs" />
     <Compile Include="ViewModels\Dialogs\IDialogHostViewModel.cs" />
     <Compile Include="ViewModels\ICursorController.cs" />
+    <Compile Include="ViewModels\IDragCanceller.cs" />
     <Compile Include="ViewModels\IScrollController.cs" />
     <Compile Include="ViewModels\LogMessageCommand.cs" />
     <Compile Include="ViewModels\Twitter\CardViewModel.cs" />

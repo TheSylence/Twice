@@ -15,7 +15,7 @@ namespace Twice.ViewModels.Twitter
 		Animated
 	}
 
-	internal class StatusMediaViewModel : ObservableObject
+	internal class StatusMediaViewModel : ObservableObject, IDragCanceller
 	{
 		public StatusMediaViewModel( Uri url, Uri displayUrl = null )
 		{

@@ -1,18 +1,18 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using Twice.Behaviors;
 
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///  Base class for all modal dialogs. 
+	///     Base class for all modal dialogs.
 	/// </summary>
 	/// <remarks>
-	///  Dialogs are modal because they work like a user would expect them to. Using non-modal
-	///  requires toplevel and this could cause some strange behaviors when switching applications, etc.
+	///     Dialogs are modal because they work like a user would expect them to. Using non-modal
+	///     requires toplevel and this could cause some strange behaviors when switching applications, etc.
 	/// </remarks>
 	[ExcludeFromCodeCoverage]
 	public class DialogWindow : MetroWindow
@@ -38,9 +38,9 @@ namespace Twice.Views.Dialogs
 			bool close = CloseOnClick && outsideWindow && insideMainWindow;
 			if( close )
 			{
+				e.Handled = true;
 				WindowHelper.SetResult( this, false );
 				Close();
-				e.Handled = true;
 			}
 			else
 			{
@@ -48,16 +48,16 @@ namespace Twice.Views.Dialogs
 			}
 		}
 
+		public static readonly DependencyProperty CloseOnClickProperty =
+			DependencyProperty.Register( "CloseOnClick", typeof( bool ), typeof( DialogWindow ), new PropertyMetadata( true ) );
+
 		/// <summary>
-		///  Flag indicating whether clicking outside the window will close it. 
+		///     Flag indicating whether clicking outside the window will close it.
 		/// </summary>
 		public bool CloseOnClick
 		{
-			get { return (bool)GetValue( CloseOnClickProperty ); }
-			set { SetValue( CloseOnClickProperty, value ); }
+			get => (bool)GetValue( CloseOnClickProperty );
+			set => SetValue( CloseOnClickProperty, value );
 		}
-
-		public static readonly DependencyProperty CloseOnClickProperty =
-			DependencyProperty.Register( "CloseOnClick", typeof( bool ), typeof( DialogWindow ), new PropertyMetadata( true ) );
 	}
 }

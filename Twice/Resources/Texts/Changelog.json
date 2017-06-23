@@ -6,13 +6,15 @@
         "NewFeatures": [],
         "Changes": [
             "More performance improvements",
-            "Unfavorited status is immediately removed from favourites column"
+            "Unfavorited status is immediately removed from favourites column",
+            "Image viewer can be closed by clicking outside the dialog"
         ],
         "Fixes": [
             "Dialog centering is now always using the correct display",
             "Dialog centering is now upated when dialog content is updated",
             "Fixed possible crash when loading broken config file",
-            "Same media is no longer displayed multiple times on same status"
+            "Same media is no longer displayed multiple times on same status",
+            "Closing image viewer by clicking outside no longer reloads columns"
         ],
         "Issues": []
     },
