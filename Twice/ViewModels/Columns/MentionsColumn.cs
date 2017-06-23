@@ -1,5 +1,4 @@
 ﻿using LinqToTwitter;
-using Seal.Fody;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +10,6 @@ using Twice.Resources;
 
 namespace Twice.ViewModels.Columns
 {
-	[LeaveUnsealed]
 	internal class MentionsColumn : ColumnViewModelBase
 	{
 		public MentionsColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )

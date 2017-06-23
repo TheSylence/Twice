@@ -75,7 +75,9 @@ namespace Twice.Views.Services
 		{
 			var dlg = new OpenFileDialog();
 			if( fsa != null )
+			{
 				dlg.Filter = fsa.Filter;
+			}
 
 			return dlg.ShowDialog( Application.Current.MainWindow ) == true
 				? Task.FromResult( dlg.FileName )
@@ -172,7 +174,9 @@ namespace Twice.Views.Services
 			Action<IAccountsDialogViewModel> vmSetup = vm =>
 			{
 				if( directlyAddAccount )
+				{
 					vm.AddAccountCommand.Execute( null );
+				}
 			};
 			await ShowWindow<AccountsDialog, IAccountsDialogViewModel, object>( null, vmSetup );
 		}
@@ -265,7 +269,9 @@ namespace Twice.Views.Services
 		public async Task ViewStatus( StatusViewModel status )
 		{
 			if( status == null )
+			{
 				return;
+			}
 
 			if( !DialogStack.Push( new StatusData( status ) ) )
 			{
@@ -367,7 +373,9 @@ namespace Twice.Views.Services
 			vmSetup?.Invoke( vm );
 
 			if( dlg.ShowDialog() != true )
+			{
 				return Task.FromResult<TResult>( null );
+			}
 
 			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
 			var resSetup = resultSetup ?? defaultResultSetup;

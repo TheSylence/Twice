@@ -77,10 +77,14 @@ namespace Twice.Views
 			var triggerBase = d as TriggerBase;
 
 			if( triggerBase == null )
+			{
 				return;
+			}
 
 			if( !( e.NewValue is bool ) )
+			{
 				return;
+			}
 
 			if( (bool)e.NewValue )
 			{

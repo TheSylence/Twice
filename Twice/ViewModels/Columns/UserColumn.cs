@@ -1,5 +1,4 @@
 ﻿using LinqToTwitter;
-using Seal.Fody;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +10,6 @@ using Twice.Models.Twitter.Streaming;
 
 namespace Twice.ViewModels.Columns
 {
-	[LeaveUnsealed]
 	internal class UserColumn : ColumnViewModelBase
 	{
 		public UserColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )

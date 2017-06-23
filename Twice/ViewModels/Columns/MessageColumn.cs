@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
 using Newtonsoft.Json;
-using Seal.Fody;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,6 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
-	[LeaveUnsealed]
 	internal class MessageColumn : ColumnViewModelBase
 	{
 		public MessageColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
