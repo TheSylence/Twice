@@ -1,9 +1,9 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
 using Twice.Models.Cache;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Validation;
@@ -12,18 +12,9 @@ namespace Twice.ViewModels
 {
 	internal class DialogViewModel : ValidationViewModel, IDialogViewModel
 	{
-		public event EventHandler CenterRequested;
-
-		public event EventHandler<CloseEventArgs> CloseRequested;
-
 		protected virtual bool CanExecuteOkCommand()
 		{
 			return !HasErrors;
-		}
-
-		protected void Center()
-		{
-			CenterRequested?.Invoke( this, EventArgs.Empty );
 		}
 
 		protected void Close( bool result )
@@ -55,20 +46,13 @@ namespace Twice.ViewModels
 			}
 		}
 
-		[Inject]
-		public ICache Cache { protected get; set; }
-
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
-
-		[Inject]
-		public IDispatcher Dispatcher { protected get; set; }
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
 		public string Title
 		{
-			[DebuggerStepThrough]
-			get { return _Title; }
+			[DebuggerStepThrough] get { return _Title; }
 			set
 			{
 				if( _Title == value )
@@ -80,6 +64,21 @@ namespace Twice.ViewModels
 				RaisePropertyChanged();
 			}
 		}
+
+		public void Center()
+		{
+			CenterRequested?.Invoke( this, EventArgs.Empty );
+		}
+
+		public event EventHandler CenterRequested;
+
+		public event EventHandler<CloseEventArgs> CloseRequested;
+
+		[Inject]
+		public ICache Cache { protected get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { protected get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 

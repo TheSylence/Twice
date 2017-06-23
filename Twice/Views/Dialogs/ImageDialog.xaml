@@ -1,30 +1,30 @@
 ﻿<UserControl x:Class="Twice.Views.Dialogs.ImageDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:dialogs="clr-namespace:Twice.ViewModels.Dialogs"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Twice.Behaviors"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" DataContext="{Binding Image, Source={StaticResource Locator}}"
-		MinWidth="400" MinHeight="300" MaxWidth="1280" MaxHeight="800">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:dialogs="clr-namespace:Twice.ViewModels.Dialogs"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" DataContext="{Binding Image, Source={StaticResource Locator}}"
+             MinWidth="400" MinHeight="300" MaxWidth="1280" MaxHeight="800">
 	<DockPanel>
 		<StackPanel Orientation="Horizontal" Margin="5" DockPanel.Dock="Bottom">
 			<Button ToolTip="{lex:Loc CopyToClipboard}" Style="{StaticResource MaterialDesignToolForegroundButton}"
-					Command="{Binding CopyToClipboardCommand}">
+			        Command="{Binding CopyToClipboardCommand}">
 				<materialDesign:PackIcon Kind="ClipboardText" />
 			</Button>
 			<Button ToolTip="{lex:Loc OpenInWeb}" Style="{StaticResource MaterialDesignToolForegroundButton}"
-					Command="{Binding OpenImageCommand}">
+			        Command="{Binding OpenImageCommand}">
 				<materialDesign:PackIcon Kind="Web" />
 			</Button>
 
 			<TextBox IsReadOnly="True" materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
-                BorderThickness="0" FontFamily="Courier New" FontWeight="Bold"
-				 Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap">
+			         BorderThickness="0" FontFamily="Courier New" FontWeight="Bold"
+			         Margin="5" Text="{Binding SelectedImage.Title}" TextWrapping="Wrap">
 				<i:Interaction.Behaviors>
 					<behaviors:SelectOnDoubleClick />
 				</i:Interaction.Behaviors>
@@ -32,7 +32,10 @@
 		</StackPanel>
 
 		<controls:FlipView ItemsSource="{Binding Images}" MouseOverGlowEnabled="False" IsBannerEnabled="False"
-						   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+		                   SelectedItem="{Binding SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+			<i:Interaction.Behaviors>
+				<behaviors:RequestCenterAfterRender />
+			</i:Interaction.Behaviors>
 			<controls:FlipView.ItemTemplate>
 				<DataTemplate DataType="dialogs:ImageEntry">
 					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

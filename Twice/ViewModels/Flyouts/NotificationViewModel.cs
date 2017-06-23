@@ -88,11 +88,6 @@ namespace Twice.ViewModels.Flyouts
 			AutoCloseWatch.Stop();
 		}
 
-		private void Center()
-		{
-			CenterRequested?.Invoke( this, EventArgs.Empty );
-		}
-
 		private void Close( bool result = true )
 		{
 			CloseRequested?.Invoke( this, result
@@ -116,14 +111,14 @@ namespace Twice.ViewModels.Flyouts
 			OnClosed();
 		}
 
-		private void SetText( string text )
-		{
-			Text = text;
-		}
-
 		private void ExecuteRestartAppCommand()
 		{
 			ProcStarter.Restart();
+		}
+
+		private void SetText( string text )
+		{
+			Text = text;
 		}
 
 		public Task Reset()
@@ -141,6 +136,11 @@ namespace Twice.ViewModels.Flyouts
 			CloseTimer.Start();
 
 			return Task.CompletedTask;
+		}
+
+		public void Center()
+		{
+			CenterRequested?.Invoke( this, EventArgs.Empty );
 		}
 
 		public event EventHandler CenterRequested;
@@ -162,12 +162,24 @@ namespace Twice.ViewModels.Flyouts
 			}
 		}
 
-		public ICommand RestartAppCommand => _RestartAppCommand
-		                                     ?? ( _RestartAppCommand = new RelayCommand( ExecuteRestartAppCommand ) );
-
 		public TimeSpan CloseDelay { private get; set; }
 		public ICommand DismissCommand => _DismissCommand ?? ( _DismissCommand = new RelayCommand( ExecuteDismissCommand ) );
 		public IDispatcher Dispatcher { private get; set; }
+
+		public bool DisplayRestartButton
+		{
+			[DebuggerStepThrough] get { return _DisplayRestartButton; }
+			set
+			{
+				if( _DisplayRestartButton == value )
+				{
+					return;
+				}
+
+				_DisplayRestartButton = value;
+				RaisePropertyChanged( nameof(DisplayRestartButton) );
+			}
+		}
 
 		public Position FlyoutPosition
 		{
@@ -186,6 +198,9 @@ namespace Twice.ViewModels.Flyouts
 
 		public IMessenger MessengerInstance { private get; set; }
 
+		public ICommand RestartAppCommand => _RestartAppCommand
+		                                     ?? ( _RestartAppCommand = new RelayCommand( ExecuteRestartAppCommand ) );
+
 		public string Text
 		{
 			[DebuggerStepThrough] get { return _Text; }
@@ -198,21 +213,6 @@ namespace Twice.ViewModels.Flyouts
 
 				_Text = value;
 				RaisePropertyChanged();
-			}
-		}
-
-		public bool DisplayRestartButton
-		{
-			[DebuggerStepThrough] get { return _DisplayRestartButton; }
-			set
-			{
-				if( _DisplayRestartButton == value )
-				{
-					return;
-				}
-
-				_DisplayRestartButton = value;
-				RaisePropertyChanged( nameof( DisplayRestartButton ) );
 			}
 		}
 

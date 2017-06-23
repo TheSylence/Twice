@@ -7,7 +7,8 @@
         "Changes": [
             "More performance improvements",
             "Unfavorited status is immediately removed from favourites column",
-            "Image viewer can be closed by clicking outside the dialog"
+            "Image viewer can be closed by clicking outside the dialog",
+            "Image viewer is now correctly centered"
         ],
         "Fixes": [
             "Dialog centering is now always using the correct display",

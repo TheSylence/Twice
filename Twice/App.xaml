@@ -85,6 +85,11 @@
 				<Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
 			</Style>
 
+			<Style TargetType="{x:Type TabControl}">
+				<Setter Property="Background" Value="{StaticResource MaterialDesignPaper}"/>
+				<Setter Property="BorderBrush" Value="Transparent"/>
+			</Style>
+
 			<viewModels:ViewModelLocator x:Key="Locator" />
 		</ResourceDictionary>
 	</Application.Resources>

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Forms;
@@ -23,36 +24,15 @@ namespace Twice.Behaviors
 			{
 				return;
 			}
-
-			var mainWindow = Application.Current.MainWindow;
-			var actualPos = GetActualWindowPosition( mainWindow );
-
-			var parentWidth = mainWindow.ActualWidth;
-			var parentHeight = mainWindow.ActualHeight;
-			var parentLeft = actualPos.X;
-			var parentTop = actualPos.Y;
-
 			var width = window.ActualWidth;
 			var height = window.ActualHeight;
 
-			window.Top = parentTop + ( parentHeight / 2 - height / 2 );
-			window.Left = parentLeft + ( parentWidth / 2 - width / 2 );
-		}
-
-		/// <summary>
-		/// Returns the ACTUAL position of a window, even if it is maximized
-		/// </summary>
-		/// <param name="window"></param>
-		/// <returns></returns>
-		static Point GetActualWindowPosition( Window window )
-		{
-			if( window.WindowState != WindowState.Maximized )
+			if( Math.Abs( width ) < 0.1 || Math.Abs( height ) < 0.1 )
 			{
-				return new Point( window.Left, window.Top );
+				window.SizeChanged += WindowOnSizeChanged;
 			}
 
-			var windowScreen = Screen.FromHandle( new WindowInteropHelper( window ).Handle );
-			return new Point( windowScreen.Bounds.Left, windowScreen.Bounds.Top );
+			CenterInternal( window );
 		}
 
 		/// <summary>
@@ -69,6 +49,47 @@ namespace Twice.Behaviors
 			catch( InvalidOperationException )
 			{
 			}
+		}
+
+		private static void CenterInternal( Window window )
+		{
+			var width = window.ActualWidth;
+			var height = window.ActualHeight;
+			var mainWindow = Application.Current.MainWindow;
+			var actualPos = GetActualWindowPosition( mainWindow );
+
+			var parentWidth = mainWindow.ActualWidth;
+			var parentHeight = mainWindow.ActualHeight;
+			var parentLeft = actualPos.X;
+			var parentTop = actualPos.Y;
+
+			window.Top = parentTop + ( parentHeight / 2 - height / 2 );
+			window.Left = parentLeft + ( parentWidth / 2 - width / 2 );
+		}
+
+		/// <summary>
+		///     Returns the ACTUAL position of a window, even if it is maximized
+		/// </summary>
+		/// <param name="window"></param>
+		/// <returns></returns>
+		private static Point GetActualWindowPosition( Window window )
+		{
+			if( window.WindowState != WindowState.Maximized )
+			{
+				return new Point( window.Left, window.Top );
+			}
+
+			var windowScreen = Screen.FromHandle( new WindowInteropHelper( window ).Handle );
+			return new Point( windowScreen.Bounds.Left, windowScreen.Bounds.Top );
+		}
+
+		private static void WindowOnSizeChanged( object sender, SizeChangedEventArgs sizeChangedEventArgs )
+		{
+			var window = sender as Window;
+			Debug.Assert( window != null, "window != null" );
+			window.SizeChanged -= WindowOnSizeChanged;
+
+			CenterInternal( window );
 		}
 	}
 }
