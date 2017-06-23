@@ -6,6 +6,7 @@ using Twice.Converters;
 namespace Twice.Tests.Converters
 {
 	[TestClass, ExcludeFromCodeCoverage]
+	[SuppressMessage( "ReSharper", "PossibleNullReferenceException" )]
 	public class EmptyStringTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

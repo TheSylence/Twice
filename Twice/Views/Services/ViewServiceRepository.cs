@@ -98,7 +98,9 @@ namespace Twice.Views.Services
 				var mainWindow = Application.Current.MainWindow as MetroWindow;
 				Flyout flyout = mainWindow?.Flyouts.Items.OfType<NotificationBar>().FirstOrDefault();
 				if( flyout == null )
+				{
 					return;
+				}
 
 				flyout.DataContext = vm;
 				vm.Reset();
@@ -321,6 +323,7 @@ namespace Twice.Views.Services
 			}
 
 			var hostVm = host.DataContext as IDialogHostViewModel;
+			Debug.Assert( hostVm != null, "hostVm != null" );
 			await hostVm.Setup( vm );
 
 			TResult result = null;

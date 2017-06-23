@@ -16,6 +16,7 @@ namespace Twice.Tests.Models.Scheduling.Processors
 	public class CreateStatusProcessorTests
 	{
 		[TestMethod, TestCategory( "Models.Scheduling.Processors" )]
+		[SuppressMessage( "ReSharper", "PossibleMultipleEnumeration" )]
 		public async Task ImagesAreUploaded()
 		{
 			try
@@ -32,7 +33,7 @@ namespace Twice.Tests.Models.Scheduling.Processors
 				ctx1.Setup( c => c.Twitter.UploadMediaAsync( new byte[] { 5, 6, 7, 8 }, "image/bmp", new[] { 2ul } ) )
 					.Returns( Task.FromResult( new LinqToTwitter.Media { MediaID = 999 } ) )
 					.Verifiable();
-
+				
 				Func<IEnumerable<ulong>, bool> mediaCheck = ids => ids.Contains( 888ul ) && ids.Contains( 999ul );
 				ctx1.Setup( c => c.Twitter.Statuses.TweetAsync( It.IsAny<string>(), It.Is<IEnumerable<ulong>>( ids => mediaCheck( ids ) ), It.IsAny<ulong>() ) )
 					.Returns( Task.FromResult( DummyGenerator.CreateDummyStatus() ) )

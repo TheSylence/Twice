@@ -5,11 +5,6 @@ namespace Twice.Behaviors
 {
 	internal class ContentChanger : BehaviorBase<Window>
 	{
-		protected override void OnAttached()
-		{
-			base.OnAttached();
-		}
-
 		private static void OnContextChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{
 			var changer = d as ContentChanger;

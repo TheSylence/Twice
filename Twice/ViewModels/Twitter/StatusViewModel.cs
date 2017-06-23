@@ -108,7 +108,9 @@ namespace Twice.ViewModels.Twitter
 			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
 			{
 				if (_InlineMedias.Contains(vm))
+				{
 					continue;
+				}
 
 				vm.OpenRequested += Image_OpenRequested;
 				_InlineMedias.Add( vm );
@@ -125,7 +127,9 @@ namespace Twice.ViewModels.Twitter
 				{
 					var vm = new StatusMediaViewModel( extracted, new Uri( url ) );
 					if (_InlineMedias.Contains(vm))
+					{
 						continue;
+					}
 
 					vm.OpenRequested += Image_OpenRequested;
 					_InlineMedias.Add( vm );

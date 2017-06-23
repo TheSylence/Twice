@@ -151,7 +151,8 @@ namespace Twice.Tests.ViewModels.Main
 			columnList.Setup( c => c.SetExistingContexts( It.Is( checkAction ) ) ).Verifiable();
 			var columnFactory = new Mock<IColumnFactory>();
 
-			// Act ReSharper disable once UnusedVariable
+			// Act
+			// ReSharper disable once UnusedVariable
 			var vm = new MainViewModel( contextList.Object, notifier.Object, columnList.Object, columnFactory.Object );
 			contextList.Raise( ctx => ctx.ContextsChanged += null, EventArgs.Empty );
 

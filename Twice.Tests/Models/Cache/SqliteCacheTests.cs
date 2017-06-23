@@ -117,7 +117,8 @@ namespace Twice.Tests.Models.Cache
 			using( var con = OpenConnection() )
 			using( var cache = new SqliteCache( con ) )
 			{
-				// Act ReSharper disable once AccessToDisposedClosure
+				// Act
+				// ReSharper disable once AccessToDisposedClosure
 				var ex = await ExceptionAssert.CatchAsync<Exception>( () => cache.AddHashtags( new List<string>() ) );
 
 				// Assert
@@ -189,7 +190,8 @@ namespace Twice.Tests.Models.Cache
 				DataSource = ":memory:"
 			};
 
-			// Act ReSharper disable once ObjectCreationAsStatement
+			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new SqliteCache( sb.ToString() ) );
 
 			// Assert

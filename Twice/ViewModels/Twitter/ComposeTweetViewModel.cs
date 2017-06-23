@@ -13,7 +13,6 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GongSolutions.Wpf.DragDrop;
 using LinqToTwitter;
 using Ninject;
-using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 using Twice.Resources;
 using Twice.Views.Services;

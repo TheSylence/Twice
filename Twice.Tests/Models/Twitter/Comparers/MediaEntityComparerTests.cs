@@ -45,6 +45,7 @@ namespace Twice.Tests.Models.Twitter.Comparers
 			var comp = new MediaEntityComparer();
 
 			// Act
+			// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
 			var ex = ExceptionAssert.Catch<ArgumentNullException>( () => comp.GetHashCode( null ) );
 
 			// Assert

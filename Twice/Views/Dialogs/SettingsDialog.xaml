@@ -53,7 +53,7 @@
 			</StackPanel>
 		</DockPanel>
 
-		<TabControl controls:TabControlHelper.IsUnderlined="True" Margin="5">
+		<TabControl controls:TabControlHelper.Underlined="SelectedTabItem" Margin="5">
 			<TabItem Header="{lex:Loc General}" DataContext="{Binding General}">
 				<Grid Margin="5">
 					<Grid.ColumnDefinitions>

@@ -186,6 +186,7 @@ namespace Twice.Tests.Models.Scheduling
 			File.WriteAllText( fileName, @"This is a broken JSON file" );
 
 			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new Scheduler( fileName, contextList.Object, config.Object ) );
 
 			// Assert

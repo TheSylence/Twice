@@ -48,7 +48,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			var content = Activator.CreateInstance( topData.ControlType ) as UserControl;
 			contentChanger.ChangeContent( content );
 
-			topData.Setup( content.DataContext );
+			topData.Setup( content?.DataContext );
 		}
 
 		public void Setup<TViewModel>( TViewModel vm ) where TViewModel : class

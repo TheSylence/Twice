@@ -8,6 +8,7 @@ using Twice.Converters;
 namespace Twice.Tests.Converters
 {
 	[TestClass, ExcludeFromCodeCoverage]
+	[SuppressMessage( "ReSharper", "PossibleNullReferenceException" )]
 	public class EmptyListTests
 	{
 		[TestMethod, TestCategory( "Converters" )]

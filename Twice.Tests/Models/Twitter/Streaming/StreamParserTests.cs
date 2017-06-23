@@ -78,7 +78,7 @@ namespace Twice.Tests.Models.Twitter.Streaming
 
 			// Assert
 			Assert.IsNotNull( receivedData );
-			Assert.IsTrue( receivedData.Status.Text.StartsWith( "Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o" ) );
+			Assert.IsTrue( receivedData.Status.Text.StartsWith( "Das ist mal wieder ein #Test. Und jetzt muss ich sogar irgendwie dieses mal die 140 Zeichen vollbekommen. Aber wie in einem #test? Fragen :o", StringComparison.Ordinal ) );
 		}
 
 		[TestMethod, TestCategory( "Models.Twitter.Streaming" )]

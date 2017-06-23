@@ -33,14 +33,20 @@ namespace Twice.Behaviors
 
 		private void CleanupBehavior()
 		{
-			if( !IsSetup ) return;
+			if( !IsSetup )
+			{
+				return;
+			}
 			IsSetup = false;
 			OnCleanup();
 		}
 
 		private void HookupBehavior( T target )
 		{
-			if( IsHookedUp ) return;
+			if( IsHookedUp )
+			{
+				return;
+			}
 			WeakTarget = new WeakReference( target );
 			IsHookedUp = true;
 			target.Unloaded += OnTarget_Unloaded;
@@ -60,14 +66,20 @@ namespace Twice.Behaviors
 
 		private void SetupBehavior()
 		{
-			if( IsSetup ) return;
+			if( IsSetup )
+			{
+				return;
+			}
 			IsSetup = true;
 			OnSetup();
 		}
 
 		private void UnHookupBehavior()
 		{
-			if( !IsHookedUp ) return;
+			if( !IsHookedUp )
+			{
+				return;
+			}
 			IsHookedUp = false;
 			var target = AssociatedObject ?? (T)WeakTarget.Target;
 			if( target != null )

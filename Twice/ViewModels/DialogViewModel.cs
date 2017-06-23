@@ -65,7 +65,7 @@ namespace Twice.ViewModels
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
-		public virtual string Title
+		public string Title
 		{
 			[DebuggerStepThrough]
 			get { return _Title; }

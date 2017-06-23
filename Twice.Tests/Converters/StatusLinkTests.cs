@@ -1,14 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Converters;
 
 namespace Twice.Tests.Converters
 {
-	[TestClass, ExcludeFromCodeCoverage]
+	[TestClass]
+	[ExcludeFromCodeCoverage]
 	public class StatusLinkTests
 	{
-		[TestMethod, TestCategory( "Converters" )]
+		[TestMethod]
+		[TestCategory( "Converters" )]
 		public void ConvertBackThrowsException()
 		{
 			// Arrange
@@ -21,7 +23,8 @@ namespace Twice.Tests.Converters
 			Assert.IsNotNull( ex );
 		}
 
-		[TestMethod, TestCategory( "Converters" )]
+		[TestMethod]
+		[TestCategory( "Converters" )]
 		public void CorrectUrlIsExctracted()
 		{
 			// Arrange
@@ -34,10 +37,12 @@ namespace Twice.Tests.Converters
 			var url = (Uri)conv.Convert( status, null, null, null );
 
 			// Assert
+			Assert.IsNotNull( url );
 			Assert.AreEqual( "https://twitter.com/username/status/123", url.AbsoluteUri );
 		}
 
-		[TestMethod, TestCategory( "Converters" )]
+		[TestMethod]
+		[TestCategory( "Converters" )]
 		public void NonStatusReturnsItself()
 		{
 			// Arrange

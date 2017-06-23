@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -163,6 +164,7 @@ namespace Twice
 
 				string localizedCode = Strings.ResourceManager.GetString( "__Language_Code__", CultureInfo.CurrentUICulture );
 
+				Debug.Assert( localizedCode != null, "localizedCode != null" );
 				var culture = CultureInfo.CreateSpecificCulture( localizedCode );
 
 				if( !CultureInfo.InvariantCulture.Equals( culture ) )

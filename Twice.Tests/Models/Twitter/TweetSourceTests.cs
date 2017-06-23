@@ -1,14 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.Models.Twitter;
 
 namespace Twice.Tests.Models.Twitter
 {
-	[TestClass, ExcludeFromCodeCoverage]
+	[TestClass]
+	[ExcludeFromCodeCoverage]
 	public class TweetSourceTests
 	{
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void AppIsCorrectlyRecognized()
 		{
 			// Arrange
@@ -22,7 +24,8 @@ namespace Twice.Tests.Models.Twitter
 			Assert.AreEqual( new Uri( "http://example.com" ), source.Url );
 		}
 
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void EmptySourceUsesWebAsFallback()
 		{
 			// Arrange
@@ -36,30 +39,35 @@ namespace Twice.Tests.Models.Twitter
 			Assert.AreEqual( new Uri( "https://twitter.com" ), source.Url );
 		}
 
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void MalformedSourceThrows()
 		{
 			// Arrange
 			const string url = "this is a test";
 
-			// Act ReSharper disable once ObjectCreationAsStatement
+			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<ArgumentException>( () => new TweetSource( url ) );
 
 			// Assert
 			Assert.IsNotNull( ex );
 		}
 
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void NullSourceThrowsException()
 		{
-			// Arrange Act ReSharper disable once ObjectCreationAsStatement
+			// Arrange Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<ArgumentNullException>( () => new TweetSource( null ) );
 
 			// Assert
 			Assert.IsNotNull( ex );
 		}
 
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void StrangeFormattedAppsAreRecognized()
 		{
 			// Arrange
@@ -77,7 +85,8 @@ namespace Twice.Tests.Models.Twitter
 			Assert.AreEqual( new Uri( "http://example.com" ), noRelSource.Url );
 		}
 
-		[TestMethod, TestCategory( "Models.Twitter" )]
+		[TestMethod]
+		[TestCategory( "Models.Twitter" )]
 		public void WebIsCorrectlyRecognized()
 		{
 			// Arrange
