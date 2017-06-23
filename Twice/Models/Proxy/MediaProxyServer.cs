@@ -1,11 +1,11 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 
@@ -18,11 +18,6 @@ namespace Twice.Models.Proxy
 			ContextList = contextList;
 			Client = client ?? new HttpClientWrapper( new HttpClient() );
 			Http = listener ?? new HttpListenerWrapper( new HttpListener() );
-		}
-
-		public void Dispose()
-		{
-			Client.Dispose();
 		}
 
 		public void Start( ITwitterContextList contextList = null )
@@ -83,15 +78,25 @@ namespace Twice.Models.Proxy
 			return BuildUrl( url.AbsoluteUri, userId );
 		}
 
+		internal static Uri ExtractUrl( Uri url )
+		{
+			if( !url.AbsoluteUri.StartsWith( Prefix, StringComparison.Ordinal ) )
+			{
+				return url;
+			}
+
+			return new Uri( url.AbsoluteUri.Substring( Prefix.Length + "?stream=".Length ) );
+		}
+
 		internal async Task HandleRequest( IHttpRequest request, IHttpResponse response )
 		{
 			if( request == null )
 			{
-				throw new ArgumentNullException( nameof( request ) );
+				throw new ArgumentNullException( nameof(request) );
 			}
 			if( response == null )
 			{
-				throw new ArgumentNullException( nameof( response ) );
+				throw new ArgumentNullException( nameof(response) );
 			}
 
 			var requestUrl = request.GetQueryParameter( "stream" );
@@ -172,6 +177,11 @@ namespace Twice.Models.Proxy
 
 				Thread.Sleep( 10 );
 			}
+		}
+
+		public void Dispose()
+		{
+			Client.Dispose();
 		}
 
 		private const string Prefix = "http://localhost:60123/twice/media/";
