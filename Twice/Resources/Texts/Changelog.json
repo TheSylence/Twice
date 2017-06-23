@@ -14,7 +14,8 @@
             "Dialog centering is now upated when dialog content is updated",
             "Fixed possible crash when loading broken config file",
             "Same media is no longer displayed multiple times on same status",
-            "Closing image viewer by clicking outside no longer reloads columns"
+            "Closing image viewer by clicking outside no longer reloads columns",
+            "Profile dialog keeps correct size when switching to followers tab"
         ],
         "Issues": []
     },

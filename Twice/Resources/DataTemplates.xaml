@@ -793,7 +793,7 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">
-		<materialDesign:Card Margin="3">
+		<materialDesign:Card Margin="3" MinWidth="200" MaxWidth="600">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
