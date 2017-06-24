@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using NLog;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
@@ -67,7 +67,7 @@ namespace Twice.ViewModels.Twitter
 				}
 			}
 
-			RaisePropertyChanged( nameof( InlineMedias ) );
+			RaisePropertyChanged( nameof(InlineMedias) );
 		}
 
 		private async void ExecuteReplyCommand()

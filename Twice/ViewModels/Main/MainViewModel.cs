@@ -1,9 +1,4 @@
-﻿using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -13,6 +8,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using Ninject;
 using Twice.Messages;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
@@ -66,41 +66,20 @@ namespace Twice.ViewModels.Main
 			updateCheckTimer.Start();
 		}
 
-		[SuppressMessage( "ReSharper", "NotAccessedVariable" )]
-		public async Task OnLoad( object data )
+		internal async Task CheckCredentials()
 		{
-			if( !HasContexts )
+			foreach( var context in ContextList.Contexts )
 			{
-				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
-
-				if( await ViewServiceRepository.Confirm( csa ) )
+				try
 				{
-					await ViewServiceRepository.ShowAccounts( true );
+					bool valid = await context.Twitter.VerifyCredentials();
+					LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
+				}
+				catch( Exception ex )
+				{
+					LogTo.WarnException( $"Credentials for {context.AccountName} could not be checked", ex );
 				}
 			}
-
-			Task.Run( async () =>
-			{
-				await CheckCredentials();
-				await ReportAppVersion();
-			} ).Forget();
-			
-			await Task.WhenAll( Columns.Select( c => c.Load( AsyncLoadContext.Ui ) ) );
-
-			// It's late and I didn't have enough coffee...
-			ColumnsLocked = !Configuration.General.ColumnsLocked;
-			await Dispatcher.RunAsync( ExecuteToggleColumnsLockCommand );
-
-			try
-			{
-				await TwitterConfig.QueryConfig();
-			}
-			catch( Exception ex )
-			{
-				LogTo.WarnException( "Failed to read current config from twitter", ex );
-			}
-
-			await Task.WhenAll( CheckForUpdates(), QueryRateLimit() );
 		}
 
 		private bool CanExecuteAddColumnCommand()
@@ -116,22 +95,6 @@ namespace Twice.ViewModels.Main
 		private bool CanExecuteNewTweetCommand()
 		{
 			return HasContexts;
-		}
-
-		internal async Task CheckCredentials()
-		{
-			foreach( var context in ContextList.Contexts )
-			{
-				try
-				{
-					bool valid = await context.Twitter.VerifyCredentials();
-					LogTo.Info( $"Credentials valid for {context.AccountName}: {valid}" );
-				}
-				catch( Exception ex )
-				{
-					LogTo.WarnException( $"Credentials for {context.AccountName} could not be checked", ex );
-				}
-			}
 		}
 
 		private async Task CheckForUpdates()
@@ -198,7 +161,7 @@ namespace Twice.ViewModels.Main
 			var col = sender as IColumnViewModel;
 			Debug.Assert( col != null, "col != null" );
 
-			ColumnList.Remove( new[] { col.Definition } );
+			ColumnList.Remove( new[] {col.Definition} );
 		}
 
 		private void Col_NewItem( object sender, ColumnItemEventArgs e )
@@ -244,7 +207,7 @@ namespace Twice.ViewModels.Main
 		{
 			ColumnList.SetExistingContexts( ContextList.Contexts.Select( c => c.UserId ) );
 
-			RaisePropertyChanged( nameof( HasContexts ) );
+			RaisePropertyChanged( nameof(HasContexts) );
 		}
 
 		private async void ExecuteAccountsCommand()
@@ -339,20 +302,54 @@ namespace Twice.ViewModels.Main
 			await CheckForUpdates();
 		}
 
+		[SuppressMessage( "ReSharper", "NotAccessedVariable" )]
+		public async Task OnLoad( object data )
+		{
+			if( !HasContexts )
+			{
+				var csa = new ConfirmServiceArgs( Strings.DoYouWantToAddANewAccount, Strings.NoAccountAdded );
+
+				if( await ViewServiceRepository.Confirm( csa ) )
+				{
+					await ViewServiceRepository.ShowAccounts( true );
+				}
+			}
+
+			Task.Run( async () =>
+			{
+				await CheckCredentials();
+				await ReportAppVersion();
+			} ).Forget();
+
+			await Task.WhenAll( Columns.Select( c => c.Load( AsyncLoadContext.Ui ) ) );
+
+			// It's late and I didn't have enough coffee...
+			ColumnsLocked = !Configuration.General.ColumnsLocked;
+			await Dispatcher.RunAsync( ExecuteToggleColumnsLockCommand );
+
+			try
+			{
+				await TwitterConfig.QueryConfig();
+			}
+			catch( Exception ex )
+			{
+				LogTo.WarnException( "Failed to read current config from twitter", ex );
+			}
+
+			await Task.WhenAll( CheckForUpdates(), QueryRateLimit() );
+		}
+
 		public ICommand AccountsCommand
 			=> _AccountsCommand ?? ( _AccountsCommand = new RelayCommand( ExecuteAccountsCommand ) );
 
 		public ICommand AddColumnCommand
 			=>
-			_ManageColumnsCommand
-			?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
+				_ManageColumnsCommand
+				?? ( _ManageColumnsCommand = new RelayCommand( ExecuteAddColumnCommand, CanExecuteAddColumnCommand ) );
 
 		public ICollection<IColumnViewModel> Columns { get; }
 
 		public bool ColumnsLocked { get; set; }
-
-		[Inject]
-		public IDispatcher Dispatcher { get; set; }
 
 		public IDragDropHandler DragDropHandler { get; }
 
@@ -362,20 +359,23 @@ namespace Twice.ViewModels.Main
 
 		public ICommand NewMessageCommand
 			=>
-			_NewMessageCommand
-			?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
+				_NewMessageCommand
+				?? ( _NewMessageCommand = new RelayCommand( ExecuteNewMessageCommand, CanExecuteNewMessageCommand ) );
 
 		public ICommand NewTweetCommand
 			=> _NewTweetCommand ?? ( _NewTweetCommand = new RelayCommand( ExecuteNewTweetCommand, CanExecuteNewTweetCommand ) );
 
 		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand(
-											 ExecuteSearchCommand ) );
+			                                 ExecuteSearchCommand ) );
 
 		public ICommand SettingsCommand
 			=> _SettingsCommand ?? ( _SettingsCommand = new RelayCommand( ExecuteSettingsCommand ) );
 
 		public ICommand ToggleColumnsLockCommand
 			=> _ToggleColumnsLockCommand ?? ( _ToggleColumnsLockCommand = new RelayCommand( ExecuteToggleColumnsLockCommand ) );
+
+		[Inject]
+		public IDispatcher Dispatcher { get; set; }
 
 		[Inject]
 		public IAppUpdaterFactory UpdateFactory { private get; set; }
@@ -387,7 +387,7 @@ namespace Twice.ViewModels.Main
 		private readonly INotifier Notifier;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
-		
+
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;

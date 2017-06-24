@@ -1,7 +1,7 @@
-﻿using Anotar.NLog;
-using Fody;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter
@@ -13,6 +13,8 @@ namespace Twice.Models.Twitter
 			ContextList = contextList;
 			Cache = cache;
 		}
+
+		public int MaxImageSize => Configuration?.PhotoSizeLimit ?? int.MaxValue;
 
 		[ConfigureAwait( false )]
 		public async Task QueryConfig()
@@ -39,7 +41,6 @@ namespace Twice.Models.Twitter
 			Configuration = currentConfig;
 		}
 
-		public int MaxImageSize => Configuration?.PhotoSizeLimit ?? int.MaxValue;
 		public int UrlLength => Configuration?.ShortUrlLength ?? 23;
 		public int UrlLengthHttps => Configuration?.ShortUrlLengthHttps ?? 23;
 

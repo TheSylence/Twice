@@ -1,8 +1,8 @@
-using Fody;
-using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Fody;
+using GalaSoft.MvvmLight.Threading;
 
 namespace Twice.Utilities.Ui
 {

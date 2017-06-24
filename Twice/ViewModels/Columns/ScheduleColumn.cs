@@ -1,9 +1,9 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;

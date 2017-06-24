@@ -1,11 +1,11 @@
-﻿using Fody;
+﻿using System.Threading.Tasks;
+using Fody;
 using Squirrel;
-using System.Threading.Tasks;
 
 namespace Twice.Utilities
 {
 	/// <summary>
-	///  Wrapper for an UpdateManager 
+	///     Wrapper for an UpdateManager
 	/// </summary>
 	[ConfigureAwait( false )]
 	internal class AppUpdater : IAppUpdater
@@ -15,15 +15,15 @@ namespace Twice.Utilities
 			Manager = mgr;
 		}
 
-		public void Dispose()
-		{
-			Manager.Dispose();
-		}
-
 		public async Task<AppRelease> UpdateApp()
 		{
 			var release = await Manager.UpdateApp();
 			return new AppRelease( release );
+		}
+
+		public void Dispose()
+		{
+			Manager.Dispose();
 		}
 
 		private readonly UpdateManager Manager;

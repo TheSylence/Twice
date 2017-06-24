@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
+using Newtonsoft.Json;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;

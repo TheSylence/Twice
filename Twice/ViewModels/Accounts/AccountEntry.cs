@@ -1,6 +1,6 @@
-using GalaSoft.MvvmLight;
 using System;
 using System.Diagnostics;
+using GalaSoft.MvvmLight;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Accounts
@@ -14,8 +14,6 @@ namespace Twice.ViewModels.Accounts
 			ProfileImage = Context.ProfileImageUrl;
 			_RequiresConfirmation = Context.RequiresConfirmation;
 		}
-
-		public event EventHandler ConfirmationChanged;
 
 		public string AccountName { get; }
 		public TwitterAccountData Data => Context.Data;
@@ -34,8 +32,7 @@ namespace Twice.ViewModels.Accounts
 
 		public bool RequiresConfirmation
 		{
-			[DebuggerStepThrough]
-			get { return _RequiresConfirmation; }
+			[DebuggerStepThrough] get { return _RequiresConfirmation; }
 			set
 			{
 				if( _RequiresConfirmation == value )
@@ -52,7 +49,8 @@ namespace Twice.ViewModels.Accounts
 
 		private readonly IContextEntry Context;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _RequiresConfirmation;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RequiresConfirmation;
+
+		public event EventHandler ConfirmationChanged;
 	}
 }

@@ -1,35 +1,15 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Media
 {
 	internal class TwitterCardExtractor : ITwitterCardExtractor
 	{
-		public async Task<TwitterCard> ExtractCard( Uri url )
-		{
-			if( url.Host.Equals( "twitter.com", StringComparison.OrdinalIgnoreCase ) ||
-				url.Host.Equals( "www.twitter.com", StringComparison.OrdinalIgnoreCase ) )
-			{
-				if( TwitterHelper.IsExtendedTweetUrl( url.AbsolutePath ) )
-				{
-					return null;
-				}
-			}
-
-			using( var client = new HttpClient() )
-			{
-				var response = await client.GetAsync( url );
-				var str = await response.Content.ReadAsStringAsync();
-
-				return ExtractCard( str );
-			}
-		}
-
 		internal TwitterCard ExtractCard( string http )
 		{
 			int headStart = http.IndexOf( "<head>", StringComparison.OrdinalIgnoreCase );
@@ -73,6 +53,26 @@ namespace Twice.Models.Media
 			}
 
 			return new TwitterCard( twitterMetaInfo );
+		}
+
+		public async Task<TwitterCard> ExtractCard( Uri url )
+		{
+			if( url.Host.Equals( "twitter.com", StringComparison.OrdinalIgnoreCase ) ||
+			    url.Host.Equals( "www.twitter.com", StringComparison.OrdinalIgnoreCase ) )
+			{
+				if( TwitterHelper.IsExtendedTweetUrl( url.AbsolutePath ) )
+				{
+					return null;
+				}
+			}
+
+			using( var client = new HttpClient() )
+			{
+				var response = await client.GetAsync( url );
+				var str = await response.Content.ReadAsStringAsync();
+
+				return ExtractCard( str );
+			}
 		}
 
 		internal static ITwitterCardExtractor Default { get; } = new TwitterCardExtractor();

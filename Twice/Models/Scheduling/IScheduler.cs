@@ -5,8 +5,6 @@ namespace Twice.Models.Scheduling
 {
 	internal interface IScheduler
 	{
-		event EventHandler JobListUpdated;
-
 		void AddJob( SchedulerJob job );
 
 		void DeleteJob( SchedulerJob job );
@@ -16,5 +14,6 @@ namespace Twice.Models.Scheduling
 		void Stop();
 
 		IEnumerable<SchedulerJob> JobList { get; }
+		event EventHandler JobListUpdated;
 	}
 }

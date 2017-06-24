@@ -33,13 +33,13 @@ namespace Twice.ViewModels.Dialogs.Data
 			if( ImageSetUrls != null && other.ImageSetUrls != null )
 			{
 				return SelectedImageUrl.Equals( other.SelectedImageUrl )
-					&& ImageSetUrls.Compare( other.ImageSetUrls );
+				       && ImageSetUrls.Compare( other.ImageSetUrls );
 			}
 
 			if( ImageSetMedias != null && other.ImageSetMedias != null )
 			{
 				return SelectedImageMedia.Equals( other.SelectedImageMedia )
-					&& ImageSetMedias.Compare( other.ImageSetMedias );
+				       && ImageSetMedias.Compare( other.ImageSetMedias );
 			}
 
 			return false;
@@ -58,19 +58,19 @@ namespace Twice.ViewModels.Dialogs.Data
 			{
 				vm.SetImages( ImageSetUrls );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == SelectedImageUrl )
-								   ?? vm.Images.FirstOrDefault();
+				                   ?? vm.Images.FirstOrDefault();
 			}
 			else
 			{
 				vm.SetImages( ImageSetMedias );
 				vm.SelectedImage = vm.Images.FirstOrDefault( img => img.ImageUrl == SelectedImageMedia.Url )
-									?? vm.Images.FirstOrDefault();
+				                   ?? vm.Images.FirstOrDefault();
 			}
 		}
 
-		private List<StatusMediaViewModel> ImageSetMedias;
-		private List<Uri> ImageSetUrls;
-		private StatusMediaViewModel SelectedImageMedia;
-		private Uri SelectedImageUrl;
+		private readonly List<StatusMediaViewModel> ImageSetMedias;
+		private readonly List<Uri> ImageSetUrls;
+		private readonly StatusMediaViewModel SelectedImageMedia;
+		private readonly Uri SelectedImageUrl;
 	}
 }

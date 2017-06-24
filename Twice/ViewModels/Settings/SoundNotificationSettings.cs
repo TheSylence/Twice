@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -36,12 +35,12 @@ namespace Twice.ViewModels.Settings
 		}
 
 		private string GetSupportedFileTypes()
-		{ 
+		{
 			var extensions = new[]
 			{
-				"asf","wma","m4a","aac","adt","adts",
-				"cda","mp2","mp3","mid","midi","aif",
-				"aifc","aiff","wav","au","snd"
+				"asf", "wma", "m4a", "aac", "adt", "adts",
+				"cda", "mp2", "mp3", "mid", "midi", "aif",
+				"aifc", "aiff", "wav", "au", "snd"
 			};
 
 			var display = Strings.SupportedMediaTypes;

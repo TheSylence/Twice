@@ -1,7 +1,7 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Twice.Models.Twitter.Repositories;
 
 namespace Twice.Models.Twitter

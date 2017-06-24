@@ -1,10 +1,10 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Anotar.NLog;
 
 namespace Twice.Utilities.Os
 {
@@ -44,7 +44,7 @@ namespace Twice.Utilities.Os
 				var displayModes = GetDisplayModes();
 
 				bool next = false;
-				for( int i=0; i<displayModes.Length; ++i )
+				for( int i = 0; i < displayModes.Length; ++i )
 				{
 					if( next )
 					{
@@ -66,7 +66,7 @@ namespace Twice.Utilities.Os
 			return result;
 		}
 
-		static bool Equals( NativeMethods.LUID a, NativeMethods.LUID b )
+		private static bool Equals( NativeMethods.LUID a, NativeMethods.LUID b )
 		{
 			return a.HighPart == b.HighPart && a.LowPart == b.LowPart;
 		}
@@ -98,11 +98,16 @@ namespace Twice.Utilities.Os
 
 		private static string MonitorFriendlyName( NativeMethods.LUID adapterId, uint targetId )
 		{
-			var deviceName = new NativeMethods.DISPLAYCONFIG_TARGET_DEVICE_NAME();
-			deviceName.header.size = (uint)Marshal.SizeOf( typeof( NativeMethods.DISPLAYCONFIG_TARGET_DEVICE_NAME ) );
-			deviceName.header.adapterId = adapterId;
-			deviceName.header.id = targetId;
-			deviceName.header.type = NativeMethods.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
+			var deviceName = new NativeMethods.DISPLAYCONFIG_TARGET_DEVICE_NAME
+			{
+				header =
+				{
+					size = (uint)Marshal.SizeOf( typeof( NativeMethods.DISPLAYCONFIG_TARGET_DEVICE_NAME ) ),
+					adapterId = adapterId,
+					id = targetId,
+					type = NativeMethods.DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME
+				}
+			};
 			int error = NativeMethods.DisplayConfigGetDeviceInfo( ref deviceName );
 			if( error != NativeMethods.ERROR_SUCCESS )
 			{

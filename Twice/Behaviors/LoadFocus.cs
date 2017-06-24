@@ -12,15 +12,15 @@ namespace Twice.Behaviors
 			AssociatedObject.Loaded += AssociatedObject_Loaded;
 		}
 
+		private void AssociatedObject_Loaded( object sender, RoutedEventArgs e )
+		{
+			FocusElement?.Focus();
+		}
+
 		private static void OnFocusElementChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{
 			var load = d as LoadFocus;
 			load?.OnFocusElementChanged( e.NewValue as IInputElement );
-		}
-
-		private void AssociatedObject_Loaded( object sender, RoutedEventArgs e )
-		{
-			FocusElement?.Focus();
 		}
 
 		private void OnFocusElementChanged( IInputElement inputElement )
@@ -28,13 +28,13 @@ namespace Twice.Behaviors
 			inputElement?.Focus();
 		}
 
-		public IInputElement FocusElement
-		{
-			get { return (IInputElement)GetValue( FocusElementProperty ); }
-			set { SetValue( FocusElementProperty, value ); }
-		}
-
 		public static readonly DependencyProperty FocusElementProperty =
 			DependencyProperty.Register( "FocusElement", typeof( IInputElement ), typeof( LoadFocus ), new PropertyMetadata( null, OnFocusElementChanged ) );
+
+		public IInputElement FocusElement
+		{
+			get => (IInputElement)GetValue( FocusElementProperty );
+			set => SetValue( FocusElementProperty, value );
+		}
 	}
 }

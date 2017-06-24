@@ -1,17 +1,17 @@
 ﻿<dialogs:DialogWindow x:Class="Twice.Views.Dialogs.TextInputDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:Twice.Behaviors"
-             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
-             SizeToContent="Height"
-             mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
-			  DataContext="{Binding TextInput, Source={StaticResource Locator}}"
-			Width="350" Height="250" d:DesignHeight="300" d:DesignWidth="300">
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      xmlns:behaviors="clr-namespace:Twice.Behaviors"
+                      xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+                      xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                      xmlns:dialogs="clr-namespace:Twice.Views.Dialogs"
+                      SizeToContent="Height"
+                      mc:Ignorable="d" Style="{StaticResource DialogStyle}" WindowStartupLocation="CenterOwner"
+                      DataContext="{Binding TextInput, Source={StaticResource Locator}}"
+                      Width="350" Height="250" d:DesignHeight="300" d:DesignWidth="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
@@ -20,9 +20,9 @@
 	<DockPanel Margin="10">
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
 			<Button Content="{lex:Loc Ok}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
-										Style="{DynamicResource MaterialDesignRaisedButton}" />
+			        Style="{DynamicResource MaterialDesignRaisedButton}" />
 			<Button Content="{lex:Loc Cancel}" IsCancel="True" Command="{Binding CancelCommand}"
-										Margin="5" Style="{DynamicResource MaterialDesignRaisedButton}" />
+			        Margin="5" Style="{DynamicResource MaterialDesignRaisedButton}" />
 		</StackPanel>
 
 		<Grid>

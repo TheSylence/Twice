@@ -1,6 +1,6 @@
-﻿using MahApps.Metro.Controls;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using MahApps.Metro.Controls;
 using Twice.ViewModels;
 
 namespace Twice.Behaviors

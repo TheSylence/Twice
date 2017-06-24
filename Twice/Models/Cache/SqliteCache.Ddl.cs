@@ -2,7 +2,7 @@
 
 namespace Twice.Models.Cache
 {
-	partial class SqliteCache
+	internal partial class SqliteCache
 	{
 		private IEnumerable<string> GetDdlQueries()
 		{

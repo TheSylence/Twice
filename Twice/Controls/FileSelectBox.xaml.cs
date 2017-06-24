@@ -1,11 +1,11 @@
-﻿using Microsoft.Win32;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace Twice.Controls
 {
 	/// <summary>
-	///  Interaction logic for FileSelectBox.xaml 
+	///     Interaction logic for FileSelectBox.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal partial class FileSelectBox
@@ -57,33 +57,33 @@ namespace Twice.Controls
 			}
 		}
 
-		public string Filter
-		{
-			get { return (string)GetValue( FilterProperty ); }
-			set { SetValue( FilterProperty, value ); }
-		}
-
-		public FileSelectMode Mode
-		{
-			get { return (FileSelectMode)GetValue( ModeProperty ); }
-			set { SetValue( ModeProperty, value ); }
-		}
-
-		public string Value
-		{
-			get { return (string)GetValue( ValueProperty ); }
-			set { SetValue( ValueProperty, value ); }
-		}
-
 		public static readonly DependencyProperty FilterProperty =
 			DependencyProperty.Register( "Filter", typeof( string ), typeof( FileSelectBox ), new PropertyMetadata( string.Empty ) );
 
 		public static readonly DependencyProperty ModeProperty =
-									DependencyProperty.Register( "Mode", typeof( FileSelectMode ), typeof( FileSelectBox ),
+			DependencyProperty.Register( "Mode", typeof( FileSelectMode ), typeof( FileSelectBox ),
 				new PropertyMetadata( FileSelectMode.Open ) );
 
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register( "Value", typeof( string ),
 			typeof( FileSelectBox ),
 			new PropertyMetadata( null ) );
+
+		public string Filter
+		{
+			get => (string)GetValue( FilterProperty );
+			set => SetValue( FilterProperty, value );
+		}
+
+		public FileSelectMode Mode
+		{
+			get => (FileSelectMode)GetValue( ModeProperty );
+			set => SetValue( ModeProperty, value );
+		}
+
+		public string Value
+		{
+			get => (string)GetValue( ValueProperty );
+			set => SetValue( ValueProperty, value );
+		}
 	}
 }

@@ -4,7 +4,7 @@ using Squirrel;
 namespace Twice.Utilities
 {
 	/// <summary>
-	///  Wrapper for ReleaseEntry 
+	///     Wrapper for ReleaseEntry
 	/// </summary>
 	internal class AppRelease
 	{

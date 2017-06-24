@@ -1,11 +1,10 @@
-using LinqToTwitter;
-using Newtonsoft.Json;
-using Resourcer;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using LinqToTwitter;
+using Newtonsoft.Json;
+using Resourcer;
 using Twice.Models.Configuration;
 using Twice.Resources;
 using Twice.Utilities.Ui;
@@ -25,7 +24,7 @@ namespace Twice.ViewModels.Settings
 					Name = a.Name,
 					ColorBrush = new SolidColorBrush( a.ExemplarHue.Color )
 				}
-				) );
+			) );
 
 			AvailablePrimaryColors = new List<ColorItem>( ColorProvider.AvailablePrimaryColors.Select( a =>
 				new ColorItem
@@ -33,7 +32,7 @@ namespace Twice.ViewModels.Settings
 					Name = a.Name,
 					ColorBrush = new SolidColorBrush( a.ExemplarHue.Color )
 				}
-				) );
+			) );
 
 			SelectedPrimaryColor = AvailablePrimaryColors.FirstOrDefault( c => c.Name == currentConfig.Visual.PrimaryColor );
 			SelectedAccentColor = AvailableAccentColors.FirstOrDefault( c => c.Name == currentConfig.Visual.AccentColor );

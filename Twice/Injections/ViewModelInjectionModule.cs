@@ -1,6 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using Ninject.Modules;
-using System.Diagnostics.CodeAnalysis;
 using Twice.ViewModels;
 using Twice.ViewModels.Accounts;
 using Twice.ViewModels.ColumnManagement;
@@ -19,7 +19,7 @@ namespace Twice.Injections
 	internal class ViewModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		///  Loads the module into the kernel. 
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

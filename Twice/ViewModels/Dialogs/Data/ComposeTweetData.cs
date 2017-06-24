@@ -31,8 +31,8 @@ namespace Twice.ViewModels.Dialogs.Data
 			vm.SetInitialText( Text );
 		}
 
-		private bool ReplyToAll;
-		private StatusViewModel Status;
-		private string Text;
+		private readonly bool ReplyToAll;
+		private readonly StatusViewModel Status;
+		private readonly string Text;
 	}
 }

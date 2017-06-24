@@ -6,7 +6,7 @@ using Twice.ViewModels;
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///  Interaction logic for DialogWindowHost.xaml 
+	///     Interaction logic for DialogWindowHost.xaml
 	/// </summary>
 	public partial class DialogWindowHost
 	{

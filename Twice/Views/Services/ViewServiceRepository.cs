@@ -1,8 +1,4 @@
-﻿using Fody;
-using MahApps.Metro.Controls;
-using Microsoft.Win32;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -11,6 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Fody;
+using MahApps.Metro.Controls;
+using Microsoft.Win32;
+using Ninject;
 using Twice.Models.Columns;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Accounts;
@@ -35,6 +35,131 @@ namespace Twice.Views.Services
 		public ViewServiceRepository( IDialogStack dialogStack )
 		{
 			DialogStack = dialogStack;
+		}
+
+		private Task<object> ShowHostedDialog<TControl, TViewModel>()
+			where TViewModel : class
+			where TControl : UserControl, new()
+		{
+			return ShowHostedDialog<TControl, TViewModel, object>();
+		}
+
+		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>()
+			where TViewModel : class
+			where TResult : class
+			where TControl : UserControl, new()
+		{
+			var ctrl = new TControl();
+			var vm = ctrl.DataContext as TViewModel;
+
+			bool newHost = false;
+			DialogWindowHost host = CurrentDialogHost;
+			if( host == null )
+			{
+				host = new DialogWindowHost
+				{
+					Owner = Window,
+					Content = ctrl
+				};
+
+				host.Closed += ( s, e ) =>
+				{
+					DialogStack.Clear();
+					CurrentDialogHost = null;
+				};
+
+				CurrentDialogHost = host;
+				newHost = true;
+			}
+			else
+			{
+				host.Content = ctrl;
+			}
+
+			var hostVm = host.DataContext as IDialogHostViewModel;
+			Debug.Assert( hostVm != null, "hostVm != null" );
+			await hostVm.Setup( vm );
+
+			TResult result = null;
+			await Dispatcher.RunAsync( () =>
+			{
+				bool shouldSetupResult = false;
+
+				if( newHost )
+				{
+					try
+					{
+						shouldSetupResult = host.ShowDialog() == true;
+					}
+					catch( InvalidOperationException )
+					{
+						// Window was closed during setup
+					}
+				}
+
+				if( shouldSetupResult )
+				{
+					result = DialogStack.ResultSetup<TViewModel, TResult>( vm );
+				}
+			} );
+
+			return result;
+		}
+
+		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TWindow : Window, new()
+		{
+			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
+		}
+
+		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var dlg = new TWindow
+			{
+				Owner = Window
+			};
+
+			var vm = dlg.DataContext as TViewModel;
+			Debug.Assert( vm != null );
+
+			vmSetup?.Invoke( vm );
+
+			if( dlg.ShowDialog() != true )
+			{
+				return Task.FromResult<TResult>( null );
+			}
+
+			Func<TViewModel, TResult> defaultResultSetup = _ => default(TResult);
+			var resSetup = resultSetup ?? defaultResultSetup;
+			var result = resSetup( vm );
+
+			return Task.FromResult( result );
+		}
+
+		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
+			Action<TViewModel> vmSetup = null )
+			where TViewModel : class
+			where TResult : class
+			where TWindow : Window, new()
+		{
+			var waitHandle = new ManualResetEventSlim( false );
+
+			TResult result = null;
+
+			Dispatcher.CheckBeginInvokeOnUI(
+				async () =>
+				{
+					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
+					waitHandle.Set();
+				} );
+
+			waitHandle.Wait();
+			return result;
 		}
 
 		public async Task ComposeMessage()
@@ -110,6 +235,19 @@ namespace Twice.Views.Services
 			} );
 		}
 
+		public void OpenNotificationPopup( NotificationViewModel vm )
+		{
+			var window = new NotifyPopup
+			{
+				DataContext = vm,
+				Top = vm.WindowRect.Top,
+				Left = vm.WindowRect.Left
+			};
+
+			vm.Reset();
+			window.Show();
+		}
+
 		public async Task OpenSearch( string query = null )
 		{
 			if( !DialogStack.Push( new SearchDialogData( query ) ) )
@@ -159,8 +297,8 @@ namespace Twice.Views.Services
 
 		public async Task<ColumnDefinition[]> SelectAccountColumnTypes( ulong accountId )
 		{
-			ulong[] sourceAccounts = { accountId };
-			ulong[] targetAccounts = { accountId };
+			ulong[] sourceAccounts = {accountId};
+			ulong[] targetAccounts = {accountId};
 
 			Func<IColumnTypeSelectionDialogViewModel, ColumnDefinition[]> resultSetup = vm =>
 			{
@@ -281,145 +419,6 @@ namespace Twice.Views.Services
 			}
 
 			await ShowHostedDialog<TweetDetailsDialog, ITweetDetailsViewModel>();
-		}
-
-		private Task<object> ShowHostedDialog<TControl, TViewModel>()
-			where TViewModel : class
-			where TControl : UserControl, new()
-		{
-			return ShowHostedDialog<TControl, TViewModel, object>();
-		}
-
-		private async Task<TResult> ShowHostedDialog<TControl, TViewModel, TResult>()
-			where TViewModel : class
-			where TResult : class
-			where TControl : UserControl, new()
-		{
-			var ctrl = new TControl();
-			var vm = ctrl.DataContext as TViewModel;
-
-			bool newHost = false;
-			DialogWindowHost host = CurrentDialogHost;
-			if( host == null )
-			{
-				host = new DialogWindowHost
-				{
-					Owner = Window,
-					Content = ctrl
-				};
-
-				host.Closed += ( s, e ) =>
-				{
-					DialogStack.Clear();
-					CurrentDialogHost = null;
-				};
-
-				CurrentDialogHost = host;
-				newHost = true;
-			}
-			else
-			{
-				host.Content = ctrl;
-			}
-
-			var hostVm = host.DataContext as IDialogHostViewModel;
-			Debug.Assert( hostVm != null, "hostVm != null" );
-			await hostVm.Setup( vm );
-
-			TResult result = null;
-			await Dispatcher.RunAsync( () =>
-			{
-				bool shouldSetupResult = false;
-
-				if( newHost )
-				{
-					try
-					{
-						shouldSetupResult = host.ShowDialog() == true;
-					}
-					catch( InvalidOperationException )
-					{
-						// Window was closed during setup
-					}
-				}
-
-				if( shouldSetupResult )
-				{
-					result = DialogStack.ResultSetup<TViewModel, TResult>( vm );
-				}
-			} );
-
-			return result;
-		}
-
-		private async Task ShowWindow<TWindow, TViewModel>( Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TWindow : Window, new()
-		{
-			await ShowWindow<TWindow, TViewModel, object>( null, vmSetup );
-		}
-
-		private Task<TResult> ShowWindow<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			var dlg = new TWindow
-			{
-				Owner = Window
-			};
-
-			var vm = dlg.DataContext as TViewModel;
-			Debug.Assert( vm != null );
-
-			vmSetup?.Invoke( vm );
-
-			if( dlg.ShowDialog() != true )
-			{
-				return Task.FromResult<TResult>( null );
-			}
-
-			Func<TViewModel, TResult> defaultResultSetup = _ => default( TResult );
-			var resSetup = resultSetup ?? defaultResultSetup;
-			var result = resSetup( vm );
-
-			return Task.FromResult( result );
-		}
-
-		private TResult ShowWindowSync<TWindow, TViewModel, TResult>( Func<TViewModel, TResult> resultSetup = null,
-			Action<TViewModel> vmSetup = null )
-			where TViewModel : class
-			where TResult : class
-			where TWindow : Window, new()
-		{
-			var waitHandle = new ManualResetEventSlim( false );
-
-			TResult result = null;
-
-			Dispatcher.CheckBeginInvokeOnUI(
-				async () =>
-				{
-					result = await ShowWindow<TWindow, TViewModel, TResult>( resultSetup, vmSetup );
-					waitHandle.Set();
-				} );
-
-			waitHandle.Wait();
-			return result;
-		}
-
-		public void OpenNotificationPopup( NotificationViewModel vm )
-		{
-			var window = new NotifyPopup()
-			{
-				DataContext = vm
-			};
-
-			window.Top = vm.WindowRect.Top;
-			window.Left = vm.WindowRect.Left;
-
-			vm.Reset();
-			window.Show();
 		}
 
 		[Inject]

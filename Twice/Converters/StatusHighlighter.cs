@@ -399,7 +399,7 @@ namespace Twice.Converters
 				{
 					Debugger.Break();
 				}
-				throw new ArgumentException( @"Value is not an IHighlightable", nameof( value ) );
+				throw new ArgumentException( @"Value is not an IHighlightable", nameof(value) );
 			}
 
 			return GenerateInlines( tweet ).ToList();

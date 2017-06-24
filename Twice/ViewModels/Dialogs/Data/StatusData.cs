@@ -30,6 +30,6 @@ namespace Twice.ViewModels.Dialogs.Data
 			vm.DisplayTweet = Status;
 		}
 
-		private StatusViewModel Status;
+		private readonly StatusViewModel Status;
 	}
 }

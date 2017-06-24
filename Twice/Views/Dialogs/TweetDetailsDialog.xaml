@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="Twice.Views.Dialogs.TweetDetailsDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Twice.Behaviors"
-        xmlns:views="clr-namespace:Twice.Views"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource Locator}}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Twice.Behaviors"
+             xmlns:views="clr-namespace:Twice.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" DataContext="{Binding TweetDetails,Source={StaticResource Locator}}">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -18,11 +18,13 @@
 		</Grid.RowDefinitions>
 
 		<StackPanel Orientation="Vertical">
-			<Grid MaxHeight="250" Visibility="{Binding PreviousConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
+			<Grid MaxHeight="250"
+			      Visibility="{Binding PreviousConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
 				<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
-									   DisplayIndicators="False">
+				                       DisplayIndicators="False">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-						<ItemsControl ItemsSource="{Binding PreviousConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}">
+						<ItemsControl ItemsSource="{Binding PreviousConversationTweets}"
+						              ItemTemplate="{StaticResource StatusViewTemplate}">
 							<i:Interaction.Behaviors>
 								<behaviors:ScrollToEnd Controller="{Binding}" />
 							</i:Interaction.Behaviors>
@@ -30,10 +32,12 @@
 					</ScrollViewer>
 				</views:StatusContainer>
 
-				<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+				<controls:ProgressRing IsActive="{Binding IsLoadingPrevious, Mode=OneWay}" VerticalAlignment="Center"
+				                       HorizontalAlignment="Center" IsLarge="True" />
 			</Grid>
 
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+			            Visibility="{Binding PreviousConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
 				<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
 				<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc InReplyTo}" />
 				<materialDesign:PackIcon Kind="ChevronUp" VerticalAlignment="Center" />
@@ -41,26 +45,30 @@
 		</StackPanel>
 
 		<views:StatusContainer ShowRetweets="True" ShowFavorites="True" DisplaySource="True" EnableHoverIcons="True"
-							   DisplayIndicators="False" Grid.Row="1" HightlightStatus="True">
+		                       DisplayIndicators="False" Grid.Row="1" HightlightStatus="True">
 			<ContentControl Content="{Binding DisplayTweet}" ContentTemplate="{StaticResource StatusViewTemplate}" />
 		</views:StatusContainer>
 
 		<StackPanel Orientation="Vertical" Grid.Row="2">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding FollowingConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+			            Visibility="{Binding FollowingConversationTweets.Count, Converter={StaticResource VisibleIfGreaterZeroConv}}">
 				<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
 				<TextBlock FontWeight="Bold" Margin="5" Text="{lex:Loc Responses}" />
 				<materialDesign:PackIcon Kind="ChevronDown" VerticalAlignment="Center" />
 			</StackPanel>
 
-			<Grid MaxHeight="250" Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
+			<Grid MaxHeight="250"
+			      Visibility="{Binding FollowingConversationTweets, Converter={StaticResource VisibleIfItemsConv}}">
 				<views:StatusContainer ShowRetweets="False" ShowFavorites="False" EnableHoverIcons="False" DisplaySource="False"
-									   DisplayIndicators="False">
+				                       DisplayIndicators="False">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-						<ItemsControl ItemsSource="{Binding FollowingConversationTweets}" ItemTemplate="{StaticResource StatusViewTemplate}" />
+						<ItemsControl ItemsSource="{Binding FollowingConversationTweets}"
+						              ItemTemplate="{StaticResource StatusViewTemplate}" />
 					</ScrollViewer>
 				</views:StatusContainer>
 
-				<controls:ProgressRing IsActive="{Binding IsLoadingFollowing, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" IsLarge="True" />
+				<controls:ProgressRing IsActive="{Binding IsLoadingFollowing, Mode=OneWay}" VerticalAlignment="Center"
+				                       HorizontalAlignment="Center" IsLarge="True" />
 			</Grid>
 		</StackPanel>
 	</Grid>

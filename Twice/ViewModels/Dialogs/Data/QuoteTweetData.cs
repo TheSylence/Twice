@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			}
 
 			return Status.Equals( other.Status )
-				&& PreSelectedAccounts.Compare( other.PreSelectedAccounts );
+			       && PreSelectedAccounts.Compare( other.PreSelectedAccounts );
 		}
 
 		public override object GetResult( object viewModel )
@@ -37,7 +37,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			vm.PreSelectAccounts( PreSelectedAccounts );
 		}
 
-		private ulong[] PreSelectedAccounts;
-		private StatusViewModel Status;
+		private readonly ulong[] PreSelectedAccounts;
+		private readonly StatusViewModel Status;
 	}
 }

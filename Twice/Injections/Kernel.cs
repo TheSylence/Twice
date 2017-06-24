@@ -1,10 +1,10 @@
-﻿using Anotar.NLog;
-using Ninject;
-using Ninject.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Anotar.NLog;
+using Ninject;
+using Ninject.Modules;
 using Twice.Models.Media;
 
 namespace Twice.Injections
@@ -19,6 +19,7 @@ namespace Twice.Injections
 
 			MediaExtractorRepository.Default.AddExtractor( new InstragramExtractor() );
 			MediaExtractorRepository.Default.AddExtractor( new YoutubeExtractor() );
+
 			//MediaExtractorRepository.Default.AddExtractor( new TwitterVideoExtractor() );
 
 			MediaExtractorRepository.Default.AddExtractor( new GenericMediaExtractor() );

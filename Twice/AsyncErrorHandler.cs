@@ -1,6 +1,6 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Anotar.NLog;
 
 // ReSharper disable UnusedMember.Global
 

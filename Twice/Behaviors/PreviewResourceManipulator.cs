@@ -1,9 +1,9 @@
-﻿using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Ninject;
 using Twice.Utilities.Ui;
 using Twice.Views;
 
@@ -23,42 +23,6 @@ namespace Twice.Behaviors
 			manipulator?.OnAccentColorChanged( (string)e.NewValue );
 		}
 
-		private static void OnDarkThemeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnDarkThemeChanged( (bool)e.NewValue );
-		}
-
-		private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnFontSizeChanged( (double)e.NewValue );
-		}
-
-		private static void OnHashtagColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnHashtagColorChanged( (Brush)e.NewValue );
-		}
-
-		private static void OnLinkColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnLinkColorChanged( (Brush)e.NewValue );
-		}
-
-		private static void OnMentionColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnMentionColorChanged( (Brush)e.NewValue );
-		}
-
-		private static void OnPrimaryColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var manipulator = d as PreviewResourceManipulator;
-			manipulator?.OnPrimaryColorChanged( (string)e.NewValue );
-		}
-
 		private void OnAccentColorChanged( string newValue )
 		{
 			if( Dictionary == null )
@@ -75,6 +39,12 @@ namespace Twice.Behaviors
 			Dictionary["SecondaryAccentBrush"] = new SolidColorBrush( swatch.AccentHues.First( h => h.Name == "Accent700" ).Color );
 		}
 
+		private static void OnDarkThemeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnDarkThemeChanged( (bool)e.NewValue );
+		}
+
 		private void OnDarkThemeChanged( bool newValue )
 		{
 			if( Dictionary == null )
@@ -84,7 +54,7 @@ namespace Twice.Behaviors
 
 			var resDictionaryName =
 				$"pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.{( newValue ? "Dark" : "Light" )}.xaml";
-			var dict = new ResourceDictionary { Source = new Uri( resDictionaryName ) };
+			var dict = new ResourceDictionary {Source = new Uri( resDictionaryName )};
 
 			var keys = new[]
 			{
@@ -99,6 +69,12 @@ namespace Twice.Behaviors
 			}
 		}
 
+		private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnFontSizeChanged( (double)e.NewValue );
+		}
+
 		private void OnFontSizeChanged( double newValue )
 		{
 			if( Dictionary == null )
@@ -107,6 +83,12 @@ namespace Twice.Behaviors
 			}
 
 			Dictionary["GlobalFontSize"] = newValue;
+		}
+
+		private static void OnHashtagColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnHashtagColorChanged( (Brush)e.NewValue );
 		}
 
 		private void OnHashtagColorChanged( Brush newValue )
@@ -119,6 +101,12 @@ namespace Twice.Behaviors
 			Dictionary["HashtagBrush"] = newValue;
 		}
 
+		private static void OnLinkColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnLinkColorChanged( (Brush)e.NewValue );
+		}
+
 		private void OnLinkColorChanged( Brush newValue )
 		{
 			if( Dictionary == null )
@@ -127,6 +115,12 @@ namespace Twice.Behaviors
 			}
 
 			Dictionary["LinkBrush"] = newValue;
+		}
+
+		private static void OnMentionColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnMentionColorChanged( (Brush)e.NewValue );
 		}
 
 		private void OnMentionColorChanged( Brush newValue )
@@ -139,6 +133,12 @@ namespace Twice.Behaviors
 			Dictionary["MentionBrush"] = newValue;
 		}
 
+		private static void OnPrimaryColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var manipulator = d as PreviewResourceManipulator;
+			manipulator?.OnPrimaryColorChanged( (string)e.NewValue );
+		}
+
 		private void OnPrimaryColorChanged( string newValue )
 		{
 			if( Dictionary == null )
@@ -149,62 +149,13 @@ namespace Twice.Behaviors
 			var swatch = ColorProvider.AvailablePrimaryColors.FirstOrDefault( s => s.Name == newValue );
 			if( swatch == null )
 			{
-				return;
 			}
 
 			// TODO: Update Resouce Dictionaries
 		}
 
-		public string AccentColorName
-		{
-			get { return (string)GetValue( AccentColorNameProperty ); }
-			set { SetValue( AccentColorNameProperty, value ); }
-		}
-
-		public bool DarkTheme
-		{
-			get { return (bool)GetValue( DarkThemeProperty ); }
-			set { SetValue( DarkThemeProperty, value ); }
-		}
-
-		public ResourceDictionary Dictionary
-		{
-			get { return (ResourceDictionary)GetValue( DictionaryProperty ); }
-			set { SetValue( DictionaryProperty, value ); }
-		}
-
-		public double FontSize
-		{
-			get { return (double)GetValue( FontSizeProperty ); }
-			set { SetValue( FontSizeProperty, value ); }
-		}
-
-		public Brush HashtagColor
-		{
-			get { return (Brush)GetValue( HashtagColorProperty ); }
-			set { SetValue( HashtagColorProperty, value ); }
-		}
-
-		public Brush LinkColor
-		{
-			get { return (Brush)GetValue( LinkColorProperty ); }
-			set { SetValue( LinkColorProperty, value ); }
-		}
-
-		public Brush MentionColor
-		{
-			get { return (Brush)GetValue( MentionColorProperty ); }
-			set { SetValue( MentionColorProperty, value ); }
-		}
-
-		public string PrimaryColorName
-		{
-			get { return (string)GetValue( PrimaryColorNameProperty ); }
-			set { SetValue( PrimaryColorNameProperty, value ); }
-		}
-
 		public static readonly DependencyProperty AccentColorNameProperty =
-																			DependencyProperty.Register( "AccentColorName", typeof( string ), typeof( PreviewResourceManipulator ),
+			DependencyProperty.Register( "AccentColorName", typeof( string ), typeof( PreviewResourceManipulator ),
 				new PropertyMetadata( null, OnAccentColorChanged ) );
 
 		public static readonly DependencyProperty DarkThemeProperty =
@@ -234,6 +185,54 @@ namespace Twice.Behaviors
 		public static readonly DependencyProperty PrimaryColorNameProperty =
 			DependencyProperty.Register( "PrimaryColorName", typeof( string ), typeof( PreviewResourceManipulator ),
 				new PropertyMetadata( null, OnPrimaryColorChanged ) );
+
+		public string AccentColorName
+		{
+			get => (string)GetValue( AccentColorNameProperty );
+			set => SetValue( AccentColorNameProperty, value );
+		}
+
+		public bool DarkTheme
+		{
+			get => (bool)GetValue( DarkThemeProperty );
+			set => SetValue( DarkThemeProperty, value );
+		}
+
+		public ResourceDictionary Dictionary
+		{
+			get => (ResourceDictionary)GetValue( DictionaryProperty );
+			set => SetValue( DictionaryProperty, value );
+		}
+
+		public double FontSize
+		{
+			get => (double)GetValue( FontSizeProperty );
+			set => SetValue( FontSizeProperty, value );
+		}
+
+		public Brush HashtagColor
+		{
+			get => (Brush)GetValue( HashtagColorProperty );
+			set => SetValue( HashtagColorProperty, value );
+		}
+
+		public Brush LinkColor
+		{
+			get => (Brush)GetValue( LinkColorProperty );
+			set => SetValue( LinkColorProperty, value );
+		}
+
+		public Brush MentionColor
+		{
+			get => (Brush)GetValue( MentionColorProperty );
+			set => SetValue( MentionColorProperty, value );
+		}
+
+		public string PrimaryColorName
+		{
+			get => (string)GetValue( PrimaryColorNameProperty );
+			set => SetValue( PrimaryColorNameProperty, value );
+		}
 
 		private readonly IColorProvider ColorProvider;
 	}

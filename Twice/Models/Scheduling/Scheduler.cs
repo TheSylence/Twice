@@ -1,11 +1,11 @@
-﻿using Anotar.NLog;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Anotar.NLog;
+using Newtonsoft.Json;
 using Twice.Models.Scheduling.Processors;
 using Twice.Models.Twitter;
 
@@ -45,61 +45,6 @@ namespace Twice.Models.Scheduling
 		{
 			JobProcessors.Add( SchedulerJobType.Test, testProcessor );
 			SleepTime = sleepTime;
-		}
-
-		public event EventHandler JobListUpdated;
-
-		public void AddJob( SchedulerJob job )
-		{
-			Debug.Assert( job.AccountIds.Any() );
-			Debug.Assert( !string.IsNullOrEmpty( job.Text ) );
-
-			lock( JobListLock )
-			{
-				job.JobId = JobIdCounter++;
-
-				Jobs.Add( job );
-				UpdateJobList();
-			}
-
-			lock( JobListLock )
-			{
-				JobListUpdated?.Invoke( this, EventArgs.Empty );
-			}
-		}
-
-		public void DeleteJob( SchedulerJob job )
-		{
-			lock( JobListLock )
-			{
-				Jobs.Remove( job );
-				UpdateJobList();
-			}
-
-			lock( JobListLock )
-			{
-				JobListUpdated?.Invoke( this, EventArgs.Empty );
-			}
-		}
-
-		public void Start()
-		{
-			LogTo.Info( "Starting scheduler thread" );
-
-			IsRunning = true;
-			ThreadObject = new Thread( RunThreaded )
-			{
-				Name = "SchedulerThread"
-			};
-			ThreadObject.Start();
-		}
-
-		public void Stop()
-		{
-			LogTo.Info( "Stopping scheduler thread" );
-
-			IsRunning = false;
-			ThreadObject?.Join();
 		}
 
 		internal bool ProcessJob( SchedulerJob job )
@@ -157,7 +102,63 @@ namespace Twice.Models.Scheduling
 			File.WriteAllText( FileName, json );
 		}
 
+		public void AddJob( SchedulerJob job )
+		{
+			Debug.Assert( job.AccountIds.Any() );
+			Debug.Assert( !string.IsNullOrEmpty( job.Text ) );
+
+			lock( JobListLock )
+			{
+				job.JobId = JobIdCounter++;
+
+				Jobs.Add( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
+
+		public void DeleteJob( SchedulerJob job )
+		{
+			lock( JobListLock )
+			{
+				Jobs.Remove( job );
+				UpdateJobList();
+			}
+
+			lock( JobListLock )
+			{
+				JobListUpdated?.Invoke( this, EventArgs.Empty );
+			}
+		}
+
 		public IEnumerable<SchedulerJob> JobList => Jobs;
+
+		public event EventHandler JobListUpdated;
+
+		public void Start()
+		{
+			LogTo.Info( "Starting scheduler thread" );
+
+			IsRunning = true;
+			ThreadObject = new Thread( RunThreaded )
+			{
+				Name = "SchedulerThread"
+			};
+			ThreadObject.Start();
+		}
+
+		public void Stop()
+		{
+			LogTo.Info( "Stopping scheduler thread" );
+
+			IsRunning = false;
+			ThreadObject?.Join();
+		}
+
 		private readonly string FileName;
 		private readonly object JobListLock = new object();
 

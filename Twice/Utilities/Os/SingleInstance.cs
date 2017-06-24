@@ -44,6 +44,12 @@ namespace Twice.Utilities.Os
 			}
 		}
 
+		private static Mutex AppMutex;
+		private static bool ReleaseMutex;
+
+		// ReSharper disable once InconsistentNaming
+		internal static readonly int WM_SHOWFIRSTINSTANCE;
+
 		private static string AssemblyGuid
 		{
 			get
@@ -55,11 +61,5 @@ namespace Twice.Utilities.Os
 					: attributes.First().Value;
 			}
 		}
-
-		// ReSharper disable once InconsistentNaming
-		internal static readonly int WM_SHOWFIRSTINSTANCE;
-
-		private static Mutex AppMutex;
-		private static bool ReleaseMutex;
 	}
 }

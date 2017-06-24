@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Twice.ViewModels.Twitter
 {
-	interface IScheduleInformationViewModel
+	internal interface IScheduleInformationViewModel
 	{
 		void ResetSchedule();
 		void ScheduleDeletion( List<Tuple<ulong, ulong>> tweetIds, string text );

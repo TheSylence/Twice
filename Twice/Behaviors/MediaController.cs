@@ -1,8 +1,8 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
+using Anotar.NLog;
 
 namespace Twice.Behaviors
 {
@@ -22,18 +22,6 @@ namespace Twice.Behaviors
 		protected override void OnCleanup()
 		{
 			Stop();
-		}
-
-		private static void OnIsPlayingChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var ctrl = d as MediaController;
-			ctrl?.OnIsPlayingChanged( (bool)e.NewValue );
-		}
-
-		private static void OnMuteAudioChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var ctrl = d as MediaController;
-			ctrl?.OnMuteAudioChanged( (bool)e.NewValue );
 		}
 
 		private void AssociatedObject_MediaEnded( object sender, RoutedEventArgs e )
@@ -63,6 +51,12 @@ namespace Twice.Behaviors
 			ResetBeforePlay = false;
 		}
 
+		private static void OnIsPlayingChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var ctrl = d as MediaController;
+			ctrl?.OnIsPlayingChanged( (bool)e.NewValue );
+		}
+
 		private void OnIsPlayingChanged( bool isPlaying )
 		{
 			if( AssociatedObject == null || !IsAnimated )
@@ -84,6 +78,12 @@ namespace Twice.Behaviors
 			{
 				Pause();
 			}
+		}
+
+		private static void OnMuteAudioChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var ctrl = d as MediaController;
+			ctrl?.OnMuteAudioChanged( (bool)e.NewValue );
 		}
 
 		private void OnMuteAudioChanged( bool mute )
@@ -132,30 +132,6 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public bool IsAnimated
-		{
-			get { return (bool)GetValue( IsAnimatedProperty ); }
-			set { SetValue( IsAnimatedProperty, value ); }
-		}
-
-		public bool IsPlaying
-		{
-			get { return (bool)GetValue( IsPlayingProperty ); }
-			set { SetValue( IsPlayingProperty, value ); }
-		}
-
-		public bool Loop
-		{
-			get { return (bool)GetValue( LoopProperty ); }
-			set { SetValue( LoopProperty, value ); }
-		}
-
-		public bool MuteAudio
-		{
-			get { return (bool)GetValue( MuteAudioProperty ); }
-			set { SetValue( MuteAudioProperty, value ); }
-		}
-
 		public static readonly DependencyProperty IsAnimatedProperty =
 			DependencyProperty.Register( "IsAnimated", typeof( bool ), typeof( MediaController ), new PropertyMetadata( false ) );
 
@@ -167,6 +143,30 @@ namespace Twice.Behaviors
 
 		public static readonly DependencyProperty MuteAudioProperty =
 			DependencyProperty.Register( "MuteAudio", typeof( bool ), typeof( MediaController ), new PropertyMetadata( true, OnMuteAudioChanged ) );
+
+		public bool IsAnimated
+		{
+			get => (bool)GetValue( IsAnimatedProperty );
+			set => SetValue( IsAnimatedProperty, value );
+		}
+
+		public bool IsPlaying
+		{
+			get => (bool)GetValue( IsPlayingProperty );
+			set => SetValue( IsPlayingProperty, value );
+		}
+
+		public bool Loop
+		{
+			get => (bool)GetValue( LoopProperty );
+			set => SetValue( LoopProperty, value );
+		}
+
+		public bool MuteAudio
+		{
+			get => (bool)GetValue( MuteAudioProperty );
+			set => SetValue( MuteAudioProperty, value );
+		}
 
 		private bool ResetBeforePlay;
 	}

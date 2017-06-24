@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Twice.Behaviors
 {
-	class CenterAfterRender : BehaviorBase<Window>
+	internal class CenterAfterRender : BehaviorBase<Window>
 	{
 		protected override void OnAttached()
 		{

@@ -1,26 +1,15 @@
-﻿using Anotar.NLog;
-using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
+using Anotar.NLog;
+using Newtonsoft.Json;
 using Twice.Views;
 
 namespace Twice.Utilities.Ui
 {
 	internal class WindowSettings
 	{
-		public static WindowSettings Load( string fileName )
-		{
-			if( !File.Exists( fileName ) )
-			{
-				return null;
-			}
-
-			var json = File.ReadAllText( fileName );
-			return JsonConvert.DeserializeObject<WindowSettings>( json );
-		}
-
 		/// <summary>
-		///  Applies the saved settings to a window. 
+		///     Applies the saved settings to a window.
 		/// </summary>
 		/// <param name="window"> The window </param>
 		public void Apply( IWindowAdapter window )
@@ -35,12 +24,23 @@ namespace Twice.Utilities.Ui
 			window.WindowState = State;
 		}
 
+		public static WindowSettings Load( string fileName )
+		{
+			if( !File.Exists( fileName ) )
+			{
+				return null;
+			}
+
+			var json = File.ReadAllText( fileName );
+			return JsonConvert.DeserializeObject<WindowSettings>( json );
+		}
+
 		/// <summary>
-		///  Saves the current state of a window to a file. 
+		///     Saves the current state of a window to a file.
 		/// </summary>
 		/// <param name="window"> The window. </param>
 		/// <returns>
-		///  <c> true </c> if save was successful; otherwise (when window is minimized) <c> false </c>
+		///     <c> true </c> if save was successful; otherwise (when window is minimized) <c> false </c>
 		/// </returns>
 		public bool Save( IWindowAdapter window )
 		{
@@ -121,9 +121,9 @@ namespace Twice.Utilities.Ui
 
 		public double Height { get; set; }
 		public double Left { get; set; }
+		internal IScreenRepository ScreenRepo { get; set; } = new ScreenRepository();
 		public WindowState State { get; set; }
 		public double Top { get; set; }
 		public double Width { get; set; }
-		internal IScreenRepository ScreenRepo { get; set; } = new ScreenRepository();
 	}
 }

@@ -11,17 +11,36 @@ namespace Twice.Views
 			Window = window;
 		}
 
-		public double Height { get { return Window.Height; } set { Window.Height = value; } }
-		public double Left { get { return Window.Left; } set { Window.Left = value; } }
-		public double Top { get { return Window.Top; } set { Window.Top = value; } }
+		public double Height
+		{
+			get => Window.Height;
+			set => Window.Height = value;
+		}
+
+		public double Left
+		{
+			get => Window.Left;
+			set => Window.Left = value;
+		}
+
+		public double Top
+		{
+			get => Window.Top;
+			set => Window.Top = value;
+		}
 
 		public double Width
 		{
-			get { return Window.Width; }
-			set { Window.Width = value; }
+			get => Window.Width;
+			set => Window.Width = value;
 		}
 
-		public WindowState WindowState { get { return Window.WindowState; } set { Window.WindowState = value; } }
+		public WindowState WindowState
+		{
+			get => Window.WindowState;
+			set => Window.WindowState = value;
+		}
+
 		private readonly Window Window;
 	}
 }

@@ -1,6 +1,6 @@
-﻿using Ninject;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject;
 using Ninject.Activation;
-using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter;
 
@@ -10,7 +10,7 @@ namespace Twice.Injections
 	internal class SchedulerProvider : Provider<IScheduler>
 	{
 		/// <summary>
-		///  Creates an instance within the specified context. 
+		///     Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context"> The context. </param>
 		/// <returns> The created instance. </returns>

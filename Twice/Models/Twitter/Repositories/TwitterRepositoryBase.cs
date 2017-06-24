@@ -1,5 +1,5 @@
-using LinqToTwitter;
 using System.Diagnostics.CodeAnalysis;
+using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories

@@ -1,5 +1,5 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.ViewModels;
 
@@ -39,12 +39,6 @@ namespace Twice.Models.Twitter
 			Twitter = context;
 		}
 
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
 		public override bool Equals( object obj )
 		{
 			var other = obj as ContextEntry;
@@ -72,5 +66,11 @@ namespace Twice.Models.Twitter
 		public bool RequiresConfirmation { get; }
 		public ITwitterContext Twitter { get; }
 		public ulong UserId { get; }
+
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
 	}
 }

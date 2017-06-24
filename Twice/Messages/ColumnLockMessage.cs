@@ -1,5 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Twice.Messages
 {

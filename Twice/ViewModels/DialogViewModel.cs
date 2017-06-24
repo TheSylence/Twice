@@ -50,7 +50,7 @@ namespace Twice.ViewModels
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
-		public string Title{ get; set; }
+		public string Title { get; set; }
 
 		public void Center()
 		{

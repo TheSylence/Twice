@@ -24,6 +24,17 @@ namespace Twice.ViewModels
 			Name = GetName();
 		}
 
+		public override bool Equals( object obj )
+		{
+			var other = obj as ValueDescription<TValue>;
+			return other != null && Value.Equals( other.Value );
+		}
+
+		public override int GetHashCode()
+		{
+			return Value.GetHashCode();
+		}
+
 		public static IEnumerable<ValueDescription<TValue>> GetValues( bool includeNone = false, params TValue[] toSkip )
 		{
 			if( !typeof( TValue ).IsEnum )
@@ -46,16 +57,6 @@ namespace Twice.ViewModels
 			}
 		}
 
-		public static implicit operator TValue( ValueDescription<TValue> value )
-		{
-			return value.Value;
-		}
-
-		public static bool operator !=( ValueDescription<TValue> a, ValueDescription<TValue> b )
-		{
-			return !( a == b );
-		}
-
 		public static bool operator ==( ValueDescription<TValue> a, ValueDescription<TValue> b )
 		{
 			if( ReferenceEquals( a, b ) )
@@ -64,9 +65,9 @@ namespace Twice.ViewModels
 			}
 
 			// ReSharper disable RedundantCast.0
-			if( ( (object)a == null ) || ( (object)b == null ) )
+			if( (object)a == null || (object)b == null )
 
-			// ReSharper restore RedundantCast.0
+				// ReSharper restore RedundantCast.0
 			{
 				return false;
 			}
@@ -74,15 +75,14 @@ namespace Twice.ViewModels
 			return a.Equals( b );
 		}
 
-		public override bool Equals( object obj )
+		public static implicit operator TValue( ValueDescription<TValue> value )
 		{
-			var other = obj as ValueDescription<TValue>;
-			return other != null && Value.Equals( other.Value );
+			return value.Value;
 		}
 
-		public override int GetHashCode()
+		public static bool operator !=( ValueDescription<TValue> a, ValueDescription<TValue> b )
 		{
-			return Value.GetHashCode();
+			return !( a == b );
 		}
 
 		private string GetName()

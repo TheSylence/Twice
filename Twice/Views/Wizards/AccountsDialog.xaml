@@ -1,19 +1,19 @@
 ﻿<controls:MetroWindow x:Class="Twice.Views.Wizards.AccountsDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:accounts="clr-namespace:Twice.ViewModels.Accounts"
-             xmlns:proxies="clr-namespace:Twice.Views.Proxies"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:Twice.Behaviors"
-             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-             mc:Ignorable="d" Title="{lex:Loc Accounts}" Style="{StaticResource DialogStyle}"
-             DataContext="{Binding Accounts, Source={StaticResource Locator}}"
-			Width="600" Height="500" d:DesignHeight="300" d:DesignWidth="300">
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:lex="http://wpflocalizeextension.codeplex.com" WindowStartupLocation="CenterOwner"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                      xmlns:accounts="clr-namespace:Twice.ViewModels.Accounts"
+                      xmlns:proxies="clr-namespace:Twice.Views.Proxies"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      xmlns:behaviors="clr-namespace:Twice.Behaviors"
+                      xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+                      mc:Ignorable="d" Title="{lex:Loc Accounts}" Style="{StaticResource DialogStyle}"
+                      DataContext="{Binding Accounts, Source={StaticResource Locator}}"
+                      Width="600" Height="500" d:DesignHeight="300" d:DesignWidth="300">
 	<controls:MetroWindow.Resources>
 		<proxies:AccountsDialogDataProxy Data="{Binding}" x:Key="DataProxy" />
 	</controls:MetroWindow.Resources>
@@ -44,11 +44,12 @@
 									</Grid.RowDefinitions>
 
 									<Image Source="{Binding ProfileImage, IsAsync=True}" Grid.RowSpan="2" Width="48" Height="48" Margin="5"
-									   VerticalAlignment="Center" HorizontalAlignment="Center" />
+									       VerticalAlignment="Center" HorizontalAlignment="Center" />
 
 									<TextBlock Text="{Binding AccountName}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
-									<TextBlock Text="{lex:Loc IsDefaultAccount}" Visibility="{Binding IsDefaultAccount, Converter={StaticResource BoolToVisibleConv}}"
-									   Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
+									<TextBlock Text="{lex:Loc IsDefaultAccount}"
+									           Visibility="{Binding IsDefaultAccount, Converter={StaticResource BoolToVisibleConv}}"
+									           Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" />
 								</Grid>
 							</Expander.Header>
 
@@ -56,10 +57,12 @@
 								<CheckBox Margin="5" IsChecked="{Binding RequiresConfirmation, Mode=TwoWay}">
 									<TextBlock Text="{lex:Loc RequiresConfirmationStep}" TextWrapping="Wrap" />
 								</CheckBox>
-								<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5" IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
-											CommandParameter="{Binding}" Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
+								<Button Content="{lex:Loc MakeDefaultAccount}" Margin="5"
+								        IsEnabled="{Binding IsDefaultAccount, Converter={StaticResource InvertBoolConv}}"
+								        CommandParameter="{Binding}"
+								        Command="{Binding Data.MakeDefaultAccountCommand, Source={StaticResource DataProxy}}" />
 								<Button Margin="5" Command="{Binding Data.DeleteAccountCommand, Source={StaticResource DataProxy}}"
-										CommandParameter="{Binding}">
+								        CommandParameter="{Binding}">
 									<DockPanel>
 										<materialDesign:PackIcon Kind="Delete" Margin="5,0" />
 										<TextBlock Text="{lex:Loc Delete}" />

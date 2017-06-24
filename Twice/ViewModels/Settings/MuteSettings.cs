@@ -1,13 +1,13 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using Resourcer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
+using Resourcer;
 using Twice.Messages;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -23,29 +23,6 @@ namespace Twice.ViewModels.Settings
 
 			string languageCode = CultureInfo.CreateSpecificCulture( config.General.Language ?? "en-US" ).TwoLetterISOLanguageName;
 			HelpDocument = Resource.AsStringUnChecked( $"Twice.Resources.Documentation.Mute_{languageCode}.md" );
-		}
-
-		public Task OnLoad( object data )
-		{
-			return Task.CompletedTask;
-		}
-
-		public void SaveTo( IConfig config )
-		{
-			config.Mute.Entries.Clear();
-			config.Mute.Entries.AddRange( Entries );
-
-			if( Changed )
-			{
-				var msg = new FilterUpdateMessage();
-				MessengerInstance.Send( msg );
-
-				if( msg.RemoveCount > 0 )
-				{
-					var str = string.Format( Strings.StatusesMuted, msg.RemoveCount );
-					Notifier.DisplayMessage( str, NotificationType.Information );
-				}
-			}
 		}
 
 		private bool CanExecuteEditCommand()
@@ -126,6 +103,11 @@ namespace Twice.ViewModels.Settings
 			Changed = true;
 		}
 
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
+		}
+
 		public ICommand AddCommand => _AddCommand ?? ( _AddCommand = new RelayCommand( ExecuteAddCommand ) );
 
 		public ICommand EditCommand
@@ -136,22 +118,37 @@ namespace Twice.ViewModels.Settings
 		public ICollection<MuteEntry> Entries { get; }
 		public string HelpDocument { get; }
 
-		[Inject]
-		public INotifier Notifier { get; set; }
-
 		public ICommand RemoveCommand
 			=> _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
 
 		public MuteEntry SelectedEntry { get; set; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _AddCommand;
+		public void SaveTo( IConfig config )
+		{
+			config.Mute.Entries.Clear();
+			config.Mute.Entries.AddRange( Entries );
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _EditCommand;
+			if( Changed )
+			{
+				var msg = new FilterUpdateMessage();
+				MessengerInstance.Send( msg );
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _RemoveCommand;
+				if( msg.RemoveCount > 0 )
+				{
+					var str = string.Format( Strings.StatusesMuted, msg.RemoveCount );
+					Notifier.DisplayMessage( str, NotificationType.Information );
+				}
+			}
+		}
+
+		[Inject]
+		public INotifier Notifier { get; set; }
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AddCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _EditCommand;
+
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _RemoveCommand;
 
 		private bool Changed;
 	}

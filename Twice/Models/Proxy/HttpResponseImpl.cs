@@ -11,6 +11,8 @@ namespace Twice.Models.Proxy
 			Response = response;
 		}
 
+		public Stream OutputStream => Response.OutputStream;
+
 		public void SetCacheInfo( DateTimeOffset? expires, DateTimeOffset? lastModified )
 		{
 			if( expires.HasValue )
@@ -41,7 +43,6 @@ namespace Twice.Models.Proxy
 			Response.StatusDescription = description;
 		}
 
-		public Stream OutputStream => Response.OutputStream;
 		private readonly HttpListenerResponse Response;
 	}
 }

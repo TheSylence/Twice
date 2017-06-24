@@ -7,17 +7,17 @@ using System.Windows.Documents;
 namespace Twice.Controls
 {
 	/// <summary>
-	///  A TextBlock that exposes it's Inlines property as a dependency property called Elements. 
+	///     A TextBlock that exposes it's Inlines property as a dependency property called Elements.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class BindableTextBlock : TextBlock
 	{
 		/// <summary>
-		///  Called when the Elements property changed its value. 
+		///     Called when the Elements property changed its value.
 		/// </summary>
 		/// <param name="d"> The object on which the property was chagned. </param>
 		/// <param name="e">
-		///  The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.
+		///     The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.
 		/// </param>
 		private static void OnElementsChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
 		{
@@ -45,16 +45,16 @@ namespace Twice.Controls
 			}
 		}
 
+		public static readonly DependencyProperty ElementsProperty = DependencyProperty.Register( "Elements",
+			typeof( IEnumerable<Inline> ), typeof( BindableTextBlock ), new PropertyMetadata( null, OnElementsChanged ) );
+
 		/// <summary>
-		///  Collection of Inlines this TextBox uses.. 
+		///     Collection of Inlines this TextBox uses..
 		/// </summary>
 		public IEnumerable<Inline> Elements
 		{
-			get { return (IEnumerable<Inline>)GetValue( ElementsProperty ); }
-			set { SetValue( ElementsProperty, value ); }
+			get => (IEnumerable<Inline>)GetValue( ElementsProperty );
+			set => SetValue( ElementsProperty, value );
 		}
-
-		public static readonly DependencyProperty ElementsProperty = DependencyProperty.Register( "Elements",
-					typeof( IEnumerable<Inline> ), typeof( BindableTextBlock ), new PropertyMetadata( null, OnElementsChanged ) );
 	}
 }

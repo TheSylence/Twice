@@ -28,6 +28,6 @@ namespace Twice.ViewModels.Dialogs.Data
 			vm.Message = Message;
 		}
 
-		private MessageViewModel Message;
+		private readonly MessageViewModel Message;
 	}
 }

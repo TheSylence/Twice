@@ -1,5 +1,5 @@
-﻿using Resourcer;
-using System.IO;
+﻿using System.IO;
+using Resourcer;
 
 namespace Twice.Utilities
 {

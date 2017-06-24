@@ -1,8 +1,8 @@
+using System.Data.Common;
+using System.Threading.Tasks;
 using Fody;
 using LinqToTwitter;
 using Newtonsoft.Json;
-using System.Data.Common;
-using System.Threading.Tasks;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 

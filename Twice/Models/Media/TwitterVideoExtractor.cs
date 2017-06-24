@@ -1,8 +1,8 @@
-﻿using Anotar.NLog;
-using System;
+﻿using System;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Anotar.NLog;
 
 namespace Twice.Models.Media
 {

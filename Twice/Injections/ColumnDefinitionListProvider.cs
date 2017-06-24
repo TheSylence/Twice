@@ -1,6 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using Ninject;
 using Ninject.Activation;
-using System.Diagnostics.CodeAnalysis;
 using Twice.Models.Columns;
 using Twice.Utilities;
 
@@ -10,7 +10,7 @@ namespace Twice.Injections
 	internal class ColumnDefinitionListProvider : Provider<IColumnDefinitionList>
 	{
 		/// <summary>
-		///  Creates an instance within the specified context. 
+		///     Creates an instance within the specified context.
 		/// </summary>
 		/// <param name="context"> The context. </param>
 		/// <returns> The created instance. </returns>

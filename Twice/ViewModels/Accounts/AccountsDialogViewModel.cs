@@ -1,12 +1,12 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -70,7 +70,7 @@ namespace Twice.ViewModels.Accounts
 					ContextList.AddContext( accountData );
 
 					var newColumns = await ViewServiceRepository.SelectAccountColumnTypes( accountData.UserId )
-									?? new ColumnDefinition[0];
+					                 ?? new ColumnDefinition[0];
 					if( newColumns.Any() )
 					{
 						ColumnList.AddColumns( newColumns );
@@ -119,13 +119,12 @@ namespace Twice.ViewModels.Accounts
 
 		public ICollection<AccountEntry> AddedAccounts { get; }
 
-		public ICommand DeleteAccountCommand
-			=> _DeleteAccountCommand ?? ( _DeleteAccountCommand = new RelayCommand<AccountEntry>( ExecuteDeleteAccountCommand ) )
-			;
-
 		public ICommand MakeDefaultAccountCommand
-					=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
-				ExecuteMakeDefaultAccountCommand ) );
+			=> _MakeDefaultAccountCommand ?? ( _MakeDefaultAccountCommand = new RelayCommand<AccountEntry>(
+				   ExecuteMakeDefaultAccountCommand ) );
+
+		public ICommand DeleteAccountCommand
+			=> _DeleteAccountCommand ?? ( _DeleteAccountCommand = new RelayCommand<AccountEntry>( ExecuteDeleteAccountCommand ) );
 
 		private readonly ITwitterAuthorizer Authorizer;
 
@@ -133,8 +132,7 @@ namespace Twice.ViewModels.Accounts
 
 		private RelayCommand _AddAccountCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand<AccountEntry> _DeleteAccountCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<AccountEntry> _DeleteAccountCommand;
 
 		private RelayCommand<AccountEntry> _MakeDefaultAccountCommand;
 		private CancellationTokenSource PinEntryCancelled;

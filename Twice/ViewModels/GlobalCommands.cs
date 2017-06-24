@@ -1,11 +1,11 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Twitter;
 using Twice.Views.Services;
@@ -13,7 +13,7 @@ using Twice.Views.Services;
 namespace Twice.ViewModels
 {
 	/// <summary>
-	///  Class containing commands that are available everywhere in the application. 
+	///     Class containing commands that are available everywhere in the application.
 	/// </summary>
 	[ConfigureAwait( false )]
 	[ExcludeFromCodeCoverage]
@@ -47,7 +47,7 @@ namespace Twice.ViewModels
 
 		private static async void ExecuteOpenImageCommand( Uri imageUrl )
 		{
-			await ViewServices.ViewImage( new[] { imageUrl }, imageUrl );
+			await ViewServices.ViewImage( new[] {imageUrl}, imageUrl );
 		}
 
 		private static async void ExecuteOpenMessageCommand( MessageViewModel message )
@@ -90,36 +90,6 @@ namespace Twice.ViewModels
 			await ViewServices.OpenSearch( query );
 		}
 
-		public static ICommand CopyToClipboardCommand
-			=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand<string>( ExecuteCopyToClipboardCommand ) );
-
-		public static ICommand CreateMuteCommand
-			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
-
-		public static ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand<Uri>(
-													   ExecuteOpenImageCommand ) );
-
-		public static ICommand OpenMessageCommand
-			=> _OpenMessageCommand ?? ( _OpenMessageCommand = new RelayCommand<MessageViewModel>( ExecuteOpenMessageCommand ) );
-
-		public static ICommand OpenProfileCommand
-			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<object>( ExecuteOpenProfileCommand ) );
-
-		public static ICommand OpenStatusCommand
-			=> _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
-				   ExecuteOpenStatusCommand ) );
-
-		/// <summary>
-		///  Command to open an URL in the default webbrowser. 
-		/// </summary>
-		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
-												 ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
-
-		public static ICommand StartSearchCommand
-			=> _StartSearchCommand ?? ( _StartSearchCommand = new RelayCommand<string>( ExecuteStartSearchCommand ) );
-
-		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
-		private static readonly IKernel Kernel;
 		private static RelayCommand<string> _CopyToClipboardCommand;
 		private static RelayCommand<string> _CreateMuteCommand;
 
@@ -134,5 +104,36 @@ namespace Twice.ViewModels
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<Uri> _OpenUrlCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private static RelayCommand<string> _StartSearchCommand;
+		private static readonly IKernel Kernel;
+
+		public static ICommand CopyToClipboardCommand
+			=> _CopyToClipboardCommand ?? ( _CopyToClipboardCommand = new RelayCommand<string>( ExecuteCopyToClipboardCommand ) );
+
+		public static ICommand CreateMuteCommand
+			=> _CreateMuteCommand ?? ( _CreateMuteCommand = new RelayCommand<string>( ExecuteCreateMuteCommand ) );
+
+		public static ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand<Uri>(
+			                                           ExecuteOpenImageCommand ) );
+
+		public static ICommand OpenMessageCommand
+			=> _OpenMessageCommand ?? ( _OpenMessageCommand = new RelayCommand<MessageViewModel>( ExecuteOpenMessageCommand ) );
+
+		public static ICommand OpenProfileCommand
+			=> _OpenProfileCommand ?? ( _OpenProfileCommand = new RelayCommand<object>( ExecuteOpenProfileCommand ) );
+
+		public static ICommand OpenStatusCommand
+			=> _OpenStatusCommand ?? ( _OpenStatusCommand = new RelayCommand<StatusViewModel>(
+				   ExecuteOpenStatusCommand ) );
+
+		/// <summary>
+		///     Command to open an URL in the default webbrowser.
+		/// </summary>
+		public static ICommand OpenUrlCommand => _OpenUrlCommand ??
+		                                         ( _OpenUrlCommand = new RelayCommand<Uri>( ExecuteOpenUrlCommand, CanExecuteOpenUrlCommand ) );
+
+		public static ICommand StartSearchCommand
+			=> _StartSearchCommand ?? ( _StartSearchCommand = new RelayCommand<string>( ExecuteStartSearchCommand ) );
+
+		private static IViewServiceRepository ViewServices => Kernel.Get<IViewServiceRepository>();
 	}
 }

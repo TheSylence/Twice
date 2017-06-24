@@ -1,6 +1,6 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 
 namespace Twice.Utilities.Ui

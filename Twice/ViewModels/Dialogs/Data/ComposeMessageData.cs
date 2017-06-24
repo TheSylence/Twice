@@ -21,7 +21,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			}
 
 			return ScreenName?.Equals( other.ScreenName ) == true
-				&& Message?.Equals( other.Message ) == true;
+			       && Message?.Equals( other.Message ) == true;
 		}
 
 		public override object GetResult( object viewModel )
@@ -37,7 +37,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			vm.InReplyTo = Message;
 		}
 
-		private MessageViewModel Message;
-		private string ScreenName;
+		private readonly MessageViewModel Message;
+		private readonly string ScreenName;
 	}
 }

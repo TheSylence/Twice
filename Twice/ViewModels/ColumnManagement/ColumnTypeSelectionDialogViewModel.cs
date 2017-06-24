@@ -10,7 +10,7 @@ namespace Twice.ViewModels.ColumnManagement
 	{
 		public ColumnTypeSelectionDialogViewModel()
 		{
-			var types = new[] { ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages };
+			var types = new[] {ColumnType.Mentions, ColumnType.Timeline, ColumnType.Messages};
 
 			AvailableColumnTypes =
 				ColumnTypeListFactory.GetItems( types ).Select( t => new ItemSelection<ColumnTypeItem>( t, true ) ).ToList();
@@ -25,7 +25,7 @@ namespace Twice.ViewModels.ColumnManagement
 
 		private void ColumnType_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
-			if( e.PropertyName != nameof( ItemSelection<ColumnTypeItem>.IsSelected ) )
+			if( e.PropertyName != nameof(ItemSelection<ColumnTypeItem>.IsSelected) )
 			{
 				return;
 			}
@@ -43,15 +43,14 @@ namespace Twice.ViewModels.ColumnManagement
 			bool all = AvailableColumnTypes.All( c => c.IsSelected );
 			_SelectAll = all;
 
-			RaisePropertyChanged( nameof( SelectAll ) );
+			RaisePropertyChanged( nameof(SelectAll) );
 		}
 
 		public ICollection<ItemSelection<ColumnTypeItem>> AvailableColumnTypes { get; }
 
 		public bool SelectAll
 		{
-			[DebuggerStepThrough]
-			get { return _SelectAll; }
+			[DebuggerStepThrough] get { return _SelectAll; }
 			set
 			{
 				if( _SelectAll == value )
@@ -72,8 +71,7 @@ namespace Twice.ViewModels.ColumnManagement
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _SelectAll;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _SelectAll;
 
 		private bool InSelection;
 	}

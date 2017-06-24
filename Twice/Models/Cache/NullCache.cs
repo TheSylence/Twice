@@ -1,9 +1,9 @@
-﻿using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using LinqToTwitter;
 using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Cache
@@ -34,10 +34,6 @@ namespace Twice.Models.Cache
 		public Task Clear()
 		{
 			return Task.CompletedTask;
-		}
-
-		public void Dispose()
-		{
 		}
 
 		public Task<ulong> FindFriend( ulong friendId )
@@ -108,6 +104,10 @@ namespace Twice.Models.Cache
 		public Task SetUserFriends( ulong userId, IEnumerable<ulong> friendIds )
 		{
 			return Task.CompletedTask;
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

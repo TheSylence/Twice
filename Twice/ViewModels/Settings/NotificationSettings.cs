@@ -26,19 +26,6 @@ namespace Twice.ViewModels.Settings
 				new ObservableCollection<NotificationModuleSettings>( AvailableNotifications.Where( c => c.Enabled ) );
 		}
 
-		public Task OnLoad( object data )
-		{
-			return Task.CompletedTask;
-		}
-
-		public void SaveTo( IConfig config )
-		{
-			foreach( var notifyModule in AvailableNotifications )
-			{
-				notifyModule.SaveTo( config );
-			}
-		}
-
 		private void NotifyModule_PropertyChanged( object sender, PropertyChangedEventArgs e )
 		{
 			var notifyModule = sender as NotificationModuleSettings;
@@ -47,7 +34,7 @@ namespace Twice.ViewModels.Settings
 				return;
 			}
 
-			if( nameof( NotificationModuleSettings.Enabled ).Equals( e.PropertyName ) )
+			if( nameof(NotificationModuleSettings.Enabled).Equals( e.PropertyName ) )
 			{
 				if( notifyModule.Enabled )
 				{
@@ -60,8 +47,21 @@ namespace Twice.ViewModels.Settings
 			}
 		}
 
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
+		}
+
 		public ICollection<NotificationModuleSettings> AvailableNotifications { get; }
 
 		public ICollection<NotificationModuleSettings> EnabledNotifications { get; }
+
+		public void SaveTo( IConfig config )
+		{
+			foreach( var notifyModule in AvailableNotifications )
+			{
+				notifyModule.SaveTo( config );
+			}
+		}
 	}
 }

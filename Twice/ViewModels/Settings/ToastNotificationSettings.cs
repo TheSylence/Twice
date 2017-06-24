@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Twice.Models.Configuration;
 using Twice.Resources;
 

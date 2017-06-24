@@ -1,17 +1,17 @@
-using LinqToTwitter;
-using LitJson;
 using System;
 using System.Globalization;
+using LinqToTwitter;
+using LitJson;
 
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
-	///  Arguments for a streaming event associated with a non-tweet event. 
+	///     Arguments for a streaming event associated with a non-tweet event.
 	/// </summary>
 	internal class EventStreamEventArgs : StreamEventArgs
 	{
 		/// <summary>
-		///  Initializes a new instance of the <see cref="EventStreamEventArgs" /> class. 
+		///     Initializes a new instance of the <see cref="EventStreamEventArgs" /> class.
 		/// </summary>
 		/// <param name="json"> The json encoded data. </param>
 		public EventStreamEventArgs( string json )
@@ -40,27 +40,27 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///  Date and time this event has been created. 
+		///     Date and time this event has been created.
 		/// </summary>
 		public DateTime CreatedAt { get; private set; }
 
 		/// <summary>
-		///  Type of associated event. 
+		///     Type of associated event.
 		/// </summary>
 		public StreamEventType Event { get; private set; }
 
 		/// <summary>
-		///  Raw event type. 
+		///     Raw event type.
 		/// </summary>
 		public string EventStr { get; }
 
 		/// <summary>
-		///  The source user. 
+		///     The source user.
 		/// </summary>
 		public User Source { get; private set; }
 
 		/// <summary>
-		///  The target user. 
+		///     The target user.
 		/// </summary>
 		public User Target { get; private set; }
 	}

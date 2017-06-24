@@ -12,11 +12,7 @@ namespace Twice.Utilities.Ui
 			Wrapped = timer;
 		}
 
-		public event EventHandler Tick
-		{
-			add { Wrapped.Tick += value; }
-			remove { Wrapped.Tick -= value; }
-		}
+		public bool IsEnabled => Wrapped.IsEnabled;
 
 		public void Start()
 		{
@@ -28,7 +24,12 @@ namespace Twice.Utilities.Ui
 			Wrapped.Stop();
 		}
 
-		public bool IsEnabled => Wrapped.IsEnabled;
+		public event EventHandler Tick
+		{
+			add => Wrapped.Tick += value;
+			remove => Wrapped.Tick -= value;
+		}
+
 		private readonly DispatcherTimer Wrapped;
 	}
 }
