@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Twice.ViewModels;
 using Twice.ViewModels.Flyouts;
 
@@ -12,7 +12,7 @@ namespace Twice.Tests.ViewModels.Flyouts
 		public void PropertyChangedIsImplementedCorrectly()
 		{
 			// Arrange
-			var vm = new NotificationViewModel( "", NotificationType.Information, true );
+			var vm = new NotificationViewModel( "", NotificationType.Information, true, null );
 			var tester = new PropertyChangedTester( vm );
 
 			// Act

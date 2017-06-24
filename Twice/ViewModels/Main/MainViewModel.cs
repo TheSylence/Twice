@@ -79,13 +79,13 @@ namespace Twice.ViewModels.Main
 				}
 			}
 
-			// ReSharper disable once UnusedVariable
-			var dontWait = CheckCredentials();
-
-			// ReSharper disable once RedundantAssignment
-			dontWait = ReportAppVersion();
-
-			await Task.WhenAll( Columns.Select( c => c.Load() ) );
+			Task.Run( async () =>
+			{
+				await CheckCredentials();
+				await ReportAppVersion();
+			} ).Forget();
+			
+			await Task.WhenAll( Columns.Select( c => c.Load( AsyncLoadContext.Ui ) ) );
 
 			// It's late and I didn't have enough coffee...
 			ColumnsLocked = !Configuration.General.ColumnsLocked;
@@ -118,7 +118,7 @@ namespace Twice.ViewModels.Main
 			return HasContexts;
 		}
 
-		private async Task CheckCredentials()
+		internal async Task CheckCredentials()
 		{
 			foreach( var context in ContextList.Contexts )
 			{
@@ -159,7 +159,7 @@ namespace Twice.ViewModels.Main
 						{
 							LogTo.Info( $"Updated app to {release.Version}" );
 							Notifier.DisplayMessage( string.Format( Strings.UpdateHasBeenInstalled, release.Version ),
-								NotificationType.Information );
+								NotificationType.Information | NotificationType.Restart );
 						}
 						else
 						{

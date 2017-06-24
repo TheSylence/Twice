@@ -69,11 +69,11 @@ namespace Twice.ViewModels.Columns
 
 		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
 
-		public async Task Load()
+		public async Task Load( AsyncLoadContext context )
 		{
-			Parser.StartStreaming();
+			Task.Run(() => Parser.StartStreaming()).Forget();
 
-			await OnLoad().ContinueWith( t =>
+			await OnLoad(context).ContinueWith( t =>
 			{
 				IsLoading = false;
 				RaisePropertyChanged( nameof( IsLoading ) );
@@ -167,7 +167,7 @@ namespace Twice.ViewModels.Columns
 
 				foreach( var s in statusViewModels )
 				{
-					await UpdateCache( s.Model );
+					Task.Run( async () => await UpdateCache( s.Model ) ).Forget();
 
 					int index = GetInsertIndex( s );
 					if( index >= 0 )
@@ -180,19 +180,35 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		protected async Task<MessageViewModel> CreateViewModel( DirectMessage m )
+		protected async Task<MessageViewModel> CreateViewModel( DirectMessage m, AsyncLoadContext context = AsyncLoadContext.Default )
 		{
 			var vm = new MessageViewModel( m, Context, Configuration, ViewServiceRepository );
-			await vm.LoadDataAsync();
+
+			if( context == AsyncLoadContext.Default )
+			{
+				await vm.LoadDataAsync();
+			}
+			else
+			{
+				Task.Run( async () => await vm.LoadDataAsync() ).Forget();
+			}
 
 			return vm;
 		}
 
-		protected async Task<StatusViewModel> CreateViewModel( Status s )
+		protected async Task<StatusViewModel> CreateViewModel( Status s, AsyncLoadContext context = AsyncLoadContext.Default )
 		{
 			var vm = new StatusViewModel( s, Context, Configuration, ViewServiceRepository );
 
-			await vm.LoadDataAsync();
+			if( context == AsyncLoadContext.Default )
+			{
+				await vm.LoadDataAsync();
+			}
+			else
+			{
+				Task.Run( async () => await vm.LoadDataAsync() ).Forget();
+			}
+
 			return vm;
 		}
 
@@ -233,13 +249,13 @@ namespace Twice.ViewModels.Columns
 			return Task.CompletedTask;
 		}
 
-		protected virtual async Task OnLoad()
+		protected virtual async Task OnLoad( AsyncLoadContext context )
 		{
 			var list = new List<StatusViewModel>();
 			var cachedStatuses = await Cache.GetStatusesForColumn( Definition.Id, Configuration.General.TweetFetchCount );
 			foreach( var s in cachedStatuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
-				list.Add( await CreateViewModel( s ) );
+				list.Add( await CreateViewModel( s, context ) );
 			}
 
 			await AddItems( list );
@@ -261,7 +277,7 @@ namespace Twice.ViewModels.Columns
 
 			foreach( var s in statuses.Where( s => !Muter.IsMuted( s ) ) )
 			{
-				list.Add( await CreateViewModel( s ) );
+				list.Add( await CreateViewModel( s, context ) );
 			}
 
 			await AddItems( list );

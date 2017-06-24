@@ -21,12 +21,14 @@ namespace Twice.ViewModels
 {
 	internal class Notifier : INotifier
 	{
-		public Notifier( IConfig config, IMessenger messenger, IDispatcher dispatcher, IViewServiceRepository viewServices )
+		public Notifier( IConfig config, IMessenger messenger, IDispatcher dispatcher, IViewServiceRepository viewServices, 
+			IProcessStarter procStarter )
 		{
 			Dispatcher = dispatcher;
 			MessengerInstance = messenger;
 			Config = config;
 			ViewServices = viewServices;
+			ProcStarter = procStarter;
 
 			if( config.Notifications.SoundEnabled )
 			{
@@ -51,7 +53,7 @@ namespace Twice.ViewModels
 				return;
 			}
 
-			var context = new NotificationViewModel( message, type, Config.Notifications.ToastsTop )
+			var context = new NotificationViewModel( message, type, Config.Notifications.ToastsTop, ProcStarter)
 			{
 				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
 			};
@@ -101,7 +103,7 @@ namespace Twice.ViewModels
 
 		public void PreviewInAppNotification( string message, bool top, int closeTime )
 		{
-			var context = new NotificationViewModel( message, NotificationType.Information, top )
+			var context = new NotificationViewModel( message, NotificationType.Information, top, ProcStarter )
 			{
 				CloseDelay = TimeSpan.FromSeconds( closeTime )
 			};
@@ -155,7 +157,7 @@ namespace Twice.ViewModels
 				break;
 			}
 
-			var context = new NotificationViewModel( message, NotificationType.Information, position )
+			var context = new NotificationViewModel( message, NotificationType.Information, position, ProcStarter)
 			{
 				CloseDelay = TimeSpan.FromSeconds( closeTime ),
 				Dispatcher = Dispatcher,
@@ -192,7 +194,7 @@ namespace Twice.ViewModels
 
 		private void NotifyToast( ColumnItem item )
 		{
-			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop )
+			var context = new NotificationViewModel( item, Config.Notifications.ToastsTop, ProcStarter)
 			{
 				CloseDelay = TimeSpan.FromSeconds( Config.Notifications.ToastsCloseTime )
 			};
@@ -208,6 +210,7 @@ namespace Twice.ViewModels
 			ViewServices.OpenNotificationFlyout( vm );
 		}
 
+		private readonly IProcessStarter ProcStarter;
 		private readonly IConfig Config;
 		private readonly IDispatcher Dispatcher;
 		private readonly IMessenger MessengerInstance;

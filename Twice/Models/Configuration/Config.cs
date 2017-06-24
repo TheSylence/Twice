@@ -22,12 +22,15 @@ namespace Twice.Models.Configuration
 				{
 					try
 					{
-						Config tmp = Serializer.Deserialize<Config>( json );
-						Visual = tmp.Visual;
-						General = tmp.General;
-						Mute = tmp.Mute;
-						Notifications = tmp.Notifications;
-						defaultNeeded = false;
+						Config tmp = Serializer?.Deserialize<Config>( json );
+						if (tmp != null)
+						{
+							Visual = tmp.Visual;
+							General = tmp.General;
+							Mute = tmp.Mute;
+							Notifications = tmp.Notifications;
+							defaultNeeded = false;
+						}
 					}
 					catch( JsonReaderException )
 					{

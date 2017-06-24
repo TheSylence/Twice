@@ -11,6 +11,7 @@ namespace Twice.Utilities.Os
 	///  Class holding native interop methods. 
 	/// </summary>
 	[ExcludeFromCodeCoverage]
+	[SuppressMessage( "ReSharper", "InconsistentNaming" )]
 	internal static class NativeMethods
 	{
 		public enum DISPLAYCONFIG_DEVICE_INFO_TYPE : uint

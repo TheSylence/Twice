@@ -233,7 +233,7 @@ namespace Twice.Tests.ViewModels.Columns
 			vm.Cache = new NullCache();
 
 			// Act
-			await vm.Load();
+			await vm.Load( AsyncLoadContext.Default );
 
 			// Assert
 			Assert.AreEqual( 3, vm.Items.Count );

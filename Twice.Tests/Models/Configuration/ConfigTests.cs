@@ -18,7 +18,8 @@ namespace Twice.Tests.Models.Configuration
 			var fileName = Path.GetTempFileName();
 			File.WriteAllText( fileName, @"Hello world this is a test" );
 
-			// Act ReSharper disable once ObjectCreationAsStatement ReSharper disable once ObjectCreationAsStatement
+			// Act
+			// ReSharper disable once ObjectCreationAsStatement
 			var ex = ExceptionAssert.Catch<Exception>( () => new Config( fileName, new Serializer() ) );
 
 			// Assert

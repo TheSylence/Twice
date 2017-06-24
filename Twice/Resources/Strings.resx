@@ -765,4 +765,7 @@
   <data name="Notification" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="ClickToRestartApp" xml:space="preserve">
+    <value>(Click here to restart app)</value>
+  </data>
 </root>

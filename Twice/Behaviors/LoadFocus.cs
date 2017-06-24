@@ -18,7 +18,7 @@ namespace Twice.Behaviors
 			load?.OnFocusElementChanged( e.NewValue as IInputElement );
 		}
 
-		private void AssociatedObject_Loaded( object sender, System.Windows.RoutedEventArgs e )
+		private void AssociatedObject_Loaded( object sender, RoutedEventArgs e )
 		{
 			FocusElement?.Focus();
 		}

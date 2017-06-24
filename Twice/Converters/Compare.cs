@@ -17,7 +17,7 @@ namespace Twice.Converters
 			}
 			else
 			{
-				if( !double.TryParse( value.ToString(), NumberStyles.Any, culture, out n ) )
+				if( !double.TryParse( value?.ToString(), NumberStyles.Any, culture, out n ) )
 				{
 					return DependencyProperty.UnsetValue;
 				}

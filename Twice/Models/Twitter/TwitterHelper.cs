@@ -148,7 +148,7 @@ namespace Twice.Models.Twitter
 		{
 			var mime = GetMimeType( fileName );
 
-			return mime.StartsWith( "image/" );
+			return mime.StartsWith( "image/", StringComparison.Ordinal );
 		}
 
 		public static bool IsTweetUrl( Uri uri )

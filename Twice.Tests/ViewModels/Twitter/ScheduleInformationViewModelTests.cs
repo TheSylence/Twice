@@ -44,8 +44,9 @@ namespace Twice.Tests.ViewModels.Twitter
 			Assert.IsTrue( enabledDateInPast );
 			Assert.IsFalse( enabledDateInFuture );
 		}
+
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void DeletionTimeMustBeInFutureWhenEnabled()
+		public void DeletionTimeIsIgnoredWhenNotEnabled()
 		{
 			// Arrange
 			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
@@ -64,25 +65,42 @@ namespace Twice.Tests.ViewModels.Twitter
 			vm.DeletionDate = futureDate.Date;
 			bool disabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
 
-			vm.IsDeletionScheduled = true;
-			vm.DeletionTime = pastDate;
-			vm.DeletionDate = pastDate.Date;
-			bool enabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
-
-			vm.IsDeletionScheduled = true;
-			vm.DeletionTime = futureDate;
-			vm.DeletionDate = futureDate.Date;
-			bool enabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
-
 			// Assert
 			Assert.IsFalse( disabledDateInPast );
 			Assert.IsFalse( disabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void DeletionTimeMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var now = new DateTime( 2000, 5, 5, 23, 23, 23 );
+			var dateProvider = new Mock<IDateProvider>();
+			dateProvider.SetupGet( d => d.Now ).Returns( now );
+
+			var vm = new ScheduleInformationViewModel( null, dateProvider.Object );
+
+			var pastDate = now.AddHours( -1 );
+			var futureDate = now.AddHours( 1 );
+
+			// Act
+			vm.IsDeletionScheduled = true;
+			vm.DeletionDate = pastDate.Date;
+			vm.DeletionTime = pastDate;
+			bool enabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			vm.IsDeletionScheduled = true;
+			vm.DeletionDate = futureDate.Date;
+			vm.DeletionTime = futureDate;
+			bool enabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.DeletionTime ) ).Cast<object>().Any();
+
+			// Assert
 			Assert.IsTrue( enabledDateInPast );
 			Assert.IsFalse( enabledDateInFuture );
 		}
 
 		[TestMethod, TestCategory( "ViewModels.Twitter" )]
-		public void ScheduleDateMustBeInFutureWhenEnabled()
+		public void ScheduleDateIsIgnoredWhenDisabled()
 		{
 			// Arrange
 			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
@@ -99,6 +117,21 @@ namespace Twice.Tests.ViewModels.Twitter
 			vm.ScheduleDate = futureDate;
 			bool disabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleDate ) ).Cast<object>().Any();
 
+			// Assert
+			Assert.IsFalse( disabledDateInPast );
+			Assert.IsFalse( disabledDateInFuture );
+		}
+
+		[TestMethod, TestCategory( "ViewModels.Twitter" )]
+		public void ScheduleDateMustBeInFutureWhenEnabled()
+		{
+			// Arrange
+			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
+
+			var pastDate = DateTime.Now.AddDays( -1 );
+			var futureDate = DateTime.Now.AddDays( 1 );
+
+			// Act
 			vm.IsTweetScheduled = true;
 			vm.ScheduleDate = pastDate;
 			bool enabledDateInPast = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleDate ) ).Cast<object>().Any();
@@ -108,8 +141,6 @@ namespace Twice.Tests.ViewModels.Twitter
 			bool enabledDateInFuture = vm.GetErrors( nameof( ScheduleInformationViewModel.ScheduleDate ) ).Cast<object>().Any();
 
 			// Assert
-			Assert.IsFalse( disabledDateInPast );
-			Assert.IsFalse( disabledDateInFuture );
 			Assert.IsTrue( enabledDateInPast );
 			Assert.IsFalse( enabledDateInFuture );
 		}
@@ -118,10 +149,14 @@ namespace Twice.Tests.ViewModels.Twitter
 		public void ScheduledTimeMustBeInFutureWhenEnabled()
 		{
 			// Arrange
-			var vm = new ScheduleInformationViewModel( null, new DateProvider() );
+			var now = new DateTime( 2000, 5, 5, 23, 23, 23 );
+			var dateProvider = new Mock<IDateProvider>();
+			dateProvider.SetupGet( d => d.Now ).Returns( now );
 
-			var pastDate = DateTime.Now.AddHours( -1 );
-			var futureDate = DateTime.Now.AddHours( 1 );
+			var vm = new ScheduleInformationViewModel( null, dateProvider.Object );
+
+			var pastDate = now.AddHours( -1 );
+			var futureDate = now.AddHours( 1 );
 
 			// Act
 			vm.IsTweetScheduled = false;

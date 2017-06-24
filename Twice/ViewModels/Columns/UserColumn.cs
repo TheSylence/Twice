@@ -1,5 +1,4 @@
 ﻿using LinqToTwitter;
-using Seal.Fody;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +10,6 @@ using Twice.Models.Twitter.Streaming;
 
 namespace Twice.ViewModels.Columns
 {
-	[LeaveUnsealed]
 	internal class UserColumn : ColumnViewModelBase
 	{
 		public UserColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser )
@@ -31,12 +29,12 @@ namespace Twice.ViewModels.Columns
 			return false;
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			var userInfo = await Context.Twitter.Users.ShowUser( UserId, false );
 			Title = userInfo.ScreenNameResponse;
 
-			await base.OnLoad();
+			await base.OnLoad( context );
 		}
 
 		public override Icon Icon => Icon.User;

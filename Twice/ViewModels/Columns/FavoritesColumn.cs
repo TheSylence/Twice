@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using LinqToTwitter;
-using Seal.Fody;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,6 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
-	[LeaveUnsealed]
 	internal class FavoritesColumn : ColumnViewModelBase
 	{
 		public FavoritesColumn( IContextEntry context, ColumnDefinition definition, IConfig config, IStreamParser parser,
@@ -68,13 +66,13 @@ namespace Twice.ViewModels.Columns
 			await AddItem( vm );
 		}
 
-		protected override async Task OnLoad()
+		protected override async Task OnLoad( AsyncLoadContext context )
 		{
 			var statuses = await Context.Twitter.Favorites.List( Context.UserId );
 			var list = new List<StatusViewModel>();
 			foreach( var s in statuses )
 			{
-				list.Add( await CreateViewModel( s ) );
+				list.Add( await CreateViewModel( s, context ) );
 			}
 
 			await AddItems( list );

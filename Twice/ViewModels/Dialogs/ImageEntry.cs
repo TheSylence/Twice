@@ -5,12 +5,12 @@ namespace Twice.ViewModels.Dialogs
 {
 	internal class ImageEntry
 	{
-		public ImageEntry( Uri url, bool animated, string title = null )
+		public ImageEntry( Uri url, bool animated, string title = null, Uri displayUrl = null )
 		{
 			ImageUrl = url;
 			Title = title ?? url.AbsoluteUri;
 			IsAnimated = animated;
-			DisplayUrl = url;
+			DisplayUrl = displayUrl ?? url;
 		}
 
 		public ImageEntry( StatusMediaViewModel media )

@@ -1,19 +1,19 @@
-﻿using Anotar.NLog;
-using LinqToTwitter;
-using LitJson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using LinqToTwitter;
+using LitJson;
 
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
-	///  Parser for twitter streams. 
+	///     Parser for twitter streams.
 	/// </summary>
 	internal class StreamParser : IStreamParser
 	{
 		/// <summary>
-		///  Initializes a new instance of the <see cref="StreamParser" /> class. 
+		///     Initializes a new instance of the <see cref="StreamParser" /> class.
 		/// </summary>
 		/// <param name="stream"> The user stream. </param>
 		/// <param name="context"> The context this stream is associated with </param>
@@ -25,47 +25,7 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///  Occurs when a status was deleted. 
-		/// </summary>
-		public event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
-
-		/// <summary>
-		///  Occurs when a direct message was received. 
-		/// </summary>
-		public event EventHandler<DirectMessageStreamEventArgs> DirectMessageReceived;
-
-		/// <summary>
-		///  Occurs when a status was favourited. 
-		/// </summary>
-		public event EventHandler<FavoriteStreamEventArgs> FavoriteEventReceived;
-
-		/// <summary>
-		///  Occurs when the friend list was received. 
-		/// </summary>
-		public event EventHandler<FriendsStreamEventArgs> FriendsReceived;
-
-		/// <summary>
-		///  Occurs when a status was deleted. 
-		/// </summary>
-		public event EventHandler<DeleteStreamEventArgs> StatusDeleted;
-
-		/// <summary>
-		///  Occurs when a status was received. 
-		/// </summary>
-		public event EventHandler<StatusStreamEventArgs> StatusReceived;
-
-		/// <summary>
-		///  Occurs when unknown data has been received. 
-		/// </summary>
-		public event EventHandler<StreamEventArgs> UnknownDataReceived;
-
-		/// <summary>
-		///  Occurs when an event was received. 
-		/// </summary>
-		public event EventHandler<EventStreamEventArgs> UnknownEventReceived;
-
-		/// <summary>
-		///  Creates a new parser for the specified stream. 
+		///     Creates a new parser for the specified stream.
 		/// </summary>
 		/// <param name="userStream"> The stream. </param>
 		/// <param name="context"> The context this stream is associated with </param>
@@ -76,34 +36,11 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///  Performs application-defined tasks associated with freeing, releasing, or resetting
-		///  unmanaged resources.
-		/// </summary>
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		public void StartStreaming()
-		{
-			if( Started )
-			{
-				return;
-			}
-
-			LogTo.Info( "Start realtime streaming on connection" );
-			Started = true;
-			StreamingTask = Stream.Start( c => Task.Run( () => ParseContent( c ) ) )
-				.ContinueWith( t => Connections.AddRange( t.Result ) );
-		}
-
-		/// <summary>
-		///  Releases unmanaged and - optionally - managed resources. 
+		///     Releases unmanaged and - optionally - managed resources.
 		/// </summary>
 		/// <param name="disposing">
-		///  <c> true </c> to release both managed and unmanaged resources; <c> false </c> to release
-		///  only unmanaged resources.
+		///     <c> true </c> to release both managed and unmanaged resources; <c> false </c> to release
+		///     only unmanaged resources.
 		/// </param>
 		private void Dispose( bool disposing )
 		{
@@ -120,7 +57,7 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///  Handles a twitter event. 
+		///     Handles a twitter event.
 		/// </summary>
 		/// <param name="json"> The json describing the event. </param>
 		private void HandleEvent( string json )
@@ -145,22 +82,21 @@ namespace Twice.Models.Twitter.Streaming
 			switch( eventType )
 			{
 			case StreamEventType.Favorite:
+			case StreamEventType.Unfavorite:
 				LogTo.Debug( "Favorite received" );
-				var favhandler = FavoriteEventReceived;
-				favhandler?.Invoke( this, new FavoriteStreamEventArgs( json ) );
+				FavoriteEventReceived?.Invoke( this, new FavoriteStreamEventArgs( json ) );
 				break;
 
 			default:
 				LogTo.Debug( "Unknown event received" );
 				LogTo.Debug( json );
-				var handler = UnknownEventReceived;
-				handler?.Invoke( this, new EventStreamEventArgs( json ) );
+				UnknownEventReceived?.Invoke( this, new EventStreamEventArgs( json ) );
 				break;
 			}
 		}
 
 		/// <summary>
-		///  Parses the content and raises events. 
+		///     Parses the content and raises events.
 		/// </summary>
 		/// <param name="content"> The content. </param>
 		private void ParseContent( IStreamContent content )
@@ -230,7 +166,70 @@ namespace Twice.Models.Twitter.Streaming
 			}
 		}
 
+		/// <summary>
+		///     Performs application-defined tasks associated with freeing, releasing, or resetting
+		///     unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
 		public IContextEntry AssociatedContext { get; }
+
+		/// <summary>
+		///     Occurs when a status was deleted.
+		/// </summary>
+		public event EventHandler<DeleteStreamEventArgs> DirectMessageDeleted;
+
+		/// <summary>
+		///     Occurs when a direct message was received.
+		/// </summary>
+		public event EventHandler<DirectMessageStreamEventArgs> DirectMessageReceived;
+
+		/// <summary>
+		///     Occurs when a status was favourited.
+		/// </summary>
+		public event EventHandler<FavoriteStreamEventArgs> FavoriteEventReceived;
+
+		/// <summary>
+		///     Occurs when the friend list was received.
+		/// </summary>
+		public event EventHandler<FriendsStreamEventArgs> FriendsReceived;
+
+		public void StartStreaming()
+		{
+			if( Started )
+			{
+				return;
+			}
+
+			LogTo.Info( "Start realtime streaming on connection" );
+			Started = true;
+			StreamingTask = Stream.Start( c => Task.Run( () => ParseContent( c ) ) )
+				.ContinueWith( t => Connections.AddRange( t.Result ) );
+		}
+
+		/// <summary>
+		///     Occurs when a status was deleted.
+		/// </summary>
+		public event EventHandler<DeleteStreamEventArgs> StatusDeleted;
+
+		/// <summary>
+		///     Occurs when a status was received.
+		/// </summary>
+		public event EventHandler<StatusStreamEventArgs> StatusReceived;
+
+		/// <summary>
+		///     Occurs when unknown data has been received.
+		/// </summary>
+		public event EventHandler<StreamEventArgs> UnknownDataReceived;
+
+		/// <summary>
+		///     Occurs when an event was received.
+		/// </summary>
+		public event EventHandler<EventStreamEventArgs> UnknownEventReceived;
 
 		public Task StreamingTask { get; private set; }
 		private readonly List<IStreaming> Connections;

@@ -175,7 +175,9 @@ namespace Twice.Utilities.Os
 			get
 			{
 				if( s_Edition != null )
+				{
 					return s_Edition; //***** RETURN *****//
+				}
 
 				string edition = string.Empty;
 
@@ -582,7 +584,9 @@ namespace Twice.Utilities.Os
 			get
 			{
 				if( s_Name != null )
+				{
 					return s_Name; //***** RETURN *****//
+				}
 
 				string name = "unknown";
 
@@ -641,9 +645,13 @@ namespace Twice.Utilities.Os
 								{
 								case 0:
 									if( csdVersion == "B" || csdVersion == "C" )
+									{
 										name = "Windows 95 OSR2";
+									}
 									else
+									{
 										name = "Windows 95";
+									}
 									break;
 
 								case 10:

@@ -13,10 +13,39 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=829E53E1_002D120D_002D4384_002DB309_002DE37FF07BAC54/@EntryIndexedValue"></s:String>
 	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=829E53E1_002D120D_002D4384_002DB309_002DE37FF07BAC54/@EntryIndexRemoved">True</s:Boolean>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=C909EBD0_002D9CA3_002D49FB_002D8B78_002DF4EE4426D4F6/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=34186C3B_002DC308_002D4CAE_002DB462_002DDB7B5F5E378C/@EntryIndexedValue">34186C3B-C308-4CAE-B462-DB7B5F5E378C</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=37396599_002D8A5A_002D4AC5_002DB583_002DC49EC4E40781/@EntryIndexedValue">37396599-8A5A-4AC5-B583-C49EC4E40781</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=554F8A8A_002D9CC0_002D40C9_002DB7CA_002DF3C3CF5190B2_002Fdl_003A_002E_002E_003FLinqToTwitter_002EShared/@EntryIndexedValue">554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2/dl:..?LinqToTwitter.Shared</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=554F8A8A_002D9CC0_002D40C9_002DB7CA_002DF3C3CF5190B2_002Fdl_003A_002E_002E_003FLinqToTwitter_002EShared_002Enet/@EntryIndexedValue">554F8A8A-9CC0-40C9-B7CA-F3C3CF5190B2/dl:..?LinqToTwitter.Shared.net</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=7B25A4F0_002D18EA_002D4819_002DB67C_002DEFEA0E14F919/@EntryIndexedValue">7B25A4F0-18EA-4819-B67C-EFEA0E14F919</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=C909EBD0_002D9CA3_002D49FB_002D8B78_002DF4EE4426D4F6/@EntryIndexedValue">C909EBD0-9CA3-49FB-8B78-F4EE4426D4F6</s:String>
 	
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ExplicitCallerInfoArgument/@EntryIndexedValue">HINT</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=IO/@EntryIndexedValue">IO</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/WebNaming/UserRules/=ASP_005FFIELD/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/WebNaming/UserRules/=ASP_005FHTML_005FCONTROL/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/WebNaming/UserRules/=ASP_005FTAG_005FNAME/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
-	<s:String x:Key="/Default/CodeStyle/Naming/WebNaming/UserRules/=ASP_005FTAG_005FPREFIX/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeStyle/Naming/WebNaming/UserRules/=ASP_005FTAG_005FPREFIX/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
+	
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=34186C3B_002DC308_002D4CAE_002DB462_002DDB7B5F5E378C/@EntryIndexRemoved">True</s:Boolean>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=34186C3B_002DC308_002D4CAE_002DB462_002DDB7B5F5E378C_002Ff_003AMarkdown_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	
+	
+	
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=554F8A8A_002D9CC0_002D40C9_002DB7CA_002DF3C3CF5190B2_002Fdl_003A_002E_002E_003FLinqToTwitter_002EShared/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=554F8A8A_002D9CC0_002D40C9_002DB7CA_002DF3C3CF5190B2_002Fd_003A_003CLinqToTwitter_002EShared_002Enet_003E/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=554F8A8A_002D9CC0_002D40C9_002DB7CA_002DF3C3CF5190B2_002Fd_003A_003CLinqToTwitter_002EShared_003E/@EntryIndexRemoved">True</s:Boolean>
+	
+	
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7B25A4F0_002D18EA_002D4819_002DB67C_002DEFEA0E14F919/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	
+	
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=C909EBD0_002D9CA3_002D49FB_002D8B78_002DF4EE4426D4F6/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	
+	
+	</wpf:ResourceDictionary>

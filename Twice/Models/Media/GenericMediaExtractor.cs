@@ -10,7 +10,7 @@ namespace Twice.Models.Media
 		{
 			var mime = TwitterHelper.GetMimeType( originalUrl );
 
-			return mime.StartsWith( "image/" );
+			return mime.StartsWith( "image/", StringComparison.Ordinal );
 		}
 
 		public Task<Uri> GetMediaUrl( string originalUrl )

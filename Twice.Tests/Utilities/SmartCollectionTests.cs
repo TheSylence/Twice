@@ -10,6 +10,7 @@ namespace Twice.Tests.Utilities
 	public class SmartCollectionTests
 	{
 		[TestMethod, TestCategory( "Utilities" )]
+		[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
 		public void CollectionCanBeConstructedFromEnumerable()
 		{
 			// Arrange
@@ -39,6 +40,7 @@ namespace Twice.Tests.Utilities
 		public void EmptyConstructorCreatesEmptyList()
 		{
 			// Arrange Act
+			// ReSharper disable once CollectionNeverUpdated.Local
 			var collection = new SmartCollection<int>();
 
 			// Assert

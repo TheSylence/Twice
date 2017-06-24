@@ -376,6 +376,15 @@ namespace Twice.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Click here to restart app).
+        /// </summary>
+        public static string ClickToRestartApp {
+            get {
+                return ResourceManager.GetString("ClickToRestartApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close notification after X seconds.
         /// </summary>
         public static string CloseNotificationDelay {

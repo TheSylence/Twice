@@ -1,4 +1,16 @@
-﻿using Anotar.NLog;
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using Anotar.NLog;
 using GalaSoft.MvvmLight.Threading;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
@@ -8,16 +20,6 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using Twice.Injections;
 using Twice.Models.Configuration;
 using Twice.Models.Proxy;
@@ -32,31 +34,36 @@ using WPFLocalizeExtension.Engine;
 namespace Twice
 {
 	/// <summary>
-	///  Interaction logic for App.xaml 
+	///     Interaction logic for App.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class App
 	{
 		public App()
 		{
-			Settings.UIMode = UIMode.Full;
-			Settings.MiniDumpType = MiniDumpType.Normal;
-			Settings.StoragePath = StoragePath.CurrentDirectory;
-			Settings.UIProvider = UIProvider.WPF;
-			Settings.AdditionalReportFiles.Add( "log*.txt" );
-			Settings.AdditionalReportFiles.Add( Constants.IO.ConfigFileName );
-			Settings.SleepBeforeSend = 20;
-			Settings.StopReportingAfter = 100;
-			Settings.AddDestinationFromConnectionString( $"Type=Http;Url={Constants.Web.CrashReportUrl};" );
+			Kernel = new Kernel();
 
-			Settings.ReleaseMode = true;
+			Task.Run( () =>
+			{
+				Settings.UIMode = UIMode.Full;
+				Settings.MiniDumpType = MiniDumpType.Normal;
+				Settings.StoragePath = StoragePath.CurrentDirectory;
+				Settings.UIProvider = UIProvider.WPF;
+				Settings.AdditionalReportFiles.Add( "log*.txt" );
+				Settings.AdditionalReportFiles.Add( Constants.IO.ConfigFileName );
+				Settings.SleepBeforeSend = 20;
+				Settings.StopReportingAfter = 100;
+				Settings.AddDestinationFromConnectionString( $"Type=Http;Url={Constants.Web.CrashReportUrl};" );
+
+				Settings.ReleaseMode = true;
+			} ).Forget();
 
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
 			Current.DispatcherUnhandledException += Handler.DispatcherUnhandledException;
 
 			ProxyServer = new MediaProxyServer();
 
-			Timeline.DesiredFrameRateProperty.OverrideMetadata( typeof( Timeline ), new FrameworkPropertyMetadata { DefaultValue = 30 } );
+			Timeline.DesiredFrameRateProperty.OverrideMetadata( typeof( Timeline ), new FrameworkPropertyMetadata {DefaultValue = 30} );
 		}
 
 		internal static void ApplyWindowSettings( Window window )
@@ -70,11 +77,6 @@ namespace Twice
 			{
 				WindowSettings = new WindowSettings();
 			}
-		}
-
-		internal static void SaveWindowSettings( Window window )
-		{
-			WindowSettings.Save( new WindowWrapper( window ) );
 		}
 
 		protected override void OnExit( ExitEventArgs e )
@@ -93,11 +95,14 @@ namespace Twice
 		protected override void OnStartup( StartupEventArgs e )
 		{
 			// Ensure that only one instance of the application can run at any time
-			if( !SingleInstance.Start() )
+			if( e.Args.Any( a => a == Constants.IgnoreMutexFlag ) )
 			{
-				SingleInstance.ShowFirstInstance();
-				Shutdown( 0 );
-				return;
+				if( !SingleInstance.Start() )
+				{
+					SingleInstance.ShowFirstInstance();
+					Shutdown( 0 );
+					return;
+				}
 			}
 
 			ConfigureLogging();
@@ -105,7 +110,6 @@ namespace Twice
 			LogEnvironmentInfo();
 
 			DispatcherHelper.Initialize();
-			Kernel = new Kernel();
 			ProxyServer.Start( Kernel.Get<ITwitterContextList>() );
 
 			Scheduler = Kernel.Get<IScheduler>();
@@ -140,6 +144,11 @@ namespace Twice
 			ChangeLanguage( conf );
 		}
 
+		internal static void SaveWindowSettings( Window window )
+		{
+			WindowSettings.Save( new WindowWrapper( window ) );
+		}
+
 		private static void ChangeLanguage( IConfig config )
 		{
 			var language = config.General.Language;
@@ -155,6 +164,7 @@ namespace Twice
 
 				string localizedCode = Strings.ResourceManager.GetString( "__Language_Code__", CultureInfo.CurrentUICulture );
 
+				Debug.Assert( localizedCode != null, "localizedCode != null" );
 				var culture = CultureInfo.CreateSpecificCulture( localizedCode );
 
 				if( !CultureInfo.InvariantCulture.Equals( culture ) )
@@ -175,31 +185,6 @@ namespace Twice
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( FrameworkElement ),
 				new FrameworkPropertyMetadata( xmlLang ) );
 			FrameworkElement.LanguageProperty.OverrideMetadata( typeof( Run ), new FrameworkPropertyMetadata( xmlLang ) );
-		}
-
-		private static void LogEnvironmentInfo()
-		{
-			LogTo.Info( $"App version: {Assembly.GetExecutingAssembly().GetName().Version}" );
-
-			string osVersionString = OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64
-				? $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit"
-				: $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
-
-			LogTo.Info( osVersionString );
-			if( !string.IsNullOrEmpty( OsVersionInfo.ServicePack ) )
-			{
-				LogTo.Info( $"Service Pack {OsVersionInfo.ServicePack}" );
-			}
-			LogTo.Info( $"Version {OsVersionInfo.Version}" );
-			if( OsVersionInfo.ProcessorBits == OsVersionInfo.ProcessorArchitecture.Bit64 )
-			{
-				LogTo.Info( "64bit CPU" );
-			}
-			if( OsVersionInfo.ProgramBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
-			{
-				LogTo.Info( "64bit app" );
-			}
-			LogTo.Info( $"CLR version: {Environment.Version}" );
 		}
 
 		private void ConfigureLogging()
@@ -233,8 +218,34 @@ namespace Twice
 			LogManager.Configuration = config;
 		}
 
-		public static IKernel Kernel { get; private set; }
+		private static void LogEnvironmentInfo()
+		{
+			LogTo.Info( $"App version: {Assembly.GetExecutingAssembly().GetName().Version}" );
+
+			string osVersionString = OsVersionInfo.OsBits == OsVersionInfo.SoftwareArchitecture.Bit64
+				? $"{OsVersionInfo.Name} {OsVersionInfo.Edition} 64bit"
+				: $"{OsVersionInfo.Name} {OsVersionInfo.Edition}";
+
+			LogTo.Info( osVersionString );
+			if( !string.IsNullOrEmpty( OsVersionInfo.ServicePack ) )
+			{
+				LogTo.Info( $"Service Pack {OsVersionInfo.ServicePack}" );
+			}
+			LogTo.Info( $"Version {OsVersionInfo.Version}" );
+			if( OsVersionInfo.ProcessorBits == OsVersionInfo.ProcessorArchitecture.Bit64 )
+			{
+				LogTo.Info( "64bit CPU" );
+			}
+			if( OsVersionInfo.ProgramBits == OsVersionInfo.SoftwareArchitecture.Bit64 )
+			{
+				LogTo.Info( "64bit app" );
+			}
+			LogTo.Info( $"CLR version: {Environment.Version}" );
+		}
+
 		private static WindowSettings WindowSettings;
+
+		public static IKernel Kernel { get; private set; }
 		private readonly MediaProxyServer ProxyServer;
 		private CentralMessageHandler CentralHandler;
 		private IScheduler Scheduler;

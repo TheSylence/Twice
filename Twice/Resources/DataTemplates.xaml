@@ -10,19 +10,26 @@
                     xmlns:behaviors="clr-namespace:Twice.Behaviors"
                     xmlns:views="clr-namespace:Twice.Views"
                     xmlns:scheduling="clr-namespace:Twice.Models.Scheduling">
+
+	<Style TargetType="TextBlock" x:Key="LinkStyle">
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+	</Style>
+
 	<views:CardTemplateSelector x:Key="CardSelector">
 		<views:CardTemplateSelector.SummaryTemplate>
 			<DataTemplate DataType="twitter:CardViewModel">
 				<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+				                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 					<i:Interaction.Behaviors>
 						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
-										CommandParameter="{Binding Card.Url}" />
+						                        CommandParameter="{Binding Card.Url}" />
 					</i:Interaction.Behaviors>
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}"
-							   DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,3,3,0" VerticalAlignment="Top" />
+						       DockPanel.Dock="Left" MaxWidth="48" MaxHeight="48" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
@@ -36,15 +43,15 @@
 		<views:CardTemplateSelector.SummaryImageTemplate>
 			<DataTemplate DataType="twitter:CardViewModel">
 				<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+				                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 					<i:Interaction.Behaviors>
 						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
-										CommandParameter="{Binding Card.Url}" />
+						                        CommandParameter="{Binding Card.Url}" />
 					</i:Interaction.Behaviors>
 
 					<DockPanel LastChildFill="True">
 						<Image Source="{Binding Card.Image, IsAsync=True}" Stretch="UniformToFill" ToolTip="{Binding Card.ImageAlt}"
-							   DockPanel.Dock="Top" MaxHeight="150" Margin="0,3,3,0" VerticalAlignment="Top" />
+						       DockPanel.Dock="Top" MaxHeight="150" Margin="0,3,3,0" VerticalAlignment="Top" />
 
 						<StackPanel Orientation="Vertical">
 							<TextBlock Text="{Binding Card.Title}" TextWrapping="Wrap" FontWeight="Bold" />
@@ -66,12 +73,14 @@
 							<scheduling:SchedulerJobType x:Key="DeleteStatus">DeleteStatus</scheduling:SchedulerJobType>
 						</StackPanel.Resources>
 						<materialDesign:PackIcon Kind="Alarm" Foreground="{DynamicResource SecondaryAccentBrush}" />
-						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc TweetScheduledFor}}"
-								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource CreateStatus}}"
-								   Margin="5,0" />
-						<TextBlock Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc DeletionScheduledFor}}"
-								   Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource DeleteStatus}}"
-								   Margin="5,0" />
+						<TextBlock
+							Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc TweetScheduledFor}}"
+							Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource CreateStatus}}"
+							Margin="5,0" />
+						<TextBlock
+							Text="{Binding TargetDate, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc DeletionScheduledFor}}"
+							Visibility="{Binding Type, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={StaticResource DeleteStatus}}"
+							Margin="5,0" />
 					</StackPanel>
 				</DockPanel>
 
@@ -87,7 +96,8 @@
 						</Grid.RowDefinitions>
 
 						<StackPanel Grid.Row="0" Grid.Column="0">
-							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
+							       Margin="5" />
 
 							<Grid>
 								<Grid.ColumnDefinitions>
@@ -100,17 +110,16 @@
 						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
 							<StackPanel>
 								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
-										Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+								                            Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 							</StackPanel>
 						</StackPanel>
 					</Grid>
-
-					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
 				</Grid>
 			</StackPanel>
 
 			<materialDesign:Card.ContextMenu>
-				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice"
+				             lex:ResxLocalizationProvider.DefaultDictionary="Strings">
 					<MenuItem Header="{lex:Loc Delete}" Command="{Binding DeleteScheduleCommand}" />
 				</ContextMenu>
 			</materialDesign:Card.ContextMenu>
@@ -130,33 +139,39 @@
 			</materialDesign:Card.Style>
 			<i:Interaction.Behaviors>
 				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenMessageCommand}}"
-										CommandParameter="{Binding}" />
+				                        CommandParameter="{Binding}" />
 			</i:Interaction.Behaviors>
 
 			<StackPanel Orientation="Vertical">
 				<DockPanel>
 					<Grid Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">
-						<materialDesign:PackIcon Kind="MessageReply" Visibility="{Binding IsIncoming, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource SecondaryAccentBrush}" />
-						<materialDesign:PackIcon Kind="Message" Visibility="{Binding IsIncoming, Converter={StaticResource InvertBoolToVisibleConv}}" Foreground="{DynamicResource SecondaryAccentBrush}" />
+						<materialDesign:PackIcon Kind="MessageReply"
+						                         Visibility="{Binding IsIncoming, Converter={StaticResource BoolToVisibleConv}}"
+						                         Foreground="{DynamicResource SecondaryAccentBrush}" />
+						<materialDesign:PackIcon Kind="Message"
+						                         Visibility="{Binding IsIncoming, Converter={StaticResource InvertBoolToVisibleConv}}"
+						                         Foreground="{DynamicResource SecondaryAccentBrush}" />
 					</Grid>
 
-					<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
-						<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
-						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
-							<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
-							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-								<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
-													   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
-							</Hyperlink>
-						</ContentControl>
-					</StackPanel>
+					<TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="5,0" TextAlignment="Right"
+					           Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
+					           Style="{StaticResource LinkStyle}"
+					           ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}"
+					           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}">
+						<i:Interaction.Behaviors>
+							<behaviors:ClickHandler CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+							                        Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}" />
+						</i:Interaction.Behaviors>
+					</TextBlock>
 
 					<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5" DockPanel.Dock="Left">
 						<StackPanel.Resources>
 							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
 								<Style.Triggers>
-									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-												   Path=IsMouseOver}" Value="True">
+									<DataTrigger
+										Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+												   Path=IsMouseOver}"
+										Value="True">
 										<Setter Property="TextDecorations" Value="Underline" />
 									</DataTrigger>
 								</Style.Triggers>
@@ -164,141 +179,150 @@
 						</StackPanel.Resources>
 						<i:Interaction.Behaviors>
 							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-												 CommandParameter="{Binding Partner.Model, Converter={StaticResource UserToIdConv}}" />
+							                        CommandParameter="{Binding Partner.Model, Converter={StaticResource UserToIdConv}}" />
 						</i:Interaction.Behaviors>
-						<TextBlock Text="{Binding Partner.Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-						<TextBlock Text="{Binding Partner.ScreenName}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-								VerticalAlignment="Center" />
-						<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
+						<TextBlock Text="{Binding Partner.Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold"
+						           FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding Partner.ScreenName}" Margin="5,0" FontWeight="Thin"
+						           FontSize="{DynamicResource GlobalFontSize}"
+						           VerticalAlignment="Center" />
+						<materialDesign:PackIcon Kind="CheckCircle"
+						                         Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 					</StackPanel>
 				</DockPanel>
 
-				<Grid>
-					<Grid Background="Transparent">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
+				<Grid Background="Transparent">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-						<StackPanel Grid.Row="0" Grid.Column="0">
-							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+					<StackPanel Grid.Row="0" Grid.Column="0">
+						<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
+						       Margin="5" />
 
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition />
-								</Grid.ColumnDefinitions>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
 
-								<Button Width="28" Height="28" Command="{Binding ReplyCommand}" ToolTip="{lex:Loc Reply}" Grid.Column="0">
-									<Button.Style>
-										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
+							<Button Width="28" Height="28" Command="{Binding ReplyCommand}" ToolTip="{lex:Loc Reply}" Grid.Column="0">
+								<Button.Style>
+									<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+												Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
 
-									<materialDesign:PackIcon Kind="ReplyAll" />
-								</Button>
-							</Grid>
+								<materialDesign:PackIcon Kind="ReplyAll" />
+							</Button>
+						</Grid>
+					</StackPanel>
+
+					<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
+						<StackPanel>
+							<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
+							                            Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+
+							<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+							                    ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3"
+							                    Background="Transparent">
+								<controls1:FlipView.ItemTemplate>
+									<DataTemplate>
+										<Grid>
+											<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual" Source="{Binding Url, IsAsync=True}"
+											              Stretch="Uniform">
+												<i:Interaction.Behaviors>
+													<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+													<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}"
+													                           Loop="{Binding Loop}"
+													                           IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+												</i:Interaction.Behaviors>
+											</MediaElement>
+
+											<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+											            Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
+												<StackPanel.Resources>
+													<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+														<Style.Triggers>
+															<DataTrigger
+																Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
+																Value="False">
+																<Setter Property="Visibility" Value="Hidden" />
+															</DataTrigger>
+														</Style.Triggers>
+														<Setter Property="Margin" Value="5" />
+													</Style>
+												</StackPanel.Resources>
+
+												<ToggleButton ToolTip="{lex:Loc Repeat}"
+												              IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+													<materialDesign:PackIcon Kind="Repeat" />
+
+													<materialDesign:ToggleButtonAssist.OnContent>
+														<materialDesign:PackIcon Kind="RepeatOff" />
+													</materialDesign:ToggleButtonAssist.OnContent>
+												</ToggleButton>
+
+												<ToggleButton ToolTip="{lex:Loc PlayPause}"
+												              IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+													<materialDesign:PackIcon Kind="Play" />
+
+													<materialDesign:ToggleButtonAssist.OnContent>
+														<materialDesign:PackIcon Kind="Pause" />
+													</materialDesign:ToggleButtonAssist.OnContent>
+												</ToggleButton>
+
+												<ToggleButton ToolTip="{lex:Loc MuteAudio}"
+												              IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+													<materialDesign:PackIcon Kind="VolumeOff" />
+
+													<materialDesign:ToggleButtonAssist.OnContent>
+														<materialDesign:PackIcon Kind="VolumeHigh" />
+													</materialDesign:ToggleButtonAssist.OnContent>
+												</ToggleButton>
+											</StackPanel>
+										</Grid>
+									</DataTemplate>
+								</controls1:FlipView.ItemTemplate>
+							</controls1:FlipView>
 						</StackPanel>
-
-						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
-							<StackPanel>
-								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
-					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
-
-								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" Background="Transparent">
-									<controls1:FlipView.ItemTemplate>
-										<DataTemplate>
-											<Grid>
-												<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual" Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
-													<i:Interaction.Behaviors>
-														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
-														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
-																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-													</i:Interaction.Behaviors>
-												</MediaElement>
-
-												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
-													<StackPanel.Resources>
-														<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
-															<Style.Triggers>
-																<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
-																			Value="False">
-																	<Setter Property="Visibility" Value="Hidden" />
-																</DataTrigger>
-															</Style.Triggers>
-															<Setter Property="Margin" Value="5" />
-														</Style>
-													</StackPanel.Resources>
-
-													<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="Repeat" />
-
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="RepeatOff" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
-
-													<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="Play" />
-
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="Pause" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
-
-													<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-														<materialDesign:PackIcon Kind="VolumeOff" />
-
-														<materialDesign:ToggleButtonAssist.OnContent>
-															<materialDesign:PackIcon Kind="VolumeHigh" />
-														</materialDesign:ToggleButtonAssist.OnContent>
-													</ToggleButton>
-												</StackPanel>
-											</Grid>
-										</DataTemplate>
-									</controls1:FlipView.ItemTemplate>
-								</controls1:FlipView>
-							</StackPanel>
-						</StackPanel>
-					</Grid>
-
-					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
+					</StackPanel>
 				</Grid>
 			</StackPanel>
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="QuotedTweetTemplate" DataType="twitter:StatusViewModel">
 		<materialDesign:Card Margin="3" Padding="3" Background="{DynamicResource PrimaryHueDarkBrush}"
-                  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+		                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
 			<i:Interaction.Behaviors>
 				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
-										CommandParameter="{Binding}" />
+				                        CommandParameter="{Binding}" />
 			</i:Interaction.Behaviors>
 			<StackPanel Orientation="Vertical">
 				<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 					<TextBlock Text="{Binding Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center"
-							   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" />
+					           Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" />
 					<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
-										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+					           VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 				</StackPanel>
 				<StackPanel>
 					<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}"
-					Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
+					                            Elements="{Binding Converter={StaticResource StatusHighlighterConv}}" />
 
 					<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3"
-										Background="Transparent">
+					                    ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3"
+					                    Background="Transparent">
 						<controls1:FlipView.ItemTemplate>
 							<DataTemplate>
 								<Image Source="{Binding Url, IsAsync=True}" Stretch="Uniform">
@@ -318,7 +342,9 @@
 			<materialDesign:Card.Style>
 				<Style TargetType="{x:Type materialDesign:Card}">
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding HightlightStatus ,RelativeSource={RelativeSource AncestorType=views:StatusContainer}}" Value="True">
+						<DataTrigger
+							Binding="{Binding HightlightStatus ,RelativeSource={RelativeSource AncestorType=views:StatusContainer}}"
+							Value="True">
 							<Setter Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
 							<Setter Property="Foreground" Value="{DynamicResource PrimaryHueLightForegroundBrush}" />
 						</DataTrigger>
@@ -327,19 +353,24 @@
 			</materialDesign:Card.Style>
 			<i:Interaction.Behaviors>
 				<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenStatusCommand}}"
-										CommandParameter="{Binding}" />
+				                        CommandParameter="{Binding}" />
 			</i:Interaction.Behaviors>
 
 			<StackPanel Orientation="Vertical">
-				<StackPanel Orientation="Vertical" Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
-						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+
+				<!-- Conversation / RT Indicators -->
+				<StackPanel Orientation="Vertical"
+				            Visibility="{Binding DisplayIndicators, Converter={StaticResource BoolToVisibleConv},
+							RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<StackPanel Visibility="{Binding SourceUser, Converter={StaticResource VisibleNotNullConv}}"
-									Orientation="Horizontal" Background="Transparent" Margin="5">
+					            Orientation="Horizontal" Background="Transparent" Margin="5">
 						<StackPanel.Resources>
 							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
 								<Style.Triggers>
-									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
+									<DataTrigger
+										Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}"
+										Value="True">
 										<Setter Property="TextDecorations" Value="Underline" />
 									</DataTrigger>
 								</Style.Triggers>
@@ -347,25 +378,28 @@
 						</StackPanel.Resources>
 						<i:Interaction.Behaviors>
 							<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-											 CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
+							                        CommandParameter="{Binding SourceUser, Converter={StaticResource UserToIdConv}}" />
 						</i:Interaction.Behaviors>
 
 						<materialDesign:PackIcon Kind="TwitterRetweet" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
-												 Foreground="{DynamicResource SecondaryAccentBrush}" />
+						                         Foreground="{DynamicResource SecondaryAccentBrush}" />
 
 						<Image Height="24" Width="24" Source="{Binding SourceUser.ProfileImageUrlHttpsMini, IsAsync=True}" Margin="5,0" />
 
-						<TextBlock Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}"
-								   Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-								   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
+						<TextBlock
+							Text="{Binding SourceUser.Model.Name, Converter={StaticResource LocConv}, ConverterParameter={lex:Loc UserRetweeted}}"
+							Style="{StaticResource MouseOverStyle}" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+							VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" Visibility="{Binding IsReply, Converter={StaticResource BoolToVisibleConv}}">
 						<StackPanel.Resources>
 							<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
 								<Style.Triggers>
-									<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
+									<DataTrigger
+										Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}"
+										Value="True">
 										<Setter Property="TextDecorations" Value="Underline" />
 									</DataTrigger>
 								</Style.Triggers>
@@ -373,292 +407,331 @@
 						</StackPanel.Resources>
 
 						<materialDesign:PackIcon Kind="Reply" Margin="5,0" Width="24" Height="24" VerticalAlignment="Center"
-												 Foreground="{DynamicResource SecondaryAccentBrush}" />
+						                         Foreground="{DynamicResource SecondaryAccentBrush}" />
 						<TextBlock Text="{lex:Loc ViewConversation}" Margin="5,0" VerticalAlignment="Center"
-								   FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-								   Foreground="{DynamicResource MaterialDesignBody}" />
+						           FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+						           Foreground="{DynamicResource MaterialDesignBody}" />
 					</StackPanel>
 				</StackPanel>
 
-				<Grid>
-					<Grid Background="Transparent">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
+				<Grid Background="Transparent">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-						<StackPanel Grid.Row="0" Grid.Column="0">
-							<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top" Margin="5" />
+					<!-- Avatar & Options -->
+					<StackPanel Grid.Row="0" Grid.Column="0">
+						<!-- Avatar -->
+						<Image Source="{Binding User.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
+						       Margin="5" />
 
-							<Grid Visibility="{Binding EnableHoverIcons, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource BoolToVisibleConv}}">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition />
-									<ColumnDefinition />
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
+						<!-- Options -->
+						<Grid
+							Visibility="{Binding EnableHoverIcons, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource BoolToVisibleConv}}">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
 
-								<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
-									ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
-									Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
-									<Button.Style>
-										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-												<DataTrigger Binding="{Binding IsFavorited}" Value="True">
-													<Setter Property="Visibility" Value="Visible" />
-													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
-												</DataTrigger>
-												<DataTrigger Binding="{Binding IsFavorited}" Value="False">
-													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-									<Grid>
-										<materialDesign:PackIcon Kind="StarOutline" Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
-										<materialDesign:PackIcon Kind="Star" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
-									</Grid>
-								</Button>
-
-								<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True" HorizontalAlignment="Center">
-									<materialDesign:PopupBox.Style>
-										<Style TargetType="{x:Type materialDesign:PopupBox}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-												<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
-													<Setter Property="Visibility" Value="Visible" />
-													<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
-													<Setter Property="IsEnabled" Value="False" />
-												</DataTrigger>
-												<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
-													<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</materialDesign:PopupBox.Style>
-									<materialDesign:PopupBox.ToggleContent>
-										<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
-															 ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}">
-											<materialDesign:PackIcon.Style>
-												<Style TargetType="materialDesign:PackIcon">
-													<Style.Triggers>
-														<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
-															<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
-														</DataTrigger>
-														<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
-															<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
-														</DataTrigger>
-													</Style.Triggers>
-												</Style>
-											</materialDesign:PackIcon.Style>
-										</materialDesign:PackIcon>
-									</materialDesign:PopupBox.ToggleContent>
-
-									<StackPanel Orientation="Vertical">
-										<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
-										<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
-									</StackPanel>
-								</materialDesign:PopupBox>
-
-								<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}"
-										Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
-										HorizontalAlignment="Center">
-									<Button.Style>
-										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-
-									<materialDesign:PackIcon Kind="ReplyAll" />
-								</Button>
-
-								<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
-										HorizontalAlignment="Center">
-									<Button.Style>
-										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
-														 Value="False">
-													<Setter Property="Visibility" Value="Hidden" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-									<i:Interaction.Behaviors>
-										<behaviors:ContextMenuOpener Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
-									</i:Interaction.Behaviors>
-
-									<materialDesign:PackIcon Kind="DotsHorizontal" />
-								</Button>
-							</Grid>
-						</StackPanel>
-
-						<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
-							<DockPanel>
-								<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0"
-											Visibility="{Binding DisplaySource, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource InvertBoolToVisibleConv}}">
-									<ContentControl DockPanel.Dock="Right" HorizontalAlignment="Right"
-						ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}">
-										<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
-							Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-											<TextBlock TextAlignment="Right" Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
-													   Foreground="{DynamicResource MaterialDesignBody}" />
-										</Hyperlink>
-									</ContentControl>
-								</StackPanel>
-
-								<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
-									<StackPanel.Resources>
-										<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-												   Path=IsMouseOver}" Value="True">
-													<Setter Property="TextDecorations" Value="Underline" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</StackPanel.Resources>
-									<i:Interaction.Behaviors>
-										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-												 CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
-									</i:Interaction.Behaviors>
-									<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}"
-											   FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"
-											   VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
-									<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
-											   Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-												VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
-									<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
-									<materialDesign:PackIcon Kind="LockOutline" Visibility="{Binding User.IsProtected, Converter={StaticResource BoolToVisibleConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
-								</StackPanel>
-							</DockPanel>
-
-							<Grid>
-								<StackPanel>
-									<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
-															FontSize="{DynamicResource GlobalFontSize}"
-															Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
-															Foreground="{DynamicResource MaterialDesignBody}" />
-
-									<ContentControl Content="{Binding QuotedTweet}" Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
-											ContentTemplate="{StaticResource QuotedTweetTemplate}" />
-
-									<ContentControl Content="{Binding Card}" Visibility="{Binding HasCard, Converter={StaticResource BoolToVisibleConv}}"
-												ContentTemplateSelector="{StaticResource CardSelector}" />
-
-									<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
-												ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3" HorizontalAlignment="Center"
-												Background="Transparent">
-										<controls1:FlipView.ItemTemplate>
-											<DataTemplate>
-												<Grid>
-													<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual"
-																  Source="{Binding Url, IsAsync=True}" Stretch="Uniform"
-															  MaxHeight="250" MinHeight="250" MaxWidth="300" MinWidth="150">
-														<i:Interaction.Behaviors>
-															<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
-															<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}" Loop="{Binding Loop}"
-																				   IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-														</i:Interaction.Behaviors>
-													</MediaElement>
-
-													<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
-														<StackPanel.Resources>
-															<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
-																<Style.Triggers>
-																	<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
-																			Value="False">
-																		<Setter Property="Visibility" Value="Hidden" />
-																	</DataTrigger>
-																</Style.Triggers>
-																<Setter Property="Margin" Value="5" />
-															</Style>
-														</StackPanel.Resources>
-
-														<ToggleButton ToolTip="{lex:Loc Repeat}" IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-															<materialDesign:PackIcon Kind="Repeat" />
-
-															<materialDesign:ToggleButtonAssist.OnContent>
-																<materialDesign:PackIcon Kind="RepeatOff" />
-															</materialDesign:ToggleButtonAssist.OnContent>
-														</ToggleButton>
-
-														<ToggleButton ToolTip="{lex:Loc PlayPause}" IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-															<materialDesign:PackIcon Kind="Play" />
-
-															<materialDesign:ToggleButtonAssist.OnContent>
-																<materialDesign:PackIcon Kind="Pause" />
-															</materialDesign:ToggleButtonAssist.OnContent>
-														</ToggleButton>
-
-														<ToggleButton ToolTip="{lex:Loc MuteAudio}" IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-															<materialDesign:PackIcon Kind="VolumeOff" />
-
-															<materialDesign:ToggleButtonAssist.OnContent>
-																<materialDesign:PackIcon Kind="VolumeHigh" />
-															</materialDesign:ToggleButtonAssist.OnContent>
-														</ToggleButton>
-													</StackPanel>
-												</Grid>
-											</DataTemplate>
-										</controls1:FlipView.ItemTemplate>
-									</controls1:FlipView>
-								</StackPanel>
-								<Grid Visibility="{Binding HasSensibleContent, Converter={StaticResource BoolToVisibleConv}}" Background="{DynamicResource PrimaryHueLightBrush}">
-									<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-										<TextBlock Text="{lex:Loc TweetContainsSensibleContent}" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="5" TextAlignment="Center" />
-										<ContentControl HorizontalAlignment="Center" Margin="0,10,0,0">
-											<Hyperlink Command="{Binding DismissSensibleWarningCommand}">
-												<TextBlock Text="{lex:Loc ShowSensibleContent}" TextDecorations="Underline" />
-											</Hyperlink>
-										</ContentControl>
-									</StackPanel>
+							<Button Width="28" Height="28" ToolTipService.ShowOnDisabled="True" Command="{Binding FavoriteStatusCommand}"
+							        ToolTip="{Binding Model.FavoriteCount, ConverterParameter={lex:Loc FavoritedXTimes}, Converter={StaticResource LocConv}}"
+							        Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center">
+								<Button.Style>
+									<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+												Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsFavorited}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsFavorited}" Value="False">
+												<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+								<Grid>
+									<materialDesign:PackIcon Kind="StarOutline"
+									                         Visibility="{Binding IsFavorited, Converter={StaticResource InvertBoolToVisibleConv}}" />
+									<materialDesign:PackIcon Kind="Star"
+									                         Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibleConv}}" />
 								</Grid>
-							</Grid>
+							</Button>
 
-							<StackPanel Margin="5" Orientation="Horizontal" Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
-								<ContentControl>
-									<Hyperlink CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
-												Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}">
-										<TextBlock Text="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}" Foreground="{DynamicResource MaterialDesignBody}" />
-									</Hyperlink>
-								</ContentControl>
+							<materialDesign:PopupBox Grid.Column="1" Grid.Row="0" StaysOpen="True" HorizontalAlignment="Center">
+								<materialDesign:PopupBox.Style>
+									<Style TargetType="{x:Type materialDesign:PopupBox}">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+												Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+												<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+												<Setter Property="IsEnabled" Value="False" />
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
+												<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</materialDesign:PopupBox.Style>
+								<materialDesign:PopupBox.ToggleContent>
+									<materialDesign:PackIcon Kind="TwitterRetweet" ToolTipService.ShowOnDisabled="True"
+									                         ToolTip="{Binding Model.RetweetCount, ConverterParameter={lex:Loc RetweetedXTimes}, Converter={StaticResource LocConv}}">
+										<materialDesign:PackIcon.Style>
+											<Style TargetType="materialDesign:PackIcon">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding IsRetweeted}" Value="True">
+														<Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+													</DataTrigger>
+													<DataTrigger Binding="{Binding IsRetweeted}" Value="False">
+														<Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</materialDesign:PackIcon.Style>
+									</materialDesign:PackIcon>
+								</materialDesign:PopupBox.ToggleContent>
 
-								<TextBlock Margin="10,0" Text="&#x2022;" />
+								<StackPanel Orientation="Vertical">
+									<Button Content="{lex:Loc Retweet}" Command="{Binding RetweetStatusCommand}" />
+									<Button Content="{lex:Loc QuoteTweet}" Command="{Binding QuoteStatusCommand}" />
+								</StackPanel>
+							</materialDesign:PopupBox>
 
-								<ContentControl>
-									<Hyperlink Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
-											   CommandParameter="{Binding Model.Source, Converter={StaticResource SourceUrlConv}}">
-										<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}"
-												   Foreground="{DynamicResource MaterialDesignBody}" />
-									</Hyperlink>
-								</ContentControl>
+							<Button Width="28" Height="28" Command="{Binding ReplyToAllCommand}" ToolTip="{lex:Loc ReplyAll}"
+							        Grid.Column="0" Grid.Row="1" Foreground="{DynamicResource MaterialDesignBody}"
+							        HorizontalAlignment="Center">
+								<Button.Style>
+									<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+												Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+
+								<materialDesign:PackIcon Kind="ReplyAll" />
+							</Button>
+
+							<Button Width="28" Height="28" ToolTip="{lex:Loc Options}" Grid.Column="1" Grid.Row="1"
+							        Foreground="{DynamicResource MaterialDesignBody}"
+							        HorizontalAlignment="Center">
+								<Button.Style>
+									<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignToolForegroundButton}">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=materialDesign:Card}}"
+												Value="False">
+												<Setter Property="Visibility" Value="Hidden" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+								<i:Interaction.Behaviors>
+									<behaviors:ContextMenuOpener
+										Element="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:Card}}" />
+								</i:Interaction.Behaviors>
+
+								<materialDesign:PackIcon Kind="DotsHorizontal" />
+							</Button>
+						</Grid>
+					</StackPanel>
+
+					<StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0">
+						<DockPanel>
+							<!-- Relative Time -->
+							<TextBlock DockPanel.Dock="Right" TextAlignment="Right"
+							           Text="{Binding CreatedAt, Converter={StaticResource RelativeDateConv}}"
+							           Visibility="{Binding DisplaySource, RelativeSource={RelativeSource AncestorType=views:StatusContainer}, Converter={StaticResource InvertBoolToVisibleConv}}"
+							           ToolTip="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}"
+							           Style="{StaticResource LinkStyle}"
+							           VerticalAlignment="Center" Margin="5,0">
+								<i:Interaction.Behaviors>
+									<behaviors:ClickHandler CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+									                        Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}" />
+								</i:Interaction.Behaviors>
+							</TextBlock>
+
+							<!-- User name -->
+							<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5">
+								<StackPanel.Resources>
+									<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+												   Path=IsMouseOver}"
+												Value="True">
+												<Setter Property="TextDecorations" Value="Underline" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</StackPanel.Resources>
+								<i:Interaction.Behaviors>
+									<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
+									                        CommandParameter="{Binding Model.User, Converter={StaticResource UserToIdConv}}" />
+								</i:Interaction.Behaviors>
+								<TextBlock Text="{Binding Model.User.Name}" Style="{StaticResource MouseOverStyle}"
+								           FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"
+								           VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
+								<TextBlock Text="{Binding Model.User.ScreenNameResponse, StringFormat='@{0}'}"
+								           Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
+								           VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBody}" />
+								<materialDesign:PackIcon Kind="CheckCircle"
+								                         Visibility="{Binding User.IsVerified, Converter={StaticResource BoolToVisibleConv}}"
+								                         Foreground="{DynamicResource MaterialDesignBody}" />
+								<materialDesign:PackIcon Kind="LockOutline"
+								                         Visibility="{Binding User.IsProtected, Converter={StaticResource BoolToVisibleConv}}"
+								                         Foreground="{DynamicResource MaterialDesignBody}" />
 							</StackPanel>
-						</StackPanel>
-					</Grid>
+						</DockPanel>
 
-					<controls1:ProgressRing IsActive="{Binding IsLoading}" />
+						<Grid>
+							<StackPanel>
+								<!-- Status text -->
+								<controls:BindableTextBlock Margin="5,0,5,5" TextWrapping="Wrap"
+								                            FontSize="{DynamicResource GlobalFontSize}"
+								                            Elements="{Binding Converter={StaticResource StatusHighlighterConv}}"
+								                            Foreground="{DynamicResource MaterialDesignBody}" />
+
+								<!-- Quote -->
+								<ContentControl Content="{Binding QuotedTweet}"
+								                Visibility="{Binding HasQuotedTweet, Converter={StaticResource BoolToVisibleConv}}"
+								                ContentTemplate="{StaticResource QuotedTweetTemplate}" />
+
+								<!-- Card -->
+								<ContentControl Content="{Binding Card}"
+								                Visibility="{Binding HasCard, Converter={StaticResource BoolToVisibleConv}}"
+								                ContentTemplateSelector="{StaticResource CardSelector}" />
+
+								<!-- Media -->
+								<controls1:FlipView Visibility="{Binding DisplayMedia, Converter={StaticResource BoolToVisibleConv}}"
+								                    ItemsSource="{Binding InlineMedias}" IsBannerEnabled="False" Margin="3"
+								                    HorizontalAlignment="Center"
+								                    Background="Transparent">
+									<controls1:FlipView.ItemTemplate>
+										<DataTemplate>
+											<Grid>
+												<MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual"
+												              Source="{Binding Url, IsAsync=True}" Stretch="Uniform"
+												              MaxHeight="250" MinHeight="250" MaxWidth="300" MinWidth="150">
+													<i:Interaction.Behaviors>
+														<behaviors:ClickHandler Command="{Binding OpenImageCommand}" />
+														<behaviors:MediaController IsAnimated="{Binding IsAnimated}" MuteAudio="{Binding IsMuted}"
+														                           Loop="{Binding Loop}"
+														                           IsPlaying="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+													</i:Interaction.Behaviors>
+												</MediaElement>
+
+												<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+												            Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibleConv}}">
+													<StackPanel.Resources>
+														<Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MaterialDesignActionToggleButton}">
+															<Style.Triggers>
+																<DataTrigger
+																	Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=controls1:FlipView}}"
+																	Value="False">
+																	<Setter Property="Visibility" Value="Hidden" />
+																</DataTrigger>
+															</Style.Triggers>
+															<Setter Property="Margin" Value="5" />
+														</Style>
+													</StackPanel.Resources>
+
+													<ToggleButton ToolTip="{lex:Loc Repeat}"
+													              IsChecked="{Binding Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Repeat" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="RepeatOff" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc PlayPause}"
+													              IsChecked="{Binding IsPlaying, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="Play" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="Pause" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+
+													<ToggleButton ToolTip="{lex:Loc MuteAudio}"
+													              IsChecked="{Binding IsMuted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+														<materialDesign:PackIcon Kind="VolumeOff" />
+
+														<materialDesign:ToggleButtonAssist.OnContent>
+															<materialDesign:PackIcon Kind="VolumeHigh" />
+														</materialDesign:ToggleButtonAssist.OnContent>
+													</ToggleButton>
+												</StackPanel>
+											</Grid>
+										</DataTemplate>
+									</controls1:FlipView.ItemTemplate>
+								</controls1:FlipView>
+							</StackPanel>
+
+							<!-- Sensible content warning -->
+							<Grid Visibility="{Binding HasSensibleContent, Converter={StaticResource BoolToVisibleConv}}"
+							      Background="{DynamicResource PrimaryHueLightBrush}">
+								<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+									<TextBlock Text="{lex:Loc TweetContainsSensibleContent}" HorizontalAlignment="Center" TextWrapping="Wrap"
+									           Margin="5" TextAlignment="Center" />
+									<TextBlock Text="{lex:Loc ShowSensibleContent}" TextDecorations="Underline" HorizontalAlignment="Center" Margin="0,10,0,0">
+										<i:Interaction.Behaviors>
+											<behaviors:ClickHandler Command="{Binding DismissSensibleWarningCommand}" />
+										</i:Interaction.Behaviors>
+									</TextBlock>
+								</StackPanel>
+							</Grid>
+						</Grid>
+
+						<!-- Source -->
+						<StackPanel Margin="5" Orientation="Horizontal"
+						            Visibility="{Binding DisplaySource, Converter={StaticResource BoolToVisibleConv}, RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
+							<TextBlock Text="{Binding CreatedAt, Converter={StaticResource UtcToLocalConv}}"
+							           Style="{StaticResource LinkStyle}">
+								<i:Interaction.Behaviors>
+									<behaviors:ClickHandler CommandParameter="{Binding Model, Converter={StaticResource StatusLinkConv}}"
+									                        Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}" />
+								</i:Interaction.Behaviors>
+							</TextBlock>
+
+							<TextBlock Margin="10,0" Text="&#x2022;" />
+
+							<TextBlock Text="{Binding Model.Source, Converter={StaticResource SourceNameConv}}"
+							           Style="{StaticResource LinkStyle}">
+								<i:Interaction.Behaviors>
+									<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenUrlCommand}}"
+									                        CommandParameter="{Binding Model.Source, Converter={StaticResource SourceUrlConv}}" />
+								</i:Interaction.Behaviors>
+							</TextBlock>
+						</StackPanel>
+					</StackPanel>
 				</Grid>
 
-				<Grid Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
+				<!-- Retweeters -->
+				<Grid
+					Visibility="{Binding ShowRetweets, Converter={StaticResource BoolToVisibleConv},
 						RelativeSource={RelativeSource AncestorType=views:StatusContainer}}">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
@@ -672,18 +745,19 @@
 					<Separator Grid.Row="0" Grid.ColumnSpan="2" />
 
 					<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5">
-						<TextBlock Text="{lex:Loc Retweets}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
+						<TextBlock Text="{lex:Loc Retweets}" VerticalAlignment="Center"
+						           Style="{StaticResource MaterialDesignSubheadingTextBlock}" />
 						<TextBlock Text="{Binding Model.RetweetCount, StringFormat=({0})}" Margin="5,0"
-								   Style="{StaticResource MaterialDesignSubheadingTextBlock}" VerticalAlignment="Center" />
+						           Style="{StaticResource MaterialDesignSubheadingTextBlock}" VerticalAlignment="Center" />
 					</StackPanel>
 					<ItemsControl Grid.Column="1" ItemsSource="{Binding RetweetedBy}" Grid.Row="1">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate DataType="twitter:UserViewModel">
 								<Image Source="{Binding ProfileImageUrlHttpsMini, IsAsync=True}"
-									   ToolTip="{Binding ScreenName}" Width="24" Height="24" Margin="3">
+								       ToolTip="{Binding ScreenName}" Width="24" Height="24" Margin="3">
 									<i:Interaction.Behaviors>
 										<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-																CommandParameter="{Binding UserId}" />
+										                        CommandParameter="{Binding UserId}" />
 									</i:Interaction.Behaviors>
 								</Image>
 							</DataTemplate>
@@ -698,7 +772,8 @@
 			</StackPanel>
 
 			<materialDesign:Card.ContextMenu>
-				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice" lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+				<ContextMenu lex:ResxLocalizationProvider.DefaultAssembly="Twice"
+				             lex:ResxLocalizationProvider.DefaultDictionary="Strings">
 					<MenuItem Header="{lex:Loc CopyTweet}" Command="{Binding CopyTweetCommand}" />
 					<MenuItem Header="{lex:Loc CopyTweetUrl}" Command="{Binding CopyTweetUrlCommand}" />
 					<Separator />
@@ -718,7 +793,7 @@
 		</materialDesign:Card>
 	</DataTemplate>
 	<DataTemplate x:Key="UserViewTemplate" DataType="twitter:UserViewModel">
-		<materialDesign:Card Margin="3">
+		<materialDesign:Card Margin="3" MinWidth="200" MaxWidth="600">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
@@ -730,14 +805,16 @@
 				</Grid.ColumnDefinitions>
 
 				<Image Source="{Binding Model.ProfileImageUrlHttps, IsAsync=True}" Width="48" Height="48" VerticalAlignment="Top"
-					Margin="5" Grid.RowSpan="2" />
+				       Margin="5" Grid.RowSpan="2" />
 
 				<StackPanel Orientation="Horizontal" Background="Transparent" Margin="5" Grid.Row="0" Grid.Column="1">
 					<StackPanel.Resources>
 						<Style TargetType="{x:Type TextBlock}" x:Key="MouseOverStyle">
 							<Style.Triggers>
-								<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
-                                               Path=IsMouseOver}" Value="True">
+								<DataTrigger
+									Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel},
+                                               Path=IsMouseOver}"
+									Value="True">
 									<Setter Property="TextDecorations" Value="Underline" />
 								</DataTrigger>
 							</Style.Triggers>
@@ -745,16 +822,19 @@
 					</StackPanel.Resources>
 					<i:Interaction.Behaviors>
 						<behaviors:ClickHandler Command="{Binding Source={x:Static vm:GlobalCommands.OpenProfileCommand}}"
-											 CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
+						                        CommandParameter="{Binding Model, Converter={StaticResource UserToIdConv}}" />
 					</i:Interaction.Behaviors>
-					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
-					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin" FontSize="{DynamicResource GlobalFontSize}"
-							VerticalAlignment="Center" />
-					<materialDesign:PackIcon Kind="CheckCircle" Visibility="{Binding IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
+					<TextBlock Text="{Binding Model.Name}" Style="{StaticResource MouseOverStyle}" FontWeight="Bold"
+					           FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Center" />
+					<TextBlock Text="{Binding Model.ScreenNameResponse, StringFormat='@{0}'}" Margin="5,0" FontWeight="Thin"
+					           FontSize="{DynamicResource GlobalFontSize}"
+					           VerticalAlignment="Center" />
+					<materialDesign:PackIcon Kind="CheckCircle"
+					                         Visibility="{Binding IsVerified, Converter={StaticResource BoolToVisibleConv}}" />
 				</StackPanel>
 
 				<TextBlock Text="{Binding Model.Description}" Margin="5,0" Grid.Column="1" Grid.Row="1"
-					   TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}" />
+				           TextWrapping="Wrap" FontSize="{DynamicResource GlobalFontSize}" />
 			</Grid>
 		</materialDesign:Card>
 	</DataTemplate>

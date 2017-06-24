@@ -1,10 +1,10 @@
-using Fody;
-using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Fody;
+using GalaSoft.MvvmLight;
 using Twice.Utilities.Ui;
 using Twice.ViewModels.Columns;
 
@@ -28,6 +28,7 @@ namespace Twice.ViewModels.Profile
 			Title = title;
 			Count = count;
 			LoadAction = loadAction;
+			_Items = new ObservableCollection<object>();
 		}
 
 		private async void ActionDispatcher_BottomReached( object sender, EventArgs e )
@@ -55,8 +56,7 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsLoading
 		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
+			[DebuggerStepThrough] get { return _IsLoading; }
 
 			set
 			{
@@ -74,14 +74,13 @@ namespace Twice.ViewModels.Profile
 		{
 			get
 			{
-				if( _Items == null )
+				if( !ItemsRequested )
 				{
+					ItemsRequested = true;
 					IsLoading = true;
+
 					Task.Run( async () =>
 					{
-						_Items = new ObservableCollection<object>();
-						RaisePropertyChanged( nameof( Items ) );
-
 						var toAdd = await LoadAction();
 						foreach( var it in toAdd )
 						{
@@ -99,9 +98,10 @@ namespace Twice.ViewModels.Profile
 		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 		private readonly Func<Task<IEnumerable<object>>> LoadMoreAction;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
 
-		private ObservableCollection<object> _Items;
+		private readonly ObservableCollection<object> _Items;
+
+		private bool ItemsRequested;
 	}
 }

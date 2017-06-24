@@ -1,14 +1,14 @@
-﻿using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using Ninject;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;
 using Twice.Resources;
@@ -19,6 +19,102 @@ namespace Twice.ViewModels.Profile
 	[ConfigureAwait( false )]
 	internal class ProfileDialogViewModel : DialogViewModel, IProfileDialogViewModel
 	{
+		internal void OverwriteContext( IContextEntry context )
+		{
+			Context = context;
+		}
+
+		private async void ExecuteFollowUserCommand()
+		{
+			try
+			{
+				await Context.Twitter.Users.FollowUser( User.UserId );
+			}
+			catch( Exception ex )
+			{
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+				return;
+			}
+
+			if( Friendship?.TargetRelationship?.FollowedBy == null )
+			{
+				return;
+			}
+
+			Friendship.TargetRelationship.FollowedBy = true;
+			RaisePropertyChanged( nameof(Friendship) );
+		}
+
+		private async void ExecuteUnfollowUserCommand()
+		{
+			try
+			{
+				await Context.Twitter.Users.UnfollowUser( User.UserId );
+			}
+			catch( Exception ex )
+			{
+				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
+				return;
+			}
+
+			if( Friendship?.TargetRelationship?.FollowedBy != null )
+			{
+				Friendship.TargetRelationship.FollowedBy = false;
+				RaisePropertyChanged( nameof(Friendship) );
+			}
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowers()
+		{
+			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadFollowings()
+		{
+			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
+
+			return users.Select( u => new UserViewModel( u ) );
+		}
+
+		private async Task<IEnumerable<object>> LoadMoreStatuses()
+		{
+			return await LoadStatuses( MaxId );
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses( ulong? maxId )
+		{
+			var newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, 0, maxId ?? 0 );
+
+			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
+				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
+
+			if( maxId == null )
+			{
+				await Dispatcher.RunAsync( () => Center() );
+			}
+
+			if( statuses.Any() )
+			{
+				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
+
+				Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) ).ContinueWith( async t =>
+				{
+					if( maxId == null )
+					{
+						await Dispatcher.RunAsync( () => Center() );
+					}
+				} ).Forget();
+			}
+			return statuses;
+		}
+
+		private async Task<IEnumerable<object>> LoadStatuses()
+		{
+			return await LoadStatuses( null );
+		}
+
 		public async Task OnLoad( object data )
 		{
 			if( ProfileId == 0 && string.IsNullOrWhiteSpace( ScreenName ) )
@@ -75,125 +171,18 @@ namespace Twice.ViewModels.Profile
 					Dispatcher = Dispatcher
 				}
 			};
-			RaisePropertyChanged( nameof( UserPages ) );
+			RaisePropertyChanged( nameof(UserPages) );
 
 			await Dispatcher.RunAsync( () => Center() );
 			IsBusy = false;
 		}
 
-		public void Setup( ulong profileId )
-		{
-			ProfileId = profileId;
-		}
-
-		public void Setup( string screenName )
-		{
-			ScreenName = screenName;
-		}
-
-		internal void OverwriteContext( IContextEntry context )
-		{
-			Context = context;
-		}
-
-		private async void ExecuteFollowUserCommand()
-		{
-			try
-			{
-				await Context.Twitter.Users.FollowUser( User.UserId );
-			}
-			catch( Exception ex )
-			{
-				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
-				return;
-			}
-
-			if( Friendship?.TargetRelationship?.FollowedBy == null )
-			{
-				return;
-			}
-
-			Friendship.TargetRelationship.FollowedBy = true;
-			RaisePropertyChanged( nameof( Friendship ) );
-		}
-
-		private async void ExecuteUnfollowUserCommand()
-		{
-			try
-			{
-				await Context.Twitter.Users.UnfollowUser( User.UserId );
-			}
-			catch( Exception ex )
-			{
-				Notifier.DisplayMessage( ex.GetReason(), NotificationType.Error );
-				return;
-			}
-
-			if( Friendship?.TargetRelationship?.FollowedBy != null )
-			{
-				Friendship.TargetRelationship.FollowedBy = false;
-				RaisePropertyChanged( nameof( Friendship ) );
-			}
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowers()
-		{
-			var users = await Context.Twitter.Friendships.ListFollowers( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadFollowings()
-		{
-			var users = await Context.Twitter.Friendships.ListFriends( User.UserId );
-
-			return users.Select( u => new UserViewModel( u ) );
-		}
-
-		private async Task<IEnumerable<object>> LoadMoreStatuses()
-		{
-			return await LoadStatuses( MaxId );
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses( ulong? maxId )
-		{
-			var newStatuses = await Context.Twitter.Statuses.GetUserTweets( User.UserId, 0, maxId ?? 0 );
-
-			var statuses = newStatuses.OrderByDescending( s => s.StatusID ).Select(
-				s => new StatusViewModel( s, Context, Configuration, ViewServiceRepository ) ).ToArray();
-
-			if( maxId == null )
-			{
-				await Dispatcher.RunAsync( () => Center() );
-			}
-
-			if( statuses.Any() )
-			{
-				MaxId = Math.Min( MaxId, statuses.Min( s => s.Id ) );
-				// ReSharper disable once UnusedVariable
-				var dontWait = Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) ).ContinueWith( async t =>
-				{
-					if( maxId == null )
-					{
-						await Dispatcher.RunAsync( () => Center() );
-					}
-				} );
-			}
-			return statuses;
-		}
-
-		private async Task<IEnumerable<object>> LoadStatuses()
-		{
-			return await LoadStatuses( null );
-		}
-
 		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
-			ExecuteFollowUserCommand ) );
+			                                     ExecuteFollowUserCommand ) );
 
 		public Friendship Friendship
 		{
-			[DebuggerStepThrough]
-			get { return _Friendship; }
+			[DebuggerStepThrough] get { return _Friendship; }
 			set
 			{
 				if( _Friendship == value )
@@ -208,8 +197,7 @@ namespace Twice.ViewModels.Profile
 
 		public bool IsBusy
 		{
-			[DebuggerStepThrough]
-			get { return _IsBusy; }
+			[DebuggerStepThrough] get { return _IsBusy; }
 			set
 			{
 				if( _IsBusy == value )
@@ -222,24 +210,22 @@ namespace Twice.ViewModels.Profile
 			}
 		}
 
-		[Inject]
-		public INotifier Notifier { get; set; }
-
-		public override string Title
+		public void Setup( ulong profileId )
 		{
-			get
-			{
-				return string.Format( Strings.ProfileOfUser, User?.Model?.ScreenNameResponse );
-			}
+			ProfileId = profileId;
+		}
+
+		public void Setup( string screenName )
+		{
+			ScreenName = screenName;
 		}
 
 		public ICommand UnfollowUserCommand => _UnfollowUserCommand ?? ( _UnfollowUserCommand = new RelayCommand(
-			ExecuteUnfollowUserCommand ) );
+			                                       ExecuteUnfollowUserCommand ) );
 
 		public UserViewModel User
 		{
-			[DebuggerStepThrough]
-			get { return _User; }
+			[DebuggerStepThrough] get { return _User; }
 			set
 			{
 				if( _User == value )
@@ -249,11 +235,17 @@ namespace Twice.ViewModels.Profile
 
 				_User = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged( nameof( Title ) );
+
+				Title = string.Format( Strings.ProfileOfUser, User?.Model?.ScreenNameResponse );
+				RaisePropertyChanged( nameof(Title) );
 			}
 		}
 
 		public ICollection<UserSubPage> UserPages { get; private set; }
+
+		[Inject]
+		public INotifier Notifier { get; set; }
+
 		private RelayCommand _FollowUserCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;

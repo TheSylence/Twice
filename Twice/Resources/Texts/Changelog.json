@@ -1,5 +1,27 @@
 ﻿[
     {
+        "Version": "0.10.4",
+        "Date": "2017-06-24",
+        "Description": "",
+        "NewFeatures": [],
+        "Changes": [
+            "More performance improvements",
+            "Unfavorited status is immediately removed from favourites column",
+            "Image viewer can be closed by clicking outside the dialog",
+            "Image viewer is now correctly centered"
+        ],
+        "Fixes": [
+            "Dialog centering is now always using the correct display",
+            "Dialog centering is now upated when dialog content is updated",
+            "Fixed possible crash when loading broken config file",
+            "Same media is no longer displayed multiple times on same status",
+            "Closing image viewer by clicking outside no longer reloads columns",
+            "Profile dialog keeps correct size when switching to followers tab",
+            "Profile picture is now displaying correct url when opened in image viewer"
+        ],
+        "Issues": []
+    },
+    {
         "Version": "0.10.3",
         "Date": "2017-02-26",
         "Description": "",

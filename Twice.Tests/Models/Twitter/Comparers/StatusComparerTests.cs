@@ -16,6 +16,7 @@ namespace Twice.Tests.Models.Twitter.Comparers
 			var comp = new StatusComparer();
 
 			// Act
+			// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
 			var ex = ExceptionAssert.Catch<ArgumentNullException>( () => comp.GetHashCode( null ) );
 
 			// Assert

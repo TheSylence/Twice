@@ -23,7 +23,7 @@ namespace Twice.Tests.ViewModels
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
-			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object );
+			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object, null );
 
 			// Act
 			notifier.DisplayMessage( "test", NotificationType.Information );
@@ -41,7 +41,7 @@ namespace Twice.Tests.ViewModels
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
-			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object );
+			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object, null);
 
 			// Act
 			notifier.DisplayMessage( "test", NotificationType.Information );
@@ -60,7 +60,7 @@ namespace Twice.Tests.ViewModels
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
-			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object );
+			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object, null);
 
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
@@ -81,7 +81,7 @@ namespace Twice.Tests.ViewModels
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
-			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object );
+			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object, null);
 
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
@@ -102,7 +102,7 @@ namespace Twice.Tests.ViewModels
 			var viewServices = new Mock<IViewServiceRepository>();
 			viewServices.Setup( v => v.OpenNotificationFlyout( It.IsAny<NotificationViewModel>() ) ).Verifiable();
 
-			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object );
+			var notifier = new Notifier( config.Object, null, new SyncDispatcher(), viewServices.Object, null);
 			var status = new StatusViewModel( DummyGenerator.CreateDummyStatus(), context.Object, null, null );
 
 			// Act

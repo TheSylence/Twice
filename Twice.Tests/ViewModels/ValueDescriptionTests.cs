@@ -13,6 +13,7 @@ namespace Twice.Tests.ViewModels
 		private enum TestEnum
 		{
 			[LocalizeKey( "Cancel" )]
+			// ReSharper disable once UnusedMember.Local
 			Test
 		}
 

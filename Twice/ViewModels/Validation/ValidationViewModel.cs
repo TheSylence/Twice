@@ -115,7 +115,10 @@ namespace Twice.ViewModels.Validation
 			}
 
 			var propInfo = GetType().GetProperty( propertyName );
-			Getters.Add( propertyName, obj => propInfo.GetValue( obj ) );
+			if( propInfo != null )
+			{
+				Getters.Add( propertyName, obj => propInfo.GetValue( obj ) );
+			}
 		}
 
 		private void ClearValidationErrors( string propertyName )

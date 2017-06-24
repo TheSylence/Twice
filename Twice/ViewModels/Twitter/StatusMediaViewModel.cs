@@ -1,10 +1,11 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Proxy;
+using Twice.Models.Twitter.Comparers;
 
 namespace Twice.ViewModels.Twitter
 {
@@ -14,7 +15,7 @@ namespace Twice.ViewModels.Twitter
 		Animated
 	}
 
-	internal class StatusMediaViewModel : ObservableObject
+	internal class StatusMediaViewModel : ObservableObject, IDragCanceller
 	{
 		public StatusMediaViewModel( Uri url, Uri displayUrl = null )
 		{
@@ -44,6 +45,22 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public event EventHandler OpenRequested;
+		
+		public override bool Equals( object obj )
+		{
+			var other = obj as StatusMediaViewModel;
+			if( other == null )
+			{
+				return false;
+			}
+
+			return TwitterComparers.MediaEntityComparer.Equals(Entity, other.Entity);
+		}
+
+		public override int GetHashCode()
+		{
+			return Entity?.GetHashCode() ?? 0;
+		}
 
 		private void ExecuteOpenImageCommand()
 		{
@@ -52,8 +69,7 @@ namespace Twice.ViewModels.Twitter
 
 		public Uri DisplayUrl
 		{
-			[DebuggerStepThrough]
-			get { return _DisplayUrl; }
+			[DebuggerStepThrough] get { return _DisplayUrl; }
 			set
 			{
 				if( _DisplayUrl == value )
@@ -70,8 +86,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsMuted
 		{
-			[DebuggerStepThrough]
-			get { return _IsMuted; }
+			[DebuggerStepThrough] get { return _IsMuted; }
 			set
 			{
 				if( _IsMuted == value )
@@ -86,8 +101,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool IsPlaying
 		{
-			[DebuggerStepThrough]
-			get { return _IsPlaying; }
+			[DebuggerStepThrough] get { return _IsPlaying; }
 			set
 			{
 				if( _IsPlaying == value )
@@ -102,8 +116,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool Loop
 		{
-			[DebuggerStepThrough]
-			get { return _Loop; }
+			[DebuggerStepThrough] get { return _Loop; }
 			set
 			{
 				if( _Loop == value )
@@ -117,9 +130,10 @@ namespace Twice.ViewModels.Twitter
 		}
 
 		public ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand(
-												ExecuteOpenImageCommand ) );
+			                                    ExecuteOpenImageCommand ) );
 
 		public Uri Url { get; }
+		private readonly MediaEntity Entity;
 
 		private readonly MediaType Type;
 
@@ -132,6 +146,5 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Loop = true;
 
 		private RelayCommand _OpenImageCommand;
-		private MediaEntity Entity;
 	}
 }

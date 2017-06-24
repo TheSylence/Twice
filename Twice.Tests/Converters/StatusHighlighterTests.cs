@@ -1,14 +1,14 @@
-﻿using LinqToTwitter;
-using LitJson;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Documents;
+using LinqToTwitter;
+using LitJson;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Twice.Converters;
 using Twice.Models.Configuration;
 using Twice.ViewModels.Twitter;
@@ -40,15 +40,16 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = false} );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
-			var links = inlines.OfType<Hyperlink>().ToArray();
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
+			Assert.IsNotNull( inlines );
+			var links = inlines.OfType<Hyperlink>().ToArray();
 			Assert.AreEqual( 5, links.Length );
 
 			Assert.AreEqual( "@spurs", ( (Run)links[0].Inlines.First() ).Text );
@@ -80,10 +81,11 @@ namespace Twice.Tests.Converters
 			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
-			var links = inlines.OfType<Hyperlink>().ToArray();
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
+			Assert.IsNotNull( inlines );
+			var links = inlines.OfType<Hyperlink>().ToArray();
 			Assert.AreEqual( 1, links.Length );
 			Assert.AreEqual( "@hello", ( (Run)links[0].Inlines.First() ).Text );
 		}
@@ -97,14 +99,15 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = false} );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
+			Assert.IsNotNull( inlines );
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( "Jetzt seid Ihr gefragt: Stimmt für Euren Pokalhelden ab! 🏆⚽ ", ( (Run)inlines[0] ).Text );
 
@@ -140,7 +143,7 @@ namespace Twice.Tests.Converters
 			linkInlines = ( (Hyperlink)inlines[9] ).Inlines.ToArray();
 			Assert.AreEqual( "pic.twitter.com/JPRZdM31ha", ( (Run)linkInlines[0] ).Text );
 
-			Assert.AreEqual( 10, inlines.Length );
+			Assert.AreEqual( 10, inlines.Count );
 		}
 
 		[TestMethod, TestCategory( "Converters" )]
@@ -160,10 +163,11 @@ namespace Twice.Tests.Converters
 			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.AreEqual( 2, inlines.Length );
+			Assert.IsNotNull( inlines );
+			Assert.AreEqual( 2, inlines.Count );
 
 			Assert.IsInstanceOfType( inlines[1], typeof( Hyperlink ) );
 			var linkInlines = ( (Hyperlink)inlines[1] ).Inlines.ToArray();
@@ -190,10 +194,11 @@ namespace Twice.Tests.Converters
 			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.AreEqual( 2, inlines.Length );
+			Assert.IsNotNull( inlines );
+			Assert.AreEqual( 2, inlines.Count );
 
 			Assert.IsInstanceOfType( inlines[0], typeof( Hyperlink ) );
 			var linkInlines = ( (Hyperlink)inlines[0] ).Inlines.ToArray();
@@ -214,10 +219,11 @@ namespace Twice.Tests.Converters
 			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.AreEqual( 1, inlines.Length );
+			Assert.IsNotNull( inlines );
+			Assert.AreEqual( 1, inlines.Count );
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( content, ( (Run)inlines[0] ).Text );
 		}
@@ -262,16 +268,18 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = true } );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = true} );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
-			var links = inlines.OfType<Hyperlink>().ToArray();
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.AreEqual( 3, inlines.Length );
+			Assert.IsNotNull( inlines );
+			var links = inlines.OfType<Hyperlink>().ToArray();
+
+			Assert.AreEqual( 3, inlines.Count );
 
 			Assert.AreEqual( 1, links.Length );
 			Assert.AreEqual( "@BVB", ( (Run)links[0].Inlines.First() ).Text );
@@ -300,10 +308,11 @@ namespace Twice.Tests.Converters
 			var vm = new StatusViewModel( status, null, null, null );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
-			Assert.AreEqual( 1, inlines.Length );
+			Assert.IsNotNull( inlines );
+			Assert.AreEqual( 1, inlines.Count );
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( status.Text, ( (Run)inlines[0] ).Text );
 		}
@@ -317,14 +326,15 @@ namespace Twice.Tests.Converters
 			var status = new Status( data );
 			var vm = new StatusViewModel( status, null, null, null );
 			var config = new Mock<IConfig>();
-			config.SetupGet( c => c.Visual ).Returns( new VisualConfig { InlineMedia = false } );
+			config.SetupGet( c => c.Visual ).Returns( new VisualConfig {InlineMedia = false} );
 
 			var conv = new StatusHighlighter( config.Object );
 
 			// Act
-			var inlines = (Inline[])conv.Convert( vm, null, null, null );
+			var inlines = (List<Inline>)conv.Convert( vm, null, null, null );
 
 			// Assert
+			Assert.IsNotNull( inlines );
 			Assert.IsInstanceOfType( inlines[0], typeof( Run ) );
 			Assert.AreEqual( "Das ist mal wieder ein ", ( (Run)inlines[0] ).Text );
 

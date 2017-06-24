@@ -1,6 +1,5 @@
 ﻿using Anotar.NLog;
 using LinqToTwitter;
-using Seal.Fody;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,6 @@ using Twice.Models.Twitter.Entities;
 
 namespace Twice.Models.Twitter.Streaming
 {
-	[LeaveUnsealed]
 	internal class StreamingRepository : IStreamingRepository
 	{
 		// ReSharper disable once MemberCanBeProtected.Global
