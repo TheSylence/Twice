@@ -50,20 +50,7 @@ namespace Twice.ViewModels
 
 		public ICommand OkCommand => _OkCommand ?? ( _OkCommand = new RelayCommand( ExecuteOkCommand, CanExecuteOkCommand ) );
 
-		public string Title
-		{
-			[DebuggerStepThrough] get { return _Title; }
-			set
-			{
-				if( _Title == value )
-				{
-					return;
-				}
-
-				_Title = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string Title{ get; set; }
 
 		public void Center()
 		{
@@ -83,7 +70,5 @@ namespace Twice.ViewModels
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _OkCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 	}
 }

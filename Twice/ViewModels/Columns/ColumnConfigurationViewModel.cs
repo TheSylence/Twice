@@ -1,8 +1,8 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Columns;
 
 namespace Twice.ViewModels.Columns
@@ -13,8 +13,6 @@ namespace Twice.ViewModels.Columns
 		{
 			Definition = definition;
 		}
-
-		public event EventHandler Saved;
 
 		private bool CanExecuteSaveCommand()
 		{
@@ -32,28 +30,11 @@ namespace Twice.ViewModels.Columns
 			IsExpanded = false;
 		}
 
-		public bool Changed
-		{
-			[DebuggerStepThrough]
-			get { return _Changed; }
-			set
-			{
-				if( _Changed == value )
-				{
-					return;
-				}
-
-				_Changed = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		public ColumnDefinition Definition { get; }
 
 		public bool IsExpanded
 		{
-			[DebuggerStepThrough]
-			get { return _IsExpanded; }
+			[DebuggerStepThrough] get { return _IsExpanded; }
 			set
 			{
 				if( _IsExpanded == value )
@@ -76,8 +57,7 @@ namespace Twice.ViewModels.Columns
 
 		public bool PopupEnabled
 		{
-			[DebuggerStepThrough]
-			get { return _PopupEnabled; }
+			[DebuggerStepThrough] get { return _PopupEnabled; }
 			set
 			{
 				if( _PopupEnabled == value )
@@ -94,10 +74,11 @@ namespace Twice.ViewModels.Columns
 		public ICommand SaveCommand
 			=> _SaveCommand ?? ( _SaveCommand = new RelayCommand( ExecuteSaveCommand, CanExecuteSaveCommand ) );
 
+		public event EventHandler Saved;
+
 		public bool SoundEnabled
 		{
-			[DebuggerStepThrough]
-			get { return _SoundEnabled; }
+			[DebuggerStepThrough] get { return _SoundEnabled; }
 			set
 			{
 				if( _SoundEnabled == value )
@@ -113,8 +94,7 @@ namespace Twice.ViewModels.Columns
 
 		public bool ToastsEnabled
 		{
-			[DebuggerStepThrough]
-			get { return _ToastsEnabled; }
+			[DebuggerStepThrough] get { return _ToastsEnabled; }
 			set
 			{
 				if( _ToastsEnabled == value )
@@ -128,22 +108,16 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Changed;
+		public bool Changed { get; set; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsExpanded;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsExpanded;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _PopupEnabled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _PopupEnabled;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SaveCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SaveCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _SoundEnabled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _SoundEnabled;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _ToastsEnabled;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ToastsEnabled;
 	}
 }

@@ -1,12 +1,12 @@
-﻿using Anotar.NLog;
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
 using Twice.Models.Configuration;
 using Twice.Models.Media;
 using Twice.Models.Twitter;
@@ -82,7 +82,7 @@ namespace Twice.ViewModels.Twitter
 				await context.Statuses.RetweetAsync( Model.GetStatusId() );
 
 				Model.Retweeted = true;
-				RaisePropertyChanged( nameof( IsRetweeted ) );
+				RaisePropertyChanged( nameof(IsRetweeted) );
 			}, Strings.RetweetedStatus, NotificationType.Success );
 		}
 
@@ -94,7 +94,7 @@ namespace Twice.ViewModels.Twitter
 			}
 
 			var videos = ( Model?.ExtendedEntities?.MediaEntities?.Where( e => e.Type == "animated_gif" || e.Type == "video" ) ??
-						   Enumerable.Empty<MediaEntity>() ).ToArray();
+			               Enumerable.Empty<MediaEntity>() ).ToArray();
 
 			var mediaEntities = Model?.Entities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
 			var extendedEntities = Model?.ExtendedEntities?.MediaEntities ?? Enumerable.Empty<MediaEntity>();
@@ -107,7 +107,7 @@ namespace Twice.ViewModels.Twitter
 
 			foreach( var vm in entities.Select( entity => new StatusMediaViewModel( entity ) ) )
 			{
-				if (_InlineMedias.Contains(vm))
+				if( _InlineMedias.Contains( vm ) )
 				{
 					continue;
 				}
@@ -126,7 +126,7 @@ namespace Twice.ViewModels.Twitter
 				if( extracted != null )
 				{
 					var vm = new StatusMediaViewModel( extracted, new Uri( url ) );
-					if (_InlineMedias.Contains(vm))
+					if( _InlineMedias.Contains( vm ) )
 					{
 						continue;
 					}
@@ -136,31 +136,12 @@ namespace Twice.ViewModels.Twitter
 				}
 			}
 
-			RaisePropertyChanged( nameof( InlineMedias ) );
+			RaisePropertyChanged( nameof(InlineMedias) );
 		}
 
-		private static void EnsureEntitiesAreNotNull( Entities ent )
+		private bool CanEditStatusCommand()
 		{
-			if( ent.HashTagEntities == null )
-			{
-				ent.HashTagEntities = new List<HashTagEntity>();
-			}
-			if( ent.MediaEntities == null )
-			{
-				ent.MediaEntities = new List<MediaEntity>();
-			}
-			if( ent.SymbolEntities == null )
-			{
-				ent.SymbolEntities = new List<SymbolEntity>();
-			}
-			if( ent.UrlEntities == null )
-			{
-				ent.UrlEntities = new List<UrlEntity>();
-			}
-			if( ent.UserMentionEntities == null )
-			{
-				ent.UserMentionEntities = new List<UserMentionEntity>();
-			}
+			return OriginalStatus.GetUserId() == Context.UserId;
 		}
 
 		private bool CanExecuteBlockUserCommand( ulong id )
@@ -188,6 +169,30 @@ namespace Twice.ViewModels.Twitter
 		private bool CanExecuteReportSpamCommand( ulong id )
 		{
 			return ( id == 0 ? OriginalStatus.User.GetUserId() : id ) != Context?.UserId;
+		}
+
+		private static void EnsureEntitiesAreNotNull( Entities ent )
+		{
+			if( ent.HashTagEntities == null )
+			{
+				ent.HashTagEntities = new List<HashTagEntity>();
+			}
+			if( ent.MediaEntities == null )
+			{
+				ent.MediaEntities = new List<MediaEntity>();
+			}
+			if( ent.SymbolEntities == null )
+			{
+				ent.SymbolEntities = new List<SymbolEntity>();
+			}
+			if( ent.UrlEntities == null )
+			{
+				ent.UrlEntities = new List<UrlEntity>();
+			}
+			if( ent.UserMentionEntities == null )
+			{
+				ent.UserMentionEntities = new List<UserMentionEntity>();
+			}
 		}
 
 		private void ExecAsync( Func<Task> action, string message = null, NotificationType type = NotificationType.Information )
@@ -259,6 +264,14 @@ namespace Twice.ViewModels.Twitter
 				NotificationType.Success );
 		}
 
+		private async void ExecuteEditStatusCommand()
+		{
+			var text = Text;
+
+			await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID );
+			await ViewServiceRepository.ComposeTweet( text );
+		}
+
 		private void ExecuteFavoriteStatusCommand()
 		{
 			ExecAsync( async () =>
@@ -273,7 +286,7 @@ namespace Twice.ViewModels.Twitter
 				}
 
 				Model.Favorited = !Model.Favorited;
-				RaisePropertyChanged( nameof( IsFavorited ) );
+				RaisePropertyChanged( nameof(IsFavorited) );
 			}, Model.Favorited
 				? Strings.RemovedFavorite
 				: Strings.AddedFavorite, NotificationType.Success );
@@ -355,37 +368,26 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
+		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
+
+		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
+
 		public override ICommand BlockUserCommand
 			=>
-				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand<ulong>( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) )
-		;
+				_BlockUserCommand ?? ( _BlockUserCommand = new RelayCommand<ulong>( ExecuteBlockUserCommand, CanExecuteBlockUserCommand ) );
 
-		public CardViewModel Card
-		{
-			[DebuggerStepThrough]
-			get { return _Card; }
-			set
-			{
-				if( _Card == value )
-				{
-					return;
-				}
-
-				_Card = value;
-				RaisePropertyChanged( nameof( Card ) );
-			}
-		}
+		public CardViewModel Card { get; set; }
 
 		public ITwitterCardExtractor CardExtractor
 		{
-			get { return _CardExtractor ?? DefaultCardExtractor; }
-			set { _CardExtractor = value; }
+			get => _CardExtractor ?? DefaultCardExtractor;
+			set => _CardExtractor = value;
 		}
 
 		public IClipboard Clipboard
 		{
-			get { return _Clipboard ?? DefaultClipboard; }
-			set { _Clipboard = value; }
+			get => _Clipboard ?? DefaultClipboard;
+			set => _Clipboard = value;
 		}
 
 		public IContextEntry Context { get; }
@@ -398,30 +400,15 @@ namespace Twice.ViewModels.Twitter
 
 		public override DateTime CreatedAt => Model.CreatedAt;
 
-		private RelayCommand _EditStatusCommand;
-
-		public ICommand EditStatusCommand => _EditStatusCommand
-			?? ( _EditStatusCommand = new RelayCommand( ExecuteEditStatusCommand, CanEditStatusCommand ) );
-
-		private bool CanEditStatusCommand()
-		{
-			return OriginalStatus.GetUserId() == Context.UserId;
-		}
-
-		private async void ExecuteEditStatusCommand()
-		{
-			var text = Text;
-
-			await Context.Twitter.Statuses.DeleteTweetAsync( OriginalStatus.StatusID );
-			await ViewServiceRepository.ComposeTweet( text );
-		}
-
 		public ICommand DeleteStatusCommand
 			=>
 				_DeleteStatusCommand
 				?? ( _DeleteStatusCommand = new RelayCommand( ExecuteDeleteStatusCommand, CanExecuteDeleteStatusCommand ) );
 
 		public IDispatcher Dispatcher { get; set; }
+
+		public ICommand EditStatusCommand => _EditStatusCommand
+		                                     ?? ( _EditStatusCommand = new RelayCommand( ExecuteEditStatusCommand, CanEditStatusCommand ) );
 
 		public override Entities Entities
 		{
@@ -458,8 +445,7 @@ namespace Twice.ViewModels.Twitter
 
 		public bool HasCard
 		{
-			[DebuggerStepThrough]
-			get { return _HasCard; }
+			[DebuggerStepThrough] get { return _HasCard; }
 			private set
 			{
 				if( _HasCard == value )
@@ -468,12 +454,12 @@ namespace Twice.ViewModels.Twitter
 				}
 
 				_HasCard = value;
-				RaisePropertyChanged( nameof( HasCard ) );
+				RaisePropertyChanged( nameof(HasCard) );
 
 				if( _HasCard )
 				{
 					_InlineMedias.Clear();
-					RaisePropertyChanged( nameof( InlineMedias ) );
+					RaisePropertyChanged( nameof(InlineMedias) );
 				}
 			}
 		}
@@ -513,14 +499,9 @@ namespace Twice.ViewModels.Twitter
 
 		public UserViewModel SourceUser { get; }
 		public override string Text => Model.Text;
-		private static readonly ITwitterCardExtractor DefaultCardExtractor = TwitterCardExtractor.Default;
-
-		private static readonly IClipboard DefaultClipboard = new ClipboardWrapper();
 		private readonly Status OriginalStatus;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<ulong> _BlockUserCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CardViewModel _Card;
 
 		private ITwitterCardExtractor _CardExtractor;
 
@@ -531,6 +512,8 @@ namespace Twice.ViewModels.Twitter
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CopyTweetUrlCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteStatusCommand;
+
+		private RelayCommand _EditStatusCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _FavoriteStatusCommand;
 

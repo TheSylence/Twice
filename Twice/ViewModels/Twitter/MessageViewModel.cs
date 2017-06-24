@@ -88,24 +88,8 @@ namespace Twice.ViewModels.Twitter
 		public override ICommand ReportSpamCommand { get; }
 		public override string Text => Model.Text;
 
-		public bool WasRead
-		{
-			[DebuggerStepThrough]
-			get { return _WasRead; }
-			set
-			{
-				if( _WasRead == value )
-				{
-					return;
-				}
-
-				_WasRead = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool WasRead { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
 	}
 }

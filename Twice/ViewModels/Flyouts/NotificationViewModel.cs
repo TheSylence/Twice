@@ -147,74 +147,22 @@ namespace Twice.ViewModels.Flyouts
 
 		public event EventHandler<CloseEventArgs> CloseRequested;
 
-		public int AutoCloseProgress
-		{
-			[DebuggerStepThrough] get { return _AutoCloseProgress; }
-			set
-			{
-				if( _AutoCloseProgress == value )
-				{
-					return;
-				}
-
-				_AutoCloseProgress = value;
-				RaisePropertyChanged();
-			}
-		}
+		public int AutoCloseProgress { get; set; }
 
 		public TimeSpan CloseDelay { private get; set; }
 		public ICommand DismissCommand => _DismissCommand ?? ( _DismissCommand = new RelayCommand( ExecuteDismissCommand ) );
 		public IDispatcher Dispatcher { private get; set; }
 
-		public bool DisplayRestartButton
-		{
-			[DebuggerStepThrough] get { return _DisplayRestartButton; }
-			set
-			{
-				if( _DisplayRestartButton == value )
-				{
-					return;
-				}
+		public bool DisplayRestartButton { get; set; }
 
-				_DisplayRestartButton = value;
-				RaisePropertyChanged( nameof(DisplayRestartButton) );
-			}
-		}
-
-		public Position FlyoutPosition
-		{
-			[DebuggerStepThrough] get { return _FlyoutPosition; }
-			set
-			{
-				if( _FlyoutPosition == value )
-				{
-					return;
-				}
-
-				_FlyoutPosition = value;
-				RaisePropertyChanged();
-			}
-		}
+		public Position FlyoutPosition { get; set; }
 
 		public IMessenger MessengerInstance { private get; set; }
 
 		public ICommand RestartAppCommand => _RestartAppCommand
 		                                     ?? ( _RestartAppCommand = new RelayCommand( ExecuteRestartAppCommand ) );
 
-		public string Text
-		{
-			[DebuggerStepThrough] get { return _Text; }
-			set
-			{
-				if( _Text == value )
-				{
-					return;
-				}
-
-				_Text = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string Text { get; set; }
 
 		public NotificationType Type
 		{
@@ -237,17 +185,9 @@ namespace Twice.ViewModels.Flyouts
 
 		private readonly IProcessStarter ProcStarter;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _AutoCloseProgress;
-
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DismissCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _DisplayRestartButton;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Position _FlyoutPosition;
-
 		private RelayCommand _RestartAppCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private NotificationType _Type;
 

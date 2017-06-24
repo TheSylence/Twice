@@ -1,9 +1,9 @@
-using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Models.Twitter;
 using Twice.Utilities;
 using Twice.ViewModels.Twitter;
@@ -56,28 +56,13 @@ namespace Twice.ViewModels.ColumnManagement
 			ExecuteSearchCommand();
 		}
 
-		public bool IsLoading
-		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
-			set
-			{
-				if( _IsLoading == value )
-				{
-					return;
-				}
-
-				_IsLoading = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsLoading { get; set; }
 
 		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand( ExecuteSearchCommand ) );
 
 		public string SearchText
 		{
-			[DebuggerStepThrough]
-			get { return _SearchText; }
+			[DebuggerStepThrough] get { return _SearchText; }
 			set
 			{
 				if( _SearchText == value )
@@ -99,13 +84,8 @@ namespace Twice.ViewModels.ColumnManagement
 
 		private readonly SmartCollection<UserViewModel> UserCollection;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoading;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SearchCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SearchCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SearchText;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SearchText;
 	}
 }

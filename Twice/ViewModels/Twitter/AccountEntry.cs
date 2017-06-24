@@ -1,8 +1,8 @@
-﻿using GalaSoft.MvvmLight;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight;
+using JetBrains.Annotations;
 using Twice.Models.Twitter;
 
 namespace Twice.ViewModels.Twitter
@@ -19,31 +19,19 @@ namespace Twice.ViewModels.Twitter
 			Image = loadImage ? new BitmapImage( context.ProfileImageUrl ) : new BitmapImage();
 		}
 
-		public event EventHandler UseChanged;
+		[UsedImplicitly]
+		private void OnUseChanged()
+		{
+			UseChanged?.Invoke( this, EventArgs.Empty );
+		}
 
 		public IContextEntry Context { get; }
 		public ImageSource Image { get; }
 		public bool IsDefault => Context.IsDefault;
 		public string ScreenName => Context.AccountName;
 
-		public bool Use
-		{
-			[DebuggerStepThrough]
-			get { return _Use; }
-			set
-			{
-				if( _Use == value )
-				{
-					return;
-				}
+		public bool Use { get; set; }
 
-				_Use = value;
-				RaisePropertyChanged();
-				UseChanged?.Invoke( this, EventArgs.Empty );
-			}
-		}
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Use;
+		public event EventHandler UseChanged;
 	}
 }

@@ -4,4 +4,5 @@
   <ConfigureAwait />
   <Anotar.NLog />
   <Resourcer />
+  <PropertyChanged />
 </Weavers>

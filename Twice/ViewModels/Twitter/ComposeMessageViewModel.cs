@@ -1,8 +1,8 @@
-﻿using Ninject;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Ninject;
 using Twice.Messages;
 using Twice.Models.Twitter;
 using Twice.Resources;
@@ -24,11 +24,6 @@ namespace Twice.ViewModels.Twitter
 			// determine if you can Direct Message a user via the public API" So we simply use this
 			// (https://dev.twitter.com/rest/reference/post/direct_messages/new) value as an
 			// indicator for the user and handle any errors that twitter will report
-		}
-
-		public Task OnLoad( object data )
-		{
-			return Task.CompletedTask;
 		}
 
 		protected override async Task<bool> OnOk()
@@ -72,119 +67,34 @@ namespace Twice.ViewModels.Twitter
 			} );
 		}
 
-		public bool? CanSend
+		[UsedImplicitly]
+		private void OnRecipientChanged()
 		{
-			[DebuggerStepThrough]
-			get { return _CanSend; }
-			set
-			{
-				if( _CanSend == value )
-				{
-					return;
-				}
+			CheckRecipient();
+		}
 
-				_CanSend = value;
-				RaisePropertyChanged();
-			}
+		public bool? CanSend { get; set; }
+
+		public MessageViewModel InReplyTo { get; set; }
+
+		public bool IsCheckingRelationship { get; set; }
+
+		public bool IsSending { get; set; }
+
+		public string Recipient { get; set; }
+
+		public string Text { get; set; }
+
+		public Task OnLoad( object data )
+		{
+			return Task.CompletedTask;
 		}
 
 		private IContextEntry Context => ContextList.Contexts.First();
 
-		public MessageViewModel InReplyTo
-		{
-			[DebuggerStepThrough]
-			get { return _InReplyTo; }
-			set
-			{
-				if( _InReplyTo == value )
-				{
-					return;
-				}
-
-				_InReplyTo = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool IsCheckingRelationship
-		{
-			[DebuggerStepThrough]
-			get { return _IsCheckingRelationship; }
-			set
-			{
-				if( _IsCheckingRelationship == value )
-				{
-					return;
-				}
-
-				_IsCheckingRelationship = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool IsSending
-		{
-			[DebuggerStepThrough]
-			get { return _IsSending; }
-			set
-			{
-				if( _IsSending == value )
-				{
-					return;
-				}
-
-				_IsSending = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		[Inject]
+
 		// ReSharper disable once MemberCanBePrivate.Global
 		public INotifier Notifier { get; set; }
-
-		public string Recipient
-		{
-			[DebuggerStepThrough]
-			get { return _Recipient; }
-			set
-			{
-				if( _Recipient == value )
-				{
-					return;
-				}
-
-				_Recipient = value;
-				RaisePropertyChanged();
-				CheckRecipient();
-			}
-		}
-
-		public string Text
-		{
-			[DebuggerStepThrough]
-			get { return _Text; }
-			set
-			{
-				if( _Text == value )
-				{
-					return;
-				}
-
-				_Text = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool? _CanSend;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private MessageViewModel _InReplyTo;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsCheckingRelationship;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsSending;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Recipient;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Text;
 	}
 }

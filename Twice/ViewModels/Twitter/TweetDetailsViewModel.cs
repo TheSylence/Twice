@@ -1,11 +1,10 @@
-using Fody;
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Twitter;
 using Twice.Resources;
 
@@ -19,27 +18,6 @@ namespace Twice.ViewModels.Twitter
 			PreviousConversationTweets = new ObservableCollection<StatusViewModel>();
 			FollowingConversationTweets = new ObservableCollection<StatusViewModel>();
 			Title = Strings.Tweet;
-		}
-
-		public event EventHandler ScrollRequested;
-
-		public async Task OnLoad( object data )
-		{
-			if( DisplayTweet == null )
-			{
-				Close( false );
-				return;
-			}
-
-			PreviousConversationTweets.Clear();
-			FollowingConversationTweets.Clear();
-
-			await
-				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
-					DisplayTweet.LoadDataAsync() ).ContinueWith( async t =>
-					{
-						await Dispatcher.RunAsync( () => Center() );
-					} );
 		}
 
 		private async Task StartLoadingPrevTweets()
@@ -63,7 +41,7 @@ namespace Twice.ViewModels.Twitter
 				var vm = new StatusViewModel( inReplyTo, Context, Configuration, ViewServiceRepository );
 
 				await Dispatcher.RunAsync( () => PreviousConversationTweets.Insert( 0, vm ) );
-				RaisePropertyChanged( nameof( PreviousConversationTweets ) );
+				RaisePropertyChanged( nameof(PreviousConversationTweets) );
 
 				status = inReplyTo;
 			}
@@ -85,7 +63,7 @@ namespace Twice.ViewModels.Twitter
 
 			await Task.WhenAll( FollowingConversationTweets.Select( s => s.LoadDataAsync() ) );
 
-			RaisePropertyChanged( nameof( FollowingConversationTweets ) );
+			RaisePropertyChanged( nameof(FollowingConversationTweets) );
 			IsLoadingFollowing = false;
 		}
 
@@ -94,67 +72,34 @@ namespace Twice.ViewModels.Twitter
 			await DisplayTweet.LoadRetweets();
 		}
 
+		public async Task OnLoad( object data )
+		{
+			if( DisplayTweet == null )
+			{
+				Close( false );
+				return;
+			}
+
+			PreviousConversationTweets.Clear();
+			FollowingConversationTweets.Clear();
+
+			await
+				Task.WhenAll( StartLoadingPrevTweets(), StartLoadingResponses(), StartLoadingRetweets(),
+					DisplayTweet.LoadDataAsync() ).ContinueWith( async t => { await Dispatcher.RunAsync( Center ); } );
+		}
+
+		public event EventHandler ScrollRequested;
+
 		public IContextEntry Context { get; set; }
 
-		public StatusViewModel DisplayTweet
-		{
-			[DebuggerStepThrough]
-			get { return _DisplayTweet; }
-			set
-			{
-				if( _DisplayTweet == value )
-				{
-					return;
-				}
-
-				_DisplayTweet = value;
-				RaisePropertyChanged();
-			}
-		}
+		public StatusViewModel DisplayTweet { get; set; }
 
 		public IList<StatusViewModel> FollowingConversationTweets { get; }
 
-		public bool IsLoadingFollowing
-		{
-			[DebuggerStepThrough]
-			get { return _IsLoadingFollowing; }
-			private set
-			{
-				if( _IsLoadingFollowing == value )
-				{
-					return;
-				}
+		public bool IsLoadingFollowing { get; set; }
 
-				_IsLoadingFollowing = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool IsLoadingPrevious
-		{
-			[DebuggerStepThrough]
-			get { return _IsLoadingPrevious; }
-			private set
-			{
-				if( _IsLoadingPrevious == value )
-				{
-					return;
-				}
-
-				_IsLoadingPrevious = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsLoadingPrevious { get; set; }
 
 		public IList<StatusViewModel> PreviousConversationTweets { get; }
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private StatusViewModel _DisplayTweet;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoadingFollowing;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoadingPrevious;
 	}
 }

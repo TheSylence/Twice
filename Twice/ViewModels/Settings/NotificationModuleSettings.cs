@@ -20,28 +20,11 @@ namespace Twice.ViewModels.Settings
 		{
 		}
 
-		public bool Enabled
-		{
-			[DebuggerStepThrough]
-			get { return _Enabled; }
-			set
-			{
-				if( _Enabled == value )
-				{
-					return;
-				}
-
-				_Enabled = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool Enabled { get; set; }
 
 		public ICommand PreviewCommand => _PreviewCommand ?? ( _PreviewCommand = new RelayCommand( ExecutePreviewCommand ) );
 		public abstract string Title { get; }
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Enabled;
-
+		
 		private RelayCommand _PreviewCommand;
 	}
 }

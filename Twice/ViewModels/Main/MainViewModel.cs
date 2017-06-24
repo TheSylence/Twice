@@ -349,21 +349,7 @@ namespace Twice.ViewModels.Main
 
 		public ICollection<IColumnViewModel> Columns { get; }
 
-		public bool ColumnsLocked
-		{
-			[DebuggerStepThrough]
-			get { return _ColumnsLocked; }
-			set
-			{
-				if( _ColumnsLocked == value )
-				{
-					return;
-				}
-
-				_ColumnsLocked = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool ColumnsLocked { get; set; }
 
 		[Inject]
 		public IDispatcher Dispatcher { get; set; }
@@ -401,9 +387,7 @@ namespace Twice.ViewModels.Main
 		private readonly INotifier Notifier;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _AccountsCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _ColumnsLocked;
-
+		
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _InfoCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ManageColumnsCommand;

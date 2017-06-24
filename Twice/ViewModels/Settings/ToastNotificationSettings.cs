@@ -27,46 +27,12 @@ namespace Twice.ViewModels.Settings
 			Notifier.PreviewInAppNotification( Strings.TestNotification, Top, CloseTime );
 		}
 
-		public int CloseTime
-		{
-			[DebuggerStepThrough]
-			get { return _CloseTime; }
-			set
-			{
-				if( _CloseTime == value )
-				{
-					return;
-				}
-
-				_CloseTime = value;
-				RaisePropertyChanged();
-			}
-		}
+		public int CloseTime { get; set; }
 
 		public override string Title => Strings.InAppNotification;
 
-		public bool Top
-		{
-			[DebuggerStepThrough]
-			get { return _Top; }
-			set
-			{
-				if( _Top == value )
-				{
-					return;
-				}
-
-				_Top = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool Top { get; set; }
 
 		private readonly INotifier Notifier;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _CloseTime;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Top;
 	}
 }

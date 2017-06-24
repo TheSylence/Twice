@@ -1,9 +1,3 @@
-using Anotar.NLog;
-using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Anotar.NLog;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
+using Ninject;
 using Twice.Messages;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
@@ -61,31 +61,6 @@ namespace Twice.ViewModels.Columns
 			SinceIdFilterExpression = s => s.SinceID == SinceId;
 			CountExpression = s => s.Count == config.General.TweetFetchCount;
 			SubTitle = "@" + Context.AccountName;
-		}
-
-		public virtual event EventHandler Changed;
-
-		public virtual event EventHandler Deleted;
-
-		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
-
-		public async Task Load( AsyncLoadContext context )
-		{
-			Task.Run(() => Parser.StartStreaming()).Forget();
-
-			await OnLoad(context).ContinueWith( t =>
-			{
-				IsLoading = false;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			} );
-		}
-
-		public void UpdateRelativeTimes()
-		{
-			foreach( var it in Items )
-			{
-				it.UpdateRelativeTime();
-			}
 		}
 
 		protected async Task AddItem( MessageViewModel message )
@@ -477,7 +452,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public IColumnActionDispatcher ActionDispatcher { get; }
-		public ICache Cache { get; set; }
+
+		public virtual event EventHandler Changed;
 		public ICommand ClearCommand => _ClearCommand ?? ( _ClearCommand = new RelayCommand( ExecuteClearCommand ) );
 
 		public IColumnConfigurationViewModel ColumnConfiguration { get; }
@@ -486,67 +462,42 @@ namespace Twice.ViewModels.Columns
 
 		public ICommand DeleteCommand => _DeleteCommand ?? ( _DeleteCommand = new RelayCommand( ExecuteDeleteCommand ) );
 
-		[Inject]
-		public IDispatcher Dispatcher { protected get; set; }
+		public virtual event EventHandler Deleted;
 
 		public abstract Icon Icon { get; }
 
-		public bool IsLoading
-		{
-			[DebuggerStepThrough]
-			get { return _IsLoading; }
-			protected set
-			{
-				if( _IsLoading == value )
-				{
-					return;
-				}
-
-				_IsLoading = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsLoading { get; set; }
 
 		public ICollection<ColumnItem> Items { get; }
-		public IStatusMuter Muter { get; set; }
-		private INotifier Notifier => Context.Notifier;
 
-		public string SubTitle
+		public async Task Load( AsyncLoadContext context )
 		{
-			[DebuggerStepThrough]
-			get { return _SubTitle; }
-			set
-			{
-				if( _SubTitle == value )
-				{
-					return;
-				}
+			Task.Run( () => Parser.StartStreaming() ).Forget();
 
-				_SubTitle = value;
-				RaisePropertyChanged();
-			}
+			await OnLoad( context ).ContinueWith( t =>
+			{
+				IsLoading = false;
+				RaisePropertyChanged( nameof(IsLoading) );
+			} );
 		}
 
-		public string Title
-		{
-			[DebuggerStepThrough]
-			get { return _Title; }
-			set
-			{
-				if( _Title == value )
-				{
-					return;
-				}
+		public virtual event EventHandler<ColumnItemEventArgs> NewItem;
 
-				_Title = value;
-				RaisePropertyChanged();
+		public string SubTitle { get; set; }
+
+		public string Title { get; set; }
+
+		public void UpdateRelativeTimes()
+		{
+			foreach( var it in Items )
+			{
+				it.UpdateRelativeTime();
 			}
 		}
 
 		public double Width
 		{
-			[DebuggerStepThrough]
-			get { return _Width; }
+			[DebuggerStepThrough] get { return _Width; }
 			set
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -562,11 +513,18 @@ namespace Twice.ViewModels.Columns
 			}
 		}
 
+		public ICache Cache { get; set; }
+
+		[Inject]
+		public IDispatcher Dispatcher { protected get; set; }
+
 		protected ulong MaxId { get; private set; } = ulong.MaxValue;
-		protected ulong SinceId { get; private set; } = ulong.MinValue;
-		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		private Expression<Func<Status, bool>> MaxIdFilterExpression { get; }
+		public IStatusMuter Muter { get; set; }
+		private INotifier Notifier => Context.Notifier;
+		protected ulong SinceId { get; private set; } = ulong.MinValue;
 		private Expression<Func<Status, bool>> SinceIdFilterExpression { get; }
+		protected abstract Expression<Func<Status, bool>> StatusFilterExpression { get; }
 		protected readonly IContextEntry Context;
 		protected readonly Expression<Func<Status, bool>> CountExpression;
 		private readonly SmartCollection<ColumnItem> ItemCollection;
@@ -575,12 +533,6 @@ namespace Twice.ViewModels.Columns
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ClearCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _DeleteCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SubTitle;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _Title;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private double _Width;
 	}

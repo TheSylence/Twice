@@ -51,25 +51,9 @@ namespace Twice.ViewModels.Settings
 
 		public string FileTypeFilter { get; }
 
-		public string SoundFile
-		{
-			[DebuggerStepThrough]
-			get { return _SoundFile; }
-			set
-			{
-				if( _SoundFile == value )
-				{
-					return;
-				}
-
-				_SoundFile = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string SoundFile { get; set; }
 
 		public override string Title => Strings.SoundNotification;
 		private readonly MediaPlayer Player;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private string _SoundFile;
 	}
 }

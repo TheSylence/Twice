@@ -107,160 +107,24 @@ namespace Twice.ViewModels.Settings
 		public ICollection<FontSizeItem> AvailableFontSizes { get; }
 		public ICollection<ColorItem> AvailablePrimaryColors { get; }
 
-		public bool InlineMedias
-		{
-			[DebuggerStepThrough]
-			get { return _InlineMedias; }
-			set
-			{
-				if( _InlineMedias == value )
-				{
-					return;
-				}
-
-				_InlineMedias = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool InlineMedias { get; set; }
 
 		public ICollection<StatusViewModel> PreviewStatuses { get; }
 
-		public ColorItem SelectedAccentColor
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedAccentColor; }
-			set
-			{
-				if( _SelectedAccentColor == value )
-				{
-					return;
-				}
+		public ColorItem SelectedAccentColor { get; set; }
 
-				_SelectedAccentColor = value;
-				RaisePropertyChanged();
-			}
-		}
+		public FontSizeItem SelectedFontSize { get; set; }
 
-		public FontSizeItem SelectedFontSize
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedFontSize; }
-			set
-			{
-				if( _SelectedFontSize == value )
-				{
-					return;
-				}
+		public ColorItem SelectedHashtagColor { get; set; }
 
-				_SelectedFontSize = value;
-				RaisePropertyChanged();
-			}
-		}
+		public ColorItem SelectedLinkColor { get; set; }
 
-		public ColorItem SelectedHashtagColor
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedHashtagColor; }
-			set
-			{
-				if( _SelectedHashtagColor == value )
-				{
-					return;
-				}
+		public ColorItem SelectedMentionColor { get; set; }
 
-				_SelectedHashtagColor = value;
-				RaisePropertyChanged();
-			}
-		}
+		public ColorItem SelectedPrimaryColor { get; set; }
 
-		public ColorItem SelectedLinkColor
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedLinkColor; }
-			set
-			{
-				if( _SelectedLinkColor == value )
-				{
-					return;
-				}
-
-				_SelectedLinkColor = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public ColorItem SelectedMentionColor
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedMentionColor; }
-			set
-			{
-				if( _SelectedMentionColor == value )
-				{
-					return;
-				}
-
-				_SelectedMentionColor = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public ColorItem SelectedPrimaryColor
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedPrimaryColor; }
-			set
-			{
-				if( _SelectedPrimaryColor == value )
-				{
-					return;
-				}
-
-				_SelectedPrimaryColor = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool UseDarkTheme
-		{
-			[DebuggerStepThrough]
-			get { return _UseDarkTheme; }
-			set
-			{
-				if( _UseDarkTheme == value )
-				{
-					return;
-				}
-
-				_UseDarkTheme = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool UseDarkTheme { get; set; }
 
 		private readonly IColorProvider ColorProvider;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _InlineMedias;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedAccentColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private FontSizeItem _SelectedFontSize;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedHashtagColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedLinkColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedMentionColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private ColorItem _SelectedPrimaryColor;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _UseDarkTheme;
 	}
 }

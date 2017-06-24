@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -45,84 +44,16 @@ namespace Twice.ViewModels.Settings
 
 		public ICollection<ValueDescription<string>> AvailableDisplays { get; }
 
-		public int CloseTime
-		{
-			[DebuggerStepThrough]
-			get { return _CloseTime; }
-			set
-			{
-				if( _CloseTime == value )
-				{
-					return;
-				}
+		public int CloseTime { get; set; }
 
-				_CloseTime = value;
-				RaisePropertyChanged();
-			}
-		}
+		public Corner SelectedCorner { get; set; }
 
-		public Corner SelectedCorner
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedCorner; }
-			set
-			{
-				if( _SelectedCorner == value )
-				{
-					return;
-				}
-
-				_SelectedCorner = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string SelectedDisplay
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedDisplay; }
-			set
-			{
-				if( _SelectedDisplay == value )
-				{
-					return;
-				}
-
-				_SelectedDisplay = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string SelectedDisplay { get; set; }
 
 		public override string Title => Strings.PopupNotification;
 
-		public bool Win10Enabled
-		{
-			[DebuggerStepThrough]
-			get { return _Win10Enabled; }
-			set
-			{
-				if( _Win10Enabled == value )
-				{
-					return;
-				}
-
-				_Win10Enabled = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool Win10Enabled { get; set; }
 
 		private readonly INotifier Notifier;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private int _CloseTime;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private Corner _SelectedCorner;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SelectedDisplay;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _Win10Enabled;
 	}
 }

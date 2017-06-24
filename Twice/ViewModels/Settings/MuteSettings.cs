@@ -131,21 +131,7 @@ namespace Twice.ViewModels.Settings
 		public ICommand EditCommand
 			=> _EditCommand ?? ( _EditCommand = new RelayCommand( ExecuteEditCommand, CanExecuteEditCommand ) );
 
-		public IMuteEditViewModel EditData
-		{
-			[DebuggerStepThrough]
-			get { return _EditData; }
-			set
-			{
-				if( _EditData == value )
-				{
-					return;
-				}
-
-				_EditData = value;
-				RaisePropertyChanged();
-			}
-		}
+		public IMuteEditViewModel EditData { get; set; }
 
 		public ICollection<MuteEntry> Entries { get; }
 		public string HelpDocument { get; }
@@ -156,21 +142,7 @@ namespace Twice.ViewModels.Settings
 		public ICommand RemoveCommand
 			=> _RemoveCommand ?? ( _RemoveCommand = new RelayCommand( ExecuteRemoveCommand, CanExecuteRemoveCommand ) );
 
-		public MuteEntry SelectedEntry
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedEntry; }
-			set
-			{
-				if( _SelectedEntry == value )
-				{
-					return;
-				}
-
-				_SelectedEntry = value;
-				RaisePropertyChanged();
-			}
-		}
+		public MuteEntry SelectedEntry { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _AddCommand;
@@ -179,13 +151,7 @@ namespace Twice.ViewModels.Settings
 		private RelayCommand _EditCommand;
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private IMuteEditViewModel _EditData;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
 		private RelayCommand _RemoveCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private MuteEntry _SelectedEntry;
 
 		private bool Changed;
 	}

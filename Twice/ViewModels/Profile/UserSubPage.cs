@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Fody;
 using GalaSoft.MvvmLight;
@@ -54,21 +53,7 @@ namespace Twice.ViewModels.Profile
 		public int Count { get; }
 		public IDispatcher Dispatcher { get; set; }
 
-		public bool IsLoading
-		{
-			[DebuggerStepThrough] get { return _IsLoading; }
-
-			set
-			{
-				if( _IsLoading == value )
-				{
-					return;
-				}
-
-				_IsLoading = value;
-				RaisePropertyChanged( nameof( IsLoading ) );
-			}
-		}
+		public bool IsLoading { get; set; }
 
 		public ICollection<object> Items
 		{
@@ -95,12 +80,10 @@ namespace Twice.ViewModels.Profile
 
 		public string Title { get; }
 
+		private readonly ObservableCollection<object> _Items;
+
 		private readonly Func<Task<IEnumerable<object>>> LoadAction;
 		private readonly Func<Task<IEnumerable<object>>> LoadMoreAction;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsLoading;
-
-		private readonly ObservableCollection<object> _Items;
 
 		private bool ItemsRequested;
 	}

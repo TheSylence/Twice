@@ -22,7 +22,7 @@ namespace Twice.ViewModels.Accounts
 
 		public bool IsDefaultAccount
 		{
-			get { return Context.IsDefault; }
+			get => Context.IsDefault;
 			set
 			{
 				Context.IsDefault = value;

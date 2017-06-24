@@ -1,11 +1,10 @@
-﻿using Fody;
-using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Fody;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Resources;
 using Twice.ViewModels.Twitter;
 
@@ -35,92 +34,41 @@ namespace Twice.ViewModels.Dialogs
 			switch( Mode )
 			{
 			case SearchMode.Users:
-				{
-					var result = await context.Twitter.Search.SearchUsers( SearchQuery );
-					var users = result.Select( u => new UserViewModel( u ) );
+			{
+				var result = await context.Twitter.Search.SearchUsers( SearchQuery );
+				var users = result.Select( u => new UserViewModel( u ) );
 
-					await Dispatcher.RunAsync( () => SearchResults.AddRange( users ) );
-				}
+				await Dispatcher.RunAsync( () => SearchResults.AddRange( users ) );
+			}
 				break;
 
 			case SearchMode.Statuses:
-				{
-					var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
-					var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) ).ToArray();
-					await Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) );
+			{
+				var result = await context.Twitter.Search.SearchStatuses( SearchQuery );
+				var statuses = result.Select( s => new StatusViewModel( s, context, Configuration, ViewServiceRepository ) ).ToArray();
+				await Task.WhenAll( statuses.Select( s => s.LoadDataAsync() ) );
 
-					await Dispatcher.RunAsync( () => SearchResults.AddRange( statuses ) );
-				}
+				await Dispatcher.RunAsync( () => SearchResults.AddRange( statuses ) );
+			}
 				break;
 			}
 
-			await Dispatcher.RunAsync( () => Center() );
+			await Dispatcher.RunAsync( Center );
 			IsSearching = false;
 		}
 
-		public bool IsSearching
-		{
-			[DebuggerStepThrough]
-			get { return _IsSearching; }
-			set
-			{
-				if( _IsSearching == value )
-				{
-					return;
-				}
+		public bool IsSearching { get; set; }
 
-				_IsSearching = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public SearchMode Mode
-		{
-			[DebuggerStepThrough]
-			get { return _Mode; }
-			set
-			{
-				if( _Mode == value )
-				{
-					return;
-				}
-
-				_Mode = value;
-				RaisePropertyChanged();
-			}
-		}
+		public SearchMode Mode { get; set; }
 
 		public ICommand SearchCommand => _SearchCommand ?? ( _SearchCommand = new RelayCommand(
-			ExecuteSearchCommand,
-			CanExecuteSearchCommand ) );
+			                                 ExecuteSearchCommand,
+			                                 CanExecuteSearchCommand ) );
 
-		public string SearchQuery
-		{
-			[DebuggerStepThrough]
-			get { return _SearchQuery; }
-			set
-			{
-				if( _SearchQuery == value )
-				{
-					return;
-				}
-
-				_SearchQuery = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string SearchQuery { get; set; }
 
 		public ICollection<object> SearchResults { get; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsSearching;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private SearchMode _Mode;
-
 		private RelayCommand _SearchCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SearchQuery;
 	}
 }
