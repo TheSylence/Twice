@@ -8,6 +8,16 @@
 
 Twitter Windows Client - Follow [@TwiceApp](https://twitter.com/TwiceApp)
 
+# Features
+* Real-time content streaming
+* Support for multiple accounts
+* Material Design User Interface
+* Customizable notifications (in-app toasts, system notifications, sounds)
+* Displays images from a variety of services (twitter, instagram, youtube, ...)
+* Mute tweets based on their origin or content
+* Localized user interface (currently English and German)
+* Stars instead of hearts for your favorite tweets ;)
+
 # Mentions
 * [LINQ to Twitter](https://github.com/JoeMayo/LinqToTwitter)
 * [Material Design In XAML Toolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
