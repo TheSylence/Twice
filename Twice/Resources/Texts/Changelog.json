@@ -1,643 +1,654 @@
 ﻿[
-    {
-        "Version": "0.10.5",
-        "Date": "2017-11-11",
-        "Description": "",
-        "NewFeatures": [],
+	{
+		"Version": "0.10.6",
+		"Date": "2017-11-11",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"New character limit is now display correctly"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.5",
+		"Date": "2017-11-11",
+		"Description": "",
+		"NewFeatures": [],
 		"Changes": [
 			"Allow to compose tweets with 280 characters"
 		],
-        "Fixes": [],
-        "Issues": []
-    },
-    {
-        "Version": "0.10.4",
-        "Date": "2017-06-24",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "More performance improvements",
-            "Unfavorited status is immediately removed from favourites column",
-            "Image viewer can be closed by clicking outside the dialog",
-            "Image viewer is now correctly centered"
-        ],
-        "Fixes": [
-            "Dialog centering is now always using the correct display",
-            "Dialog centering is now upated when dialog content is updated",
-            "Fixed possible crash when loading broken config file",
-            "Same media is no longer displayed multiple times on same status",
-            "Closing image viewer by clicking outside no longer reloads columns",
-            "Profile dialog keeps correct size when switching to followers tab",
-            "Profile picture is now displaying correct url when opened in image viewer"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.10.3",
-        "Date": "2017-02-26",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "Message column now display a title",
-            "Improved rendering performance",
-            "App no longer prefers 32bit",
-            "Improved performance of profile dialog"
-        ],
-        "Fixes": [
-            "Opening a user's profile picture now uses the best available quality",
-            "Fixed possible crash when trying to follow a user"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.10.2",
-        "Date": "2017-02-04",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash after update"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.10.1",
-        "Date": "2017-01-28",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Text field in tweet composer does not grow anymore",
-            "Media control buttons are usable no matter which format the media has",
-            "Search dialog now has correct size restraints",
-            "Image viewer now has correct size restraints",
-            "Fixed possible crash when opening profile of non existing user",
-            "Fixed wrong manual centering of dialog windows"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.10.0",
-        "Date": "2017-01-23",
-        "Description": "",
-        "NewFeatures": [
-            "Reworked dialog system. You can now navigate back to previously opened dialogs.",
-            "Tweets can be edited (i.e. they will be deleted and a new compose dialog with the previous text will open)",
-            "Notifications can now be displayed as popup windows"
-        ],
-        "Changes": [
-            "The dark theme now uses a dark background in compliance with material design guidelines",
-            "When selecting a notification sound you can only select supported file types"
-        ],
-        "Fixes": [
-            "Fixed possible crash when caching user's friends",
-            "Fixed possible crashes in local cache",
-            "Removing a quote from the compose dialog now updates the character count",
-            "Details of the same tweet no longer open mulitple times when click it",
-            "Images no longer flounce when scrolling through multiple medias",
-            "Scrolling down in the message column no longer displays an error"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.9.3",
-        "Date": "2017-01-01",
-        "Description": "",
-        "NewFeatures": [
-            "Profile picture of a user can be viewed in full size by clicking on it in the profile dialog",
-            "Users can be blocked from the context menu of a mention",
-            "Users can be reported for spam from the context menu of a mention"
-        ],
-        "Changes": [],
-        "Fixes": [
-            "Extended tweets are now correctly displayed when realtime streaming (for real this time)",
-            "URLs from statuses in timeline can be copied to clipboard",
-            "Fixed issue that could prevent blocking users"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.9.2",
-        "Date": "2016-11-08",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Extended tweets are now correctly displayed when realtime streaming",
-            "Fixed broken User URL when user does not have a custom URL set"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.9.1",
-        "Date": "2016-10-30",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash when receiving a tweet when realtime streaming is enabled"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.9.0",
-        "Date": "2016-10-29",
-        "Description": "",
-        "NewFeatures": [
-            "Extended tweets are now displayed correctly",
-            "Anonymous version info are now send on each start up (can be disabled in settings)"
-        ],
-        "Changes": [
-            "Icons in profile dialog now have describing tooltips"
-        ],
-        "Fixes": [
-            "Fixed crash when pressing backspace key when autocomplete suggestion is active.",
-            "Fixed crashes that could occur when displaying inline media",
-            "User's website is displayed in profile dialog when dialog is re-opened",
-            "Fixed messages sometimes being displayed in wrong column"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.8.3",
-        "Date": "2016-10-17",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash that could occur when loading inline media. For real this time"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.8.2",
-        "Date": "2016-10-17",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash that could occur when loading inline media"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.8.1",
-        "Date": "2016-10-17",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash at startup"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.8.0",
-        "Date": "2016-10-17",
-        "Description": "",
-        "NewFeatures": [
-            "Auto complete suggestions in compose dialog can now be selected using a double click",
-            "Sensible content can be hidden if wanted",
-            "Images in DMs are now displayed",
-            "Mutings are now applied to already loaded columns"
-        ],
-        "Changes": [
-            "Errors while loading statuses for columns are now displayed",
-            "Images for twitter cards are now aligned top",
-            "Image viewer now displays user friendly URLs for images extracted from image hosters",
-            "Inline media is not displayed of status contains a twitter card"
-        ],
-        "Fixes": [
-            "Links in quoted statuses are now properly displayed and can be clicked",
-            "Pause button in GIFs is now correctly toggled when repeat is disabled",
-            "Pressing the backspace key while having auto complete suggestions now behaves correctly",
-            "Openeing a retweet multiple times no longer adds the same images of users that retweeted the status"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.6",
-        "Date": "2016-10-03",
-        "Description": "",
-        "NewFeatures": [
-            "Added button to settings dialog to manually clear the cache"
-        ],
-        "Changes": [],
-        "Fixes": [
-            "Fixed slow performance for loading statuses in columns"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.5",
-        "Date": "2016-09-30",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed more crashes when extracting cards from webpages"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.4",
-        "Date": "2016-09-30",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crashes when extracting cards from webpages"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.3",
-        "Date": "2016-09-29",
-        "Description": "",
-        "NewFeatures": [
-            "Images can be attached to a tweet by dropping them onto the compose dialog",
-            "Images can be pasted from clipboard when composing a tweet",
-            "Urls that point to images are now directly displayed in statuses",
-            "Cards for weblinks are now displayed in status"
-        ],
-        "Changes": [
-            "Reworked autocomplete functionality when entering hashtags and mentions"
-        ],
-        "Fixes": [
-            "Image viewer now uses correct url for images and videos",
-            "Fixed not all urls of extracted medias were removed from status text",
-            "Retweeted statuses are now correctly sorted in timelines",
-            "Removed focus lines around controls in some cases"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.2",
-        "Date": "2016-08-30",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "Various UI tweaks throughout the app",
-            "Added documentation for different kind of mutes"
-        ],
-        "Fixes": [
-            "Media and quotes are now loaded in search results",
-            "When replying to a tweet, the cursor is now placed after the usernames",
-            "Compose dialog no longer closes when clicking outside and 'Stay Open' is checked",
-            "Correct time zone is now used in tweet details",
-            "Fixed rare case where statuses are displayed twice",
-            "Fixed loading of statuses that contain more than one url that points to another status"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.1",
-        "Date": "2016-08-19",
-        "Description": "",
-        "NewFeatures": [
-            "Videos and gifs can be paused and muted"
-        ],
-        "Changes": [
-            "Improved sensitivity for detection of a click in a column header",
-            "Audio for videos is now muted by default",
-            "Added information which of your accounts is followed by a user to the profile dialog"
-        ],
-        "Fixes": [],
-        "Issues": []
-    },
-    {
-        "Version": "0.7.0",
-        "Date": "2016-08-17",
-        "Description": "",
-        "NewFeatures": [
-            "Tweets can be scheduled",
-            "Tweet deletion can be scheduled",
-            "Images can now be viewed in full size",
-            "Protected accounts are now marked as such",
-            "Conversation view now scrolls to bottom when loading, displaying the actual item that was replied to"
-        ],
-        "Changes": [
-            "Following a user no longer enables notification for this user"
-        ],
-        "Fixes": [
-            "Fixed rare case when entities in user biographies were shown more than once",
-            "Fixed possible crash when migrating appdata from versions older then 0.6.5",
-            "Clicking outside the application no longer closes an opened window",
-            "Fixed rare crash when trying to view a tweet by clicking on it",
-            "Fixed crash when opening settings when no account was added",
-            "Fixed rare crash when viewing a tweet with replies",
-            "Window position is saved for displays that are left to the primary display"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.6",
-        "Date": "2016-07-10",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "Clicking a quote in a tweet now opens the quote instead of the tweet"
-        ],
-        "Fixes": [
-            "Fixed issues with loading statuses for some columns",
-            "Settings dialog is now big enough to display all options",
-            "Long words are now correctly wrapped in statuses",
-            "Fixed crash while trying to load instagram image in status",
-            "Fixed crash when viewing details of test tweets in settings dialog",
-            "Favourites column now has correct title"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.5",
-        "Date": "2016-07-03",
-        "Description": "",
-        "NewFeatures": [
-            "Visual settings now include a preview",
-            "Old tweets in column are now loaded from local cache"
-        ],
-        "Changes": [
-            "Application data is now stored in roaming appdata"
-        ],
-        "Fixes": [
-            "Fixed crashes when (un)following users",
-            "Verified icon is now visible in light theme",
-            "Profiles of protected accounts are now viewed from an account that follows the user",
-            "Statuses in columns are now sorted correctly",
-            "Account names with underscores are now correctly displayed",
-            "Fixed issue where some statuses would display more than once",
-            "Accounts in user profile and search are no longer marked as verified when they are not"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.4",
-        "Date": "2016-06-25",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "Update check is now done once an hour",
-            "(Un)following a user from the profile dialog is now done using the default account"
-        ],
-        "Fixes": [
-            "Accounts can be removed",
-            "Fixed crash when opening user profile via retweet message",
-            "Select all checkbox in account column selection is now behaving correctly"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.3",
-        "Date": "2016-06-23",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed potential crash in status/profile parser"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.2",
-        "Date": "2016-06-23",
-        "Description": "",
-        "NewFeatures": [
-            "In-App notification can be dismissed manually",
-            "Auto close delay for in-app notifications can be configured",
-            "Verified twitter accounts are now marked as such"
-        ],
-        "Changes": [
-            "In-App notification now indicates when it will close"
-        ],
-        "Fixes": [
-            "Preview for In-App notification works everytime",
-            "Mentions and hashtags in user biographies are now correctly highlighted",
-            "Fixed potential crash on app exit",
-            "Improved UI responsiveness when opening user profiles",
-            "Retweet dialog now closes after retweeting/quoting the tweet"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.1",
-        "Date": "2016-06-19",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "In-App notification displays at correct position"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.6.0",
-        "Date": "2016-06-18",
-        "Description": "",
-        "NewFeatures": [
-            "Thumbnails for YouTube videos are now displayed in statuses",
-            "Clicking column buttons now scroll to the associated column",
-            "Sound notifications are now working",
-            "Notification popups can be action center notifications on Windows 10",
-            "Added preview button for notifications in settings",
-            "Columns can be locked, i.e. fixed in width and position",
-            "In-App notifications can be displayed at bottom of app"
-        ],
-        "Changes": [
-            "Some visual elements in a status now use the accent color",
-            "Hover icons are now enabled in detail view for status",
-            "Deleting a tweet now has to be confirmed"
-        ],
-        "Fixes": [
-            "Relative time for statuses is now updated regularly",
-            "Options for a tweet now work when menu was opened by clicking the options button",
-            "Compose dialogs now have correct keyboard focus when opened"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.5.1",
-        "Date": "2016-06-14",
-        "Description": "",
-        "NewFeatures": [
-            "Added colum that displays favorited tweets",
-            "Dialogs can be closed using the escape key or clicking outside the window"
-        ],
-        "Changes": [
-            "Own statuses can be retweeted"
-        ],
-        "Fixes": [],
-        "Issues": []
-    },
-    {
-        "Version": "0.5.0",
-        "Date": "2016-06-13",
-        "Description": "",
-        "NewFeatures": [
-            "Window position and size is now saved between application launches",
-            "Tweets and users can be searched",
-            "Source application is now displayed in tweet details",
-            "Double clicking selects the whole URL of an image",
-            "Added support for direct messages"
-        ],
-        "Changes": [
-            "Dialog windows can now be dragged using the mouse",
-            "Links to Twitter users in Info-Dialog now open inside the app",
-            "Update check now uses GitHub releases"
-        ],
-        "Fixes": [
-            "Clicking the header of a column scrolls to top is working again",
-            "View conversation and retweet indicators no longer overlap",
-            "Fixed many crashes when no internet connection is available",
-            "Fixed crash when openeing profile of a non existing user"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.4.2",
-        "Date": "2016-06-05",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [
-            "Reply to all' is now enabled for every tweet",
-            "Own username is not used in reply when using 'Reply to all",
-            "Image URL can now be copied from image viewer dialog"
-        ],
-        "Fixes": [
-            "Fixed crash when trying to retweet a protected user's tweet",
-            "Fixed crash when trying to add a user column",
-            "(un)following a user now updates the (un)follow button immediately",
-            "Autocompletebox in light theme now uses correct colors"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.4.1",
-        "Date": "2016-06-04",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash when Twitter reported a status deletion in realtime streaming"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.4.0",
-        "Date": "2016-06-04",
-        "Description": "",
-        "NewFeatures": [
-            "Added possibility to send crash reports to the developer",
-            "Images can now be viewed in large",
-            "Tweets can be quoted",
-            "Tweets can be replied to",
-            "More tweets can be loaded when viewing a user profile",
-            "Mutings can be case(in)sensitive",
-            "Legend in changelog for the differnet symbols",
-            "Instagram images are now directly displayed",
-            "You can now define how many tweets the app should load at once"
-        ],
-        "Changes": [
-            "When inline media are displayed, media url is no longer shown in status text",
-            "Composing a new tweet is now done in a separate dialog",
-            "Only one instance of the application can run at the same time",
-            "Quick actions for tweets are only displayed when the mouse is over the tweet"
-        ],
-        "Fixes": [
-            "Inline media option is now taken into account when displaying statuses",
-            "When a status contains multiple images, all of them are now displayed",
-            "Emojis in statuses no longer break following entities"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.3.0",
-        "Date": "2016-04-30",
-        "Description": "",
-        "NewFeatures": [
-            "Resizing a column now saves the width for future starts",
-            "Notification can now configured for individual columns",
-            "Columns can be removed",
-            "Column content can be cleared",
-            "New columns can be added"
-        ],
-        "Changes": [
-            "UI should keep responsive for most of the time",
-            "Adding the same column twice won't result in duplicate column"
-        ],
-        "Fixes": [
-            "Closing the autocomplete box during compose gives focus back",
-            "Timeline is now named timeline everywhere",
-            "Profile pictures are now sharp in every dialog",
-            "Editing a muting no longer creates a new one"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.2.0",
-        "Date": "2016-04-05",
-        "Description": "",
-        "NewFeatures": [
-            "Remaining characters are displayed in compose window",
-            "Autocomplete for usernames and hashtags in compose window",
-            "Marking an account as 'Requires Confirmation' now forces confirmation in compose window",
-            "Default account can be set in accounts window"
-        ],
-        "Changes": [
-            "Compose window is now better layouted and most of the features are working",
-            "Made retweeting user's image bigger",
-            "Compose window closes itself after tweeting (except when StayOpen option is checked)"
-        ],
-        "Fixes": [
-            "Version and build date are now readable in about dialog",
-            "Changelogs are no longer being cut off in about dialog",
-            "Using certain colors for entities no longer crashes"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.1.3",
-        "Date": "2016-04-03",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed update search not working"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.1.2",
-        "Date": "2016-04-03",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash when looking for updates"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.1.1",
-        "Date": "2016-04-03",
-        "Description": "",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [
-            "Fixed crash when adding a new account"
-        ],
-        "Issues": []
-    },
-    {
-        "Version": "0.1.0",
-        "Date": "2016-04-03",
-        "Description": "First beta release",
-        "NewFeatures": [],
-        "Changes": [],
-        "Fixes": [],
-        "Issues": [
-            "Adding columns doesn't work",
-            "Loading more content in the timeline column doesn't work",
-            "Following and unfollowing a user from the profile dialog doesn't work"
-        ]
-    }
+		"Fixes": [],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.4",
+		"Date": "2017-06-24",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"More performance improvements",
+			"Unfavorited status is immediately removed from favourites column",
+			"Image viewer can be closed by clicking outside the dialog",
+			"Image viewer is now correctly centered"
+		],
+		"Fixes": [
+			"Dialog centering is now always using the correct display",
+			"Dialog centering is now upated when dialog content is updated",
+			"Fixed possible crash when loading broken config file",
+			"Same media is no longer displayed multiple times on same status",
+			"Closing image viewer by clicking outside no longer reloads columns",
+			"Profile dialog keeps correct size when switching to followers tab",
+			"Profile picture is now displaying correct url when opened in image viewer"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.3",
+		"Date": "2017-02-26",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"Message column now display a title",
+			"Improved rendering performance",
+			"App no longer prefers 32bit",
+			"Improved performance of profile dialog"
+		],
+		"Fixes": [
+			"Opening a user's profile picture now uses the best available quality",
+			"Fixed possible crash when trying to follow a user"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.2",
+		"Date": "2017-02-04",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash after update"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.1",
+		"Date": "2017-01-28",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Text field in tweet composer does not grow anymore",
+			"Media control buttons are usable no matter which format the media has",
+			"Search dialog now has correct size restraints",
+			"Image viewer now has correct size restraints",
+			"Fixed possible crash when opening profile of non existing user",
+			"Fixed wrong manual centering of dialog windows"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.10.0",
+		"Date": "2017-01-23",
+		"Description": "",
+		"NewFeatures": [
+			"Reworked dialog system. You can now navigate back to previously opened dialogs.",
+			"Tweets can be edited (i.e. they will be deleted and a new compose dialog with the previous text will open)",
+			"Notifications can now be displayed as popup windows"
+		],
+		"Changes": [
+			"The dark theme now uses a dark background in compliance with material design guidelines",
+			"When selecting a notification sound you can only select supported file types"
+		],
+		"Fixes": [
+			"Fixed possible crash when caching user's friends",
+			"Fixed possible crashes in local cache",
+			"Removing a quote from the compose dialog now updates the character count",
+			"Details of the same tweet no longer open mulitple times when click it",
+			"Images no longer flounce when scrolling through multiple medias",
+			"Scrolling down in the message column no longer displays an error"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.9.3",
+		"Date": "2017-01-01",
+		"Description": "",
+		"NewFeatures": [
+			"Profile picture of a user can be viewed in full size by clicking on it in the profile dialog",
+			"Users can be blocked from the context menu of a mention",
+			"Users can be reported for spam from the context menu of a mention"
+		],
+		"Changes": [],
+		"Fixes": [
+			"Extended tweets are now correctly displayed when realtime streaming (for real this time)",
+			"URLs from statuses in timeline can be copied to clipboard",
+			"Fixed issue that could prevent blocking users"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.9.2",
+		"Date": "2016-11-08",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Extended tweets are now correctly displayed when realtime streaming",
+			"Fixed broken User URL when user does not have a custom URL set"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.9.1",
+		"Date": "2016-10-30",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash when receiving a tweet when realtime streaming is enabled"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.9.0",
+		"Date": "2016-10-29",
+		"Description": "",
+		"NewFeatures": [
+			"Extended tweets are now displayed correctly",
+			"Anonymous version info are now send on each start up (can be disabled in settings)"
+		],
+		"Changes": [
+			"Icons in profile dialog now have describing tooltips"
+		],
+		"Fixes": [
+			"Fixed crash when pressing backspace key when autocomplete suggestion is active.",
+			"Fixed crashes that could occur when displaying inline media",
+			"User's website is displayed in profile dialog when dialog is re-opened",
+			"Fixed messages sometimes being displayed in wrong column"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.8.3",
+		"Date": "2016-10-17",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash that could occur when loading inline media. For real this time"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.8.2",
+		"Date": "2016-10-17",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash that could occur when loading inline media"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.8.1",
+		"Date": "2016-10-17",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash at startup"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.8.0",
+		"Date": "2016-10-17",
+		"Description": "",
+		"NewFeatures": [
+			"Auto complete suggestions in compose dialog can now be selected using a double click",
+			"Sensible content can be hidden if wanted",
+			"Images in DMs are now displayed",
+			"Mutings are now applied to already loaded columns"
+		],
+		"Changes": [
+			"Errors while loading statuses for columns are now displayed",
+			"Images for twitter cards are now aligned top",
+			"Image viewer now displays user friendly URLs for images extracted from image hosters",
+			"Inline media is not displayed of status contains a twitter card"
+		],
+		"Fixes": [
+			"Links in quoted statuses are now properly displayed and can be clicked",
+			"Pause button in GIFs is now correctly toggled when repeat is disabled",
+			"Pressing the backspace key while having auto complete suggestions now behaves correctly",
+			"Openeing a retweet multiple times no longer adds the same images of users that retweeted the status"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.6",
+		"Date": "2016-10-03",
+		"Description": "",
+		"NewFeatures": [
+			"Added button to settings dialog to manually clear the cache"
+		],
+		"Changes": [],
+		"Fixes": [
+			"Fixed slow performance for loading statuses in columns"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.5",
+		"Date": "2016-09-30",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed more crashes when extracting cards from webpages"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.4",
+		"Date": "2016-09-30",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crashes when extracting cards from webpages"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.3",
+		"Date": "2016-09-29",
+		"Description": "",
+		"NewFeatures": [
+			"Images can be attached to a tweet by dropping them onto the compose dialog",
+			"Images can be pasted from clipboard when composing a tweet",
+			"Urls that point to images are now directly displayed in statuses",
+			"Cards for weblinks are now displayed in status"
+		],
+		"Changes": [
+			"Reworked autocomplete functionality when entering hashtags and mentions"
+		],
+		"Fixes": [
+			"Image viewer now uses correct url for images and videos",
+			"Fixed not all urls of extracted medias were removed from status text",
+			"Retweeted statuses are now correctly sorted in timelines",
+			"Removed focus lines around controls in some cases"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.2",
+		"Date": "2016-08-30",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"Various UI tweaks throughout the app",
+			"Added documentation for different kind of mutes"
+		],
+		"Fixes": [
+			"Media and quotes are now loaded in search results",
+			"When replying to a tweet, the cursor is now placed after the usernames",
+			"Compose dialog no longer closes when clicking outside and 'Stay Open' is checked",
+			"Correct time zone is now used in tweet details",
+			"Fixed rare case where statuses are displayed twice",
+			"Fixed loading of statuses that contain more than one url that points to another status"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.1",
+		"Date": "2016-08-19",
+		"Description": "",
+		"NewFeatures": [
+			"Videos and gifs can be paused and muted"
+		],
+		"Changes": [
+			"Improved sensitivity for detection of a click in a column header",
+			"Audio for videos is now muted by default",
+			"Added information which of your accounts is followed by a user to the profile dialog"
+		],
+		"Fixes": [],
+		"Issues": []
+	},
+	{
+		"Version": "0.7.0",
+		"Date": "2016-08-17",
+		"Description": "",
+		"NewFeatures": [
+			"Tweets can be scheduled",
+			"Tweet deletion can be scheduled",
+			"Images can now be viewed in full size",
+			"Protected accounts are now marked as such",
+			"Conversation view now scrolls to bottom when loading, displaying the actual item that was replied to"
+		],
+		"Changes": [
+			"Following a user no longer enables notification for this user"
+		],
+		"Fixes": [
+			"Fixed rare case when entities in user biographies were shown more than once",
+			"Fixed possible crash when migrating appdata from versions older then 0.6.5",
+			"Clicking outside the application no longer closes an opened window",
+			"Fixed rare crash when trying to view a tweet by clicking on it",
+			"Fixed crash when opening settings when no account was added",
+			"Fixed rare crash when viewing a tweet with replies",
+			"Window position is saved for displays that are left to the primary display"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.6",
+		"Date": "2016-07-10",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"Clicking a quote in a tweet now opens the quote instead of the tweet"
+		],
+		"Fixes": [
+			"Fixed issues with loading statuses for some columns",
+			"Settings dialog is now big enough to display all options",
+			"Long words are now correctly wrapped in statuses",
+			"Fixed crash while trying to load instagram image in status",
+			"Fixed crash when viewing details of test tweets in settings dialog",
+			"Favourites column now has correct title"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.5",
+		"Date": "2016-07-03",
+		"Description": "",
+		"NewFeatures": [
+			"Visual settings now include a preview",
+			"Old tweets in column are now loaded from local cache"
+		],
+		"Changes": [
+			"Application data is now stored in roaming appdata"
+		],
+		"Fixes": [
+			"Fixed crashes when (un)following users",
+			"Verified icon is now visible in light theme",
+			"Profiles of protected accounts are now viewed from an account that follows the user",
+			"Statuses in columns are now sorted correctly",
+			"Account names with underscores are now correctly displayed",
+			"Fixed issue where some statuses would display more than once",
+			"Accounts in user profile and search are no longer marked as verified when they are not"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.4",
+		"Date": "2016-06-25",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"Update check is now done once an hour",
+			"(Un)following a user from the profile dialog is now done using the default account"
+		],
+		"Fixes": [
+			"Accounts can be removed",
+			"Fixed crash when opening user profile via retweet message",
+			"Select all checkbox in account column selection is now behaving correctly"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.3",
+		"Date": "2016-06-23",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed potential crash in status/profile parser"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.2",
+		"Date": "2016-06-23",
+		"Description": "",
+		"NewFeatures": [
+			"In-App notification can be dismissed manually",
+			"Auto close delay for in-app notifications can be configured",
+			"Verified twitter accounts are now marked as such"
+		],
+		"Changes": [
+			"In-App notification now indicates when it will close"
+		],
+		"Fixes": [
+			"Preview for In-App notification works everytime",
+			"Mentions and hashtags in user biographies are now correctly highlighted",
+			"Fixed potential crash on app exit",
+			"Improved UI responsiveness when opening user profiles",
+			"Retweet dialog now closes after retweeting/quoting the tweet"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.1",
+		"Date": "2016-06-19",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"In-App notification displays at correct position"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.6.0",
+		"Date": "2016-06-18",
+		"Description": "",
+		"NewFeatures": [
+			"Thumbnails for YouTube videos are now displayed in statuses",
+			"Clicking column buttons now scroll to the associated column",
+			"Sound notifications are now working",
+			"Notification popups can be action center notifications on Windows 10",
+			"Added preview button for notifications in settings",
+			"Columns can be locked, i.e. fixed in width and position",
+			"In-App notifications can be displayed at bottom of app"
+		],
+		"Changes": [
+			"Some visual elements in a status now use the accent color",
+			"Hover icons are now enabled in detail view for status",
+			"Deleting a tweet now has to be confirmed"
+		],
+		"Fixes": [
+			"Relative time for statuses is now updated regularly",
+			"Options for a tweet now work when menu was opened by clicking the options button",
+			"Compose dialogs now have correct keyboard focus when opened"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.5.1",
+		"Date": "2016-06-14",
+		"Description": "",
+		"NewFeatures": [
+			"Added colum that displays favorited tweets",
+			"Dialogs can be closed using the escape key or clicking outside the window"
+		],
+		"Changes": [
+			"Own statuses can be retweeted"
+		],
+		"Fixes": [],
+		"Issues": []
+	},
+	{
+		"Version": "0.5.0",
+		"Date": "2016-06-13",
+		"Description": "",
+		"NewFeatures": [
+			"Window position and size is now saved between application launches",
+			"Tweets and users can be searched",
+			"Source application is now displayed in tweet details",
+			"Double clicking selects the whole URL of an image",
+			"Added support for direct messages"
+		],
+		"Changes": [
+			"Dialog windows can now be dragged using the mouse",
+			"Links to Twitter users in Info-Dialog now open inside the app",
+			"Update check now uses GitHub releases"
+		],
+		"Fixes": [
+			"Clicking the header of a column scrolls to top is working again",
+			"View conversation and retweet indicators no longer overlap",
+			"Fixed many crashes when no internet connection is available",
+			"Fixed crash when openeing profile of a non existing user"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.4.2",
+		"Date": "2016-06-05",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [
+			"Reply to all' is now enabled for every tweet",
+			"Own username is not used in reply when using 'Reply to all",
+			"Image URL can now be copied from image viewer dialog"
+		],
+		"Fixes": [
+			"Fixed crash when trying to retweet a protected user's tweet",
+			"Fixed crash when trying to add a user column",
+			"(un)following a user now updates the (un)follow button immediately",
+			"Autocompletebox in light theme now uses correct colors"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.4.1",
+		"Date": "2016-06-04",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash when Twitter reported a status deletion in realtime streaming"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.4.0",
+		"Date": "2016-06-04",
+		"Description": "",
+		"NewFeatures": [
+			"Added possibility to send crash reports to the developer",
+			"Images can now be viewed in large",
+			"Tweets can be quoted",
+			"Tweets can be replied to",
+			"More tweets can be loaded when viewing a user profile",
+			"Mutings can be case(in)sensitive",
+			"Legend in changelog for the differnet symbols",
+			"Instagram images are now directly displayed",
+			"You can now define how many tweets the app should load at once"
+		],
+		"Changes": [
+			"When inline media are displayed, media url is no longer shown in status text",
+			"Composing a new tweet is now done in a separate dialog",
+			"Only one instance of the application can run at the same time",
+			"Quick actions for tweets are only displayed when the mouse is over the tweet"
+		],
+		"Fixes": [
+			"Inline media option is now taken into account when displaying statuses",
+			"When a status contains multiple images, all of them are now displayed",
+			"Emojis in statuses no longer break following entities"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.3.0",
+		"Date": "2016-04-30",
+		"Description": "",
+		"NewFeatures": [
+			"Resizing a column now saves the width for future starts",
+			"Notification can now configured for individual columns",
+			"Columns can be removed",
+			"Column content can be cleared",
+			"New columns can be added"
+		],
+		"Changes": [
+			"UI should keep responsive for most of the time",
+			"Adding the same column twice won't result in duplicate column"
+		],
+		"Fixes": [
+			"Closing the autocomplete box during compose gives focus back",
+			"Timeline is now named timeline everywhere",
+			"Profile pictures are now sharp in every dialog",
+			"Editing a muting no longer creates a new one"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.2.0",
+		"Date": "2016-04-05",
+		"Description": "",
+		"NewFeatures": [
+			"Remaining characters are displayed in compose window",
+			"Autocomplete for usernames and hashtags in compose window",
+			"Marking an account as 'Requires Confirmation' now forces confirmation in compose window",
+			"Default account can be set in accounts window"
+		],
+		"Changes": [
+			"Compose window is now better layouted and most of the features are working",
+			"Made retweeting user's image bigger",
+			"Compose window closes itself after tweeting (except when StayOpen option is checked)"
+		],
+		"Fixes": [
+			"Version and build date are now readable in about dialog",
+			"Changelogs are no longer being cut off in about dialog",
+			"Using certain colors for entities no longer crashes"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.1.3",
+		"Date": "2016-04-03",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed update search not working"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.1.2",
+		"Date": "2016-04-03",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash when looking for updates"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.1.1",
+		"Date": "2016-04-03",
+		"Description": "",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [
+			"Fixed crash when adding a new account"
+		],
+		"Issues": []
+	},
+	{
+		"Version": "0.1.0",
+		"Date": "2016-04-03",
+		"Description": "First beta release",
+		"NewFeatures": [],
+		"Changes": [],
+		"Fixes": [],
+		"Issues": [
+			"Adding columns doesn't work",
+			"Loading more content in the timeline column doesn't work",
+			"Following and unfollowing a user from the profile dialog doesn't work"
+		]
+	}
 ]
