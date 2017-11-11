@@ -557,7 +557,7 @@ namespace Twice.Tests.ViewModels.Twitter
 			var noConfirmationSet = vm.SendTweetCommand.CanExecute( null );
 
 			requiresConfirmation = false;
-			vm.Text = new string( 'x', 141 );
+			vm.Text = new string( 'x', 281 );
 			var tooLong = vm.SendTweetCommand.CanExecute( null );
 
 			vm.Text = "test";
