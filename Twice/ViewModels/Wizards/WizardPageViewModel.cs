@@ -1,7 +1,7 @@
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Twice.ViewModels.Wizards
 {
@@ -37,7 +37,6 @@ namespace Twice.ViewModels.Wizards
 		public bool IsLastPage { get; protected set; }
 		protected readonly IWizardViewModel Wizard;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand<object> _GotoNextPageCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand<object> _GotoNextPageCommand;
 	}
 }

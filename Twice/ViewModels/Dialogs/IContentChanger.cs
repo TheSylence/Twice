@@ -4,8 +4,7 @@ namespace Twice.ViewModels.Dialogs
 {
 	internal interface IContentChanger
 	{
-		event EventHandler<ContentChangeEventArgs> ContentChange;
-
 		void ChangeContent( object newContent );
+		event EventHandler<ContentChangeEventArgs> ContentChange;
 	}
 }

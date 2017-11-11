@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 // ReSharper disable InconsistentNaming
 
@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 namespace Twice.Utilities.Os
 {
 	/// <summary>
-	///  Provides detailed information about the host operating system. 
+	///     Provides detailed information about the host operating system.
 	/// </summary>
 	[SuppressMessage( "ReSharper", "MemberCanBePrivate.Global" )]
 	[SuppressMessage( "ReSharper", "FieldCanBeMadeReadOnly.Global" )]
@@ -24,8 +24,6 @@ namespace Twice.Utilities.Os
 	[ExcludeFromCodeCoverage]
 	public static class OsVersionInfo
 	{
-		private delegate bool IsWow64ProcessDelegate( [In] IntPtr handle, [Out] out bool isWow64Process );
-
 		public enum ProcessorArchitecture
 		{
 			Unknown = 0,
@@ -167,8 +165,99 @@ namespace Twice.Utilities.Os
 			return rtn;
 		}
 
+		private const int PRODUCT_BUSINESS = 0x00000006;
+		private const int PRODUCT_BUSINESS_N = 0x00000010;
+		private const int PRODUCT_CLUSTER_SERVER = 0x00000012;
+		private const int PRODUCT_CLUSTER_SERVER_V = 0x00000040;
+		private const int PRODUCT_DATACENTER_SERVER = 0x00000008;
+		private const int PRODUCT_DATACENTER_SERVER_CORE = 0x0000000C;
+		private const int PRODUCT_DATACENTER_SERVER_CORE_V = 0x00000027;
+		private const int PRODUCT_DATACENTER_SERVER_V = 0x00000025;
+		private const int PRODUCT_EMBEDDED = 0x00000041;
+		private const int PRODUCT_ENTERPRISE = 0x00000004;
+		private const int PRODUCT_ENTERPRISE_E = 0x00000046;
+		private const int PRODUCT_ENTERPRISE_N = 0x0000001B;
+		private const int PRODUCT_ENTERPRISE_SERVER = 0x0000000A;
+		private const int PRODUCT_ENTERPRISE_SERVER_CORE = 0x0000000E;
+		private const int PRODUCT_ENTERPRISE_SERVER_CORE_V = 0x00000029;
+		private const int PRODUCT_ENTERPRISE_SERVER_IA64 = 0x0000000F;
+		private const int PRODUCT_ENTERPRISE_SERVER_V = 0x00000026;
+		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL = 0x0000003C;
+		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC = 0x0000003E;
+
+		//private const int ???? = 0x0000003A;
+		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT = 0x0000003B;
+
+		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC = 0x0000003D;
+		private const int PRODUCT_HOME_BASIC = 0x00000002;
+		private const int PRODUCT_HOME_BASIC_E = 0x00000043;
+		private const int PRODUCT_HOME_BASIC_N = 0x00000005;
+		private const int PRODUCT_HOME_PREMIUM = 0x00000003;
+		private const int PRODUCT_HOME_PREMIUM_E = 0x00000044;
+		private const int PRODUCT_HOME_PREMIUM_N = 0x0000001A;
+		private const int PRODUCT_HOME_PREMIUM_SERVER = 0x00000022;
+		private const int PRODUCT_HYPERV = 0x0000002A;
+		private const int PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT = 0x0000001E;
+		private const int PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING = 0x00000020;
+		private const int PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY = 0x0000001F;
+		private const int PRODUCT_PROFESSIONAL = 0x00000030;
+		private const int PRODUCT_PROFESSIONAL_E = 0x00000045;
+		private const int PRODUCT_PROFESSIONAL_N = 0x00000031;
+		private const int PRODUCT_SB_SOLUTION_SERVER = 0x00000032;
+		private const int PRODUCT_SB_SOLUTION_SERVER_EM = 0x00000036;
+		private const int PRODUCT_SERVER_FOR_SB_SOLUTIONS = 0x00000033;
+		private const int PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM = 0x00000037;
+		private const int PRODUCT_SERVER_FOR_SMALLBUSINESS = 0x00000018;
+		private const int PRODUCT_SERVER_FOR_SMALLBUSINESS_V = 0x00000023;
+		private const int PRODUCT_SERVER_FOUNDATION = 0x00000021;
+		private const int PRODUCT_SMALLBUSINESS_SERVER = 0x00000009;
+		private const int PRODUCT_SMALLBUSINESS_SERVER_PREMIUM = 0x00000019;
+		private const int PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE = 0x0000003F;
+		private const int PRODUCT_SOLUTION_EMBEDDEDSERVER = 0x00000038;
+		private const int PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE = 0x00000039;
+		private const int PRODUCT_STANDARD_SERVER = 0x00000007;
+		private const int PRODUCT_STANDARD_SERVER_CORE = 0x0000000D;
+		private const int PRODUCT_STANDARD_SERVER_CORE_V = 0x00000028;
+		private const int PRODUCT_STANDARD_SERVER_SOLUTIONS = 0x00000034;
+		private const int PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE = 0x00000035;
+		private const int PRODUCT_STANDARD_SERVER_V = 0x00000024;
+		private const int PRODUCT_STARTER = 0x0000000B;
+		private const int PRODUCT_STARTER_E = 0x00000042;
+		private const int PRODUCT_STARTER_N = 0x0000002F;
+		private const int PRODUCT_STORAGE_ENTERPRISE_SERVER = 0x00000017;
+		private const int PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE = 0x0000002E;
+		private const int PRODUCT_STORAGE_EXPRESS_SERVER = 0x00000014;
+		private const int PRODUCT_STORAGE_EXPRESS_SERVER_CORE = 0x0000002B;
+		private const int PRODUCT_STORAGE_STANDARD_SERVER = 0x00000015;
+		private const int PRODUCT_STORAGE_STANDARD_SERVER_CORE = 0x0000002C;
+		private const int PRODUCT_STORAGE_WORKGROUP_SERVER = 0x00000016;
+		private const int PRODUCT_STORAGE_WORKGROUP_SERVER_CORE = 0x0000002D;
+		private const int PRODUCT_ULTIMATE = 0x00000001;
+		private const int PRODUCT_ULTIMATE_E = 0x00000047;
+		private const int PRODUCT_ULTIMATE_N = 0x0000001C;
+		private const int PRODUCT_UNDEFINED = 0x00000000;
+		private const int PRODUCT_WEB_SERVER = 0x00000011;
+		private const int PRODUCT_WEB_SERVER_CORE = 0x0000001D;
+		private const int VER_NT_SERVER = 3;
+		private const int VER_NT_WORKSTATION = 1;
+		private const int VER_SUITE_BLADE = 1024;
+		private const int VER_SUITE_DATACENTER = 128;
+		private const int VER_SUITE_ENTERPRISE = 2;
+		private const int VER_SUITE_PERSONAL = 512;
+
+		private static string s_Edition;
+		private static string s_Name;
+
 		/// <summary>
-		///  Gets the edition of the operating system running on this computer. 
+		///     Gets the build version number of the operating system running on this computer.
+		/// </summary>
+		private static int BuildVersion
+			=>
+				int.Parse( RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuildNumber",
+					"0" ) );
+
+		/// <summary>
+		///     Gets the edition of the operating system running on this computer.
 		/// </summary>
 		public static string Edition
 		{
@@ -577,7 +666,55 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		///  Gets the name of the operating system running on this computer. 
+		///     Gets the major version number of the operating system running on this computer.
+		/// </summary>
+		private static int MajorVersion
+		{
+			get
+			{
+				if( IsWindows10() )
+				{
+					return 10;
+				}
+
+				string exactVersion = RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+					"CurrentVersion", "" );
+				if( !string.IsNullOrEmpty( exactVersion ) )
+				{
+					string[] splitVersion = exactVersion.Split( '.' );
+					return int.Parse( splitVersion[0] );
+				}
+
+				return Environment.OSVersion.Version.Major;
+			}
+		}
+
+		/// <summary>
+		///     Gets the minor version number of the operating system running on this computer.
+		/// </summary>
+		private static int MinorVersion
+		{
+			get
+			{
+				if( IsWindows10() )
+				{
+					return 0;
+				}
+
+				string exactVersion = RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+					"CurrentVersion", "" );
+				if( !string.IsNullOrEmpty( exactVersion ) )
+				{
+					string[] splitVersion = exactVersion.Split( '.' );
+					return int.Parse( splitVersion[1] );
+				}
+
+				return Environment.OSVersion.Version.Minor;
+			}
+		}
+
+		/// <summary>
+		///     Gets the name of the operating system running on this computer.
 		/// </summary>
 		public static string Name
 		{
@@ -637,156 +774,153 @@ namespace Twice.Utilities.Os
 						break;
 
 					case PlatformID.Win32Windows:
+					{
+						if( majorVersion == 4 )
 						{
-							if( majorVersion == 4 )
+							string csdVersion = osVersionInfo.szCSDVersion;
+							switch( minorVersion )
 							{
-								string csdVersion = osVersionInfo.szCSDVersion;
-								switch( minorVersion )
+							case 0:
+								if( csdVersion == "B" || csdVersion == "C" )
 								{
-								case 0:
-									if( csdVersion == "B" || csdVersion == "C" )
-									{
-										name = "Windows 95 OSR2";
-									}
-									else
-									{
-										name = "Windows 95";
-									}
-									break;
-
-								case 10:
-									name = csdVersion == "A"
-										? "Windows 98 Second Edition"
-										: "Windows 98";
-									break;
-
-								case 90:
-									name = "Windows Me";
-									break;
+									name = "Windows 95 OSR2";
 								}
-							}
-
-							break;
-						}
-					case PlatformID.Win32NT:
-						{
-							byte productType = osVersionInfo.wProductType;
-
-							switch( majorVersion )
-							{
-							case 3:
-								name = "Windows NT 3.51";
-								break;
-
-							case 4:
-								switch( productType )
+								else
 								{
-								case 1:
-									name = "Windows NT 4.0";
-									break;
-
-								case 3:
-									name = "Windows NT 4.0 Server";
-									break;
+									name = "Windows 95";
 								}
-
-								break;
-
-							case 5:
-								switch( minorVersion )
-								{
-								case 0:
-									name = "Windows 2000";
-									break;
-
-								case 1:
-									name = "Windows XP";
-									break;
-
-								case 2:
-									name = "Windows Server 2003";
-									break;
-								}
-
-								break;
-
-							case 6:
-								switch( minorVersion )
-								{
-								case 0:
-									switch( productType )
-									{
-									case 1:
-										name = "Windows Vista";
-										break;
-
-									case 3:
-										name = "Windows Server 2008";
-										break;
-									}
-
-									break;
-
-								case 1:
-									switch( productType )
-									{
-									case 1:
-										name = "Windows 7";
-										break;
-
-									case 3:
-										name = "Windows Server 2008 R2";
-										break;
-									}
-
-									break;
-
-								case 2:
-									switch( productType )
-									{
-									case 1:
-										name = "Windows 8";
-										break;
-
-									case 3:
-										name = "Windows Server 2012";
-										break;
-									}
-
-									break;
-
-								case 3:
-									switch( productType )
-									{
-									case 1:
-										name = "Windows 8.1";
-										break;
-
-									case 3:
-										name = "Windows Server 2012 R2";
-										break;
-									}
-
-									break;
-								}
-
 								break;
 
 							case 10:
-								switch( minorVersion )
+								name = csdVersion == "A"
+									? "Windows 98 Second Edition"
+									: "Windows 98";
+								break;
+
+							case 90:
+								name = "Windows Me";
+								break;
+							}
+						}
+
+						break;
+					}
+					case PlatformID.Win32NT:
+					{
+						byte productType = osVersionInfo.wProductType;
+
+						switch( majorVersion )
+						{
+						case 3:
+							name = "Windows NT 3.51";
+							break;
+
+						case 4:
+							switch( productType )
+							{
+							case 1:
+								name = "Windows NT 4.0";
+								break;
+
+							case 3:
+								name = "Windows NT 4.0 Server";
+								break;
+							}
+
+							break;
+
+						case 5:
+							switch( minorVersion )
+							{
+							case 0:
+								name = "Windows 2000";
+								break;
+
+							case 1:
+								name = "Windows XP";
+								break;
+
+							case 2:
+								name = "Windows Server 2003";
+								break;
+							}
+
+							break;
+
+						case 6:
+							switch( minorVersion )
+							{
+							case 0:
+								switch( productType )
 								{
-								case 0:
-									switch( productType )
-									{
-									case 1:
-										name = "Windows 10";
-										break;
+								case 1:
+									name = "Windows Vista";
+									break;
 
-									case 3:
-										name = "Windows Server 2016";
-										break;
-									}
+								case 3:
+									name = "Windows Server 2008";
+									break;
+								}
 
+								break;
+
+							case 1:
+								switch( productType )
+								{
+								case 1:
+									name = "Windows 7";
+									break;
+
+								case 3:
+									name = "Windows Server 2008 R2";
+									break;
+								}
+
+								break;
+
+							case 2:
+								switch( productType )
+								{
+								case 1:
+									name = "Windows 8";
+									break;
+
+								case 3:
+									name = "Windows Server 2012";
+									break;
+								}
+
+								break;
+
+							case 3:
+								switch( productType )
+								{
+								case 1:
+									name = "Windows 8.1";
+									break;
+
+								case 3:
+									name = "Windows Server 2012 R2";
+									break;
+								}
+
+								break;
+							}
+
+							break;
+
+						case 10:
+							switch( minorVersion )
+							{
+							case 0:
+								switch( productType )
+								{
+								case 1:
+									name = "Windows 10";
+									break;
+
+								case 3:
+									name = "Windows Server 2016";
 									break;
 								}
 
@@ -795,6 +929,9 @@ namespace Twice.Utilities.Os
 
 							break;
 						}
+
+						break;
+					}
 					}
 				}
 
@@ -831,7 +968,7 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		///  Determines if the current processor is 32 or 64-bit. 
+		///     Determines if the current processor is 32 or 64-bit.
 		/// </summary>
 		public static ProcessorArchitecture ProcessorBits
 		{
@@ -873,7 +1010,7 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		///  Determines if the current application is 32 or 64-bit. 
+		///     Determines if the current application is 32 or 64-bit.
 		/// </summary>
 		public static SoftwareArchitecture ProgramBits
 		{
@@ -901,7 +1038,14 @@ namespace Twice.Utilities.Os
 		}
 
 		/// <summary>
-		///  Gets the service pack information of the operating system running on this computer. 
+		///     Gets the revision version number of the operating system running on this computer.
+		/// </summary>
+		private static int RevisionVersion => IsWindows10()
+			? 0
+			: Environment.OSVersion.Version.Revision;
+
+		/// <summary>
+		///     Gets the service pack information of the operating system running on this computer.
 		/// </summary>
 		public static string ServicePack
 		{
@@ -924,197 +1068,50 @@ namespace Twice.Utilities.Os
 
 		public static Version Version => new Version( MajorVersion, MinorVersion, BuildVersion, RevisionVersion );
 
-		/// <summary>
-		///  Gets the build version number of the operating system running on this computer. 
-		/// </summary>
-		private static int BuildVersion
-			=>
-				int.Parse( RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentBuildNumber",
-					"0" ) );
-
-		/// <summary>
-		///  Gets the major version number of the operating system running on this computer. 
-		/// </summary>
-		private static int MajorVersion
-		{
-			get
-			{
-				if( IsWindows10() )
-				{
-					return 10;
-				}
-
-				string exactVersion = RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-					"CurrentVersion", "" );
-				if( !string.IsNullOrEmpty( exactVersion ) )
-				{
-					string[] splitVersion = exactVersion.Split( '.' );
-					return int.Parse( splitVersion[0] );
-				}
-
-				return Environment.OSVersion.Version.Major;
-			}
-		}
-
-		/// <summary>
-		///  Gets the minor version number of the operating system running on this computer. 
-		/// </summary>
-		private static int MinorVersion
-		{
-			get
-			{
-				if( IsWindows10() )
-				{
-					return 0;
-				}
-
-				string exactVersion = RegistryRead( @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-					"CurrentVersion", "" );
-				if( !string.IsNullOrEmpty( exactVersion ) )
-				{
-					string[] splitVersion = exactVersion.Split( '.' );
-					return int.Parse( splitVersion[1] );
-				}
-
-				return Environment.OSVersion.Version.Minor;
-			}
-		}
-
-		/// <summary>
-		///  Gets the revision version number of the operating system running on this computer. 
-		/// </summary>
-		private static int RevisionVersion => IsWindows10()
-			? 0
-			: Environment.OSVersion.Version.Revision;
-
-		private const int PRODUCT_BUSINESS = 0x00000006;
-		private const int PRODUCT_BUSINESS_N = 0x00000010;
-		private const int PRODUCT_CLUSTER_SERVER = 0x00000012;
-		private const int PRODUCT_CLUSTER_SERVER_V = 0x00000040;
-		private const int PRODUCT_DATACENTER_SERVER = 0x00000008;
-		private const int PRODUCT_DATACENTER_SERVER_CORE = 0x0000000C;
-		private const int PRODUCT_DATACENTER_SERVER_CORE_V = 0x00000027;
-		private const int PRODUCT_DATACENTER_SERVER_V = 0x00000025;
-		private const int PRODUCT_EMBEDDED = 0x00000041;
-		private const int PRODUCT_ENTERPRISE = 0x00000004;
-		private const int PRODUCT_ENTERPRISE_E = 0x00000046;
-		private const int PRODUCT_ENTERPRISE_N = 0x0000001B;
-		private const int PRODUCT_ENTERPRISE_SERVER = 0x0000000A;
-		private const int PRODUCT_ENTERPRISE_SERVER_CORE = 0x0000000E;
-		private const int PRODUCT_ENTERPRISE_SERVER_CORE_V = 0x00000029;
-		private const int PRODUCT_ENTERPRISE_SERVER_IA64 = 0x0000000F;
-		private const int PRODUCT_ENTERPRISE_SERVER_V = 0x00000026;
-		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL = 0x0000003C;
-		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC = 0x0000003E;
-
-		//private const int ???? = 0x0000003A;
-		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT = 0x0000003B;
-
-		private const int PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC = 0x0000003D;
-		private const int PRODUCT_HOME_BASIC = 0x00000002;
-		private const int PRODUCT_HOME_BASIC_E = 0x00000043;
-		private const int PRODUCT_HOME_BASIC_N = 0x00000005;
-		private const int PRODUCT_HOME_PREMIUM = 0x00000003;
-		private const int PRODUCT_HOME_PREMIUM_E = 0x00000044;
-		private const int PRODUCT_HOME_PREMIUM_N = 0x0000001A;
-		private const int PRODUCT_HOME_PREMIUM_SERVER = 0x00000022;
-		private const int PRODUCT_HYPERV = 0x0000002A;
-		private const int PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT = 0x0000001E;
-		private const int PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING = 0x00000020;
-		private const int PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY = 0x0000001F;
-		private const int PRODUCT_PROFESSIONAL = 0x00000030;
-		private const int PRODUCT_PROFESSIONAL_E = 0x00000045;
-		private const int PRODUCT_PROFESSIONAL_N = 0x00000031;
-		private const int PRODUCT_SB_SOLUTION_SERVER = 0x00000032;
-		private const int PRODUCT_SB_SOLUTION_SERVER_EM = 0x00000036;
-		private const int PRODUCT_SERVER_FOR_SB_SOLUTIONS = 0x00000033;
-		private const int PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM = 0x00000037;
-		private const int PRODUCT_SERVER_FOR_SMALLBUSINESS = 0x00000018;
-		private const int PRODUCT_SERVER_FOR_SMALLBUSINESS_V = 0x00000023;
-		private const int PRODUCT_SERVER_FOUNDATION = 0x00000021;
-		private const int PRODUCT_SMALLBUSINESS_SERVER = 0x00000009;
-		private const int PRODUCT_SMALLBUSINESS_SERVER_PREMIUM = 0x00000019;
-		private const int PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE = 0x0000003F;
-		private const int PRODUCT_SOLUTION_EMBEDDEDSERVER = 0x00000038;
-		private const int PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE = 0x00000039;
-		private const int PRODUCT_STANDARD_SERVER = 0x00000007;
-		private const int PRODUCT_STANDARD_SERVER_CORE = 0x0000000D;
-		private const int PRODUCT_STANDARD_SERVER_CORE_V = 0x00000028;
-		private const int PRODUCT_STANDARD_SERVER_SOLUTIONS = 0x00000034;
-		private const int PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE = 0x00000035;
-		private const int PRODUCT_STANDARD_SERVER_V = 0x00000024;
-		private const int PRODUCT_STARTER = 0x0000000B;
-		private const int PRODUCT_STARTER_E = 0x00000042;
-		private const int PRODUCT_STARTER_N = 0x0000002F;
-		private const int PRODUCT_STORAGE_ENTERPRISE_SERVER = 0x00000017;
-		private const int PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE = 0x0000002E;
-		private const int PRODUCT_STORAGE_EXPRESS_SERVER = 0x00000014;
-		private const int PRODUCT_STORAGE_EXPRESS_SERVER_CORE = 0x0000002B;
-		private const int PRODUCT_STORAGE_STANDARD_SERVER = 0x00000015;
-		private const int PRODUCT_STORAGE_STANDARD_SERVER_CORE = 0x0000002C;
-		private const int PRODUCT_STORAGE_WORKGROUP_SERVER = 0x00000016;
-		private const int PRODUCT_STORAGE_WORKGROUP_SERVER_CORE = 0x0000002D;
-		private const int PRODUCT_ULTIMATE = 0x00000001;
-		private const int PRODUCT_ULTIMATE_E = 0x00000047;
-		private const int PRODUCT_ULTIMATE_N = 0x0000001C;
-		private const int PRODUCT_UNDEFINED = 0x00000000;
-		private const int PRODUCT_WEB_SERVER = 0x00000011;
-		private const int PRODUCT_WEB_SERVER_CORE = 0x0000001D;
-		private const int VER_NT_SERVER = 3;
-		private const int VER_NT_WORKSTATION = 1;
-		private const int VER_SUITE_BLADE = 1024;
-		private const int VER_SUITE_DATACENTER = 128;
-		private const int VER_SUITE_ENTERPRISE = 2;
-		private const int VER_SUITE_PERSONAL = 512;
-
-		private static string s_Edition;
-		private static string s_Name;
-
 		[StructLayout( LayoutKind.Explicit )]
 		public struct _PROCESSOR_INFO_UNION
 		{
-			[FieldOffset( 0 )]
-			internal uint dwOemId;
+			[FieldOffset( 0 )] internal uint dwOemId;
 
-			[FieldOffset( 0 )]
-			internal ushort wProcessorArchitecture;
+			[FieldOffset( 0 )] internal ushort wProcessorArchitecture;
 
-			[FieldOffset( 2 )]
-			internal ushort wReserved;
+			[FieldOffset( 2 )] internal ushort wReserved;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct SYSTEM_INFO
 		{
-			internal _PROCESSOR_INFO_UNION uProcessorInfo;
-			public uint dwPageSize;
-			public IntPtr lpMinimumApplicationAddress;
-			public IntPtr lpMaximumApplicationAddress;
 			public IntPtr dwActiveProcessorMask;
-			public uint dwNumberOfProcessors;
-			public uint dwProcessorType;
 			public uint dwAllocationGranularity;
+			public uint dwNumberOfProcessors;
+			public uint dwPageSize;
 			public ushort dwProcessorLevel;
 			public ushort dwProcessorRevision;
+			public uint dwProcessorType;
+			public IntPtr lpMaximumApplicationAddress;
+			public IntPtr lpMinimumApplicationAddress;
+			internal _PROCESSOR_INFO_UNION uProcessorInfo;
 		}
+
+		private delegate bool IsWow64ProcessDelegate( [In] IntPtr handle, [Out] out bool isWow64Process );
 
 		[StructLayout( LayoutKind.Sequential )]
 		private struct OSVERSIONINFOEX
 		{
-			public int dwOSVersionInfoSize;
+			public readonly int dwBuildNumber;
 			public readonly int dwMajorVersion;
 			public readonly int dwMinorVersion;
-			public readonly int dwBuildNumber;
 			public readonly int dwPlatformId;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
-			public readonly string szCSDVersion;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public readonly string szCSDVersion;
+
+			public readonly byte wProductType;
+			public readonly byte wReserved;
 
 			public readonly short wServicePackMajor;
 			public readonly short wServicePackMinor;
 			public readonly short wSuiteMask;
-			public readonly byte wProductType;
-			public readonly byte wReserved;
+			public int dwOSVersionInfoSize;
 		}
 	}
 }

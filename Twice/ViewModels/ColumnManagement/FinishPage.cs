@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Twice.ViewModels.Wizards;
 
 namespace Twice.ViewModels.ColumnManagement
@@ -18,42 +17,8 @@ namespace Twice.ViewModels.ColumnManagement
 			SourceAccount = string.Join( ", ", Wizard.GetProperty<string[]>( AddColumnDialogViewModel.SourceAccountNamesKey ) );
 		}
 
-		public string ColumnTypeDescription
-		{
-			[DebuggerStepThrough]
-			get { return _ColumnTypeDescription; }
-			set
-			{
-				if( _ColumnTypeDescription == value )
-				{
-					return;
-				}
+		public string ColumnTypeDescription { get; set; }
 
-				_ColumnTypeDescription = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string SourceAccount
-		{
-			[DebuggerStepThrough]
-			get { return _SourceAccount; }
-			set
-			{
-				if( _SourceAccount == value )
-				{
-					return;
-				}
-
-				_SourceAccount = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _ColumnTypeDescription;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _SourceAccount;
+		public string SourceAccount { get; set; }
 	}
 }

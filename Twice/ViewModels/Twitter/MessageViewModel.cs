@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using NLog;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Comparers;
@@ -67,7 +67,7 @@ namespace Twice.ViewModels.Twitter
 				}
 			}
 
-			RaisePropertyChanged( nameof( InlineMedias ) );
+			RaisePropertyChanged( nameof(InlineMedias) );
 		}
 
 		private async void ExecuteReplyCommand()
@@ -88,24 +88,8 @@ namespace Twice.ViewModels.Twitter
 		public override ICommand ReportSpamCommand { get; }
 		public override string Text => Model.Text;
 
-		public bool WasRead
-		{
-			[DebuggerStepThrough]
-			get { return _WasRead; }
-			set
-			{
-				if( _WasRead == value )
-				{
-					return;
-				}
-
-				_WasRead = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool WasRead { get; set; }
 
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _ReplyCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _WasRead;
 	}
 }

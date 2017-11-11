@@ -1,11 +1,11 @@
-using Anotar.NLog;
 using System;
 using System.Data.SQLite;
+using Anotar.NLog;
 
 namespace Twice.Models.Cache
 {
 	/// <summary>
-	///  Helper methods for SQLite 
+	///     Helper methods for SQLite
 	/// </summary>
 	internal static class SqliteHelper
 	{
@@ -24,8 +24,8 @@ namespace Twice.Models.Cache
 		}
 
 		/// <summary>
-		///  Tries to execute a query against a database, catches exceptions and tries to execute
-		///  query multiple times.
+		///     Tries to execute a query against a database, catches exceptions and tries to execute
+		///     query multiple times.
 		/// </summary>
 		/// <param name="query"> Query to execute </param>
 		/// <param name="connection"> Connection to execute query on </param>

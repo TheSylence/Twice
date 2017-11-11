@@ -1,6 +1,6 @@
-using Anotar.NLog;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
 using Twice.Models.Twitter;
 
 namespace Twice.Models.Scheduling.Processors

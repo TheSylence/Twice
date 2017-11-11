@@ -1,6 +1,6 @@
+using System;
 using GalaSoft.MvvmLight;
 using LinqToTwitter;
-using System;
 using Twice.Models.Proxy;
 using Twice.Models.Twitter;
 using Twice.Models.Twitter.Entities;

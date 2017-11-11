@@ -6,7 +6,7 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///  Allows a window to be closed from the window's DataContext 
+	///     Allows a window to be closed from the window's DataContext
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class CloseableView : BehaviorBase<Window>

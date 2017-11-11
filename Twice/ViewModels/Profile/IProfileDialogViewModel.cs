@@ -1,6 +1,6 @@
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Windows.Input;
+using LinqToTwitter;
 using Twice.ViewModels.Main;
 using Twice.ViewModels.Twitter;
 

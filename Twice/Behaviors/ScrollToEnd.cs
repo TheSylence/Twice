@@ -7,17 +7,11 @@ using Twice.ViewModels;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///  Scrolls to the last element in an ItemsControl when requested. 
+	///     Scrolls to the last element in an ItemsControl when requested.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class ScrollToEnd : BehaviorBase<ItemsControl>
 	{
-		private static void OnControllerChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			var b = d as ScrollToEnd;
-			b?.OnControllerChanged( (IScrollController)e.NewValue, (IScrollController)e.OldValue );
-		}
-
 		private void Controller_ScrollRequested( object sender, EventArgs e )
 		{
 			int index = ScrollBottom
@@ -26,6 +20,12 @@ namespace Twice.Behaviors
 
 			var element = AssociatedObject.ItemContainerGenerator.ContainerFromIndex( index ) as FrameworkElement;
 			element?.BringIntoView();
+		}
+
+		private static void OnControllerChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+		{
+			var b = d as ScrollToEnd;
+			b?.OnControllerChanged( (IScrollController)e.NewValue, (IScrollController)e.OldValue );
 		}
 
 		private void OnControllerChanged( IScrollController newController, IScrollController oldController )
@@ -41,23 +41,23 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public IScrollController Controller
-		{
-			get { return (IScrollController)GetValue( ControllerProperty ); }
-			set { SetValue( ControllerProperty, value ); }
-		}
-
-		public bool ScrollBottom
-		{
-			get { return (bool)GetValue( ScrollBottomProperty ); }
-			set { SetValue( ScrollBottomProperty, value ); }
-		}
-
 		public static readonly DependencyProperty ControllerProperty =
-							DependencyProperty.Register( "Controller", typeof( IScrollController ), typeof( ScrollToEnd ),
+			DependencyProperty.Register( "Controller", typeof( IScrollController ), typeof( ScrollToEnd ),
 				new PropertyMetadata( null, OnControllerChanged ) );
 
 		public static readonly DependencyProperty ScrollBottomProperty =
 			DependencyProperty.Register( "ScrollBottom", typeof( bool ), typeof( ScrollToEnd ), new PropertyMetadata( true ) );
+
+		public IScrollController Controller
+		{
+			get => (IScrollController)GetValue( ControllerProperty );
+			set => SetValue( ControllerProperty, value );
+		}
+
+		public bool ScrollBottom
+		{
+			get => (bool)GetValue( ScrollBottomProperty );
+			set => SetValue( ScrollBottomProperty, value );
+		}
 	}
 }

@@ -1,12 +1,12 @@
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
-using LitJson;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
+using LitJson;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Entities;
 
@@ -19,6 +19,30 @@ namespace Twice.Models.Twitter.Repositories
 		public TwitterUserRepository( TwitterContext context, ICache cache )
 			: base( context, cache )
 		{
+		}
+
+		private async Task<UserEx> LoadUserFromQuery( string queryString )
+		{
+			Raw rawResult;
+			try
+			{
+				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
+				if( rawResult == null )
+				{
+					return null;
+				}
+			}
+			catch( TwitterQueryException )
+			{
+				return null;
+			}
+
+			var json = JsonMapper.ToObject( rawResult.Response );
+			var user = new UserEx( json );
+
+			await Cache.AddUsers( new[] {new UserCacheEntry( user )} );
+
+			return user;
 		}
 
 		public async Task FollowUser( ulong userId )
@@ -113,30 +137,6 @@ namespace Twice.Models.Twitter.Repositories
 		public async Task UnfollowUser( ulong userId )
 		{
 			await Context.DestroyFriendshipAsync( userId );
-		}
-
-		private async Task<UserEx> LoadUserFromQuery( string queryString )
-		{
-			Raw rawResult;
-			try
-			{
-				rawResult = await Context.RawQuery.Where( q => q.QueryString == queryString ).SingleOrDefaultAsync();
-				if( rawResult == null )
-				{
-					return null;
-				}
-			}
-			catch( TwitterQueryException )
-			{
-				return null;
-			}
-
-			var json = JsonMapper.ToObject( rawResult.Response );
-			var user = new UserEx( json );
-
-			await Cache.AddUsers( new[] { new UserCacheEntry( user ) } );
-
-			return user;
 		}
 	}
 }

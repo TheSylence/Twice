@@ -1,16 +1,17 @@
 ﻿<controls:MetroWindow x:Class="Twice.Views.Dialogs.ConfirmDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:Twice.Behaviors"
-        xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
-        WindowStartupLocation="CenterOwner" DataContext="{Binding Confirm, Source={StaticResource Locator}}"
-        mc:Ignorable="d" Style="{StaticResource DialogStyle}" SizeToContent="Height"
-        Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300">
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      xmlns:behaviors="clr-namespace:Twice.Behaviors"
+                      xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+                      WindowStartupLocation="CenterOwner"
+                      DataContext="{Binding Confirm, Source={StaticResource Locator}}"
+                      mc:Ignorable="d" Style="{StaticResource DialogStyle}" SizeToContent="Height"
+                      Title="{Binding Title, FallbackValue={lex:Loc Confirm}}" Height="300" Width="300">
 	<i:Interaction.Behaviors>
 		<behaviors:CloseableView />
 		<behaviours:BorderlessWindowBehavior />
@@ -18,9 +19,9 @@
 	<DockPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="5">
 			<Button Content="{lex:Loc Yes}" IsDefault="True" Command="{Binding OkCommand}" Margin="5"
-										Style="{DynamicResource MaterialDesignRaisedButton}" />
+			        Style="{DynamicResource MaterialDesignRaisedButton}" />
 			<Button Content="{lex:Loc No}" IsCancel="True" Command="{Binding CancelCommand}"
-										Margin="5"  Style="{DynamicResource MaterialDesignRaisedButton}" />
+			        Margin="5" Style="{DynamicResource MaterialDesignRaisedButton}" />
 		</StackPanel>
 
 		<TextBlock Text="{Binding Label}" Margin="5" TextWrapping="Wrap" />

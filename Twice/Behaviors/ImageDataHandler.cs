@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///  Allows pasting image data from clipboard to a textbox. 
+	///     Allows pasting image data from clipboard to a textbox.
 	/// </summary>
 	internal class ImageDataHandler : BehaviorBase<TextBox>
 	{
@@ -70,13 +70,13 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public ICommand AttachCommand
-		{
-			get { return (ICommand)GetValue( AttachCommandProperty ); }
-			set { SetValue( AttachCommandProperty, value ); }
-		}
-
 		public static readonly DependencyProperty AttachCommandProperty =
 			DependencyProperty.Register( "AttachCommand", typeof( ICommand ), typeof( ImageDataHandler ), new PropertyMetadata( null ) );
+
+		public ICommand AttachCommand
+		{
+			get => (ICommand)GetValue( AttachCommandProperty );
+			set => SetValue( AttachCommandProperty, value );
+		}
 	}
 }

@@ -3,7 +3,7 @@
 namespace Twice.Views.Dialogs
 {
 	/// <summary>
-	///  Interaction logic for ProfileDialog.xaml 
+	///     Interaction logic for ProfileDialog.xaml
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	public partial class ProfileDialog

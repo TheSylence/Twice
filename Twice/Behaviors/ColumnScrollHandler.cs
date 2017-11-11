@@ -16,12 +16,6 @@ namespace Twice.Behaviors
 			AssociatedObject.ScrollChanged += AssociatedObject_ScrollChanged;
 		}
 
-		private static void OnDispatcherChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
-		{
-			var handler = obj as ColumnScrollHandler;
-			handler?.OnDispatcherChanged( e.NewValue as IColumnActionDispatcher, e.OldValue as IColumnActionDispatcher );
-		}
-
 		private void AssociatedObject_ScrollChanged( object sender, ScrollChangedEventArgs e )
 		{
 			if( e.VerticalChange <= 0 )
@@ -48,6 +42,12 @@ namespace Twice.Behaviors
 			AssociatedObject.ScrollToTop();
 		}
 
+		private static void OnDispatcherChanged( DependencyObject obj, DependencyPropertyChangedEventArgs e )
+		{
+			var handler = obj as ColumnScrollHandler;
+			handler?.OnDispatcherChanged( e.NewValue as IColumnActionDispatcher, e.OldValue as IColumnActionDispatcher );
+		}
+
 		private void OnDispatcherChanged( IColumnActionDispatcher newDispatcher, IColumnActionDispatcher oldDispatcher )
 		{
 			if( oldDispatcher != null )
@@ -61,15 +61,15 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public IColumnActionDispatcher ActionDispatcher
-		{
-			get { return (IColumnActionDispatcher)GetValue( ActionDispatcherProperty ); }
-			set { SetValue( ActionDispatcherProperty, value ); }
-		}
-
 		public static readonly DependencyProperty ActionDispatcherProperty =
 			DependencyProperty.Register( "ActionDispatcher", typeof( IColumnActionDispatcher ), typeof( ColumnScrollHandler ),
 				new PropertyMetadata( null, OnDispatcherChanged ) );
+
+		public IColumnActionDispatcher ActionDispatcher
+		{
+			get => (IColumnActionDispatcher)GetValue( ActionDispatcherProperty );
+			set => SetValue( ActionDispatcherProperty, value );
+		}
 
 		private readonly Range HandledRange = new Range();
 

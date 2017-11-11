@@ -1,12 +1,12 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Ninject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using Ninject;
 using Twice.Models.Cache;
 using Twice.Models.Configuration;
 using Twice.Resources;
@@ -35,7 +35,7 @@ namespace Twice.ViewModels.Settings
 
 			AvailableLanguages = langs.Distinct().OrderBy( l => l.NativeName ).ToList();
 
-			AvailableFetchCounts = new[] { 20, 50, 100, 200 };
+			AvailableFetchCounts = new[] {20, 50, 100, 200};
 
 			var english = AvailableLanguages.FirstOrDefault( IsEnglish );
 
@@ -47,6 +47,53 @@ namespace Twice.ViewModels.Settings
 			FilterSensitiveTweets = currentConfig.General.FilterSensitiveTweets;
 			SendVersionStats = currentConfig.General.SendVersionStats;
 		}
+
+		private async void ExecuteClearCacheCommand()
+		{
+			await Cache.Clear();
+
+			Notifier.DisplayMessage( Strings.CacheCleared, NotificationType.Success );
+		}
+
+		private static bool IsEnglish( CultureInfo lang )
+		{
+			var english = CultureInfo.CreateSpecificCulture( "en" );
+
+			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
+		}
+
+		public ICollection<int> AvailableFetchCounts { get; }
+
+		public ICollection<CultureInfo> AvailableLanguages { get; }
+
+		public bool CheckForUpdates { get; set; }
+
+		public ICommand ClearCacheCommand => _ClearCacheCommand ?? ( _ClearCacheCommand = new RelayCommand( ExecuteClearCacheCommand ) );
+
+		public bool FilterSensitiveTweets { get; set; }
+
+		public bool IncludePrereleaseUpdates { get; set; }
+
+		public bool RealtimeStreaming { get; set; }
+
+		public CultureInfo SelectedLanguage
+		{
+			[DebuggerStepThrough] get { return _SelectedLanguage; }
+			set
+			{
+				if( _SelectedLanguage?.Name == value?.Name )
+				{
+					return;
+				}
+
+				_SelectedLanguage = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool SendVersionStats { get; set; }
+
+		public int TweetFetchCount { get; set; }
 
 		public Task OnLoad( object data )
 		{
@@ -64,162 +111,18 @@ namespace Twice.ViewModels.Settings
 			config.General.SendVersionStats = SendVersionStats;
 		}
 
-		private static bool IsEnglish( CultureInfo lang )
-		{
-			var english = CultureInfo.CreateSpecificCulture( "en" );
-
-			return lang.ThreeLetterISOLanguageName.Equals( english.ThreeLetterISOLanguageName );
-		}
-
-		private async void ExecuteClearCacheCommand()
-		{
-			await Cache.Clear();
-
-			Notifier.DisplayMessage( Strings.CacheCleared, NotificationType.Success );
-		}
-
-		public ICollection<int> AvailableFetchCounts { get; }
-
-		public ICollection<CultureInfo> AvailableLanguages { get; }
-
 		[Inject]
 
 		// ReSharper disable once MemberCanBePrivate.Global
 		public ICache Cache { get; set; }
-
-		public bool CheckForUpdates
-		{
-			[DebuggerStepThrough]
-			get { return _CheckForUpdates; }
-			set
-			{
-				if( _CheckForUpdates == value )
-				{
-					return;
-				}
-
-				_CheckForUpdates = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public ICommand ClearCacheCommand => _ClearCacheCommand ?? ( _ClearCacheCommand = new RelayCommand( ExecuteClearCacheCommand ) );
-
-		public bool FilterSensitiveTweets
-		{
-			[DebuggerStepThrough]
-			get { return _FilterSensitiveTweets; }
-			set
-			{
-				if( _FilterSensitiveTweets == value )
-				{
-					return;
-				}
-
-				_FilterSensitiveTweets = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool IncludePrereleaseUpdates
-		{
-			[DebuggerStepThrough]
-			get { return _IncludePrereleaseUpdates; }
-			set
-			{
-				if( _IncludePrereleaseUpdates == value )
-				{
-					return;
-				}
-
-				_IncludePrereleaseUpdates = value;
-				RaisePropertyChanged();
-			}
-		}
 
 		[Inject]
 
 		// ReSharper disable once MemberCanBePrivate.Global
 		public INotifier Notifier { get; set; }
 
-		public bool RealtimeStreaming
-		{
-			[DebuggerStepThrough]
-			get { return _RealtimeStreaming; }
-			set
-			{
-				if( _RealtimeStreaming == value )
-				{
-					return;
-				}
-
-				_RealtimeStreaming = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public CultureInfo SelectedLanguage
-		{
-			[DebuggerStepThrough]
-			get { return _SelectedLanguage; }
-			set
-			{
-				if( _SelectedLanguage?.Name == value?.Name )
-				{
-					return;
-				}
-
-				_SelectedLanguage = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool SendVersionStats
-		{
-			[DebuggerStepThrough]
-			get { return _SendVersionStats; }
-			set
-			{
-				if( _SendVersionStats == value )
-				{
-					return;
-				}
-
-				_SendVersionStats = value;
-				RaisePropertyChanged( nameof( SendVersionStats ) );
-			}
-		}
-
-		public int TweetFetchCount
-		{
-			[DebuggerStepThrough]
-			get { return _TweetFetchCount; }
-			set
-			{
-				if( _TweetFetchCount == value )
-				{
-					return;
-				}
-
-				_TweetFetchCount = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _CheckForUpdates;
-
 		private RelayCommand _ClearCacheCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _FilterSensitiveTweets;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IncludePrereleaseUpdates;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _RealtimeStreaming;
-
 		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private CultureInfo _SelectedLanguage;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _SendVersionStats;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private int _TweetFetchCount;
 	}
 }

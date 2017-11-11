@@ -12,8 +12,8 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:proxies="clr-namespace:Twice.Views.Proxies"
              xmlns:dragDrop="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-			 AllowDrop="True" DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
-			 dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
+             AllowDrop="True" DataContext="{Binding ComposeTweet, Source={StaticResource Locator}}"
+             dragDrop:DragDrop.IsDropTarget="True" dragDrop:DragDrop.DropHandler="{Binding}"
              mc:Ignorable="d" MaxWidth="500">
 	<UserControl.Resources>
 		<proxies:ComposeTweetDataProxy Data="{Binding}" x:Key="DataProxy" />
@@ -60,11 +60,11 @@
 						<DataTemplate DataType="twitter:MediaItem">
 							<Grid Margin="5,0,0,0">
 								<Image Source="{Binding Image.Value, IsAsync=True}" MaxWidth="48" MaxHeight="48" Stretch="Fill"
-									   ToolTip="{lex:Loc ClickToRemove}">
+								       ToolTip="{lex:Loc ClickToRemove}">
 									<i:Interaction.Triggers>
 										<i:EventTrigger EventName="MouseDown">
 											<command:EventToCommand Command="{Binding Data.DeleteMediaCommand, Source={StaticResource DataProxy}}"
-																	CommandParameter="{Binding MediaId}" PassEventArgsToCommand="False" />
+											                        CommandParameter="{Binding MediaId}" PassEventArgsToCommand="False" />
 										</i:EventTrigger>
 									</i:Interaction.Triggers>
 									<Image.Style>
@@ -86,7 +86,7 @@
 
 			<StackPanel Orientation="Vertical" Grid.Column="1">
 				<CheckBox Content="{lex:Loc StayOpen}" IsChecked="{Binding StayOpen,Mode=TwoWay}"
-						  VerticalAlignment="Bottom" Margin="5,3" HorizontalAlignment="Right" />
+				          VerticalAlignment="Bottom" Margin="5,3" HorizontalAlignment="Right" />
 
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 					<ToggleButton x:Name="scheduleToggle" Style="{StaticResource MaterialDesignActionToggleButton}">
@@ -98,12 +98,13 @@
 						</materialDesign:ToggleButtonAssist.OnContent>
 					</ToggleButton>
 					<Button Content="{lex:Loc SendTweet}" Command="{Binding SendTweetCommand}"
-					HorizontalAlignment="Right" Margin="5" />
+					        HorizontalAlignment="Right" Margin="5" />
 				</StackPanel>
 			</StackPanel>
 		</Grid>
 
-		<Grid Margin="8" DockPanel.Dock="Bottom" Visibility="{Binding ElementName=scheduleToggle, Path=IsChecked, Converter={StaticResource BoolToVisibleConv}}">
+		<Grid Margin="8" DockPanel.Dock="Bottom"
+		      Visibility="{Binding ElementName=scheduleToggle, Path=IsChecked, Converter={StaticResource BoolToVisibleConv}}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -116,26 +117,28 @@
 			</DockPanel>
 
 			<StackPanel Orientation="Vertical" Grid.Row="1">
-				<CheckBox Content="{lex:Loc ScheduleTweet}" Margin="5,10" IsChecked="{Binding ScheduleInformation.IsTweetScheduled}" />
+				<CheckBox Content="{lex:Loc ScheduleTweet}" Margin="5,10"
+				          IsChecked="{Binding ScheduleInformation.IsTweetScheduled}" />
 				<DockPanel LastChildFill="False" IsEnabled="{Binding ScheduleInformation.IsTweetScheduled}">
 					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
-											SelectedDate="{Binding ScheduleInformation.ScheduleDate}" />
+					            materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
+					            SelectedDate="{Binding ScheduleInformation.ScheduleDate}" />
 					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
-														   SelectedTime="{Binding ScheduleInformation.ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
+					                           SelectedTime="{Binding ScheduleInformation.ScheduleTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					                           materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
 				</DockPanel>
 			</StackPanel>
 
 			<StackPanel Orientation="Vertical" Grid.Row="2">
-				<CheckBox Content="{lex:Loc ScheduleTweetDeletion}" Margin="5,10" IsChecked="{Binding ScheduleInformation.IsDeletionScheduled}" />
+				<CheckBox Content="{lex:Loc ScheduleTweetDeletion}" Margin="5,10"
+				          IsChecked="{Binding ScheduleInformation.IsDeletionScheduled}" />
 				<DockPanel LastChildFill="False" IsEnabled="{Binding ScheduleInformation.IsDeletionScheduled}">
 					<DatePicker Margin="5" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-											materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
-											SelectedDate="{Binding ScheduleInformation.DeletionDate}" />
+					            materialDesign:HintAssist.Hint="{lex:Loc PickDate}" DockPanel.Dock="Left" Width="150"
+					            SelectedDate="{Binding ScheduleInformation.DeletionDate}" />
 					<materialDesign:TimePicker DockPanel.Dock="Right" Margin="5" Width="150"
-														   SelectedTime="{Binding ScheduleInformation.DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-														   materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
+					                           SelectedTime="{Binding ScheduleInformation.DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					                           materialDesign:HintAssist.Hint="{lex:Loc PickTime}" />
 				</DockPanel>
 			</StackPanel>
 		</Grid>
@@ -159,7 +162,7 @@
 						<DataTemplate DataType="twitter:AccountEntry">
 							<Grid VerticalAlignment="Center" Margin="3">
 								<ToggleButton IsChecked="{Binding Use, Mode=TwoWay}" Style="{StaticResource MaterialDesignActionToggleButton}"
-											  ToolTip="{Binding ScreenName, StringFormat=@{0}}">
+								              ToolTip="{Binding ScreenName, StringFormat=@{0}}">
 									<Image Source="{Binding Image, IsAsync=True}" />
 								</ToggleButton>
 							</Grid>
@@ -181,10 +184,12 @@
 				</Grid.ColumnDefinitions>
 
 				<Grid Grid.ColumnSpan="2" Height="80">
-					<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-							 IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}" VerticalScrollBarVisibility="Auto"
-							 Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}" MaxHeight="80"
-							 VerticalAlignment="Top" x:Name="txtInput" AllowDrop="True">
+					<TextBox AcceptsReturn="True" AcceptsTab="True" FontSize="16"
+					         Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					         IsEnabled="{Binding IsSending, Converter={StaticResource InvertBoolConv}}"
+					         VerticalScrollBarVisibility="Auto"
+					         Margin="5" TextWrapping="Wrap" materialDesign:HintAssist.Hint="{lex:Loc WhatsHappening}" MaxHeight="80"
+					         VerticalAlignment="Top" x:Name="txtInput" AllowDrop="True">
 						<TextBox.InputBindings>
 							<KeyBinding Modifiers="Control" Key="Return" Command="{Binding SendTweetCommand}" />
 						</TextBox.InputBindings>
@@ -197,13 +202,16 @@
 				</Grid>
 
 				<controls:ProgressRing Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
-									   IsActive="{Binding IsSending, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+				                       IsActive="{Binding IsSending, Mode=OneWay}" VerticalAlignment="Center"
+				                       HorizontalAlignment="Center" />
 
-				<CheckBox Grid.Column="0" Grid.Row="1" Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}" Margin="2"
-						  Content="{lex:Loc ConfirmTweet}" IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				<CheckBox Grid.Column="0" Grid.Row="1"
+				          Visibility="{Binding ConfirmationRequired, Converter={StaticResource BoolToVisibleConv}}" Margin="2"
+				          Content="{lex:Loc ConfirmTweet}"
+				          IsChecked="{Binding ConfirmationSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 				<TextBlock Text="{Binding TextLength, StringFormat={lex:Loc CharacterCounter}}" Grid.Row="1" Margin="5"
-						   Grid.Column="1" HorizontalAlignment="Right">
+				           Grid.Column="1" HorizontalAlignment="Right">
 					<TextBlock.Style>
 						<Style TargetType="{x:Type TextBlock}">
 							<Style.Triggers>
@@ -222,12 +230,14 @@
 
 			<!-- Quoted Tweet Start -->
 			<GroupBox Visibility="{Binding QuotedTweet, Converter={StaticResource VisibleNotNullConv}}"
-					  Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+			          Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
 				<GroupBox.HeaderTemplate>
 					<DataTemplate>
 						<DockPanel LastChildFill="True">
-							<Button Command="{Binding Data.RemoveQuoteCommand, Source={StaticResource DataProxy}}" Margin="5" VerticalAlignment="Center"
-									DockPanel.Dock="Right" Style="{StaticResource MaterialDesignToolForegroundButton}" ToolTip="{lex:Loc RemoveQuote}">
+							<Button Command="{Binding Data.RemoveQuoteCommand, Source={StaticResource DataProxy}}" Margin="5"
+							        VerticalAlignment="Center"
+							        DockPanel.Dock="Right" Style="{StaticResource MaterialDesignToolForegroundButton}"
+							        ToolTip="{lex:Loc RemoveQuote}">
 								<materialDesign:PackIcon Kind="CloseCircleOutline" />
 							</Button>
 
@@ -240,7 +250,7 @@
 					<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 						<TextBlock Text="{Binding QuotedTweet.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
 						<TextBlock Text="{Binding QuotedTweet.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
-										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+						           VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 					</StackPanel>
 					<TextBlock Text="{Binding QuotedTweet.Model.Text}" TextWrapping="Wrap" Margin="5" />
 				</StackPanel>
@@ -249,13 +259,13 @@
 
 			<!-- Reply to Tweet Start -->
 			<GroupBox Visibility="{Binding InReplyTo, Converter={StaticResource VisibleNotNullConv}}"
-					  Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+			          Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
 				<GroupBox.HeaderTemplate>
 					<DataTemplate>
 						<DockPanel LastChildFill="True">
 							<Button Style="{StaticResource MaterialDesignToolForegroundButton}" DockPanel.Dock="Right"
-									Command="{Binding Data.RemoveReplyCommand, Source={StaticResource DataProxy}}"
-									ToolTip="{lex:Loc RemoveReply}" VerticalAlignment="Center">
+							        Command="{Binding Data.RemoveReplyCommand, Source={StaticResource DataProxy}}"
+							        ToolTip="{lex:Loc RemoveReply}" VerticalAlignment="Center">
 								<materialDesign:PackIcon Kind="CloseCircleOutline" />
 							</Button>
 
@@ -268,7 +278,7 @@
 					<StackPanel Orientation="Horizontal" Margin="5,5,0,5">
 						<TextBlock Text="{Binding InReplyTo.Model.User.Name}" FontWeight="Bold" VerticalAlignment="Center" />
 						<TextBlock Text="{Binding InReplyTo.Model.User.ScreenNameResponse, StringFormat='@{0}'}"
-										   VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
+						           VerticalAlignment="Center" Margin="5,0" FontWeight="Thin" />
 					</StackPanel>
 					<TextBlock Text="{Binding InReplyTo.Model.Text}" TextWrapping="Wrap" Margin="5" />
 				</StackPanel>

@@ -7,7 +7,7 @@ using Twice.ViewModels.Twitter;
 
 namespace Twice.ViewModels.Columns
 {
-	enum AsyncLoadContext
+	internal enum AsyncLoadContext
 	{
 		Default,
 		Ui
@@ -15,12 +15,6 @@ namespace Twice.ViewModels.Columns
 
 	internal interface IColumnViewModel
 	{
-		event EventHandler Changed;
-
-		event EventHandler Deleted;
-
-		event EventHandler<ColumnItemEventArgs> NewItem;
-
 		Task Load( AsyncLoadContext context = AsyncLoadContext.Default );
 
 		void UpdateRelativeTimes();
@@ -36,5 +30,10 @@ namespace Twice.ViewModels.Columns
 		string SubTitle { get; set; }
 		string Title { get; set; }
 		double Width { get; set; }
+		event EventHandler Changed;
+
+		event EventHandler Deleted;
+
+		event EventHandler<ColumnItemEventArgs> NewItem;
 	}
 }

@@ -1,11 +1,11 @@
-using GalaSoft.MvvmLight.CommandWpf;
-using LinqToTwitter;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using LinqToTwitter;
+using NLog;
 using Twice.Models.Configuration;
 using Twice.Models.Scheduling;
 using Twice.Models.Twitter.Entities;

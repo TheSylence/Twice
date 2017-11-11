@@ -92,7 +92,7 @@ namespace Twice.ViewModels.Profile
 
 			if( maxId == null )
 			{
-				await Dispatcher.RunAsync( () => Center() );
+				await Dispatcher.RunAsync( Center );
 			}
 
 			if( statuses.Any() )
@@ -103,7 +103,7 @@ namespace Twice.ViewModels.Profile
 				{
 					if( maxId == null )
 					{
-						await Dispatcher.RunAsync( () => Center() );
+						await Dispatcher.RunAsync( Center );
 					}
 				} ).Forget();
 			}
@@ -173,42 +173,16 @@ namespace Twice.ViewModels.Profile
 			};
 			RaisePropertyChanged( nameof(UserPages) );
 
-			await Dispatcher.RunAsync( () => Center() );
+			await Dispatcher.RunAsync( Center );
 			IsBusy = false;
 		}
 
 		public ICommand FollowUserCommand => _FollowUserCommand ?? ( _FollowUserCommand = new RelayCommand(
 			                                     ExecuteFollowUserCommand ) );
 
-		public Friendship Friendship
-		{
-			[DebuggerStepThrough] get { return _Friendship; }
-			set
-			{
-				if( _Friendship == value )
-				{
-					return;
-				}
+		public Friendship Friendship { get; set; }
 
-				_Friendship = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool IsBusy
-		{
-			[DebuggerStepThrough] get { return _IsBusy; }
-			set
-			{
-				if( _IsBusy == value )
-				{
-					return;
-				}
-
-				_IsBusy = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsBusy { get; set; }
 
 		public void Setup( ulong profileId )
 		{
@@ -247,10 +221,6 @@ namespace Twice.ViewModels.Profile
 		public INotifier Notifier { get; set; }
 
 		private RelayCommand _FollowUserCommand;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Friendship _Friendship;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsBusy;
 
 		private RelayCommand _UnfollowUserCommand;
 

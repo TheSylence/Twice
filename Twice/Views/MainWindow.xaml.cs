@@ -48,7 +48,7 @@ namespace Twice.Views
 
 			{
 				var kernel = App.Kernel;
-				kernel.Get<INotifier>().DisplayMessage( "DEBUG MESSAGE", NotificationType.Information  );
+				kernel.Get<INotifier>().DisplayMessage( "DEBUG MESSAGE", NotificationType.Information );
 			}
 		}
 

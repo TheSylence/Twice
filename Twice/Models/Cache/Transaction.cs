@@ -22,18 +22,18 @@ namespace Twice.Models.Cache
 			SqliteHelper.ExecuteNonQuerySafe( "COMMIT TRANSACTION;", Connection );
 		}
 
+		[Conditional( "DEBUG" )]
+		private static void CaptureStackTrace()
+		{
+			LastCreationTrace = new StackTrace();
+		}
+
 		public void Dispose()
 		{
 			if( !Done )
 			{
 				SqliteHelper.ExecuteNonQuerySafe( "ROLLBACK TRANSACTION;", Connection );
 			}
-		}
-
-		[Conditional( "DEBUG" )]
-		private static void CaptureStackTrace()
-		{
-			LastCreationTrace = new StackTrace();
 		}
 
 		// ReSharper disable once NotAccessedField.Local => Used for debugging

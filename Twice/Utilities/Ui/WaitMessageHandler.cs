@@ -1,7 +1,7 @@
-using GalaSoft.MvvmLight.Messaging;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Messaging;
 using Twice.Messages;
 
 namespace Twice.Utilities.Ui

@@ -5,22 +5,16 @@ namespace Twice.ViewModels
 {
 	internal enum Icon
 	{
-		[Icon( PackIconKind.Account )]
-		User,
+		[Icon( PackIconKind.Account )] User,
 
-		[Icon( PackIconKind.Home )]
-		Home,
+		[Icon( PackIconKind.Home )] Home,
 
-		[Icon( PackIconKind.At )]
-		Mentions,
+		[Icon( PackIconKind.At )] Mentions,
 
-		[Icon( PackIconKind.Message )]
-		Messages,
+		[Icon( PackIconKind.Message )] Messages,
 
-		[Icon( PackIconKind.Star )]
-		Favorites,
+		[Icon( PackIconKind.Star )] Favorites,
 
-		[Icon( PackIconKind.Alarm )]
-		Schedule
+		[Icon( PackIconKind.Alarm )] Schedule
 	}
 }

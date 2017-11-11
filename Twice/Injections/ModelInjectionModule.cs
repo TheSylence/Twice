@@ -1,5 +1,5 @@
-﻿using Ninject.Modules;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ninject.Modules;
 using Twice.Models.Cache;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
@@ -14,7 +14,7 @@ namespace Twice.Injections
 	internal class ModelInjectionModule : NinjectModule
 	{
 		/// <summary>
-		///  Loads the module into the kernel. 
+		///     Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{

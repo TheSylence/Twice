@@ -1,12 +1,12 @@
-using Anotar.NLog;
-using Fody;
-using LinqToTwitter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anotar.NLog;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 using Twice.Models.Twitter.Repositories;
 
@@ -29,22 +29,27 @@ namespace Twice.Models.Twitter
 			Favorites = new TwitterFavoritesRepository( context, cache );
 		}
 
-		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
-		{
-			return Context.CreateBlockAsync( userId, screenName, skipStatus );
-		}
-
 		public void Dispose()
 		{
 			Context.Dispose();
 		}
 
+		public IAuthorizer Authorizer => Context.Authorizer;
+
+		public Task<User> CreateBlockAsync( ulong userId, string screenName, bool skipStatus )
+		{
+			return Context.CreateBlockAsync( userId, screenName, skipStatus );
+		}
+
+		public ITwitterFavoritesRepository Favorites { get; }
+		public ITwitterFriendshipRepository Friendships { get; }
+
 		public string GetAuthorizationString( string requestUrl, string method = "GET" )
 		{
 			var parameters = new Dictionary<string, string>
 			{
-				{ "oauth_token", Context.Authorizer.CredentialStore.OAuthToken },
-				{ "oauth_consumer_key", Context.Authorizer.CredentialStore.ConsumerKey }
+				{"oauth_token", Context.Authorizer.CredentialStore.OAuthToken},
+				{"oauth_consumer_key", Context.Authorizer.CredentialStore.ConsumerKey}
 			};
 
 			return Context.Authorizer.GetAuthorizationString( method, requestUrl, parameters );
@@ -93,16 +98,24 @@ namespace Twice.Models.Twitter
 			}
 		}
 
+		public ITwitterMessageRepository Messages { get; }
+
 		public async Task ReportAsSpam( ulong userId )
 		{
 			await Context.ReportSpamAsync( userId );
 		}
+
+		public ITwitterSearchRepository Search { get; }
+		public ITwitterStatusRepository Statuses { get; }
+		public ITwitterStreamingRepository Streaming { get; }
 
 		public Task<LinqToTwitter.Media> UploadMediaAsync( byte[] mediaData, string mediaType,
 			IEnumerable<ulong> additionalOwners )
 		{
 			return Context.UploadMediaAsync( mediaData, mediaType, additionalOwners, "tweet_image" );
 		}
+
+		public ITwitterUserRepository Users { get; }
 
 		public async Task<bool> VerifyCredentials()
 		{
@@ -112,14 +125,6 @@ namespace Twice.Models.Twitter
 			return verifyResponse?.User != null;
 		}
 
-		public IAuthorizer Authorizer => Context.Authorizer;
-		public ITwitterFavoritesRepository Favorites { get; }
-		public ITwitterFriendshipRepository Friendships { get; }
-		public ITwitterMessageRepository Messages { get; }
-		public ITwitterSearchRepository Search { get; }
-		public ITwitterStatusRepository Statuses { get; }
-		public ITwitterStreamingRepository Streaming { get; }
-		public ITwitterUserRepository Users { get; }
 		private readonly TwitterContext Context;
 	}
 }

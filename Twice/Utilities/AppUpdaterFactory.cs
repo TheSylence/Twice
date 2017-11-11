@@ -1,5 +1,5 @@
-using Squirrel;
 using System.Threading.Tasks;
+using Squirrel;
 
 namespace Twice.Utilities
 {

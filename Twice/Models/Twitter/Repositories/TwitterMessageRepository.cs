@@ -1,9 +1,9 @@
-using Fody;
-using LinqToTwitter;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
 using Twice.Models.Cache;
 
 namespace Twice.Models.Twitter.Repositories
@@ -20,6 +20,7 @@ namespace Twice.Models.Twitter.Repositories
 		{
 			// ReSharper disable RedundantBoolCompare
 			var query = Queryable.Where( dm => dm.Type == DirectMessageType.SentTo && dm.Count == count && dm.FullText == true && dm.IncludeEntities == true );
+
 			// ReSharper restore RedundantBoolCompare
 			if( maxId.HasValue && maxId.Value != ulong.MaxValue )
 			{
@@ -42,6 +43,7 @@ namespace Twice.Models.Twitter.Repositories
 		{
 			// ReSharper disable RedundantBoolCompare
 			var query = Queryable.Where( dm => dm.Type == DirectMessageType.SentBy && dm.Count == count && dm.FullText == true && dm.IncludeEntities == true );
+
 			// ReSharper restore RedundantBoolCompare
 			if( maxId.HasValue && maxId.Value != ulong.MaxValue )
 			{

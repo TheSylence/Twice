@@ -25,7 +25,7 @@ namespace Twice.Models.Columns
 			}
 
 			return SourceAccounts.Compare( other.SourceAccounts ) &&
-					TargetAccounts.Compare( other.TargetAccounts );
+			       TargetAccounts.Compare( other.TargetAccounts );
 		}
 
 		[SuppressMessage( "ReSharper", "NonReadonlyMemberInGetHashCode" )]

@@ -1,6 +1,6 @@
-﻿using Anotar.NLog;
+﻿using System.IO;
+using Anotar.NLog;
 using Newtonsoft.Json;
-using System.IO;
 using Twice.Utilities;
 
 namespace Twice.Models.Configuration
@@ -23,7 +23,7 @@ namespace Twice.Models.Configuration
 					try
 					{
 						Config tmp = Serializer?.Deserialize<Config>( json );
-						if (tmp != null)
+						if( tmp != null )
 						{
 							Visual = tmp.Visual;
 							General = tmp.General;
@@ -44,12 +44,6 @@ namespace Twice.Models.Configuration
 			}
 		}
 
-		public void Save()
-		{
-			string json = Serializer.Serialize( this );
-			File.WriteAllText( FileName, json );
-		}
-
 		private void DefaultConfig()
 		{
 			LogTo.Info( "No configuration saved. Loading default values" );
@@ -62,6 +56,13 @@ namespace Twice.Models.Configuration
 		public GeneralConfig General { get; set; }
 		public MuteConfig Mute { get; set; }
 		public NotificationConfig Notifications { get; set; }
+
+		public void Save()
+		{
+			string json = Serializer.Serialize( this );
+			File.WriteAllText( FileName, json );
+		}
+
 		public VisualConfig Visual { get; set; }
 		private readonly string FileName;
 		private readonly ISerializer Serializer;

@@ -6,8 +6,6 @@ namespace Twice.ViewModels.Columns
 {
 	internal interface IColumnConfigurationViewModel
 	{
-		event EventHandler Saved;
-
 		ColumnDefinition Definition { get; }
 		bool IsExpanded { get; set; }
 
@@ -16,5 +14,6 @@ namespace Twice.ViewModels.Columns
 
 		bool SoundEnabled { get; set; }
 		bool ToastsEnabled { get; set; }
+		event EventHandler Saved;
 	}
 }

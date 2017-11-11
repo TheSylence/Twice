@@ -1,10 +1,10 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using LinqToTwitter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
+using LinqToTwitter;
 using Twice.Models.Columns;
 using Twice.Models.Configuration;
 using Twice.Models.Twitter;
@@ -84,8 +84,8 @@ namespace Twice.ViewModels.Columns
 		}
 
 		public override Icon Icon => Icon.Favorites;
-		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Favorited;
 		private Expression<Func<Favorites, bool>> MaxIdFilterExpressionFavorites { get; }
 		private Expression<Func<Favorites, bool>> SinceIdFilterExpressionFavorites { get; }
+		protected override Expression<Func<Status, bool>> StatusFilterExpression => s => s.Favorited;
 	}
 }

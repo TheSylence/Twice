@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -44,8 +43,6 @@ namespace Twice.ViewModels.Twitter
 			}
 		}
 
-		public event EventHandler OpenRequested;
-		
 		public override bool Equals( object obj )
 		{
 			var other = obj as StatusMediaViewModel;
@@ -54,7 +51,7 @@ namespace Twice.ViewModels.Twitter
 				return false;
 			}
 
-			return TwitterComparers.MediaEntityComparer.Equals(Entity, other.Entity);
+			return TwitterComparers.MediaEntityComparer.Equals( Entity, other.Entity );
 		}
 
 		public override int GetHashCode()
@@ -67,84 +64,24 @@ namespace Twice.ViewModels.Twitter
 			OpenRequested?.Invoke( this, EventArgs.Empty );
 		}
 
-		public Uri DisplayUrl
-		{
-			[DebuggerStepThrough] get { return _DisplayUrl; }
-			set
-			{
-				if( _DisplayUrl == value )
-				{
-					return;
-				}
-
-				_DisplayUrl = value;
-				RaisePropertyChanged( nameof( DisplayUrl ) );
-			}
-		}
+		public Uri DisplayUrl { get; set; }
 
 		public bool IsAnimated => Type == MediaType.Animated;
 
-		public bool IsMuted
-		{
-			[DebuggerStepThrough] get { return _IsMuted; }
-			set
-			{
-				if( _IsMuted == value )
-				{
-					return;
-				}
+		public bool IsMuted { get; set; } = true;
 
-				_IsMuted = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsPlaying { get; set; } = true;
 
-		public bool IsPlaying
-		{
-			[DebuggerStepThrough] get { return _IsPlaying; }
-			set
-			{
-				if( _IsPlaying == value )
-				{
-					return;
-				}
-
-				_IsPlaying = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public bool Loop
-		{
-			[DebuggerStepThrough] get { return _Loop; }
-			set
-			{
-				if( _Loop == value )
-				{
-					return;
-				}
-
-				_Loop = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool Loop { get; set; } = true;
 
 		public ICommand OpenImageCommand => _OpenImageCommand ?? ( _OpenImageCommand = new RelayCommand(
 			                                    ExecuteOpenImageCommand ) );
 
 		public Uri Url { get; }
 		private readonly MediaEntity Entity;
-
 		private readonly MediaType Type;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private Uri _DisplayUrl;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsMuted = true;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _IsPlaying = true;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _Loop = true;
-
 		private RelayCommand _OpenImageCommand;
+
+		public event EventHandler OpenRequested;
 	}
 }

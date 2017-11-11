@@ -1,12 +1,11 @@
-﻿using Fody;
-using LinqToTwitter;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Fody;
+using LinqToTwitter;
+using Newtonsoft.Json;
 using Twice.Models.Twitter;
 using Twice.Resources;
 
@@ -19,8 +18,6 @@ namespace Twice.ViewModels.Twitter
 			PreviousMessages = new ObservableCollection<MessageViewModel>();
 			Title = Strings.Message;
 		}
-
-		public event EventHandler ScrollRequested;
 
 		[ConfigureAwait( false )]
 		public async Task OnLoad( object data )
@@ -44,49 +41,16 @@ namespace Twice.ViewModels.Twitter
 				await Dispatcher.RunAsync( () => PreviousMessages.Add( msg ) );
 			}
 
-			RaisePropertyChanged( nameof( PreviousMessages ) );
+			RaisePropertyChanged( nameof(PreviousMessages) );
 			IsLoadingPrevious = false;
 			await Dispatcher.RunAsync( () => ScrollRequested?.Invoke( this, EventArgs.Empty ) );
 		}
 
-		public bool IsLoadingPrevious
-		{
-			[DebuggerStepThrough]
-			get { return _IsLoadingPrevious; }
-			private set
-			{
-				if( _IsLoadingPrevious == value )
-				{
-					return;
-				}
-
-				_IsLoadingPrevious = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public MessageViewModel Message
-		{
-			[DebuggerStepThrough]
-			get { return _Message; }
-			set
-			{
-				if( _Message == value )
-				{
-					return;
-				}
-
-				_Message = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool IsLoadingPrevious { get; set; }
+		public MessageViewModel Message { get; set; }
 
 		public ICollection<MessageViewModel> PreviousMessages { get; }
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _IsLoadingPrevious;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private MessageViewModel _Message;
+		public event EventHandler ScrollRequested;
 	}
 }

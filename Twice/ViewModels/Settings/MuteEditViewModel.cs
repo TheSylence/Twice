@@ -1,7 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Twice.Resources;
 using Twice.ViewModels.Validation;
 
@@ -23,10 +23,6 @@ namespace Twice.ViewModels.Settings
 			HasEndDate = false;
 			CaseSensitive = false;
 		}
-
-		public event EventHandler Cancelled;
-
-		public event EventHandler<MuteEditArgs> Saved;
 
 		private bool CanExecuteSaveCommand()
 		{
@@ -57,58 +53,17 @@ namespace Twice.ViewModels.Settings
 
 		public ICommand CancelCommand => _CancelCommand ?? ( _CancelCommand = new RelayCommand( ExecuteCancelCommand ) );
 
-		public bool CaseSensitive
-		{
-			[DebuggerStepThrough]
-			get { return _CaseSensitive; }
-			set
-			{
-				if( _CaseSensitive == value )
-				{
-					return;
-				}
+		public event EventHandler Cancelled;
 
-				_CaseSensitive = value;
-				RaisePropertyChanged();
-			}
-		}
+		public bool CaseSensitive { get; set; }
 
-		public DateTime EndDate
-		{
-			[DebuggerStepThrough]
-			get { return _EndDate; }
-			set
-			{
-				if( _EndDate == value )
-				{
-					return;
-				}
+		public DateTime EndDate { get; set; }
 
-				_EndDate = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string Filter
-		{
-			[DebuggerStepThrough]
-			get { return _Filter; }
-			set
-			{
-				if( _Filter == value )
-				{
-					return;
-				}
-
-				_Filter = value;
-				RaisePropertyChanged();
-			}
-		}
+		public string Filter { get; set; }
 
 		public bool HasEndDate
 		{
-			[DebuggerStepThrough]
-			get { return _HasEndDate; }
+			[DebuggerStepThrough] get { return _HasEndDate; }
 			set
 			{
 				if( _HasEndDate == value )
@@ -118,32 +73,22 @@ namespace Twice.ViewModels.Settings
 
 				_HasEndDate = value;
 				RaisePropertyChanged();
-				RaiseErrorsChanged( nameof( EndDate ) );
-				RaisePropertyChanged( nameof( EndDate ) );
+				RaiseErrorsChanged( nameof(EndDate) );
+				RaisePropertyChanged( nameof(EndDate) );
 			}
 		}
 
 		public ICommand SaveCommand
 			=> _SaveCommand ?? ( _SaveCommand = new RelayCommand( ExecuteSaveCommand, CanExecuteSaveCommand ) );
 
+		public event EventHandler<MuteEditArgs> Saved;
+
 		private readonly MuteEditAction Action;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _CancelCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _CancelCommand;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _CaseSensitive;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private bool _HasEndDate;
 
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private DateTime _EndDate;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private string _Filter;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private bool _HasEndDate;
-
-		[DebuggerBrowsable( DebuggerBrowsableState.Never )]
-		private RelayCommand _SaveCommand;
+		[DebuggerBrowsable( DebuggerBrowsableState.Never )] private RelayCommand _SaveCommand;
 	}
 }

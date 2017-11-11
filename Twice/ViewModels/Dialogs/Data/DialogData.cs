@@ -11,8 +11,6 @@ namespace Twice.ViewModels.Dialogs.Data
 			ViewModelType = viewModelType;
 		}
 
-		public abstract bool Equals( DialogData obj );
-
 		public override bool Equals( object obj )
 		{
 			var data = obj as DialogData;
@@ -31,6 +29,7 @@ namespace Twice.ViewModels.Dialogs.Data
 			{
 				hash = hash * 23 + ControlType.GetHashCode();
 				hash = hash * 23 + ViewModelType.GetHashCode();
+
 				//? Do we need to ensure that inherited classes offer a hash code?
 			}
 			return hash;
@@ -46,6 +45,8 @@ namespace Twice.ViewModels.Dialogs.Data
 
 			return viewModel as TViewModel;
 		}
+
+		public abstract bool Equals( DialogData obj );
 
 		public Type ControlType { get; }
 		public Type ViewModelType { get; }

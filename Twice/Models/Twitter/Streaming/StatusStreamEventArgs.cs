@@ -4,12 +4,12 @@ using LitJson;
 namespace Twice.Models.Twitter.Streaming
 {
 	/// <summary>
-	///  Arguments for a streaming event associated to a status. 
+	///     Arguments for a streaming event associated to a status.
 	/// </summary>
 	internal class StatusStreamEventArgs : StreamEventArgs
 	{
 		/// <summary>
-		///  Initializes a new instance of the <see cref="StatusStreamEventArgs" /> class. 
+		///     Initializes a new instance of the <see cref="StatusStreamEventArgs" /> class.
 		/// </summary>
 		/// <param name="json"> The content. </param>
 		public StatusStreamEventArgs( string json )
@@ -25,7 +25,7 @@ namespace Twice.Models.Twitter.Streaming
 		}
 
 		/// <summary>
-		///  The received status. 
+		///     The received status.
 		/// </summary>
 		public Status Status { get; private set; }
 	}

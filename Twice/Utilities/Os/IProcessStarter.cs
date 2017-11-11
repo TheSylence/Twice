@@ -2,7 +2,7 @@
 {
 	internal interface IProcessStarter
 	{
-		void Start( string proc );
 		void Restart();
+		void Start( string proc );
 	}
 }

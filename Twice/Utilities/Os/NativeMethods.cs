@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace Twice.Utilities.Os
 {
 	/// <summary>
-	///  Class holding native interop methods. 
+	///     Class holding native interop methods.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	[SuppressMessage( "ReSharper", "InconsistentNaming" )]
@@ -144,37 +144,35 @@ namespace Twice.Utilities.Os
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_DEVICE_INFO_HEADER
 		{
-			public DISPLAYCONFIG_DEVICE_INFO_TYPE type;
-			public uint size;
 			public LUID adapterId;
 			public uint id;
+			public uint size;
+			public DISPLAYCONFIG_DEVICE_INFO_TYPE type;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_MODE_INFO
 		{
-			public DISPLAYCONFIG_MODE_INFO_TYPE infoType;
-			public uint id;
 			public LUID adapterId;
+			public uint id;
+			public DISPLAYCONFIG_MODE_INFO_TYPE infoType;
 			public DISPLAYCONFIG_MODE_INFO_UNION modeInfo;
 		}
 
 		[StructLayout( LayoutKind.Explicit )]
 		public struct DISPLAYCONFIG_MODE_INFO_UNION
 		{
-			[FieldOffset( 0 )]
-			public DISPLAYCONFIG_TARGET_MODE targetMode;
+			[FieldOffset( 0 )] public DISPLAYCONFIG_SOURCE_MODE sourceMode;
 
-			[FieldOffset( 0 )]
-			public DISPLAYCONFIG_SOURCE_MODE sourceMode;
+			[FieldOffset( 0 )] public DISPLAYCONFIG_TARGET_MODE targetMode;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_PATH_INFO
 		{
+			public uint flags;
 			public DISPLAYCONFIG_PATH_SOURCE_INFO sourceInfo;
 			public DISPLAYCONFIG_PATH_TARGET_INFO targetInfo;
-			public uint flags;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
@@ -192,46 +190,45 @@ namespace Twice.Utilities.Os
 			public LUID adapterId;
 			public uint id;
 			public uint modeInfoIdx;
-			private DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY outputTechnology;
-			private DISPLAYCONFIG_ROTATION rotation;
-			private DISPLAYCONFIG_SCALING scaling;
-			private DISPLAYCONFIG_RATIONAL refreshRate;
-			private DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
-			public bool targetAvailable;
+			private readonly DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY outputTechnology;
+			private readonly DISPLAYCONFIG_RATIONAL refreshRate;
+			private readonly DISPLAYCONFIG_ROTATION rotation;
+			private readonly DISPLAYCONFIG_SCALING scaling;
+			private readonly DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
 			public uint statusFlags;
+			public bool targetAvailable;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_RATIONAL
 		{
-			public uint Numerator;
 			public uint Denominator;
+			public uint Numerator;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_SOURCE_MODE
 		{
-			public uint width;
 			public uint height;
 			public DISPLAYCONFIG_PIXELFORMAT pixelFormat;
 			public POINTL position;
+			public uint width;
 		}
 
 		[StructLayout( LayoutKind.Sequential, CharSet = CharSet.Unicode )]
 		public struct DISPLAYCONFIG_TARGET_DEVICE_NAME
 		{
-			public DISPLAYCONFIG_DEVICE_INFO_HEADER header;
-			public DISPLAYCONFIG_TARGET_DEVICE_NAME_FLAGS flags;
-			public DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY outputTechnology;
+			public uint connectorInstance;
 			public ushort edidManufactureId;
 			public ushort edidProductCodeId;
-			public uint connectorInstance;
+			public DISPLAYCONFIG_TARGET_DEVICE_NAME_FLAGS flags;
+			public DISPLAYCONFIG_DEVICE_INFO_HEADER header;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 64 )]
-			public string monitorFriendlyDeviceName;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )] public string monitorDevicePath;
 
-			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
-			public string monitorDevicePath;
+			[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 64 )] public string monitorFriendlyDeviceName;
+
+			public DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY outputTechnology;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
@@ -249,20 +246,20 @@ namespace Twice.Utilities.Os
 		[StructLayout( LayoutKind.Sequential )]
 		public struct DISPLAYCONFIG_VIDEO_SIGNAL_INFO
 		{
-			public ulong pixelRate;
-			public DISPLAYCONFIG_RATIONAL hSyncFreq;
-			public DISPLAYCONFIG_RATIONAL vSyncFreq;
 			public DISPLAYCONFIG_2DREGION activeSize;
+			public DISPLAYCONFIG_RATIONAL hSyncFreq;
+			public ulong pixelRate;
+			public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
 			public DISPLAYCONFIG_2DREGION totalSize;
 			public uint videoStandard;
-			public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
+			public DISPLAYCONFIG_RATIONAL vSyncFreq;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]
 		public struct LUID
 		{
-			public uint LowPart;
 			public int HighPart;
+			public uint LowPart;
 		}
 
 		[StructLayout( LayoutKind.Sequential )]

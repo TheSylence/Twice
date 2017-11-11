@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -10,11 +9,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 
 namespace Twice.Behaviors
 {
 	/// <summary>
-	///  Behavior that can be attached to a TextBox to allow autocomplete functionality. 
+	///     Behavior that can be attached to a TextBox to allow autocomplete functionality.
 	/// </summary>
 	[ExcludeFromCodeCoverage]
 	internal class AutoComplete : BehaviorBase<TextBox>
@@ -35,13 +35,6 @@ namespace Twice.Behaviors
 			ShadowAssist.SetShadowDepth( AutoCompletePopup, ShadowDepth.Depth3 );
 
 			AutoCompletePopup.Closed += AutoCompletePopup_Closed;
-		}
-
-		private enum SourceMode
-		{
-			None,
-			Hashtags,
-			Users
 		}
 
 		protected override void OnAttached()
@@ -202,17 +195,12 @@ namespace Twice.Behaviors
 			AssociatedObject.CaretIndex = currentCaret + insertText.Length;
 		}
 
-		public IEnumerable<string> Hashtags
-		{
-			get { return (IEnumerable<string>)GetValue( ItemsSourceProperty ); }
-			set { SetValue( ItemsSourceProperty, value ); }
-		}
+		public static readonly DependencyProperty ItemsSourceProperty =
+			DependencyProperty.Register( "Hashtags", typeof( IEnumerable<string> ), typeof( AutoComplete ),
+				new PropertyMetadata( new string[] { } ) );
 
-		public IEnumerable<string> Users
-		{
-			get { return (IEnumerable<string>)GetValue( UsersProperty ); }
-			set { SetValue( UsersProperty, value ); }
-		}
+		public static readonly DependencyProperty UsersProperty =
+			DependencyProperty.Register( "Users", typeof( IEnumerable<string> ), typeof( AutoComplete ), new PropertyMetadata( new string[] { } ) );
 
 		private IEnumerable<string> FilteredHashtags
 		{
@@ -246,16 +234,28 @@ namespace Twice.Behaviors
 			}
 		}
 
-		public static readonly DependencyProperty ItemsSourceProperty =
-			DependencyProperty.Register( "Hashtags", typeof( IEnumerable<string> ), typeof( AutoComplete ),
-				new PropertyMetadata( new string[] { } ) );
+		public IEnumerable<string> Hashtags
+		{
+			get => (IEnumerable<string>)GetValue( ItemsSourceProperty );
+			set => SetValue( ItemsSourceProperty, value );
+		}
 
-		public static readonly DependencyProperty UsersProperty =
-			DependencyProperty.Register( "Users", typeof( IEnumerable<string> ), typeof( AutoComplete ), new PropertyMetadata( new string[] { } ) );
+		public IEnumerable<string> Users
+		{
+			get => (IEnumerable<string>)GetValue( UsersProperty );
+			set => SetValue( UsersProperty, value );
+		}
 
 		private readonly ListView AutoCompleteBox;
 		private readonly Popup AutoCompletePopup;
 		private string FilterText;
 		private SourceMode Mode = SourceMode.None;
+
+		private enum SourceMode
+		{
+			None,
+			Hashtags,
+			Users
+		}
 	}
 }

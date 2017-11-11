@@ -1,9 +1,9 @@
-﻿using Anotar.NLog;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Anotar.NLog;
+using Newtonsoft.Json;
 using Twice.Models.Cache;
 using Twice.Utilities;
 using Twice.ViewModels;
@@ -31,7 +31,7 @@ namespace Twice.Models.Twitter
 			try
 			{
 				accountData = Serializer.Deserialize<List<TwitterAccountData>>( json ) ??
-							new List<TwitterAccountData>();
+				              new List<TwitterAccountData>();
 			}
 			catch( JsonReaderException )
 			{
@@ -48,57 +48,6 @@ namespace Twice.Models.Twitter
 					return ctx;
 				} );
 			} ).ToList();
-		}
-
-		public event EventHandler ContextsChanged;
-
-		public void AddContext( TwitterAccountData data )
-		{
-			LogTo.Info( $"Adding account data for {data.AccountName} ({data.UserId})" );
-			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
-
-			SaveToFile();
-
-			ContextsChanged?.Invoke( this, EventArgs.Empty );
-		}
-
-		public void Dispose()
-		{
-			Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-
-		public void RemoveAccount( ulong userId )
-		{
-			LogTo.Info( $"Removing account {userId}" );
-			var toRemove = Contexts.FirstOrDefault( c => c.UserId == userId );
-			if( toRemove == null )
-			{
-				LogTo.Warn( "Account wasn't found" );
-				return;
-			}
-
-			Contexts.Remove( toRemove );
-			SaveToFile();
-		}
-
-		/// <summary>
-		///  Only pass decrypted data to this method. 
-		/// </summary>
-		/// <param name="data"></param>
-		public void UpdateAccount( TwitterAccountData data )
-		{
-			LogTo.Info( $"Updating account data for {data.AccountName} ({data.UserId})" );
-			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
-			Contexts.Remove( context );
-
-			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
-			SaveToFile();
-		}
-
-		public void UpdateAllAccounts()
-		{
-			SaveToFile();
 		}
 
 		private void Dispose( bool disposing )
@@ -134,7 +83,59 @@ namespace Twice.Models.Twitter
 			File.WriteAllText( FileName, json );
 		}
 
+		public void Dispose()
+		{
+			Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		public void AddContext( TwitterAccountData data )
+		{
+			LogTo.Info( $"Adding account data for {data.AccountName} ({data.UserId})" );
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
+
+			SaveToFile();
+
+			ContextsChanged?.Invoke( this, EventArgs.Empty );
+		}
+
 		public ICollection<IContextEntry> Contexts { get; }
+
+		public event EventHandler ContextsChanged;
+
+		public void RemoveAccount( ulong userId )
+		{
+			LogTo.Info( $"Removing account {userId}" );
+			var toRemove = Contexts.FirstOrDefault( c => c.UserId == userId );
+			if( toRemove == null )
+			{
+				LogTo.Warn( "Account wasn't found" );
+				return;
+			}
+
+			Contexts.Remove( toRemove );
+			SaveToFile();
+		}
+
+		/// <summary>
+		///     Only pass decrypted data to this method.
+		/// </summary>
+		/// <param name="data"></param>
+		public void UpdateAccount( TwitterAccountData data )
+		{
+			LogTo.Info( $"Updating account data for {data.AccountName} ({data.UserId})" );
+			var context = Contexts.FirstOrDefault( c => c.UserId == data.UserId );
+			Contexts.Remove( context );
+
+			Contexts.Add( new ContextEntry( Notifier, data, Cache ) );
+			SaveToFile();
+		}
+
+		public void UpdateAllAccounts()
+		{
+			SaveToFile();
+		}
+
 		private readonly ICache Cache;
 		private readonly string FileName;
 		private readonly INotifier Notifier;

@@ -12,14 +12,14 @@ namespace Twice.Views.Proxies
 			return new GenericBindingProxy<TData>();
 		}
 
+		public static readonly DependencyProperty DataProperty = DependencyProperty.Register( "Data", typeof( TData ),
+			typeof( GenericBindingProxy<TData> ),
+			new UIPropertyMetadata( null ) );
+
 		public TData Data
 		{
-			get { return (TData)GetValue( DataProperty ); }
-			set { SetValue( DataProperty, value ); }
+			get => (TData)GetValue( DataProperty );
+			set => SetValue( DataProperty, value );
 		}
-
-		public static readonly DependencyProperty DataProperty = DependencyProperty.Register( "Data", typeof( TData ),
-					typeof( GenericBindingProxy<TData> ),
-			new UIPropertyMetadata( null ) );
 	}
 }

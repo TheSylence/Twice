@@ -1,5 +1,5 @@
-﻿using MaterialDesignColors;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MaterialDesignColors;
 
 namespace Twice.Utilities.Ui
 {

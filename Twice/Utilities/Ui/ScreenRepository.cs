@@ -7,6 +7,11 @@ namespace Twice.Utilities.Ui
 	[ExcludeFromCodeCoverage]
 	internal class ScreenRepository : IScreenRepository
 	{
+		private IVirtualScreen ConstructScreen( Screen screen )
+		{
+			return new VirtualScreen( screen.Bounds.Left, screen.Bounds.Top, screen.Bounds.Width, screen.Bounds.Height );
+		}
+
 		public IVirtualScreen GetScreenFromPosition( double x, double y )
 		{
 			var allScreens = Screen.AllScreens;
@@ -20,11 +25,6 @@ namespace Twice.Utilities.Ui
 			}
 
 			return ConstructScreen( allScreens.First() );
-		}
-
-		private IVirtualScreen ConstructScreen( Screen screen )
-		{
-			return new VirtualScreen( screen.Bounds.Left, screen.Bounds.Top, screen.Bounds.Width, screen.Bounds.Height );
 		}
 	}
 }
