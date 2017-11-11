@@ -208,7 +208,11 @@ namespace Twice.Models.Twitter.Streaming
 			LogTo.Info( "Start realtime streaming on connection" );
 			Started = true;
 			StreamingTask = Stream.Start( c => Task.Run( () => ParseContent( c ) ) )
-				.ContinueWith( t => Connections.AddRange( t.Result ) );
+				.ContinueWith( t =>
+				{
+					LogTo.Warn("StreamingConnection disconnected");
+					Connections.AddRange(t.Result);
+				} );
 		}
 
 		/// <summary>
