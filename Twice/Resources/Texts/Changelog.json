@@ -1,10 +1,12 @@
 ﻿[
     {
-        "Version": "0.x.x",
-        "Date": "9999-12-31",
+        "Version": "0.10.5",
+        "Date": "2017-11-11",
         "Description": "",
         "NewFeatures": [],
-        "Changes": [],
+		"Changes": [
+			"Allow to compose tweets with 280 characters"
+		],
         "Fixes": [],
         "Issues": []
     },

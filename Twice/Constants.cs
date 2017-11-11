@@ -104,7 +104,7 @@ namespace Twice
 			/// <summary>
 			///     Maximum characters allowed in a tweet.
 			/// </summary>
-			internal const int MaxTweetLength = 140;
+			internal const int MaxTweetLength = 280;
 
 			/// <summary>
 			///     Prefix for a user mention.
