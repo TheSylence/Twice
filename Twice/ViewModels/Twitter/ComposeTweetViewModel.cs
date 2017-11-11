@@ -461,8 +461,8 @@ namespace Twice.ViewModels.Twitter
 			ScheduleInformation?.ResetSchedule();
 		}
 
-		private const int LowWarnThreshold = 135;
-		private const int MediumWarnThreshold = 125;
+		private const int LowWarnThreshold = 270;
+		private const int MediumWarnThreshold = 250;
 
 		[Inject]
 		public INotifier Notifier { get; set; }

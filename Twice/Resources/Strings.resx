@@ -469,7 +469,7 @@
     <value>Send tweet</value>
   </data>
   <data name="CharacterCounter" xml:space="preserve">
-    <value>{0} / 140</value>
+    <value>{0} / 280</value>
   </data>
   <data name="WhatsHappening" xml:space="preserve">
     <value>What's happening?</value>
