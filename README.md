@@ -1,3 +1,6 @@
+This app will no longer work properly because Twitter Inc. decided to start digging its own grave.
+Learn more about this at http://apps-of-a-feather.com/
+
 # Twice
 [![Build status](https://img.shields.io/appveyor/ci/TheSylence/Twice/develop.svg?maxAge=3600)](https://ci.appveyor.com/project/TheSylence/Twice)
 [![Github Releases (by Asset)](https://img.shields.io/github/downloads/TheSylence/Twice/Setup.exe.svg?maxAge=259200)](https://github.com/TheSylence/Twice/releases/latest)
